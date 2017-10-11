@@ -22,6 +22,7 @@ public abstract class EncodeUtils {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(bos, newEncode);
         IOUtils.copy(reader, writer);
+        writer.flush();
         return new String(bos.toByteArray(), newEncode);
     }
 
@@ -38,6 +39,7 @@ public abstract class EncodeUtils {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(bos, newEncode);
         IOUtils.copy(reader, writer);
+        writer.flush();
         return bos.toByteArray();
     }
 

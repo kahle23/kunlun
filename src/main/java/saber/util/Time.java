@@ -9,7 +9,6 @@ import java.util.Date;
 
 public class Time {
     private static final String DEFAULT_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
-    private Calendar calendar;
 
     public static Time on() {
         return new Time().setCalendar(Calendar.getInstance());
@@ -32,6 +31,23 @@ public class Time {
         Date date = DateUtils.parseDate(timeString, pattern);
         return time.setDate(date);
     }
+
+    public static Time on(int year, int month, int day) {
+        return Time.on().setYear(year).setMonth(month)
+                .setDay(day).setHour(0).setMinute(0).setSecond(0).setMillisecond(0);
+    }
+
+    public static Time on(int year, int month, int day, int hour, int minute, int second) {
+        return Time.on().setYear(year).setMonth(month)
+                .setDay(day).setHour(hour).setMinute(minute).setSecond(second).setMillisecond(0);
+    }
+
+    public static Time on(int year, int month, int day, int hour, int minute, int second, int millisecond) {
+        return Time.on().setYear(year).setMonth(month)
+                .setDay(day).setHour(hour).setMinute(minute).setSecond(second).setMillisecond(millisecond);
+    }
+
+    private Calendar calendar;
 
     private Time() {}
 

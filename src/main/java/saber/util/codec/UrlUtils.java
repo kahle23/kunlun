@@ -40,8 +40,8 @@ public abstract class UrlUtils {
         for (Map.Entry entry : map.entrySet()) {
             builder.append(entry.getKey());
             builder.append(keySeparator);
-            builder.append(entry.getValue());
-            builder.append(URLEncoder.encode(valueSeparator, encoding));
+            builder.append(URLEncoder.encode(entry.getValue() + "", encoding));
+            builder.append(valueSeparator);
         }
         int len = builder.length();
         int valLen = valueSeparator.length();

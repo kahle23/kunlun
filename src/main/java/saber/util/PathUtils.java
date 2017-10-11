@@ -28,7 +28,7 @@ public abstract class PathUtils {
     }
 
     public static String getClassPath() throws URISyntaxException {
-        if (!StringUtils.isBlank(classPath)) {
+        if (StringUtils.isBlank(classPath)) {
             URL res = PathUtils.class.getClassLoader().getResource("");
             classPath = res != null ? new File(res.toURI().getPath()).toString() : "";
         }

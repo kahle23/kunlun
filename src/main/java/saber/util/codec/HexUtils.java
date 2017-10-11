@@ -10,7 +10,7 @@ public abstract class HexUtils {
 
     public static char[] encode(byte[] data, boolean toLowerCase) {
         char[] toDigits = toLowerCase ? DIGITS_LOWER : DIGITS_UPPER;
-        return encode(data, toLowerCase);
+        return encode(data, toDigits);
     }
 
     public static char[] encode(byte[] data, char[] toDigits) {
