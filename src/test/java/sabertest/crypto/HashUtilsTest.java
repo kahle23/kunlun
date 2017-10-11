@@ -1,8 +1,8 @@
-package sabertest.util.crypto;
+package sabertest.crypto;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
-import saber.util.crypto.HashUtils;
+import saber.crypto.HashUtils;
 
 import java.io.File;
 

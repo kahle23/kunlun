@@ -1,4 +1,4 @@
-package saber.util.crypto;
+package saber.crypto;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;

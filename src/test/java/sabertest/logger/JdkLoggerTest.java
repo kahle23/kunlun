@@ -1,7 +1,7 @@
-package sabertest.util.logger;
+package sabertest.logger;
 
 import org.junit.Test;
-import saber.util.logger.JdkLogger;
+import saber.logger.JdkLogger;
 
 public class JdkLoggerTest {
 

@@ -1,4 +1,4 @@
-package saber.util.logger;
+package saber.logger;
 
 public abstract class LogFactory {
 

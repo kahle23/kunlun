@@ -1,4 +1,4 @@
-package saber.util.codec;
+package saber.codec;
 
 import org.apache.commons.collections.MapUtils;
 

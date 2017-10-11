@@ -1,6 +1,6 @@
-package saber.util.crypto;
+package saber.crypto;
 
-import saber.util.codec.HexUtils;
+import saber.codec.HexUtils;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;

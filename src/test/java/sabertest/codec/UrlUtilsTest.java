@@ -1,7 +1,7 @@
-package sabertest.util.codec;
+package sabertest.codec;
 
 import org.junit.Test;
-import saber.util.codec.UrlUtils;
+import saber.codec.UrlUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;

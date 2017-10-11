@@ -1,4 +1,4 @@
-package saber.util.codec;
+package saber.codec;
 
 import saber.util.Assert;
 import saber.util.Reflect;
