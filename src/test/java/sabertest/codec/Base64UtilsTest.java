@@ -1,7 +1,7 @@
-package sabertest.util.codec;
+package sabertest.codec;
 
 import org.junit.Test;
-import saber.util.codec.Base64Utils;
+import saber.codec.Base64Utils;
 
 public class Base64UtilsTest {
 

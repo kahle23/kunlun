@@ -1,4 +1,4 @@
-package saber.util.codec;
+package saber.codec;
 
 public abstract class UnicodeUtils {
 

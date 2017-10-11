@@ -1,7 +1,7 @@
-package sabertest.util.codec;
+package sabertest.codec;
 
 import org.junit.Test;
-import saber.util.codec.UnicodeUtils;
+import saber.codec.UnicodeUtils;
 
 public class UnicodeUtilsTest {
 

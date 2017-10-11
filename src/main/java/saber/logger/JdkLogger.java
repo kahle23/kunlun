@@ -1,4 +1,4 @@
-package saber.util.logger;
+package saber.logger;
 
 import java.util.logging.Level;
 import java.util.logging.LogManager;

@@ -1,9 +1,9 @@
-package sabertest.util.crypto;
+package sabertest.crypto;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
-import saber.util.codec.Base64Utils;
-import saber.util.crypto.DesUtils;
+import saber.codec.Base64Utils;
+import saber.crypto.DesUtils;
 
 public class DesUtilsTest {
 

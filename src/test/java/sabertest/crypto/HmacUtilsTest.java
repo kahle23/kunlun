@@ -1,7 +1,7 @@
-package sabertest.util.crypto;
+package sabertest.crypto;
 
 import org.junit.Test;
-import saber.util.crypto.HmacUtils;
+import saber.crypto.HmacUtils;
 
 public class HmacUtilsTest {
 
