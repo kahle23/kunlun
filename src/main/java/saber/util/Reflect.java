@@ -70,7 +70,7 @@ public class Reflect {
     }
 
     public Object get(String name) throws ReflectiveOperationException {
-        return accessible(field(name)).get(bean);//TODO
+        return accessible(field(name)).get(bean);
     }
 
     public Reflect set(String name, Object value) throws ReflectiveOperationException {
@@ -79,7 +79,7 @@ public class Reflect {
             Field modifiersField = Field.class.getDeclaredField("modifiers");
             modifiersField.setAccessible(true);
             modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        }
+        } else { field = accessible(field); }
         field.set(bean, value);
         return this;
     }
