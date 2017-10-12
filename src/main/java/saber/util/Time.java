@@ -15,7 +15,7 @@ public class Time {
     }
 
     public static Time on(Date date) {
-        return new Time().setDate(date);
+        return Time.on().setDate(date);
     }
 
     public static Time on(Calendar calendar) {
@@ -23,11 +23,11 @@ public class Time {
     }
 
     public static Time on(String timeString) throws ParseException {
-        return on(DEFAULT_TIME_PATTERN, timeString);
+        return Time.on(DEFAULT_TIME_PATTERN, timeString);
     }
 
     public static Time on(String pattern, String timeString) throws ParseException {
-        Time time = new Time();
+        Time time = Time.on();
         Date date = DateUtils.parseDate(timeString, pattern);
         return time.setDate(date);
     }
