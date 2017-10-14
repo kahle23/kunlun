@@ -45,4 +45,13 @@ public class HttpTest {
         System.out.println(http.send("http://uux.me", "GET"));
     }
 
+    @Test
+    public void test5() throws Exception {
+        String url = "http://ip.chinaz.com/getip.aspx";
+        System.out.println(Http.on(url)
+                .setHttpProxy("127.0.0.1", 5000)
+                .setProxyAuth("zhangsan", "123")
+                .get());
+    }
+
 }

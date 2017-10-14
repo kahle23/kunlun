@@ -3,15 +3,14 @@ package saber.util;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import saber.codec.Base64Utils;
 
 import javax.net.ssl.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.security.cert.CertificateException;
@@ -25,6 +24,7 @@ public class Http {
     private static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
     private static final TrustAnyHostnameVerifier TRUST_ANY_HOSTNAME_VERIFIER = new TrustAnyHostnameVerifier();
     private static final SSLSocketFactory SSL_SOCKET_FACTORY = initSSLSocketFactory();
+    private static final String STRING_PROXY_AUTHORIZATION = "Proxy-Authorization";
     private static final String STRING_CONTENT_TYPE = "Content-Type";
     private static final String STRING_USER_AGENT = "User-Agent";
     private static final String GET     = "GET";
@@ -89,8 +89,11 @@ public class Http {
     private Map<String, String> headers = new HashMap<>();
     private int connectTimeout = 19000;
     private int readTimeout = 19000;
+    private String proxyUser;
+    private String proxyPwd;
     private String charset;
     private String method;
+    private Proxy proxy;
     private byte[] data;
     private String url;
 
@@ -147,6 +150,48 @@ public class Http {
 
     public Http setUrl(String url) {
         this.url = url;
+        return this;
+    }
+
+    public String getProxyAuth() {
+        return this.proxyUser + ":" + this.proxyPwd;
+    }
+
+    public Http setProxyAuth(String username, String password) {
+        this.proxyUser = username;
+        this.proxyPwd = password;
+        return this;
+    }
+
+    public String getProxyUser() {
+        return proxyUser;
+    }
+
+    public Http setProxyUser(String proxyUser) {
+        this.proxyUser = proxyUser;
+        return this;
+    }
+
+    public String getProxyPwd() {
+        return proxyPwd;
+    }
+
+    public Http setProxyPwd(String proxyPwd) {
+        this.proxyPwd = proxyPwd;
+        return this;
+    }
+
+    public Proxy getProxy() {
+        return proxy;
+    }
+
+    public Http setProxy(Proxy proxy) {
+        this.proxy = proxy;
+        return this;
+    }
+
+    public Http setHttpProxy(String hostname, int port) {
+        this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(hostname, port));
         return this;
     }
 
@@ -222,7 +267,7 @@ public class Http {
         if (StringUtils.isBlank(charset)) charset = DEFAULT_CHARSET_NAME;
 
         URL _url = new URL(buildUrlWithQueryString(url, parameters, charset));
-        HttpURLConnection conn = (HttpURLConnection)_url.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) (proxy != null ? _url.openConnection(proxy) : _url.openConnection());
         if (conn instanceof HttpsURLConnection) {
             ((HttpsURLConnection)conn).setSSLSocketFactory(SSL_SOCKET_FACTORY);
             ((HttpsURLConnection)conn).setHostnameVerifier(TRUST_ANY_HOSTNAME_VERIFIER);
@@ -245,6 +290,11 @@ public class Http {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
                 conn.setRequestProperty(entry.getKey(), entry.getValue());
             }
+        }
+        if (StringUtils.isNotBlank(proxyUser)) {
+            String auth = proxyUser + ":" + (StringUtils.isNotBlank(proxyPwd) ? proxyPwd : "");
+            auth = "Basic " + Base64Utils.encodeToString(auth.getBytes(DEFAULT_CHARSET_NAME));
+            conn.setRequestProperty(STRING_PROXY_AUTHORIZATION, auth);
         }
 
         conn.connect();

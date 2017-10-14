@@ -74,13 +74,7 @@ public class Reflect {
     }
 
     public Reflect set(String name, Object value) throws ReflectiveOperationException {
-        Field field = field(name);//TODO
-        if ((field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        } else { field = accessible(field); }
-        field.set(bean, value);
+        field(name).set(bean, value);
         return this;
     }
 
