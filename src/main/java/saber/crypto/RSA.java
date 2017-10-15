@@ -1,5 +1,6 @@
 package saber.crypto;
 
+import org.apache.commons.lang3.ArrayUtils;
 import saber.util.Reflect;
 
 import javax.crypto.Cipher;
@@ -11,6 +12,10 @@ public class RSA {
     public static final String ALGORITHM_NAME = "RSA";
     public static final String DEFAULT_TRANSFORMATION = "RSA";
     public static final int DEFAULT_GENERATOR_KEY_SIZE = 2048;
+    public static final String NONE_NOPADDING = "RSA/None/NoPadding";
+    public static final String NONE_PKCS1PADDING = "RSA/None/PKCS1Padding";
+    public static final String ECB_NOPADDING = "RSA/ECB/NoPadding";
+    public static final String ECB_PKCS1PADDING = "RSA/ECB/PKCS1Padding";
 
     static {
         String className = "org.bouncycastle.jce.provider.BouncyCastleProvider";
@@ -27,6 +32,33 @@ public class RSA {
 
     public static RSA on() {
         return new RSA();
+    }
+
+    public static RSA on(String transformation) {
+        return new RSA().setTransformation(transformation);
+    }
+
+    public static RSA on(int keySize) throws NoSuchAlgorithmException {
+        return new RSA().setKeyPairGenerator(keySize);
+    }
+
+    public static RSA on(PublicKey publicKey) {
+        return new RSA().setPublicKey(publicKey);
+    }
+
+    public static RSA on(PrivateKey privateKey) {
+        return new RSA().setPrivateKey(privateKey);
+    }
+
+    public static RSA on(PublicKey publicKey, PrivateKey privateKey) {
+        return new RSA().setPublicKey(publicKey).setPrivateKey(privateKey);
+    }
+
+    public static RSA on(byte[] publicKey, byte[] privateKey) throws GeneralSecurityException {
+        RSA rsa = new RSA();
+        if (ArrayUtils.isNotEmpty(publicKey)) rsa.parsePublicKey(publicKey);
+        if (ArrayUtils.isNotEmpty(privateKey)) rsa.parsePrivateKey(privateKey);
+        return rsa;
     }
 
     private KeyPairGenerator keyPairGenerator;
@@ -58,6 +90,12 @@ public class RSA {
 
     public RSA setKeyPairGenerator(KeyPairGenerator keyPairGenerator) {
         this.keyPairGenerator = keyPairGenerator;
+        return this;
+    }
+
+    public RSA setKeyPairGenerator(int keySize) throws NoSuchAlgorithmException {
+        this.keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM_NAME);
+        keyPairGenerator.initialize(keySize);
         return this;
     }
 

@@ -26,10 +26,12 @@ public class RSATest {
     @Test
     public void test2() throws Exception {
         // Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-        String data = "Hello, World! ";
+        String data = "Hello, World!111";
         System.out.println(data);
         RSA rsa = RSA.on().generateKey();
+        // rsa.setTransformation("RSA/None/NoPadding");
         // rsa.setTransformation("RSA/None/PKCS1Padding");
+        // rsa.setTransformation("RSA/ECB/NoPadding");
         // rsa.setTransformation("RSA/ECB/PKCS1Padding");
         System.out.println("Transformation : " + rsa.getTransformation());
         String encryptString = Base64.encodeBase64String(rsa.encrypt(data.getBytes()));
@@ -40,6 +42,18 @@ public class RSATest {
         // rsa.setTransformation("RSA/ECB/PKCS5Padding"); // PKCS5Padding unavailable with RSA.
         String decryptString = new String(rsa.decrypt(Base64.decodeBase64(encryptString)));
         System.out.println(decryptString);
+    }
+
+    @Test
+    public void test3() throws Exception {
+        //  Data must not be longer than 245 bytes
+        String data = "Hello, World!Hello, World!Hello1, Worldell, World!Hello, Worlld!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!";
+        System.out.println(data.getBytes().length);
+        RSA rsa = RSA.on(RSA.ECB_PKCS1PADDING).generateKey();
+        String encrypt = Base64.encodeBase64String(rsa.encrypt(data.getBytes()));
+        System.out.println(encrypt);
+
+        System.out.println(new String(rsa.decrypt(Base64.decodeBase64(encrypt))));
     }
 
 
