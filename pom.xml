@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>saber</groupId>
 	<artifactId>saber</artifactId>
-	<version>0.0.2-beta2</version>
+	<version>0.0.2-beta3</version>
 	<packaging>jar</packaging>
 	<name>saber</name>
 	<url>http://uux.me</url>
