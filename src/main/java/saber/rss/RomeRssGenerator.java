@@ -14,8 +14,24 @@ public class RomeRssGenerator extends RSS20Generator {
     private boolean doCData;
     private String pattern;
 
+    public RomeRssGenerator() {
+        this("rss_2.0","2.0", false, null);
+    }
+
+    public RomeRssGenerator(RomeRss.FeedType feedType) {
+        this(feedType.getType(), feedType.getVersion(), false, null);
+    }
+
+    public RomeRssGenerator(String feedType, String version) {
+        this(feedType, version, false, null);
+    }
+
     public RomeRssGenerator(boolean doCData, String pattern) {
         this("rss_2.0","2.0", doCData, pattern);
+    }
+
+    public RomeRssGenerator(RomeRss.FeedType feedType, boolean doCData, String pattern) {
+        this(feedType.getType(), feedType.getVersion(), doCData, pattern);
     }
 
     public RomeRssGenerator(String feedType, String version, boolean doCData, String pattern) {
