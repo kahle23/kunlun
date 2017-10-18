@@ -2,6 +2,7 @@ package saber.rss;
 
 import com.sun.syndication.feed.rss.Channel;
 import com.sun.syndication.feed.rss.Description;
+import com.sun.syndication.feed.rss.Image;
 import com.sun.syndication.feed.rss.Item;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.WireFeedGenerator;
@@ -26,14 +27,14 @@ public class RomeRss {
     private final static FeedGenerators GENERATORS = new FeedGenerators();
 
     public enum FeedType {
-        RSS_0_90("rss_0.90"),
-        RSS_0_91("rss_0.91"),
-        RSS_0_92("rss_0.92"),
-        RSS_0_93("rss_0.93"),
-        RSS_0_94("rss_0.94"),
-        RSS_1_0("rss_1.0"),
-        RSS_2_0("rss_2.0"),
-        ATOM_0_3("atom_0.3")
+        RSS_0_90("rss_0.90", "0.90"),
+        RSS_0_91("rss_0.91", "0.91"),
+        RSS_0_92("rss_0.92", "0.92"),
+        RSS_0_93("rss_0.93", "0.93"),
+        RSS_0_94("rss_0.94", "0.94"),
+        RSS_1_0("rss_1.0", "1.0"),
+        RSS_2_0("rss_2.0", "2.0"),
+        ATOM_0_3("atom_0.3", "0.3")
         ;
 
         public static FeedType search(String type) {
@@ -45,9 +46,19 @@ public class RomeRss {
         }
 
         private String type;
+        private String version;
 
-        FeedType(String type) {
+        FeedType(String type, String version) {
             this.type = type;
+            this.version = version;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public String getVersion() {
+            return version;
         }
 
         @Override
@@ -88,7 +99,7 @@ public class RomeRss {
         return RomeRss.on(new ByteArrayInputStream(xml.getBytes(charset)));
     }
 
-    public static WireFeedGenerator getGenerator(String feedType) {
+    public static WireFeedGenerator createGenerator(String feedType) {
         return GENERATORS.getGenerator(feedType);
     }
 
@@ -100,7 +111,7 @@ public class RomeRss {
         this.channel.setItems(items);
     }
 
-    private WireFeedGenerator getGenerator() {
+    private WireFeedGenerator createGenerator() {
         return GENERATORS.getGenerator(channel.getFeedType());
     }
 
@@ -168,6 +179,38 @@ public class RomeRss {
         return channel.getDescription();
     }
 
+    public RomeRss setGenerator(String generator) {
+        channel.setGenerator(generator);
+        return this;
+    }
+
+    public String getGenerator() {
+        return channel.getGenerator();
+    }
+
+    public RomeRss setImage(Image image) {
+        channel.setImage(image);
+        return this;
+    }
+
+    public RomeRss setImage(String title, String url) {
+        return setImage(title, url, null, null);
+    }
+
+    public RomeRss setImage(String title, String url, String link, String description) {
+        Image image = new Image();
+        image.setTitle(title);
+        image.setUrl(url);
+        if (StringUtils.isNotBlank(link)) image.setLink(link);
+        if (StringUtils.isNotBlank(link)) image.setDescription(description);
+        channel.setImage(image);
+        return this;
+    }
+
+    public Image getImage() {
+        return channel.getImage();
+    }
+
     public RomeRss setItems(List<Item> items) {
         this.items = items;
         this.channel.setItems(items);
@@ -222,7 +265,7 @@ public class RomeRss {
     }
 
     public Document outputJDom() throws FeedException {
-        return outputJDom(getGenerator());
+        return outputJDom(createGenerator());
     }
 
     public org.w3c.dom.Document outputW3CDom(WireFeedGenerator generator) throws FeedException {
@@ -237,7 +280,7 @@ public class RomeRss {
     }
 
     public org.w3c.dom.Document outputW3CDom() throws FeedException {
-        return outputW3CDom(getGenerator());
+        return outputW3CDom(createGenerator());
     }
 
     public RomeRss output(WireFeedGenerator generator, Format format, Writer writer) throws FeedException, IOException {
@@ -248,7 +291,7 @@ public class RomeRss {
     }
 
     public RomeRss output(Format format, Writer writer) throws FeedException, IOException {
-        return output(getGenerator(), format, writer);
+        return output(createGenerator(), format, writer);
     }
 
     public RomeRss output(WireFeedGenerator generator, Writer writer) throws FeedException, IOException {
@@ -262,7 +305,7 @@ public class RomeRss {
     }
 
     public RomeRss output(Writer writer) throws FeedException, IOException {
-        return output(getGenerator(), writer);
+        return output(createGenerator(), writer);
     }
 
     public RomeRss output(WireFeedGenerator generator, File file) throws IOException, FeedException {
@@ -273,7 +316,7 @@ public class RomeRss {
     }
 
     public RomeRss output(File file) throws IOException, FeedException {
-        return output(getGenerator(), file);
+        return output(createGenerator(), file);
     }
 
     public String outputString(WireFeedGenerator generator, Format format) throws FeedException {
@@ -283,7 +326,7 @@ public class RomeRss {
     }
 
     public String outputString(Format format) throws FeedException {
-        return outputString(getGenerator(), format);
+        return outputString(createGenerator(), format);
     }
 
     public String outputString(WireFeedGenerator generator) throws FeedException {
@@ -296,7 +339,7 @@ public class RomeRss {
     }
 
     public String outputString() throws FeedException {
-        return outputString(getGenerator());
+        return outputString(createGenerator());
     }
 
 }
