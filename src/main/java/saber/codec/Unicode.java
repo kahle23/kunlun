@@ -1,6 +1,6 @@
 package saber.codec;
 
-public abstract class UnicodeUtils {
+public abstract class Unicode {
 
     public static String encode(String string) {
         StringBuilder unicode = new StringBuilder();

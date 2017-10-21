@@ -4,6 +4,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import saber.util.Reflect;
 
 import javax.crypto.Cipher;
+import java.nio.charset.Charset;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -12,10 +13,11 @@ public class RSA {
     public static final String ALGORITHM_NAME = "RSA";
     public static final String DEFAULT_TRANSFORMATION = "RSA";
     public static final int DEFAULT_GENERATOR_KEY_SIZE = 2048;
-    public static final String NONE_NOPADDING = "RSA/None/NoPadding";
-    public static final String NONE_PKCS1PADDING = "RSA/None/PKCS1Padding";
-    public static final String ECB_NOPADDING = "RSA/ECB/NoPadding";
-    public static final String ECB_PKCS1PADDING = "RSA/ECB/PKCS1Padding";
+
+    public static final String NONE_NO_PADDING = "RSA/None/NoPadding";
+    public static final String NONE_PKCS_1_PADDING = "RSA/None/PKCS1Padding";
+    public static final String ECB_NO_PADDING = "RSA/ECB/NoPadding";
+    public static final String ECB_PKCS_1_PADDING = "RSA/ECB/PKCS1Padding";
 
     static {
         String className = "org.bouncycastle.jce.provider.BouncyCastleProvider";
@@ -63,9 +65,10 @@ public class RSA {
 
     private KeyPairGenerator keyPairGenerator;
     private KeyFactory keyFactory;
+    private String charset = Charset.defaultCharset().name();
+    private String transformation = DEFAULT_TRANSFORMATION;
     private PublicKey publicKey;
     private PrivateKey privateKey;
-    private String transformation = DEFAULT_TRANSFORMATION;
 
     private RSA() {}
 
@@ -108,6 +111,24 @@ public class RSA {
         return this;
     }
 
+    public String getCharset() {
+        return charset;
+    }
+
+    public RSA setCharset(String charset) {
+        this.charset = charset;
+        return this;
+    }
+
+    public String getTransformation() {
+        return transformation;
+    }
+
+    public RSA setTransformation(String transformation) {
+        this.transformation = transformation;
+        return this;
+    }
+
     public PublicKey getPublicKey() {
         return publicKey;
     }
@@ -123,15 +144,6 @@ public class RSA {
 
     public RSA setPrivateKey(PrivateKey privateKey) {
         this.privateKey = privateKey;
-        return this;
-    }
-
-    public String getTransformation() {
-        return transformation;
-    }
-
-    public RSA setTransformation(String transformation) {
-        this.transformation = transformation;
         return this;
     }
 
@@ -154,16 +166,26 @@ public class RSA {
         return this;
     }
 
-    public byte[] encrypt(byte[] data) throws GeneralSecurityException {
+    public byte[] calc(byte[] data, int opmode) throws GeneralSecurityException {
         Cipher cipher = Cipher.getInstance(transformation);
-        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        // cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        // cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        cipher.init(opmode, opmode == Cipher.ENCRYPT_MODE
+                ? publicKey : opmode == Cipher.DECRYPT_MODE
+                ? privateKey : null);
         return cipher.doFinal(data);
     }
 
+    public byte[] encrypt(byte[] data) throws GeneralSecurityException {
+        return calc(data, Cipher.ENCRYPT_MODE);
+    }
+
+    public byte[] encrypt(String data) throws GeneralSecurityException {
+        return calc(data.getBytes(Charset.forName(charset)), Cipher.ENCRYPT_MODE);
+    }
+
     public byte[] decrypt(byte[] data) throws GeneralSecurityException {
-        Cipher cipher = Cipher.getInstance(transformation);
-        cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        return cipher.doFinal(data);
+        return calc(data, Cipher.DECRYPT_MODE);
     }
 
 }
