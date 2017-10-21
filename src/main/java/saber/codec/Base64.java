@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * @see DatatypeConverter#printBase64Binary
  * @see DatatypeConverter#parseBase64Binary
  */
-public abstract class Base64Utils {
+public abstract class Base64 {
     private static final Pattern BASE64_URL_SAFE = Pattern.compile("^[a-zA-Z0-9-_]+={0,2}$");
     private static final Pattern BASE64_URL_UNSAFE = Pattern.compile("^[a-zA-Z0-9+/]+={0,2}$");
     private static final Charset DEFAULT_CHARSET = Charset.defaultCharset();
@@ -21,7 +21,7 @@ public abstract class Base64Utils {
 
     static {
         Base64Delegate delegateToUse = null;
-        ClassLoader classLoader = Base64Utils.class.getClassLoader();
+        ClassLoader classLoader = Base64.class.getClassLoader();
         // Apache Commons Codec present on the classpath?
 		if (Reflect.isPresent("org.apache.commons.codec.binary.Base64", classLoader)) {
             delegateToUse = new CommonsCodecBase64Delegate();

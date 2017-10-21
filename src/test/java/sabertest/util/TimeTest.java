@@ -3,6 +3,7 @@ package sabertest.util;
 import org.junit.Test;
 import saber.util.Time;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class TimeTest {
@@ -34,15 +35,21 @@ public class TimeTest {
     @Test
     public void test4() throws Exception {
         String patten = "yyyy-MM-dd HH:mm:ss SSS";
+
         Time time = Time.on(1999, 12, 21);
-        String format = time.format();
-        String format1 = time.format(patten);
-        long timestamp = time.getTimestamp();
-        System.out.println(Time.on((Object) time.getDate()));
-        System.out.println(Time.on((Object) time.getCalendar()));
-        System.out.println(Time.on((Object) format));
-        System.out.println(Time.on((Object) format1, patten));
-        System.out.println(Time.on((Object) timestamp));
+        Object format = time.format();
+        Object format1 = time.format(patten);
+        Object timestamp = time.getTimestamp();
+        Object calendar = time.getCalendar();
+        Object date = time.getDate();
+
+        System.out.println(Time.on(calendar));
+        System.out.println(Time.on(date));
+        System.out.println(Time.on(format));
+        System.out.println(Time.on(format1, patten));
+        System.out.println(Time.on(timestamp));
+
+        System.out.println(Time.on(format).addHour(8).addDay(5));
     }
 
 }

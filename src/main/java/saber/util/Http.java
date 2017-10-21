@@ -3,7 +3,7 @@ package saber.util;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import saber.codec.Base64Utils;
+import saber.codec.Base64;
 
 import javax.net.ssl.*;
 import java.io.IOException;
@@ -293,7 +293,7 @@ public class Http {
         }
         if (StringUtils.isNotBlank(proxyUser)) {
             String auth = proxyUser + ":" + (StringUtils.isNotBlank(proxyPwd) ? proxyPwd : "");
-            auth = "Basic " + Base64Utils.encodeToString(auth.getBytes(DEFAULT_CHARSET_NAME));
+            auth = "Basic " + Base64.encodeToString(auth.getBytes(DEFAULT_CHARSET_NAME));
             conn.setRequestProperty(STRING_PROXY_AUTHORIZATION, auth);
         }
 
