@@ -54,4 +54,10 @@ public class FreeMarkerTest {
         System.out.println(FreeMarker.me.handleString(tempSource, data));
     }
 
+    @Test
+    public void test4() throws Exception {
+        FreeMarker.me = FreeMarker.on(new Configuration());
+        System.out.println(FreeMarker.me.handleString("aa${str} vvvv\n ${str} aa", data));
+    }
+
 }

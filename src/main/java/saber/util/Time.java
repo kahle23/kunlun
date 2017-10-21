@@ -14,6 +14,38 @@ public class Time {
         return new Time().setCalendar(Calendar.getInstance());
     }
 
+    public static Time on(Object time) throws ParseException {
+        return Time.on(time, DEFAULT_TIME_PATTERN);
+    }
+
+    public static Time on(Object time, String pattern) throws ParseException {
+        if (time instanceof String) {
+            return Time.on((String) time, pattern);
+        }
+        else if (time instanceof Long) {
+            return Time.on((Long) time);
+        }
+        else if (long.class.isInstance(time)) {
+            return Time.on((long) time);
+        }
+        else if (time instanceof Time) {
+            return (Time) time;
+        }
+        else if (time instanceof Date) {
+            return Time.on((Date) time);
+        }
+        else if (time instanceof Calendar) {
+            return Time.on((Calendar) time);
+        }
+        else {
+            return null;
+        }
+    }
+
+    public static Time on(Long ts) {
+        return Time.on().setTimestamp(ts);
+    }
+
     public static Time on(Date date) {
         return Time.on().setDate(date);
     }
@@ -23,10 +55,10 @@ public class Time {
     }
 
     public static Time on(String timeString) throws ParseException {
-        return Time.on(DEFAULT_TIME_PATTERN, timeString);
+        return Time.on(timeString, DEFAULT_TIME_PATTERN);
     }
 
-    public static Time on(String pattern, String timeString) throws ParseException {
+    public static Time on(String timeString, String pattern) throws ParseException {
         Time time = Time.on();
         Date date = DateUtils.parseDate(timeString, pattern);
         return time.setDate(date);

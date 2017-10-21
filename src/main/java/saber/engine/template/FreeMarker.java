@@ -16,7 +16,7 @@ import java.util.Locale;
 
 public class FreeMarker {
 
-    public static final FreeMarker me = FreeMarker.on(new Configuration());
+    public static FreeMarker me = FreeMarker.on(new Configuration());
 
     public static FreeMarker on() {
         return new FreeMarker(new Configuration());
@@ -72,6 +72,11 @@ public class FreeMarker {
         TemplateLoader[] loaderArr = new TemplateLoader[this.loaders.size()];
         this.loaders.toArray(loaderArr);
         configuration.setTemplateLoader(new MultiTemplateLoader(loaderArr));
+        return this;
+    }
+
+    public FreeMarker clearTemplateCache() {
+        configuration.clearTemplateCache();
         return this;
     }
 
