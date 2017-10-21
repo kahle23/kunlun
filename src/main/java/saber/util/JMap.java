@@ -13,6 +13,10 @@ public class JMap extends HashMap<Object, Object> {
         return new JMap();
     }
 
+    public static JMap on(Integer code) {
+        return new JMap().setCode(code);
+    }
+
     public static JMap on(Map map) {
         return new JMap().set(map);
     }

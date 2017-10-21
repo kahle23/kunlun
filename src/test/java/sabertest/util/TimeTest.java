@@ -31,4 +31,18 @@ public class TimeTest {
         System.out.println(Time.on().getTimestamp());
     }
 
+    @Test
+    public void test4() throws Exception {
+        String patten = "yyyy-MM-dd HH:mm:ss SSS";
+        Time time = Time.on(1999, 12, 21);
+        String format = time.format();
+        String format1 = time.format(patten);
+        long timestamp = time.getTimestamp();
+        System.out.println(Time.on((Object) time.getDate()));
+        System.out.println(Time.on((Object) time.getCalendar()));
+        System.out.println(Time.on((Object) format));
+        System.out.println(Time.on((Object) format1, patten));
+        System.out.println(Time.on((Object) timestamp));
+    }
+
 }
