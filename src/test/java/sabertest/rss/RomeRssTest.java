@@ -33,11 +33,10 @@ public class RomeRssTest {
     @Test
     public void test2() throws Exception {
         RomeRss.FeedType feedType = RomeRss.FeedType.RSS_2_0;
-        RomeRss rss = createRss(feedType);
-
         RomeRssGenerator generator = new RomeRssGenerator(true, "yyyy-MM-dd HH:mm:ss");
-        System.out.println(rss.outputString(generator));
-    }
+        RomeRss rss = createRss(feedType).setFeedGenerator(generator);
 
+        System.out.println(rss.outputString());
+    }
 
 }

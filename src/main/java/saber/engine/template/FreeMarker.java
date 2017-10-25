@@ -3,18 +3,15 @@ package saber.engine.template;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.cache.TemplateLoader;
-import freemarker.template.*;
+import freemarker.template.Configuration;
+import org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
-public class FreeMarker {
+public class FreeMarker implements TemplateEngine<freemarker.template.Template> {
 
     public static FreeMarker me = FreeMarker.on(new Configuration());
 
@@ -75,108 +72,111 @@ public class FreeMarker {
         return this;
     }
 
-    public FreeMarker clearTemplateCache() {
+    @Override
+    public FreeMarker clearTemplateCache() throws Exception {
         configuration.clearTemplateCache();
         return this;
     }
 
-    public Template getTemplate(String name) throws IOException {
-        return configuration.getTemplate(name);
+    @Override
+    public Template getTemplate(String templateName) throws Exception {
+        return new FreeMarkerTemplate().setTemplate(configuration.getTemplate(templateName));
     }
 
-    public Template getTemplate(String name, Locale locale) throws IOException {
-        return configuration.getTemplate(name, locale);
+    @Override
+    public Template getTemplate(freemarker.template.Template template) throws Exception {
+        return new FreeMarkerTemplate().setTemplate(template);
     }
 
-    public Template getTemplate(String name, String encoding) throws IOException {
-        return configuration.getTemplate(name, encoding);
+    @Override
+    public Template getTemplate(String templateName, String encoding) throws Exception {
+        return new FreeMarkerTemplate().setTemplate(configuration.getTemplate(templateName, encoding));
     }
 
-    public Template getTemplate(String name, Locale locale, String encoding) throws IOException {
-        return configuration.getTemplate(name, locale, encoding);
+    @Override
+    public Template getTemplateByString(String templateSource) throws Exception {
+        return getTemplateByString(null, templateSource, false);
     }
 
-    public Template getTemplate(String name, Locale locale, String encoding, boolean parseAsFTL) throws IOException {
-        return configuration.getTemplate(name, locale, encoding, parseAsFTL);
+    @Override
+    public Template getTemplateByString(String templateName, String templateSource) throws Exception {
+        return getTemplateByString(templateName, templateSource, false);
     }
 
-    public FreeMarker addTemplate(String name, String templateSource) throws IOException {
-        stringTemplateLoader.putTemplate(name, templateSource);
-        return this;
+    @Override
+    public Template getTemplateByString(String templateName, String templateSource, boolean cache) throws Exception {
+        if (cache) {
+            stringTemplateLoader.putTemplate(templateName, templateSource);
+            return getTemplate(templateName);
+        }
+        else {
+            return new FreeMarkerTemplate()
+                    .setTemplate(new freemarker.template.Template(templateName, templateSource, configuration));
+        }
     }
 
-    public FreeMarker addTemplate(String name, String templateSource, long lastModified) throws IOException {
-        stringTemplateLoader.putTemplate(name, templateSource, lastModified);
-        return this;
+    @Override
+    public Template getTemplateByReader(Reader reader) throws Exception {
+        return getTemplateByReader(null, reader, false);
     }
 
-    public FreeMarker handle(String templateSource, Object dataModel, Writer out) throws IOException, TemplateException {
-        Template template = new Template(null, templateSource, configuration);
-        template.process(dataModel, out);
-        return this;
+    @Override
+    public Template getTemplateByReader(String templateName, Reader reader) throws Exception {
+        return getTemplateByReader(templateName, reader, false);
     }
 
-    public FreeMarker handle(Reader reader, Object dataModel, Writer out) throws IOException, TemplateException {
-        Template template = new Template(null, reader, configuration);
-        template.process(dataModel, out);
-        return this;
+    @Override
+    public Template getTemplateByReader(String templateName, Reader reader, boolean cache) throws Exception {
+        if (cache) {
+            stringTemplateLoader.putTemplate(templateName, IOUtils.toString(reader));
+            return getTemplate(templateName);
+        }
+        else {
+            return new FreeMarkerTemplate()
+                    .setTemplate(new freemarker.template.Template(templateName, reader, configuration));
+        }
     }
 
-    public String handleString(String templateSource, Object dataModel) throws IOException, TemplateException {
-        StringWriter writer = new StringWriter();
-        handle(templateSource, dataModel, writer);
-        return writer.toString();
-    }
+    private static class FreeMarkerTemplate implements Template<freemarker.template.Template> {
+        private freemarker.template.Template template;
 
-    public String handleString(Reader reader, Object dataModel) throws IOException, TemplateException {
-        StringWriter writer = new StringWriter();
-        handle(reader, dataModel, writer);
-        return writer.toString();
-    }
+        @Override
+        public freemarker.template.Template getTemplate() {
+            return template;
+        }
 
-    public FreeMarker process(Template template, Object dataModel, Writer out) throws IOException, TemplateException {
-        template.process(dataModel, out);
-        return this;
-    }
+        @Override
+        public Template setTemplate(freemarker.template.Template template) {
+            this.template = template;
+            return this;
+        }
 
-    public FreeMarker process(Template template, Object dataModel, Writer out, ObjectWrapper wrapper) throws IOException, TemplateException {
-        template.process(dataModel, out, wrapper);
-        return this;
-    }
+        @Override
+        public Template render(Map data, Writer writer) throws Exception {
+            template.process(data, writer);
+            return this;
+        }
 
-    public FreeMarker process(Template template, Object dataModel, Writer out, ObjectWrapper wrapper, TemplateNodeModel rootNode) throws IOException, TemplateException {
-        template.process(dataModel, out, wrapper, rootNode);
-        return this;
-    }
+        @Override
+        public Template render(Writer writer) throws Exception {
+            template.process(new HashMap(), writer);
+            return this;
+        }
 
-    public FreeMarker process(String templateName, Object dataModel, Writer out) throws IOException, TemplateException {
-        Template template = configuration.getTemplate(templateName);
-        process(template, dataModel, out);
-        return this;
-    }
+        @Override
+        public String renderToString(Map data) throws Exception {
+            StringWriter writer = new StringWriter();
+            template.process(data, writer);
+            return writer.toString();
+        }
 
-    public String processString(Template template, Object dataModel) throws IOException, TemplateException {
-        StringWriter writer = new StringWriter();
-        process(template, dataModel, writer);
-        return writer.toString();
-    }
+        @Override
+        public StringBuilder renderToStringBuilder(Map data) throws Exception {
+            StringWriter writer = new StringWriter();
+            template.process(data, writer);
+            return new StringBuilder(writer.getBuffer());
+        }
 
-    public String processString(Template template, Object dataModel, ObjectWrapper wrapper) throws IOException, TemplateException {
-        StringWriter writer = new StringWriter();
-        process(template, dataModel, writer, wrapper);
-        return writer.toString();
-    }
-
-    public String processString(Template template, Object dataModel, ObjectWrapper wrapper, TemplateNodeModel rootNode) throws IOException, TemplateException {
-        StringWriter writer = new StringWriter();
-        process(template, dataModel, writer, wrapper, rootNode);
-        return writer.toString();
-    }
-
-    public String processString(String TemplateName, Object dataModel) throws IOException, TemplateException {
-        StringWriter writer = new StringWriter();
-        process(TemplateName, dataModel, writer);
-        return writer.toString();
     }
 
 }

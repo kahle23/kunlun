@@ -9,6 +9,7 @@ import freemarker.template.Template;
 import org.junit.Before;
 import org.junit.Test;
 import saber.engine.template.FreeMarker;
+import saber.engine.template.TemplateEngine;
 
 import java.io.StringReader;
 import java.util.HashMap;
@@ -36,28 +37,30 @@ public class FreeMarkerTest {
         MultiTemplateLoader loader = new MultiTemplateLoader(new TemplateLoader[]{strTempLoader});
         cfg.setTemplateLoader(loader);
 
-        System.out.println(FreeMarker.me.processString("123", data));
-        System.out.println(FreeMarker.me.processString(template, data));
+        System.out.println(FreeMarker.me.getTemplate("123").renderToString(data));
+        System.out.println(FreeMarker.me.getTemplate(template).renderToString(data));
     }
 
     @Test
     public void test2() throws Exception {
         String tempSource = "aa${str} vvvv\n ${str} aa";
-        System.out.println(FreeMarker.me
-                .addTemplate("123", tempSource)
-                .processString("123", data));
+        TemplateEngine marker = FreeMarker.on();
+        System.out.println(marker
+                .getTemplateByString("123", tempSource)
+                .renderToString(data));
     }
 
     @Test
     public void test3() throws Exception {
         String tempSource = "aa${str} vvvv\n ${str} aa";
-        System.out.println(FreeMarker.me.handleString(tempSource, data));
+        FreeMarker on = FreeMarker.on();
+        System.out.println(on.getTemplateByString(tempSource).renderToString(data));
     }
 
     @Test
     public void test4() throws Exception {
         FreeMarker.me = FreeMarker.on(new Configuration());
-        System.out.println(FreeMarker.me.handleString("aa${str} vvvv\n ${str} aa", data));
+        System.out.println(FreeMarker.me.getTemplateByString("aa${str} vvvv\n ${str} aa").renderToString(data));
     }
 
 }

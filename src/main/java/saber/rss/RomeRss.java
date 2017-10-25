@@ -105,18 +105,19 @@ public class RomeRss {
 
     private Channel channel;
     private List<Item> items = new ArrayList<>();
+    private WireFeedGenerator feedGenerator;
 
     private RomeRss() {
         this.channel = new Channel();
         this.channel.setItems(items);
     }
 
-    private WireFeedGenerator createGenerator() {
-        return GENERATORS.getGenerator(channel.getFeedType());
-    }
-
-    public Channel getChannel() {
-        return channel;
+    private WireFeedGenerator feedGenerator() {
+        if (feedGenerator == null ||
+                !feedGenerator.getType().equalsIgnoreCase(channel.getFeedType())) {
+            feedGenerator = GENERATORS.getGenerator(channel.getFeedType());
+        }
+        return feedGenerator;
     }
 
     @SuppressWarnings("unchecked")
@@ -127,6 +128,19 @@ public class RomeRss {
             channel.setItems(items);
         }
         return this;
+    }
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public RomeRss setFeedGenerator(WireFeedGenerator feedGenerator) {
+        this.feedGenerator = feedGenerator;
+        return this;
+    }
+
+    public WireFeedGenerator getFeedGenerator() {
+        return feedGenerator;
     }
 
     public RomeRss setFeedType(FeedType feedType) {
@@ -253,23 +267,12 @@ public class RomeRss {
         return this;
     }
 
-    public Document outputJDom(WireFeedGenerator generator) throws FeedException {
-        if (generator==null) {
-            throw new IllegalArgumentException("Invalid feed type [" + channel.getFeedType() + "]");
-        }
-        if (!generator.getType().equals(channel.getFeedType())) {
-            throw new IllegalArgumentException("WireFeedOutput type[" + channel.getFeedType() + "] and WireFeed type [" +
-                    channel.getFeedType() + "] don't match");
-        }
-        return generator.generate(channel);
-    }
-
     public Document outputJDom() throws FeedException {
-        return outputJDom(createGenerator());
+        return feedGenerator().generate(channel);
     }
 
-    public org.w3c.dom.Document outputW3CDom(WireFeedGenerator generator) throws FeedException {
-        Document doc = outputJDom(generator);
+    public org.w3c.dom.Document outputW3CDom() throws FeedException {
+        Document doc = outputJDom();
         DOMOutputter outputter = new DOMOutputter();
         try {
             return outputter.output(doc);
@@ -279,67 +282,43 @@ public class RomeRss {
         }
     }
 
-    public org.w3c.dom.Document outputW3CDom() throws FeedException {
-        return outputW3CDom(createGenerator());
+    public String outputString(Format format) throws FeedException {
+        Document doc = outputJDom();
+        XMLOutputter outputter = new XMLOutputter(format);
+        return outputter.outputString(doc);
     }
 
-    public RomeRss output(WireFeedGenerator generator, Format format, Writer writer) throws FeedException, IOException {
-        Document doc = outputJDom(generator);
+    public String outputString() throws FeedException {
+        String encoding = channel.getEncoding();
+        Format format = Format.getPrettyFormat();
+        if (encoding != null) {
+            format.setEncoding(encoding);
+        }
+        return outputString(format);
+    }
+
+    public RomeRss output(Format format, Writer writer) throws FeedException, IOException {
+        Document doc = outputJDom();
         XMLOutputter outputter = new XMLOutputter(format);
         outputter.output(doc, writer);
         return this;
     }
 
-    public RomeRss output(Format format, Writer writer) throws FeedException, IOException {
-        return output(createGenerator(), format, writer);
-    }
-
-    public RomeRss output(WireFeedGenerator generator, Writer writer) throws FeedException, IOException {
+    public RomeRss output(Writer writer) throws FeedException, IOException {
         String encoding = channel.getEncoding();
         Format format = Format.getPrettyFormat();
         if (encoding!=null) {
             format.setEncoding(encoding);
         }
-        output(generator, format, writer);
-        return this;
-    }
-
-    public RomeRss output(Writer writer) throws FeedException, IOException {
-        return output(createGenerator(), writer);
-    }
-
-    public RomeRss output(WireFeedGenerator generator, File file) throws IOException, FeedException {
-        Writer writer = new FileWriter(file);
-        output(generator, writer);
-        writer.close();
+        output(format, writer);
         return this;
     }
 
     public RomeRss output(File file) throws IOException, FeedException {
-        return output(createGenerator(), file);
-    }
-
-    public String outputString(WireFeedGenerator generator, Format format) throws FeedException {
-        Document doc = outputJDom(generator);
-        XMLOutputter outputter = new XMLOutputter(format);
-        return outputter.outputString(doc);
-    }
-
-    public String outputString(Format format) throws FeedException {
-        return outputString(createGenerator(), format);
-    }
-
-    public String outputString(WireFeedGenerator generator) throws FeedException {
-        String encoding = channel.getEncoding();
-        Format format = Format.getPrettyFormat();
-        if (encoding!=null) {
-            format.setEncoding(encoding);
-        }
-        return outputString(generator, format);
-    }
-
-    public String outputString() throws FeedException {
-        return outputString(createGenerator());
+        Writer writer = new FileWriter(file);
+        output(writer);
+        writer.close();
+        return this;
     }
 
 }
