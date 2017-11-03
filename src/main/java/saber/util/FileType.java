@@ -39,7 +39,7 @@ public enum FileType {
     EPS(             "Postscript",             "eps",          Pattern.compile("(?i)252150532D41646F6265.*")),
     ZIP(             "ZIP Archive",            "zip",          Pattern.compile("(?i)504B0304140000000800.*|(?i)504B0506000000000000.*")),
     RAR(             "RAR Archive",            "rar",          Pattern.compile("(?i)526172211A0700CF907300000D00000000000000.*")),
-    CLASS(           "CLASS",                  "class",        Pattern.compile("(?i)CAFEBABE0000002E0041.*")),
+    CLASS(           "CLASS",                  "class",        Pattern.compile("(?i)CAFEBABE.{8}.*")),
     JAR(             "JAR",                    "jar",          Pattern.compile("(?i)504B03040A0000000[0-9A-Fa-f]{16}0000000000000000000090000004D45.*")),//final
     EXE(             "EXE",                    "exe",          Pattern.compile("(?i)4D5A90000300000004000000FFFF0000B8000000000000004000000000000000.*")),//final
     CHM(             "CHM",                    "chm",          Pattern.compile("(?i)49545346030000006000.*")),

@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>saber</groupId>
 	<artifactId>saber</artifactId>
-	<version>0.0.3-beta1</version>
+	<version>0.0.3-beta2</version>
 	<packaging>jar</packaging>
 	<name>saber</name>
 	<url>http://uux.me</url>
@@ -614,6 +614,27 @@
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk16</artifactId>
 			<version>1.45</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.4.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>us.codecraft</groupId>
+			<artifactId>xsoup</artifactId>
+			<version>0.3.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>21.0</version>
 			<scope>provided</scope>
 		</dependency>
 

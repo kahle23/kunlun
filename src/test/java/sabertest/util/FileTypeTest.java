@@ -1,9 +1,12 @@
 package sabertest.util;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
+import saber.codec.Hex;
 import saber.util.FileType;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class FileTypeTest {
 
@@ -25,7 +28,23 @@ public class FileTypeTest {
 //        System.out.println(FileType.check(new File("e:\\1.zip")));
 //        System.out.println(FileType.check(new File("e:\\1.rtf")));
 //        System.out.println(FileType.check(new File("e:\\1.mp4")));
-        System.out.println(FileType.fileHeader(new File("e:\\1.mp4")).substring(0, 64));
+//        System.out.println(FileType.check(new File("e:\\1.class")));
+        System.out.println(FileType.fileHeader(new File("e:\\1.class")).substring(0, 64));
+    }
+
+    @Test
+    public void testClass() throws Exception {
+        byte[] bytes = FileUtils.readFileToByteArray(new File("e:\\1.class"));
+        // class文件前四位为魔数位，魔数位的值一般固定为 CAFEBABE
+        String magic = Hex.me.encodeToString(Arrays.copyOfRange(bytes, 0, 4));
+        System.out.println("魔数为：" + magic.toUpperCase());
+
+        // 次版本号
+        int minorVersion = (((int)bytes[4]) << 8) + bytes[5];
+        // 主版本号
+        int majorVersion = (((int)bytes[6]) << 8) + bytes[7];
+        System.out.println(bytes[4] + " | " + bytes[5] + " | " + bytes[6] + " | " + bytes[7]);
+        System.out.println("主版本号为：" + majorVersion + "，次版本号为：" + minorVersion);
     }
 
 }
