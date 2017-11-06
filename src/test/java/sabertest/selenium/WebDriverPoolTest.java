@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class WebDriverPoolTest {
 
     @Test
-    public void test1() throws Exception {
+    public void phantomjsTest() throws Exception {
         // chromedriver.exe
         DesiredCapabilities phantomjs = new DesiredCapabilities();
         phantomjs.setJavascriptEnabled(true);

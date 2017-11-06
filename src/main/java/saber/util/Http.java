@@ -18,6 +18,9 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Kahle
+ */
 public class Http {
     private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36";
     private static final String DEFAULT_CONTENT_TYPE = "application/x-www-form-urlencoded";

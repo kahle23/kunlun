@@ -9,6 +9,9 @@ import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+/**
+ * @author Kahle
+ */
 public class RSA {
     public static final String ALGORITHM_NAME = "RSA";
     public static final String DEFAULT_TRANSFORMATION = "RSA";

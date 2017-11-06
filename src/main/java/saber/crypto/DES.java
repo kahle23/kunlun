@@ -9,6 +9,9 @@ import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * @author Kahle
+ */
 public class DES {
     public static final String ALGORITHM_NAME = "DES";
     public static final String DEFAULT_TRANSFORMATION = "DES/ECB/PKCS5Padding";

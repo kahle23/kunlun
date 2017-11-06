@@ -7,6 +7,9 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 
+/**
+ * @author Kahle
+ */
 public class Blowfish {
     public static final String ALGORITHM_NAME = "Blowfish";
     public static final String DEFAULT_TRANSFORMATION = "Blowfish/ECB/PKCS5Padding";

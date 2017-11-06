@@ -7,6 +7,9 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 
+/**
+ * @author Kahle
+ */
 public class DESede {
     public static final String ALGORITHM_NAME = "DESede";
     public static final String DEFAULT_TRANSFORMATION = "DESede/ECB/PKCS5Padding";

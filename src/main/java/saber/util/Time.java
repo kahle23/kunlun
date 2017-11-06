@@ -7,6 +7,9 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * @author Kahle
+ */
 public class Time {
     private static final String DEFAULT_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
 
