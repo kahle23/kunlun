@@ -8,6 +8,9 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 
+/**
+ * @author Kahle
+ */
 public class Hmac {
 
     public enum Algorithm {

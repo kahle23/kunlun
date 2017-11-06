@@ -8,6 +8,9 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 
+/**
+ * @author Kahle
+ */
 public abstract class EncodeUtils {
 
     public static String recode(String data, String newEncode)

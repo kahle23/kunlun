@@ -13,6 +13,9 @@ import org.openqa.selenium.safari.SafariDriver;
 
 import java.util.regex.Pattern;
 
+/**
+ * @author Kahle
+ */
 public enum DriverType {
     HTMLUNIT(        HtmlUnitDriver.class,                   Pattern.compile("(?i)htmlunit.*")),
     PHANTOMJS(       PhantomJSDriver.class,                  Pattern.compile("(?i)phantomjs.*")),

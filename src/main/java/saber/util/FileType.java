@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * @author Kahle
+ */
 public enum FileType {
     JPEG(            "JPEG",                   "jpg",          Pattern.compile("(?i)FFD8FFE000104A464946.*")),
     PNG(             "PNG",                    "png",          Pattern.compile("(?i)89504E470D0A1A0A0000.*")),

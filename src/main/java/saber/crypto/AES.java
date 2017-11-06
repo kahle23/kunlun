@@ -7,6 +7,9 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 
+/**
+ * @author Kahle
+ */
 public class AES {
     public static final String ALGORITHM_NAME = "AES";
     public static final String DEFAULT_TRANSFORMATION = "AES/ECB/PKCS5Padding";
