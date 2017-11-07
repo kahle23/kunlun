@@ -292,26 +292,26 @@
 		<!-- //////////////// -->
 
 		<!-- apache httpclient -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.3.6</version>
-			<scope>provided</scope>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.apache.httpcomponents</groupId>-->
+			<!--<artifactId>httpclient</artifactId>-->
+			<!--<version>4.3.6</version>-->
+			<!--<scope>provided</scope>-->
+		<!--</dependency>-->
 
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpmime</artifactId>
-			<version>4.5.2</version>
-			<scope>provided</scope>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.apache.httpcomponents</groupId>-->
+			<!--<artifactId>httpmime</artifactId>-->
+			<!--<version>4.5.2</version>-->
+			<!--<scope>provided</scope>-->
+		<!--</dependency>-->
 
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpcore</artifactId>
-			<version>4.4.5</version>
-			<scope>provided</scope>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.apache.httpcomponents</groupId>-->
+			<!--<artifactId>httpcore</artifactId>-->
+			<!--<version>4.4.5</version>-->
+			<!--<scope>provided</scope>-->
+		<!--</dependency>-->
 		<!-- //////////////// -->
 
 		<!-- apache poi -->
@@ -524,13 +524,6 @@
 			<version>3.2.1</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>20.0</version>
-			<scope>provided</scope>
-		</dependency>
 		<!-- //////////////// -->
 
 		<dependency>
@@ -617,12 +610,28 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- //    selenium     // -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>3.4.0</version>
+			<version>3.5.3</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<!--<dependency>-->
+			<!--<groupId>org.seleniumhq.selenium</groupId>-->
+			<!--<artifactId>selenium-htmlunit-driver</artifactId>-->
+			<!--<version>2.52.0</version>-->
+			<!--<scope>provided</scope>-->
+		<!--</dependency>-->
+
+		<dependency>
+			<groupId>ch.racic.selenium</groupId>
+			<artifactId>selenium-driver-helper-phantomjs</artifactId>
+			<version>2.1.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- //////////////// -->
 
 		<dependency>
 			<groupId>us.codecraft</groupId>
@@ -634,7 +643,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>21.0</version>
+			<version>23.0</version>
 			<scope>provided</scope>
 		</dependency>
 

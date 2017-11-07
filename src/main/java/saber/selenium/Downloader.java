@@ -1,7 +1,10 @@
 package saber.selenium;
 
+import ch.racic.selenium.drivers.PhantomJSDriverHelper;
+import ch.racic.selenium.drivers.exceptions.ExecutableNotFoundException;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +14,9 @@ import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import saber.util.Reflect;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -24,10 +29,23 @@ public class Downloader {
     }
 
     public static Downloader on(String driverPath, int poolSize) {
-        String baseName = FilenameUtils.getBaseName(driverPath);
-        DriverType driverType = DriverType.find(baseName);
+        DriverType driverType = DriverType.find(driverPath);
+        if (driverType == null) {
+            throw new RuntimeException("Can not match any driver type. ");
+        }
+        else {
+            log.info("Downloader match \"" + driverType.getDriverClass().getSimpleName() + "\" driver type. ");
+        }
+        return on(driverType, driverPath, poolSize);
+    }
+
+    public static Downloader on(DriverType driverType, String driverPath) {
+        return on(driverType, driverPath, DEFAULT_POOL_SIZE);
+    }
+
+    public static Downloader on(DriverType driverType, String driverPath, int poolSize) {
         if (DriverType.HTMLUNIT.equals(driverType)) {
-            throw new RuntimeException("Not finish. ");
+            return htmlunit(poolSize);
         }
         else if (DriverType.PHANTOMJS.equals(driverType)) {
             return phantomjs(driverPath, poolSize);
@@ -58,7 +76,7 @@ public class Downloader {
             throw new RuntimeException("Not finish. ");
         }
         else {
-            throw new RuntimeException("Not finish. ");
+            throw new RuntimeException("Unexpected enum object. ");
         }
     }
 
@@ -66,7 +84,30 @@ public class Downloader {
         return new Downloader(WebDriverPool.on(driverType, dCaps, poolSize));
     }
 
+    public static Downloader htmlunit(int poolSize) {
+        DesiredCapabilities htmlunit = new DesiredCapabilities();
+        htmlunit.setJavascriptEnabled(true);
+        htmlunit.setBrowserName("htmlunit");
+        WebDriverPool pool = WebDriverPool.on(DriverType.HTMLUNIT, htmlunit, poolSize);
+        return new Downloader(pool);
+    }
+
     public static Downloader phantomjs(String driverPath, int poolSize) {
+        if (StringUtils.isBlank(driverPath)) {
+            if (Reflect.isPresent("ch.racic.selenium.drivers.PhantomJSDriverHelper"
+                    , Downloader.class.getClassLoader())) {
+                try {
+                    driverPath = PhantomJSDriverHelper.executable().toString();
+                }
+                catch (ExecutableNotFoundException | IOException e) {
+                    throw new RuntimeException("Input driver path is blank" +
+                            ", and run \"PhantomJSDriverHelper.executable()\" failure. ");
+                }
+            }
+            else {
+                throw new RuntimeException("Input driver path is blank. ");
+            }
+        }
         String extension = FilenameUtils.getExtension(driverPath);
         boolean isGhostDriver = "js".equals(extension);
         DesiredCapabilities phantomjs = DesiredCapabilities.phantomjs();

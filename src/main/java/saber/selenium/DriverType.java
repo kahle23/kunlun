@@ -17,15 +17,15 @@ import java.util.regex.Pattern;
  * @author Kahle
  */
 public enum DriverType {
-    HTMLUNIT(        HtmlUnitDriver.class,                   Pattern.compile("(?i)htmlunit.*")),
-    PHANTOMJS(       PhantomJSDriver.class,                  Pattern.compile("(?i)phantomjs.*")),
-    CHROME(          ChromeDriver.class,                     Pattern.compile("(?i)chrome.*")),
-    FIREFOX(         FirefoxDriver.class,                    Pattern.compile("(?i)firefox.*")),
-    EDGE(            EdgeDriver.class,                       Pattern.compile("(?i)edge.*")),
-    IE(              InternetExplorerDriver.class,           Pattern.compile("(?i)internetexplorer.*|(?i)ie.*")),
-    OPERA(           OperaDriver.class,                      Pattern.compile("(?i)opera.*")),
-    SAFARI(          SafariDriver.class,                     Pattern.compile("(?i)safari.*")),
-    REMOTE(          RemoteWebDriver.class,                  Pattern.compile("(?i)remote.*")),
+    HTMLUNIT(        HtmlUnitDriver.class,                   Pattern.compile("(?i).*htmlunit.*")),
+    PHANTOMJS(       PhantomJSDriver.class,                  Pattern.compile("(?i).*phantomjs.*")),
+    CHROME(          ChromeDriver.class,                     Pattern.compile("(?i).*chrome.*")),
+    FIREFOX(         FirefoxDriver.class,                    Pattern.compile("(?i).*firefox.*")),
+    EDGE(            EdgeDriver.class,                       Pattern.compile("(?i).*edge.*")),
+    IE(              InternetExplorerDriver.class,           Pattern.compile("(?i).*internetexplorer.*|(?i).*ie.*")),
+    OPERA(           OperaDriver.class,                      Pattern.compile("(?i).*opera.*")),
+    SAFARI(          SafariDriver.class,                     Pattern.compile("(?i).*safari.*")),
+    REMOTE(          RemoteWebDriver.class,                  Pattern.compile("(?i).*remote.*")),
     ;
 
     private Class<? extends WebDriver> driverClass;
