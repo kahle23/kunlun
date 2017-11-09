@@ -6,8 +6,13 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
+/**
+ * @author Kahle
+ */
 public class Prop {
     private static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
+    private static final String STRING_TRUE = "true";
+    private static final String STRING_FALSE = "false";
 
     public static Prop on(Properties properties) {
         return new Prop(properties);
@@ -120,9 +125,9 @@ public class Prop {
         String value = properties.getProperty(key);
         if (value != null) {
             value = value.toLowerCase().trim();
-            if ("true".equals(value)) {
+            if (STRING_TRUE.equals(value)) {
                 return true;
-            } else if ("false".equals(value)) {
+            } else if (STRING_FALSE.equals(value)) {
                 return false;
             } else {
                 throw new IllegalArgumentException("The value can not parse to Boolean: " + value);

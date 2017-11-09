@@ -1,10 +1,14 @@
 package saber.codec;
 
+/**
+ * @author Kahle
+ */
 public class Hex {
     public static final char[] DIGITS_LOWER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
     public static final char[] DIGITS_UPPER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    private static final int HEX_01 = 0x01;
 
-    public static final Hex me = Hex.on();
+    public static final Hex ME = Hex.on();
 
     public static Hex on() {
         return new Hex();
@@ -53,7 +57,7 @@ public class Hex {
 
     public byte[] decode(char[] data) {
         int len = data.length;
-        if ((len & 0x01) != 0) {
+        if ((len & HEX_01) != 0) {
             throw new IllegalArgumentException("Odd number of characters.");
         }
         byte[] out = new byte[len >> 1];

@@ -17,11 +17,32 @@ import java.security.NoSuchAlgorithmException;
 public class Hash {
 
     public enum Algorithm {
+
+        /**
+         * MD5
+         */
         MD5("MD5"),
+
+        /**
+         * SHA-1
+         */
         SHA1("SHA-1"),
+
+        /**
+         * SHA-256
+         */
         SHA256("SHA-256"),
+
+        /**
+         * SHA-384
+         */
         SHA384("SHA-384"),
+
+        /**
+         * SHA-512
+         */
         SHA512("SHA-512")
+
         ;
 
         public static Algorithm search(String algorithm) {
@@ -55,11 +76,11 @@ public class Hash {
     private static final int DEFAULT_BUFFER_SIZE = 8192;
 
     public static final Algorithm DEFAULT_ALGORITHM = Algorithm.SHA1;
-    public static final Hash md5 = new Hash(Algorithm.MD5.toString());
-    public static final Hash sha1 = new Hash(Algorithm.SHA1.toString());
-    public static final Hash sha256 = new Hash(Algorithm.SHA256.toString());
-    public static final Hash sha384 = new Hash(Algorithm.SHA384.toString());
-    public static final Hash sha512 = new Hash(Algorithm.SHA512.toString());
+    public static final Hash MD5 = new Hash(Algorithm.MD5.toString());
+    public static final Hash SHA1 = new Hash(Algorithm.SHA1.toString());
+    public static final Hash SHA256 = new Hash(Algorithm.SHA256.toString());
+    public static final Hash SHA384 = new Hash(Algorithm.SHA384.toString());
+    public static final Hash SHA512 = new Hash(Algorithm.SHA512.toString());
 
     public static Hash on() {
         return new Hash(DEFAULT_ALGORITHM.toString());

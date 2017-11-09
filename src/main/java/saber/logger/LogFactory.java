@@ -1,6 +1,9 @@
 package saber.logger;
 
-public abstract class LogFactory {
+/**
+ * @author Kahle
+ */
+public class LogFactory {
 
     public static org.slf4j.Logger slf4j(Class<?> clazz) {
         return org.slf4j.LoggerFactory.getLogger(clazz);

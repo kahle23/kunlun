@@ -4,7 +4,10 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-public abstract class JdkLogger {
+/**
+ * @author Kahle
+ */
+public class JdkLogger {
 
 	public static void debug(String message) {
 		logp(Level.FINE, message, null);

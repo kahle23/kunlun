@@ -10,6 +10,9 @@ import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSocketFactory;
 import java.util.Set;
 
+/**
+ * @author Kahle
+ */
 public class Redis {
 
     public static Redis on() {
@@ -161,11 +164,12 @@ public class Redis {
         return this;
     }
 
-    ////////////////
     private Redis() {}
 
     public Redis init() {
-        if (jedisPoolConfig == null) jedisPoolConfig = new JedisPoolConfig();
+        if (jedisPoolConfig == null) {
+            jedisPoolConfig = new JedisPoolConfig();
+        }
         jedisPool = new JedisPool(jedisPoolConfig, host, port, connectionTimeout, soTimeout, password
                 , database, clientName, ssl, sslSocketFactory, sslParameters, hostnameVerifier);
         return this;

@@ -10,11 +10,14 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Kahle
+ */
 public class UrlCodec {
     public static final String DEFAULT_KEY_SEPARATOR = "=";
     public static final String DEFAULT_VALUE_SEPARATOR = "&";
 
-    public static final UrlCodec me = UrlCodec.on();
+    public static final UrlCodec ME = UrlCodec.on();
 
     public static UrlCodec on() {
         UrlCodec urlCodec = new UrlCodec();
@@ -82,8 +85,9 @@ public class UrlCodec {
 
     public String encode(Map<?, ?> map) throws UnsupportedEncodingException {
         StringBuilder builder = new StringBuilder();
-        if (MapUtils.isEmpty(map))
+        if (MapUtils.isEmpty(map)) {
             return builder.toString();
+        }
         for (Map.Entry entry : map.entrySet()) {
             builder.append(entry.getKey());
             builder.append(keySeparator);
@@ -97,9 +101,11 @@ public class UrlCodec {
     }
 
     public Map<String, String> decode(String data) throws UnsupportedEncodingException {
-        Map<String, String> result = new HashMap<>();
         String[] split = data.split(valueSeparator);
-        if (split.length <= 0) return result;
+        Map<String, String> result = new HashMap<>(split.length);
+        if (split.length <= 0) {
+            return result;
+        }
         for (String s : split) {
             String[] entry = s.split(keySeparator);
             if (entry.length == 2) {

@@ -19,6 +19,9 @@ import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author Kahle
+ */
 public class WebDriverPool {
     private final static Logger log = LoggerFactory.getLogger(WebDriverPool.class);
     private final static String REMOTE_WEB_URL_PROPERTY = "remote.web.url";
@@ -34,9 +37,13 @@ public class WebDriverPool {
         return new WebDriverPool(driverType, dCaps, capacity);
     }
 
-    // store webDrivers created
+    /**
+     * store webDrivers created
+     */
     private List<WebDriver> webDriverList = Collections.synchronizedList(new ArrayList<WebDriver>());
-    // store webDrivers available
+    /**
+     * store webDrivers available
+     */
     private BlockingDeque<WebDriver> innerQueue = new LinkedBlockingDeque<>();
     private AtomicInteger stat = new AtomicInteger(STAT_RUNNING);
     private final DesiredCapabilities dCaps;

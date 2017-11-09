@@ -16,9 +16,9 @@ public class UrlCodecTest {
         map.put("q", "你好，Java！");
         map.put("天寒地冻", "春暖花开");
         map.put("我是键", "你好，世界！");
-        String s = UrlCodec.me.encode(map);
+        String s = UrlCodec.ME.encode(map);
         System.out.println(s);
-        Map<String, String> map1 = UrlCodec.me.decode(s);
+        Map<String, String> map1 = UrlCodec.ME.decode(s);
         System.out.println(map1.toString());
     }
 

@@ -20,7 +20,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * @author Kahle
+ */
 public class Downloader {
+    private static final String RACIC_PHANTOMJS_DRIVER_HELPER = "ch.racic.selenium.drivers.PhantomJSDriverHelper";
     private static final Logger log = LoggerFactory.getLogger(Downloader.class);
     private static final int DEFAULT_POOL_SIZE = 1;
 
@@ -94,8 +98,7 @@ public class Downloader {
 
     public static Downloader phantomjs(String driverPath, int poolSize) {
         if (StringUtils.isBlank(driverPath)) {
-            if (Reflect.isPresent("ch.racic.selenium.drivers.PhantomJSDriverHelper"
-                    , Downloader.class.getClassLoader())) {
+            if (Reflect.isPresent(RACIC_PHANTOMJS_DRIVER_HELPER, Downloader.class.getClassLoader())) {
                 try {
                     driverPath = PhantomJSDriverHelper.executable().toString();
                 }

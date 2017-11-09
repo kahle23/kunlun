@@ -8,7 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Collection;
 import java.util.Map;
 
-public abstract class Assert {
+/**
+ * @author Kahle
+ */
+public class Assert {
 
     public static void isTrue(boolean expression, String message) {
         if (!expression) {

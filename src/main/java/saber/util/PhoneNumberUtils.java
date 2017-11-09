@@ -7,7 +7,10 @@ import com.google.i18n.phonenumbers.geocoding.PhoneNumberOfflineGeocoder;
 
 import java.util.Locale;
 
-public abstract class PhoneNumberUtils {
+/**
+ * @author Kahle
+ */
+public class PhoneNumberUtils {
     private static PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
     private static PhoneNumberOfflineGeocoder geoCoder = PhoneNumberOfflineGeocoder.getInstance();
     private static PhoneNumberToCarrierMapper carrierMapper = PhoneNumberToCarrierMapper.getInstance();
