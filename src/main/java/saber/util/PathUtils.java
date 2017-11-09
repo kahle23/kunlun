@@ -7,7 +7,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-public abstract class PathUtils {
+/**
+ * @author Kahle
+ */
+public class PathUtils {
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
     public static final String PATH_SEPARATOR = System.getProperty("path.separator");
 

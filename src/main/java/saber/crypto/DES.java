@@ -13,6 +13,9 @@ import java.security.NoSuchAlgorithmException;
  * @author Kahle
  */
 public class DES {
+    private static final int MAX_KEY_LENGTH = 8;
+    private static final int MAX_IV_LENGTH = 8;
+
     public static final String ALGORITHM_NAME = "DES";
     public static final String DEFAULT_TRANSFORMATION = "DES/ECB/PKCS5Padding";
 
@@ -128,11 +131,13 @@ public class DES {
     }
 
     public byte[] calc(byte[] data, int opmode) throws GeneralSecurityException {
-        if (key == null || key.length < 8) {
+        boolean isWrongKey = key == null || key.length < MAX_KEY_LENGTH;
+        boolean isWrongIv = needIv && (iv == null || iv.length != MAX_IV_LENGTH);
+        if (isWrongKey) {
             throw new IllegalArgumentException("Wrong key size. Key length >= 8. ");
         }
-        if (needIv && (iv == null || iv.length != 8)) {
-            throw new IllegalArgumentException("Wrong IV length: must be 8 bytes long. ");
+        if (isWrongIv) {
+            throw new IllegalArgumentException("Wrong Iv length: must be 8 bytes long. ");
         }
         byte[] finalData = data;
         if (opmode == Cipher.ENCRYPT_MODE && needFill) {

@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class RegexUtils {
+/**
+ * @author Kahle
+ */
+public class RegexUtils {
 
     public static boolean matches(Pattern pattern, CharSequence input) {
         Matcher matcher = pattern.matcher(input);

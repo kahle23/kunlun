@@ -11,6 +11,11 @@ import java.security.GeneralSecurityException;
  * @author Kahle
  */
 public class AES {
+    private static final int MAX_KEY_LENGTH_1 = 16;
+    private static final int MAX_KEY_LENGTH_2 = 24;
+    private static final int MAX_KEY_LENGTH_3 = 32;
+    private static final int MAX_IV_LENGTH = 16;
+
     public static final String ALGORITHM_NAME = "AES";
     public static final String DEFAULT_TRANSFORMATION = "AES/ECB/PKCS5Padding";
 
@@ -109,10 +114,12 @@ public class AES {
     }
 
     public byte[] calc(byte[] data, int opmode) throws GeneralSecurityException {
-        if (key == null || (key.length != 16 && key.length != 24 && key.length != 32)) {
+        boolean isWrongKey = key == null || (key.length != MAX_KEY_LENGTH_1 && key.length != MAX_KEY_LENGTH_2 && key.length != MAX_KEY_LENGTH_3);
+        boolean isWrongIv = needIv && (iv == null || iv.length != MAX_IV_LENGTH);
+        if (isWrongKey) {
             throw new IllegalArgumentException("Wrong key size. Key length only is 16 or 24 or 32. ");
         }
-        if (needIv && (iv == null || iv.length != 16)) {
+        if (isWrongIv) {
             throw new IllegalArgumentException("Wrong IV length: must be 16 bytes long. ");
         }
         byte[] finalData = data;

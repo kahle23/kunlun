@@ -11,6 +11,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.*;
 
+/**
+ * @author Kahle
+ */
 public class FreeMarker implements TemplateEngine<freemarker.template.Template> {
 
     public static FreeMarker me = FreeMarker.on(new Configuration());
@@ -159,7 +162,7 @@ public class FreeMarker implements TemplateEngine<freemarker.template.Template> 
 
         @Override
         public Template render(Writer writer) throws Exception {
-            template.process(new HashMap(), writer);
+            template.process(new HashMap(0), writer);
             return this;
         }
 

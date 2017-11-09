@@ -8,37 +8,41 @@ import java.nio.charset.Charset;
 import java.util.regex.Pattern;
 
 /**
+ * @author Kahle
  * @see org.apache.commons.codec.binary.Base64
  * @see java.util.Base64
  * @see DatatypeConverter#printBase64Binary
  * @see DatatypeConverter#parseBase64Binary
  */
-public abstract class Base64 {
+public class Base64 {
+    private static final String JAVAX_XML_DATATYPE_CONVERTER = "javax.xml.bind.DatatypeConverter";
+    private static final String COMMONS_CODEC_BASE64 = "org.apache.commons.codec.binary.Base64";
+    private static final String JAVA_UTIL_BASE64 = "java.util.Base64";
     private static final Pattern BASE64_URL_SAFE = Pattern.compile("^[a-zA-Z0-9-_]+={0,2}$");
     private static final Pattern BASE64_URL_UNSAFE = Pattern.compile("^[a-zA-Z0-9+/]+={0,2}$");
     private static final Charset DEFAULT_CHARSET = Charset.defaultCharset();
-    private static final Base64Delegate delegate;
+    private static final Base64Delegate DELEGATE;
 
     static {
         Base64Delegate delegateToUse = null;
         ClassLoader classLoader = Base64.class.getClassLoader();
         // Apache Commons Codec present on the classpath?
-		if (Reflect.isPresent("org.apache.commons.codec.binary.Base64", classLoader)) {
+		if (Reflect.isPresent(COMMONS_CODEC_BASE64, classLoader)) {
             delegateToUse = new CommonsCodecBase64Delegate();
         }
         // JDK 8's java.util.Base64 class present?
-        else if (Reflect.isPresent("java.util.Base64", classLoader)) {
+        else if (Reflect.isPresent(JAVA_UTIL_BASE64, classLoader)) {
             delegateToUse = new Java8Base64Delegate();
         }
         // maybe all jdk is ok?
-        else if (Reflect.isPresent("javax.xml.bind.DatatypeConverter", classLoader)) {
+        else if (Reflect.isPresent(JAVAX_XML_DATATYPE_CONVERTER, classLoader)) {
             delegateToUse = new Java67Base64Delegate();
         }
-        delegate = delegateToUse;
+        DELEGATE = delegateToUse;
     }
 
     private static void assertDelegateAvailable() {
-        Assert.state(delegate != null,
+        Assert.state(DELEGATE != null,
                 "Neither Java 8, Java 7, Java 6 nor Apache Commons Codec found - Base64 encoding between byte arrays not supported");
     }
 
@@ -52,22 +56,22 @@ public abstract class Base64 {
 
     public static byte[] encode(byte[] src) {
         assertDelegateAvailable();
-        return delegate.encode(src);
+        return DELEGATE.encode(src);
     }
 
     public static byte[] decode(byte[] src) {
         assertDelegateAvailable();
-        return delegate.decode(src);
+        return DELEGATE.decode(src);
     }
 
     public static byte[] encodeUrlSafe(byte[] src) {
         assertDelegateAvailable();
-        return delegate.encodeUrlSafe(src);
+        return DELEGATE.encodeUrlSafe(src);
     }
 
     public static byte[] decodeUrlSafe(byte[] src) {
         assertDelegateAvailable();
-        return delegate.decodeUrlSafe(src);
+        return DELEGATE.decodeUrlSafe(src);
     }
 
     public static String encodeToString(byte[] src) {
@@ -104,12 +108,32 @@ public abstract class Base64 {
 
     interface Base64Delegate {
 
+        /**
+         * Base64 encode
+         * @param src something will encode
+         * @return something encoded
+         */
         byte[] encode(byte[] src);
 
+        /**
+         * Base64 decode
+         * @param src something will decode
+         * @return something encoded
+         */
         byte[] decode(byte[] src);
 
+        /**
+         * Base64 url safe encode
+         * @param src something will url safe encode
+         * @return something encoded
+         */
         byte[] encodeUrlSafe(byte[] src);
 
+        /**
+         * Base64 url safe decode
+         * @param src something will url safe decode
+         * @return something encoded
+         */
         byte[] decodeUrlSafe(byte[] src);
 
     }
@@ -118,19 +142,25 @@ public abstract class Base64 {
 
         @Override
         public byte[] encode(byte[] src) {
-            if (src == null || src.length == 0) return src;
+            if (src == null || src.length == 0) {
+                return src;
+            }
             return DatatypeConverter.printBase64Binary(src).getBytes();
         }
 
         @Override
         public byte[] decode(byte[] src) {
-            if (src == null || src.length == 0) return src;
+            if (src == null || src.length == 0) {
+                return src;
+            }
             return DatatypeConverter.parseBase64Binary(new String(src));
         }
 
         @Override
         public byte[] encodeUrlSafe(byte[] src) {
-            if (src == null || src.length == 0) return src;
+            if (src == null || src.length == 0) {
+                return src;
+            }
             String s = DatatypeConverter.printBase64Binary(src);
             s = s.replaceAll("\\+", "-");
             s = s.replaceAll("/", "_");
@@ -139,7 +169,9 @@ public abstract class Base64 {
 
         @Override
         public byte[] decodeUrlSafe(byte[] src) {
-            if (src == null || src.length == 0) return src;
+            if (src == null || src.length == 0) {
+                return src;
+            }
             String s = new String(src);
             s = s.replaceAll("-", "+");
             s = s.replaceAll("_", "/");
@@ -152,25 +184,33 @@ public abstract class Base64 {
 
         @Override
         public byte[] encode(byte[] src) {
-            if (src == null || src.length == 0) return src;
+            if (src == null || src.length == 0) {
+                return src;
+            }
             return java.util.Base64.getEncoder().encode(src);
         }
 
         @Override
         public byte[] decode(byte[] src) {
-            if (src == null || src.length == 0) return src;
+            if (src == null || src.length == 0) {
+                return src;
+            }
             return java.util.Base64.getDecoder().decode(src);
         }
 
         @Override
         public byte[] encodeUrlSafe(byte[] src) {
-            if (src == null || src.length == 0) return src;
+            if (src == null || src.length == 0) {
+                return src;
+            }
             return java.util.Base64.getUrlEncoder().encode(src);
         }
 
         @Override
         public byte[] decodeUrlSafe(byte[] src) {
-            if (src == null || src.length == 0) return src;
+            if (src == null || src.length == 0) {
+                return src;
+            }
             return java.util.Base64.getUrlDecoder().decode(src);
         }
 

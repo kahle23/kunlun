@@ -16,6 +16,9 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Kahle
+ */
 public class Barcode {
     private static final int DEFAULT_TRUE_COLOR = 0xFF000000;
     private static final int DEFAULT_FALSE_COLOR = 0xFFFFFFFF;

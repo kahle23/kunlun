@@ -10,6 +10,9 @@ import org.jdom.Element;
 
 import java.util.Date;
 
+/**
+ * @author Kahle
+ */
 public class RomeRssGenerator extends RSS20Generator {
     private boolean doCData;
     private String pattern;
@@ -40,6 +43,7 @@ public class RomeRssGenerator extends RSS20Generator {
         this.pattern = pattern;
     }
 
+    @Override
     protected void addItem(Item item, Element parent, int index) throws FeedException {
         Element eItem = new Element("item", getFeedNamespace());
         populateItem(item,eItem, index);
@@ -55,6 +59,7 @@ public class RomeRssGenerator extends RSS20Generator {
         parent.addContent(eItem);
     }
 
+    @Override
     public void populateItem(Item item, Element eItem, int index) {
         super.populateItem(item, eItem, index);
 

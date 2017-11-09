@@ -11,6 +11,9 @@ import java.security.GeneralSecurityException;
  * @author Kahle
  */
 public class DESede {
+    private static final int MAX_KEY_LENGTH = 24;
+    private static final int MAX_IV_LENGTH = 8;
+
     public static final String ALGORITHM_NAME = "DESede";
     public static final String DEFAULT_TRANSFORMATION = "DESede/ECB/PKCS5Padding";
 
@@ -109,11 +112,13 @@ public class DESede {
     }
 
     public byte[] calc(byte[] data, int opmode) throws GeneralSecurityException {
-        if (key == null || key.length != 24) {
+        boolean isWrongKey = key == null || key.length != MAX_KEY_LENGTH;
+        boolean isWrongIv = needIv && (iv == null || iv.length != MAX_IV_LENGTH);
+        if (isWrongKey) {
             throw new IllegalArgumentException("Wrong key size. Key length must is 24. ");
         }
-        if (needIv && (iv == null || iv.length != 8)) {
-            throw new IllegalArgumentException("Wrong IV length: must be 8 bytes long. ");
+        if (isWrongIv) {
+            throw new IllegalArgumentException("Wrong Iv length: must be 8 bytes long. ");
         }
         byte[] finalData = data;
         if (opmode == Cipher.ENCRYPT_MODE && needFill) {

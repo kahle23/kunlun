@@ -14,7 +14,10 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class ServletUtils {
+/**
+ * @author Kahle
+ */
+public class ServletUtils {
     private static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_JSON = "application/json";
@@ -68,7 +71,7 @@ public abstract class ServletUtils {
         if (cookies != null && cookies.length > 0) {
             builder.append(STRING_COOKIE).append(BRACKETS_LEFT);
             for (Cookie cookie : cookies) {
-                builder.append(cookie.getName()).append(CHARACTER_EQUAL)
+                builder.append(cookie.getName()).append(EQUAL_MARK)
                         .append(cookie.getValue()).append(ENGLISH_COMMA);
             }
             builder.deleteCharAt(builder.length() - 1);
@@ -138,13 +141,15 @@ public abstract class ServletUtils {
 
     private static StringBuilder paramsSummary(Map<String, String[]> parameterMap) {
         StringBuilder builder = new StringBuilder();
-        if (parameterMap == null) return builder;
+        if (parameterMap == null) {
+            return builder;
+        }
         Set<Map.Entry<String, String[]>> entries = parameterMap.entrySet();
         for (Map.Entry<String, String[]> entry : entries) {
             String[] values = entry.getValue();
             if (values.length == 1) {
                 builder.append(entry.getKey())
-                        .append(CHARACTER_EQUAL)
+                        .append(EQUAL_MARK)
                         .append(values[0])
                         .append(ENGLISH_COMMA);
             }
@@ -152,7 +157,7 @@ public abstract class ServletUtils {
                 builder.append(entry.getKey())
                         .append(BRACKETS_LEFT)
                         .append(BRACKETS_RIGHT)
-                        .append(CHARACTER_EQUAL)
+                        .append(EQUAL_MARK)
                         .append(BRACES_LEFT);
                 for (String value : values) {
                     builder.append(value)
@@ -172,7 +177,7 @@ public abstract class ServletUtils {
     private static final String BRACKETS_LEFT = "[";
     private static final String BRACKETS_RIGHT = "]";
     private static final String ENGLISH_COMMA = ",";
-    private static final String CHARACTER_EQUAL = "=";
+    private static final String EQUAL_MARK = "=";
     private static final String STRING_TO = "To";
     private static final String STRING_AT = "At";
     private static final String STRING_CONTENT_TYPE = "ContentType";

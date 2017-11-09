@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
 /**
  * @author Kahle
  */
-public abstract class EncodeUtils {
+public class EncodeUtils {
 
     public static String recode(String data, String newEncode)
             throws IOException {

@@ -6,7 +6,10 @@ import org.apache.commons.lang3.SystemUtils;
 import java.io.*;
 import java.nio.charset.Charset;
 
-public abstract class RuntimeUtils {
+/**
+ * @author Kahle
+ */
+public class RuntimeUtils {
     private static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
 
     public static Process doExec(String command)

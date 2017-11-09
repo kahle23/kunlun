@@ -2,7 +2,10 @@ package saber.util;
 
 import java.io.*;
 
-public abstract class SerializeUtils {
+/**
+ * @author Kahle
+ */
+public class SerializeUtils {
 
     public static Object deserialize(byte[] bytes) {
         if (bytes == null) {

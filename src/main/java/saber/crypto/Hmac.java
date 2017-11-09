@@ -14,11 +14,32 @@ import java.security.GeneralSecurityException;
 public class Hmac {
 
     public enum Algorithm {
+
+        /**
+         * HMAC MD5
+         */
         HMAC_MD5("HmacMD5"),
+
+        /**
+         * HMAC SHA1
+         */
         HMAC_SHA1("HmacSHA1"),
+
+        /**
+         * HMAC SHA256
+         */
         HMAC_SHA256("HmacSHA256"),
+
+        /**
+         * HMAC SHA384
+         */
         HMAC_SHA384("HmacSHA384"),
+
+        /**
+         * HMAC SHA512
+         */
         HMAC_SHA512("HmacSHA512")
+
         ;
 
         public static Algorithm search(String algorithm) {

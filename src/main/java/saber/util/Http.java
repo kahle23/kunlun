@@ -22,6 +22,10 @@ import java.util.Map;
  * @author Kahle
  */
 public class Http {
+    private static final String QUESTION_MARK = "?";
+    private static final String EQUAL_MARK = "=";
+    private static final String AND_MARK = "&";
+
     private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36";
     private static final String DEFAULT_CONTENT_TYPE = "application/x-www-form-urlencoded";
     private static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
@@ -40,20 +44,29 @@ public class Http {
 
     private static class TrustAnyTrustManager implements X509TrustManager {
         // https certificate manager
+
+        @Override
         public X509Certificate[] getAcceptedIssuers() { return null; }
-        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException { }
-        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException { }
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
     }
 
     private static class TrustAnyHostnameVerifier implements HostnameVerifier {
         // https hostname verifier
+
+        @Override
         public boolean verify(String hostname, SSLSession session) { return true; }
     }
 
     private static SSLSocketFactory initSSLSocketFactory() {
         try {
             TrustManager[] tm = { new TrustAnyTrustManager() };
-            SSLContext sslContext = SSLContext.getInstance("TLS"); // ("TLS", "SunJSSE");
+            // ("TLS", "SunJSSE");
+            SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, tm, new java.security.SecureRandom());
             return sslContext.getSocketFactory();
         } catch (Exception e) {
@@ -65,11 +78,15 @@ public class Http {
             throws UnsupportedEncodingException {
         if (MapUtils.isNotEmpty(queryParas)) {
             StringBuilder builder = new StringBuilder(url);
-            if (!url.contains("?")) builder.append("?");
-            else builder.append("&");
+            if (!url.contains(QUESTION_MARK)) {
+                builder.append(QUESTION_MARK);
+            }
+            else {
+                builder.append(AND_MARK);
+            }
             for (Map.Entry<String, String> entry : queryParas.entrySet()) {
                 builder.append(entry.getKey())
-                        .append("=")
+                        .append(EQUAL_MARK)
                         .append(URLEncoder.encode(entry.getValue(), charset))
                         .append("&");
             }
@@ -265,12 +282,18 @@ public class Http {
     }
 
     public HttpURLConnection connect() throws IOException, GeneralSecurityException {
-        if (StringUtils.isBlank(url)) throw new IOException("Url is blank. ");
-        if (StringUtils.isBlank(method)) throw new IOException("Method is blank. ");
-        if (StringUtils.isBlank(charset)) charset = DEFAULT_CHARSET_NAME;
+        if (StringUtils.isBlank(url)) {
+            throw new IOException("Url is blank. ");
+        }
+        if (StringUtils.isBlank(method)) {
+            throw new IOException("Method is blank. ");
+        }
+        if (StringUtils.isBlank(charset)) {
+            charset = DEFAULT_CHARSET_NAME;
+        }
 
-        URL _url = new URL(buildUrlWithQueryString(url, parameters, charset));
-        HttpURLConnection conn = (HttpURLConnection) (proxy != null ? _url.openConnection(proxy) : _url.openConnection());
+        URL urlObj = new URL(buildUrlWithQueryString(url, parameters, charset));
+        HttpURLConnection conn = (HttpURLConnection) (proxy != null ? urlObj.openConnection(proxy) : urlObj.openConnection());
         if (conn instanceof HttpsURLConnection) {
             ((HttpsURLConnection)conn).setSSLSocketFactory(SSL_SOCKET_FACTORY);
             ((HttpsURLConnection)conn).setHostnameVerifier(TRUST_ANY_HOSTNAME_VERIFIER);

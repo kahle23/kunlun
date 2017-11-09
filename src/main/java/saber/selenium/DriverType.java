@@ -17,15 +17,52 @@ import java.util.regex.Pattern;
  * @author Kahle
  */
 public enum DriverType {
+
+    /**
+     * HtmlUnit Driver
+     */
     HTMLUNIT(        HtmlUnitDriver.class,                   Pattern.compile("(?i).*htmlunit.*")),
+
+    /**
+     * PhantomJS Driver
+     */
     PHANTOMJS(       PhantomJSDriver.class,                  Pattern.compile("(?i).*phantomjs.*")),
+
+    /**
+     * Chrome Driver
+     */
     CHROME(          ChromeDriver.class,                     Pattern.compile("(?i).*chrome.*")),
+
+    /**
+     * Firefox Driver
+     */
     FIREFOX(         FirefoxDriver.class,                    Pattern.compile("(?i).*firefox.*")),
+
+    /**
+     * Edge Driver
+     */
     EDGE(            EdgeDriver.class,                       Pattern.compile("(?i).*edge.*")),
+
+    /**
+     * Internet Explorer Driver
+     */
     IE(              InternetExplorerDriver.class,           Pattern.compile("(?i).*internetexplorer.*|(?i).*ie.*")),
+
+    /**
+     * Opera Driver
+     */
     OPERA(           OperaDriver.class,                      Pattern.compile("(?i).*opera.*")),
+
+    /**
+     * Safari Driver
+     */
     SAFARI(          SafariDriver.class,                     Pattern.compile("(?i).*safari.*")),
+
+    /**
+     * Remote Web Driver
+     */
     REMOTE(          RemoteWebDriver.class,                  Pattern.compile("(?i).*remote.*")),
+
     ;
 
     private Class<? extends WebDriver> driverClass;
@@ -53,7 +90,9 @@ public enum DriverType {
         DriverType[] types = DriverType.values();
         for (DriverType type : types) {
             Pattern p = type.getDriverName();
-            if (p.matcher(name).matches()) return type;
+            if (p.matcher(name).matches()) {
+                return type;
+            }
         }
         return null;
     }

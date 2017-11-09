@@ -61,8 +61,12 @@ public class RSA {
 
     public static RSA on(byte[] publicKey, byte[] privateKey) throws GeneralSecurityException {
         RSA rsa = new RSA();
-        if (ArrayUtils.isNotEmpty(publicKey)) rsa.parsePublicKey(publicKey);
-        if (ArrayUtils.isNotEmpty(privateKey)) rsa.parsePrivateKey(privateKey);
+        if (ArrayUtils.isNotEmpty(publicKey)) {
+            rsa.parsePublicKey(publicKey);
+        }
+        if (ArrayUtils.isNotEmpty(privateKey)) {
+            rsa.parsePrivateKey(privateKey);
+        }
         return rsa;
     }
 
@@ -171,8 +175,6 @@ public class RSA {
 
     public byte[] calc(byte[] data, int opmode) throws GeneralSecurityException {
         Cipher cipher = Cipher.getInstance(transformation);
-        // cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        // cipher.init(Cipher.DECRYPT_MODE, privateKey);
         cipher.init(opmode, opmode == Cipher.ENCRYPT_MODE
                 ? publicKey : opmode == Cipher.DECRYPT_MODE
                 ? privateKey : null);

@@ -1,6 +1,9 @@
 package saber.util;
 
-public abstract class ThreadUtils {
+/**
+ * @author Kahle
+ */
+public class ThreadUtils {
 
     public static void sleepQuietly(long millis) {
         try {

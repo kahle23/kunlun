@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * @author Kahle
+ */
 public class Reflect {
     private Class<?> clazz;
     private Object bean;
@@ -106,7 +109,9 @@ public class Reflect {
             for (Field field : cls.getDeclaredFields()) {
                 if (clazz != cls ^ Modifier.isStatic(field.getModifiers())) {
                     String name = field.getName();
-                    if (!result.containsKey(name)) result.put(name, field(name));
+                    if (!result.containsKey(name)) {
+                        result.put(name, field(name));
+                    }
                 }
             }
             cls = cls.getSuperclass();
@@ -206,7 +211,7 @@ public class Reflect {
                 '}';
     }
 
-    private static class NULL {}
+    private static class Null {}
 
     private static Class<?> wrapper(Class<?> type) {
         if (type == null) {
@@ -247,9 +252,13 @@ public class Reflect {
     private boolean match(Class<?>[] declaredTypes, Class<?>[] actualTypes) {
         if (declaredTypes.length == actualTypes.length) {
             for (int i = 0; i < actualTypes.length; i++) {
-                if (actualTypes[i] == NULL.class) continue;
+                if (actualTypes[i] == Null.class) {
+                    continue;
+                }
                 if (wrapper(declaredTypes[i])
-                        .isAssignableFrom(wrapper(actualTypes[i]))) continue;
+                        .isAssignableFrom(wrapper(actualTypes[i]))) {
+                    continue;
+                }
                 return false;
             }
             return true;
@@ -287,7 +296,7 @@ public class Reflect {
         Class<?>[] result = new Class[values.length];
         for (int i = 0; i < values.length; i++) {
             Object value = values[i];
-            result[i] = value == null ? NULL.class : value.getClass();
+            result[i] = value == null ? Null.class : value.getClass();
         }
 
         return result;

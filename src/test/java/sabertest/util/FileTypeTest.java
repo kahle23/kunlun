@@ -36,7 +36,7 @@ public class FileTypeTest {
     public void testClass() throws Exception {
         byte[] bytes = FileUtils.readFileToByteArray(new File("e:\\1.class"));
         // class文件前四位为魔数位，魔数位的值一般固定为 CAFEBABE
-        String magic = Hex.me.encodeToString(Arrays.copyOfRange(bytes, 0, 4));
+        String magic = Hex.ME.encodeToString(Arrays.copyOfRange(bytes, 0, 4));
         System.out.println("魔数为：" + magic.toUpperCase());
 
         // 次版本号

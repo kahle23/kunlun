@@ -11,6 +11,9 @@ import java.security.GeneralSecurityException;
  * @author Kahle
  */
 public class Blowfish {
+    private static final int MAX_KEY_LENGTH = 56;
+    private static final int MAX_IV_LENGTH = 8;
+
     public static final String ALGORITHM_NAME = "Blowfish";
     public static final String DEFAULT_TRANSFORMATION = "Blowfish/ECB/PKCS5Padding";
 
@@ -109,10 +112,10 @@ public class Blowfish {
     }
 
     public byte[] calc(byte[] data, int opmode) throws GeneralSecurityException {
-        if (key == null || key.length > 56) {
+        if (key == null || key.length > MAX_KEY_LENGTH) {
             throw new IllegalArgumentException("Key too long (> 448 bits (56 bytes)). ");
         }
-        if (needIv && iv.length != 8) {
+        if (needIv && iv.length != MAX_IV_LENGTH) {
             throw new IllegalArgumentException("Wrong IV length: must be 8 bytes long. ");
         }
         byte[] finalData = data;
