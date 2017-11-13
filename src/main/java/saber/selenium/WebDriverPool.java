@@ -76,11 +76,13 @@ public class WebDriverPool {
             if (StringUtils.isBlank(dCaps.getBrowserName())) {
                 dCaps.setBrowserName("phantomjs");
             }
+            log.info("Try create \"RemoteWebDriver\" instance. ");
             return new RemoteWebDriver(url, dCaps);
         }
         else {
             try {
                 Class<? extends WebDriver> clz = driverType.getDriverClass();
+                log.info("Try create \"" + clz.getSimpleName() + "\" instance. ");
                 Constructor<? extends WebDriver> cst = clz.getConstructor(Capabilities.class);
                 return cst.newInstance(dCaps);
             }
@@ -106,7 +108,7 @@ public class WebDriverPool {
                         innerQueue.add(driver);
                         webDriverList.add(driver);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        log.error(e.getMessage(), e);
                     }
                     //
                 }
@@ -116,11 +118,14 @@ public class WebDriverPool {
     }
 
     public void restore(WebDriver webDriver) {
+        log.debug("Try restore WebDriver. ");
         checkRunning();
         innerQueue.add(webDriver);
+        log.debug("Restore WebDriver success. ");
     }
 
     public void destroy() {
+        log.debug("Try destroy WebDriverPool. ");
         boolean b = stat.compareAndSet(STAT_RUNNING, STAT_DESTROYED);
         if (!b) {
             throw new IllegalStateException("Already destroyed!");
@@ -130,6 +135,7 @@ public class WebDriverPool {
             webDriver.quit();
             webDriver = null;
         }
+        log.debug("Destroy WebDriverPool success. ");
     }
 
 }

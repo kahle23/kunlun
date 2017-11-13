@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 /**
  * @author Kahle
  */
-public class JdkLogger {
+public class JulUtils {
 
 	public static void debug(String message) {
 		logp(Level.FINE, message, null);
