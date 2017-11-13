@@ -7,6 +7,8 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -20,6 +22,7 @@ import java.util.Map;
  * @author Kahle
  */
 public class Barcode {
+    private static final Logger log = LoggerFactory.getLogger(Barcode.class);
     private static final int DEFAULT_TRUE_COLOR = 0xFF000000;
     private static final int DEFAULT_FALSE_COLOR = 0xFFFFFFFF;
     private static final int DEFAULT_IMAGE_TYPE = BufferedImage.TYPE_INT_RGB;
@@ -173,6 +176,7 @@ public class Barcode {
     }
 
     public BitMatrix encode(String content) throws WriterException {
+        log.info("Encode \"" + content + "\" to \"" + barcodeFormat.name() + "\"(" + width + "*" + height + "). ");
         MultiFormatWriter writer = new MultiFormatWriter();
         return writer.encode(content, barcodeFormat, width, height, encodeHints);
     }

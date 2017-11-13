@@ -1,17 +1,17 @@
 package sabertest.logger;
 
 import org.junit.Test;
-import saber.logger.JdkLogger;
+import saber.logger.JulUtils;
 
 public class JdkLoggerTest {
 
     @Test
     public void test() {
-        JdkLogger.debug("Hello, World! ");
-        JdkLogger.info("Hello, World! ");
-        JdkLogger.warn("Hello, World! ");
-        JdkLogger.error("Hello, World! ");
-        JdkLogger.fatal("Hello, World! ");
+        JulUtils.debug("Hello, World! ");
+        JulUtils.info("Hello, World! ");
+        JulUtils.warn("Hello, World! ");
+        JulUtils.error("Hello, World! ");
+        JulUtils.fatal("Hello, World! ");
     }
 
 }

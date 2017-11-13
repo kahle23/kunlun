@@ -1,16 +1,16 @@
-package sabertest.util;
+package sabertest.redis;
 
 import org.junit.Before;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
-import saber.util.Redis;
+import saber.redis.Jediser;
 
-public class RedisTest {
-    private Redis redis;
+public class JediserTest {
+    private Jediser jediser;
 
     @Before
     public void init() {
-        redis = Redis.on("share0.oaw.me")
+        jediser = Jediser.on("share0.oaw.me")
                 .setPassword("+5WZSDV3CZU2PPW+").init();
     }
 
@@ -18,9 +18,9 @@ public class RedisTest {
     public void test1() {
         // 封装的 方法 额外 的 消耗
         // 每次 调用 都会 从 池里面取出，用完 再 放回去
-        System.out.println(redis.ping());
-        System.out.println(redis.set("123", "456"));
-        System.out.println(redis.get("123"));
+        System.out.println(jediser.ping());
+        System.out.println(jediser.set("123", "456"));
+        System.out.println(jediser.get("123"));
     }
 
     @Test
@@ -32,12 +32,12 @@ public class RedisTest {
     }
 
     public void doSet() {
-        redis.flushDB();
+        jediser.flushDB();
 
         long start = System.currentTimeMillis();
         for (int i = 0; i < 100; i++) {
 //            System.out.print(redis.set("V" + i, "V" + i) + " ");
-            redis.set("V" + i, "V" + i);
+            jediser.set("V" + i, "V" + i);
         }
         long end = System.currentTimeMillis();
         long handle1 = end - start;
@@ -45,7 +45,7 @@ public class RedisTest {
 //        System.out.println();
 
         start = System.currentTimeMillis();
-        Jedis jedis = redis.getJedis();
+        Jedis jedis = jediser.getJedis();
         for (int i = 0; i < 100; i++) {
 //            System.out.print(jedis.set("Q" + i, "Q" + i) + " ");
             jedis.set("Q" + i, "Q" + i);

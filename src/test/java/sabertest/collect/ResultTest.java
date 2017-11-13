@@ -1,7 +1,7 @@
-package sabertest.util;
+package sabertest.collect;
 
 import org.junit.Test;
-import saber.util.Result;
+import saber.collect.Result;
 
 import java.util.HashMap;
 import java.util.Map;

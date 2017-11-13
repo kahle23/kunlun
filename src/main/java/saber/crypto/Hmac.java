@@ -42,7 +42,7 @@ public class Hmac {
 
         ;
 
-        public static Algorithm search(String algorithm) {
+        public static Algorithm find(String algorithm) {
             Algorithm[] values = Algorithm.values();
             for (Algorithm value : values) {
                 if (value.getAlgorithm().equalsIgnoreCase(algorithm)) {

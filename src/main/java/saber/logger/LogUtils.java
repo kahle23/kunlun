@@ -3,7 +3,7 @@ package saber.logger;
 /**
  * @author Kahle
  */
-public class LogFactory {
+public class LogUtils {
 
     public static org.slf4j.Logger slf4j(Class<?> clazz) {
         return org.slf4j.LoggerFactory.getLogger(clazz);
@@ -13,19 +13,19 @@ public class LogFactory {
         return org.slf4j.LoggerFactory.getLogger(name);
     }
 
-    public static org.apache.commons.logging.Log commonsLog(Class<?> clazz) {
+    public static org.apache.commons.logging.Log jcl(Class<?> clazz) {
         return org.apache.commons.logging.LogFactory.getLog(clazz);
     }
 
-    public static org.apache.commons.logging.Log commonsLog(String name) {
+    public static org.apache.commons.logging.Log jcl(String name) {
         return org.apache.commons.logging.LogFactory.getLog(name);
     }
 
-    public static java.util.logging.Logger jdkLog(String name) {
+    public static java.util.logging.Logger jul(String name) {
         return java.util.logging.Logger.getLogger(name);
     }
 
-    public static java.util.logging.Logger jdkLog(Class<?> clazz) {
+    public static java.util.logging.Logger jul(Class<?> clazz) {
         return java.util.logging.Logger.getLogger(clazz.getName());
     }
 

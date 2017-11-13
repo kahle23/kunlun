@@ -1,4 +1,4 @@
-package saber.util;
+package saber.collect;
 
 import java.util.HashMap;
 import java.util.Map;

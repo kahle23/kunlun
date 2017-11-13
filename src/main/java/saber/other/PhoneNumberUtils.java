@@ -1,4 +1,4 @@
-package saber.util;
+package saber.other;
 
 import com.google.i18n.phonenumbers.PhoneNumberToCarrierMapper;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;

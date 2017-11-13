@@ -172,22 +172,24 @@ public class Downloader {
             webDriver = webDriverPool.take();
         }
         catch (InterruptedException e) {
-            log.warn("Interrupted ", e);
+            log.warn("Take WebDriver Failure. ", e);
             return null;
         }
-        log.info("Downloading page " + url);
+        log.info("Downloading \"" + url + "\" page. ");
         webDriver.get(url);
         try {
             Thread.sleep(sleepTime);
         }
         catch (InterruptedException e) {
-            log.warn("Thread sleep failure. ", e);
+            log.warn("Thread sleep failure, will running continue. ", e);
         }
 
         // Cookies
         WebDriver.Options manage = webDriver.manage();
         manage.deleteAllCookies();
         if (MapUtils.isNotEmpty(cookies)) {
+            log.info("Has cookies, try assembly. ");
+            log.debug("Cookies \"" + cookies + "\". ");
             for (Map.Entry<String, String> entry : cookies.entrySet()) {
                 Cookie cookie = new Cookie(entry.getKey(), entry.getValue());
                 manage.addCookie(cookie);
@@ -197,6 +199,8 @@ public class Downloader {
         // Contents
         WebElement webElement = webDriver.findElement(By.xpath("/html"));
         String content = webElement.getAttribute("outerHTML");
+        log.info("Downloading page success. ");
+        log.debug("The page content : " + content);
         webDriverPool.restore(webDriver);
         return content;
     }

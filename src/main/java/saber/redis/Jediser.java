@@ -1,9 +1,12 @@
-package saber.util;
+package saber.redis;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisException;
+import sun.rmi.runtime.Log;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLParameters;
@@ -13,22 +16,23 @@ import java.util.Set;
 /**
  * @author Kahle
  */
-public class Redis {
+public class Jediser {
+    private static final Logger log = LoggerFactory.getLogger(Jediser.class);
 
-    public static Redis on() {
-        return new Redis();
+    public static Jediser on() {
+        return new Jediser();
     }
 
-    public static Redis on(String host) {
-        return new Redis().setHost(host);
+    public static Jediser on(String host) {
+        return new Jediser().setHost(host);
     }
 
-    public static Redis on(String host, Integer port) {
-        return new Redis().setHost(host).setPort(port);
+    public static Jediser on(String host, Integer port) {
+        return new Jediser().setHost(host).setPort(port);
     }
 
-    public static Redis on(String host, Integer port, String password) {
-        return new Redis().setHost(host).setPort(port).setPassword(password);
+    public static Jediser on(String host, Integer port, String password) {
+        return new Jediser().setHost(host).setPort(port).setPassword(password);
     }
 
     private JedisPoolConfig jedisPoolConfig;
@@ -51,7 +55,7 @@ public class Redis {
         return jedisPoolConfig;
     }
 
-    public Redis setJedisPoolConfig(JedisPoolConfig jedisPoolConfig) {
+    public Jediser setJedisPoolConfig(JedisPoolConfig jedisPoolConfig) {
         this.jedisPoolConfig = jedisPoolConfig;
         return this;
     }
@@ -60,7 +64,7 @@ public class Redis {
         return host;
     }
 
-    public Redis setHost(String host) {
+    public Jediser setHost(String host) {
         this.host = host;
         return this;
     }
@@ -69,7 +73,7 @@ public class Redis {
         return port;
     }
 
-    public Redis setPort(Integer port) {
+    public Jediser setPort(Integer port) {
         this.port = port;
         return this;
     }
@@ -78,7 +82,7 @@ public class Redis {
         return password;
     }
 
-    public Redis setPassword(String password) {
+    public Jediser setPassword(String password) {
         this.password = password;
         return this;
     }
@@ -87,7 +91,7 @@ public class Redis {
         return database;
     }
 
-    public Redis setDatabase(Integer database) {
+    public Jediser setDatabase(Integer database) {
         this.database = database;
         return this;
     }
@@ -96,7 +100,7 @@ public class Redis {
         return clientName;
     }
 
-    public Redis setClientName(String clientName) {
+    public Jediser setClientName(String clientName) {
         this.clientName = clientName;
         return this;
     }
@@ -105,7 +109,7 @@ public class Redis {
         return connectionTimeout;
     }
 
-    public Redis setConnectionTimeout(Integer connectionTimeout) {
+    public Jediser setConnectionTimeout(Integer connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
     }
@@ -114,7 +118,7 @@ public class Redis {
         return soTimeout;
     }
 
-    public Redis setSoTimeout(Integer soTimeout) {
+    public Jediser setSoTimeout(Integer soTimeout) {
         this.soTimeout = soTimeout;
         return this;
     }
@@ -123,7 +127,7 @@ public class Redis {
         return ssl;
     }
 
-    public Redis setSsl(Boolean ssl) {
+    public Jediser setSsl(Boolean ssl) {
         this.ssl = ssl;
         return this;
     }
@@ -132,7 +136,7 @@ public class Redis {
         return sslSocketFactory;
     }
 
-    public Redis setSslSocketFactory(SSLSocketFactory sslSocketFactory) {
+    public Jediser setSslSocketFactory(SSLSocketFactory sslSocketFactory) {
         this.sslSocketFactory = sslSocketFactory;
         return this;
     }
@@ -141,7 +145,7 @@ public class Redis {
         return sslParameters;
     }
 
-    public Redis setSslParameters(SSLParameters sslParameters) {
+    public Jediser setSslParameters(SSLParameters sslParameters) {
         this.sslParameters = sslParameters;
         return this;
     }
@@ -150,7 +154,7 @@ public class Redis {
         return hostnameVerifier;
     }
 
-    public Redis setHostnameVerifier(HostnameVerifier hostnameVerifier) {
+    public Jediser setHostnameVerifier(HostnameVerifier hostnameVerifier) {
         this.hostnameVerifier = hostnameVerifier;
         return this;
     }
@@ -159,14 +163,15 @@ public class Redis {
         return jedisPool;
     }
 
-    public Redis setJedisPool(JedisPool jedisPool) {
+    public Jediser setJedisPool(JedisPool jedisPool) {
         this.jedisPool = jedisPool;
         return this;
     }
 
-    private Redis() {}
+    private Jediser() {}
 
-    public Redis init() {
+    public Jediser init() {
+        log.info("Try init Jediser[" + host + ":" + port + "]. ");
         if (jedisPoolConfig == null) {
             jedisPoolConfig = new JedisPoolConfig();
         }
@@ -182,7 +187,7 @@ public class Redis {
         return jedisPool.getResource();
     }
 
-    public Redis setJedis(Jedis jedis) {
+    public Jediser setJedis(Jedis jedis) {
         // close will do "returnBrokenResource" or "returnResource"
         jedis.close();
         return this;

@@ -10,6 +10,8 @@ import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.regex.Pattern;
 
@@ -65,6 +67,7 @@ public enum DriverType {
 
     ;
 
+    private final static Logger log = LoggerFactory.getLogger(DriverType.class);
     private Class<? extends WebDriver> driverClass;
     private Pattern driverName;
 
@@ -91,9 +94,11 @@ public enum DriverType {
         for (DriverType type : types) {
             Pattern p = type.getDriverName();
             if (p.matcher(name).matches()) {
+                log.info("Find " + type.getDriverClass().getSimpleName() + ". ");
                 return type;
             }
         }
+        log.info("Find nothing. ");
         return null;
     }
 

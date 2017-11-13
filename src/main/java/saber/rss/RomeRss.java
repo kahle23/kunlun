@@ -16,6 +16,8 @@ import org.jdom.JDOMException;
 import org.jdom.output.DOMOutputter;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -28,6 +30,7 @@ import java.util.List;
  */
 public class RomeRss {
     private final static FeedGenerators GENERATORS = new FeedGenerators();
+    private final static Logger log = LoggerFactory.getLogger(RomeRss.class);
 
     public enum FeedType {
 
@@ -73,13 +76,15 @@ public class RomeRss {
 
         ;
 
-        public static FeedType search(String type) {
+        public static FeedType find(String type) {
             FeedType[] values = FeedType.values();
             for (FeedType value : values) {
                 if (value.type.equalsIgnoreCase(type)) {
+                    log.info("Find \"" + value.type + "\" type. ");
                     return value;
                 }
             }
+            log.info("Find nothing. ");
             return null;
         }
 
