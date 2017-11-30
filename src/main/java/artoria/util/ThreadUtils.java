@@ -1,11 +1,16 @@
 package artoria.util;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+
 /**
  * @author Kahle
  */
 public class ThreadUtils {
 
     public static void sleepQuietly(long millis) {
+        Assert.state(millis > 0, "Millis must greater than 0. ");
         try {
             Thread.sleep(millis);
         }
@@ -14,24 +19,35 @@ public class ThreadUtils {
         }
     }
 
+    public static ThreadInfo getThreadInfo(long threadId) {
+        ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+        Assert.state(threadMXBean != null, "Get ThreadMXBean failure. ");
+        return threadMXBean.getThreadInfo(threadId);
+    }
+
     public static int currentLineNumber() {
-        return Thread.currentThread().getStackTrace()[2].getLineNumber();
+        Thread thread = Thread.currentThread();
+        return thread.getStackTrace()[2].getLineNumber();
     }
 
     public static String currentMethodName() {
-        return Thread.currentThread().getStackTrace()[2].getMethodName();
+        Thread thread = Thread.currentThread();
+        return thread.getStackTrace()[2].getMethodName();
     }
 
     public static String currentClassName() {
-        return Thread.currentThread().getStackTrace()[2].getClassName();
+        Thread thread = Thread.currentThread();
+        return thread.getStackTrace()[2].getClassName();
     }
 
     public static String currentFileName() {
-        return Thread.currentThread().getStackTrace()[2].getFileName();
+        Thread thread = Thread.currentThread();
+        return thread.getStackTrace()[2].getFileName();
     }
 
     public static String currentThreadName() {
-        return Thread.currentThread().getName();
+        Thread thread = Thread.currentThread();
+        return thread.getName();
     }
 
 }

@@ -1,16 +1,16 @@
 package artoria.logging;
 
+import artoria.util.StringUtils;
+import artoria.util.ThreadUtils;
+import artoria.util.ThrowableUtils;
 import artoria.util.Time;
-import org.apache.commons.lang3.StringUtils;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
-import java.lang.management.ThreadMXBean;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+
+import static artoria.util.StringUtils.*;
 
 /**
  * @author Kahle
@@ -18,9 +18,6 @@ import java.util.logging.LogRecord;
 public class SimpleFormatter extends Formatter {
 
     private static final int MAX_LEVEL_LENGTH = 7;
-    private static final String SINGLE_BLANK = " ";
-    private static final String LEFT_SQUARE_BRACKET = "[";
-    private static final String RIGHT_SQUARE_BRACKET = "]";
 
     @Override
     public String format(LogRecord record) {
@@ -32,12 +29,12 @@ public class SimpleFormatter extends Formatter {
         String throwable = printfThrowable(record);
 
         String result = LEFT_SQUARE_BRACKET + time + RIGHT_SQUARE_BRACKET;
-        if (level != null) { result += SINGLE_BLANK + LEFT_SQUARE_BRACKET + level + RIGHT_SQUARE_BRACKET; }
-        if (thread != null) { result += SINGLE_BLANK + LEFT_SQUARE_BRACKET + thread + RIGHT_SQUARE_BRACKET; }
-        if (source != null) { result += SINGLE_BLANK + LEFT_SQUARE_BRACKET + source + RIGHT_SQUARE_BRACKET; }
-        if (message != null) { result += SINGLE_BLANK + LEFT_SQUARE_BRACKET + message + RIGHT_SQUARE_BRACKET; }
-        if (throwable != null) { result += SINGLE_BLANK + LEFT_SQUARE_BRACKET + throwable + RIGHT_SQUARE_BRACKET; }
-        result += "\n";
+        if (level != null) { result += SINGLE_BLANK_SPACE + LEFT_SQUARE_BRACKET + level + RIGHT_SQUARE_BRACKET; }
+        if (thread != null) { result += SINGLE_BLANK_SPACE + LEFT_SQUARE_BRACKET + thread + RIGHT_SQUARE_BRACKET; }
+        if (source != null) { result += SINGLE_BLANK_SPACE + LEFT_SQUARE_BRACKET + source + RIGHT_SQUARE_BRACKET; }
+        if (message != null) { result += SINGLE_BLANK_SPACE + LEFT_SQUARE_BRACKET + message + RIGHT_SQUARE_BRACKET; }
+        if (throwable != null) { result += SINGLE_BLANK_SPACE + LEFT_SQUARE_BRACKET + throwable + RIGHT_SQUARE_BRACKET; }
+        result += ENDL;
         return result;
     }
 
@@ -55,7 +52,7 @@ public class SimpleFormatter extends Formatter {
             int count = MAX_LEVEL_LENGTH - levelString.length();
             StringBuilder builder = new StringBuilder(levelString);
             for (int i = 0; i < count; i++) {
-                builder.append(SINGLE_BLANK);
+                builder.append(SINGLE_BLANK_SPACE);
             }
             return builder.toString();
         }
@@ -65,10 +62,8 @@ public class SimpleFormatter extends Formatter {
     }
 
     private String printfThread(LogRecord record) {
-        ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
-        if (threadMXBean == null) { return null; }
-        int threadID = record.getThreadID();
-        ThreadInfo threadInfo = threadMXBean.getThreadInfo(threadID);
+        int threadId = record.getThreadID();
+        ThreadInfo threadInfo = ThreadUtils.getThreadInfo(threadId);
         if (threadInfo == null) { return null; }
         String threadName = threadInfo.getThreadName();
         return StringUtils.isNotBlank(threadName) ? threadName : null;
@@ -97,12 +92,7 @@ public class SimpleFormatter extends Formatter {
     private String printfThrowable(LogRecord record) {
         Throwable thrown = record.getThrown();
         if (thrown == null) { return null; }
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        pw.println();
-        thrown.printStackTrace(pw);
-        pw.close();
-        String result = sw.toString();
+        String result = ThrowableUtils.toString(thrown);
         return StringUtils.isNotBlank(result) ? result : null;
     }
 

@@ -9,8 +9,110 @@ import java.util.Map;
  * @author Kahle
  */
 public class Reflect {
+
+    public static Reflect on(Class<?> clazz) {
+        return new Reflect(clazz);
+    }
+
+    public static Reflect on(Class<?> clazz, Object bean) {
+        return new Reflect(clazz, bean);
+    }
+
+    public static Reflect on(Object bean) {
+        return new Reflect(bean == null ? Object.class : bean.getClass(), bean);
+    }
+
+    public static Reflect on(String name) throws ClassNotFoundException {
+        return on(Class.forName(name));
+    }
+
+    public static Reflect on(String name, ClassLoader classLoader) throws ClassNotFoundException {
+        return on(Class.forName(name, true, classLoader));
+    }
+
+    private static Class<?> wrapper(Class<?> type) {
+        if (type == null) {
+            return null;
+        }
+        if (type.isPrimitive()) {
+            if (boolean.class == type) {
+                return Boolean.class;
+            }
+            else if (int.class == type) {
+                return Integer.class;
+            }
+            else if (long.class == type) {
+                return Long.class;
+            }
+            else if (short.class == type) {
+                return Short.class;
+            }
+            else if (byte.class == type) {
+                return Byte.class;
+            }
+            else if (double.class == type) {
+                return Double.class;
+            }
+            else if (float.class == type) {
+                return Float.class;
+            }
+            else if (char.class == type) {
+                return Character.class;
+            }
+            else if (void.class == type) {
+                return Void.class;
+            }
+        }
+        return type;
+    }
+
+    public static Class<?>[] types(Object... values) {
+        if (values == null) {
+            return new Class[0];
+        }
+
+        Class<?>[] result = new Class[values.length];
+        for (int i = 0; i < values.length; i++) {
+            Object value = values[i];
+            result[i] = value == null ? Null.class : value.getClass();
+        }
+
+        return result;
+    }
+
+    public static <T extends AccessibleObject> T accessible(T accessible) {
+        if (accessible == null) {
+            return null;
+        }
+        if (accessible instanceof Member) {
+            Member member = (Member) accessible;
+
+            if (Modifier.isPublic(member.getModifiers()) &&
+                    Modifier.isPublic(member.getDeclaringClass().getModifiers())) {
+
+                return accessible;
+            }
+        }
+        // [jOOQ #3392] The accessible flag is set to false by default, also for public members.
+        if (!accessible.isAccessible()) {
+            accessible.setAccessible(true);
+        }
+        return accessible;
+    }
+
+    private static class Null {}
+
     private Class<?> clazz;
     private Object bean;
+
+    public Reflect(Class<?> clazz) {
+        this.clazz = clazz;
+    }
+
+    public Reflect(Class<?> clazz, Object bean) {
+        this.clazz = clazz;
+        this.bean = bean;
+    }
 
     public Class<?> getClazz() {
         return clazz;
@@ -30,13 +132,23 @@ public class Reflect {
         return this;
     }
 
-    public Reflect(Class<?> clazz) {
-        this.clazz = clazz;
-    }
-
-    public Reflect(Class<?> clazz, Object bean) {
-        this.clazz = clazz;
-        this.bean = bean;
+    private boolean match(Class<?>[] declaredTypes, Class<?>[] actualTypes) {
+        if (declaredTypes.length == actualTypes.length) {
+            for (int i = 0; i < actualTypes.length; i++) {
+                if (actualTypes[i] == Null.class) {
+                    continue;
+                }
+                if (wrapper(declaredTypes[i])
+                        .isAssignableFrom(wrapper(actualTypes[i]))) {
+                    continue;
+                }
+                return false;
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     private boolean isSimilarMethod(Method method, String name, Class<?>[] types) {
@@ -209,166 +321,6 @@ public class Reflect {
                 "clazz=" + clazz +
                 ", bean=" + bean +
                 '}';
-    }
-
-    private static class Null {}
-
-    private static Class<?> wrapper(Class<?> type) {
-        if (type == null) {
-            return null;
-        }
-        if (type.isPrimitive()) {
-            if (boolean.class == type) {
-                return Boolean.class;
-            }
-            else if (int.class == type) {
-                return Integer.class;
-            }
-            else if (long.class == type) {
-                return Long.class;
-            }
-            else if (short.class == type) {
-                return Short.class;
-            }
-            else if (byte.class == type) {
-                return Byte.class;
-            }
-            else if (double.class == type) {
-                return Double.class;
-            }
-            else if (float.class == type) {
-                return Float.class;
-            }
-            else if (char.class == type) {
-                return Character.class;
-            }
-            else if (void.class == type) {
-                return Void.class;
-            }
-        }
-        return type;
-    }
-
-    private boolean match(Class<?>[] declaredTypes, Class<?>[] actualTypes) {
-        if (declaredTypes.length == actualTypes.length) {
-            for (int i = 0; i < actualTypes.length; i++) {
-                if (actualTypes[i] == Null.class) {
-                    continue;
-                }
-                if (wrapper(declaredTypes[i])
-                        .isAssignableFrom(wrapper(actualTypes[i]))) {
-                    continue;
-                }
-                return false;
-            }
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    public static Reflect on(Class<?> clazz) {
-        return new Reflect(clazz);
-    }
-
-    public static Reflect on(Class<?> clazz, Object bean) {
-        return new Reflect(clazz, bean);
-    }
-
-    public static Reflect on(Object bean) {
-        return new Reflect(bean == null ? Object.class : bean.getClass(), bean);
-    }
-
-    public static Reflect on(String name) throws ClassNotFoundException {
-        return on(Class.forName(name));
-    }
-
-    public static Reflect on(String name, ClassLoader classLoader) throws ClassNotFoundException {
-        return on(Class.forName(name, true, classLoader));
-    }
-
-    public static Class<?>[] types(Object... values) {
-        if (values == null) {
-            return new Class[0];
-        }
-
-        Class<?>[] result = new Class[values.length];
-        for (int i = 0; i < values.length; i++) {
-            Object value = values[i];
-            result[i] = value == null ? Null.class : value.getClass();
-        }
-
-        return result;
-    }
-
-    public static <T extends AccessibleObject> T accessible(T accessible) {
-        if (accessible == null) {
-            return null;
-        }
-        if (accessible instanceof Member) {
-            Member member = (Member) accessible;
-
-            if (Modifier.isPublic(member.getModifiers()) &&
-                    Modifier.isPublic(member.getDeclaringClass().getModifiers())) {
-
-                return accessible;
-            }
-        }
-        // [jOOQ #3392] The accessible flag is set to false by default, also for public members.
-        if (!accessible.isAccessible()) {
-            accessible.setAccessible(true);
-        }
-        return accessible;
-    }
-
-    public static Class<?> forName(String name) throws ClassNotFoundException {
-        return Class.forName(name);
-    }
-
-    public static Class<?> forName(String name, ClassLoader loader) throws ClassNotFoundException {
-        return Class.forName(name, true, loader);
-    }
-
-    public static Class<?> forName(String name, boolean initialize, ClassLoader loader) throws ClassNotFoundException {
-        return Class.forName(name, initialize, loader);
-    }
-
-    public static ClassLoader getClassLoader() {
-        ClassLoader classLoader = null;
-        try {
-            classLoader = Thread.currentThread().getContextClassLoader();
-        }
-        catch (Throwable ex) {
-            // Cannot access thread context ClassLoader - falling back...
-        }
-        if (classLoader == null) {
-            // No thread context class loader -> use class loader of this class.
-            classLoader = Reflect.class.getClassLoader();
-            if (classLoader == null) {
-                // getClassLoader() returning null indicates the bootstrap ClassLoader
-                try {
-                    classLoader = ClassLoader.getSystemClassLoader();
-                }
-                catch (Throwable ex) {
-                    // Cannot access system ClassLoader - oh well, maybe the caller can live with null...
-                }
-            }
-        }
-        return classLoader;
-    }
-
-    public static boolean isPresent(String className, ClassLoader classLoader) {
-        return isPresent(className, true, classLoader);
-    }
-
-    public static boolean isPresent(String className, boolean initialize, ClassLoader classLoader) {
-        try {
-            Class.forName(className, initialize, classLoader);
-            return true;
-        } catch (Throwable e) {
-            return false;
-        }
     }
 
 }
