@@ -2,5 +2,13 @@
 /.classpath
 /.settings
 /.idea
-/target
 /*.iml
+/target
+
+/*/.project
+/*/.classpath
+/*/.settings
+/*/.idea
+/*/*.iml
+/*/target
+
