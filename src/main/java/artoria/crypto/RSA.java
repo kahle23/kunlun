@@ -1,7 +1,8 @@
 package artoria.crypto;
 
-import org.apache.commons.lang3.ArrayUtils;
+import artoria.util.ClassUtils;
 import artoria.util.Reflect;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.crypto.Cipher;
 import java.nio.charset.Charset;
@@ -25,7 +26,7 @@ public class RSA {
     static {
         String className = "org.bouncycastle.jce.provider.BouncyCastleProvider";
         ClassLoader classLoader = RSA.class.getClassLoader();
-        if (Reflect.isPresent(className, classLoader)) {
+        if (ClassUtils.isPresent(className, classLoader)) {
             try {
                 Provider provider = (Provider) Reflect.on(className).create().getBean();
                 Security.addProvider(provider);
