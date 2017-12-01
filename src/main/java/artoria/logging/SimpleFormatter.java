@@ -10,7 +10,7 @@ import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import static artoria.util.StringUtils.*;
+import static artoria.util.StringConst.*;
 
 /**
  * @author Kahle
@@ -29,11 +29,11 @@ public class SimpleFormatter extends Formatter {
         String throwable = printfThrowable(record);
 
         String result = LEFT_SQUARE_BRACKET + time + RIGHT_SQUARE_BRACKET;
-        if (level != null) { result += SINGLE_BLANK_SPACE + LEFT_SQUARE_BRACKET + level + RIGHT_SQUARE_BRACKET; }
-        if (thread != null) { result += SINGLE_BLANK_SPACE + LEFT_SQUARE_BRACKET + thread + RIGHT_SQUARE_BRACKET; }
-        if (source != null) { result += SINGLE_BLANK_SPACE + LEFT_SQUARE_BRACKET + source + RIGHT_SQUARE_BRACKET; }
-        if (message != null) { result += SINGLE_BLANK_SPACE + LEFT_SQUARE_BRACKET + message + RIGHT_SQUARE_BRACKET; }
-        if (throwable != null) { result += SINGLE_BLANK_SPACE + LEFT_SQUARE_BRACKET + throwable + RIGHT_SQUARE_BRACKET; }
+        if (level != null) { result += BLANK_SPACE + LEFT_SQUARE_BRACKET + level + RIGHT_SQUARE_BRACKET; }
+        if (thread != null) { result += BLANK_SPACE + LEFT_SQUARE_BRACKET + thread + RIGHT_SQUARE_BRACKET; }
+        if (source != null) { result += BLANK_SPACE + LEFT_SQUARE_BRACKET + source + RIGHT_SQUARE_BRACKET; }
+        if (message != null) { result += BLANK_SPACE + LEFT_SQUARE_BRACKET + message + RIGHT_SQUARE_BRACKET; }
+        if (throwable != null) { result += BLANK_SPACE + LEFT_SQUARE_BRACKET + throwable + RIGHT_SQUARE_BRACKET; }
         result += ENDL;
         return result;
     }
@@ -52,7 +52,7 @@ public class SimpleFormatter extends Formatter {
             int count = MAX_LEVEL_LENGTH - levelString.length();
             StringBuilder builder = new StringBuilder(levelString);
             for (int i = 0; i < count; i++) {
-                builder.append(SINGLE_BLANK_SPACE);
+                builder.append(BLANK_SPACE);
             }
             return builder.toString();
         }
@@ -74,7 +74,8 @@ public class SimpleFormatter extends Formatter {
         if (StringUtils.isNotBlank(source)) {
             String methodName = record.getSourceMethodName();
             if (StringUtils.isNotBlank(methodName)) {
-                source += "." + methodName + "()";
+                source += DOT + methodName;
+                source += LEFT_PARENTHESIS + RIGHT_PARENTHESIS;
             }
         }
         else {

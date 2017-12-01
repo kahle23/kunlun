@@ -1,9 +1,5 @@
 package artoria.util;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +9,8 @@ import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Set;
+
+import static artoria.util.StringConst.*;
 
 /**
  * @author Kahle
@@ -51,90 +49,90 @@ public class ServletUtils {
     public static StringBuilder simpleSummary(HttpServletRequest request) {
         StringBuilder builder = new StringBuilder();
 
-        builder.append(STRING_AT).append(BRACKETS_LEFT)
-                .append(Time.on().format()).append(BRACKETS_RIGHT).append(BLANK_SPACE);
+        builder.append(STRING_AT).append(LEFT_SQUARE_BRACKET)
+                .append(Time.on().format()).append(RIGHT_SQUARE_BRACKET).append(BLANK_SPACE);
 
-        builder.append(BRACKETS_LEFT).append(request.getRemoteAddr())
-                .append(ENGLISH_COLON).append(request.getRemotePort())
-                .append(BRACKETS_RIGHT).append(BLANK_SPACE);
+        builder.append(LEFT_SQUARE_BRACKET).append(request.getRemoteAddr())
+                .append(COLON).append(request.getRemotePort())
+                .append(RIGHT_SQUARE_BRACKET).append(BLANK_SPACE);
 
         builder.append(request.getMethod()).append(BLANK_SPACE);
 
         Map<String, String[]> parameterMap = request.getParameterMap();
         if (parameterMap.entrySet().size() != 0) {
-            builder.append(STRING_PARAMETER).append(BRACKETS_LEFT)
-                    .append(paramsSummary(parameterMap)).append(BRACKETS_RIGHT)
+            builder.append(STRING_PARAMETER).append(LEFT_SQUARE_BRACKET)
+                    .append(paramsSummary(parameterMap)).append(RIGHT_SQUARE_BRACKET)
                     .append(BLANK_SPACE);
         }
 
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
-            builder.append(STRING_COOKIE).append(BRACKETS_LEFT);
+            builder.append(STRING_COOKIE).append(LEFT_SQUARE_BRACKET);
             for (Cookie cookie : cookies) {
-                builder.append(cookie.getName()).append(EQUAL_MARK)
-                        .append(cookie.getValue()).append(ENGLISH_COMMA);
+                builder.append(cookie.getName()).append(EQUAL)
+                        .append(cookie.getValue()).append(COMMA);
             }
             builder.deleteCharAt(builder.length() - 1);
-            builder.append(BRACKETS_RIGHT).append(BLANK_SPACE);
+            builder.append(RIGHT_SQUARE_BRACKET).append(BLANK_SPACE);
         }
 
         String contentType = request.getContentType();
         if (StringUtils.isNotBlank(contentType)) {
-            builder.append(STRING_CONTENT_TYPE).append(BRACKETS_LEFT)
-                    .append(contentType).append(BRACKETS_RIGHT).append(BLANK_SPACE);
+            builder.append(STRING_CONTENT_TYPE).append(LEFT_SQUARE_BRACKET)
+                    .append(contentType).append(RIGHT_SQUARE_BRACKET).append(BLANK_SPACE);
         }
 
         String characterEncoding = request.getCharacterEncoding();
         if (StringUtils.isNotBlank(characterEncoding)) {
-            builder.append(STRING_ENCODE).append(BRACKETS_LEFT)
-                    .append(characterEncoding).append(BRACKETS_RIGHT).append(BLANK_SPACE);
+            builder.append(STRING_ENCODE).append(LEFT_SQUARE_BRACKET)
+                    .append(characterEncoding).append(RIGHT_SQUARE_BRACKET).append(BLANK_SPACE);
         }
 
-        builder.append(STRING_TO).append(BLANK_SPACE).append(BRACKETS_LEFT)
-                .append(request.getRequestURL().toString()).append(BRACKETS_RIGHT);
+        builder.append(STRING_TO).append(BLANK_SPACE).append(LEFT_SQUARE_BRACKET)
+                .append(request.getRequestURL().toString()).append(RIGHT_SQUARE_BRACKET);
 
         return builder;
     }
 
     public static StringBuilder heavySummary(HttpServletRequest request) {
-        StringBuilder builder = new StringBuilder(SystemUtils.LINE_SEPARATOR)
+        StringBuilder builder = new StringBuilder(ENDL)
                 .append(ARROWHEAD_RIGHT).append(ARROWHEAD_RIGHT)
-                .append(ARROWHEAD_RIGHT).append(ARROWHEAD_RIGHT).append(SystemUtils.LINE_SEPARATOR);
+                .append(ARROWHEAD_RIGHT).append(ARROWHEAD_RIGHT).append(ENDL);
 
-        builder.append(STRING_TIME).append(ENGLISH_COLON).append(BLANK_SPACE)
-                .append(Time.on().format()).append(SystemUtils.LINE_SEPARATOR);
+        builder.append(STRING_TIME).append(COLON).append(BLANK_SPACE)
+                .append(Time.on().format()).append(ENDL);
 
-        builder.append(STRING_FROM).append(ENGLISH_COLON).append(BLANK_SPACE)
-                .append(request.getRemoteAddr()).append(ENGLISH_COLON)
-                .append(request.getRemotePort()).append(SystemUtils.LINE_SEPARATOR);
+        builder.append(STRING_FROM).append(COLON).append(BLANK_SPACE)
+                .append(request.getRemoteAddr()).append(COLON)
+                .append(request.getRemotePort()).append(ENDL);
 
-        builder.append(STRING_METHOD).append(ENGLISH_COLON).append(BLANK_SPACE)
-                .append(request.getMethod()).append(SystemUtils.LINE_SEPARATOR);
+        builder.append(STRING_METHOD).append(COLON).append(BLANK_SPACE)
+                .append(request.getMethod()).append(ENDL);
 
-        builder.append(STRING_TARGET).append(ENGLISH_COLON).append(BLANK_SPACE)
-                .append(request.getRequestURL().toString()).append(SystemUtils.LINE_SEPARATOR);
+        builder.append(STRING_TARGET).append(COLON).append(BLANK_SPACE)
+                .append(request.getRequestURL().toString()).append(ENDL);
 
         Map<String, String[]> parameterMap = request.getParameterMap();
         if (parameterMap.entrySet().size() != 0) {
-            builder.append(STRING_PARAMETER_LOWER_CASE).append(ENGLISH_COLON).append(BLANK_SPACE);
-            builder.append(paramsSummary(parameterMap)).append(SystemUtils.LINE_SEPARATOR);
+            builder.append(STRING_PARAMETER_LOWER_CASE).append(COLON).append(BLANK_SPACE);
+            builder.append(paramsSummary(parameterMap)).append(ENDL);
         }
 
         String characterEncoding = request.getCharacterEncoding();
         if (StringUtils.isNotBlank(characterEncoding)) {
-            builder.append(STRING_CHARACTER_ENCODING).append(ENGLISH_COLON).append(BLANK_SPACE)
-                    .append(characterEncoding).append(SystemUtils.LINE_SEPARATOR);
+            builder.append(STRING_CHARACTER_ENCODING).append(COLON).append(BLANK_SPACE)
+                    .append(characterEncoding).append(ENDL);
         }
 
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
-            builder.append(headerName).append(ENGLISH_COLON).append(BLANK_SPACE)
-                    .append(request.getHeader(headerName)).append(SystemUtils.LINE_SEPARATOR);
+            builder.append(headerName).append(COLON).append(BLANK_SPACE)
+                    .append(request.getHeader(headerName)).append(ENDL);
         }
 
         builder.append(ARROWHEAD_LEFT).append(ARROWHEAD_LEFT)
-                .append(ARROWHEAD_LEFT).append(ARROWHEAD_LEFT).append(SystemUtils.LINE_SEPARATOR);
+                .append(ARROWHEAD_LEFT).append(ARROWHEAD_LEFT).append(ENDL);
 
         return builder;
     }
@@ -149,43 +147,34 @@ public class ServletUtils {
             String[] values = entry.getValue();
             if (values.length == 1) {
                 builder.append(entry.getKey())
-                        .append(EQUAL_MARK)
+                        .append(EQUAL)
                         .append(values[0])
-                        .append(ENGLISH_COMMA);
+                        .append(COMMA);
             }
             else {
                 builder.append(entry.getKey())
-                        .append(BRACKETS_LEFT)
-                        .append(BRACKETS_RIGHT)
-                        .append(EQUAL_MARK)
-                        .append(BRACES_LEFT);
+                        .append(LEFT_SQUARE_BRACKET)
+                        .append(RIGHT_SQUARE_BRACKET)
+                        .append(EQUAL)
+                        .append(LEFT_CURLY_BRACKET);
                 for (String value : values) {
                     builder.append(value)
-                            .append(ENGLISH_COMMA);
+                            .append(COMMA);
                 }
                 builder.deleteCharAt(builder.length() - 1)
-                        .append(BRACES_RIGHT)
-                        .append(ENGLISH_COMMA);
+                        .append(RIGHT_CURLY_BRACKET)
+                        .append(COMMA);
             }
         }
         return builder.deleteCharAt(builder.length() - 1);
     }
 
-    private static final String ENGLISH_COLON = ":";
-    private static final String BLANK_SPACE = " ";
-
-    private static final String BRACKETS_LEFT = "[";
-    private static final String BRACKETS_RIGHT = "]";
-    private static final String ENGLISH_COMMA = ",";
-    private static final String EQUAL_MARK = "=";
     private static final String STRING_TO = "To";
     private static final String STRING_AT = "At";
     private static final String STRING_CONTENT_TYPE = "ContentType";
     private static final String STRING_ENCODE = "Encode";
     private static final String STRING_PARAMETER = "Parameter";
     private static final String STRING_COOKIE = "Cookie";
-    private static final String BRACES_LEFT = "{";
-    private static final String BRACES_RIGHT = "}";
 
     private static final String ARROWHEAD_LEFT = "<<====";
     private static final String ARROWHEAD_RIGHT = "====>>";
