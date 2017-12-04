@@ -10,7 +10,7 @@ import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import static artoria.util.StringConst.*;
+import static artoria.util.StringConstant.*;
 
 /**
  * @author Kahle
