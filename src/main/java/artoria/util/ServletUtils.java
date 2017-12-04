@@ -10,7 +10,7 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.Set;
 
-import static artoria.util.StringConst.*;
+import static artoria.util.StringConstant.*;
 
 /**
  * @author Kahle

@@ -1,45 +1,59 @@
 package artoria.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import static artoria.util.StringConstant.*;
+
 /**
  * @author Kahle
  */
 public class PathUtils {
-    public static final String FILE_SEPARATOR = System.getProperty("file.separator");
-    public static final String PATH_SEPARATOR = System.getProperty("path.separator");
 
-    private static String rootPath;
-    private static String classPath;
-
-    public static String getPackagePath(Class<?> clazz) {
-        Package p = clazz.getPackage();
-        return p != null ? p.getName().replaceAll("\\.", "/") : "";
+    public static String getExtension(String path) {
+        if (path == null) { return EMPTY_STRING; }
+        int extIndex = path.lastIndexOf(DOT);
+        if (extIndex == -1) { return EMPTY_STRING; }
+        int folderIndex = path.lastIndexOf(FILE_SEPARATOR);
+        if (folderIndex > extIndex) { return EMPTY_STRING; }
+        return path.substring(extIndex + 1);
     }
 
+    public static String stripExtension(String path) {
+        if (path == null) { return null; }
+        int extIndex = path.lastIndexOf(DOT);
+        if (extIndex == -1) { return path; }
+        int folderIndex = path.lastIndexOf(FILE_SEPARATOR);
+        if (folderIndex > extIndex) { return path; }
+        return path.substring(0, extIndex);
+    }
+
+    public static final String REGEX_DOT = BACKLASH + DOT;
+    public static String getPackagePath(Class<?> clazz) {
+        Package p = clazz.getPackage();
+        return p != null ? p.getName().replaceAll(REGEX_DOT, SLASH) : EMPTY_STRING;
+    }
+
+    private static String rootPath;
     public static String getRootPath() throws URISyntaxException {
-        if (StringUtils.isBlank(rootPath)) {
-            String path = PathUtils.class.getResource("/").toURI().getPath();
-            rootPath = new File(path).getParentFile().getParent();
-        }
+        if (StringUtils.isNotBlank(rootPath)) { return rootPath; }
+        String path = PathUtils.class.getResource(SLASH).toURI().getPath();
+        rootPath = new File(path).getParentFile().getParent();
         return rootPath;
     }
 
-    public static String getClassPath() throws URISyntaxException {
-        if (StringUtils.isBlank(classPath)) {
-            URL res = PathUtils.class.getClassLoader().getResource("");
-            classPath = res != null ? new File(res.toURI().getPath()).toString() : "";
-        }
-        return classPath;
+    private static String classpath;
+    public static String getClasspath() throws URISyntaxException {
+        if (StringUtils.isNotBlank(classpath)) { return classpath; }
+        URL res = PathUtils.class.getClassLoader().getResource(EMPTY_STRING);
+        classpath = res != null ? new File(res.toURI().getPath()).toString() : EMPTY_STRING;
+        return classpath;
     }
 
     public static String getClassFilePath(Class<?> clazz) throws URISyntaxException {
-        URI uri = clazz.getResource("").toURI();
+        URI uri = clazz.getResource(EMPTY_STRING).toURI();
         return new File(uri.getPath()).toString();
     }
 

@@ -1,6 +1,6 @@
 package artoria.util;
 
-import static artoria.util.StringConst.EMPTY_STRING;
+import static artoria.util.StringConstant.EMPTY_STRING;
 
 /**
  * @author Kahle
