@@ -1,8 +1,8 @@
 package artoriatest.util;
 
-import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import artoria.util.IOUtils;
 import artoria.util.RuntimeUtils;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;

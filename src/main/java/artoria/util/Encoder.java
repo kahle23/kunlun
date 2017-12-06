@@ -1,7 +1,5 @@
 package artoria.util;
 
-import org.apache.commons.io.IOUtils;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -24,7 +22,7 @@ public class Encoder {
         StringReader reader = new StringReader(data);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(bos, newCharset);
-        IOUtils.copy(reader, writer);
+        IOUtils.copyLarge(reader, writer);
         writer.flush();
         return new String(bos.toByteArray(), newCharset);
     }
@@ -41,7 +39,7 @@ public class Encoder {
         StringReader reader = new StringReader(new String(data, oldCharset));
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(bos, newCharset);
-        IOUtils.copy(reader, writer);
+        IOUtils.copyLarge(reader, writer);
         writer.flush();
         return bos.toByteArray();
     }

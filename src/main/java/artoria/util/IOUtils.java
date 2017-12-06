@@ -1,6 +1,6 @@
 package artoria.util;
 
-import org.apache.commons.io.output.StringBuilderWriter;
+import artoria.io.StringBuilderWriter;
 
 import java.io.*;
 import java.net.HttpURLConnection;

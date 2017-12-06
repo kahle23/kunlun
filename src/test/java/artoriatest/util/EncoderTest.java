@@ -1,8 +1,8 @@
 package artoriatest.util;
 
-import org.apache.commons.io.IOUtils;
-import org.junit.Test;
 import artoria.util.Encoder;
+import artoria.util.IOUtils;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class EncoderTest {
         StringReader reader = new StringReader("你好，世界！");
         ByteArrayOutputStream o = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(o, "GB2312");
-        IOUtils.copy(reader, writer);
+        IOUtils.copyLarge(reader, writer);
         System.out.println(new String(o.toByteArray(), "GB2312"));
     }
 

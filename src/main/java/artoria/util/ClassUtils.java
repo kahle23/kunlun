@@ -45,7 +45,7 @@ public class ClassUtils {
     }
 
     public static boolean isPresent(String className, ClassLoader classLoader) {
-        return isPresent(className, true, classLoader);
+        return ClassUtils.isPresent(className, true, classLoader);
     }
 
     public static boolean isPresent(String className, boolean initialize, ClassLoader classLoader) {

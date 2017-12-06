@@ -1,10 +1,9 @@
 package artoria.util;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.SystemUtils;
-
 import java.io.*;
 import java.nio.charset.Charset;
+
+import static artoria.util.StringConstant.ENDL;
 
 /**
  * @author Kahle
@@ -76,8 +75,9 @@ public class RuntimeUtils {
             StringBuilder builder = new StringBuilder();
             long target = System.currentTimeMillis() + runtime;
             long current = System.currentTimeMillis();
-            for (String line; (line = reader.readLine()) != null && current < target; ) {
-                builder.append(line).append(SystemUtils.LINE_SEPARATOR);
+            for (String line; (line = reader.readLine()) != null
+                    && current < target; ) {
+                builder.append(line).append(ENDL);
                 current = System.currentTimeMillis();
             }
             return builder.toString();

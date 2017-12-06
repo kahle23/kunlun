@@ -1,9 +1,7 @@
 package artoria.util;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
-
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -63,7 +61,8 @@ public class Time {
 
     public static Time on(String timeString, String pattern) throws ParseException {
         Time time = Time.on();
-        Date date = DateUtils.parseDate(timeString, pattern);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        Date date = dateFormat.parse(timeString);
         return time.setDate(date);
     }
 
@@ -223,7 +222,9 @@ public class Time {
     }
 
     public boolean equal(Time time) {
-        return DateUtils.isSameDay(this.getCalendar(), time.getCalendar());
+        Date d1 = this.getDate();
+        Date d2 = time.getDate();
+        return d1 == null ? d2 == null : d2 != null && (d1 == d2 || d1.equals(d2));
     }
 
     public String format() {
@@ -231,7 +232,8 @@ public class Time {
     }
 
     public String format(String pattern) {
-        return DateFormatUtils.format(getCalendar(), pattern);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        return dateFormat.format(getCalendar());
     }
 
     @Override
