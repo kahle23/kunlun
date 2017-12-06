@@ -1,16 +1,16 @@
 package artoriatest.crypto;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
 import artoria.codec.Base64;
 import artoria.crypto.AES;
+import artoria.util.RandomUtils;
+import org.junit.Test;
 
 public class AESTest {
 
     @Test
     public void test1() throws Exception {
-        byte[] key = RandomStringUtils.randomAscii(32).getBytes();
-        byte[] iv = RandomStringUtils.randomAscii(16).getBytes();
+        byte[] key = RandomUtils.nextString(32).getBytes();
+        byte[] iv = RandomUtils.nextString(16).getBytes();
         System.out.println("key = " + new String(key));
         System.out.println("iv = " + new String(iv));
         AES aes = AES.on(AES.ECB_PKCS_5_PADDING, key);
@@ -25,8 +25,8 @@ public class AESTest {
 
     @Test
     public void test2() throws Exception {
-        byte[] key = RandomStringUtils.randomAscii(32).getBytes();
-        byte[] iv = RandomStringUtils.randomAscii(16).getBytes();
+        byte[] key = RandomUtils.nextString(32).getBytes();
+        byte[] iv = RandomUtils.nextString(16).getBytes();
         System.out.println("key = " + new String(key));
         System.out.println("iv = " + new String(iv));
         AES aes = AES.on(AES.ECB_NO_PADDING, key);

@@ -4,6 +4,7 @@ import artoria.util.FileUtils;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 
 public class FileUtilsTest {
 
@@ -26,5 +27,32 @@ public class FileUtilsTest {
         System.out.println(FileUtils.rename(file, "hello.txt"));
     }
 
+    @Test
+    public void test_copyFileToFile() throws IOException {
+        File src = new File("E:\\src\\1.txt");
+        File dest = new File("E:\\dest\\11.txt");
+        FileUtils.copyFileToFile(src, dest, false);
+    }
+
+    @Test
+    public void test_copyFileToDirectory() throws IOException {
+        File src = new File("E:\\src\\1.txt");
+        File dest = new File("E:\\dest");
+        FileUtils.copyFileToDirectory(src, dest, false);
+    }
+
+    @Test
+    public void test_copyDirectoryToDirectory() throws IOException {
+        File src = new File("E:\\src");
+        File dest = new File("E:\\dest");
+        FileUtils.copyDirectoryToDirectory(src, dest);
+    }
+
+    @Test
+    public void test_moveDirectory() throws IOException {
+        File src = new File("E:\\src");
+        File dest = new File("E:\\dest");
+        FileUtils.moveDirectory(src, dest);
+    }
 
 }

@@ -1,7 +1,7 @@
 package artoria.codec;
 
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.StringUtils;
+import artoria.util.MapUtils;
+import artoria.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

@@ -1,16 +1,16 @@
 package artoriatest.crypto;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
 import artoria.codec.Base64;
 import artoria.crypto.DES;
+import artoria.util.RandomUtils;
+import org.junit.Test;
 
 public class DESTest {
 
     @Test
     public void test1() throws Exception {
-        byte[] key = RandomStringUtils.randomAscii(13).getBytes();
-        byte[] iv = RandomStringUtils.randomAscii(8).getBytes();
+        byte[] key = RandomUtils.nextString(13).getBytes();
+        byte[] iv = RandomUtils.nextString(8).getBytes();
         System.out.println("key = " + new String(key));
         System.out.println("iv = " + new String(iv));
         DES des = DES.on(DES.ECB_PKCS_5_PADDING, key);
@@ -25,8 +25,8 @@ public class DESTest {
 
     @Test
     public void test2() throws Exception {
-        byte[] key = RandomStringUtils.randomAscii(69).getBytes();
-        byte[] iv = RandomStringUtils.randomAscii(8).getBytes();
+        byte[] key = RandomUtils.nextString(69).getBytes();
+        byte[] iv = RandomUtils.nextString(8).getBytes();
         System.out.println("key = " + new String(key));
         System.out.println("iv = " + new String(iv));
         DES des = DES.on(DES.ECB_NO_PADDING, key);

@@ -1,8 +1,8 @@
 package artoria.crypto;
 
+import artoria.util.ArrayUtils;
 import artoria.util.ClassUtils;
 import artoria.util.Reflect;
-import org.apache.commons.lang3.ArrayUtils;
 
 import javax.crypto.Cipher;
 import java.nio.charset.Charset;

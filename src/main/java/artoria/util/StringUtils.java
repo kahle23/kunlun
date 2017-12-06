@@ -11,24 +11,20 @@ public class StringUtils {
         return str1 == null ? str2 == null : str1.equals(str2);
     }
 
-    public static boolean isBlank(CharSequence str) {
-        return !hasText(str);
-    }
-
-    public static boolean isNotBlank(CharSequence str) {
-        return hasText(str);
-    }
-
     public static boolean isEmpty(Object obj) {
         return obj == null || EMPTY_STRING.equals(obj);
     }
 
-    public static boolean hasLength(CharSequence str) {
-        return str != null && str.length() > 0;
+    public static boolean isNotEmpty(Object obj) {
+        return obj != null && !EMPTY_STRING.equals(obj);
     }
 
-    public static boolean hasText(CharSequence str) {
-        if (!hasLength(str)) { return false; }
+    public static boolean isBlank(CharSequence str) {
+        return !StringUtils.isNotBlank(str);
+    }
+
+    public static boolean isNotBlank(CharSequence str) {
+        if (!StringUtils.isNotEmpty(str)) { return false; }
         int strLen = str.length();
         for (int i = 0; i < strLen; i++) {
             int codePoint = (int) str.charAt(i);
@@ -39,7 +35,7 @@ public class StringUtils {
     }
 
     public static boolean containsWhitespace(CharSequence str) {
-        if (!hasLength(str)) { return false; }
+        if (!isNotEmpty(str)) { return false; }
         int strLen = str.length();
         for (int i = 0; i < strLen; i++) {
             int codePoint = (int) str.charAt(i);
@@ -50,7 +46,7 @@ public class StringUtils {
     }
 
     public static String trimWhitespace(String str) {
-        if (!hasLength(str)) { return str; }
+        if (!isNotEmpty(str)) { return str; }
         StringBuilder sb = new StringBuilder(str);
         boolean isLoop;
         do {
@@ -69,7 +65,7 @@ public class StringUtils {
     }
 
     public static String trimAllWhitespace(String str) {
-        if (!hasLength(str)) { return str; }
+        if (!isNotEmpty(str)) { return str; }
         int len = str.length();
         StringBuilder sb = new StringBuilder(str.length());
         for (int i = 0; i < len; i++) {
@@ -81,8 +77,8 @@ public class StringUtils {
     }
 
     public static String replace(String inString, String oldPattern, String newPattern) {
-        if (!hasLength(inString)
-                || !hasLength(oldPattern)
+        if (!isNotEmpty(inString)
+                || !isNotEmpty(oldPattern)
                 || newPattern == null) {
             return inString;
         }

@@ -1,6 +1,6 @@
 package artoria.logging;
 
-import org.apache.commons.io.IOUtils;
+import artoria.util.IOUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

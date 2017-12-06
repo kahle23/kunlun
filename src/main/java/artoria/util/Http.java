@@ -1,8 +1,5 @@
 package artoria.util;
 
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import artoria.codec.Base64;
 
 import javax.net.ssl.*;

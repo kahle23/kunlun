@@ -1,7 +1,7 @@
 package artoria.crypto;
 
-import org.apache.commons.io.IOUtils;
 import artoria.codec.Hex;
+import artoria.util.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

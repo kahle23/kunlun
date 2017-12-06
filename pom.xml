@@ -4,14 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>artoria</groupId>
 	<artifactId>artoria</artifactId>
-	<version>0.0.5-beta4</version>
+	<version>0.0.5-beta5</version>
 	<packaging>jar</packaging>
 	<name>Artoria</name>
 	<description>A reinforce only rely on a little and the SDK.</description>
 
 	<properties>
-		<spring.version>4.3.3.RELEASE</spring.version>
-		<spring-security.version>4.2.3.RELEASE</spring-security.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 	</properties>
@@ -26,13 +24,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.10</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
@@ -40,30 +31,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.4</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.10</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
 			<scope>provided</scope>
 		</dependency>
 

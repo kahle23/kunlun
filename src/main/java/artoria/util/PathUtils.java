@@ -12,6 +12,19 @@ import static artoria.util.StringConstant.*;
  */
 public class PathUtils {
 
+    public static String subPath(File src, File parent) {
+        String srcStr = src.toString();
+        String parentStr = parent.toString();
+        return PathUtils.subPath(srcStr, parentStr);
+    }
+
+    public static String subPath(String src, String parent) {
+        Assert.notNull(src, "Source is required. ");
+        Assert.notNull(parent, "Parent is required. ");
+        Assert.state(src.startsWith(parent), "Source must start with parent. ");
+        return StringUtils.replace(src, parent, EMPTY_STRING);
+    }
+
     public static String getExtension(String path) {
         if (path == null) { return EMPTY_STRING; }
         int extIndex = path.lastIndexOf(DOT);

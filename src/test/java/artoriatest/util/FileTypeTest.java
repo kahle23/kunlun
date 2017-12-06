@@ -1,9 +1,9 @@
 package artoriatest.util;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.Test;
 import artoria.codec.Hex;
 import artoria.util.FileType;
+import artoria.util.FileUtils;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.Arrays;
@@ -34,7 +34,7 @@ public class FileTypeTest {
 
     @Test
     public void testClass() throws Exception {
-        byte[] bytes = FileUtils.readFileToByteArray(new File("e:\\1.class"));
+        byte[] bytes = FileUtils.read(new File("e:\\1.class"));
         // class文件前四位为魔数位，魔数位的值一般固定为 CAFEBABE
         String magic = Hex.ME.encodeToString(Arrays.copyOfRange(bytes, 0, 4));
         System.out.println("魔数为：" + magic.toUpperCase());
