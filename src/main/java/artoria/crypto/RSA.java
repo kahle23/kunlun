@@ -28,7 +28,7 @@ public class RSA {
         ClassLoader classLoader = RSA.class.getClassLoader();
         if (ClassUtils.isPresent(className, classLoader)) {
             try {
-                Provider provider = (Provider) Reflect.on(className).create().getBean();
+                Provider provider = (Provider) Reflect.create(className).create().getBean();
                 Security.addProvider(provider);
             } catch (ReflectiveOperationException e) {
                 // ignore
@@ -36,31 +36,31 @@ public class RSA {
         }
     }
 
-    public static RSA on() {
+    public static RSA create() {
         return new RSA();
     }
 
-    public static RSA on(String transformation) {
+    public static RSA create(String transformation) {
         return new RSA().setTransformation(transformation);
     }
 
-    public static RSA on(int keySize) throws NoSuchAlgorithmException {
+    public static RSA create(int keySize) throws NoSuchAlgorithmException {
         return new RSA().setKeyPairGenerator(keySize);
     }
 
-    public static RSA on(PublicKey publicKey) {
+    public static RSA create(PublicKey publicKey) {
         return new RSA().setPublicKey(publicKey);
     }
 
-    public static RSA on(PrivateKey privateKey) {
+    public static RSA create(PrivateKey privateKey) {
         return new RSA().setPrivateKey(privateKey);
     }
 
-    public static RSA on(PublicKey publicKey, PrivateKey privateKey) {
+    public static RSA create(PublicKey publicKey, PrivateKey privateKey) {
         return new RSA().setPublicKey(publicKey).setPrivateKey(privateKey);
     }
 
-    public static RSA on(byte[] publicKey, byte[] privateKey) throws GeneralSecurityException {
+    public static RSA create(byte[] publicKey, byte[] privateKey) throws GeneralSecurityException {
         RSA rsa = new RSA();
         if (ArrayUtils.isNotEmpty(publicKey)) {
             rsa.parsePublicKey(publicKey);

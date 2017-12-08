@@ -12,26 +12,26 @@ public class Prop {
     private static final String STRING_TRUE = "true";
     private static final String STRING_FALSE = "false";
 
-    public static Prop on() {
+    public static Prop create() {
         return new Prop(new Properties());
     }
 
-    public static Prop on(Properties properties) {
+    public static Prop create(Properties properties) {
         return new Prop(properties);
     }
 
-    public static Prop on(String fileName) {
-        return on(fileName, DEFAULT_CHARSET_NAME);
+    public static Prop create(String fileName) {
+        return create(fileName, DEFAULT_CHARSET_NAME);
     }
 
-    public static Prop on(String fileName, String encoding) {
+    public static Prop create(String fileName, String encoding) {
         InputStream inputStream = null;
         try {
             inputStream = Prop.class.getClassLoader().getResourceAsStream(fileName);
             if (inputStream == null) {
                 throw new IllegalArgumentException("Properties file not found in classpath: " + fileName);
             }
-            return on(inputStream, encoding);
+            return create(inputStream, encoding);
         }
         catch (IOException e) {
             throw new RuntimeException("Error loading properties file.", e);
@@ -41,11 +41,11 @@ public class Prop {
         }
     }
 
-    public static Prop on(File file) {
-        return on(file, DEFAULT_CHARSET_NAME);
+    public static Prop create(File file) {
+        return create(file, DEFAULT_CHARSET_NAME);
     }
 
-    public static Prop on(File file, String encoding) {
+    public static Prop create(File file, String encoding) {
         if (file == null) {
             throw new IllegalArgumentException("File can not be null.");
         }
@@ -55,7 +55,7 @@ public class Prop {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
-            return on(inputStream, encoding);
+            return create(inputStream, encoding);
         }
         catch (IOException e) {
             throw new RuntimeException("Loading properties file error.", e);
@@ -65,15 +65,15 @@ public class Prop {
         }
     }
 
-    public static Prop on(InputStream in) throws IOException {
-        return on(new InputStreamReader(in, DEFAULT_CHARSET_NAME));
+    public static Prop create(InputStream in) throws IOException {
+        return create(new InputStreamReader(in, DEFAULT_CHARSET_NAME));
     }
 
-    public static Prop on(InputStream in, String encoding) throws IOException {
-        return on(new InputStreamReader(in, encoding));
+    public static Prop create(InputStream in, String encoding) throws IOException {
+        return create(new InputStreamReader(in, encoding));
     }
 
-    public static Prop on(Reader reader) throws IOException {
+    public static Prop create(Reader reader) throws IOException {
         Properties properties = new Properties();
         properties.load(reader);
         return new Prop(properties);

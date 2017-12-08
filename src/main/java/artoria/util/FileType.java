@@ -313,7 +313,7 @@ public enum FileType {
         return typeName + " (" + extension + ")";
     }
 
-    private static Hex hex = Hex.on(true);
+    private static Hex hex = Hex.create(true);
     private static final int DEFAULT_HEADER_LENGTH = 1024;
 
     public static List<FileType> check(File file) throws IOException {

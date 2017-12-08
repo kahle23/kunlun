@@ -67,7 +67,7 @@ public class RegexUtilsTest {
 
     @Test
     public void test5() throws Exception {
-        List<String> list = RegexUtils.findAllALabel(Http.on("http://uux.me").get());
+        List<String> list = RegexUtils.findAllALabel(Http.create("http://uux.me").get());
         for (String s : list) {
             System.out.println(s);
         }
@@ -75,7 +75,7 @@ public class RegexUtilsTest {
 
     @Test
     public void test6() throws Exception {
-        List<String> list = RegexUtils.findAllImgLabel(Http.on("http://uux.me/2").get());
+        List<String> list = RegexUtils.findAllImgLabel(Http.create("http://uux.me/2").get());
         for (String s : list) {
             System.out.println(s);
         }

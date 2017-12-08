@@ -18,6 +18,7 @@ public class StringConstant {
     public static final String COLON = ":";
     public static final String COMMA = ",";
     public static final String BACKLASH = "\\";
+    public static final String AMPERSAND = "&";
     public static final String BLANK_SPACE = " ";
     public static final String EMPTY_STRING = "";
 

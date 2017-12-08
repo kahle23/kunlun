@@ -111,36 +111,36 @@ public class Hmac {
         return new Hmac(Algorithm.HMAC_SHA512.toString()).setKey(key);
     }
 
-    public static Hmac on() {
+    public static Hmac create() {
         return new Hmac(DEFAULT_ALGORITHM.toString());
     }
 
-    public static Hmac on(String algorithm) {
+    public static Hmac create(String algorithm) {
         return new Hmac(algorithm);
     }
 
-    public static Hmac on(Algorithm algorithm) {
+    public static Hmac create(Algorithm algorithm) {
         return new Hmac(algorithm.toString());
     }
 
-    public static Hmac on(String algorithm, byte[] key) {
+    public static Hmac create(String algorithm, byte[] key) {
         return new Hmac(algorithm).setKey(key);
     }
 
-    public static Hmac on(String algorithm, String key) {
+    public static Hmac create(String algorithm, String key) {
         return new Hmac(algorithm).setKey(key);
     }
 
-    public static Hmac on(Algorithm algorithm, byte[] key) {
+    public static Hmac create(Algorithm algorithm, byte[] key) {
         return new Hmac(algorithm.toString()).setKey(key);
     }
 
-    public static Hmac on(Algorithm algorithm, String key) {
+    public static Hmac create(Algorithm algorithm, String key) {
         return new Hmac(algorithm.toString()).setKey(key);
     }
 
     private String charset = Charset.defaultCharset().name();
-    private Hex hex = Hex.on();
+    private Hex hex = Hex.create();
     private String algorithm;
     private byte[] key;
 

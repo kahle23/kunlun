@@ -11,74 +11,78 @@ import java.util.Date;
 public class Time {
     private static final String DEFAULT_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
 
-    public static Time on() {
+    public static Time create() {
         return new Time().setCalendar(Calendar.getInstance());
     }
 
-    public static Time on(Object time) throws ParseException {
-        return Time.on(time, DEFAULT_TIME_PATTERN);
+    public static Time create(Object time) throws ParseException {
+        return Time.create(time, DEFAULT_TIME_PATTERN);
     }
 
-    public static Time on(Object time, String pattern) throws ParseException {
+    public static Time create(Object time, String pattern) throws ParseException {
         if (time instanceof String) {
-            return Time.on((String) time, pattern);
+            return Time.create((String) time, pattern);
         }
         else if (time instanceof Long) {
-            return Time.on((Long) time);
+            return Time.create((Long) time);
         }
         else if (long.class.isInstance(time)) {
-            return Time.on((long) time);
+            return Time.create((long) time);
         }
         else if (time instanceof Time) {
             return (Time) time;
         }
         else if (time instanceof Date) {
-            return Time.on((Date) time);
+            return Time.create((Date) time);
         }
         else if (time instanceof Calendar) {
-            return Time.on((Calendar) time);
+            return Time.create((Calendar) time);
         }
         else {
             return null;
         }
     }
 
-    public static Time on(Long ts) {
-        return Time.on().setTimestamp(ts);
+    public static Time create(Long ts) {
+        return Time.create().setTimestamp(ts);
     }
 
-    public static Time on(Date date) {
-        return Time.on().setDate(date);
+    public static Time create(Date date) {
+        return Time.create().setDate(date);
     }
 
-    public static Time on(Calendar calendar) {
+    public static Time create(Calendar calendar) {
         return new Time().setCalendar(calendar);
     }
 
-    public static Time on(String timeString) throws ParseException {
-        return Time.on(timeString, DEFAULT_TIME_PATTERN);
+    public static Time create(String timeString) throws ParseException {
+        return Time.create(timeString, DEFAULT_TIME_PATTERN);
     }
 
-    public static Time on(String timeString, String pattern) throws ParseException {
-        Time time = Time.on();
+    public static Time create(String timeString, String pattern) throws ParseException {
+        Time time = Time.create();
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         Date date = dateFormat.parse(timeString);
         return time.setDate(date);
     }
 
-    public static Time on(int year, int month, int day) {
-        return Time.on().setYear(year).setMonth(month)
+    public static Time create(int year, int month, int day) {
+        return Time.create().setYear(year).setMonth(month)
                 .setDay(day).setHour(0).setMinute(0).setSecond(0).setMillisecond(0);
     }
 
-    public static Time on(int year, int month, int day, int hour, int minute, int second) {
-        return Time.on().setYear(year).setMonth(month)
+    public static Time create(int year, int month, int day, int hour, int minute, int second) {
+        return Time.create().setYear(year).setMonth(month)
                 .setDay(day).setHour(hour).setMinute(minute).setSecond(second).setMillisecond(0);
     }
 
-    public static Time on(int year, int month, int day, int hour, int minute, int second, int millisecond) {
-        return Time.on().setYear(year).setMonth(month)
+    public static Time create(int year, int month, int day, int hour, int minute, int second, int millisecond) {
+        return Time.create().setYear(year).setMonth(month)
                 .setDay(day).setHour(hour).setMinute(minute).setSecond(second).setMillisecond(millisecond);
+    }
+
+    public static boolean equal(Date d1, Date d2) {
+        return d1 == null ? d2 == null : d2 != null && (d1 == d2 || d1.equals(d2));
     }
 
     private Calendar calendar;
@@ -222,9 +226,7 @@ public class Time {
     }
 
     public boolean equal(Time time) {
-        Date d1 = this.getDate();
-        Date d2 = time.getDate();
-        return d1 == null ? d2 == null : d2 != null && (d1 == d2 || d1.equals(d2));
+        return Time.equal(this.getDate(), time.getDate());
     }
 
     public String format() {
@@ -233,7 +235,7 @@ public class Time {
 
     public String format(String pattern) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-        return dateFormat.format(getCalendar());
+        return dateFormat.format(getDate());
     }
 
     @Override
