@@ -3,10 +3,30 @@ package artoria.util;
 import java.util.Collection;
 import java.util.Map;
 
+import static artoria.util.StringConstant.BLANK_SPACE;
+import static artoria.util.StringConstant.EMPTY_STRING;
+
 /**
+ * Assert, verify data state, if failure, will throw exception.
  * @author Kahle
  */
 public class Assert {
+
+    public static void state(boolean expression) {
+        Assert.state(expression, "[Assertion failed] - " +
+                "this state invariant must be true");
+    }
+
+    public static void state(boolean expression, String message) {
+        if (!expression) {
+            throw new IllegalStateException(message);
+        }
+    }
+
+    public static void isTrue(boolean expression) {
+        Assert.isTrue(expression, "[Assertion failed] - " +
+                "this expression must be true");
+    }
 
     public static void isTrue(boolean expression, String message) {
         if (!expression) {
@@ -14,8 +34,9 @@ public class Assert {
         }
     }
 
-    public static void isTrue(boolean expression) {
-        isTrue(expression, "[Assertion failed] - this expression must be true");
+    public static void isNull(Object object) {
+        Assert.isNull(object, "[Assertion failed] - " +
+                "the object argument must be null");
     }
 
     public static void isNull(Object object, String message) {
@@ -24,8 +45,9 @@ public class Assert {
         }
     }
 
-    public static void isNull(Object object) {
-        isNull(object, "[Assertion failed] - the object argument must be null");
+    public static void notNull(Object object) {
+        Assert.notNull(object, "[Assertion failed] - " +
+                "this argument is required; it must not be null");
     }
 
     public static void notNull(Object object, String message) {
@@ -34,42 +56,9 @@ public class Assert {
         }
     }
 
-    public static void notNull(Object object) {
-        notNull(object, "[Assertion failed] - this argument is required; it must not be null");
-    }
-
-    public static void hasLength(String text, String message) {
-        if (StringUtils.isEmpty(text)) {
-            throw new IllegalArgumentException(message);
-        }
-    }
-
-    public static void hasLength(String text) {
-        hasLength(text,
-                "[Assertion failed] - this String argument must have length; it must not be null or empty");
-    }
-
-    public static void hasText(String text, String message) {
-        if (StringUtils.isBlank(text)) {
-            throw new IllegalArgumentException(message);
-        }
-    }
-
-    public static void hasText(String text) {
-        hasText(text,
-                "[Assertion failed] - this String argument must have text; it must not be null, empty, or blank");
-    }
-
-    public static void doesNotContain(String textToSearch, String substring, String message) {
-        if (StringUtils.isNotEmpty(textToSearch) && StringUtils.isNotEmpty(substring) &&
-                textToSearch.contains(substring)) {
-            throw new IllegalArgumentException(message);
-        }
-    }
-
-    public static void doesNotContain(String textToSearch, String substring) {
-        doesNotContain(textToSearch, substring,
-                "[Assertion failed] - this String argument must not contain the substring [" + substring + "]");
+    public static void notEmpty(Object[] array) {
+        Assert.notEmpty(array, "[Assertion failed] - " +
+                "this array must not be empty: it must contain at least 1 element");
     }
 
     public static void notEmpty(Object[] array, String message) {
@@ -78,8 +67,53 @@ public class Assert {
         }
     }
 
-    public static void notEmpty(Object[] array) {
-        notEmpty(array, "[Assertion failed] - this array must not be empty: it must contain at least 1 element");
+    public static void notEmpty(Collection<?> collection) {
+        Assert.notEmpty(collection, "[Assertion failed] - " +
+                "this collection must not be empty: it must contain at least 1 element");
+    }
+
+    public static void notEmpty(Collection<?> collection, String message) {
+        if (CollectionUtils.isEmpty(collection)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void notEmpty(Map<?, ?> map) {
+        Assert.notEmpty(map, "[Assertion failed] - " +
+                "this map must not be empty; it must contain at least one entry");
+    }
+
+    public static void notEmpty(Map<?, ?> map, String message) {
+        if (MapUtils.isEmpty(map)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void notEmpty(String text) {
+        Assert.notEmpty(text, "[Assertion failed] - " +
+                "this String argument must have length; it must not be null or empty");
+    }
+
+    public static void notEmpty(String text, String message) {
+        if (StringUtils.isEmpty(text)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void notBlank(String text) {
+        Assert.notBlank(text, "[Assertion failed] - " +
+                "this String argument must have text; it must not be null, empty, or blank");
+    }
+
+    public static void notBlank(String text, String message) {
+        if (StringUtils.isBlank(text)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void noNullElements(Object[] array) {
+        Assert.noNullElements(array, "[Assertion failed] - " +
+                "this array must not contain any null elements");
     }
 
     public static void noNullElements(Object[] array, String message) {
@@ -92,65 +126,45 @@ public class Assert {
         }
     }
 
-    public static void noNullElements(Object[] array) {
-        noNullElements(array, "[Assertion failed] - this array must not contain any null elements");
+    public static void doesNotContain(String textToSearch, String substring) {
+        Assert.doesNotContain(textToSearch, substring, "[Assertion failed] - " +
+                "this String argument must not contain the substring [" + substring + "]");
     }
 
-    public static void notEmpty(Collection<?> collection, String message) {
-        if (CollectionUtils.isEmpty(collection)) {
+    public static void doesNotContain(String textToSearch, String substring, String message) {
+        if (StringUtils.isNotEmpty(textToSearch)
+                && StringUtils.isNotEmpty(substring)
+                && textToSearch.contains(substring)) {
             throw new IllegalArgumentException(message);
-        }
-    }
-
-    public static void notEmpty(Collection<?> collection) {
-        notEmpty(collection,
-                "[Assertion failed] - this collection must not be empty: it must contain at least 1 element");
-    }
-
-    public static void notEmpty(Map<?, ?> map, String message) {
-        if (MapUtils.isEmpty(map)) {
-            throw new IllegalArgumentException(message);
-        }
-    }
-
-    public static void notEmpty(Map<?, ?> map) {
-        notEmpty(map, "[Assertion failed] - this map must not be empty; it must contain at least one entry");
-    }
-
-    public static void isInstanceOf(Class<?> clazz, Object obj) {
-        isInstanceOf(clazz, obj, "");
-    }
-
-    public static void isInstanceOf(Class<?> type, Object obj, String message) {
-        notNull(type, "Type to check against must not be null");
-        if (!type.isInstance(obj)) {
-            throw new IllegalArgumentException(
-                    (StringUtils.isNotEmpty(message) ? message + " " : "") +
-                            "Object of class [" + (obj != null ? obj.getClass().getName() : "null") +
-                            "] must be an instance of " + type);
         }
     }
 
     public static void isAssignable(Class<?> superType, Class<?> subType) {
-        isAssignable(superType, subType, "");
+        Assert.isAssignable(superType, subType, null);
     }
 
     public static void isAssignable(Class<?> superType, Class<?> subType, String message) {
-        notNull(superType, "Type to check against must not be null");
+        Assert.notNull(superType, "Type to check against must not be null");
         if (subType == null || !superType.isAssignableFrom(subType)) {
-            throw new IllegalArgumentException((StringUtils.isNotEmpty(message) ? message + " " : "") +
-                    subType + " is not assignable to " + superType);
+            message = StringUtils.isNotBlank(message) ? message + BLANK_SPACE : EMPTY_STRING;
+            message += subType + " is not assignable to " + superType;
+            throw new IllegalArgumentException(message);
         }
     }
 
-    public static void state(boolean expression, String message) {
-        if (!expression) {
-            throw new IllegalStateException(message);
-        }
+    public static void isInstanceOf(Class<?> clazz, Object obj) {
+        Assert.isInstanceOf(clazz, obj, null);
     }
 
-    public static void state(boolean expression) {
-        state(expression, "[Assertion failed] - this state invariant must be true");
+    public static void isInstanceOf(Class<?> type, Object obj, String message) {
+        Assert.notNull(type, "Type to check against must not be null");
+        if (!type.isInstance(obj)) {
+            message = StringUtils.isNotBlank(message) ? message + BLANK_SPACE : EMPTY_STRING;
+            message += "Object of class [";
+            message += obj != null ? obj.getClass().getName() : "null";
+            message += "] must be an instance of " + type;
+            throw new IllegalArgumentException(message);
+        }
     }
 
 }

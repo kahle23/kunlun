@@ -13,9 +13,7 @@ public class ArrayUtils {
             return false;
         }
         for (int i = 0; i < bytes1.length; i++) {
-            if (bytes1[i] != bytes2[i]) {
-                return false;
-            }
+            if (bytes1[i] != bytes2[i]) { return false; }
         }
         return true;
     }

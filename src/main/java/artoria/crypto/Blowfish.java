@@ -24,22 +24,22 @@ public class Blowfish {
 
     private static final int FILL_LENGTH = 8;
 
-    public static Blowfish on() {
+    public static Blowfish create() {
         return new Blowfish()
                 .setTransformation(DEFAULT_TRANSFORMATION);
     }
 
-    public static Blowfish on(byte[] key) {
+    public static Blowfish create(byte[] key) {
         return new Blowfish().setKey(key)
                 .setTransformation(DEFAULT_TRANSFORMATION);
     }
 
-    public static Blowfish on(String transformation) {
+    public static Blowfish create(String transformation) {
         return new Blowfish()
                 .setTransformation(transformation);
     }
 
-    public static Blowfish on(String transformation, byte[] key) {
+    public static Blowfish create(String transformation, byte[] key) {
         return new Blowfish().setKey(key)
                 .setTransformation(transformation);
     }

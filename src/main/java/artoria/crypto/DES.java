@@ -26,22 +26,22 @@ public class DES {
 
     private static final int FILL_LENGTH = 8;
 
-    public static DES on() {
+    public static DES create() {
         return new DES()
                 .setTransformation(DEFAULT_TRANSFORMATION);
     }
 
-    public static DES on(byte[] key) {
+    public static DES create(byte[] key) {
         return new DES().setKey(key)
                 .setTransformation(DEFAULT_TRANSFORMATION);
     }
 
-    public static DES on(String transformation) {
+    public static DES create(String transformation) {
         return new DES()
                 .setTransformation(transformation);
     }
 
-    public static DES on(String transformation, byte[] key) {
+    public static DES create(String transformation, byte[] key) {
         return new DES().setKey(key)
                 .setTransformation(transformation);
     }

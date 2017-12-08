@@ -14,7 +14,7 @@ import java.util.logging.LogManager;
  * @author Kahle
  */
 public class Logger {
-	private static final String LOGGER_CONFIG_FILENAME = "log.properties";
+	private static final String LOGGER_CONFIG_FILENAME = "logging.properties";
 
 	private static final LogManager LOG_MANAGER;
 

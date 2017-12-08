@@ -10,24 +10,24 @@ import java.util.Map;
  */
 public class Reflect {
 
-    public static Reflect on(Class<?> clazz) {
+    public static Reflect create(Class<?> clazz) {
         return new Reflect(clazz);
     }
 
-    public static Reflect on(Class<?> clazz, Object bean) {
+    public static Reflect create(Class<?> clazz, Object bean) {
         return new Reflect(clazz, bean);
     }
 
-    public static Reflect on(Object bean) {
+    public static Reflect create(Object bean) {
         return new Reflect(bean == null ? Object.class : bean.getClass(), bean);
     }
 
-    public static Reflect on(String name) throws ClassNotFoundException {
-        return on(Class.forName(name));
+    public static Reflect create(String name) throws ClassNotFoundException {
+        return create(Class.forName(name));
     }
 
-    public static Reflect on(String name, ClassLoader classLoader) throws ClassNotFoundException {
-        return on(Class.forName(name, true, classLoader));
+    public static Reflect create(String name, ClassLoader classLoader) throws ClassNotFoundException {
+        return create(Class.forName(name, true, classLoader));
     }
 
     private static Class<?> wrapper(Class<?> type) {

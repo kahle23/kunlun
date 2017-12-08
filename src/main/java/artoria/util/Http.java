@@ -94,11 +94,11 @@ public class Http {
         return url;
     }
 
-    public static Http on() {
+    public static Http create() {
         return new Http();
     }
 
-    public static Http on(String url) {
+    public static Http create(String url) {
         return new Http().setUrl(url);
     }
 

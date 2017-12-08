@@ -8,12 +8,12 @@ public class RSATest {
 
     @Test
     public void test1() throws Exception {
-        RSA rsa = RSA.on().generateKey();
+        RSA rsa = RSA.create().generateKey();
         String pubKey = Base64.encodeBase64String(rsa.getPublicKey().getEncoded());
         String priKey = Base64.encodeBase64String(rsa.getPrivateKey().getEncoded());
         System.out.println(pubKey);
         System.out.println(priKey);
-        RSA rsa1 = RSA.on().parsePublicKey(Base64.decodeBase64(pubKey))
+        RSA rsa1 = RSA.create().parsePublicKey(Base64.decodeBase64(pubKey))
                 .parsePrivateKey(Base64.decodeBase64(priKey));
         String pubKey1 = Base64.encodeBase64String(rsa1.getPublicKey().getEncoded());
         String priKey1 = Base64.encodeBase64String(rsa1.getPrivateKey().getEncoded());
@@ -28,7 +28,7 @@ public class RSATest {
         // Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         String data = "Hello, World!111";
         System.out.println(data);
-        RSA rsa = RSA.on().generateKey();
+        RSA rsa = RSA.create().generateKey();
         // rsa.setTransformation("RSA/None/NoPadding");
         // rsa.setTransformation("RSA/None/PKCS1Padding");
         // rsa.setTransformation("RSA/ECB/NoPadding");
@@ -49,7 +49,7 @@ public class RSATest {
         //  Data must not be longer than 245 bytes
         String data = "Hello, World!Hello, World!Hello1, Worldell, World!Hello, Worlld!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!Hello, World!";
         System.out.println(data.getBytes().length);
-        RSA rsa = RSA.on(RSA.ECB_PKCS_1_PADDING).generateKey();
+        RSA rsa = RSA.create(RSA.ECB_PKCS_1_PADDING).generateKey();
         String encrypt = Base64.encodeBase64String(rsa.encrypt(data));
         System.out.println(encrypt);
 

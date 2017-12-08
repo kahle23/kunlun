@@ -82,28 +82,28 @@ public class Hash {
     public static final Hash SHA384 = new Hash(Algorithm.SHA384.toString());
     public static final Hash SHA512 = new Hash(Algorithm.SHA512.toString());
 
-    public static Hash on() {
+    public static Hash create() {
         return new Hash(DEFAULT_ALGORITHM.toString());
     }
 
-    public static Hash on(String algorithm) {
+    public static Hash create(String algorithm) {
         return new Hash(algorithm);
     }
 
-    public static Hash on(Algorithm algorithm) {
+    public static Hash create(Algorithm algorithm) {
         return new Hash(algorithm.toString());
     }
 
-    public static Hash on(String algorithm, String charset) {
+    public static Hash create(String algorithm, String charset) {
         return new Hash(algorithm).setCharset(charset);
     }
 
-    public static Hash on(Algorithm algorithm, String charset) {
+    public static Hash create(Algorithm algorithm, String charset) {
         return new Hash(algorithm.toString()).setCharset(charset);
     }
 
     private String charset = Charset.defaultCharset().name();
-    private Hex hex = Hex.on();
+    private Hex hex = Hex.create();
     private String algorithm;
 
     private Hash(String algorithm) {

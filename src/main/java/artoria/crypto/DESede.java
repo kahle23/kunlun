@@ -24,22 +24,22 @@ public class DESede {
 
     private static final int FILL_LENGTH = 8;
 
-    public static DESede on() {
+    public static DESede create() {
         return new DESede()
                 .setTransformation(DEFAULT_TRANSFORMATION);
     }
 
-    public static DESede on(byte[] key) {
+    public static DESede create(byte[] key) {
         return new DESede().setKey(key)
                 .setTransformation(DEFAULT_TRANSFORMATION);
     }
 
-    public static DESede on(String transformation) {
+    public static DESede create(String transformation) {
         return new DESede()
                 .setTransformation(transformation);
     }
 
-    public static DESede on(String transformation, byte[] key) {
+    public static DESede create(String transformation, byte[] key) {
         return new DESede().setKey(key)
                 .setTransformation(transformation);
     }

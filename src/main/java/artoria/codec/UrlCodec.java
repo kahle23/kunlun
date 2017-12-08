@@ -10,28 +10,29 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+import static artoria.util.StringConstant.AMPERSAND;
+import static artoria.util.StringConstant.EQUAL;
+
 /**
  * @author Kahle
  */
 public class UrlCodec {
-    public static final String DEFAULT_KEY_SEPARATOR = "=";
-    public static final String DEFAULT_VALUE_SEPARATOR = "&";
 
-    public static final UrlCodec ME = UrlCodec.on();
+    public static final UrlCodec ME = UrlCodec.create();
 
-    public static UrlCodec on() {
+    public static UrlCodec create() {
         UrlCodec urlCodec = new UrlCodec();
-        urlCodec.keySeparator = DEFAULT_KEY_SEPARATOR;
-        urlCodec.valueSeparator = DEFAULT_VALUE_SEPARATOR;
+        urlCodec.keySeparator = EQUAL;
+        urlCodec.valueSeparator = AMPERSAND;
         return urlCodec;
     }
 
-    public static UrlCodec on(String charset) {
-        return UrlCodec.on()
+    public static UrlCodec create(String charset) {
+        return UrlCodec.create()
                 .setCharset(charset);
     }
 
-    public static UrlCodec on(String keySeparator, String valueSeparator) {
+    public static UrlCodec create(String keySeparator, String valueSeparator) {
         return new UrlCodec()
                 .setKeySeparator(keySeparator)
                 .setValueSeparator(valueSeparator);

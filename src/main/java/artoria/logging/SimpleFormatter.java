@@ -40,7 +40,7 @@ public class SimpleFormatter extends Formatter {
 
     private String printfTime(LogRecord record) {
         long millis = record.getMillis();
-        Time time = Time.on(millis);
+        Time time = Time.create(millis);
         return time.format();
     }
 

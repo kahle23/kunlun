@@ -13,11 +13,11 @@ public class DESTest {
         byte[] iv = RandomUtils.nextString(8).getBytes();
         System.out.println("key = " + new String(key));
         System.out.println("iv = " + new String(iv));
-        DES des = DES.on(DES.ECB_PKCS_5_PADDING, key);
+        DES des = DES.create(DES.ECB_PKCS_5_PADDING, key);
         byte[] bytes = des.encrypt("你好，Java！");
         System.out.println(Base64.encodeToString(bytes));
         System.out.println(new String(des.decrypt(bytes)));
-        DES des1 = DES.on(DES.CBC_PKCS_5_PADDING, key).setIv(iv);
+        DES des1 = DES.create(DES.CBC_PKCS_5_PADDING, key).setIv(iv);
         byte[] bytes1 = des1.encrypt("你好，Java！");
         System.out.println(Base64.encodeToString(bytes1));
         System.out.println(new String(des1.decrypt(bytes1)));
@@ -29,11 +29,11 @@ public class DESTest {
         byte[] iv = RandomUtils.nextString(8).getBytes();
         System.out.println("key = " + new String(key));
         System.out.println("iv = " + new String(iv));
-        DES des = DES.on(DES.ECB_NO_PADDING, key);
+        DES des = DES.create(DES.ECB_NO_PADDING, key);
         byte[] bytes = des.encrypt("你好，Java！123");
         System.out.println(Base64.encodeToString(bytes));
         System.out.println(new String(des.decrypt(bytes)));
-        DES des1 = DES.on(DES.CBC_NO_PADDING, key).setIv(iv);
+        DES des1 = DES.create(DES.CBC_NO_PADDING, key).setIv(iv);
         byte[] bytes1 = des1.encrypt("你好，Java！123");
         System.out.println(Base64.encodeToString(bytes1));
         System.out.println(new String(des1.decrypt(bytes1)));

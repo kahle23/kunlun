@@ -26,22 +26,22 @@ public class AES {
 
     private static final int FILL_LENGTH = 16;
 
-    public static AES on() {
+    public static AES create() {
         return new AES()
                 .setTransformation(DEFAULT_TRANSFORMATION);
     }
 
-    public static AES on(byte[] key) {
+    public static AES create(byte[] key) {
         return new AES().setKey(key)
                 .setTransformation(DEFAULT_TRANSFORMATION);
     }
 
-    public static AES on(String transformation) {
+    public static AES create(String transformation) {
         return new AES()
                 .setTransformation(transformation);
     }
 
-    public static AES on(String transformation, byte[] key) {
+    public static AES create(String transformation, byte[] key) {
         return new AES().setKey(key)
                 .setTransformation(transformation);
     }

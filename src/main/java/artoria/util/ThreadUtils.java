@@ -21,7 +21,7 @@ public class ThreadUtils {
 
     public static ThreadInfo getThreadInfo(long threadId) {
         ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
-        Assert.state(threadMXBean != null, "Get ThreadMXBean failure. ");
+        Assert.notNull(threadMXBean, "Get ThreadMXBean failure. ");
         return threadMXBean.getThreadInfo(threadId);
     }
 

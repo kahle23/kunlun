@@ -1,6 +1,7 @@
 package artoria.codec;
 
 /**
+ * Encoding or decoding unicode tools.
  * @author Kahle
  */
 public class Unicode {

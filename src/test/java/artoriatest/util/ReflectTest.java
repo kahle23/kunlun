@@ -13,25 +13,25 @@ public class ReflectTest {
 
     @Test
     public void test1() throws Exception {
-        Reflect reflect = Reflect.on(Time.class);
+        Reflect reflect = Reflect.create(Time.class);
         Object call = reflect.call("on");
         System.out.println(call);
         Object calendar = reflect.setBean(call).get("calendar");
         System.out.println(calendar instanceof Calendar);
-        System.out.println(Time.on(((Calendar) calendar).getTime()));
+        System.out.println(Time.create(((Calendar) calendar).getTime()));
     }
 
     @Test
     public void test2() throws Exception {
-        Reflect reflect = Reflect.on(Time.class);
+        Reflect reflect = Reflect.create(Time.class);
         System.out.println(reflect.setBean(reflect.call("on")).call("format"));
-        Time time = Time.on(1990, 1, 1, 12, 12, 12);
+        Time time = Time.create(1990, 1, 1, 12, 12, 12);
         System.out.println(reflect.set("calendar", time.getCalendar()).call("format"));
     }
 
     @Test
     public void test3() throws Exception {
-        Reflect reflect = Reflect.on(ReflectTest.class).create();
+        Reflect reflect = Reflect.create(ReflectTest.class).create();
         System.out.println(reflect.get("TEST_VAL"));
         reflect.set("TEST_VAL", "123456");
         System.out.println(reflect.get("TEST_VAL"));
@@ -39,7 +39,7 @@ public class ReflectTest {
 
     @Test
     public void test4() throws Exception {
-        Reflect reflect = Reflect.on(ReflectTest.class).create();
+        Reflect reflect = Reflect.create(ReflectTest.class).create();
         System.out.println(reflect.get("TEST_VAL1"));
         reflect.set("TEST_VAL1", "123456");
         System.out.println(reflect.get("TEST_VAL1"));

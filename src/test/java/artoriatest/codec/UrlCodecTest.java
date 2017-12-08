@@ -30,7 +30,7 @@ public class UrlCodecTest {
 
     @Test
     public void test2() throws Exception {
-        UrlCodec urlCodec = UrlCodec.on("utf-8");
+        UrlCodec urlCodec = UrlCodec.create("utf-8");
         String encode = urlCodec.encode(data);
         System.out.println(encode);
         Map<String, String> decode = urlCodec.decode(encode);

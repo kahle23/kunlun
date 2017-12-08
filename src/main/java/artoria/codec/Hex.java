@@ -8,13 +8,13 @@ public class Hex {
     public static final char[] DIGITS_UPPER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     private static final int HEX_01 = 0x01;
 
-    public static final Hex ME = Hex.on();
+    public static final Hex ME = Hex.create();
 
-    public static Hex on() {
+    public static Hex create() {
         return new Hex();
     }
 
-    public static Hex on(boolean toUpperCase) {
+    public static Hex create(boolean toUpperCase) {
         return new Hex().setToUpperCase(toUpperCase);
     }
 
