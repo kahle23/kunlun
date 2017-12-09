@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.io.Writer;
 
 /**
+ * The StringWriter who using StringBuilder.
  * @author Kahle
  */
 public class StringBuilderWriter extends Writer implements Serializable {

@@ -3,6 +3,7 @@ package artoria.collect;
 import java.util.Map;
 
 /**
+ * HashMap who can chained set.
  * @author Kahle
  */
 public class HashMap<K,V> extends java.util.HashMap<K,V> {

@@ -5,6 +5,7 @@ import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 
 /**
+ * Thread tools.
  * @author Kahle
  */
 public class ThreadUtils {

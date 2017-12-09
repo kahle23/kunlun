@@ -1,6 +1,7 @@
 package artoria.util;
 
 /**
+ * Class tools.
  * @author Kahle
  */
 public class ClassUtils {
@@ -29,26 +30,13 @@ public class ClassUtils {
         return classLoader;
     }
 
-    public static Class<?> forName(String name) throws ClassNotFoundException {
-        Assert.notNull(name);
-        return Class.forName(name);
-    }
-
-    public static Class<?> forName(String name, ClassLoader loader) throws ClassNotFoundException {
-        Assert.notNull(name);
-        return Class.forName(name, true, loader);
-    }
-
-    public static Class<?> forName(String name, boolean initialize, ClassLoader loader) throws ClassNotFoundException {
-        Assert.notNull(name);
-        return Class.forName(name, initialize, loader);
-    }
-
     public static boolean isPresent(String className, ClassLoader classLoader) {
         return ClassUtils.isPresent(className, true, classLoader);
     }
 
     public static boolean isPresent(String className, boolean initialize, ClassLoader classLoader) {
+        Assert.notNull(className, "Class name must is not null. ");
+        Assert.notNull(classLoader, "Class loader must is not null. ");
         try {
             Class.forName(className, initialize, classLoader);
             return true;

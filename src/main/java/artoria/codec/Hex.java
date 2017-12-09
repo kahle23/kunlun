@@ -1,11 +1,14 @@
 package artoria.codec;
 
+import artoria.util.Assert;
+
 /**
+ * Hex encode and decode tools.
  * @author Kahle
  */
 public class Hex {
-    public static final char[] DIGITS_LOWER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-    public static final char[] DIGITS_UPPER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    private static final char[] DIGITS_LOWER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    private static final char[] DIGITS_UPPER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     private static final int HEX_01 = 0x01;
 
     public static final Hex ME = Hex.create();
@@ -15,7 +18,9 @@ public class Hex {
     }
 
     public static Hex create(boolean toUpperCase) {
-        return new Hex().setToUpperCase(toUpperCase);
+        Hex hex = new Hex();
+        hex.setToUpperCase(toUpperCase);
+        return hex;
     }
 
     private static int toDigit(final char ch, int index) {
@@ -40,6 +45,7 @@ public class Hex {
     }
 
     public char[] encode(byte[] data) {
+        Assert.notNull(data, "Data must is not null. ");
         char[] toDigits = toUpperCase ? DIGITS_UPPER : DIGITS_LOWER;
         int len = data.length;
         char[] out = new char[len << 1];
@@ -51,11 +57,8 @@ public class Hex {
         return out;
     }
 
-    public String encodeToString(byte[] data) {
-        return new String(encode(data));
-    }
-
     public byte[] decode(char[] data) {
+        Assert.notNull(data, "Data must is not null. ");
         int len = data.length;
         if ((len & HEX_01) != 0) {
             throw new IllegalArgumentException("Odd number of characters.");
@@ -72,8 +75,15 @@ public class Hex {
         return out;
     }
 
+    public String encodeToString(byte[] data) {
+        char[] encode = this.encode(data);
+        return new String(encode);
+    }
+
     public byte[] decodeFromString(String data) {
-        return decode(data.toCharArray());
+        Assert.notNull(data, "Data must is not null. ");
+        char[] chars = data.toCharArray();
+        return this.decode(chars);
     }
 
 }

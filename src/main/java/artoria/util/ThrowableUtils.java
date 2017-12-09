@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * Throwable tools
+ * Throwable tools.
  * @author Kahle
  */
 public class ThrowableUtils {

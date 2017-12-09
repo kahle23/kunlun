@@ -1,7 +1,7 @@
 package artoria.codec;
 
+import artoria.util.Assert;
 import artoria.util.MapUtils;
-import artoria.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -14,6 +14,7 @@ import static artoria.util.StringConstant.AMPERSAND;
 import static artoria.util.StringConstant.EQUAL;
 
 /**
+ * Url codec, and map to string tools.
  * @author Kahle
  */
 public class UrlCodec {
@@ -49,6 +50,7 @@ public class UrlCodec {
     }
 
     public UrlCodec setCharset(String charset) {
+        Assert.notBlank(charset, "Charset must is not blank. ");
         this.charset = charset;
         return this;
     }
@@ -58,9 +60,7 @@ public class UrlCodec {
     }
 
     public UrlCodec setKeySeparator(String keySeparator) {
-        if (StringUtils.isBlank(keySeparator)) {
-            throw new IllegalArgumentException("Key separator is blank. ");
-        }
+        Assert.notBlank(keySeparator, "Key separator must is not blank. ");
         this.keySeparator = keySeparator;
         return this;
     }
@@ -70,22 +70,23 @@ public class UrlCodec {
     }
 
     public UrlCodec setValueSeparator(String valueSeparator) {
-        if (StringUtils.isBlank(valueSeparator)) {
-            throw new IllegalArgumentException("Value separator is blank. ");
-        }
+        Assert.notBlank(valueSeparator, "Value separator must is not blank. ");
         this.valueSeparator = valueSeparator;
         return this;
     }
 
-    public String doEncode(String data) throws UnsupportedEncodingException {
+    public String encode(String data) throws UnsupportedEncodingException {
+        Assert.notNull(data, "Data must is not null. ");
         return URLEncoder.encode(data, charset);
     }
 
-    public String doDecode(String data) throws UnsupportedEncodingException {
+    public String decode(String data) throws UnsupportedEncodingException {
+        Assert.notNull(data, "Data must is not null. ");
         return URLDecoder.decode(data, charset);
     }
 
-    public String encode(Map<?, ?> map) throws UnsupportedEncodingException {
+    public String encodeToString(Map<?, ?> map) throws UnsupportedEncodingException {
+        Assert.notNull(map, "Map must is not null. ");
         StringBuilder builder = new StringBuilder();
         if (MapUtils.isEmpty(map)) {
             return builder.toString();
@@ -102,7 +103,8 @@ public class UrlCodec {
         return builder.toString();
     }
 
-    public Map<String, String> decode(String data) throws UnsupportedEncodingException {
+    public Map<String, String> decodeFromString(String data) throws UnsupportedEncodingException {
+        Assert.notNull(data, "Data must is not null. ");
         String[] split = data.split(valueSeparator);
         Map<String, String> result = new HashMap<>(split.length);
         if (split.length <= 0) {
