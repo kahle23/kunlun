@@ -1,6 +1,7 @@
 package artoria.util;
 
 /**
+ * String constant.
  * @author Kahle
  */
 public class StringConstant {
@@ -9,18 +10,19 @@ public class StringConstant {
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
     public static final String PATH_SEPARATOR = System.getProperty("path.separator");
 
+    public static final String DOT = ".";
     public static final String PLUS = "+";
     public static final String MINUS = "-";
-
-    public static final String DOT = ".";
     public static final String SLASH = "/";
     public static final String EQUAL = "=";
     public static final String COLON = ":";
     public static final String COMMA = ",";
-    public static final String BACKLASH = "\\";
+    public static final String UNDERLINE = "_";
     public static final String AMPERSAND = "&";
-    public static final String BLANK_SPACE = " ";
+    public static final String QUESTION_MARK = "?";
+    public static final String BACKLASH = "\\";
     public static final String EMPTY_STRING = "";
+    public static final String BLANK_SPACE = " ";
 
     public static final String LEFT_PARENTHESIS = "(";
     public static final String RIGHT_PARENTHESIS = ")";

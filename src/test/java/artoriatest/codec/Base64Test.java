@@ -21,4 +21,14 @@ public class Base64Test {
         System.out.println(Base64.isUrlSafeString(s6));
     }
 
+    @Test
+    public void test2() {
+        byte[] data = "Hello, World! �6n���ѿ�AS#".getBytes();
+        System.out.println(Base64.encodeToString(data));
+        String urlSafeString = Base64.encodeToUrlSafeString(data);
+        System.out.println(urlSafeString);
+        byte[] decode = Base64.decodeFromUrlSafeString(urlSafeString);
+        System.out.println(new String(decode));
+    }
+
 }

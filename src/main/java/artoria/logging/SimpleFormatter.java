@@ -13,6 +13,7 @@ import java.util.logging.LogRecord;
 import static artoria.util.StringConstant.*;
 
 /**
+ * Simple jdk logger formatter.
  * @author Kahle
  */
 public class SimpleFormatter extends Formatter {
@@ -94,7 +95,7 @@ public class SimpleFormatter extends Formatter {
         Throwable thrown = record.getThrown();
         if (thrown == null) { return null; }
         String result = ThrowableUtils.toString(thrown);
-        return StringUtils.isNotBlank(result) ? result : null;
+        return StringUtils.isNotBlank(result) ? ENDL + result : null;
     }
 
 }

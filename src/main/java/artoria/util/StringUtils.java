@@ -3,6 +3,7 @@ package artoria.util;
 import static artoria.util.StringConstant.EMPTY_STRING;
 
 /**
+ * String tools.
  * @author Kahle
  */
 public class StringUtils {
@@ -24,7 +25,7 @@ public class StringUtils {
     }
 
     public static boolean isNotBlank(CharSequence str) {
-        if (!StringUtils.isNotEmpty(str)) { return false; }
+        if (StringUtils.isEmpty(str)) { return false; }
         int strLen = str.length();
         for (int i = 0; i < strLen; i++) {
             int codePoint = (int) str.charAt(i);
@@ -35,7 +36,7 @@ public class StringUtils {
     }
 
     public static boolean containsWhitespace(CharSequence str) {
-        if (!isNotEmpty(str)) { return false; }
+        if (StringUtils.isEmpty(str)) { return false; }
         int strLen = str.length();
         for (int i = 0; i < strLen; i++) {
             int codePoint = (int) str.charAt(i);
@@ -46,7 +47,7 @@ public class StringUtils {
     }
 
     public static String trimWhitespace(String str) {
-        if (!isNotEmpty(str)) { return str; }
+        if (StringUtils.isEmpty(str)) { return str; }
         StringBuilder sb = new StringBuilder(str);
         boolean isLoop;
         do {
@@ -65,7 +66,7 @@ public class StringUtils {
     }
 
     public static String trimAllWhitespace(String str) {
-        if (!isNotEmpty(str)) { return str; }
+        if (StringUtils.isEmpty(str)) { return str; }
         int len = str.length();
         StringBuilder sb = new StringBuilder(str.length());
         for (int i = 0; i < len; i++) {
@@ -77,8 +78,8 @@ public class StringUtils {
     }
 
     public static String replace(String inString, String oldPattern, String newPattern) {
-        if (!isNotEmpty(inString)
-                || !isNotEmpty(oldPattern)
+        if (StringUtils.isEmpty(inString)
+                || StringUtils.isEmpty(oldPattern)
                 || newPattern == null) {
             return inString;
         }
@@ -100,23 +101,24 @@ public class StringUtils {
     }
 
     public static String delete(String inString, String pattern) {
-        return replace(inString, pattern, EMPTY_STRING);
+        return StringUtils.replace(inString, pattern, EMPTY_STRING);
     }
 
     public static String capitalize(String str) {
-        return changeFirstCharacterCase(str, true);
+        return StringUtils.changeFirstCharacterCase(str, true);
     }
 
     public static String uncapitalize(String str) {
-        return changeFirstCharacterCase(str, false);
+        return StringUtils.changeFirstCharacterCase(str, false);
     }
 
     private static String changeFirstCharacterCase(String str, boolean capitalize) {
         if (str == null || str.length() == 0) { return str; }
         StringBuilder sb = new StringBuilder(str.length());
         char c = str.charAt(0);
-        if (capitalize) { sb.append(Character.toUpperCase(c)); }
-        else { sb.append(Character.toLowerCase(c)); }
+        sb.append(capitalize ?
+                Character.toUpperCase(c) :
+                Character.toLowerCase(c));
         sb.append(str.substring(1));
         return sb.toString();
     }

@@ -15,14 +15,12 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
+import static artoria.util.StringConstant.*;
+
 /**
  * @author Kahle
  */
 public class Http {
-    private static final String QUESTION_MARK = "?";
-    private static final String EQUAL_MARK = "=";
-    private static final String AND_MARK = "&";
-
     private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36";
     private static final String DEFAULT_CONTENT_TYPE = "application/x-www-form-urlencoded";
     private static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
@@ -79,13 +77,13 @@ public class Http {
                 builder.append(QUESTION_MARK);
             }
             else {
-                builder.append(AND_MARK);
+                builder.append(AMPERSAND);
             }
             for (Map.Entry<String, String> entry : queryParas.entrySet()) {
                 builder.append(entry.getKey())
-                        .append(EQUAL_MARK)
+                        .append(EQUAL)
                         .append(URLEncoder.encode(entry.getValue(), charset))
-                        .append("&");
+                        .append(AMPERSAND);
             }
             int len = builder.length();
             builder.delete(len - 1, len);
@@ -315,7 +313,7 @@ public class Http {
             }
         }
         if (StringUtils.isNotBlank(proxyUser)) {
-            String auth = proxyUser + ":" + (StringUtils.isNotBlank(proxyPwd) ? proxyPwd : "");
+            String auth = proxyUser + COLON + (StringUtils.isNotBlank(proxyPwd) ? proxyPwd : EMPTY_STRING);
             auth = "Basic " + Base64.encodeToString(auth.getBytes(DEFAULT_CHARSET_NAME));
             conn.setRequestProperty(STRING_PROXY_AUTHORIZATION, auth);
         }

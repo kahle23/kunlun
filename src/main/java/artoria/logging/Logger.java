@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 
 /**
+ * Jdk logger tools.
  * @author Kahle
  */
 public class Logger {
@@ -60,97 +61,97 @@ public class Logger {
 
 	private static boolean isLoggable(Level level) {
 		String clazzName = Thread.currentThread().getStackTrace()[3].getClassName();
-		return getLogger(clazzName).isLoggable(level);
+		return Logger.getLogger(clazzName).isLoggable(level);
 	}
 
 	private static void logp(Level level, String message, Throwable t) {
 		String clazzName = Thread.currentThread().getStackTrace()[3].getClassName();
 		String methodName = Thread.currentThread().getStackTrace()[3].getMethodName();
-		getLogger(clazzName).logp(level, clazzName, methodName, message, t);
+		Logger.getLogger(clazzName).logp(level, clazzName, methodName, message, t);
 	}
 
 	public static boolean isFinestEnabled() {
-		return isLoggable(Level.FINEST);
+		return Logger.isLoggable(Level.FINEST);
 	}
 
 	public static boolean isFinerEnabled() {
-		return isLoggable(Level.FINER);
+		return Logger.isLoggable(Level.FINER);
 	}
 
 	public static boolean isFineEnabled() {
-		return isLoggable(Level.FINE);
+		return Logger.isLoggable(Level.FINE);
 	}
 
 	public static boolean isConfigEnabled() {
-		return isLoggable(Level.CONFIG);
+		return Logger.isLoggable(Level.CONFIG);
 	}
 
 	public static boolean isInfoEnabled() {
-		return isLoggable(Level.INFO);
+		return Logger.isLoggable(Level.INFO);
 	}
 
 	public static boolean isWarningEnabled() {
-		return isLoggable(Level.WARNING);
+		return Logger.isLoggable(Level.WARNING);
 	}
 
 	public static boolean isSevereEnabled() {
-		return isLoggable(Level.SEVERE);
+		return Logger.isLoggable(Level.SEVERE);
 	}
 
 	public static void finest(String message) {
-		logp(Level.FINEST, message, null);
+		Logger.logp(Level.FINEST, message, null);
 	}
 
 	public static void finest(String message,  Throwable t) {
-		logp(Level.FINEST, message, t);
+		Logger.logp(Level.FINEST, message, t);
 	}
 
 	public static void finer(String message) {
-		logp(Level.FINER, message, null);
+		Logger.logp(Level.FINER, message, null);
 	}
 
 	public static void finer(String message,  Throwable t) {
-		logp(Level.FINER, message, t);
+		Logger.logp(Level.FINER, message, t);
 	}
 
 	public static void fine(String message) {
-		logp(Level.FINE, message, null);
+		Logger.logp(Level.FINE, message, null);
 	}
 
 	public static void fine(String message,  Throwable t) {
-		logp(Level.FINE, message, t);
+		Logger.logp(Level.FINE, message, t);
 	}
 
 	public static void config(String message) {
-		logp(Level.CONFIG, message, null);
+		Logger.logp(Level.CONFIG, message, null);
 	}
 
 	public static void config(String message,  Throwable t) {
-		logp(Level.CONFIG, message, t);
+		Logger.logp(Level.CONFIG, message, t);
 	}
 
 	public static void info(String message) {
-		logp(Level.INFO, message, null);
+		Logger.logp(Level.INFO, message, null);
 	}
 
 	public static void info(String message, Throwable t) {
-		logp(Level.INFO, message, t);
+		Logger.logp(Level.INFO, message, t);
 	}
 
 	public static void warning(String message) {
-		logp(Level.WARNING, message, null);
+		Logger.logp(Level.WARNING, message, null);
 	}
 
 	public static void warning(String message, Throwable t) {
-		logp(Level.WARNING, message, t);
+		Logger.logp(Level.WARNING, message, t);
 	}
 
 	public static void severe(String message) {
-		logp(Level.SEVERE, message, null);
+		Logger.logp(Level.SEVERE, message, null);
 	}
 
 	public static void severe(String message, Throwable t) {
-		logp(Level.SEVERE, message, t);
+		Logger.logp(Level.SEVERE, message, t);
 	}
 
 }

@@ -1,10 +1,9 @@
 package artoriatest.codec;
 
+import artoria.codec.UrlCodec;
 import org.junit.Before;
 import org.junit.Test;
-import artoria.codec.UrlCodec;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,18 +21,18 @@ public class UrlCodecTest {
 
     @Test
     public void test1() throws Exception {
-        String encode = UrlCodec.ME.encode(data);
+        String encode = UrlCodec.ME.encodeToString(data);
         System.out.println(encode);
-        Map<String, String> map = UrlCodec.ME.decode(encode);
+        Map<String, String> map = UrlCodec.ME.decodeFromString(encode);
         System.out.println(map.toString());
     }
 
     @Test
     public void test2() throws Exception {
         UrlCodec urlCodec = UrlCodec.create("utf-8");
-        String encode = urlCodec.encode(data);
+        String encode = urlCodec.encodeToString(data);
         System.out.println(encode);
-        Map<String, String> decode = urlCodec.decode(encode);
+        Map<String, String> decode = urlCodec.decodeFromString(encode);
         System.out.println(decode);
     }
 
