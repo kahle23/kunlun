@@ -1,30 +1,30 @@
 package artoriatest.logging;
 
 import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 public class LoggerTest {
+    private static Logger log = LoggerFactory.getLogger(LoggerTest.class);
 
     @Test
-    public void test1() {
-        Logger.finest("Hello, World!");
-        Logger.finer("Hello, World!");
-        Logger.fine("Hello, World!");
-        Logger.config("Hello, World!");
-        Logger.info("Hello, World!");
-        Logger.warning("Hello, World!");
-        Logger.severe("Hello, World!");
+    public void testLogMsg() {
+        System.out.println("Test logger message, and show \"using logger: artoria.logging.JdkLoggerAdapter\".");
+        log.trace("Hello, World!");
+        log.debug("Hello, World!");
+        log.info("Hello, World!");
+        log.warn("Hello, World!");
+        log.error("Hello, World!");
     }
 
     @Test
-    public void test2() {
-        Logger.finest("Hello, World!", new RuntimeException());
-        Logger.finer("Hello, World!", new RuntimeException());
-        Logger.fine("Hello, World!", new RuntimeException());
-        Logger.config("Hello, World!", new RuntimeException());
-        Logger.info("Hello, World!", new RuntimeException());
-        Logger.warning("Hello, World!", new RuntimeException());
-        Logger.severe("Hello, World!", new RuntimeException());
+    public void testLogException() {
+        System.out.println("Test logger RuntimeException, and show \"using logger: artoria.logging.JdkLoggerAdapter\".");
+        log.trace("Hello, World!", new RuntimeException());
+        log.debug("Hello, World!", new RuntimeException());
+        log.info("Hello, World!", new RuntimeException());
+        log.warn("Hello, World!", new RuntimeException());
+        log.error("Hello, World!", new RuntimeException());
     }
 
 }

@@ -1,6 +1,7 @@
 package artoria.util;
 
 import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +13,7 @@ import java.util.LinkedList;
  * @author Kahle
  */
 public class FileUtils {
+    private static Logger log = LoggerFactory.getLogger(FileUtils.class);
 
     public static boolean rename(File path, String newName) {
         File dest = new File(path.getParent(), newName);
@@ -138,14 +140,14 @@ public class FileUtils {
                     }
                     else {
                         if (!file.delete()) {
-                            Logger.info("File[" + file + "] delete failure. ");
+                            log.info("File[" + file + "] delete failure. ");
                             isSuccess = false;
                         }
                     }
                 }
             }
             if (!addCurrent && !current.delete()) {
-                Logger.info("File[" + current + "] delete failure. ");
+                log.info("File[" + current + "] delete failure. ");
                 isSuccess = false;
             }
         }

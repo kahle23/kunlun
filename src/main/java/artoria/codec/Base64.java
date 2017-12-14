@@ -1,6 +1,7 @@
 package artoria.codec;
 
 import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.ClassUtils;
@@ -30,22 +31,24 @@ public class Base64 {
     private static final Charset DEFAULT_CHARSET = Charset.defaultCharset();
     private static final Base64Delegate DELEGATE;
 
+    private static Logger log = LoggerFactory.getLogger(Base64.class);
+
     static {
         Base64Delegate delegateToUse = null;
         ClassLoader classLoader = Base64.class.getClassLoader();
         // Apache Commons Codec present on the classpath?
         if (ClassUtils.isPresent(COMMONS_CODEC_BASE64, classLoader)) {
-            Logger.info("Use base64 class : " + COMMONS_CODEC_BASE64);
+            log.info("Use base64 class : " + COMMONS_CODEC_BASE64);
             delegateToUse = new CommonsCodecBase64Delegate();
         }
         // JDK 8's java.util.Base64 class present?
         else if (ClassUtils.isPresent(JAVA_UTIL_BASE64, classLoader)) {
-            Logger.info("Use base64 class : " + JAVA_UTIL_BASE64);
+            log.info("Use base64 class : " + JAVA_UTIL_BASE64);
             delegateToUse = new Java8Base64Delegate();
         }
         // maybe all jdk is ok?
         else if (ClassUtils.isPresent(JAVAX_XML_DATATYPE_CONVERTER, classLoader)) {
-            Logger.info("Use base64 class : " + JAVAX_XML_DATATYPE_CONVERTER);
+            log.info("Use base64 class : " + JAVAX_XML_DATATYPE_CONVERTER);
             delegateToUse = new Java7Base64Delegate();
         }
         DELEGATE = delegateToUse;
