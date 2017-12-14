@@ -1,157 +1,134 @@
 package artoria.logging;
 
-import artoria.util.IOUtils;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-
 /**
- * Jdk logger tools.
+ * Super logger
  * @author Kahle
  */
-public class Logger {
-	private static final String LOGGER_CONFIG_FILENAME = "logging.properties";
+public interface Logger {
 
-	private static final LogManager LOG_MANAGER;
+    /**
+     * Logger trace
+     * @param msg The log message
+     */
+    void trace(String msg);
 
-	static {
-		LOG_MANAGER = LogManager.getLogManager();
-		ClassLoader loader = Logger.class.getClassLoader();
-		InputStream in = loader != null
-				? loader.getResourceAsStream(LOGGER_CONFIG_FILENAME)
-				: ClassLoader.getSystemResourceAsStream(LOGGER_CONFIG_FILENAME);
-		if (in == null) {
-			try {
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				Properties prop = new Properties();
-				prop.setProperty("java.util.logging.ConsoleHandler.level", "INFO");
-				prop.setProperty("java.util.logging.ConsoleHandler.formatter", "artoria.logging.SimpleFormatter");
-				prop.setProperty("java.util.logging.SocketHandler.formatter", "artoria.logging.SimpleFormatter");
-				prop.setProperty("java.util.logging.FileHandler.formatter", "artoria.logging.SimpleFormatter");
-				prop.setProperty("handlers", "java.util.logging.ConsoleHandler");
-				prop.store(out, null);
-				in = new ByteArrayInputStream(out.toByteArray());
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			LOG_MANAGER.readConfiguration(in);
-		}
-		catch (IOException | SecurityException e) {
-			e.printStackTrace();
-		}
-		finally { IOUtils.closeQuietly(in); }
-	}
+    /**
+     * Logger trace
+     * @param e exception message
+     */
+    void trace(Throwable e);
 
-	private static java.util.logging.Logger getLogger(String clazzName) {
-		java.util.logging.Logger log = LOG_MANAGER.getLogger(clazzName);
-		if(log == null) {
-			log = java.util.logging.Logger.getLogger(clazzName);
-			LOG_MANAGER.addLogger(log);
-		}
-		return log;
-	}
+    /**
+     * Logger trace
+     * @param msg The log message
+     * @param e exception message
+     */
+    void trace(String msg, Throwable e);
 
-	private static boolean isLoggable(Level level) {
-		String clazzName = Thread.currentThread().getStackTrace()[3].getClassName();
-		return Logger.getLogger(clazzName).isLoggable(level);
-	}
+	/**
+	 * Logger debug
+	 * @param msg The log message
+	 */
+	void debug(String msg);
 
-	private static void logp(Level level, String message, Throwable t) {
-		String clazzName = Thread.currentThread().getStackTrace()[3].getClassName();
-		String methodName = Thread.currentThread().getStackTrace()[3].getMethodName();
-		Logger.getLogger(clazzName).logp(level, clazzName, methodName, message, t);
-	}
+	/**
+     * Logger debug
+     * @param e exception message
+     */
+	void debug(Throwable e);
 
-	public static boolean isFinestEnabled() {
-		return Logger.isLoggable(Level.FINEST);
-	}
+	/**
+	 * Logger debug
+	 * @param msg The log message
+	 * @param e exception message
+	 */
+	void debug(String msg, Throwable e);
 
-	public static boolean isFinerEnabled() {
-		return Logger.isLoggable(Level.FINER);
-	}
+	/**
+	 * Logger information
+	 * @param msg The log message
+	 */
+	void info(String msg);
 
-	public static boolean isFineEnabled() {
-		return Logger.isLoggable(Level.FINE);
-	}
+	/**
+     * Logger information
+     * @param e The log message
+     */
+	void info(Throwable e);
 
-	public static boolean isConfigEnabled() {
-		return Logger.isLoggable(Level.CONFIG);
-	}
+	/**
+	 * Logger information
+	 * @param msg The log message
+	 * @param e exception message
+	 */
+	void info(String msg, Throwable e);
 
-	public static boolean isInfoEnabled() {
-		return Logger.isLoggable(Level.INFO);
-	}
+	/**
+	 * Logger warning
+	 * @param msg The log message
+	 */
+	void warn(String msg);
 
-	public static boolean isWarningEnabled() {
-		return Logger.isLoggable(Level.WARNING);
-	}
+	/**
+     * Logger warning
+     * @param e exception message
+     */
+	void warn(Throwable e);
 
-	public static boolean isSevereEnabled() {
-		return Logger.isLoggable(Level.SEVERE);
-	}
+	/**
+	 * Logger warning
+	 * @param msg The log message
+	 * @param e exception message
+	 */
+	void warn(String msg, Throwable e);
 
-	public static void finest(String message) {
-		Logger.logp(Level.FINEST, message, null);
-	}
+	/**
+	 * Logger error
+	 * @param msg The log message
+	 */
+	void error(String msg);
 
-	public static void finest(String message,  Throwable t) {
-		Logger.logp(Level.FINEST, message, t);
-	}
+	/**
+     * Logger error
+     * @param e exception message
+     */
+	void error(Throwable e);
 
-	public static void finer(String message) {
-		Logger.logp(Level.FINER, message, null);
-	}
+	/**
+	 * Logger error
+	 * @param msg The log message
+	 * @param e exception message
+	 */
+	void error(String msg, Throwable e);
 
-	public static void finer(String message,  Throwable t) {
-		Logger.logp(Level.FINER, message, t);
-	}
+    /**
+     * Is trace enabled
+     * @return Enable trace or not
+     */
+    boolean isTraceEnabled();
 
-	public static void fine(String message) {
-		Logger.logp(Level.FINE, message, null);
-	}
+	/**
+	 * Is debug enabled
+	 * @return Enable debug or not
+	 */
+	boolean isDebugEnabled();
 
-	public static void fine(String message,  Throwable t) {
-		Logger.logp(Level.FINE, message, t);
-	}
+	/**
+	 * Is info enabled
+	 * @return Enable info or not
+	 */
+	boolean isInfoEnabled();
 
-	public static void config(String message) {
-		Logger.logp(Level.CONFIG, message, null);
-	}
+	/**
+	 * Is warn enabled
+	 * @return Enable warn or not
+	 */
+	boolean isWarnEnabled();
 
-	public static void config(String message,  Throwable t) {
-		Logger.logp(Level.CONFIG, message, t);
-	}
-
-	public static void info(String message) {
-		Logger.logp(Level.INFO, message, null);
-	}
-
-	public static void info(String message, Throwable t) {
-		Logger.logp(Level.INFO, message, t);
-	}
-
-	public static void warning(String message) {
-		Logger.logp(Level.WARNING, message, null);
-	}
-
-	public static void warning(String message, Throwable t) {
-		Logger.logp(Level.WARNING, message, t);
-	}
-
-	public static void severe(String message) {
-		Logger.logp(Level.SEVERE, message, null);
-	}
-
-	public static void severe(String message, Throwable t) {
-		Logger.logp(Level.SEVERE, message, t);
-	}
+	/**
+	 * Is error enabled
+	 * @return Enable error or not
+	 */
+	boolean isErrorEnabled();
 
 }
