@@ -7,8 +7,8 @@ import java.io.StringReader;
 import java.nio.charset.Charset;
 
 /**
- * Change string show charset
- * and recode string charset.
+ * Change string show charset.
+ * And recode string charset.
  * @author Kahle
  */
 public class Encoder {
