@@ -2,7 +2,7 @@ package artoriatest.util;
 
 import org.junit.Test;
 import artoria.util.Reflect;
-import artoria.util.Time;
+import artoria.util.DateUtils;
 
 import java.util.Calendar;
 
@@ -13,19 +13,19 @@ public class ReflectTest {
 
     @Test
     public void test1() throws Exception {
-        Reflect reflect = Reflect.create(Time.class);
+        Reflect reflect = Reflect.create(DateUtils.class);
         Object call = reflect.call("on");
         System.out.println(call);
         Object calendar = reflect.setBean(call).get("calendar");
         System.out.println(calendar instanceof Calendar);
-        System.out.println(Time.create(((Calendar) calendar).getTime()));
+        System.out.println(DateUtils.create(((Calendar) calendar).getTime()));
     }
 
     @Test
     public void test2() throws Exception {
-        Reflect reflect = Reflect.create(Time.class);
+        Reflect reflect = Reflect.create(DateUtils.class);
         System.out.println(reflect.setBean(reflect.call("on")).call("format"));
-        Time time = Time.create(1990, 1, 1, 12, 12, 12);
+        DateUtils time = DateUtils.create(1990, 1, 1, 12, 12, 12);
         System.out.println(reflect.set("calendar", time.getCalendar()).call("format"));
     }
 

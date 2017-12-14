@@ -1,9 +1,9 @@
 package artoria.logging;
 
+import artoria.util.DateUtils;
 import artoria.util.StringUtils;
 import artoria.util.ThreadUtils;
 import artoria.util.ThrowableUtils;
-import artoria.util.Time;
 
 import java.lang.management.ThreadInfo;
 import java.util.logging.Formatter;
@@ -41,8 +41,7 @@ public class SimpleFormatter extends Formatter {
 
     private String printfTime(LogRecord record) {
         long millis = record.getMillis();
-        Time time = Time.create(millis);
-        return time.format();
+        return DateUtils.format(millis);
     }
 
     private String printfLevel(LogRecord record) {

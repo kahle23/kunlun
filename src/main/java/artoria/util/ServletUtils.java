@@ -50,7 +50,7 @@ public class ServletUtils {
         StringBuilder builder = new StringBuilder();
 
         builder.append(STRING_AT).append(LEFT_SQUARE_BRACKET)
-                .append(Time.create().format()).append(RIGHT_SQUARE_BRACKET).append(BLANK_SPACE);
+                .append(DateUtils.format()).append(RIGHT_SQUARE_BRACKET).append(BLANK_SPACE);
 
         builder.append(LEFT_SQUARE_BRACKET).append(request.getRemoteAddr())
                 .append(COLON).append(request.getRemotePort())
@@ -100,7 +100,7 @@ public class ServletUtils {
                 .append(ARROWHEAD_RIGHT).append(ARROWHEAD_RIGHT).append(ENDL);
 
         builder.append(STRING_TIME).append(COLON).append(BLANK_SPACE)
-                .append(Time.create().format()).append(ENDL);
+                .append(DateUtils.format()).append(ENDL);
 
         builder.append(STRING_FROM).append(COLON).append(BLANK_SPACE)
                 .append(request.getRemoteAddr()).append(COLON)
