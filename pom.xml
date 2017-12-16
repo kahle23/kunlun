@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>artoria</groupId>
 	<artifactId>artoria</artifactId>
-	<version>0.0.5-beta10</version>
+	<version>0.0.5-beta11</version>
 	<packaging>jar</packaging>
 	<name>Artoria</name>
 	<description>A reinforce only rely on a little and the SDK.</description>

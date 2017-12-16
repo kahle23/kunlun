@@ -9,12 +9,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import static artoria.util.StringConstant.CLASSPATH;
+
 /**
  * File tools.
  * @author Kahle
  */
 public class FileUtils {
     private static Logger log = LoggerFactory.getLogger(FileUtils.class);
+
+    public static File findClasspath(String fileName) {
+        return new File(CLASSPATH, fileName);
+    }
 
     public static boolean rename(File path, String newName) {
         File dest = new File(path.getParent(), newName);

@@ -6,12 +6,12 @@ import org.junit.Test;
 public class PathUtilsTest {
 
     @Test
-    public void test() throws Exception {
+    public void test() {
         System.out.println();
     }
 
     @Test
-    public void test1() throws Exception {
+    public void test1() {
         System.out.println(PathUtils.getExtension("C:\\windows\\system\\123.txt"));
         System.out.println(PathUtils.getExtension("C:\\windows\\system"));
         System.out.println(PathUtils.getExtension("C:\\windows\\system\\"));
@@ -21,9 +21,7 @@ public class PathUtilsTest {
     }
 
     @Test
-    public void test2() throws Exception {
-        System.out.println(PathUtils.getRootPath());
-        System.out.println(PathUtils.getClasspath());
+    public void test2() {
         System.out.println(PathUtils.getPackagePath(PathUtilsTest.class));
         System.out.println(PathUtils.getClassFilePath(PathUtilsTest.class));
     }

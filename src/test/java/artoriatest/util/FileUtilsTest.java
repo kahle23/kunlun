@@ -9,6 +9,14 @@ import java.io.IOException;
 public class FileUtilsTest {
 
     @Test
+    public void test() throws Exception {
+        File file = FileUtils.findClasspath("logging.properties");
+        System.out.println(new String(FileUtils.read(file)));
+        File file1 = FileUtils.findClasspath("hello.txt");
+        System.out.println(file1);
+    }
+
+    @Test
     public void test_renameTo() {
         File file = new File("E:\\hello.txt");
         boolean rnSc = file.renameTo(new File("D:\\123.txt"));
