@@ -1,26 +1,50 @@
 package artoria.util;
 
+import artoria.exception.UnexpectedException;
+
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import static artoria.util.StringConstant.*;
 
 /**
+ * Path tools.
  * @author Kahle
  */
 public class PathUtils {
 
+    static String getRootPath() {
+        try {
+            URL res = PathUtils.class.getResource(SLASH);
+            File path = res != null ? new File(res.toURI().getPath()) : null;
+            return path != null ? path.getParentFile().getParent() : EMPTY_STRING;
+        }
+        catch (Throwable t) {
+            throw new UnexpectedException(t.getMessage(), t);
+        }
+    }
+
+    static String getClasspath() {
+        try {
+            URL res = ClassUtils.getDefaultClassLoader().getResource(EMPTY_STRING);
+            return res != null ? new File(res.toURI().getPath()).toString() : EMPTY_STRING;
+        }
+        catch (Throwable t) {
+            throw new UnexpectedException(t.getMessage(), t);
+        }
+    }
+
     public static String subPath(File src, File parent) {
+        Assert.notNull(src, "Source must is not null. ");
+        Assert.notNull(parent, "Parent must is not null. ");
         String srcStr = src.toString();
         String parentStr = parent.toString();
         return PathUtils.subPath(srcStr, parentStr);
     }
 
     public static String subPath(String src, String parent) {
-        Assert.notNull(src, "Source is required. ");
-        Assert.notNull(parent, "Parent is required. ");
+        Assert.notBlank(src, "Source must is not blank. ");
+        Assert.notBlank(parent, "Parent must is not blank. ");
         Assert.state(src.startsWith(parent), "Source must start with parent. ");
         return StringUtils.replace(src, parent, EMPTY_STRING);
     }
@@ -43,31 +67,23 @@ public class PathUtils {
         return path.substring(0, extIndex);
     }
 
-    public static final String REGEX_DOT = BACKLASH + DOT;
     public static String getPackagePath(Class<?> clazz) {
+        Assert.notNull(clazz, "Clazz must is not null. ");
         Package p = clazz.getPackage();
-        return p != null ? p.getName().replaceAll(REGEX_DOT, SLASH) : EMPTY_STRING;
+        String pName = p != null ? p.getName() : null;
+        return pName != null ? StringUtils.replace(pName, DOT, SLASH) : EMPTY_STRING;
     }
 
-    private static String rootPath;
-    public static String getRootPath() throws URISyntaxException {
-        if (StringUtils.isNotBlank(rootPath)) { return rootPath; }
-        String path = PathUtils.class.getResource(SLASH).toURI().getPath();
-        rootPath = new File(path).getParentFile().getParent();
-        return rootPath;
-    }
-
-    private static String classpath;
-    public static String getClasspath() throws URISyntaxException {
-        if (StringUtils.isNotBlank(classpath)) { return classpath; }
-        URL res = PathUtils.class.getClassLoader().getResource(EMPTY_STRING);
-        classpath = res != null ? new File(res.toURI().getPath()).toString() : EMPTY_STRING;
-        return classpath;
-    }
-
-    public static String getClassFilePath(Class<?> clazz) throws URISyntaxException {
-        URI uri = clazz.getResource(EMPTY_STRING).toURI();
-        return new File(uri.getPath()).toString();
+    public static String getClassFilePath(Class<?> clazz) {
+        Assert.notNull(clazz, "Clazz must is not null. ");
+        try {
+            URL res = clazz.getResource(EMPTY_STRING);
+            String path = res != null ? res.toURI().getPath() : null;
+            return path != null ? new File(path).toString() : EMPTY_STRING;
+        }
+        catch (Throwable t) {
+            throw new UnexpectedException(t.getMessage(), t);
+        }
     }
 
 }

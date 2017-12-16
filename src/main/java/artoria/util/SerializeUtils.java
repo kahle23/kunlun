@@ -50,12 +50,12 @@ public class SerializeUtils {
         }
     }
 
-    public static void serialize(Object object, OutputStream outputStream)
-            throws IOException {
-        if (!(object instanceof Serializable)) {
-            throw new IllegalArgumentException(SerializeUtils.class.getSimpleName() + " requires a Serializable payload " +
-                    "but received an object of type [" + object.getClass().getName() + "]");
-        }
+    public static void serialize(Object object, OutputStream outputStream) throws IOException {
+        Assert.isInstanceOf(Serializable.class, object
+                , SerializeUtils.class.getSimpleName()
+                        + " requires a Serializable payload "
+                        + "but received an object of type ["
+                        + object.getClass().getName() + "]");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         objectOutputStream.writeObject(object);
         objectOutputStream.flush();

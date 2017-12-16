@@ -9,6 +9,7 @@ import java.util.UUID;
 import static artoria.util.StringConstant.MINUS;
 
 /**
+ * Random tools.
  * @author Kahle
  */
 public class RandomUtils {
@@ -35,6 +36,10 @@ public class RandomUtils {
         return list;
     }
 
+    public static int nextInt(int bound) {
+        return RANDOM.nextInt(bound);
+    }
+
     public static String nextUUID() {
         return UUID.randomUUID().toString();
     }
@@ -47,16 +52,6 @@ public class RandomUtils {
         else {
             return uuid;
         }
-    }
-
-    public static BigDecimal nextBigDecimal(int length) {
-        StringBuilder result = new StringBuilder();
-        result.append(RANDOM.nextInt(9) + 1);
-        int len = length - 1;
-        for (int i = 0; i < len; i++) {
-            result.append(RANDOM.nextInt(10));
-        }
-        return new BigDecimal(result.toString());
     }
 
     public static byte[] nextBytes(int length) {
@@ -77,6 +72,16 @@ public class RandomUtils {
             result.append(charArray[nextInt]);
         }
         return result.toString();
+    }
+
+    public static BigDecimal nextBigDecimal(int length) {
+        StringBuilder result = new StringBuilder();
+        result.append(RANDOM.nextInt(9) + 1);
+        int len = length - 1;
+        for (int i = 0; i < len; i++) {
+            result.append(RANDOM.nextInt(10));
+        }
+        return new BigDecimal(result.toString());
     }
 
 }
