@@ -1,14 +1,14 @@
 package artoria.util;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.Properties;
+
+import static artoria.util.StringConstant.DEFAULT_CHARSET_NAME;
 
 /**
  * @author Kahle
  */
 public class Prop {
-    private static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
     private static final String STRING_TRUE = "true";
     private static final String STRING_FALSE = "false";
 

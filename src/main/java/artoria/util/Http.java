@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
-import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -23,7 +22,6 @@ import static artoria.util.StringConstant.*;
 public class Http {
     private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36";
     private static final String DEFAULT_CONTENT_TYPE = "application/x-www-form-urlencoded";
-    private static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
     private static final TrustAnyHostnameVerifier TRUST_ANY_HOSTNAME_VERIFIER = new TrustAnyHostnameVerifier();
     private static final SSLSocketFactory SSL_SOCKET_FACTORY = initSSLSocketFactory();
     private static final String STRING_PROXY_AUTHORIZATION = "Proxy-Authorization";
@@ -338,7 +336,7 @@ public class Http {
         } finally {
             IOUtils.closeQuietly(out);
             IOUtils.closeQuietly(in);
-            IOUtils.close(conn);
+            IOUtils.closeQuietly(conn);
         }
     }
 

@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Set;
@@ -16,7 +15,6 @@ import static artoria.util.StringConstant.*;
  * @author Kahle
  */
 public class ServletUtils {
-    private static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_JSON = "application/json";
     private static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
