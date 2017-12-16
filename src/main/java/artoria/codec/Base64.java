@@ -28,7 +28,6 @@ public class Base64 {
     private static final String JAVA_UTIL_BASE64 = "java.util.Base64";
     private static final Pattern BASE64_URL_SAFE = Pattern.compile("^[a-zA-Z0-9-_]+={0,2}$");
     private static final Pattern BASE64_URL_UNSAFE = Pattern.compile("^[a-zA-Z0-9+/]+={0,2}$");
-    private static final Charset DEFAULT_CHARSET = Charset.defaultCharset();
     private static final Base64Delegate DELEGATE;
 
     private static Logger log = LoggerFactory.getLogger(Base64.class);
@@ -93,7 +92,8 @@ public class Base64 {
 
     public static String encodeToString(byte[] src) {
         byte[] encode = Base64.encode(src);
-        return new String(encode, DEFAULT_CHARSET);
+        Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
+        return new String(encode, charset);
     }
 
     public static String encodeToString(byte[] src, String charset) {
@@ -105,7 +105,8 @@ public class Base64 {
 
     public static byte[] decodeFromString(String src) {
         Assert.notNull(src, "Source must is not null. ");
-        byte[] srcBytes = src.getBytes(DEFAULT_CHARSET);
+        Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
+        byte[] srcBytes = src.getBytes(charset);
         return Base64.decode(srcBytes);
     }
 
@@ -119,7 +120,8 @@ public class Base64 {
 
     public static String encodeToUrlSafeString(byte[] src) {
         byte[] urlSafe = Base64.encodeUrlSafe(src);
-        return new String(urlSafe, DEFAULT_CHARSET);
+        Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
+        return new String(urlSafe, charset);
     }
 
     public static String encodeToUrlSafeString(byte[] src, String charset) {
@@ -131,7 +133,8 @@ public class Base64 {
 
     public static byte[] decodeFromUrlSafeString(String src) {
         Assert.notNull(src, "Source must is not null. ");
-        byte[] srcBytes = src.getBytes(DEFAULT_CHARSET);
+        Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
+        byte[] srcBytes = src.getBytes(charset);
         return Base64.decodeUrlSafe(srcBytes);
     }
 

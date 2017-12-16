@@ -1,5 +1,7 @@
 package artoria.util;
 
+import java.nio.charset.Charset;
+
 /**
  * String constant.
  * @author Kahle
@@ -9,6 +11,7 @@ public class StringConstant {
     public static final String ENDL = System.getProperty("line.separator");
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
     public static final String PATH_SEPARATOR = System.getProperty("path.separator");
+    public static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
 
     public static final String DOT = ".";
     public static final String PLUS = "+";

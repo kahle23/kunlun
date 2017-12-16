@@ -1,15 +1,14 @@
 package artoria.util;
 
 import java.io.*;
-import java.nio.charset.Charset;
 
+import static artoria.util.StringConstant.DEFAULT_CHARSET_NAME;
 import static artoria.util.StringConstant.ENDL;
 
 /**
  * @author Kahle
  */
 public class RuntimeUtils {
-    private static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
 
     public static Process doExec(String command)
             throws IOException {
