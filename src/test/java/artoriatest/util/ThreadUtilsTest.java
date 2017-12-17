@@ -1,18 +1,18 @@
 package artoriatest.util;
 
-import org.junit.Test;
 import artoria.util.ThreadUtils;
+import org.junit.Test;
 
 public class ThreadUtilsTest {
 
     @Test
     public void test() {
-        ThreadUtils.sleepQuietly(10000);
-        System.out.println(ThreadUtils.currentLineNumber());
-        System.out.println(ThreadUtils.currentMethodName());
-        System.out.println(ThreadUtils.currentClassName());
-        System.out.println(ThreadUtils.currentThreadName());
-        System.out.println(ThreadUtils.currentFileName());
+        ThreadUtils.sleepQuietly(1000);
+        System.out.println(ThreadUtils.getLineNumber());
+        System.out.println(ThreadUtils.getMethodName());
+        System.out.println(ThreadUtils.getClassName());
+        System.out.println(ThreadUtils.getThreadName());
+        System.out.println(ThreadUtils.getFileName());
     }
 
 }
