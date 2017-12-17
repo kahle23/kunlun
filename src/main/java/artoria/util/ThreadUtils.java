@@ -10,6 +10,26 @@ import java.lang.management.ThreadMXBean;
  */
 public class ThreadUtils {
 
+    public static int getLineNumber() {
+        Thread thread = Thread.currentThread();
+        return thread.getStackTrace()[2].getLineNumber();
+    }
+
+    public static String getMethodName() {
+        Thread thread = Thread.currentThread();
+        return thread.getStackTrace()[2].getMethodName();
+    }
+
+    public static String getClassName() {
+        Thread thread = Thread.currentThread();
+        return thread.getStackTrace()[2].getClassName();
+    }
+
+    public static String getFileName() {
+        Thread thread = Thread.currentThread();
+        return thread.getStackTrace()[2].getFileName();
+    }
+
     public static void sleepQuietly(long millis) {
         Assert.state(millis > 0, "Millis must greater than 0. ");
         try {
@@ -20,35 +40,15 @@ public class ThreadUtils {
         }
     }
 
+    public static String getThreadName() {
+        Thread thread = Thread.currentThread();
+        return thread.getName();
+    }
+
     public static ThreadInfo getThreadInfo(long threadId) {
         ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
         Assert.notNull(threadMXBean, "Get ThreadMXBean failure. ");
         return threadMXBean.getThreadInfo(threadId);
-    }
-
-    public static int currentLineNumber() {
-        Thread thread = Thread.currentThread();
-        return thread.getStackTrace()[2].getLineNumber();
-    }
-
-    public static String currentMethodName() {
-        Thread thread = Thread.currentThread();
-        return thread.getStackTrace()[2].getMethodName();
-    }
-
-    public static String currentClassName() {
-        Thread thread = Thread.currentThread();
-        return thread.getStackTrace()[2].getClassName();
-    }
-
-    public static String currentFileName() {
-        Thread thread = Thread.currentThread();
-        return thread.getStackTrace()[2].getFileName();
-    }
-
-    public static String currentThreadName() {
-        Thread thread = Thread.currentThread();
-        return thread.getName();
     }
 
 }

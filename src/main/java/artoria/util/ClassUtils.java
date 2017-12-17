@@ -1,10 +1,35 @@
 package artoria.util;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Class tools.
  * @author Kahle
  */
 public class ClassUtils {
+    private static final Map<Class, Class> WRAPPER;
+    private static final Map<Class, Class> PRIMITIVE;
+
+    static {
+        Map<Class, Class> wMap = new HashMap<>();
+        wMap.put(boolean.class, Boolean.class);
+        wMap.put(int.class, Integer.class);
+        wMap.put(long.class, Long.class);
+        wMap.put(short.class, Short.class);
+        wMap.put(byte.class, Byte.class);
+        wMap.put(double.class, Double.class);
+        wMap.put(float.class, Float.class);
+        wMap.put(char.class, Character.class);
+        wMap.put(void.class, Void.class);
+        WRAPPER = Collections.unmodifiableMap(wMap);
+        Map<Class, Class> pMap = new HashMap<>();
+        for (Map.Entry<Class, Class> entry : wMap.entrySet()) {
+            pMap.put(entry.getValue(), entry.getKey());
+        }
+        PRIMITIVE = Collections.unmodifiableMap(pMap);
+    }
 
     public static ClassLoader getDefaultClassLoader() {
         ClassLoader classLoader = null;
@@ -30,6 +55,22 @@ public class ClassUtils {
         return classLoader;
     }
 
+    public static Class<?> getWrapper(Class<?> type) {
+        Assert.notNull(type, "Type must is not null. ");
+        if (!type.isPrimitive() || !WRAPPER.containsKey(type)) {
+            return type;
+        }
+        return WRAPPER.get(type);
+    }
+
+    public static Class<?> getPrimitive(Class<?> type) {
+        Assert.notNull(type, "Type must is not null. ");
+        if (type.isPrimitive() || !PRIMITIVE.containsKey(type)) {
+            return type;
+        }
+        return WRAPPER.get(type);
+    }
+
     public static boolean isPresent(String className, ClassLoader classLoader) {
         return ClassUtils.isPresent(className, true, classLoader);
     }
@@ -44,6 +85,17 @@ public class ClassUtils {
         catch (Throwable e) {
             return false;
         }
+    }
+
+    public static Class<?> forName(String className) throws ClassNotFoundException {
+        ClassLoader loader = ClassUtils.getDefaultClassLoader();
+        return ClassUtils.forName(className, true, loader);
+    }
+
+    public static Class<?> forName(String className, boolean initialize, ClassLoader loader) throws ClassNotFoundException {
+        Assert.notBlank(className, "Class name must is not blank. ");
+        Assert.notNull(loader, "Class loader must is not null. ");
+        return Class.forName(className, initialize, loader);
     }
 
 }

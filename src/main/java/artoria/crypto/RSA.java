@@ -2,7 +2,7 @@ package artoria.crypto;
 
 import artoria.util.ArrayUtils;
 import artoria.util.ClassUtils;
-import artoria.util.Reflect;
+import artoria.util.ReflectUtils;
 
 import javax.crypto.Cipher;
 import java.nio.charset.Charset;
@@ -28,7 +28,7 @@ public class RSA {
         ClassLoader classLoader = RSA.class.getClassLoader();
         if (ClassUtils.isPresent(className, classLoader)) {
             try {
-                Provider provider = (Provider) Reflect.create(className).create().getBean();
+                Provider provider = (Provider) ReflectUtils.create(className).construct().getBean();
                 Security.addProvider(provider);
             } catch (ReflectiveOperationException e) {
                 // ignore

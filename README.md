@@ -1,2 +1,2 @@
 # Artoria
-A reinforce only rely on a little and the SDK.
+A toolkit only rely on the JDK.
