@@ -13,7 +13,7 @@ public class ClassUtils {
     private static final Map<Class, Class> PRIMITIVE;
 
     static {
-        Map<Class, Class> wMap = new HashMap<>();
+        Map<Class, Class> wMap = new HashMap<Class, Class>();
         wMap.put(boolean.class, Boolean.class);
         wMap.put(int.class, Integer.class);
         wMap.put(long.class, Long.class);
@@ -24,7 +24,7 @@ public class ClassUtils {
         wMap.put(char.class, Character.class);
         wMap.put(void.class, Void.class);
         WRAPPER = Collections.unmodifiableMap(wMap);
-        Map<Class, Class> pMap = new HashMap<>();
+        Map<Class, Class> pMap = new HashMap<Class, Class>();
         for (Map.Entry<Class, Class> entry : wMap.entrySet()) {
             pMap.put(entry.getValue(), entry.getKey());
         }

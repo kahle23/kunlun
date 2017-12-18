@@ -3,8 +3,7 @@ package artoria.util;
 import java.util.Collection;
 import java.util.Map;
 
-import static artoria.util.StringConstant.BLANK_SPACE;
-import static artoria.util.StringConstant.EMPTY_STRING;
+import static artoria.util.StringConstant.*;
 
 /**
  * Assert, verify data state, if failure, will throw exception.
@@ -152,8 +151,8 @@ public class Assert {
         }
     }
 
-    public static void isInstanceOf(Class<?> clazz, Object obj) {
-        Assert.isInstanceOf(clazz, obj, null);
+    public static void isInstanceOf(Class<?> type, Object obj) {
+        Assert.isInstanceOf(type, obj, null);
     }
 
     public static void isInstanceOf(Class<?> type, Object obj, String message) {
@@ -161,7 +160,7 @@ public class Assert {
         if (!type.isInstance(obj)) {
             message = StringUtils.isNotBlank(message) ? message + BLANK_SPACE : EMPTY_STRING;
             message += "Object of class [";
-            message += obj != null ? obj.getClass().getName() : "null";
+            message += obj != null ? obj.getClass().getName() : STRING_NULL;
             message += "] must be an instance of " + type;
             throw new IllegalArgumentException(message);
         }
