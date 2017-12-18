@@ -14,6 +14,7 @@ import static artoria.util.StringConstant.ENDL;
 public class FailsafeLogger implements Logger {
 
 	private static final String LOGGER_ERROR_MESSAGE = "The logger component has a error. ";
+	private static final int STACK_TRACE_INDEX = 3;
 
 	private Logger logger;
 
@@ -34,8 +35,8 @@ public class FailsafeLogger implements Logger {
 		StackTraceElement[] stackTrace = thread.getStackTrace();
 		System.err.println(">> [" + DateUtils.format() + "] [" + level + "] ["
 				+ thread.getName() + "] ["
-				+ stackTrace[3].getClassName() + "."
-				+ stackTrace[3].getMethodName() + "()]"
+				+ stackTrace[STACK_TRACE_INDEX].getClassName() + "."
+				+ stackTrace[STACK_TRACE_INDEX].getMethodName() + "()]"
 				+ (StringUtils.isNotBlank(message) ? " [" + message + "]" : EMPTY_STRING)
 				+ (t != null ? " [" + ENDL + ThrowableUtils.toString(t) + "]" : EMPTY_STRING)
 		);

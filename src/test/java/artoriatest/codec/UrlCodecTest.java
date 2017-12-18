@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class UrlCodecTest {
 
-    private Map<String, String> data = new HashMap<>();
+    private Map<String, String> data = new HashMap<String, String>();
 
     @Before
     public void init() {

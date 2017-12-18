@@ -84,7 +84,7 @@ public class FileUtils {
         Assert.state(dest.isDirectory(), "Destination must is a directory. ");
         // stack model
         boolean isSuccess = true;
-        LinkedList<File> fileList = new LinkedList<>();
+        LinkedList<File> fileList = new LinkedList<File>();
         fileList.addFirst(dest);
         while (!fileList.isEmpty()) {
             File current = fileList.removeFirst();
@@ -158,7 +158,7 @@ public class FileUtils {
         if (!dest.exists() && !dest.mkdirs()) {
             throw new IOException("Destination directory mkdirs fail. ");
         }
-        LinkedList<File> fileList = new LinkedList<>();
+        LinkedList<File> fileList = new LinkedList<File>();
         fileList.add(src);
         while (!fileList.isEmpty()) {
             File[] files = fileList.removeFirst().listFiles();

@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class LoggerFactory {
 
-	private static final ConcurrentMap<String, FailsafeLogger> LOGGERS = new ConcurrentHashMap<>();
+	private static final ConcurrentMap<String, FailsafeLogger> LOGGERS = new ConcurrentHashMap<String, FailsafeLogger>();
 
 	private static volatile LoggerAdapter LOGGER_ADAPTER;
 

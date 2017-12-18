@@ -4,7 +4,6 @@ import artoria.util.IOUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.LogManager;
@@ -40,17 +39,21 @@ public class JdkLoggerAdapter implements LoggerAdapter {
 				prop.store(out, null);
 				in = new ByteArrayInputStream(out.toByteArray());
 			}
-			catch (IOException e) {
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		try {
-			LogManager.getLogManager().readConfiguration(in);
+		if (in != null) {
+			try {
+				LogManager.getLogManager().readConfiguration(in);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally {
+				IOUtils.closeQuietly(in);
+			}
 		}
-		catch (IOException | SecurityException e) {
-			e.printStackTrace();
-		}
-		finally { IOUtils.closeQuietly(in); }
 	}
 
 	@Override

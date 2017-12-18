@@ -98,8 +98,8 @@ public class Http {
         return new Http().setUrl(url);
     }
 
-    private Map<String, String> parameters = new HashMap<>();
-    private Map<String, String> headers = new HashMap<>();
+    private Map<String, String> parameters = new HashMap<String, String>();
+    private Map<String, String> headers = new HashMap<String, String>();
     private int connectTimeout = 19000;
     private int readTimeout = 19000;
     private String proxyUser;

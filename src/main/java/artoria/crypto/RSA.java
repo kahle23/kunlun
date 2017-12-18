@@ -1,5 +1,6 @@
 package artoria.crypto;
 
+import artoria.exception.ReflectionException;
 import artoria.util.ArrayUtils;
 import artoria.util.ClassUtils;
 import artoria.util.ReflectUtils;
@@ -28,9 +29,9 @@ public class RSA {
         ClassLoader classLoader = RSA.class.getClassLoader();
         if (ClassUtils.isPresent(className, classLoader)) {
             try {
-                Provider provider = (Provider) ReflectUtils.create(className).construct().getBean();
+                Provider provider = (Provider) ReflectUtils.create(className).newInstance().getBean();
                 Security.addProvider(provider);
-            } catch (ReflectiveOperationException e) {
+            } catch (ReflectionException e) {
                 // ignore
             }
         }

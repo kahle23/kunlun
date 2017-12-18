@@ -106,7 +106,7 @@ public class UrlCodec {
     public Map<String, String> decodeFromString(String data) throws UnsupportedEncodingException {
         Assert.notNull(data, "Data must is not null. ");
         String[] split = data.split(valueSeparator);
-        Map<String, String> result = new HashMap<>(split.length);
+        Map<String, String> result = new HashMap<String, String>(split.length);
         if (split.length <= 0) {
             return result;
         }
