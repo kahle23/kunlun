@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>artoria</groupId>
 	<artifactId>artoria</artifactId>
-	<version>0.0.5-beta13</version>
+	<version>0.0.5-beta14</version>
 	<packaging>jar</packaging>
 	<name>Artoria</name>
 	<description>A toolkit only rely on the JDK.</description>
