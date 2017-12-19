@@ -1,9 +1,13 @@
 package artoria.util;
 
+import artoria.exception.ReflectionException;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import static artoria.util.StringConstant.STRING_GET;
 import static artoria.util.StringConstant.STRING_SET;
@@ -52,16 +56,61 @@ public class BeanUtils {
         return SerializeUtils.deserialize(data);
     }
 
-    public static void copyProperties(Map<String, ?> src, Object dest) {
+    public static void copyProperties(Map<String, ?> src, Object dest) throws ReflectionException {
+        try {
+            Class<?> clazz = dest.getClass();
+            Map<String, Method> methods = BeanUtils.findAllGetOrSetMethods(clazz);
+            for (Map.Entry<String, ?> entry : src.entrySet()) {
+                String name = entry.getKey();
+                if (!name.startsWith(STRING_SET)) {
+                    name = STRING_SET + StringUtils.capitalize(name);
+                }
+                Method method = methods.get(name);
+                if (method == null) { continue; }
+                Class<?> destType = method.getParameterTypes()[0];
+                Object inputValue = entry.getValue();
+                Class<?> inputType = inputValue.getClass();
+                // TODO: do type conver
+                try {
+                    method.invoke(dest, inputValue);
+                }
+                catch (Exception e) {
+                    // ignore
+                }
+            }
+        }
+        catch (Exception e) {
+            throw new ReflectionException(e);
+        }
     }
 
-    public static void copyProperties(Object src, Map<String, ?> dest) {
+    public static void copyProperties(Object src, Map<String, Object> dest) throws ReflectionException {
+        try {
+            Class<?> clazz = src.getClass();
+            Map<String, Method> methods = BeanUtils.findAllGetOrSetMethods(clazz);
+            for (Map.Entry<String, Method> entry : methods.entrySet()) {
+                String name = entry.getKey();
+                if (!name.startsWith(STRING_GET)) { continue; }
+                name = name.substring(3);
+                Method method = entry.getValue();
+                try {
+                    Object invoke = method.invoke(src);
+                    dest.put(name, invoke);
+                }
+                catch (Exception e) {
+                    // ignore
+                }
+            }
+        }
+        catch (Exception e) {
+            throw new ReflectionException(e);
+        }
     }
 
     public static void copyProperties(Object src, Object dest) {
     }
 
-    static Map<String, Method> findAllGetterOrSetterMethods(Class<?> clazz) {
+    static Map<String, Method> findAllGetOrSetMethods(Class<?> clazz) {
         Assert.notNull(clazz, "Clazz must is not null. ");
         Map<String, Method> result = new HashMap<String, Method>();
         do {
@@ -73,8 +122,10 @@ public class BeanUtils {
                 boolean isStc = Modifier.isStatic(mod);
                 boolean stGet = name.startsWith(STRING_GET);
                 boolean stSet = name.startsWith(STRING_SET);
-                boolean b = isStc || !stGet || !stSet;
+                boolean b = isStc || (!stGet && !stSet);
+                // has get and parameters not equal 0
                 b = b || (stGet && pSize != 0);
+                // has set and parameters not equal 1
                 b = b || (stSet && pSize != 1);
                 if (b) { continue; }
                 result.put(name, method);
