@@ -3,15 +3,40 @@ package artoria.util;
 import artoria.exception.ReflectionException;
 
 import java.lang.reflect.*;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+
+import static artoria.util.StringConstant.STRING_GET;
+import static artoria.util.StringConstant.STRING_SET;
 
 /**
  * Reflect tools.
  * @author Kahle
  */
 public class ReflectUtils {
+
+    public static Object newInstance(String clazzString) throws ReflectionException {
+        Class<?> clazz;
+        try {
+            clazz = ClassUtils.forName(clazzString);
+        }
+        catch (ClassNotFoundException e) {
+            throw new ReflectionException(e);
+        }
+        return ReflectUtils.newInstance(clazz);
+    }
+
+    public static Object newInstance(Class<?> clazz, Object... args) throws ReflectionException {
+        Assert.notNull(clazz, "Clazz must is not null. ");
+        Assert.notNull(args, "Args must is not null. ");
+        try {
+            Class<?>[] types = ReflectUtils.findTypes(args);
+            Constructor<?> constructor = ReflectUtils.findConstructor(clazz, types);
+            return constructor.newInstance(args);
+        }
+        catch (Exception e) {
+            throw new ReflectionException(e);
+        }
+    }
 
     public static Field findField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
         Assert.notNull(clazz, "Clazz must is not null. ");
@@ -36,27 +61,39 @@ public class ReflectUtils {
         }
     }
 
-    public static Map<String, Field> findFields(Class<?> clazz) throws NoSuchFieldException {
+    public static Map<String, Field> findFields(Class<?> clazz) {
         Assert.notNull(clazz, "Clazz must is not null. ");
-        // TODO: has some problem
         Map<String, Field> result = new LinkedHashMap<String, Field>();
         Class<?> inputClazz = clazz;
-        do {
+        LinkedList<Class<?>> list = new LinkedList<Class<?>>();
+        list.addLast(clazz);
+        while (list.size() != 0) {
+            clazz = list.removeFirst();
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
+                // find this class all, and super class not private.
                 boolean b = inputClazz != clazz;
-                int mod = field.getModifiers();
-                boolean isStatic = Modifier.isStatic(mod);
-                if (b ^ isStatic) {
-                    String name = field.getName();
-                    if (!result.containsKey(name)) {
-                        Field fd = ReflectUtils.findField(clazz, name);
-                        result.put(name, fd);
-                    }
+                b = b && Modifier.isPrivate(field.getModifiers());
+                if (b) {
+                    continue;
                 }
+                String name = field.getName();
+                boolean isContains = result.containsKey(name);
+                if (isContains) {
+                    continue;
+                }
+                field = ReflectUtils.accessible(field);
+                result.put(name, field);
             }
-            clazz = clazz.getSuperclass();
-        } while (clazz != null);
+            Class<?>[] interfaces = clazz.getInterfaces();
+            if (ArrayUtils.isNotEmpty(interfaces)) {
+                Collections.addAll(list, interfaces);
+            }
+            Class<?> superclass = clazz.getSuperclass();
+            if (superclass != null) {
+                list.addLast(superclass);
+            }
+        }
         return result;
     }
 
@@ -115,7 +152,9 @@ public class ReflectUtils {
         for (Method method : clazz.getMethods()) {
             boolean isSimilar =
                     ReflectUtils.isSimilarMethod(method, methodName, types);
-            if (isSimilar) { return method; }
+            if (isSimilar) {
+                return method;
+            }
         }
         Class<?> inputClazz = clazz;
         // second priority : find a non-public method with a "similar" signature on declaring class
@@ -123,7 +162,9 @@ public class ReflectUtils {
             for (Method method : clazz.getDeclaredMethods()) {
                 boolean isSimilar =
                         ReflectUtils.isSimilarMethod(method, methodName, types);
-                if (isSimilar) { return method; }
+                if (isSimilar) {
+                    return method;
+                }
             }
             clazz = clazz.getSuperclass();
         }
@@ -136,7 +177,9 @@ public class ReflectUtils {
     }
 
     public static Class<?>[] findTypes(Object... values) {
-        if (ArrayUtils.isEmpty(values)) { return new Class[0]; }
+        if (ArrayUtils.isEmpty(values)) {
+            return new Class[0];
+        }
         Class<?>[] result = new Class[values.length];
         for (int i = 0; i < values.length; i++) {
             Object value = values[i];
@@ -153,7 +196,9 @@ public class ReflectUtils {
             Member member = (Member) accessible;
             boolean b = Modifier.isPublic(member.getModifiers());
             b = b && Modifier.isPublic(member.getDeclaringClass().getModifiers());
-            if (b) { return accessible; }
+            if (b) {
+                return accessible;
+            }
         }
         // The accessible flag is set to false by default, also for public members.
         if (!accessible.isAccessible()) {
@@ -179,10 +224,14 @@ public class ReflectUtils {
         }
         for (int i = 0; i < actualTypes.length; i++) {
             // Method has parameter, but input null, so continue.
-            if (actualTypes[i] == null) { continue; }
+            if (actualTypes[i] == null) {
+                continue;
+            }
             Class<?> declared = ClassUtils.getWrapper(declaredTypes[i]);
             Class<?> actual = ClassUtils.getWrapper(actualTypes[i]);
-            if (declared.isAssignableFrom(actual)) { continue; }
+            if (declared.isAssignableFrom(actual)) {
+                continue;
+            }
             return false;
         }
         return true;
@@ -233,7 +282,9 @@ public class ReflectUtils {
     }
 
     private void assertBeanInstanceOfClazz(Object bean) {
-        if (bean == null) { return; }
+        if (bean == null) {
+            return;
+        }
         String msg = "The bean must is instance of clazz. ";
         Assert.isInstanceOf(this.clazz, bean, msg);
     }
@@ -314,6 +365,22 @@ public class ReflectUtils {
         catch (Exception e) {
             throw new ReflectionException(e);
         }
+    }
+
+    public Object callGetter(String methodName) throws ReflectionException {
+        Assert.notBlank(methodName, "Method name must is not blank. ");
+        if (!methodName.startsWith(STRING_GET)) {
+            methodName = STRING_GET + StringUtils.capitalize(methodName);
+        }
+        return this.call(methodName);
+    }
+
+    public Object callSetter(String methodName, Object value) throws ReflectionException {
+        Assert.notBlank(methodName, "Method name must is not blank. ");
+        if (!methodName.startsWith(STRING_SET)) {
+            methodName = STRING_SET + StringUtils.capitalize(methodName);
+        }
+        return this.call(methodName, value);
     }
 
     public Object call(String methodName) throws ReflectionException {
