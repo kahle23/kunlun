@@ -56,7 +56,22 @@ public class BeanUtilsTest {
     }
 
     @Test
-    public void copyProperties2() {
+    public void copyProperties2() throws ReflectionException {
+        Student student = new Student();
+        student.setName("zhangsan");
+        student.setAge(19);
+        student.setHeight(176d);
+        student.setScore(89);
+        student.setEmail("zhangsan@email.com");
+        System.out.println(student);
+
+        Student student1 = new Student();
+        BeanUtils.copyProperties(student, student1);
+        System.out.println(student1);
+
+        student1.setAge(23);
+        System.out.println(student);
+        System.out.println(student1);
     }
 
     @Test

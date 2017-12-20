@@ -22,4 +22,15 @@ public class Student extends Person {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + getName() + '\'' +
+                ", age=" + getAge() +
+                ", height=" + getHeight() +
+                ", score=" + score +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

@@ -14,6 +14,8 @@ import static artoria.util.StringConstant.STRING_SET;
 
 public class BeanUtils {
 
+    private static final Integer GET_OR_SET_LENGTH = 3;
+
     public static <T> T ifNull(T value, T defaultValue) {
         return value != null ? value : defaultValue;
     }
@@ -46,9 +48,11 @@ public class BeanUtils {
         return obj != null && obj.getClass().isArray();
     }
 
-    public static Object clone(Object obj) {
+    public static Object clone(Object obj) throws ReflectionException {
         Class<?> clazz = obj.getClass();
-        return null;
+        Object clone = ReflectUtils.newInstance(clazz);
+        BeanUtils.copyProperties(obj, clone);
+        return clone;
     }
 
     public static Object deepClone(Object obj) {
@@ -57,22 +61,24 @@ public class BeanUtils {
     }
 
     public static void copyProperties(Map<String, ?> src, Object dest) throws ReflectionException {
+        Assert.notNull(src, "Source must is not null. ");
+        Assert.notNull(dest, "Destination must is not null. ");
         try {
             Class<?> clazz = dest.getClass();
-            Map<String, Method> methods = BeanUtils.findAllGetOrSetMethods(clazz);
+            Map<String, Method> mths = BeanUtils.findAllGetOrSetMethods(clazz);
             for (Map.Entry<String, ?> entry : src.entrySet()) {
                 String name = entry.getKey();
                 if (!name.startsWith(STRING_SET)) {
                     name = STRING_SET + StringUtils.capitalize(name);
                 }
-                Method method = methods.get(name);
-                if (method == null) { continue; }
-                Class<?> destType = method.getParameterTypes()[0];
+                Method mth = mths.get(name);
+                if (mth == null) { continue; }
+                Class<?> destType = mth.getParameterTypes()[0];
                 Object inputValue = entry.getValue();
                 Class<?> inputType = inputValue.getClass();
                 // TODO: do type conver
                 try {
-                    method.invoke(dest, inputValue);
+                    mth.invoke(dest, inputValue);
                 }
                 catch (Exception e) {
                     // ignore
@@ -85,16 +91,19 @@ public class BeanUtils {
     }
 
     public static void copyProperties(Object src, Map<String, Object> dest) throws ReflectionException {
+        Assert.notNull(src, "Source must is not null. ");
+        Assert.notNull(dest, "Destination must is not null. ");
         try {
             Class<?> clazz = src.getClass();
-            Map<String, Method> methods = BeanUtils.findAllGetOrSetMethods(clazz);
-            for (Map.Entry<String, Method> entry : methods.entrySet()) {
+            Map<String, Method> mths = BeanUtils.findAllGetOrSetMethods(clazz);
+            for (Map.Entry<String, Method> entry : mths.entrySet()) {
                 String name = entry.getKey();
                 if (!name.startsWith(STRING_GET)) { continue; }
-                name = name.substring(3);
-                Method method = entry.getValue();
+                name = name.substring(GET_OR_SET_LENGTH);
+                name = StringUtils.uncapitalize(name);
+                Method mth = entry.getValue();
                 try {
-                    Object invoke = method.invoke(src);
+                    Object invoke = mth.invoke(src);
                     dest.put(name, invoke);
                 }
                 catch (Exception e) {
@@ -107,7 +116,37 @@ public class BeanUtils {
         }
     }
 
-    public static void copyProperties(Object src, Object dest) {
+    public static void copyProperties(Object src, Object dest) throws ReflectionException {
+        Assert.notNull(src, "Source must is not null. ");
+        Assert.notNull(dest, "Destination must is not null. ");
+        try {
+            Class<?> srcClass = src.getClass();
+            Class<?> destClass = dest.getClass();
+            Map<String, Method> srcMths = BeanUtils.findAllGetOrSetMethods(srcClass);
+            Map<String, Method> destMths = BeanUtils.findAllGetOrSetMethods(destClass);
+            for (Map.Entry<String, Method> entry : srcMths.entrySet()) {
+                String name = entry.getKey();
+                if (!name.startsWith(STRING_GET)) { continue; }
+                name = name.substring(GET_OR_SET_LENGTH);
+                name = STRING_SET + name;
+                Method destMth = destMths.get(name);
+                if (destMth == null) { continue; }
+                Method srcMth = entry.getValue();
+                try {
+                    Object inputValue = srcMth.invoke(src);
+                    Class<?> inputType = inputValue.getClass();
+                    Class<?> destType = destMth.getParameterTypes()[0];
+                    // TODO: do type conver
+                    destMth.invoke(dest, inputValue);
+                }
+                catch (Exception e) {
+                    // ignore
+                }
+            }
+        }
+        catch (Exception e) {
+            throw new ReflectionException(e);
+        }
     }
 
     static Map<String, Method> findAllGetOrSetMethods(Class<?> clazz) {
