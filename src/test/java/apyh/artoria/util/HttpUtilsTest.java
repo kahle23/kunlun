@@ -8,12 +8,12 @@ public class HttpTest {
     public void test1() throws Exception {
 //        System.out.println(Http.on("http://uux.me").get());
 //        System.out.println(Http.on("https://www.taobao.com").get());
-        System.out.println(Http.create("https://www.baidu.com").get());
+        System.out.println(HttpUtils.create("https://www.baidu.com").get());
     }
 
     @Test
     public void test2() throws Exception {
-        System.out.println(Http.create("http://uux.me").get());
+        System.out.println(HttpUtils.create("http://uux.me").get());
 //        System.out.println(Http.on("http://uux.me").post());
 //        System.out.println(Http.on("http://uux.me").put());
 //        System.out.println(Http.on("http://uux.me").delete());
@@ -25,7 +25,7 @@ public class HttpTest {
 
     @Test
     public void test3() throws Exception {
-        Http http = Http.create();
+        HttpUtils http = HttpUtils.create();
 //        System.out.println(http.setUrl("http://uux.me").get());
 //        System.out.println(http.setUrl("https://www.baidu.com").get());
         http.setConnectTimeout(1000).setReadTimeout(1000)
@@ -36,7 +36,7 @@ public class HttpTest {
 
     @Test
     public void test4() throws Exception {
-        Http http = Http.create().setConnectTimeout(1000)
+        HttpUtils http = HttpUtils.create().setConnectTimeout(1000)
                 .setReadTimeout(1000).setCharset("utf-8")
                 .setUserAgent(">>>>>>>>>>>>>>>>>>>>>");
 //        System.out.println(http.get("http://uux.me"));
@@ -47,7 +47,7 @@ public class HttpTest {
     @Test
     public void test5() throws Exception {
         String url = "http://ip.chinaz.com/getip.aspx";
-        System.out.println(Http.create(url)
+        System.out.println(HttpUtils.create(url)
                 .setHttpProxy("127.0.0.1", 5000)
                 .setProxyAuth("zhangsan", "123")
                 .get());
