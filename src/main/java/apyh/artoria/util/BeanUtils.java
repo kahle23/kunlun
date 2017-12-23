@@ -1,5 +1,7 @@
 package apyh.artoria.util;
 
+import apyh.artoria.converter.Converter;
+import apyh.artoria.converter.TypeUtils;
 import apyh.artoria.exception.ReflectionException;
 import apyh.artoria.serialize.SerializeUtils;
 
@@ -65,36 +67,6 @@ public class BeanUtils {
         return SerializeUtils.deserialize(data);
     }
 
-    public static void copyProperties(Map<String, ?> src, Object dest) throws ReflectionException {
-        Assert.notNull(src, "Source must is not null. ");
-        Assert.notNull(dest, "Destination must is not null. ");
-        try {
-            Class<?> clazz = dest.getClass();
-            Map<String, Method> mths = BeanUtils.findAllGetOrSetMethods(clazz);
-            for (Map.Entry<String, ?> entry : src.entrySet()) {
-                String name = entry.getKey();
-                if (!name.startsWith(StringConstant.STRING_SET)) {
-                    name = StringConstant.STRING_SET + StringUtils.capitalize(name);
-                }
-                Method mth = mths.get(name);
-                if (mth == null) { continue; }
-                Class<?> destType = mth.getParameterTypes()[0];
-                Object inputValue = entry.getValue();
-                Class<?> inputType = inputValue.getClass();
-                // TODO: do type conver
-                try {
-                    mth.invoke(dest, inputValue);
-                }
-                catch (Exception e) {
-                    // ignore
-                }
-            }
-        }
-        catch (Exception e) {
-            throw new ReflectionException(e);
-        }
-    }
-
     public static void copyProperties(Object src, Map<String, Object> dest) throws ReflectionException {
         Assert.notNull(src, "Source must is not null. ");
         Assert.notNull(dest, "Destination must is not null. ");
@@ -121,7 +93,45 @@ public class BeanUtils {
         }
     }
 
+    public static void copyProperties(Map<String, ?> src, Object dest) throws ReflectionException {
+        copyProperties(src, dest, CONVERTER);
+    }
+
+    public static void copyProperties(Map<String, ?> src, Object dest, Converter cvt) throws ReflectionException {
+        Assert.notNull(src, "Source must is not null. ");
+        Assert.notNull(dest, "Destination must is not null. ");
+        try {
+            Class<?> clazz = dest.getClass();
+            Map<String, Method> mths = BeanUtils.findAllGetOrSetMethods(clazz);
+            for (Map.Entry<String, ?> entry : src.entrySet()) {
+                String name = entry.getKey();
+                if (!name.startsWith(StringConstant.STRING_SET)) {
+                    name = StringConstant.STRING_SET + StringUtils.capitalize(name);
+                }
+                Method mth = mths.get(name);
+                if (mth == null) { continue; }
+                Class<?> destType = mth.getParameterTypes()[0];
+                Object inputValue = entry.getValue();
+                // do convert
+                inputValue = cvt.convert(inputValue, destType);
+                try {
+                    mth.invoke(dest, inputValue);
+                }
+                catch (Exception e) {
+                    // ignore
+                }
+            }
+        }
+        catch (Exception e) {
+            throw new ReflectionException(e);
+        }
+    }
+
     public static void copyProperties(Object src, Object dest) throws ReflectionException {
+        copyProperties(src, dest, CONVERTER);
+    }
+
+    public static void copyProperties(Object src, Object dest, Converter cvt) throws ReflectionException {
         Assert.notNull(src, "Source must is not null. ");
         Assert.notNull(dest, "Destination must is not null. ");
         try {
@@ -139,9 +149,9 @@ public class BeanUtils {
                 Method srcMth = entry.getValue();
                 try {
                     Object inputValue = srcMth.invoke(src);
-                    Class<?> inputType = inputValue.getClass();
                     Class<?> destType = destMth.getParameterTypes()[0];
-                    // TODO: do type conver
+                    // do convert
+                    inputValue = cvt.convert(inputValue, destType);
                     destMth.invoke(dest, inputValue);
                 }
                 catch (Exception e) {
@@ -178,6 +188,15 @@ public class BeanUtils {
             clazz = clazz.getSuperclass();
         }
         return result;
+    }
+
+    private static final Converter CONVERTER = new DefaultConverter();
+
+    private static class DefaultConverter implements Converter {
+        @Override
+        public Object convert(Object source, Class<?> target) {
+            return TypeUtils.convert(source, target);
+        }
     }
 
 }
