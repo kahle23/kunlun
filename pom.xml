@@ -4,12 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>apyh</groupId>
 	<artifactId>artoria</artifactId>
-	<version>0.0.5-beta16</version>
+	<version>${project.version}</version>
 	<packaging>jar</packaging>
 	<name>Artoria</name>
 	<description>A toolkit only rely on the JDK.</description>
 
 	<properties>
+		<project.version>0.0.5-beta17</project.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 	</properties>
@@ -20,7 +21,14 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
-			<scope>provided</scope>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.16</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>

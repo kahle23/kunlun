@@ -2,7 +2,7 @@ package apyh.artoria.util;
 
 import org.junit.Test;
 
-public class HttpTest {
+public class HttpUtilsTest {
 
     @Test
     public void test1() throws Exception {
@@ -26,7 +26,7 @@ public class HttpTest {
     @Test
     public void test3() throws Exception {
         HttpUtils http = HttpUtils.create();
-//        System.out.println(http.setUrl("http://uux.me").get());
+        System.out.println(http.setUrl("http://uux.me").get());
 //        System.out.println(http.setUrl("https://www.baidu.com").get());
         http.setConnectTimeout(1000).setReadTimeout(1000)
                 .setUserAgent(">>>>>>>>>>>>>>>>>>>>>").setCharset("utf-8");
