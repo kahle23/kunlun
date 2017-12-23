@@ -53,6 +53,17 @@ public class Assert {
         }
     }
 
+    public static void notEmpty(byte[] array) {
+        Assert.notEmpty(array, "[Assertion failed] - " +
+                "this array must not be empty: it must contain at least 1 element");
+    }
+
+    public static void notEmpty(byte[] array, String message) {
+        if (ArrayUtils.isEmpty(array)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
     public static void notEmpty(Object[] array) {
         Assert.notEmpty(array, "[Assertion failed] - " +
                 "this array must not be empty: it must contain at least 1 element");

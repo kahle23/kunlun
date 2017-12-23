@@ -1,6 +1,7 @@
 package apyh.artoria.util;
 
 import apyh.artoria.exception.ReflectionException;
+import apyh.artoria.serialize.SerializeUtils;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -9,9 +10,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BeanUtils {
+import static apyh.artoria.util.StringConstant.STRING_GET;
+import static apyh.artoria.util.StringConstant.STRING_SET;
 
+/**
+ * Bean tools.
+ */
+public class BeanUtils {
     private static final Integer GET_OR_SET_LENGTH = 3;
+    private static final Integer MAP_INITIAL_CAPACITY = 8;
+    private static final String GET_CLASS = "getClass";
 
     public static <T> T ifNull(T value, T defaultValue) {
         return value != null ? value : defaultValue;
@@ -148,27 +156,27 @@ public class BeanUtils {
 
     static Map<String, Method> findAllGetOrSetMethods(Class<?> clazz) {
         Assert.notNull(clazz, "Clazz must is not null. ");
-        Map<String, Method> result = new HashMap<String, Method>();
-        do {
+        Map<String, Method> result = new HashMap<String, Method>(MAP_INITIAL_CAPACITY);
+        while (clazz != Object.class) {
             Method[] methods = clazz.getMethods();
             for (Method method : methods) {
                 String name = method.getName();
                 int pSize = method.getParameterTypes().length;
                 int mod = method.getModifiers();
                 boolean isStc = Modifier.isStatic(mod);
-                boolean stGet = name.startsWith(StringConstant.STRING_GET);
-                boolean stSet = name.startsWith(StringConstant.STRING_SET);
+                boolean stGet = name.startsWith(STRING_GET);
+                boolean stSet = name.startsWith(STRING_SET);
                 boolean b = isStc || (!stGet && !stSet);
                 // has get and parameters not equal 0
                 b = b || (stGet && pSize != 0);
                 // has set and parameters not equal 1
                 b = b || (stSet && pSize != 1);
+                b = b || GET_CLASS.equals(name);
                 if (b) { continue; }
                 result.put(name, method);
             }
             clazz = clazz.getSuperclass();
         }
-        while (clazz != null);
         return result;
     }
 

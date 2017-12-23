@@ -1,7 +1,6 @@
-package apyh.artoria.util;
+package apyh.artoria.serialize;
 
 import apyh.artoria.codec.Hex;
-import apyh.artoria.serialize.SerializeUtils;
 import org.junit.Test;
 
 import java.io.Serializable;
