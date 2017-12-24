@@ -33,6 +33,7 @@ public class ReflectUtils {
         try {
             Class<?>[] types = ReflectUtils.findTypes(args);
             Constructor<?> constructor = ReflectUtils.findConstructor(clazz, types);
+            constructor = ReflectUtils.accessible(constructor);
             return constructor.newInstance(args);
         }
         catch (Exception e) {
