@@ -12,6 +12,8 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static apyh.artoria.util.IOUtils.DEFAULT_BUFFER_SIZE;
+import static apyh.artoria.util.IOUtils.EOF;
 import static apyh.artoria.util.StringConstant.DEFAULT_CHARSET_NAME;
 
 /**
@@ -95,19 +97,15 @@ public class Hash {
         Assert.notNull(file, "File must is not null. ");
         Assert.state(file.isFile(), "File object must is a file. ");
         FileInputStream in = new FileInputStream(file);
-        try {
-            return this.calc(in);
-        }
-        finally {
-            IOUtils.closeQuietly(in);
-        }
+        try { return this.calc(in); }
+        finally { IOUtils.closeQuietly(in); }
     }
 
     public byte[] calc(InputStream in) throws NoSuchAlgorithmException, IOException {
         Assert.notNull(in, "InputStream must is not null. ");
         MessageDigest md = MessageDigest.getInstance(algorithm);
-        byte[] buffer = new byte[IOUtils.DEFAULT_BUFFER_SIZE];
-        for (int len; (len = in.read(buffer)) != IOUtils.EOF;) {
+        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+        for (int len; (len = in.read(buffer)) != EOF;) {
             md.update(buffer, 0, len);
         }
         return md.digest();

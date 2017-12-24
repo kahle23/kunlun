@@ -26,7 +26,7 @@ public class FileUtils {
     }
 
     public static byte[] read(File dest) throws IOException {
-        Assert.notNull("Destination must is not null. ");
+        Assert.notNull(dest, "Destination must is not null. ");
         Assert.state(dest.exists(), "Destination must is exists. ");
         Assert.state(dest.isFile(), "Destination must is a file. ");
         FileInputStream in = null;
@@ -44,7 +44,7 @@ public class FileUtils {
     }
 
     public static int write(byte[] data, File dest, boolean append) throws IOException {
-        Assert.notNull("Destination must is not null. ");
+        Assert.notNull(dest, "Destination must is not null. ");
         if (!dest.exists() && !dest.createNewFile()) {
             throw new IOException("Create destination file fail. ");
         }
