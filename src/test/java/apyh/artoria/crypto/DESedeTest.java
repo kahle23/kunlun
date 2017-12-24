@@ -1,41 +1,39 @@
 package apyh.artoria.crypto;
 
 import apyh.artoria.codec.Base64;
-import apyh.artoria.util.RandomUtils;
 import org.junit.Test;
 
-public class DESedeTest {
+import java.security.GeneralSecurityException;
 
-    @Test
-    public void test1() throws Exception {
-        byte[] key =  RandomUtils.nextString(24).getBytes();
-        byte[] iv = RandomUtils.nextString(8).getBytes();
+public class DESedeTest {
+    private byte[] key;
+    private byte[] iv;
+
+    public void doTest(String transformation, String data)
+            throws GeneralSecurityException {
         System.out.println("key = " + new String(key));
         System.out.println("iv = " + new String(iv));
-        DESede desede = DESede.create(DESede.ECB_PKCS_5_PADDING, key);
-        byte[] bytes = desede.encrypt("你好，Java！");
+        Cipher desedeEncrypt = DESede.create(transformation, key);
+        desedeEncrypt.setMode(Cipher.Mode.ENCRYPT);
+        desedeEncrypt.setIv(iv);
+        Cipher desedeDecrypt = DESede.create(transformation, key);
+        desedeDecrypt.setMode(Cipher.Mode.DECRYPT);
+        desedeDecrypt.setIv(iv);
+
+        byte[] bytes = desedeEncrypt.calc(data);
         System.out.println(Base64.encodeToString(bytes));
-        System.out.println(new String(desede.decrypt(bytes)));
-        DESede desede1 = DESede.create(DESede.CBC_PKCS_5_PADDING, key).setIv(iv);
-        byte[] bytes1 = desede1.encrypt("你好，Java！");
-        System.out.println(Base64.encodeToString(bytes1));
-        System.out.println(new String(desede1.decrypt(bytes1)));
+        System.out.println(desedeDecrypt.calcToString(bytes));
     }
 
     @Test
-    public void test2() throws Exception {
-        byte[] key = RandomUtils.nextString(24).getBytes();
-        byte[] iv = RandomUtils.nextString(8).getBytes();
-        System.out.println("key = " + new String(key));
-        System.out.println("iv = " + new String(iv));
-        DESede desede = DESede.create(DESede.ECB_NO_PADDING, key);
-        byte[] bytes = desede.encrypt("你好，Java！");
-        System.out.println(Base64.encodeToString(bytes));
-        System.out.println(new String(desede.decrypt(bytes)));
-        DESede desede1 = DESede.create(DESede.CBC_NO_PADDING, key).setIv(iv);
-        byte[] bytes1 = desede1.encrypt("你好，Java！");
-        System.out.println(Base64.encodeToString(bytes1));
-        System.out.println(new String(desede1.decrypt(bytes1)));
+    public void test1() throws Exception {
+        key = "XASA4BKBHXLTUAC3G8L76EQ0".getBytes();
+        iv = "HESN0G1Q".getBytes();
+        String data = "你好，Java！";
+        doTest(DESede.ECB_PKCS_5_PADDING, data);
+        doTest(DESede.CBC_PKCS_5_PADDING, data);
+        doTest(DESede.ECB_NO_PADDING, data);
+        doTest(DESede.CBC_NO_PADDING, data);
     }
 
 }
