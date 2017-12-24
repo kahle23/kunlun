@@ -1,4 +1,4 @@
-package apyh.artoria.collect;
+package apyh.artoria.collection;
 
 import java.util.Map;
 

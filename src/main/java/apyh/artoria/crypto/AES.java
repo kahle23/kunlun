@@ -15,25 +15,22 @@ public class AES {
     private static final int MAX_KEY_LENGTH_2 = 24;
     private static final int MAX_KEY_LENGTH_3 = 32;
     private static final int MAX_IV_LENGTH = 16;
+    private static final int FILL_LENGTH = 16;
 
     public static final String ALGORITHM_NAME = "AES";
-    public static final String DEFAULT_TRANSFORMATION = "AES/ECB/PKCS5Padding";
-
     public static final String ECB_NO_PADDING = "AES/ECB/NoPadding";
     public static final String ECB_PKCS_5_PADDING = "AES/ECB/PKCS5Padding";
     public static final String CBC_NO_PADDING = "AES/CBC/NoPadding";
     public static final String CBC_PKCS_5_PADDING = "AES/CBC/PKCS5Padding";
 
-    private static final int FILL_LENGTH = 16;
-
     public static AES create() {
         return new AES()
-                .setTransformation(DEFAULT_TRANSFORMATION);
+                .setTransformation(ECB_PKCS_5_PADDING);
     }
 
     public static AES create(byte[] key) {
         return new AES().setKey(key)
-                .setTransformation(DEFAULT_TRANSFORMATION);
+                .setTransformation(ECB_PKCS_5_PADDING);
     }
 
     public static AES create(String transformation) {

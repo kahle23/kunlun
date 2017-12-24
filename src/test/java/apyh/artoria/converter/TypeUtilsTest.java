@@ -1,10 +1,8 @@
 package apyh.artoria.converter;
 
 import apyh.artoria.util.DateUtils;
-import apyh.artoria.util.ReflectUtils;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -51,6 +49,16 @@ public class TypeUtilsTest {
         Object o = TypeUtils.convert(DateUtils.format(), java.sql.Date.class);
         System.out.println(o.getClass());
         System.out.println(o);
+    }
+
+    @Test
+    public void test7() {
+        Object o = TypeUtils.convert(DateUtils.getTimestamp() + "", java.sql.Date.class);
+        System.out.println(o.getClass());
+        System.out.println(o);
+        Object o1 = TypeUtils.convert("-45674576567", java.sql.Date.class);
+        System.out.println(o1.getClass());
+        System.out.println(o1);
     }
 
 }

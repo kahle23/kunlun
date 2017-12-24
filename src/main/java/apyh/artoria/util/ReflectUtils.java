@@ -5,11 +5,16 @@ import apyh.artoria.exception.ReflectionException;
 import java.lang.reflect.*;
 import java.util.*;
 
+import static apyh.artoria.util.StringConstant.STRING_GET;
+import static apyh.artoria.util.StringConstant.STRING_SET;
+
 /**
  * Reflect tools.
  * @author Kahle
  */
 public class ReflectUtils {
+    private static final Integer MAP_INITIAL_CAPACITY = 8;
+    private static final String GET_CLASS = "getClass";
 
     public static Object newInstance(String clazzString) throws ReflectionException {
         Class<?> clazz;
@@ -60,7 +65,7 @@ public class ReflectUtils {
 
     public static Map<String, Field> findFields(Class<?> clazz) {
         Assert.notNull(clazz, "Clazz must is not null. ");
-        Map<String, Field> result = new LinkedHashMap<String, Field>();
+        Map<String, Field> result = new HashMap<String, Field>(MAP_INITIAL_CAPACITY);
         Class<?> inputClazz = clazz;
         LinkedList<Class<?>> list = new LinkedList<Class<?>>();
         list.addLast(clazz);
@@ -71,14 +76,10 @@ public class ReflectUtils {
                 // find this class all, and super class not private.
                 boolean b = inputClazz != clazz;
                 b = b && Modifier.isPrivate(field.getModifiers());
-                if (b) {
-                    continue;
-                }
+                if (b) { continue; }
                 String name = field.getName();
                 boolean isContains = result.containsKey(name);
-                if (isContains) {
-                    continue;
-                }
+                if (isContains) { continue; }
                 field = ReflectUtils.accessible(field);
                 result.put(name, field);
             }
@@ -171,6 +172,32 @@ public class ReflectUtils {
         msg += Arrays.toString(types) + " could be found on type ";
         msg += inputClazz + ".";
         throw new NoSuchMethodException(msg);
+    }
+
+    public static Map<String, Method> findAllGetterAndSetter(Class<?> clazz) {
+        Assert.notNull(clazz, "Clazz must is not null. ");
+        Map<String, Method> result = new HashMap<String, Method>(MAP_INITIAL_CAPACITY);
+        while (clazz != Object.class) {
+            Method[] methods = clazz.getMethods();
+            for (Method method : methods) {
+                String name = method.getName();
+                int pSize = method.getParameterTypes().length;
+                int mod = method.getModifiers();
+                boolean isStc = Modifier.isStatic(mod);
+                boolean stGet = name.startsWith(STRING_GET);
+                boolean stSet = name.startsWith(STRING_SET);
+                boolean b = isStc || (!stGet && !stSet);
+                // has get and parameters not equal 0
+                b = b || (stGet && pSize != 0);
+                // has set and parameters not equal 1
+                b = b || (stSet && pSize != 1);
+                b = b || GET_CLASS.equals(name);
+                if (b) { continue; }
+                result.put(name, method);
+            }
+            clazz = clazz.getSuperclass();
+        }
+        return result;
     }
 
     public static Class<?>[] findTypes(Object... values) {
