@@ -1,5 +1,8 @@
 package apyh.artoria.util;
 
+import static apyh.artoria.util.StringConstant.MINUS;
+import static apyh.artoria.util.StringConstant.PLUS;
+
 /**
  * String tools.
  * @author Kahle
@@ -31,6 +34,18 @@ public class StringUtils {
             if (!isWs) { return true; }
         }
         return false;
+    }
+
+    public static boolean isNumeric(String str) {
+        boolean b = str.startsWith(MINUS);
+        b = b || str.startsWith(PLUS);
+        if (b) { str = str.substring(1); }
+        for (int i = str.length() - 1; i >= 0; i--) {
+            char c = str.charAt(i);
+            boolean isDg = Character.isDigit(c);
+            if (!isDg) { return false; }
+        }
+        return true;
     }
 
     public static boolean containsWhitespace(CharSequence str) {

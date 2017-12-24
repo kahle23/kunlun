@@ -39,7 +39,7 @@ public class BeanUtilsTest {
     }
 
     @Test
-    public void copyProperties1() throws ReflectionException {
+    public void copyProperties1() {
         Student student = new Student();
         student.setName("zhangsan");
         student.setAge(19);
@@ -56,7 +56,7 @@ public class BeanUtilsTest {
     }
 
     @Test
-    public void copyProperties2() throws ReflectionException {
+    public void copyProperties2() {
         Student student = new Student();
         student.setName("zhangsan");
         student.setAge(19);
@@ -72,13 +72,5 @@ public class BeanUtilsTest {
         student1.setAge(23);
         System.out.println(student);
         System.out.println(student1);
-    }
-
-    @Test
-    public void findAllGetterOrSetterMethods() {
-        Map<String, Method> methods = BeanUtils.findAllGetOrSetMethods(Student.class);
-        for (Map.Entry<String, Method> entry : methods.entrySet()) {
-            System.out.println(entry.getKey() + " | " + entry.getValue().getName());
-        }
     }
 }

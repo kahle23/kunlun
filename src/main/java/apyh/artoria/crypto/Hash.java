@@ -1,8 +1,8 @@
 package apyh.artoria.crypto;
 
 import apyh.artoria.codec.Hex;
-import apyh.artoria.util.IOUtils;
 import apyh.artoria.util.Assert;
+import apyh.artoria.util.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +22,7 @@ import static apyh.artoria.util.StringConstant.DEFAULT_CHARSET_NAME;
  *  SHA-256
  *  SHA-384
  *  SHA-512
+ *
  * @author Kahle
  */
 public class Hash {

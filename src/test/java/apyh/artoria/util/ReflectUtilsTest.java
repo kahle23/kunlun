@@ -1,10 +1,11 @@
 package apyh.artoria.util;
 
-import apyh.artoria.exception.ReflectionException;
 import apyh.artoria.beans.Student;
+import apyh.artoria.exception.ReflectionException;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 public class ReflectUtilsTest {
@@ -44,6 +45,14 @@ public class ReflectUtilsTest {
 
     @Test
     public void findSimilarMethod() {
+    }
+
+    @Test
+    public void findAllGetterAndSetter() {
+        Map<String, Method> methods = ReflectUtils.findAllGetterAndSetter(Student.class);
+        for (Map.Entry<String, Method> entry : methods.entrySet()) {
+            System.out.println(entry.getKey() + " | " + entry.getValue().getName());
+        }
     }
 
     @Test

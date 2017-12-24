@@ -15,25 +15,22 @@ import java.security.NoSuchAlgorithmException;
 public class DES {
     private static final int MAX_KEY_LENGTH = 8;
     private static final int MAX_IV_LENGTH = 8;
+    private static final int FILL_LENGTH = 8;
 
     public static final String ALGORITHM_NAME = "DES";
-    public static final String DEFAULT_TRANSFORMATION = "DES/ECB/PKCS5Padding";
-
     public static final String ECB_NO_PADDING = "DES/ECB/NoPadding";
     public static final String ECB_PKCS_5_PADDING = "DES/ECB/PKCS5Padding";
     public static final String CBC_NO_PADDING = "DES/CBC/NoPadding";
     public static final String CBC_PKCS_5_PADDING = "DES/CBC/PKCS5Padding";
 
-    private static final int FILL_LENGTH = 8;
-
     public static DES create() {
         return new DES()
-                .setTransformation(DEFAULT_TRANSFORMATION);
+                .setTransformation(ECB_PKCS_5_PADDING);
     }
 
     public static DES create(byte[] key) {
         return new DES().setKey(key)
-                .setTransformation(DEFAULT_TRANSFORMATION);
+                .setTransformation(ECB_PKCS_5_PADDING);
     }
 
     public static DES create(String transformation) {
@@ -159,15 +156,15 @@ public class DES {
     }
 
     public byte[] encrypt(byte[] data) throws GeneralSecurityException {
-        return calc(data, Cipher.ENCRYPT_MODE);
+        return this.calc(data, Cipher.ENCRYPT_MODE);
     }
 
     public byte[] encrypt(String data) throws GeneralSecurityException {
-        return calc(data.getBytes(Charset.forName(charset)), Cipher.ENCRYPT_MODE);
+        return this.calc(data.getBytes(Charset.forName(charset)), Cipher.ENCRYPT_MODE);
     }
 
     public byte[] decrypt(byte[] data) throws GeneralSecurityException {
-        return calc(data, Cipher.DECRYPT_MODE);
+        return this.calc(data, Cipher.DECRYPT_MODE);
     }
 
 }

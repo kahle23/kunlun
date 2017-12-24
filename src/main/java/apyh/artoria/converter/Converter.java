@@ -1,13 +1,13 @@
 package apyh.artoria.converter;
 
 /**
- * Type converter
+ * Converter
  * @author Kahle
  */
 public interface Converter {
 
     /**
-     * Do type convert
+     * Do convert
      * @param source Will converting object
      * @param target Target type
      * @return Converted object

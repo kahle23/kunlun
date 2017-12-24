@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class DateUtils {
 
-    private static final String DEFAULT_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
+    public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
 
     public static boolean equals(Date date1, Date date2) {
         return date1 == null ? date2 == null : date2 != null && (date1 == date2 || date1.equals(date2));
@@ -36,7 +36,7 @@ public class DateUtils {
     }
 
     public static Date parse(String dateString) throws ParseException {
-        return DateUtils.parse(dateString, DEFAULT_TIME_PATTERN);
+        return DateUtils.parse(dateString, DEFAULT_DATE_PATTERN);
     }
 
     public static Date parse(String dateString, String pattern) throws ParseException {
@@ -51,7 +51,7 @@ public class DateUtils {
     }
 
     public static String format(Long timestamp) {
-        return DateUtils.format(timestamp, DEFAULT_TIME_PATTERN);
+        return DateUtils.format(timestamp, DEFAULT_DATE_PATTERN);
     }
 
     public static String format(String pattern) {
@@ -59,7 +59,7 @@ public class DateUtils {
     }
 
     public static String format(Date date) {
-        return DateUtils.format(date, DEFAULT_TIME_PATTERN);
+        return DateUtils.format(date, DEFAULT_DATE_PATTERN);
     }
 
     public static String format(Long timestamp, String pattern) {

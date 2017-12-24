@@ -7,51 +7,52 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 
+import static apyh.artoria.util.StringConstant.DEFAULT_CHARSET_NAME;
+
 /**
  * @author Kahle
  */
 public class DESede {
     private static final int MAX_KEY_LENGTH = 24;
     private static final int MAX_IV_LENGTH = 8;
+    private static final int FILL_LENGTH = 8;
 
     public static final String ALGORITHM_NAME = "DESede";
-    public static final String DEFAULT_TRANSFORMATION = "DESede/ECB/PKCS5Padding";
-
     public static final String ECB_NO_PADDING = "DESede/ECB/NoPadding";
     public static final String ECB_PKCS_5_PADDING = "DESede/ECB/PKCS5Padding";
     public static final String CBC_NO_PADDING = "DESede/CBC/NoPadding";
     public static final String CBC_PKCS_5_PADDING = "DESede/CBC/PKCS5Padding";
 
-    private static final int FILL_LENGTH = 8;
-
     public static DESede create() {
-        return new DESede()
-                .setTransformation(DEFAULT_TRANSFORMATION);
+        return new DESede();
     }
 
     public static DESede create(byte[] key) {
-        return new DESede().setKey(key)
-                .setTransformation(DEFAULT_TRANSFORMATION);
+        return new DESede().setKey(key);
     }
 
     public static DESede create(String transformation) {
-        return new DESede()
-                .setTransformation(transformation);
+        return new DESede(transformation);
     }
 
     public static DESede create(String transformation, byte[] key) {
-        return new DESede().setKey(key)
-                .setTransformation(transformation);
+        return new DESede(transformation).setKey(key);
     }
 
-    private String charset = Charset.defaultCharset().name();
+    private String charset = DEFAULT_CHARSET_NAME;
     private String transformation;
-    private boolean needFill;
-    private boolean needIv;
+    private boolean needFill = false;
+    private boolean needIv = false;
     private byte[] key;
     private byte[] iv;
 
-    private DESede() {}
+    private DESede() {
+        this(ECB_PKCS_5_PADDING);
+    }
+
+    private DESede(String transformation) {
+        this.setTransformation(transformation);
+    }
 
     private boolean checkNeedFill(String transformation) {
         String lowerCase = transformation.toLowerCase();

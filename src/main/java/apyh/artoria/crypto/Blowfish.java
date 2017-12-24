@@ -13,25 +13,22 @@ import java.security.GeneralSecurityException;
 public class Blowfish {
     private static final int MAX_KEY_LENGTH = 56;
     private static final int MAX_IV_LENGTH = 8;
+    private static final int FILL_LENGTH = 8;
 
     public static final String ALGORITHM_NAME = "Blowfish";
-    public static final String DEFAULT_TRANSFORMATION = "Blowfish/ECB/PKCS5Padding";
-
     public static final String ECB_NO_PADDING = "Blowfish/ECB/NoPadding";
     public static final String ECB_PKCS_5_PADDING = "Blowfish/ECB/PKCS5Padding";
     public static final String CBC_NO_PADDING = "Blowfish/CBC/NoPadding";
     public static final String CBC_PKCS_5_PADDING = "Blowfish/CBC/PKCS5Padding";
 
-    private static final int FILL_LENGTH = 8;
-
     public static Blowfish create() {
         return new Blowfish()
-                .setTransformation(DEFAULT_TRANSFORMATION);
+                .setTransformation(ECB_PKCS_5_PADDING);
     }
 
     public static Blowfish create(byte[] key) {
         return new Blowfish().setKey(key)
-                .setTransformation(DEFAULT_TRANSFORMATION);
+                .setTransformation(ECB_PKCS_5_PADDING);
     }
 
     public static Blowfish create(String transformation) {
