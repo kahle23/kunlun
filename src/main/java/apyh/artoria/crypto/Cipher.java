@@ -15,24 +15,7 @@ import java.security.spec.AlgorithmParameterSpec;
 import static apyh.artoria.util.StringConstant.DEFAULT_CHARSET_NAME;
 
 public abstract class Cipher {
-
     private static final Logger log = LoggerFactory.getLogger(Cipher.class);
-
-    public enum Mode{
-        ENCRYPT(javax.crypto.Cipher.ENCRYPT_MODE),
-        DECRYPT(javax.crypto.Cipher.DECRYPT_MODE);
-
-        private int opmode;
-
-        Mode(int opmode) {
-            this.opmode = opmode;
-        }
-
-        public int getOpmode() {
-            return opmode;
-        }
-
-    }
 
     private boolean doFill = false;
     private boolean needIv = false;
@@ -83,6 +66,22 @@ public abstract class Cipher {
         return result;
     }
 
+    public enum Mode{
+        ENCRYPT(javax.crypto.Cipher.ENCRYPT_MODE),
+        DECRYPT(javax.crypto.Cipher.DECRYPT_MODE);
+
+        private int opmode;
+
+        Mode(int opmode) {
+            this.opmode = opmode;
+        }
+
+        public int getOpmode() {
+            return opmode;
+        }
+
+    }
+
     private String charset;
     private String transformation;
     private Mode mode;
@@ -103,7 +102,8 @@ public abstract class Cipher {
     }
 
     public void setCharset(String charset) {
-        Assert.isBlank(this.charset, "Charset has value, if you want change, please new one. ");
+        Assert.isBlank(this.charset, "Charset has value" +
+                ", if you want change, please new one. ");
         Assert.notBlank(charset, "Charset must is not blank. ");
         this.charset = charset;
     }
@@ -113,7 +113,8 @@ public abstract class Cipher {
     }
 
     public Cipher setTransformation(String transformation) {
-        Assert.isBlank(this.transformation, "Transformation has value, if you want change, please new one. ");
+        Assert.isBlank(this.transformation, "Transformation has value, not allow to set again. ");
+        Assert.notBlank(transformation, "Transformation must is not blank. ");
         this.transformation = transformation;
         this.judgeDoFill(transformation);
         this.judgeNeedIv(transformation);
@@ -125,6 +126,7 @@ public abstract class Cipher {
     }
 
     public void setMode(Mode mode) {
+        Assert.isNull(this.mode, "Mode has value, not allow to set again. ");
         Assert.notNull(mode, "Mode must is not null. ");
         this.mode = mode;
     }
@@ -134,13 +136,17 @@ public abstract class Cipher {
     }
 
     public Cipher setKey(byte[] key) {
-        Assert.isEmpty(this.key, "Key has value, if you want change, please new one. ");
+        Assert.isEmpty(this.key, "Key has value, not allow to set again. ");
+        this.assertKey(key);
         this.key = key;
         return this;
     }
 
     public Cipher setKey(String key) {
-        this.setKey(key.getBytes(Charset.forName(this.getCharset())));
+        String charset = this.getCharset();
+        Charset encoding = Charset.forName(charset);
+        byte[] bytes = key.getBytes(encoding);
+        this.setKey(bytes);
         return this;
     }
 
@@ -149,13 +155,17 @@ public abstract class Cipher {
     }
 
     public Cipher setIv(byte[] iv) {
-        Assert.isEmpty(this.iv, "Iv has value, if you want change, please new one. ");
+        Assert.isEmpty(this.iv, "Iv has value, not allow to set again. ");
+        assertIv(true, iv);
         this.iv = iv;
         return this;
     }
 
     public Cipher setIv(String iv) {
-        this.setIv(iv.getBytes(Charset.forName(this.getCharset())));
+        String charset = this.getCharset();
+        Charset encoding = Charset.forName(charset);
+        byte[] bytes = iv.getBytes(encoding);
+        this.setIv(bytes);
         return this;
     }
 
@@ -164,6 +174,7 @@ public abstract class Cipher {
     }
 
     public void setHex(Hex hex) {
+        Assert.notNull(hex, "Hex must is not null. ");
         this.hex = hex;
     }
 
@@ -179,22 +190,15 @@ public abstract class Cipher {
         Key key = this.handleKey(this.key);
         int opmode = mode.getOpmode();
         if (needIv) {
-            cipher.init(opmode, key, this.handleIv(this.iv));
+            cipher.init(opmode, key, this.handleIv(iv));
         }
         else {
             cipher.init(opmode, key);
         }
     }
 
-    protected abstract Key handleKey(byte[] key);
-
-    protected abstract AlgorithmParameterSpec handleIv(byte[] iv);
-
-    protected abstract void assertKey(byte[] key);
-
-    protected abstract void assertIv(boolean needIv, byte[] iv);
-
     public byte[] calc(byte[] data) throws GeneralSecurityException {
+        Assert.notEmpty(data, "Data must is not empty. ");
         if (cipher == null) { this.init(); }
         if (mode == Mode.ENCRYPT && doFill) {
             // Transformation is no padding
@@ -205,17 +209,25 @@ public abstract class Cipher {
     }
 
     public byte[] calc(String data) throws GeneralSecurityException {
-        return this.calc(data.getBytes(Charset.forName(this.getCharset())));
+        Assert.notBlank(data, "Data must is not blank. ");
+        String charset = this.getCharset();
+        Charset encoding = Charset.forName(charset);
+        byte[] bytes = data.getBytes(encoding);
+        return this.calc(bytes);
     }
 
     public String calcToString(byte[] data) throws GeneralSecurityException {
         byte[] calc = this.calc(data);
-        return new String(calc);
+        String charset = this.getCharset();
+        Charset encoding = Charset.forName(charset);
+        return new String(calc, encoding);
     }
 
     public String calcToString(String data) throws GeneralSecurityException {
         byte[] calc = this.calc(data);
-        return new String(calc);
+        String charset = this.getCharset();
+        Charset encoding = Charset.forName(charset);
+        return new String(calc, encoding);
     }
 
     public String calcToHexString(byte[] data) throws GeneralSecurityException {
@@ -238,22 +250,24 @@ public abstract class Cipher {
 
     public String calcToBase64String(byte[] data, boolean isUrlSafe) throws GeneralSecurityException {
         byte[] calc = this.calc(data);
-        if (isUrlSafe) {
-            return Base64.encodeToUrlSafeString(calc);
-        }
-        else {
-            return Base64.encodeToString(calc);
-        }
+        return isUrlSafe ?
+                Base64.encodeToUrlSafeString(calc) :
+                Base64.encodeToString(calc);
     }
 
     public String calcToBase64String(String data, boolean isUrlSafe) throws GeneralSecurityException {
         byte[] calc = this.calc(data);
-        if (isUrlSafe) {
-            return Base64.encodeToUrlSafeString(calc);
-        }
-        else {
-            return Base64.encodeToString(calc);
-        }
+        return isUrlSafe ?
+                Base64.encodeToUrlSafeString(calc) :
+                Base64.encodeToString(calc);
     }
+
+    protected abstract void assertKey(byte[] key);
+
+    protected abstract void assertIv(boolean needIv, byte[] iv);
+
+    protected abstract Key handleKey(byte[] key);
+
+    protected abstract AlgorithmParameterSpec handleIv(byte[] iv);
 
 }

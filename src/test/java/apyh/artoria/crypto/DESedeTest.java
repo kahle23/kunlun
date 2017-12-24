@@ -13,12 +13,12 @@ public class DESedeTest {
             throws GeneralSecurityException {
         System.out.println("key = " + new String(key));
         System.out.println("iv = " + new String(iv));
-        Cipher desedeEncrypt = DESede.create(transformation, key);
+        Cipher desedeEncrypt = CipherFactory.getCipher(transformation);
         desedeEncrypt.setMode(Cipher.Mode.ENCRYPT);
-        desedeEncrypt.setIv(iv);
-        Cipher desedeDecrypt = DESede.create(transformation, key);
+        desedeEncrypt.setKey(key).setIv(iv);
+        Cipher desedeDecrypt = CipherFactory.getCipher(transformation);
         desedeDecrypt.setMode(Cipher.Mode.DECRYPT);
-        desedeDecrypt.setIv(iv);
+        desedeDecrypt.setKey(key).setIv(iv);
 
         byte[] bytes = desedeEncrypt.calc(data);
         System.out.println(Base64.encodeToString(bytes));
