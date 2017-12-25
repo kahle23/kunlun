@@ -12,6 +12,10 @@ import java.util.Date;
 import static apyh.artoria.util.StringConstant.COLON;
 import static apyh.artoria.util.StringConstant.MINUS;
 
+/**
+ * Date converter.
+ * @author Kahle
+ */
 public class DateConverter implements Converter {
     private static final Logger log = LoggerFactory.getLogger(DateConverter.class);
 

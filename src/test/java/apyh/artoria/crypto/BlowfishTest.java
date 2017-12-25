@@ -1,41 +1,18 @@
 package apyh.artoria.crypto;
 
-import apyh.artoria.util.RandomUtils;
-import apyh.artoria.codec.Base64;
 import org.junit.Test;
 
 public class BlowfishTest {
 
     @Test
     public void test1() throws Exception {
-        byte[] key = RandomUtils.nextString(56).getBytes();
-        byte[] iv = RandomUtils.nextString(8).getBytes();
-        System.out.println("key = " + new String(key));
-        System.out.println("iv = " + new String(iv));
-        Blowfish blowfish = Blowfish.create(Blowfish.ECB_PKCS_5_PADDING, key);
-        byte[] bytes = blowfish.encrypt("你好，Java！");
-        System.out.println(Base64.encodeToString(bytes));
-        System.out.println(new String(blowfish.decrypt(bytes)));
-        Blowfish blowfish1 = Blowfish.create(Blowfish.CBC_PKCS_5_PADDING, key).setIv(iv);
-        byte[] bytes1 = blowfish1.encrypt("你好，Java！");
-        System.out.println(Base64.encodeToString(bytes1));
-        System.out.println(new String(blowfish1.decrypt(bytes1)));
-    }
-
-    @Test
-    public void test2() throws Exception {
-        byte[] key = RandomUtils.nextString(19).getBytes();
-        byte[] iv = RandomUtils.nextString(8).getBytes();
-        System.out.println("key = " + new String(key));
-        System.out.println("iv = " + new String(iv));
-        Blowfish blowfish = Blowfish.create(Blowfish.ECB_NO_PADDING, key);
-        byte[] bytes = blowfish.encrypt("你好，Java！1");
-        System.out.println(Base64.encodeToString(bytes));
-        System.out.println(new String(blowfish.decrypt(bytes)));
-        Blowfish blowfish1 = Blowfish.create(Blowfish.CBC_NO_PADDING, key).setIv(iv);
-        byte[] bytes1 = blowfish1.encrypt("你好，Java！1");
-        System.out.println(Base64.encodeToString(bytes1));
-        System.out.println(new String(blowfish1.decrypt(bytes1)));
+        byte[] key = "YMHADK1XE12U1F925LZNJP3X21U5PIL5ZTOHU1B9CXOQ6449UTI3QQLA".getBytes();
+        byte[] iv = "J3CPV1FL".getBytes();
+        String data = "你好，Java！";
+        CipherTestUtils.doTest(Blowfish.ECB_PKCS_5_PADDING, key, iv, data);
+        CipherTestUtils.doTest(Blowfish.CBC_PKCS_5_PADDING, key, iv, data);
+        CipherTestUtils.doTest(Blowfish.ECB_NO_PADDING, key, iv, data);
+        CipherTestUtils.doTest(Blowfish.CBC_NO_PADDING, key, iv, data);
     }
 
 }

@@ -1,22 +1,17 @@
 package apyh.artoria.crypto;
 
-import apyh.artoria.exception.ReflectionException;
-import apyh.artoria.util.ArrayUtils;
-import apyh.artoria.util.ClassUtils;
-import apyh.artoria.util.ReflectUtils;
+import apyh.artoria.exception.UnexpectedException;
+import apyh.artoria.util.Assert;
 
-import javax.crypto.Cipher;
-import java.nio.charset.Charset;
 import java.security.*;
+import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 /**
  * @author Kahle
  */
-public class RSA {
-    public static final String ALGORITHM_NAME = "RSA";
-    public static final String DEFAULT_TRANSFORMATION = "RSA";
+public class RSA extends Cipher {
     public static final int DEFAULT_GENERATOR_KEY_SIZE = 2048;
 
     public static final String NONE_NO_PADDING = "RSA/None/NoPadding";
@@ -24,66 +19,16 @@ public class RSA {
     public static final String ECB_NO_PADDING = "RSA/ECB/NoPadding";
     public static final String ECB_PKCS_1_PADDING = "RSA/ECB/PKCS1Padding";
 
-    static {
-        String className = "org.bouncycastle.jce.provider.BouncyCastleProvider";
-        ClassLoader classLoader = RSA.class.getClassLoader();
-        if (ClassUtils.isPresent(className, classLoader)) {
-            try {
-                Provider provider = (Provider) ReflectUtils.create(className).newInstance().getBean();
-                Security.addProvider(provider);
-            } catch (ReflectionException e) {
-                // ignore
-            }
-        }
-    }
-
-    public static RSA create() {
-        return new RSA();
-    }
-
-    public static RSA create(String transformation) {
-        return new RSA().setTransformation(transformation);
-    }
-
-    public static RSA create(int keySize) throws NoSuchAlgorithmException {
-        return new RSA().setKeyPairGenerator(keySize);
-    }
-
-    public static RSA create(PublicKey publicKey) {
-        return new RSA().setPublicKey(publicKey);
-    }
-
-    public static RSA create(PrivateKey privateKey) {
-        return new RSA().setPrivateKey(privateKey);
-    }
-
-    public static RSA create(PublicKey publicKey, PrivateKey privateKey) {
-        return new RSA().setPublicKey(publicKey).setPrivateKey(privateKey);
-    }
-
-    public static RSA create(byte[] publicKey, byte[] privateKey) throws GeneralSecurityException {
-        RSA rsa = new RSA();
-        if (ArrayUtils.isNotEmpty(publicKey)) {
-            rsa.parsePublicKey(publicKey);
-        }
-        if (ArrayUtils.isNotEmpty(privateKey)) {
-            rsa.parsePrivateKey(privateKey);
-        }
-        return rsa;
-    }
-
     private KeyPairGenerator keyPairGenerator;
     private KeyFactory keyFactory;
-    private String charset = Charset.defaultCharset().name();
-    private String transformation = DEFAULT_TRANSFORMATION;
-    private PublicKey publicKey;
-    private PrivateKey privateKey;
+    private Key key;
 
-    private RSA() {}
+    protected RSA() {
+    }
 
     private KeyPairGenerator keyPairGenerator() throws NoSuchAlgorithmException {
         if (keyPairGenerator == null) {
-            keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM_NAME);
+            keyPairGenerator = KeyPairGenerator.getInstance(this.getAlgorithmName());
             keyPairGenerator.initialize(DEFAULT_GENERATOR_KEY_SIZE);
         }
         return keyPairGenerator;
@@ -91,108 +36,98 @@ public class RSA {
 
     private KeyFactory keyFactory() throws NoSuchAlgorithmException {
         if (keyFactory == null) {
-            keyFactory = KeyFactory.getInstance(ALGORITHM_NAME);
+            keyFactory = KeyFactory.getInstance(this.getAlgorithmName());
         }
         return keyFactory;
     }
 
-    public KeyPairGenerator getKeyPairGenerator() {
-        return keyPairGenerator;
-    }
-
-    public RSA setKeyPairGenerator(KeyPairGenerator keyPairGenerator) {
-        this.keyPairGenerator = keyPairGenerator;
-        return this;
-    }
-
     public RSA setKeyPairGenerator(int keySize) throws NoSuchAlgorithmException {
-        this.keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM_NAME);
+        this.keyPairGenerator = KeyPairGenerator.getInstance(this.getAlgorithmName());
         keyPairGenerator.initialize(keySize);
         return this;
     }
 
-    public KeyFactory getKeyFactory() {
-        return keyFactory;
+    public KeyPair generateKey() throws NoSuchAlgorithmException {
+        return keyPairGenerator().generateKeyPair();
     }
 
-    public RSA setKeyFactory(KeyFactory keyFactory) {
-        this.keyFactory = keyFactory;
-        return this;
-    }
-
-    public String getCharset() {
-        return charset;
-    }
-
-    public RSA setCharset(String charset) {
-        this.charset = charset;
-        return this;
-    }
-
-    public String getTransformation() {
-        return transformation;
-    }
-
-    public RSA setTransformation(String transformation) {
-        this.transformation = transformation;
-        return this;
-    }
-
-    public PublicKey getPublicKey() {
-        return publicKey;
-    }
-
-    public RSA setPublicKey(PublicKey publicKey) {
-        this.publicKey = publicKey;
-        return this;
-    }
-
-    public PrivateKey getPrivateKey() {
-        return privateKey;
-    }
-
-    public RSA setPrivateKey(PrivateKey privateKey) {
-        this.privateKey = privateKey;
-        return this;
-    }
-
-    public RSA generateKey() throws NoSuchAlgorithmException {
-        KeyPair keyPair = keyPairGenerator().generateKeyPair();
-        publicKey = keyPair.getPublic();
-        privateKey = keyPair.getPrivate();
-        return this;
-    }
-
-    public RSA parsePublicKey(byte[] array) throws GeneralSecurityException {
+    public RSA setPublicKey(byte[] array) throws GeneralSecurityException {
+        Assert.isNull(key, "Key have value");
+        // publicKey
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(array);
-        publicKey = keyFactory().generatePublic(x509EncodedKeySpec);
+        key = keyFactory().generatePublic(x509EncodedKeySpec);
         return this;
     }
 
-    public RSA parsePrivateKey(byte[] array) throws GeneralSecurityException {
+    public RSA setPrivateKey(byte[] array) throws GeneralSecurityException {
+        Assert.isNull(key, "Key have value");
+        // privateKey
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(array);
-        privateKey = keyFactory().generatePrivate(pkcs8EncodedKeySpec);
+        key = keyFactory().generatePrivate(pkcs8EncodedKeySpec);
         return this;
-    }
-
-    public byte[] calc(byte[] data, int opmode) throws GeneralSecurityException {
-        Cipher cipher = Cipher.getInstance(transformation);
-        cipher.init(opmode, opmode == Cipher.ENCRYPT_MODE
-                ? publicKey : opmode == Cipher.DECRYPT_MODE
-                ? privateKey : null);
-        return cipher.doFinal(data);
     }
 
     public byte[] encrypt(byte[] data) throws GeneralSecurityException {
-        return calc(data, Cipher.ENCRYPT_MODE);
-    }
-
-    public byte[] encrypt(String data) throws GeneralSecurityException {
-        return calc(data.getBytes(Charset.forName(charset)), Cipher.ENCRYPT_MODE);
+        Assert.isInstanceOf(PublicKey.class, key);
+        return this.calc(data);
     }
 
     public byte[] decrypt(byte[] data) throws GeneralSecurityException {
-        return calc(data, Cipher.DECRYPT_MODE);
+        Assert.isInstanceOf(PrivateKey.class, key);
+        return this.calc(data);
+    }
+
+    public byte[] sign(byte[] data) throws GeneralSecurityException {
+        Assert.isInstanceOf(PrivateKey.class, key);
+        return this.calc(data);
+    }
+
+    public byte[] verify(byte[] data) throws GeneralSecurityException {
+        Assert.isInstanceOf(PublicKey.class, key);
+        return this.calc(data);
+    }
+
+    @Override
+    protected void judgeDoFill(String transformation) {
+        this.setDoFill(false);
+    }
+
+    @Override
+    protected void judgeNeedIv(String transformation) {
+        this.setNeedIv(false);
+    }
+
+    @Override
+    public Cipher setKey(String key) {
+        throw new UnexpectedException("Please using setPublicKey or setPrivateKey. ");
+    }
+
+    @Override
+    public Cipher setKey(byte[] key) {
+        throw new UnexpectedException("Please using setPublicKey or setPrivateKey. ");
+    }
+
+    @Override
+    public String getAlgorithmName() {
+        return "RSA";
+    }
+
+    @Override
+    protected void assertKey(byte[] key) {
+    }
+
+    @Override
+    protected void assertIv(boolean needIv, byte[] iv) {
+    }
+
+    @Override
+    protected Key handleKey(byte[] key) throws GeneralSecurityException {
+        return this.key;
+    }
+
+    @Override
+    protected AlgorithmParameterSpec handleIv(byte[] iv) throws GeneralSecurityException {
+        return null;
     }
 
 }
