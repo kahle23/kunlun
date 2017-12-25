@@ -4,6 +4,7 @@ import apyh.artoria.util.Assert;
 
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
 
@@ -11,10 +12,8 @@ import java.security.spec.AlgorithmParameterSpec;
  * @author Kahle
  */
 public class DESede extends Cipher {
-    private static final String ALGORITHM_NAME = "DESede";
     private static final int MAX_KEY_LENGTH = 24;
     private static final int MAX_IV_LENGTH = 8;
-    private static final int MULTIPLE = 8;
 
     public static final String ECB_NO_PADDING = "DESede/ECB/NoPadding";
     public static final String ECB_PKCS_5_PADDING = "DESede/ECB/PKCS5Padding";
@@ -22,17 +21,12 @@ public class DESede extends Cipher {
     public static final String CBC_PKCS_5_PADDING = "DESede/CBC/PKCS5Padding";
 
     protected DESede() {
-        this.setMultiple(MULTIPLE);
+        this.setMultiple(8);
     }
 
     @Override
-    protected Key handleKey(byte[] key) {
-        return new SecretKeySpec(key, ALGORITHM_NAME);
-    }
-
-    @Override
-    protected AlgorithmParameterSpec handleIv(byte[] iv) {
-        return new IvParameterSpec(iv);
+    public String getAlgorithmName() {
+        return "DESede";
     }
 
     @Override
@@ -45,6 +39,16 @@ public class DESede extends Cipher {
     protected void assertIv(boolean needIv, byte[] iv) {
         boolean isWrongIv = needIv && (iv == null || iv.length != MAX_IV_LENGTH);
         Assert.state(!isWrongIv, "Wrong Iv length: must be 8 bytes long. ");
+    }
+
+    @Override
+    protected Key handleKey(byte[] key) throws GeneralSecurityException {
+        return new SecretKeySpec(key, this.getAlgorithmName());
+    }
+
+    @Override
+    protected AlgorithmParameterSpec handleIv(byte[] iv) throws GeneralSecurityException {
+        return new IvParameterSpec(iv);
     }
 
 }

@@ -14,6 +14,10 @@ import java.security.spec.AlgorithmParameterSpec;
 
 import static apyh.artoria.util.StringConstant.DEFAULT_CHARSET_NAME;
 
+/**
+ * Cipher object to wrap java Cipher.
+ * @author Kahle
+ */
 public abstract class Cipher {
     private static final Logger log = LoggerFactory.getLogger(Cipher.class);
 
@@ -67,7 +71,15 @@ public abstract class Cipher {
     }
 
     public enum Mode{
+
+        /**
+         * Encrypt mode
+         */
         ENCRYPT(javax.crypto.Cipher.ENCRYPT_MODE),
+
+        /**
+         * Decrypt mode
+         */
         DECRYPT(javax.crypto.Cipher.DECRYPT_MODE);
 
         private int opmode;
@@ -262,12 +274,37 @@ public abstract class Cipher {
                 Base64.encodeToString(calc);
     }
 
+    /**
+     * Get algorithm name
+     * @return Algorithm name
+     */
+    public abstract String getAlgorithmName();
+
+    /**
+     * Verify key
+     * @param key The key will verify
+     */
     protected abstract void assertKey(byte[] key);
 
+    /**
+     * Verify iv
+     * @param needIv Is need iv
+     * @param iv The iv will verify
+     */
     protected abstract void assertIv(boolean needIv, byte[] iv);
 
-    protected abstract Key handleKey(byte[] key);
+    /**
+     * Handle key to Key object
+     * @param key The key byte array will be handle
+     * @return Key object
+     */
+    protected abstract Key handleKey(byte[] key) throws GeneralSecurityException;
 
-    protected abstract AlgorithmParameterSpec handleIv(byte[] iv);
+    /**
+     * Handle iv to AlgorithmParameterSpec
+     * @param iv The iv byte array will be handle
+     * @return AlgorithmParameterSpec object
+     */
+    protected abstract AlgorithmParameterSpec handleIv(byte[] iv) throws GeneralSecurityException;
 
 }

@@ -14,25 +14,25 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Kahle
  */
 public class TypeUtils {
-    private static final Map<Class<?>, Converter> cvts;
+    private static final Map<Class<?>, Converter> CONVERTERS;
 
     static {
-        cvts = new ConcurrentHashMap<Class<?>, Converter>();
-        cvts.put(Date.class, new DateConverter());
-        cvts.put(String.class, new StringConverter());
-        cvts.put(Number.class, new NumberConverter());
-        cvts.put(Object.class, new ObjectConverter());
+        CONVERTERS = new ConcurrentHashMap<Class<?>, Converter>();
+        CONVERTERS.put(Date.class, new DateConverter());
+        CONVERTERS.put(String.class, new StringConverter());
+        CONVERTERS.put(Number.class, new NumberConverter());
+        CONVERTERS.put(Object.class, new ObjectConverter());
     }
 
     public static Converter unregisterConverter(Class<?> clazz) {
         Assert.notNull(clazz, "Clazz must is not null. ");
-        return cvts.remove(clazz);
+        return CONVERTERS.remove(clazz);
     }
 
     public static void registerConverter(Class<?> clazz, Converter converter) {
         Assert.notNull(clazz, "Clazz must is not null. ");
         Assert.notNull(converter, "Converter must is not null. ");
-        cvts.put(clazz, converter);
+        CONVERTERS.put(clazz, converter);
     }
 
     public static Object convert(Object source, Class<?> target) {
@@ -41,7 +41,7 @@ public class TypeUtils {
         list.addLast(clazz);
         while (list.size() != 0) {
             clazz = list.removeFirst();
-            Converter converter = cvts.get(clazz);
+            Converter converter = CONVERTERS.get(clazz);
             if (converter != null) {
                 return converter.convert(source, target);
             }
