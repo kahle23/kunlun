@@ -2,18 +2,46 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>apyh</groupId>
+	<groupId>com.apyhs</groupId>
 	<artifactId>artoria</artifactId>
 	<version>${project.version}</version>
 	<packaging>jar</packaging>
 	<name>Artoria</name>
-	<description>A toolkit only rely on the JDK.</description>
+    <url>https://github.com/apyhs/artoria</url>
+    <description>A toolkit only rely on the JDK.</description>
 
 	<properties>
-		<project.version>0.0.5-beta22</project.version>
+		<project.version>0.0.5-beta23</project.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 	</properties>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Kahle Kernel</name>
+            <email>kahlkn@gmail.com</email>
+            <url>http://www.apyhs.com</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/apyhs/artoria</url>
+        <connection>scm:git:https://github.com/apyhs/artoria.git</connection>
+        <developerConnection>http://www.apyhs.com</developerConnection>
+    </scm>
+
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
 
 	<dependencies>
 
@@ -21,13 +49,6 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.10.16</version>
 			<scope>test</scope>
 		</dependency>
 
