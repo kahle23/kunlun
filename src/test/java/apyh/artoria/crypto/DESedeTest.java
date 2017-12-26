@@ -9,10 +9,17 @@ public class DESedeTest {
         byte[] key = "XASA4BKBHXLTUAC3G8L76EQ0".getBytes();
         byte[] iv = "HESN0G1Q".getBytes();
         String data = "你好，Java！";
-        CipherTestUtils.doTest(DESede.ECB_PKCS_5_PADDING, key, iv, data);
-        CipherTestUtils.doTest(DESede.CBC_PKCS_5_PADDING, key, iv, data);
-        CipherTestUtils.doTest(DESede.ECB_NO_PADDING, key, iv, data);
-        CipherTestUtils.doTest(DESede.CBC_NO_PADDING, key, iv, data);
     }
 
 }
+
+// DESede data Multiple 8
+// DESede Key length 24
+// DESede Iv length 8
+// SecretKeySpec key = new SecretKeySpec(inputKey, "DESede");
+// new IvParameterSpec(iv);
+// JDK
+// "DESede/ECB/NoPadding"
+// "DESede/ECB/PKCS5Padding"
+// "DESede/CBC/NoPadding"
+// "DESede/CBC/PKCS5Padding"

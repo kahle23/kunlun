@@ -1,15 +1,8 @@
 package apyh.artoria.crypto;
 
-import apyh.artoria.codec.Base64;
-import org.junit.Test;
-
-import java.security.KeyPair;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-
 public class RSATest {
 
-    @Test
+    /*@Test
     public void test1() throws Exception {
         Cipher cipher = CipherFactory.getCipher(RSA.ECB_NO_PADDING);
         RSA rsaPublicKey = (RSA) cipher;
@@ -43,7 +36,7 @@ public class RSATest {
         byte[] decrypt = rsaPublicKey.calc(encrypt);
         System.out.println("PublicKey解密结果：" + new String(decrypt));
 
-    }
+    }*/
 
 //    @Test
 //    public void test1() throws Exception {
@@ -96,3 +89,10 @@ public class RSATest {
 //    }
 
 }
+
+// RSA
+// generatorKeySize 2048
+// "RSA/None/NoPadding"
+// "RSA/None/PKCS1Padding"
+// "RSA/ECB/NoPadding"
+// "RSA/ECB/PKCS1Padding"
