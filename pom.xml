@@ -11,7 +11,7 @@
     <description>A toolkit only rely on the JDK.</description>
 
 	<properties>
-		<project.version>0.0.5-beta23</project.version>
+		<project.version>0.0.5-beta24</project.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 	</properties>
@@ -56,6 +56,13 @@
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.10</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk16</artifactId>
+			<version>1.46</version>
 			<scope>provided</scope>
 		</dependency>
 
