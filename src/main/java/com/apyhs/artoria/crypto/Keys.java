@@ -27,7 +27,7 @@ public class Keys {
         return keyFactory.generatePrivate(pkcs8EncodedKeySpec);
     }
 
-    public static SecretKeySpec parseSecretKeySpec(String algorithmName, byte[] key) {
+    public static SecretKeySpec parseSecretKey(String algorithmName, byte[] key) {
         return new SecretKeySpec(key, algorithmName);
     }
 

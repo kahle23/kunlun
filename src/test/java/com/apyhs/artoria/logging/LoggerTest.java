@@ -7,7 +7,14 @@ public class LoggerTest {
 
     @Test
     public void testLogMsg() {
-        System.out.println("Test logger message, and show \"using logger: artoria.logging.JdkLoggerAdapter\".");
+        System.err.println("Test logger message, and show \"using logger: artoria.logging.JdkLoggerAdapter\".");
+        log.trace("Hello, World!");
+        log.debug("Hello, World!");
+        log.info("Hello, World!");
+        log.warn("Hello, World!");
+        log.error("Hello, World!");
+        System.err.println("set level INFO");
+        LoggerFactory.setLevel(Level.INFO);
         log.trace("Hello, World!");
         log.debug("Hello, World!");
         log.info("Hello, World!");
@@ -17,7 +24,7 @@ public class LoggerTest {
 
     @Test
     public void testLogException() {
-        System.out.println("Test logger RuntimeException, and show \"using logger: artoria.logging.JdkLoggerAdapter\".");
+        System.err.println("Test logger RuntimeException, and show \"using logger: artoria.logging.JdkLoggerAdapter\".");
         log.trace("Hello, World!", new RuntimeException());
         log.debug("Hello, World!", new RuntimeException());
         log.info("Hello, World!", new RuntimeException());

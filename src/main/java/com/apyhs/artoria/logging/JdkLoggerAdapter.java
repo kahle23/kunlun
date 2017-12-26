@@ -1,5 +1,6 @@
 package com.apyhs.artoria.logging;
 
+import com.apyhs.artoria.util.ClassUtils;
 import com.apyhs.artoria.util.IOUtils;
 
 import java.io.ByteArrayInputStream;
@@ -17,13 +18,14 @@ import static com.apyhs.artoria.util.StringConstant.EMPTY_STRING;
 public class JdkLoggerAdapter implements LoggerAdapter {
 
 	private static final String LOGGER_CONFIG_FILENAME = "logging.properties";
+	// This is JDK root logger name.
+	private static final String ROOT_LOGGER_NAME = "";
 
 	private java.util.logging.Logger logger;
 
 	public JdkLoggerAdapter() {
-		Class<JdkLoggerAdapter> clazz = JdkLoggerAdapter.class;
-		logger = java.util.logging.Logger.getLogger(clazz.getName());
-		ClassLoader loader = clazz.getClassLoader();
+		logger = java.util.logging.Logger.getLogger(ROOT_LOGGER_NAME);
+		ClassLoader loader = ClassUtils.getDefaultClassLoader();
 		InputStream in = loader != null
 				? loader.getResourceAsStream(LOGGER_CONFIG_FILENAME)
 				: ClassLoader.getSystemResourceAsStream(LOGGER_CONFIG_FILENAME);
@@ -32,9 +34,9 @@ public class JdkLoggerAdapter implements LoggerAdapter {
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				Properties prop = new Properties();
 				prop.setProperty("java.util.logging.ConsoleHandler.level", "INFO");
-				prop.setProperty("java.util.logging.ConsoleHandler.formatter", "artoria.logging.SimpleFormatter");
-				prop.setProperty("java.util.logging.SocketHandler.formatter", "artoria.logging.SimpleFormatter");
-				prop.setProperty("java.util.logging.FileHandler.formatter", "artoria.logging.SimpleFormatter");
+				prop.setProperty("java.util.logging.ConsoleHandler.formatter", "com.apyhs.artoria.logging.SimpleFormatter");
+				prop.setProperty("java.util.logging.SocketHandler.formatter", "com.apyhs.artoria.logging.SimpleFormatter");
+				prop.setProperty("java.util.logging.FileHandler.formatter", "com.apyhs.artoria.logging.SimpleFormatter");
 				prop.setProperty("handlers", "java.util.logging.ConsoleHandler");
 				prop.store(out, null);
 				in = new ByteArrayInputStream(out.toByteArray());
@@ -86,7 +88,7 @@ public class JdkLoggerAdapter implements LoggerAdapter {
 		if (level == java.util.logging.Level.SEVERE) {
 			return Level.ERROR;
 		}
-		return Level.INFO;
+		return null;
 	}
 
 	@Override
