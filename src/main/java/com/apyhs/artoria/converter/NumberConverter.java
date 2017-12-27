@@ -10,7 +10,6 @@ import java.math.BigInteger;
 import java.util.Date;
 
 import static com.apyhs.artoria.util.StringConstant.COLON;
-import static com.apyhs.artoria.util.StringConstant.MINUS;
 
 /**
  * Number converter.
@@ -77,7 +76,7 @@ public class NumberConverter implements Converter {
         Assert.notNull(source, "Source must is not null. ");
         Assert.notNull(target, "Target must is not null. ");
         Class<?> clazz = source.getClass();
-        log.debug(NumberConverter.class.getSimpleName() + COLON + clazz.getName() + MINUS + target.getName());
+        log.debug(NumberConverter.class.getSimpleName() + COLON + clazz.getName() + " >> " + target.getName());
         target = ClassUtils.getWrapper(target);
         if (target.isAssignableFrom(clazz)) {
             return source;

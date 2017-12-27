@@ -10,7 +10,6 @@ import com.apyhs.artoria.util.ReflectUtils;
 import java.util.Date;
 
 import static com.apyhs.artoria.util.StringConstant.COLON;
-import static com.apyhs.artoria.util.StringConstant.MINUS;
 
 /**
  * Date converter.
@@ -34,7 +33,7 @@ public class DateConverter implements Converter {
         Assert.notNull(source, "Source must is not null. ");
         Assert.notNull(target, "Target must is not null. ");
         Class<?> clazz = source.getClass();
-        log.debug(DateConverter.class.getSimpleName() + COLON + clazz.getName() + MINUS + target.getName());
+        log.debug(DateConverter.class.getSimpleName() + COLON + clazz.getName() + " >> " + target.getName());
         target = ClassUtils.getWrapper(target);
         if (target.isAssignableFrom(clazz)) {
             return source;

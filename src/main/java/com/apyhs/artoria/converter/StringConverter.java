@@ -74,7 +74,7 @@ public class StringConverter implements Converter {
         Assert.notNull(source, "Source must is not null. ");
         Assert.notNull(target, "Target must is not null. ");
         Class<?> clazz = source.getClass();
-        log.debug(StringConverter.class.getSimpleName() + COLON + clazz.getName() + MINUS + target.getName());
+        log.debug(StringConverter.class.getSimpleName() + COLON + clazz.getName() + " >> " + target.getName());
         target = ClassUtils.getWrapper(target);
         if (target.isAssignableFrom(clazz)) {
             return source;
