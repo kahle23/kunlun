@@ -7,9 +7,10 @@ import com.apyhs.artoria.util.StringConstant;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.apyhs.artoria.util.StringConstant.DEFAULT_CHARSET_NAME;
 
 /**
  * Url codec, and map to string tools.
@@ -37,7 +38,7 @@ public class UrlCodec {
                 .setValueSeparator(valueSeparator);
     }
 
-    private String charset = Charset.defaultCharset().name();
+    private String charset = DEFAULT_CHARSET_NAME;
     private String keySeparator;
     private String valueSeparator;
 

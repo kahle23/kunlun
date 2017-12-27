@@ -17,26 +17,37 @@ import static com.apyhs.artoria.util.StringConstant.EMPTY_STRING;
  */
 public class JdkLoggerAdapter implements LoggerAdapter {
 
+	/**
+	 * Default logger config filename.
+	 */
 	private static final String LOGGER_CONFIG_FILENAME = "logging.properties";
-	// This is JDK root logger name.
+
+	/**
+	 * This is JDK root logger name.
+	 */
 	private static final String ROOT_LOGGER_NAME = "";
 
-	private java.util.logging.Logger logger;
+	private java.util.logging.Logger log;
 
 	public JdkLoggerAdapter() {
-		logger = java.util.logging.Logger.getLogger(ROOT_LOGGER_NAME);
+		log = java.util.logging.Logger.getLogger(ROOT_LOGGER_NAME);
 		ClassLoader loader = ClassUtils.getDefaultClassLoader();
 		InputStream in = loader != null
 				? loader.getResourceAsStream(LOGGER_CONFIG_FILENAME)
 				: ClassLoader.getSystemResourceAsStream(LOGGER_CONFIG_FILENAME);
 		if (in == null) {
+			log.info("Logger config file \"" + LOGGER_CONFIG_FILENAME
+					+ "\" can not find in classpath, will using default. ");
 			try {
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				Properties prop = new Properties();
 				prop.setProperty("java.util.logging.ConsoleHandler.level", "INFO");
-				prop.setProperty("java.util.logging.ConsoleHandler.formatter", "com.apyhs.artoria.logging.SimpleFormatter");
-				prop.setProperty("java.util.logging.SocketHandler.formatter", "com.apyhs.artoria.logging.SimpleFormatter");
-				prop.setProperty("java.util.logging.FileHandler.formatter", "com.apyhs.artoria.logging.SimpleFormatter");
+				prop.setProperty("java.util.logging.ConsoleHandler.formatter"
+						, "com.apyhs.artoria.logging.SimpleFormatter");
+				prop.setProperty("java.util.logging.SocketHandler.formatter"
+						, "com.apyhs.artoria.logging.SimpleFormatter");
+				prop.setProperty("java.util.logging.FileHandler.formatter"
+						, "com.apyhs.artoria.logging.SimpleFormatter");
 				prop.setProperty("handlers", "java.util.logging.ConsoleHandler");
 				prop.store(out, null);
 				in = new ByteArrayInputStream(out.toByteArray());
@@ -72,7 +83,7 @@ public class JdkLoggerAdapter implements LoggerAdapter {
 
 	@Override
 	public Level getLevel() {
-		java.util.logging.Level level = logger.getLevel();
+		java.util.logging.Level level = log.getLevel();
 		if (level == java.util.logging.Level.FINER) {
 			return Level.TRACE;
 		}
@@ -94,19 +105,19 @@ public class JdkLoggerAdapter implements LoggerAdapter {
 	@Override
 	public void setLevel(Level level) {
 		if (level == Level.TRACE) {
-			logger.setLevel(java.util.logging.Level.FINER);
+			log.setLevel(java.util.logging.Level.FINER);
 		}
 		if (level == Level.DEBUG) {
-			logger.setLevel(java.util.logging.Level.FINE);
+			log.setLevel(java.util.logging.Level.FINE);
 		}
 		if (level == Level.INFO) {
-			logger.setLevel(java.util.logging.Level.INFO);
+			log.setLevel(java.util.logging.Level.INFO);
 		}
 		if (level == Level.WARN) {
-			logger.setLevel(java.util.logging.Level.WARNING);
+			log.setLevel(java.util.logging.Level.WARNING);
 		}
 		if (level == Level.ERROR) {
-			logger.setLevel(java.util.logging.Level.SEVERE);
+			log.setLevel(java.util.logging.Level.SEVERE);
 		}
 	}
 

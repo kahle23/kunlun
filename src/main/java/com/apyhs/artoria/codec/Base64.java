@@ -25,7 +25,7 @@ public class Base64 {
     private static final Pattern BASE64_URL_UNSAFE = Pattern.compile("^[a-zA-Z0-9+/]+={0,2}$");
     private static final Base64Delegate DELEGATE;
 
-    private static Logger log = LoggerFactory.getLogger(Base64.class);
+    private static final Logger log = LoggerFactory.getLogger(Base64.class);
 
     static {
         Base64Delegate delegateToUse = null;

@@ -6,7 +6,6 @@ import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.ClassUtils;
 
 import static com.apyhs.artoria.util.StringConstant.COLON;
-import static com.apyhs.artoria.util.StringConstant.MINUS;
 
 /**
  * Simple converter, So is mapping Object.
@@ -20,7 +19,7 @@ public class ObjectConverter implements Converter {
         Assert.notNull(source, "Source must is not null. ");
         Assert.notNull(target, "Target must is not null. ");
         Class<?> clazz = source.getClass();
-        log.debug(ObjectConverter.class.getSimpleName() + COLON + clazz.getName() + MINUS + target.getName());
+        log.debug(ObjectConverter.class.getSimpleName() + COLON + clazz.getName() + " >> " + target.getName());
         target = ClassUtils.getWrapper(target);
         if (target.isAssignableFrom(clazz)) {
             return source;
