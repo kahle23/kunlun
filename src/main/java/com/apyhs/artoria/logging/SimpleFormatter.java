@@ -1,9 +1,9 @@
 package com.apyhs.artoria.logging;
 
+import com.apyhs.artoria.exception.ExceptionUtils;
 import com.apyhs.artoria.util.DateUtils;
 import com.apyhs.artoria.util.StringUtils;
 import com.apyhs.artoria.util.ThreadUtils;
-import com.apyhs.artoria.util.ThrowableUtils;
 
 import java.lang.management.ThreadInfo;
 import java.util.logging.Formatter;
@@ -93,7 +93,7 @@ public class SimpleFormatter extends Formatter {
     private String printfThrowable(LogRecord record) {
         Throwable thrown = record.getThrown();
         if (thrown == null) { return null; }
-        String result = ThrowableUtils.toString(thrown);
+        String result = ExceptionUtils.toString(thrown);
         return StringUtils.isNotBlank(result) ? ENDL + result : null;
     }
 

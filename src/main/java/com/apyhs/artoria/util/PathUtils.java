@@ -11,7 +11,7 @@ import java.net.URL;
  */
 public class PathUtils {
 
-    static String getRootPath() {
+    protected static String getRootPath() {
         try {
             URL res = PathUtils.class.getResource(StringConstant.SLASH);
             File path = res != null ? new File(res.toURI().getPath()) : null;
@@ -22,7 +22,7 @@ public class PathUtils {
         }
     }
 
-    static String getClasspath() {
+    protected static String getClasspath() {
         try {
             URL res = ClassUtils.getDefaultClassLoader().getResource(StringConstant.EMPTY_STRING);
             return res != null ? new File(res.toURI().getPath()).toString() : StringConstant.EMPTY_STRING;

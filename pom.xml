@@ -4,14 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.apyhs</groupId>
 	<artifactId>artoria</artifactId>
-	<version>${project.version}</version>
+	<version>0.0.5-beta24</version>
 	<packaging>jar</packaging>
 	<name>Artoria</name>
     <url>https://github.com/apyhs/artoria</url>
     <description>A toolkit only rely on the JDK.</description>
 
 	<properties>
-		<project.version>0.0.5-beta24</project.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 	</properties>

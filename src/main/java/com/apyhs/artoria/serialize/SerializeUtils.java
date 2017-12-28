@@ -1,6 +1,7 @@
 package com.apyhs.artoria.serialize;
 
-import com.apyhs.artoria.util.ArrayUtils;
+import com.apyhs.artoria.logging.Logger;
+import com.apyhs.artoria.logging.LoggerFactory;
 import com.apyhs.artoria.util.Assert;
 
 import java.io.*;
@@ -10,22 +11,25 @@ import java.io.*;
  * @author Kahle
  */
 public class SerializeUtils {
+    private static final Logger log = LoggerFactory.getLogger(SerializeUtils.class);
     private static final int INITIAL_SIZE = 128;
     private static Serializer serializer;
     private static Deserializer deserializer;
 
     static {
-        SerializeUtils.serializer = new JavaSerializer();
-        SerializeUtils.deserializer = new JavaDeserializer();
+        SerializeUtils.setSerializer(new JavaSerializer());
+        SerializeUtils.setDeserializer(new JavaDeserializer());
     }
 
     public static void setSerializer(Serializer serializer) {
         Assert.notNull(serializer, "Serializer must is not null. ");
+        log.info("Set serializer: " + serializer.getClass().getName());
         SerializeUtils.serializer = serializer;
     }
 
     public static void setDeserializer(Deserializer deserializer) {
         Assert.notNull(deserializer, "Deserializer must is not null. ");
+        log.info("Set deserializer: " + deserializer.getClass().getName());
         SerializeUtils.deserializer = deserializer;
     }
 
@@ -43,7 +47,7 @@ public class SerializeUtils {
     }
 
     public static Object deserialize(byte[] bytes) {
-        Assert.state(ArrayUtils.isNotEmpty(bytes), "Byte array must is not empty. ");
+        Assert.notEmpty(bytes, "Byte array must is not empty. ");
         try {
             ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
             return SerializeUtils.deserialize(bais);
@@ -57,10 +61,13 @@ public class SerializeUtils {
     }
 
     public static void serialize(Object object, OutputStream outputStream) throws IOException {
+        Assert.notNull(object, "Object must is not null. ");
+        Assert.notNull(outputStream, "OutputStream must is not null. ");
         serializer.serialize(object, outputStream);
     }
 
     public static Object deserialize(InputStream inputStream) throws IOException, ClassNotFoundException {
+        Assert.notNull(inputStream, "InputStream must is not null. ");
         return deserializer.deserialize(inputStream);
     }
 

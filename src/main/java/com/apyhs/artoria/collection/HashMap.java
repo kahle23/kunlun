@@ -3,7 +3,7 @@ package com.apyhs.artoria.collection;
 import java.util.Map;
 
 /**
- * HashMap who can chained set.
+ * Strengthen hashMap.
  * @author Kahle
  */
 public class HashMap<K, V> extends java.util.HashMap<K, V> {

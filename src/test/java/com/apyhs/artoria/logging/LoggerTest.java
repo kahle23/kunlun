@@ -1,12 +1,13 @@
 package com.apyhs.artoria.logging;
 
+import com.apyhs.artoria.exception.UnexpectedException;
 import org.junit.Test;
 
 public class LoggerTest {
     private static Logger log = LoggerFactory.getLogger(LoggerTest.class);
 
     @Test
-    public void testLogMsg() {
+    public void logMessage() {
         System.err.println("Test logger message, and show \"using logger: artoria.logging.JdkLoggerAdapter\".");
         log.trace("Hello, World!");
         log.debug("Hello, World!");
@@ -23,13 +24,13 @@ public class LoggerTest {
     }
 
     @Test
-    public void testLogException() {
-        System.err.println("Test logger RuntimeException, and show \"using logger: artoria.logging.JdkLoggerAdapter\".");
-        log.trace("Hello, World!", new RuntimeException());
-        log.debug("Hello, World!", new RuntimeException());
-        log.info("Hello, World!", new RuntimeException());
-        log.warn("Hello, World!", new RuntimeException());
-        log.error("Hello, World!", new RuntimeException());
+    public void logException() {
+        System.err.println("Test logger RuntimeException, and show \"using logger: com.apyhs.artoria.logging.JdkLoggerAdapter\".");
+        log.trace("Hello, World!", new UnexpectedException());
+        log.debug("Hello, World!", new UnexpectedException());
+        log.info("Hello, World!", new UnexpectedException());
+        log.warn("Hello, World!", new UnexpectedException());
+        log.error("Hello, World!", new UnexpectedException());
     }
 
 }
