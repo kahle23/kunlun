@@ -108,11 +108,11 @@ public class PropertiesUtils {
         return properties.getProperty(key, defaultValue);
     }
 
-    public Integer getInt(String key) {
-        return this.getInt(key, null);
+    public Integer getInteger(String key) {
+        return this.getInteger(key, null);
     }
 
-    public Integer getInt(String key, Integer defaultValue) {
+    public Integer getInteger(String key, Integer defaultValue) {
         String value = properties.getProperty(key);
         return StringUtils.isNotBlank(value) ? Integer.parseInt(value.trim()) : defaultValue;
     }

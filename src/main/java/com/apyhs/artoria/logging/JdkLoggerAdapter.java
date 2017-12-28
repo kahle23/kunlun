@@ -48,6 +48,7 @@ public class JdkLoggerAdapter implements LoggerAdapter {
 						, "com.apyhs.artoria.logging.SimpleFormatter");
 				prop.setProperty("java.util.logging.FileHandler.formatter"
 						, "com.apyhs.artoria.logging.SimpleFormatter");
+				prop.setProperty(".level", "INFO");
 				prop.setProperty("handlers", "java.util.logging.ConsoleHandler");
 				prop.store(out, null);
 				in = new ByteArrayInputStream(out.toByteArray());

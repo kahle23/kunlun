@@ -1,8 +1,8 @@
 package com.apyhs.artoria.logging;
 
+import com.apyhs.artoria.exception.ExceptionUtils;
 import com.apyhs.artoria.util.DateUtils;
 import com.apyhs.artoria.util.StringUtils;
-import com.apyhs.artoria.util.ThrowableUtils;
 
 import static com.apyhs.artoria.util.StringConstant.EMPTY_STRING;
 import static com.apyhs.artoria.util.StringConstant.ENDL;
@@ -38,7 +38,7 @@ public class FailsafeLogger implements Logger {
 				+ stackTrace[STACK_TRACE_INDEX].getClassName() + "."
 				+ stackTrace[STACK_TRACE_INDEX].getMethodName() + "()]"
 				+ (StringUtils.isNotBlank(message) ? " [" + message + "]" : EMPTY_STRING)
-				+ (t != null ? " [" + ENDL + ThrowableUtils.toString(t) + "]" : EMPTY_STRING)
+				+ (t != null ? " [" + ENDL + ExceptionUtils.toString(t) + "]" : EMPTY_STRING)
 		);
 	}
 

@@ -8,11 +8,10 @@ import java.io.Serializable;
 public class SerializeUtilsTest implements Serializable {
 
     @Test
-    public void test() {
+    public void serializeAndDeserialize() {
         SerializeUtilsTest obj = new SerializeUtilsTest();
         System.out.println(obj);
         byte[] bytes = SerializeUtils.serialize(obj);
-        System.out.println(bytes.length);
         String encode = Hex.ME.encodeToString(bytes);
         System.out.println(encode);
 

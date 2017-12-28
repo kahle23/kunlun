@@ -51,7 +51,6 @@ public class BeanUtils {
         if (obj instanceof Map) {
             return ((Map) obj).isEmpty();
         }
-        // else
         return false;
     }
 

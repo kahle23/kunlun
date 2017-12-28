@@ -12,7 +12,7 @@ public class HmacTest {
     private static final Hmac hsha512 = Hmac.create(Hmac.HMAC_SHA512).setKey(KEY);
 
     @Test
-    public void test1() throws Exception {
+    public void hmacString() throws Exception {
         String data = "12345";
         System.out.println(hmd5.calcToHexString(data));
         System.out.println(hsha1.calcToHexString(data));
