@@ -22,20 +22,20 @@ public class TypeUtils {
 
     static {
         CONVERTERS = new ConcurrentHashMap<Class<?>, Converter>();
-        TypeUtils.registerConverter(Date.class, new DateConverter());
-        TypeUtils.registerConverter(String.class, new StringConverter());
-        TypeUtils.registerConverter(Number.class, new NumberConverter());
-        TypeUtils.registerConverter(Object.class, new ObjectConverter());
+        TypeUtils.register(Date.class, new DateConverter());
+        TypeUtils.register(String.class, new StringConverter());
+        TypeUtils.register(Number.class, new NumberConverter());
+        TypeUtils.register(Object.class, new ObjectConverter());
     }
 
-    public static Converter unregisterConverter(Class<?> clazz) {
+    public static Converter unregister(Class<?> clazz) {
         Assert.notNull(clazz, "Clazz must is not null. ");
         Converter remove = CONVERTERS.remove(clazz);
         log.info("Unregister: " + clazz.getName() + " >> " + remove.getClass().getName());
         return remove;
     }
 
-    public static void registerConverter(Class<?> clazz, Converter converter) {
+    public static void register(Class<?> clazz, Converter converter) {
         Assert.notNull(clazz, "Clazz must is not null. ");
         Assert.notNull(converter, "Converter must is not null. ");
         CONVERTERS.put(clazz, converter);
