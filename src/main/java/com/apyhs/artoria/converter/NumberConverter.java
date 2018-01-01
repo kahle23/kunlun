@@ -68,7 +68,7 @@ public class NumberConverter implements Converter {
         lg = isUnixTimestamp ? lg * 1000L : lg;
         Date date = DateUtils.parse(lg);
         // Maybe target is sql date or timestamp
-        return TypeUtils.convert(date, target);
+        return ConvertUtils.convert(date, target);
     }
 
     @Override

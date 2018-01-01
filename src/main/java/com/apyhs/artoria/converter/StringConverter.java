@@ -46,11 +46,11 @@ public class StringConverter implements Converter {
             BigInteger bInt = new BigInteger(srcStr);
             // Maybe is unix timestamp
             // so hand on NumberConverter
-            return TypeUtils.convert(bInt, target);
+            return ConvertUtils.convert(bInt, target);
         }
         try {
             Date date = DateUtils.parse(srcStr, pattern);
-            return TypeUtils.convert(date, target);
+            return ConvertUtils.convert(date, target);
         }
         catch (ParseException e) {
             return source;
@@ -84,7 +84,7 @@ public class StringConverter implements Converter {
         }
         if (Number.class.isAssignableFrom(target)) {
             BigDecimal d = new BigDecimal((String) source);
-            return TypeUtils.convert(d, target);
+            return ConvertUtils.convert(d, target);
         }
         if (Boolean.class.isAssignableFrom(target)) {
             return this.stringToBoolean(source, target);
