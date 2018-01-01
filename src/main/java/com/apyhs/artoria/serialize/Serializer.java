@@ -7,7 +7,7 @@ import java.io.OutputStream;
  * Serializer
  * @author Kahle
  */
-public interface Serializer {
+public interface Serializer<T> {
 
     /**
      * Do serialize
@@ -15,6 +15,6 @@ public interface Serializer {
      * @param outputStream Serialize to output stream
      * @throws IOException IO exception
      */
-    void serialize(Object object, OutputStream outputStream) throws IOException;
+    void serialize(T object, OutputStream outputStream) throws IOException;
 
 }

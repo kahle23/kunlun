@@ -7,15 +7,14 @@ import java.io.InputStream;
  * Deserializer
  * @author Kahle
  */
-public interface Deserializer {
+public interface Deserializer<T> {
 
     /**
      * Do deserialize
      * @param inputStream Input stream have data
      * @return Data object
      * @throws IOException IO exception
-     * @throws ClassNotFoundException Class not found
      */
-    Object deserialize(InputStream inputStream) throws IOException, ClassNotFoundException;
+    T deserialize(InputStream inputStream) throws IOException;
 
 }

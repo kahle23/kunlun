@@ -1,7 +1,7 @@
 package com.apyhs.artoria.util;
 
 import com.apyhs.artoria.converter.Converter;
-import com.apyhs.artoria.converter.TypeUtils;
+import com.apyhs.artoria.converter.ConvertUtils;
 import com.apyhs.artoria.exception.ReflectionException;
 import com.apyhs.artoria.serialize.SerializeUtils;
 
@@ -23,7 +23,7 @@ public class BeanUtils {
     private static final Converter CONVERTER = new Converter() {
         @Override
         public Object convert(Object source, Class<?> target) {
-            return TypeUtils.convert(source, target);
+            return ConvertUtils.convert(source, target);
         }
     };
 

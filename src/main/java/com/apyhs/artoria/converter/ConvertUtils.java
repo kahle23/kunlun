@@ -15,17 +15,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * Type tools.
  * @author Kahle
  */
-public class TypeUtils {
-    private static final Logger log = LoggerFactory.getLogger(TypeUtils.class);
+public class ConvertUtils {
+    private static final Logger log = LoggerFactory.getLogger(ConvertUtils.class);
 
     private static final Map<Class<?>, Converter> CONVERTERS;
 
     static {
         CONVERTERS = new ConcurrentHashMap<Class<?>, Converter>();
-        TypeUtils.register(Date.class, new DateConverter());
-        TypeUtils.register(String.class, new StringConverter());
-        TypeUtils.register(Number.class, new NumberConverter());
-        TypeUtils.register(Object.class, new ObjectConverter());
+        ConvertUtils.register(Date.class, new DateConverter());
+        ConvertUtils.register(String.class, new StringConverter());
+        ConvertUtils.register(Number.class, new NumberConverter());
+        ConvertUtils.register(Object.class, new ObjectConverter());
     }
 
     public static Converter unregister(Class<?> clazz) {
