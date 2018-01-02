@@ -16,14 +16,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ExceptionUtils {
     private static final Logger log = LoggerFactory.getLogger(ExceptionUtils.class);
-    private static final Map<Class<? extends ErrorCode>, Class<? extends GeneralException>> EXCEPTIONS;
+    private static final Map<Class<? extends ExceptionCode>, Class<? extends GeneralException>> EXCEPTIONS;
 
     static {
-        EXCEPTIONS = new ConcurrentHashMap<Class<? extends ErrorCode>, Class<? extends GeneralException>>();
-        ExceptionUtils.register(ErrorCode.class, GeneralException.class);
+        EXCEPTIONS = new ConcurrentHashMap<Class<? extends ExceptionCode>, Class<? extends GeneralException>>();
+        ExceptionUtils.register(ExceptionCode.class, GeneralException.class);
     }
 
-    private static Class<? extends GeneralException> find(ErrorCode errorCode) {
+    private static Class<? extends GeneralException> find(ExceptionCode errorCode) {
         Assert.notNull(errorCode, "Parameter \"errorCode\" must is not null. ");
         Class<? extends GeneralException> clazz = EXCEPTIONS.get(errorCode.getClass());
         if (clazz == null) { return GeneralException.class; }
@@ -38,26 +38,26 @@ public class ExceptionUtils {
         return sw.toString();
     }
 
-    public static Class<? extends GeneralException> unregister(Class<? extends ErrorCode> codeClazz) {
+    public static Class<? extends GeneralException> unregister(Class<? extends ExceptionCode> codeClazz) {
         Assert.notNull(codeClazz, "Parameter \"codeClazz\" must is not null. ");
         Class<? extends GeneralException> remove = EXCEPTIONS.remove(codeClazz);
         log.info("Unregister: " + codeClazz.getName() + " >> " + remove.getName());
         return remove;
     }
 
-    public static void register(Class<? extends ErrorCode> codeClazz, Class<? extends GeneralException> exceptionClazz) {
+    public static void register(Class<? extends ExceptionCode> codeClazz, Class<? extends GeneralException> exceptionClazz) {
         Assert.notNull(codeClazz, "Parameter \"codeClazz\" must is not null. ");
         Assert.notNull(exceptionClazz, "Parameter \"exceptionClazz\" must is not null. ");
         EXCEPTIONS.put(codeClazz, exceptionClazz);
         log.info("Register: " + codeClazz.getName() + " >> " + exceptionClazz.getName());
     }
 
-    public static GeneralException create(ErrorCode errorCode) {
+    public static GeneralException create(ExceptionCode errorCode) {
         Class<? extends GeneralException> clazz = ExceptionUtils.find(errorCode);
         try {
             ReflectUtils ref = ReflectUtils.create(clazz);
             ref.newInstance((Object) errorCode.getContent());
-            ref.callSetter("errorCode", errorCode);
+            ref.set("errorCode", errorCode);
             return (GeneralException) ref.getBean();
         }
         catch (ReflectionException e) {
@@ -65,7 +65,7 @@ public class ExceptionUtils {
         }
     }
 
-    public static GeneralException create(ErrorCode errorCode, Throwable t) {
+    public static GeneralException create(ExceptionCode errorCode, Throwable t) {
         Class<? extends GeneralException> clazz = ExceptionUtils.find(errorCode);
         try {
             ReflectUtils ref = ReflectUtils.create(clazz);

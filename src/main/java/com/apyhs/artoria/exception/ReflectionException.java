@@ -1,10 +1,10 @@
 package com.apyhs.artoria.exception;
 
 /**
- * Reflection exception
+ * Reflection exception.
  * @author Kahle
  */
-public class ReflectionException extends Exception {
+public class ReflectionException extends NestedException {
 
     public ReflectionException() {
         super();

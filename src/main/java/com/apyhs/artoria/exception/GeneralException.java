@@ -6,16 +6,16 @@ import com.apyhs.artoria.util.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.apyhs.artoria.util.StringConstant.EMPTY_STRING;
 import static com.apyhs.artoria.util.StringConstant.ENDL;
 
 /**
  * General exception.
  * @author Kahle
  */
-public class GeneralException extends RuntimeException {
+public class GeneralException extends NestedRuntimeException {
 
-    private ErrorCode errorCode;
-    private String remark;
+    private ExceptionCode errorCode;
     private Map<String, Object> data = new HashMap<String, Object>();
 
     public GeneralException() {
@@ -34,25 +34,12 @@ public class GeneralException extends RuntimeException {
         super(message, cause);
     }
 
-    public ErrorCode getErrorCode() {
+    public ExceptionCode getErrorCode() {
         return errorCode;
     }
 
-    protected void setErrorCode(ErrorCode errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public GeneralException setRemark(String remark) {
-        this.remark = remark;
-        return this;
-    }
-
-    public Map<String, Object> getData() {
-        return data;
+    public Object get(String name) {
+        return data.get(name);
     }
 
     public GeneralException set(String name, Object obj) {
@@ -60,32 +47,21 @@ public class GeneralException extends RuntimeException {
         return this;
     }
 
-    public GeneralException set(Map<String, Object> data) {
-        this.data.putAll(data);
-        return this;
-    }
-
-    public String summary() {
-        StringBuilder builder = new StringBuilder(ENDL);
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        String message = this.getLocalizedMessage();
+        builder.append(getClass().getName())
+                .append(StringUtils.isNotBlank(message) ? ": " + message : EMPTY_STRING)
+                .append(ENDL);
         if (errorCode != null) {
-            builder.append("Type:    ")
-                    .append(errorCode.getClass().getSimpleName())
-                    .append(ENDL);
-            builder.append("Code:    ").append(errorCode.getCode())
-                    .append(ENDL);
-            builder.append("Content: ").append(errorCode.getContent())
-                    .append(ENDL);
-        }
-        if (StringUtils.isNotBlank(remark)) {
-            builder.append("Remark:  ").append(remark)
+            builder.append(errorCode.getClass().getName())
+                    .append(": ")
+                    .append(errorCode.toString())
                     .append(ENDL);
         }
         if (MapUtils.isNotEmpty(data)) {
-            for (Map.Entry<String, Object> entry : data.entrySet()) {
-                String key = StringUtils.capitalize(entry.getKey());
-                builder.append(key).append(": ").append(entry.getValue())
-                        .append(ENDL);
-            }
+            builder.append(data).append(ENDL);
         }
         return builder.toString();
     }

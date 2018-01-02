@@ -4,7 +4,7 @@ package com.apyhs.artoria.exception;
  * Error code
  * @author Kahle
  */
-public interface ErrorCode {
+public interface ExceptionCode {
 
     /**
      * The code
