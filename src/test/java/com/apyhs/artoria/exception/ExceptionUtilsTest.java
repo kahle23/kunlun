@@ -17,11 +17,11 @@ public class ExceptionUtilsTest {
         try {
             throw ExceptionUtils
                     .create(SystemCode.MEMORY_OVERFLOW)
-                    .setRemark("MEMORY 000000")
+                    .set("hello", "MEMORY 000000")
                     .set("address", "0364294");
         }
         catch (GeneralException e) {
-            log.error(e.summary(), e);
+            log.error(e.getMessage(), e);
         }
     }
 

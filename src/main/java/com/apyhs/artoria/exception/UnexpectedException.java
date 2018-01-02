@@ -4,7 +4,7 @@ package com.apyhs.artoria.exception;
  * Unexpected exception.
  * @author Kahle
  */
-public class UnexpectedException extends RuntimeException {
+public class UnexpectedException extends NestedRuntimeException {
 
     public UnexpectedException() {
         super();
