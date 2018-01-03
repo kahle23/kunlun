@@ -8,7 +8,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 
 /**
- * JDK serializer
+ * JDK serializer.
  * @author Kahle
  */
 public class DefaultSerializer implements Serializer<Object> {

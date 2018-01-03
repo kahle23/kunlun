@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Deserializer
+ * Deserializer.
  * @author Kahle
  */
 public interface Deserializer<T> {

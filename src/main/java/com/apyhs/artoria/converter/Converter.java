@@ -1,7 +1,7 @@
 package com.apyhs.artoria.converter;
 
 /**
- * Converter
+ * Converter.
  * @author Kahle
  */
 public interface Converter {
