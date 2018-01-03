@@ -16,18 +16,77 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ExceptionUtils {
     private static final Logger log = LoggerFactory.getLogger(ExceptionUtils.class);
-    private static final Map<Class<? extends ExceptionCode>, Class<? extends GeneralException>> EXCEPTIONS;
+    private static final Map<Class<? extends ErrorCode>, Class<? extends UncheckedException>> EXCEPTIONS;
 
     static {
-        EXCEPTIONS = new ConcurrentHashMap<Class<? extends ExceptionCode>, Class<? extends GeneralException>>();
-        ExceptionUtils.register(ExceptionCode.class, GeneralException.class);
+        EXCEPTIONS = new ConcurrentHashMap<Class<? extends ErrorCode>, Class<? extends UncheckedException>>();
+        ExceptionUtils.register(ErrorCode.class, UncheckedException.class);
     }
 
-    private static Class<? extends GeneralException> find(ExceptionCode errorCode) {
+    public static Class<? extends UncheckedException> unregister(Class<? extends ErrorCode> codeClazz) {
+        Assert.notNull(codeClazz, "Parameter \"codeClazz\" must is not null. ");
+        Class<? extends UncheckedException> remove = EXCEPTIONS.remove(codeClazz);
+        log.info("Unregister: " + codeClazz.getName() + " >> " + remove.getName());
+        return remove;
+    }
+
+    public static void register(Class<? extends ErrorCode> codeClazz, Class<? extends UncheckedException> exceptionClazz) {
+        Assert.notNull(codeClazz, "Parameter \"codeClazz\" must is not null. ");
+        Assert.notNull(exceptionClazz, "Parameter \"exceptionClazz\" must is not null. ");
+        EXCEPTIONS.put(codeClazz, exceptionClazz);
+        log.info("Register: " + codeClazz.getName() + " >> " + exceptionClazz.getName());
+    }
+
+    public static UncheckedException create() {
+        return new UncheckedException();
+    }
+
+    public static UncheckedException create(String message) {
+        return new UncheckedException(message);
+    }
+
+    public static UncheckedException create(Throwable cause) {
+        return new UncheckedException(cause);
+    }
+
+    public static UncheckedException create(String message, Throwable cause) {
+        return new UncheckedException(message, cause);
+    }
+
+    public static UncheckedException create(ErrorCode errorCode) {
+        return ExceptionUtils.create(errorCode, null);
+    }
+
+    public static UncheckedException create(ErrorCode errorCode, Throwable t) {
         Assert.notNull(errorCode, "Parameter \"errorCode\" must is not null. ");
-        Class<? extends GeneralException> clazz = EXCEPTIONS.get(errorCode.getClass());
-        if (clazz == null) { return GeneralException.class; }
-        return clazz;
+        Class<? extends UncheckedException> clazz = EXCEPTIONS.get(errorCode.getClass());
+        if (clazz == null) { clazz = UncheckedException.class; }
+        try {
+            ReflectUtils ref = ReflectUtils.create(clazz);
+            if (t != null) {
+                ref.newInstance(errorCode.getContent(), t);
+            }
+            else {
+                ref.newInstance((Object) errorCode.getContent());
+            }
+            ref.call("setErrorCode", errorCode);
+            return (UncheckedException) ref.getBean();
+        }
+        catch (ReflectionException e) {
+            throw new UnexpectedException(e);
+        }
+    }
+
+    public static void check(boolean expression, ErrorCode errorCode) {
+        if (!expression) {
+            throw ExceptionUtils.create(errorCode);
+        }
+    }
+
+    public static void check(boolean expression, ErrorCode errorCode, String others) {
+        if (!expression) {
+            throw ExceptionUtils.create(errorCode).setOthers(others);
+        }
     }
 
     public static String toString(Throwable t) {
@@ -36,46 +95,6 @@ public class ExceptionUtils {
         PrintWriter pw = new PrintWriter(sw);
         t.printStackTrace(pw);
         return sw.toString();
-    }
-
-    public static Class<? extends GeneralException> unregister(Class<? extends ExceptionCode> codeClazz) {
-        Assert.notNull(codeClazz, "Parameter \"codeClazz\" must is not null. ");
-        Class<? extends GeneralException> remove = EXCEPTIONS.remove(codeClazz);
-        log.info("Unregister: " + codeClazz.getName() + " >> " + remove.getName());
-        return remove;
-    }
-
-    public static void register(Class<? extends ExceptionCode> codeClazz, Class<? extends GeneralException> exceptionClazz) {
-        Assert.notNull(codeClazz, "Parameter \"codeClazz\" must is not null. ");
-        Assert.notNull(exceptionClazz, "Parameter \"exceptionClazz\" must is not null. ");
-        EXCEPTIONS.put(codeClazz, exceptionClazz);
-        log.info("Register: " + codeClazz.getName() + " >> " + exceptionClazz.getName());
-    }
-
-    public static GeneralException create(ExceptionCode errorCode) {
-        Class<? extends GeneralException> clazz = ExceptionUtils.find(errorCode);
-        try {
-            ReflectUtils ref = ReflectUtils.create(clazz);
-            ref.newInstance((Object) errorCode.getContent());
-            ref.set("errorCode", errorCode);
-            return (GeneralException) ref.getBean();
-        }
-        catch (ReflectionException e) {
-            throw new UnexpectedException(e);
-        }
-    }
-
-    public static GeneralException create(ExceptionCode errorCode, Throwable t) {
-        Class<? extends GeneralException> clazz = ExceptionUtils.find(errorCode);
-        try {
-            ReflectUtils ref = ReflectUtils.create(clazz);
-            ref.newInstance(errorCode.getContent(), t);
-            ref.callSetter("errorCode", errorCode);
-            return (GeneralException) ref.getBean();
-        }
-        catch (ReflectionException e) {
-            throw new UnexpectedException(e);
-        }
     }
 
 }

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Serializer
+ * Serializer.
  * @author Kahle
  */
 public interface Serializer<T> {

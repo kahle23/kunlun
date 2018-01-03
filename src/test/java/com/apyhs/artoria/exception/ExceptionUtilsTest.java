@@ -8,19 +8,30 @@ public class ExceptionUtilsTest {
     private static final Logger log = LoggerFactory.getLogger(ExceptionUtilsTest.class);
 
     static {
-        // Not register, also is GeneralException, in here, just test.
-        ExceptionUtils.register(SystemCode.class, GeneralException.class);
+        ExceptionUtils.register(SystemCode.class, SystemException.class);
     }
 
     @Test
-    public void test1() {
+    public void createAndSetOthers() {
         try {
             throw ExceptionUtils
                     .create(SystemCode.MEMORY_OVERFLOW)
-                    .set("hello", "MEMORY 000000")
-                    .set("address", "0364294");
+                    .setOthers("address in %s, say \"%s\". ", "0364294", "hello");
         }
-        catch (GeneralException e) {
+        catch (UncheckedException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    @Test
+    public void check() {
+        Integer i = (System.currentTimeMillis() >> 6) % 2 == 0 ? null : 1;
+        try {
+            ExceptionUtils.check(i != null
+                    , SystemCode.ABNORMAL_SHUTDOWN
+                    , "Hello, World! Test");
+        }
+        catch (UncheckedException e) {
             log.error(e.getMessage(), e);
         }
     }

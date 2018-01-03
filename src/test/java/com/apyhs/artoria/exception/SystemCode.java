@@ -1,6 +1,6 @@
 package com.apyhs.artoria.exception;
 
-public enum SystemCode implements ExceptionCode {
+public enum SystemCode implements ErrorCode {
     MEMORY_OVERFLOW("1", "MEMORY OVERFLOW"),
     ABNORMAL_SHUTDOWN("2", "ABNORMAL SHUTDOWN");
 

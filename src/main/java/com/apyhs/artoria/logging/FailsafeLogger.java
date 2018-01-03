@@ -8,7 +8,7 @@ import static com.apyhs.artoria.util.StringConstant.EMPTY_STRING;
 import static com.apyhs.artoria.util.StringConstant.ENDL;
 
 /**
- * Failsafe logger
+ * Failsafe logger.
  * @author Kahle
  */
 public class FailsafeLogger implements Logger {

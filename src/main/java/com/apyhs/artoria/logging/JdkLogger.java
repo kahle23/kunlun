@@ -3,7 +3,7 @@ package com.apyhs.artoria.logging;
 import java.util.logging.Level;
 
 /**
- * Jdk logger
+ * Jdk logger.
  * @author Kahle
  */
 public class JdkLogger implements Logger {

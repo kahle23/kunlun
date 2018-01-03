@@ -13,21 +13,29 @@ import java.io.*;
 public class SerializeUtils {
     private static final Logger log = LoggerFactory.getLogger(SerializeUtils.class);
     private static final int INITIAL_SIZE = 128;
-    private static Serializer serializer;
-    private static Deserializer deserializer;
+    private static Serializer<Object> serializer;
+    private static Deserializer<Object> deserializer;
 
     static {
         SerializeUtils.setSerializer(new DefaultSerializer());
         SerializeUtils.setDeserializer(new DefaultDeserializer());
     }
 
-    public static void setSerializer(Serializer serializer) {
+    public static Serializer<Object> getSerializer() {
+        return serializer;
+    }
+
+    public static void setSerializer(Serializer<Object> serializer) {
         Assert.notNull(serializer, "Serializer must is not null. ");
         log.info("Set serializer: " + serializer.getClass().getName());
         SerializeUtils.serializer = serializer;
     }
 
-    public static void setDeserializer(Deserializer deserializer) {
+    public static Deserializer<Object> getDeserializer() {
+        return deserializer;
+    }
+
+    public static void setDeserializer(Deserializer<Object> deserializer) {
         Assert.notNull(deserializer, "Deserializer must is not null. ");
         log.info("Set deserializer: " + deserializer.getClass().getName());
         SerializeUtils.deserializer = deserializer;
@@ -55,9 +63,6 @@ public class SerializeUtils {
         catch (IOException e) {
             throw new IllegalArgumentException("Failed to deserialize object. ", e);
         }
-        catch (ClassNotFoundException e) {
-            throw new IllegalStateException("Failed to deserialize object type. ", e);
-        }
     }
 
     public static void serialize(Object object, OutputStream outputStream) throws IOException {
@@ -66,7 +71,7 @@ public class SerializeUtils {
         serializer.serialize(object, outputStream);
     }
 
-    public static Object deserialize(InputStream inputStream) throws IOException, ClassNotFoundException {
+    public static Object deserialize(InputStream inputStream) throws IOException {
         Assert.notNull(inputStream, "InputStream must is not null. ");
         return deserializer.deserialize(inputStream);
     }

@@ -12,7 +12,7 @@ import java.util.logging.LogManager;
 import static com.apyhs.artoria.util.StringConstant.EMPTY_STRING;
 
 /**
- * Jdk logger adapter
+ * Jdk logger adapter.
  * @author Kahle
  */
 public class JdkLoggerAdapter implements LoggerAdapter {

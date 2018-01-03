@@ -1,7 +1,7 @@
 package com.apyhs.artoria.logging;
 
 /**
- * Level
+ * Level.
  * @author Kahle
  */
 public enum Level {

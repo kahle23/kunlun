@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 
 /**
- * JDK deserializer
+ * JDK deserializer.
  * @author Kahle
  */
 public class DefaultDeserializer implements Deserializer<Object> {

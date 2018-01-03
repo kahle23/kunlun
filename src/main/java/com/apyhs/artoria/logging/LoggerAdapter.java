@@ -1,7 +1,7 @@
 package com.apyhs.artoria.logging;
 
 /**
- * Super logger adapter
+ * Super logger adapter.
  * @author Kahle
  */
 public interface LoggerAdapter {

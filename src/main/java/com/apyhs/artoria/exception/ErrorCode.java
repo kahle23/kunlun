@@ -1,10 +1,10 @@
 package com.apyhs.artoria.exception;
 
 /**
- * Error code
+ * Error code.
  * @author Kahle
  */
-public interface ExceptionCode {
+public interface ErrorCode {
 
     /**
      * The code
