@@ -1,5 +1,6 @@
 package com.apyhs.artoria.util;
 
+import com.apyhs.artoria.beans.BeanUtils;
 import com.apyhs.artoria.beans.Student;
 import org.junit.Test;
 
