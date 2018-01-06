@@ -1,6 +1,6 @@
 package com.apyhs.artoria.serialize;
 
-import com.apyhs.artoria.exception.UnexpectedException;
+import com.apyhs.artoria.exception.UncheckedException;
 import com.apyhs.artoria.util.Assert;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class DefaultDeserializer implements Deserializer<Object> {
             return ois.readObject();
         }
         catch (ClassNotFoundException e) {
-            throw new UnexpectedException(e);
+            throw new UncheckedException(e);
         }
     }
 

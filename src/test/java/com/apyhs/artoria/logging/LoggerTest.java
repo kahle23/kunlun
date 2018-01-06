@@ -1,6 +1,6 @@
 package com.apyhs.artoria.logging;
 
-import com.apyhs.artoria.exception.UnexpectedException;
+import com.apyhs.artoria.exception.UncheckedException;
 import org.junit.Test;
 
 public class LoggerTest {
@@ -26,11 +26,11 @@ public class LoggerTest {
     @Test
     public void logException() {
         System.err.println("Test logger RuntimeException, and show \"using logger: com.apyhs.artoria.logging.JdkLoggerAdapter\".");
-        log.trace("Hello, World!", new UnexpectedException());
-        log.debug("Hello, World!", new UnexpectedException());
-        log.info("Hello, World!", new UnexpectedException());
-        log.warn("Hello, World!", new UnexpectedException());
-        log.error("Hello, World!", new UnexpectedException());
+        log.trace("Hello, World!", new UncheckedException());
+        log.debug("Hello, World!", new UncheckedException());
+        log.info("Hello, World!", new UncheckedException());
+        log.warn("Hello, World!", new UncheckedException());
+        log.error("Hello, World!", new UncheckedException());
     }
 
 }

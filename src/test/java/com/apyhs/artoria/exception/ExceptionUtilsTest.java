@@ -18,7 +18,7 @@ public class ExceptionUtilsTest {
                     .create(SystemCode.MEMORY_OVERFLOW)
                     .setOthers("address in %s, say \"%s\". ", "0364294", "hello");
         }
-        catch (UncheckedException e) {
+        catch (BusinessException e) {
             log.error(e.getMessage(), e);
         }
     }
@@ -31,7 +31,7 @@ public class ExceptionUtilsTest {
                     , SystemCode.ABNORMAL_SHUTDOWN
                     , "Hello, World! Test");
         }
-        catch (UncheckedException e) {
+        catch (BusinessException e) {
             log.error(e.getMessage(), e);
         }
     }

@@ -18,13 +18,13 @@ public class DESTest {
         // Key must is 8, if using SecretKeySpec.
         byte[] key = "TAB2QNW4".getBytes();
         String trsft = "DES/ECB/NoPadding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey);
-        byte[] bytes = encrypter.doFinal(Ciphers.fill(data, 8));
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
+        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
@@ -35,13 +35,13 @@ public class DESTest {
         // So DESKeySpec just get before 8 length
         byte[] key = "TAB2QNW4UKPHY".getBytes();
         String trsft = "DES/ECB/NoPadding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, new DESKeySpec(key));
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, new DESKeySpec(key));
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey);
-        byte[] bytes = encrypter.doFinal(Ciphers.fill(data, 8));
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
+        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
@@ -50,13 +50,13 @@ public class DESTest {
     public void ecbPKCS5Padding() throws Exception {
         byte[] key = "TAB2QNW4".getBytes();
         String trsft = "DES/ECB/PKCS5Padding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey);
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         byte[] bytes = encrypter.doFinal(data);
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
@@ -66,14 +66,14 @@ public class DESTest {
         byte[] key = "TAB2QNW4".getBytes();
         byte[] iv = "WLBSQ8CG".getBytes();
         String trsft = "DES/CBC/NoPadding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
         IvParameterSpec ivps = new IvParameterSpec(iv);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey, ivps);
-        byte[] bytes = encrypter.doFinal(Ciphers.fill(data, 8));
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
+        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey, ivps);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
@@ -83,14 +83,14 @@ public class DESTest {
         byte[] key = "TAB2QNW4".getBytes();
         byte[] iv = "WLBSQ8CG".getBytes();
         String trsft = "DES/CBC/PKCS5Padding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
         IvParameterSpec ivps = new IvParameterSpec(iv);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey, ivps);
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         byte[] bytes = encrypter.doFinal(data);
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey, ivps);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }

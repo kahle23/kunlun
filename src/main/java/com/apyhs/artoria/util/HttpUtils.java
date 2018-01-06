@@ -1,7 +1,7 @@
 package com.apyhs.artoria.util;
 
 import com.apyhs.artoria.codec.Base64;
-import com.apyhs.artoria.exception.UnexpectedException;
+import com.apyhs.artoria.exception.UncheckedException;
 
 import javax.net.ssl.*;
 import java.io.IOException;
@@ -81,7 +81,7 @@ public class HttpUtils {
             return sslContext.getSocketFactory();
         }
         catch (Exception e) {
-            throw new UnexpectedException(e);
+            throw new UncheckedException(e);
         }
     }
 

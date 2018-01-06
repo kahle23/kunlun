@@ -1,6 +1,6 @@
 package com.apyhs.artoria.util;
 
-import com.apyhs.artoria.exception.UnexpectedException;
+import com.apyhs.artoria.exception.UncheckedException;
 
 import java.io.*;
 import java.util.Properties;
@@ -28,7 +28,7 @@ public class PropertiesUtils {
         }
         catch (IOException e) {
             String msg = "Loading properties file[classpath : " + fileName + "] error. ";
-            throw new UnexpectedException(msg, e);
+            throw new UncheckedException(msg, e);
         }
         finally {
             IOUtils.closeQuietly(inputStream);
@@ -52,7 +52,7 @@ public class PropertiesUtils {
         }
         catch (IOException e) {
             String msg = "Loading properties file[" + dest.toString() + "] error. ";
-            throw new UnexpectedException(msg, e);
+            throw new UncheckedException(msg, e);
         }
         finally {
             IOUtils.closeQuietly(inputStream);

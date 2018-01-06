@@ -24,14 +24,14 @@ public class AESTest {
     public void ecbNoPaddingKey16() throws Exception {
         byte[] key = "IXUSMRSSFJQLHVK9".getBytes();
         String trsft = "AES/ECB/NoPadding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey);
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
-        byte[] bytes = encrypter.doFinal(Ciphers.fill(data, 16));
+        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
@@ -40,14 +40,14 @@ public class AESTest {
     public void ecbNoPaddingKey24() throws Exception {
         byte[] key = "IXUSMRSSFJQLHVK9U3NXA2N3".getBytes();
         String trsft = "AES/ECB/NoPadding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey);
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
-        byte[] bytes = encrypter.doFinal(Ciphers.fill(data, 16));
+        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
@@ -56,14 +56,14 @@ public class AESTest {
     public void ecbNoPaddingKey32() throws Exception {
         byte[] key = "IXUSMRSSFJQLHVK93L3HKK7Q5LLD42ZC".getBytes();
         String trsft = "AES/ECB/NoPadding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey);
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
-        byte[] bytes = encrypter.doFinal(Ciphers.fill(data, 16));
+        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
@@ -72,14 +72,14 @@ public class AESTest {
     public void ecbPKCS5Padding() throws Exception {
         byte[] key = "IXUSMRSSFJQLHVK9".getBytes();
         String trsft = "AES/ECB/PKCS5Padding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey);
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
-        byte[] bytes = encrypter.doFinal(Ciphers.fill(data, 16));
+        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
@@ -89,15 +89,15 @@ public class AESTest {
         byte[] key = "IXUSMRSSFJQLHVK9".getBytes();
         byte[] iv = "XWQ6WCMAQAGFY0BR".getBytes();
         String trsft = "AES/CBC/NoPadding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
         IvParameterSpec ivps = new IvParameterSpec(iv);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey, ivps);
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
-        byte[] bytes = encrypter.doFinal(Ciphers.fill(data, 16));
+        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey, ivps);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
@@ -107,15 +107,15 @@ public class AESTest {
         byte[] key = "IXUSMRSSFJQLHVK9".getBytes();
         byte[] iv = "XWQ6WCMAQAGFY0BR".getBytes();
         String trsft = "AES/CBC/PKCS5Padding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
         IvParameterSpec ivps = new IvParameterSpec(iv);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey, ivps);
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
-        byte[] bytes = encrypter.doFinal(Ciphers.fill(data, 16));
+        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey, ivps);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
