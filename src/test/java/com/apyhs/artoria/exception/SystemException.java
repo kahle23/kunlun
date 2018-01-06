@@ -1,6 +1,6 @@
 package com.apyhs.artoria.exception;
 
-public class SystemException extends UncheckedException {
+public class SystemException extends BusinessException {
 
     public SystemException() {
         super();

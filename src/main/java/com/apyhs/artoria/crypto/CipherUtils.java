@@ -22,11 +22,11 @@ import java.security.spec.X509EncodedKeySpec;
  * Cipher tools.
  * @author Kahle
  */
-public class Ciphers {
-    private static final Logger log = LoggerFactory.getLogger(Ciphers.class);
+public class CipherUtils {
+    private static final Logger log = LoggerFactory.getLogger(CipherUtils.class);
 
     static {
-        Ciphers.loadBouncyCastle();
+        CipherUtils.loadBouncyCastle();
         Provider[] providers = Security.getProviders();
         for (Provider provider : providers) {
             String msg = "Provider: " + provider.getClass().getName();

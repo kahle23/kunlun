@@ -16,13 +16,13 @@ public class DESedeTest {
     public void ecbNoPadding() throws Exception {
         byte[] key = "XASA4BKBHXLTUAC3G8L76EQ0".getBytes();
         String trsft = "DESede/ECB/NoPadding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey);
-        byte[] bytes = encrypter.doFinal(Ciphers.fill(data, 8));
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
+        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
@@ -31,13 +31,13 @@ public class DESedeTest {
     public void ecbPKCS5Padding() throws Exception {
         byte[] key = "XASA4BKBHXLTUAC3G8L76EQ0".getBytes();
         String trsft = "DESede/ECB/PKCS5Padding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey);
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         byte[] bytes = encrypter.doFinal(data);
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
@@ -47,14 +47,14 @@ public class DESedeTest {
         byte[] key = "XASA4BKBHXLTUAC3G8L76EQ0".getBytes();
         byte[] iv = "HESN0G1Q".getBytes();
         String trsft = "DESede/CBC/NoPadding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
         IvParameterSpec ivps = new IvParameterSpec(iv);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey, ivps);
-        byte[] bytes = encrypter.doFinal(Ciphers.fill(data, 8));
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
+        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey, ivps);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }
@@ -64,14 +64,14 @@ public class DESedeTest {
         byte[] key = "XASA4BKBHXLTUAC3G8L76EQ0".getBytes();
         byte[] iv = "HESN0G1Q".getBytes();
         String trsft = "DESede/CBC/PKCS5Padding";
-        SecretKey secretKey = Ciphers.parseSecretKey(algorithmName, key);
+        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
         IvParameterSpec ivps = new IvParameterSpec(iv);
 
-        Cipher encrypter = Ciphers.getEncrypter(trsft, secretKey, ivps);
+        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         byte[] bytes = encrypter.doFinal(data);
         System.out.println(Base64.encodeToString(bytes));
 
-        Cipher decrypter = Ciphers.getDecrypter(trsft, secretKey, ivps);
+        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
         System.out.println(new String(bytes1));
     }

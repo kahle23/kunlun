@@ -1,6 +1,6 @@
 package com.apyhs.artoria.util;
 
-import com.apyhs.artoria.exception.UnexpectedException;
+import com.apyhs.artoria.exception.UncheckedException;
 
 import java.io.File;
 import java.net.URL;
@@ -18,7 +18,7 @@ public class PathUtils {
             return path != null ? path.getParentFile().getParent() : StringConstant.EMPTY_STRING;
         }
         catch (Throwable t) {
-            throw new UnexpectedException(t.getMessage(), t);
+            throw new UncheckedException(t.getMessage(), t);
         }
     }
 
@@ -28,7 +28,7 @@ public class PathUtils {
             return res != null ? new File(res.toURI().getPath()).toString() : StringConstant.EMPTY_STRING;
         }
         catch (Throwable t) {
-            throw new UnexpectedException(t.getMessage(), t);
+            throw new UncheckedException(t.getMessage(), t);
         }
     }
 
@@ -80,7 +80,7 @@ public class PathUtils {
             return path != null ? new File(path).toString() : StringConstant.EMPTY_STRING;
         }
         catch (Throwable t) {
-            throw new UnexpectedException(t.getMessage(), t);
+            throw new UncheckedException(t.getMessage(), t);
         }
     }
 

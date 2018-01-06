@@ -16,14 +16,14 @@ public class RSATest {
     @Test
     public void noneNoPaddingAndDecrypterBySelf() throws Exception {
         String trsft = "RSA/None/NoPadding";
-        KeyPair keyPair = Ciphers.generateKeyPair(algorithmName, 2048);
+        KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
 
-        Cipher encrypterPublic = Ciphers.getEncrypter(trsft, publicKey);
-        Cipher decrypterPublic = Ciphers.getDecrypter(trsft, publicKey);
-        Cipher encrypterPrivate = Ciphers.getEncrypter(trsft, privateKey);
-        Cipher decrypterPrivate = Ciphers.getDecrypter(trsft, privateKey);
+        Cipher encrypterPublic = CipherUtils.getEncrypter(trsft, publicKey);
+        Cipher decrypterPublic = CipherUtils.getDecrypter(trsft, publicKey);
+        Cipher encrypterPrivate = CipherUtils.getEncrypter(trsft, privateKey);
+        Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
 
         byte[] bytes = encrypterPublic.doFinal(data);
         System.out.println("Encrypter Public: " + Base64.encodeToString(bytes));
@@ -44,14 +44,14 @@ public class RSATest {
     @Test
     public void nonePKCS1Padding() throws Exception {
         String trsft = "RSA/None/PKCS1Padding";
-        KeyPair keyPair = Ciphers.generateKeyPair(algorithmName, 2048);
+        KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
 
-        Cipher encrypterPublic = Ciphers.getEncrypter(trsft, publicKey);
-        Cipher decrypterPublic = Ciphers.getDecrypter(trsft, publicKey);
-        Cipher encrypterPrivate = Ciphers.getEncrypter(trsft, privateKey);
-        Cipher decrypterPrivate = Ciphers.getDecrypter(trsft, privateKey);
+        Cipher encrypterPublic = CipherUtils.getEncrypter(trsft, publicKey);
+        Cipher decrypterPublic = CipherUtils.getDecrypter(trsft, publicKey);
+        Cipher encrypterPrivate = CipherUtils.getEncrypter(trsft, privateKey);
+        Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
 
         byte[] bytes = encrypterPublic.doFinal(data);
         System.out.println("Encrypter Public: " + Base64.encodeToString(bytes));
@@ -68,14 +68,14 @@ public class RSATest {
     @Test
     public void ecbNoPadding() throws Exception {
         String trsft = "RSA/ECB/NoPadding";
-        KeyPair keyPair = Ciphers.generateKeyPair(algorithmName, 2048);
+        KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
 
-        Cipher encrypterPublic = Ciphers.getEncrypter(trsft, publicKey);
-        Cipher decrypterPublic = Ciphers.getDecrypter(trsft, publicKey);
-        Cipher encrypterPrivate = Ciphers.getEncrypter(trsft, privateKey);
-        Cipher decrypterPrivate = Ciphers.getDecrypter(trsft, privateKey);
+        Cipher encrypterPublic = CipherUtils.getEncrypter(trsft, publicKey);
+        Cipher decrypterPublic = CipherUtils.getDecrypter(trsft, publicKey);
+        Cipher encrypterPrivate = CipherUtils.getEncrypter(trsft, privateKey);
+        Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
 
         byte[] bytes = encrypterPublic.doFinal(data);
         System.out.println("Encrypter Public: " + Base64.encodeToString(bytes));
@@ -92,14 +92,14 @@ public class RSATest {
     @Test
     public void ecbPKCS1Padding() throws Exception {
         String trsft = "RSA/ECB/PKCS1Padding";
-        KeyPair keyPair = Ciphers.generateKeyPair(algorithmName, 2048);
+        KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
 
-        Cipher encrypterPublic = Ciphers.getEncrypter(trsft, publicKey);
-        Cipher decrypterPublic = Ciphers.getDecrypter(trsft, publicKey);
-        Cipher encrypterPrivate = Ciphers.getEncrypter(trsft, privateKey);
-        Cipher decrypterPrivate = Ciphers.getDecrypter(trsft, privateKey);
+        Cipher encrypterPublic = CipherUtils.getEncrypter(trsft, publicKey);
+        Cipher decrypterPublic = CipherUtils.getDecrypter(trsft, publicKey);
+        Cipher encrypterPrivate = CipherUtils.getEncrypter(trsft, privateKey);
+        Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
 
         byte[] bytes = encrypterPublic.doFinal(data);
         System.out.println("Encrypter Public: " + Base64.encodeToString(bytes));
