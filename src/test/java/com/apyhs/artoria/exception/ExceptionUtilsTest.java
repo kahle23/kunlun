@@ -7,16 +7,41 @@ import org.junit.Test;
 public class ExceptionUtilsTest {
     private static final Logger log = LoggerFactory.getLogger(ExceptionUtilsTest.class);
 
-    static {
-        ExceptionUtils.register(SystemCode.class, SystemException.class);
-    }
-
     @Test
     public void createAndSetOthers() {
         try {
-            throw ExceptionUtils
-                    .create(SystemCode.MEMORY_OVERFLOW)
-                    .setOthers("address in %s, say \"%s\". ", "0364294", "hello");
+            throw new BusinessException(SystemCode.MEMORY_OVERFLOW)
+                    .setDescription("address in %s, say \"%s\". ", "0364294", "hello");
+        }
+        catch (BusinessException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    private void throwException1() throws BusinessException {
+        try {
+            throw new BusinessException(SystemCode.MEMORY_OVERFLOW)
+                    .setDescription("[BusinessException]: Just Test...");
+        }
+        catch (BusinessException e) {
+            throw ExceptionUtils.wrap(e);
+        }
+    }
+
+    private void throwException2() throws BusinessException {
+        try {
+            throw new UncheckedException(
+                    "[UncheckedException]: Just Test...");
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
+        }
+    }
+
+    @Test
+    public void testWrap1() {
+        try {
+            this.throwException1();
         }
         catch (BusinessException e) {
             log.error(e.getMessage(), e);
@@ -24,14 +49,11 @@ public class ExceptionUtilsTest {
     }
 
     @Test
-    public void check() {
-        Integer i = (System.currentTimeMillis() >> 6) % 2 == 0 ? null : 1;
+    public void testWrap2() {
         try {
-            ExceptionUtils.check(i != null
-                    , SystemCode.ABNORMAL_SHUTDOWN
-                    , "Hello, World! Test");
+            this.throwException2();
         }
-        catch (BusinessException e) {
+        catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }

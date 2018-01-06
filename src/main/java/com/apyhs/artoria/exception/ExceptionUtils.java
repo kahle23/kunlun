@@ -2,7 +2,6 @@ package com.apyhs.artoria.exception;
 
 import com.apyhs.artoria.logging.Logger;
 import com.apyhs.artoria.logging.LoggerFactory;
-import com.apyhs.artoria.util.Assert;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -14,38 +13,19 @@ import java.io.StringWriter;
 public class ExceptionUtils {
     private static final Logger log = LoggerFactory.getLogger(ExceptionUtils.class);
 
-    public static BusinessException create() {
-        return new BusinessException();
+    public static BusinessException wrap(Throwable cause) {
+        return cause instanceof BusinessException
+                ? (BusinessException) cause : new BusinessException(cause);
     }
 
-    public static BusinessException create(String message) {
-        return new BusinessException(message);
-    }
-
-    public static BusinessException create(Throwable cause) {
-        return new BusinessException(cause);
-    }
-
-    public static BusinessException create(String message, Throwable cause) {
-        return new BusinessException(message, cause);
-    }
-
-    public static BusinessException create(ErrorCode errorCode) {
-        Assert.notNull(errorCode, "Parameter \"errorCode\" must is not null. ");
-        BusinessException e = new BusinessException(errorCode.getContent());
-        e.setErrorCode(errorCode);
-        return e;
-    }
-
-    public static BusinessException create(ErrorCode errorCode, Throwable cause) {
-        Assert.notNull(errorCode, "Parameter \"errorCode\" must is not null. ");
-        if (cause != null) {
-            BusinessException e = new BusinessException(errorCode.getContent(), cause);
-            e.setErrorCode(errorCode);
-            return e;
+    public static BusinessException wrap(Throwable cause, ErrorCode code) {
+        if (code != null) {
+            BusinessException e = (BusinessException) cause;
+            return code.equals(e.getErrorCode())
+                    ? e : new BusinessException(code, cause);
         }
         else {
-            return ExceptionUtils.create(errorCode);
+            return ExceptionUtils.wrap(cause);
         }
     }
 

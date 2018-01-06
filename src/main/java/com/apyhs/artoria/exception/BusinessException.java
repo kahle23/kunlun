@@ -12,7 +12,7 @@ import static com.apyhs.artoria.util.StringConstant.ENDL;
 public class BusinessException extends Exception {
 
     private ErrorCode errorCode;
-    private String others;
+    private String description;
 
     public BusinessException() {
         super();
@@ -30,25 +30,36 @@ public class BusinessException extends Exception {
         super(message, cause);
     }
 
+    public BusinessException(ErrorCode errorCode) {
+        super(errorCode.getContent());
+        this.errorCode = errorCode;
+    }
+
+    public BusinessException(ErrorCode errorCode, Throwable cause) {
+        super(errorCode.getContent(), cause);
+        this.errorCode = errorCode;
+    }
+
     public ErrorCode getErrorCode() {
         return errorCode;
     }
 
-    protected void setErrorCode(ErrorCode errorCode) {
-        this.errorCode = errorCode;
+    public String getDescription() {
+        return description;
     }
 
-    public String getOthers() {
-        return others;
-    }
-
-    public BusinessException setOthers(String others) {
-        this.others = others;
+    public BusinessException setDescription(String description) {
+        this.description = description;
         return this;
     }
 
-    public BusinessException setOthers(String format, Object... args) {
-        this.others = String.format(format, args);
+    public BusinessException setDescription(StringBuilder builder) {
+        this.description = builder.toString();
+        return this;
+    }
+
+    public BusinessException setDescription(String format, Object... args) {
+        this.description = String.format(format, args);
         return this;
     }
 
@@ -69,9 +80,9 @@ public class BusinessException extends Exception {
                     .append(errorCode.toString())
                     .append(")").append(ENDL);
         }
-        if (StringUtils.isNotBlank(others)) {
-            builder.append("others: ")
-                    .append(others)
+        if (StringUtils.isNotBlank(description)) {
+            builder.append("description: ")
+                    .append(description)
                     .append(ENDL);
         }
         return builder.append("stack trace: ").toString();
