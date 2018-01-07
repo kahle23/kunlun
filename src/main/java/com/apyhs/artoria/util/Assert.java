@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Kahle
  */
 public class Assert {
-    private static final String MESSAGE_NOT_BLANK = "Parameter \"message\" must is not blank. ";
+    private static final String MESSAGE_NOT_BLANK = "Parameter \"message\" must not blank. ";
 
     public static void state(boolean expression, String message) {
         Assert.notBlank(message, MESSAGE_NOT_BLANK);
@@ -133,8 +133,8 @@ public class Assert {
 
     public static void isContain(String textToSearch, String substring, String message) {
         Assert.notBlank(message, MESSAGE_NOT_BLANK);
-        Assert.notEmpty(textToSearch, "Parameter \"textToSearch\" must is not empty. ");
-        Assert.notEmpty(substring, "Parameter \"substring\" must is not empty. ");
+        Assert.notEmpty(textToSearch, "Parameter \"textToSearch\" must not empty. ");
+        Assert.notEmpty(substring, "Parameter \"substring\" must not empty. ");
         if (!textToSearch.contains(substring)) {
             throw new IllegalArgumentException(message);
         }
@@ -142,8 +142,8 @@ public class Assert {
 
     public static void notContain(String textToSearch, String substring, String message) {
         Assert.notBlank(message, MESSAGE_NOT_BLANK);
-        Assert.notEmpty(textToSearch, "Parameter \"textToSearch\" must is not empty. ");
-        Assert.notEmpty(substring, "Parameter \"substring\" must is not empty. ");
+        Assert.notEmpty(textToSearch, "Parameter \"textToSearch\" must not empty. ");
+        Assert.notEmpty(substring, "Parameter \"substring\" must not empty. ");
         if (textToSearch.contains(substring)) {
             throw new IllegalArgumentException(message);
         }
@@ -151,7 +151,7 @@ public class Assert {
 
     public static void isAssignable(Class<?> superType, Class<?> subType, String message) {
         Assert.notBlank(message, MESSAGE_NOT_BLANK);
-        Assert.notNull(superType, "Parameter \"superType\" must is not null. ");
+        Assert.notNull(superType, "Parameter \"superType\" must not null. ");
         if (subType == null || !superType.isAssignableFrom(subType)) {
             throw new IllegalArgumentException(message);
         }
@@ -159,7 +159,7 @@ public class Assert {
 
     public static void isInstanceOf(Class<?> type, Object obj, String message) {
         Assert.notBlank(message, MESSAGE_NOT_BLANK);
-        Assert.notNull(type, "Parameter \"type\" must is not null. ");
+        Assert.notNull(type, "Parameter \"type\" must not null. ");
         if (obj == null || !type.isInstance(obj)) {
             throw new IllegalArgumentException(message);
         }
@@ -167,7 +167,7 @@ public class Assert {
 
     public static void noNullElements(Object[] array, String message) {
         Assert.notBlank(message, MESSAGE_NOT_BLANK);
-        Assert.notEmpty(array, "Parameter \"array\" must is not empty. ");
+        Assert.notEmpty(array, "Parameter \"array\" must not empty. ");
         for (Object element : array) {
             if (element == null) {
                 throw new IllegalArgumentException(message);

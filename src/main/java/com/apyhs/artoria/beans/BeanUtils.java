@@ -1,16 +1,14 @@
 package com.apyhs.artoria.beans;
 
-import com.apyhs.artoria.converter.Converter;
 import com.apyhs.artoria.converter.ConvertUtils;
-import com.apyhs.artoria.exception.ReflectionException;
+import com.apyhs.artoria.converter.Converter;
+import com.apyhs.artoria.exception.UncheckedException;
 import com.apyhs.artoria.serialize.SerializeUtils;
 import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.ReflectUtils;
 import com.apyhs.artoria.util.StringUtils;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.Map;
 
 import static com.apyhs.artoria.util.StringConstant.STRING_GET;
@@ -30,42 +28,18 @@ public class BeanUtils {
         }
     };
 
-    public static <T> T ifNull(T value, T defaultValue) {
-        return value != null ? value : defaultValue;
-    }
+    private static BeanCopier beanCopier = new JdkBeanCopier();
 
-    public static boolean isNull(Object obj) {
-        return obj == null;
-    }
-
-    public static boolean isEmpty(Object obj) {
-        if (obj == null) {
-            return true;
+    public static Object clone(Object obj) {
+        try {
+            Class<?> clazz = obj.getClass();
+            Object clone = ReflectUtils.newInstance(clazz);
+            BeanUtils.copy(obj, clone);
+            return clone;
         }
-        if (obj.getClass().isArray()) {
-            return Array.getLength(obj) == 0;
+        catch (Exception e) {
+            throw new UncheckedException(e);
         }
-        if (obj instanceof CharSequence) {
-            return ((CharSequence) obj).length() == 0;
-        }
-        if (obj instanceof Collection) {
-            return ((Collection) obj).isEmpty();
-        }
-        if (obj instanceof Map) {
-            return ((Map) obj).isEmpty();
-        }
-        return false;
-    }
-
-    public static boolean isArray(Object obj) {
-        return obj != null && obj.getClass().isArray();
-    }
-
-    public static Object clone(Object obj) throws ReflectionException {
-        Class<?> clazz = obj.getClass();
-        Object clone = ReflectUtils.newInstance(clazz);
-        BeanUtils.copyProperties(obj, clone);
-        return clone;
     }
 
     public static Object deepClone(Object obj) {
@@ -73,10 +47,10 @@ public class BeanUtils {
         return SerializeUtils.deserialize(data);
     }
 
-    public static void copyProperties(Object src, Map<String, Object> dest) {
-        Assert.notNull(src, "Source must is not null. ");
-        Assert.notNull(dest, "Destination must is not null. ");
-        Class<?> clazz = src.getClass();
+    public static void copy(Object from, Map<String, Object> to) {
+        Assert.notNull(from, "Source must is not null. ");
+        Assert.notNull(to, "Destination must is not null. ");
+        Class<?> clazz = from.getClass();
         Map<String, Method> mths = ReflectUtils.findAllGetterAndSetter(clazz);
         for (Map.Entry<String, Method> entry : mths.entrySet()) {
             String name = entry.getKey();
@@ -87,23 +61,23 @@ public class BeanUtils {
             name = StringUtils.uncapitalize(name);
             Method mth = entry.getValue();
             try {
-                Object invoke = mth.invoke(src);
-                dest.put(name, invoke);
+                Object invoke = mth.invoke(from);
+                to.put(name, invoke);
             }
             catch (Exception e) { /*ignore*/ }
         }
     }
 
-    public static void copyProperties(Map<String, ?> src, Object dest) {
-        BeanUtils.copyProperties(src, dest, CONVERTER);
+    public static void copy(Map<String, ?> from, Object to) {
+        BeanUtils.copy(from, to, CONVERTER);
     }
 
-    public static void copyProperties(Map<String, ?> src, Object dest, Converter cvt) {
-        Assert.notNull(src, "Source must is not null. ");
-        Assert.notNull(dest, "Destination must is not null. ");
-        Class<?> clazz = dest.getClass();
+    public static void copy(Map<String, ?> from, Object to, Converter cvt) {
+        Assert.notNull(from, "Source must is not null. ");
+        Assert.notNull(to, "Destination must is not null. ");
+        Class<?> clazz = to.getClass();
         Map<String, Method> mths = ReflectUtils.findAllGetterAndSetter(clazz);
-        for (Map.Entry<String, ?> entry : src.entrySet()) {
+        for (Map.Entry<String, ?> entry : from.entrySet()) {
             String name = entry.getKey();
             if (!name.startsWith(STRING_SET)) {
                 name = STRING_SET + StringUtils.capitalize(name);
@@ -114,39 +88,17 @@ public class BeanUtils {
             Object input = entry.getValue();
             // do convert
             input = cvt != null ? cvt.convert(input, dType) : input;
-            try { mth.invoke(dest, input); }
+            try { mth.invoke(to, input); }
             catch (Exception e) { /*ignore*/ }
         }
     }
 
-    public static void copyProperties(Object src, Object dest) {
-        BeanUtils.copyProperties(src, dest, CONVERTER);
+    public static void copy(Object from, Object to) {
+        BeanUtils.copy(from, to, CONVERTER);
     }
 
-    public static void copyProperties(Object src, Object dest, Converter cvt) {
-        Assert.notNull(src, "Source must is not null. ");
-        Assert.notNull(dest, "Destination must is not null. ");
-        Class<?> srcClass = src.getClass();
-        Class<?> destClass = dest.getClass();
-        Map<String, Method> srcMths = ReflectUtils.findAllGetterAndSetter(srcClass);
-        Map<String, Method> destMths = ReflectUtils.findAllGetterAndSetter(destClass);
-        for (Map.Entry<String, Method> entry : srcMths.entrySet()) {
-            String name = entry.getKey();
-            if (!name.startsWith(STRING_GET)) { continue; }
-            name = name.substring(GET_OR_SET_LENGTH);
-            name = STRING_SET + name;
-            Method destMth = destMths.get(name);
-            if (destMth == null) { continue; }
-            Method srcMth = entry.getValue();
-            try {
-                Object input = srcMth.invoke(src);
-                Class<?> dType = destMth.getParameterTypes()[0];
-                // do convert
-                input = cvt != null ? cvt.convert(input, dType) : input;
-                destMth.invoke(dest, input);
-            }
-            catch (Exception e) { /*ignore*/ }
-        }
+    public static void copy(Object from, Object to, Converter cvt) {
+        beanCopier.copy(from, to, null, cvt);
     }
 
 }

@@ -11,7 +11,7 @@ import java.io.Serializable;
  * JDK serializer.
  * @author Kahle
  */
-public class DefaultSerializer implements Serializer<Object> {
+public class JdkSerializer implements Serializer<Object> {
 
     @Override
     public void serialize(Object object, OutputStream outputStream) throws IOException {
