@@ -46,11 +46,11 @@ public class BeanUtilsTest {
         student.setScore(89);
         student.setEmail("zhangsan@email.com");
         Map<String, Object> map = new HashMap<String, Object>();
-        BeanUtils.copyProperties(student, map);
+        BeanUtils.copy(student, map);
         System.out.println(map);
 
         Student student1 = new Student();
-        BeanUtils.copyProperties(map, student1);
+        BeanUtils.copy(map, student1);
         System.out.println(student1);
     }
 
@@ -65,7 +65,7 @@ public class BeanUtilsTest {
         System.out.println(student);
 
         Student student1 = new Student();
-        BeanUtils.copyProperties(student, student1);
+        BeanUtils.copy(student, student1);
         System.out.println(student1);
 
         student1.setAge(23);

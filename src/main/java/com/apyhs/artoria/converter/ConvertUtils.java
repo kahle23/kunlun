@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Type tools.
+ * Convert tools.
  * @author Kahle
  */
 public class ConvertUtils {

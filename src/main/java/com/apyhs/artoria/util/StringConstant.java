@@ -21,7 +21,9 @@ public class StringConstant {
     public static final String SLASH = "/";
     public static final String EQUAL = "=";
     public static final String COLON = ":";
+    public static final String COLON_SPACE = ": ";
     public static final String COMMA = ",";
+    public static final String COMMA_SPACE = ", ";
     public static final String UNDERLINE = "_";
     public static final String AMPERSAND = "&";
     public static final String QUESTION_MARK = "?";

@@ -17,8 +17,8 @@ public class SerializeUtils {
     private static Deserializer<Object> deserializer;
 
     static {
-        SerializeUtils.setSerializer(new DefaultSerializer());
-        SerializeUtils.setDeserializer(new DefaultDeserializer());
+        SerializeUtils.setSerializer(new JdkSerializer());
+        SerializeUtils.setDeserializer(new JdkDeserializer());
     }
 
     public static Serializer<Object> getSerializer() {
