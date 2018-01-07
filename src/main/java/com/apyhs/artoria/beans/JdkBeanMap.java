@@ -1,8 +1,10 @@
 package com.apyhs.artoria.beans;
 
+import com.apyhs.artoria.converter.Converter;
 import com.apyhs.artoria.exception.UncheckedException;
+import com.apyhs.artoria.util.ArrayUtils;
 import com.apyhs.artoria.util.Assert;
-import com.apyhs.artoria.util.ReflectUtils;
+import com.apyhs.artoria.reflect.ReflectUtils;
 import com.apyhs.artoria.util.StringUtils;
 
 import java.lang.reflect.Method;
@@ -70,6 +72,11 @@ public class JdkBeanMap extends BeanMap {
     protected Object put(Object bean, Object key, Object value) {
         Method method = setters.get(key);
         if (method == null) { return null; }
+        Converter cvt = this.getConverter();
+        Class<?>[] types = method.getParameterTypes();
+        if (cvt != null && ArrayUtils.isNotEmpty(types)) {
+            value = cvt.convert(value, types[0]);
+        }
         try {
             // The return always null.
             // If want not null, must invoke getter first.

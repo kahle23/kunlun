@@ -26,7 +26,7 @@ public class SerializeUtils {
     }
 
     public static void setSerializer(Serializer<Object> serializer) {
-        Assert.notNull(serializer, "Serializer must is not null. ");
+        Assert.notNull(serializer, "Parameter \"serializer\" must not null. ");
         log.info("Set serializer: " + serializer.getClass().getName());
         SerializeUtils.serializer = serializer;
     }
@@ -36,13 +36,18 @@ public class SerializeUtils {
     }
 
     public static void setDeserializer(Deserializer<Object> deserializer) {
-        Assert.notNull(deserializer, "Deserializer must is not null. ");
+        Assert.notNull(deserializer, "Parameter \"deserializer\" must not null. ");
         log.info("Set deserializer: " + deserializer.getClass().getName());
         SerializeUtils.deserializer = deserializer;
     }
 
+    public static Object clone(Object obj) {
+        byte[] data = SerializeUtils.serialize(obj);
+        return SerializeUtils.deserialize(data);
+    }
+
     public static byte[] serialize(Object object) {
-        Assert.notNull(object, "Object must is not null. ");
+        Assert.notNull(object, "Parameter \"object\" must not null. ");
         ByteArrayOutputStream baos = new ByteArrayOutputStream(INITIAL_SIZE);
         try {
             SerializeUtils.serialize(object, baos);
@@ -55,7 +60,7 @@ public class SerializeUtils {
     }
 
     public static Object deserialize(byte[] bytes) {
-        Assert.notEmpty(bytes, "Byte array must is not empty. ");
+        Assert.notEmpty(bytes, "Parameter \"bytes\" must not empty. ");
         try {
             ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
             return SerializeUtils.deserialize(bais);
@@ -66,13 +71,13 @@ public class SerializeUtils {
     }
 
     public static void serialize(Object object, OutputStream outputStream) throws IOException {
-        Assert.notNull(object, "Object must is not null. ");
-        Assert.notNull(outputStream, "OutputStream must is not null. ");
+        Assert.notNull(object, "Parameter \"object\" must not null. ");
+        Assert.notNull(outputStream, "Parameter \"outputStream\" must not null. ");
         serializer.serialize(object, outputStream);
     }
 
     public static Object deserialize(InputStream inputStream) throws IOException {
-        Assert.notNull(inputStream, "InputStream must is not null. ");
+        Assert.notNull(inputStream, "Parameter \"inputStream\" must not null. ");
         return deserializer.deserialize(inputStream);
     }
 

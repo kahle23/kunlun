@@ -5,7 +5,7 @@ import com.apyhs.artoria.logging.Logger;
 import com.apyhs.artoria.logging.LoggerFactory;
 import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.ClassUtils;
-import com.apyhs.artoria.util.ReflectUtils;
+import com.apyhs.artoria.reflect.ReflectUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
