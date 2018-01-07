@@ -3,24 +3,21 @@ package com.apyhs.artoria.beans;
 import com.apyhs.artoria.converter.ConvertUtils;
 import com.apyhs.artoria.converter.Converter;
 import com.apyhs.artoria.exception.UncheckedException;
-import com.apyhs.artoria.serialize.SerializeUtils;
+import com.apyhs.artoria.logging.Logger;
+import com.apyhs.artoria.logging.LoggerFactory;
 import com.apyhs.artoria.util.Assert;
-import com.apyhs.artoria.util.ReflectUtils;
-import com.apyhs.artoria.util.StringUtils;
+import com.apyhs.artoria.reflect.ReflectUtils;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
+import java.util.List;
 import java.util.Map;
-
-import static com.apyhs.artoria.util.StringConstant.STRING_GET;
-import static com.apyhs.artoria.util.StringConstant.STRING_SET;
 
 /**
  * Bean tools.
  * @author Kahle
  */
 public class BeanUtils {
-    private static final Integer GET_OR_SET_LENGTH = 3;
-
+    private static final Logger log = LoggerFactory.getLogger(BeanUtils.class);
     private static final Converter CONVERTER = new Converter() {
         @Override
         public Object convert(Object source, Class<?> target) {
@@ -28,7 +25,59 @@ public class BeanUtils {
         }
     };
 
-    private static BeanCopier beanCopier = new JdkBeanCopier();
+    private static BeanCopier beanCopier;
+    private static Class<? extends BeanMap> beanMapClass;
+    private static Constructor<? extends BeanMap> beanMapConstructor;
+
+    static {
+        BeanUtils.setBeanCopier(new JdkBeanCopier());
+        BeanUtils.setBeanMapClass(JdkBeanMap.class);
+    }
+
+    public static BeanCopier getBeanCopier() {
+        return beanCopier;
+    }
+
+    public static void setBeanCopier(BeanCopier beanCopier) {
+        Assert.notNull(beanCopier,
+                "Parameter \"beanCopier\" must not null. ");
+        BeanUtils.beanCopier = beanCopier;
+        log.info("Set bean copier: " + beanCopier.getClass().getName());
+    }
+
+    public static Class<? extends BeanMap> getBeanMapClass() {
+        return beanMapClass;
+    }
+
+    public static void setBeanMapClass(Class<? extends BeanMap> beanMapClass) {
+        Assert.notNull(beanMapClass,
+                "Parameter \"beanMapClass\" must not null. ");
+        Assert.state(beanMapClass != BeanMap.class,
+                "Parameter \"beanMapClass\" must not \"BeanMap.class\". ");
+        try {
+            BeanUtils.beanMapClass = beanMapClass;
+            BeanUtils.beanMapConstructor = beanMapClass.getConstructor();
+            log.info("Set bean map class: " + beanMapClass.getName());
+        }
+        catch (Exception e) {
+            throw new UncheckedException(e);
+        }
+    }
+
+    public static BeanMap createBeanMap() {
+        try {
+            return beanMapConstructor.newInstance();
+        }
+        catch (Exception e) {
+            throw new UncheckedException(e);
+        }
+    }
+
+    public static BeanMap createBeanMap(Object bean) {
+        BeanMap map = BeanUtils.createBeanMap();
+        map.setBean(bean);
+        return map;
+    }
 
     public static Object clone(Object obj) {
         try {
@@ -42,30 +91,12 @@ public class BeanUtils {
         }
     }
 
-    public static Object deepClone(Object obj) {
-        byte[] data = SerializeUtils.serialize(obj);
-        return SerializeUtils.deserialize(data);
-    }
-
-    public static void copy(Object from, Map<String, Object> to) {
-        Assert.notNull(from, "Source must is not null. ");
-        Assert.notNull(to, "Destination must is not null. ");
-        Class<?> clazz = from.getClass();
-        Map<String, Method> mths = ReflectUtils.findAllGetterAndSetter(clazz);
-        for (Map.Entry<String, Method> entry : mths.entrySet()) {
-            String name = entry.getKey();
-            if (!name.startsWith(STRING_GET)) {
-                continue;
-            }
-            name = name.substring(GET_OR_SET_LENGTH);
-            name = StringUtils.uncapitalize(name);
-            Method mth = entry.getValue();
-            try {
-                Object invoke = mth.invoke(from);
-                to.put(name, invoke);
-            }
-            catch (Exception e) { /*ignore*/ }
-        }
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public static void copy(Object from, Map<String, ?> to) {
+        Assert.notNull(from, "Parameter \"from\" must not null. ");
+        Assert.notNull(to, "Parameter \"to\" must not null. ");
+        BeanMap map = BeanUtils.createBeanMap(from);
+        to.putAll(map);
     }
 
     public static void copy(Map<String, ?> from, Object to) {
@@ -73,32 +104,27 @@ public class BeanUtils {
     }
 
     public static void copy(Map<String, ?> from, Object to, Converter cvt) {
-        Assert.notNull(from, "Source must is not null. ");
-        Assert.notNull(to, "Destination must is not null. ");
-        Class<?> clazz = to.getClass();
-        Map<String, Method> mths = ReflectUtils.findAllGetterAndSetter(clazz);
-        for (Map.Entry<String, ?> entry : from.entrySet()) {
-            String name = entry.getKey();
-            if (!name.startsWith(STRING_SET)) {
-                name = STRING_SET + StringUtils.capitalize(name);
-            }
-            Method mth = mths.get(name);
-            if (mth == null) { continue; }
-            Class<?> dType = mth.getParameterTypes()[0];
-            Object input = entry.getValue();
-            // do convert
-            input = cvt != null ? cvt.convert(input, dType) : input;
-            try { mth.invoke(to, input); }
-            catch (Exception e) { /*ignore*/ }
-        }
+        Assert.notNull(from, "Parameter \"from\" must not null. ");
+        Assert.notNull(to, "Parameter \"to\" must not null. ");
+        BeanMap map = BeanUtils.createBeanMap(to);
+        map.setConverter(cvt);
+        map.putAll(from);
     }
 
     public static void copy(Object from, Object to) {
-        BeanUtils.copy(from, to, CONVERTER);
+        beanCopier.copy(from, to, null, CONVERTER);
     }
 
     public static void copy(Object from, Object to, Converter cvt) {
         beanCopier.copy(from, to, null, cvt);
+    }
+
+    public static void copy(Object from, Object to, List<String> ignore) {
+        beanCopier.copy(from, to, ignore, CONVERTER);
+    }
+
+    public static void copy(Object from, Object to, List<String> ignore, Converter cvt) {
+        beanCopier.copy(from, to, ignore, cvt);
     }
 
 }

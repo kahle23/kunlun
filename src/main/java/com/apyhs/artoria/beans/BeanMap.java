@@ -1,5 +1,6 @@
 package com.apyhs.artoria.beans;
 
+import com.apyhs.artoria.converter.Converter;
 import com.apyhs.artoria.util.ObjectUtils;
 
 import java.util.*;
@@ -13,6 +14,7 @@ import static com.apyhs.artoria.util.StringConstant.*;
 public abstract class BeanMap implements Map, Cloneable {
 
     private Object bean;
+    private Converter converter;
 
     protected BeanMap() {}
 
@@ -24,8 +26,29 @@ public abstract class BeanMap implements Map, Cloneable {
         this.bean = bean;
     }
 
+    public Converter getConverter() {
+        return converter;
+    }
+
+    public void setConverter(Converter converter) {
+        this.converter = converter;
+    }
+
+    /**
+     * Get the value who property is key's value from bean.
+     * @param bean The bean map's bean
+     * @param key The bean's property
+     * @return The bean's value
+     */
     protected abstract Object get(Object bean, Object key);
 
+    /**
+     * Put the value who property is key's value from bean.
+     * @param bean The bean map's bean
+     * @param key The bean's property
+     * @param value The bean's value want to put
+     * @return The old value about the property
+     */
     protected abstract Object put(Object bean, Object key, Object value);
 
     @Override
@@ -83,6 +106,7 @@ public abstract class BeanMap implements Map, Cloneable {
         throw new UnsupportedOperationException();
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public Collection values() {
         Set keys = this.keySet();
@@ -93,6 +117,7 @@ public abstract class BeanMap implements Map, Cloneable {
         return Collections.unmodifiableCollection(values);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public Set<Entry> entrySet() {
         Set keys = this.keySet();

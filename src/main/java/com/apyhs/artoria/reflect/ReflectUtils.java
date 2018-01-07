@@ -1,6 +1,7 @@
-package com.apyhs.artoria.util;
+package com.apyhs.artoria.reflect;
 
 import com.apyhs.artoria.exception.ReflectionException;
+import com.apyhs.artoria.util.*;
 
 import java.lang.reflect.*;
 import java.util.*;

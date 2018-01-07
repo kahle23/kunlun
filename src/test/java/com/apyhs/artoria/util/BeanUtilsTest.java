@@ -38,7 +38,7 @@ public class BeanUtilsTest {
     }
 
     @Test
-    public void copyProperties1() {
+    public void copy1() {
         Student student = new Student();
         student.setName("zhangsan");
         student.setAge(19);
@@ -55,7 +55,7 @@ public class BeanUtilsTest {
     }
 
     @Test
-    public void copyProperties2() {
+    public void copy2() {
         Student student = new Student();
         student.setName("zhangsan");
         student.setAge(19);
