@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 
 import static com.apyhs.artoria.util.IOUtils.DEFAULT_BUFFER_SIZE;
 import static com.apyhs.artoria.util.IOUtils.EOF;
-import static com.apyhs.artoria.util.StringConstant.DEFAULT_CHARSET_NAME;
+import static com.apyhs.artoria.util.Const.DEFAULT_CHARSET_NAME;
 
 /**
  * Hash tools.

@@ -5,8 +5,8 @@ import com.apyhs.artoria.converter.Converter;
 import com.apyhs.artoria.exception.UncheckedException;
 import com.apyhs.artoria.logging.Logger;
 import com.apyhs.artoria.logging.LoggerFactory;
-import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.reflect.ReflectUtils;
+import com.apyhs.artoria.util.Assert;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Map;
  * Bean tools.
  * @author Kahle
  */
-public class BeanUtils {
+public class BeanUtils extends BeanHandler {
     private static final Logger log = LoggerFactory.getLogger(BeanUtils.class);
     private static final Converter CONVERTER = new Converter() {
         @Override

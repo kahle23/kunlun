@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
-import static com.apyhs.artoria.util.StringConstant.COLON;
+import static com.apyhs.artoria.util.Const.COLON;
 
 /**
  * Number converter.

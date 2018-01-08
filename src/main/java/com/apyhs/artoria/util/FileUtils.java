@@ -17,7 +17,7 @@ public class FileUtils {
     private static Logger log = LoggerFactory.getLogger(FileUtils.class);
 
     public static File findClasspath(String fileName) {
-        return new File(StringConstant.CLASSPATH, fileName);
+        return new File(Const.CLASSPATH, fileName);
     }
 
     public static boolean rename(File path, String newName) {

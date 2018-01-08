@@ -13,7 +13,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 import static com.apyhs.artoria.util.DateUtils.DEFAULT_DATE_PATTERN;
-import static com.apyhs.artoria.util.StringConstant.*;
+import static com.apyhs.artoria.util.Const.*;
 
 /**
  * String converter.
@@ -58,10 +58,10 @@ public class StringConverter implements Converter {
     }
 
     protected Object stringToBoolean(Object source, Class<?> target) {
-        if (STRING_TRUE.equalsIgnoreCase((String) source)) {
+        if (TRUE.equalsIgnoreCase((String) source)) {
             return true;
         }
-        else if (STRING_FALSE.equalsIgnoreCase((String) source)) {
+        else if (FALSE.equalsIgnoreCase((String) source)) {
             return false;
         }
         else {

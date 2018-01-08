@@ -1,4 +1,4 @@
-package com.apyhs.artoria.beans;
+package com.apyhs.artoria.entity;
 
 public interface Fly {
     String DEFAULT_FLY = "No";

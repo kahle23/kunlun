@@ -1,6 +1,6 @@
 package com.apyhs.artoria.util;
 
-import com.apyhs.artoria.beans.Student;
+import com.apyhs.artoria.entity.Student;
 import com.apyhs.artoria.exception.ReflectionException;
 import com.apyhs.artoria.reflect.ReflectUtils;
 import org.junit.Test;

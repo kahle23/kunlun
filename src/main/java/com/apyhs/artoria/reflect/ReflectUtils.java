@@ -6,8 +6,8 @@ import com.apyhs.artoria.util.*;
 import java.lang.reflect.*;
 import java.util.*;
 
-import static com.apyhs.artoria.util.StringConstant.STRING_GET;
-import static com.apyhs.artoria.util.StringConstant.STRING_SET;
+import static com.apyhs.artoria.util.Const.GET;
+import static com.apyhs.artoria.util.Const.SET;
 
 /**
  * Reflect tools.
@@ -186,8 +186,8 @@ public class ReflectUtils {
                 int pSize = method.getParameterTypes().length;
                 int mod = method.getModifiers();
                 boolean isStc = Modifier.isStatic(mod);
-                boolean stGet = name.startsWith(STRING_GET);
-                boolean stSet = name.startsWith(STRING_SET);
+                boolean stGet = name.startsWith(GET);
+                boolean stSet = name.startsWith(SET);
                 boolean b = isStc || (!stGet && !stSet);
                 // has get and parameters not equal 0
                 b = b || (stGet && pSize != 0);
@@ -395,16 +395,16 @@ public class ReflectUtils {
 
     public Object callGetter(String methodName) throws ReflectionException {
         Assert.notBlank(methodName, "Method name must is not blank. ");
-        if (!methodName.startsWith(StringConstant.STRING_GET)) {
-            methodName = StringConstant.STRING_GET + StringUtils.capitalize(methodName);
+        if (!methodName.startsWith(Const.GET)) {
+            methodName = Const.GET + StringUtils.capitalize(methodName);
         }
         return this.call(methodName);
     }
 
     public Object callSetter(String methodName, Object value) throws ReflectionException {
         Assert.notBlank(methodName, "Method name must is not blank. ");
-        if (!methodName.startsWith(StringConstant.STRING_SET)) {
-            methodName = StringConstant.STRING_SET + StringUtils.capitalize(methodName);
+        if (!methodName.startsWith(Const.SET)) {
+            methodName = Const.SET + StringUtils.capitalize(methodName);
         }
         return this.call(methodName, value);
     }
