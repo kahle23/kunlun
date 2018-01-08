@@ -2,7 +2,7 @@ package com.apyhs.artoria.codec;
 
 import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.MapUtils;
-import com.apyhs.artoria.util.StringConstant;
+import com.apyhs.artoria.util.Const;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -10,7 +10,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.apyhs.artoria.util.StringConstant.DEFAULT_CHARSET_NAME;
+import static com.apyhs.artoria.util.Const.DEFAULT_CHARSET_NAME;
 
 /**
  * Url codec, and map to string tools.
@@ -22,8 +22,8 @@ public class UrlCodec {
 
     public static UrlCodec create() {
         UrlCodec urlCodec = new UrlCodec();
-        urlCodec.keySeparator = StringConstant.EQUAL;
-        urlCodec.valueSeparator = StringConstant.AMPERSAND;
+        urlCodec.keySeparator = Const.EQUAL;
+        urlCodec.valueSeparator = Const.AMPERSAND;
         return urlCodec;
     }
 

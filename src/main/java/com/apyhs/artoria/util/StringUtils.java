@@ -1,5 +1,7 @@
 package com.apyhs.artoria.util;
 
+import static com.apyhs.artoria.util.Const.*;
+
 /**
  * String tools.
  * @author Kahle
@@ -11,11 +13,11 @@ public class StringUtils {
     }
 
     public static boolean isEmpty(Object obj) {
-        return obj == null || StringConstant.EMPTY_STRING.equals(obj);
+        return obj == null || EMPTY_STRING.equals(obj);
     }
 
     public static boolean isNotEmpty(Object obj) {
-        return obj != null && !StringConstant.EMPTY_STRING.equals(obj);
+        return obj != null && !EMPTY_STRING.equals(obj);
     }
 
     public static boolean isBlank(CharSequence str) {
@@ -34,8 +36,8 @@ public class StringUtils {
     }
 
     public static boolean isNumeric(String str) {
-        boolean b = str.startsWith(StringConstant.MINUS);
-        b = b || str.startsWith(StringConstant.PLUS);
+        boolean b = str.startsWith(MINUS);
+        b = b || str.startsWith(PLUS);
         if (b) { str = str.substring(1); }
         for (int i = str.length() - 1; i >= 0; i--) {
             char c = str.charAt(i);
@@ -111,7 +113,7 @@ public class StringUtils {
     }
 
     public static String delete(String inString, String pattern) {
-        return StringUtils.replace(inString, pattern, StringConstant.EMPTY_STRING);
+        return StringUtils.replace(inString, pattern, EMPTY_STRING);
     }
 
     public static String capitalize(String str) {

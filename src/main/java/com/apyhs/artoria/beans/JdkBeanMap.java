@@ -2,9 +2,9 @@ package com.apyhs.artoria.beans;
 
 import com.apyhs.artoria.converter.Converter;
 import com.apyhs.artoria.exception.UncheckedException;
+import com.apyhs.artoria.reflect.ReflectUtils;
 import com.apyhs.artoria.util.ArrayUtils;
 import com.apyhs.artoria.util.Assert;
-import com.apyhs.artoria.reflect.ReflectUtils;
 import com.apyhs.artoria.util.StringUtils;
 
 import java.lang.reflect.Method;
@@ -13,15 +13,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.apyhs.artoria.util.StringConstant.STRING_GET;
-import static com.apyhs.artoria.util.StringConstant.STRING_SET;
+import static com.apyhs.artoria.util.Const.*;
 
 /**
  * Jdk bean map.
  * @author Kahle
  */
 public class JdkBeanMap extends BeanMap {
-    private static final Integer GET_OR_SET_LENGTH = 3;
 
     private HashMap<Object, Method> getters = new HashMap<Object, Method>();
     private HashMap<Object, Method> setters = new HashMap<Object, Method>();
@@ -47,10 +45,10 @@ public class JdkBeanMap extends BeanMap {
             String name = key.substring(GET_OR_SET_LENGTH);
             name = StringUtils.uncapitalize(name);
             Method method = entry.getValue();
-            if (key.startsWith(STRING_GET)) {
+            if (key.startsWith(GET)) {
                 getters.put(name, method);
             }
-            else if (key.startsWith(STRING_SET)) {
+            else if (key.startsWith(SET)) {
                 setters.put(name, method);
             }
         }

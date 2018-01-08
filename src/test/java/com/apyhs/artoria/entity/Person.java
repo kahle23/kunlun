@@ -1,4 +1,4 @@
-package com.apyhs.artoria.beans;
+package com.apyhs.artoria.entity;
 
 public class Person implements Fly {
 

@@ -9,7 +9,7 @@ import com.apyhs.artoria.reflect.ReflectUtils;
 
 import java.util.Date;
 
-import static com.apyhs.artoria.util.StringConstant.COLON;
+import static com.apyhs.artoria.util.Const.COLON;
 
 /**
  * Date converter.

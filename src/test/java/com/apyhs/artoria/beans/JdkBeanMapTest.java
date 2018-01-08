@@ -1,5 +1,6 @@
 package com.apyhs.artoria.beans;
 
+import com.apyhs.artoria.entity.Student;
 import org.junit.Before;
 import org.junit.Test;
 

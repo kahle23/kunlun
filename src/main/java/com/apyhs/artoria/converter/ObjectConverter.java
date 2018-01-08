@@ -5,7 +5,7 @@ import com.apyhs.artoria.logging.LoggerFactory;
 import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.ClassUtils;
 
-import static com.apyhs.artoria.util.StringConstant.COLON;
+import static com.apyhs.artoria.util.Const.COLON;
 
 /**
  * Simple converter, So is mapping Object.

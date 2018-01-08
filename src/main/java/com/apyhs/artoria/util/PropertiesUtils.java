@@ -12,7 +12,7 @@ import java.util.Properties;
 public class PropertiesUtils {
 
     public static PropertiesUtils create(String fileName) {
-        return PropertiesUtils.create(fileName, StringConstant.DEFAULT_CHARSET_NAME);
+        return PropertiesUtils.create(fileName, Const.DEFAULT_CHARSET_NAME);
     }
 
     public static PropertiesUtils create(String fileName, String charset) {
@@ -36,7 +36,7 @@ public class PropertiesUtils {
     }
 
     public static PropertiesUtils create(File dest) {
-        return PropertiesUtils.create(dest, StringConstant.DEFAULT_CHARSET_NAME);
+        return PropertiesUtils.create(dest, Const.DEFAULT_CHARSET_NAME);
     }
 
     public static PropertiesUtils create(File dest, String charset) {
@@ -60,7 +60,7 @@ public class PropertiesUtils {
     }
 
     public static PropertiesUtils create(InputStream in) throws IOException {
-        return PropertiesUtils.create(in, StringConstant.DEFAULT_CHARSET_NAME);
+        return PropertiesUtils.create(in, Const.DEFAULT_CHARSET_NAME);
     }
 
     public static PropertiesUtils create(InputStream in, String charset) throws IOException {
@@ -136,10 +136,10 @@ public class PropertiesUtils {
             return defaultValue;
         }
         value = value.toLowerCase().trim();
-        if (StringConstant.STRING_TRUE.equals(value)) {
+        if (Const.TRUE.equals(value)) {
             return true;
         }
-        else if (StringConstant.STRING_FALSE.equals(value)) {
+        else if (Const.FALSE.equals(value)) {
             return false;
         }
         else {

@@ -87,7 +87,7 @@ public class Base64 {
 
     public static String encodeToString(byte[] src) {
         byte[] encode = Base64.encode(src);
-        Charset charset = Charset.forName(StringConstant.DEFAULT_CHARSET_NAME);
+        Charset charset = Charset.forName(Const.DEFAULT_CHARSET_NAME);
         return new String(encode, charset);
     }
 
@@ -100,7 +100,7 @@ public class Base64 {
 
     public static byte[] decodeFromString(String src) {
         Assert.notNull(src, "Source must is not null. ");
-        Charset charset = Charset.forName(StringConstant.DEFAULT_CHARSET_NAME);
+        Charset charset = Charset.forName(Const.DEFAULT_CHARSET_NAME);
         byte[] srcBytes = src.getBytes(charset);
         return Base64.decode(srcBytes);
     }
@@ -115,7 +115,7 @@ public class Base64 {
 
     public static String encodeToUrlSafeString(byte[] src) {
         byte[] urlSafe = Base64.encodeUrlSafe(src);
-        Charset charset = Charset.forName(StringConstant.DEFAULT_CHARSET_NAME);
+        Charset charset = Charset.forName(Const.DEFAULT_CHARSET_NAME);
         return new String(urlSafe, charset);
     }
 
@@ -128,7 +128,7 @@ public class Base64 {
 
     public static byte[] decodeFromUrlSafeString(String src) {
         Assert.notNull(src, "Source must is not null. ");
-        Charset charset = Charset.forName(StringConstant.DEFAULT_CHARSET_NAME);
+        Charset charset = Charset.forName(Const.DEFAULT_CHARSET_NAME);
         byte[] srcBytes = src.getBytes(charset);
         return Base64.decodeUrlSafe(srcBytes);
     }
@@ -191,8 +191,8 @@ public class Base64 {
         public byte[] encodeUrlSafe(byte[] src) {
             if (ArrayUtils.isEmpty(src)) { return src; }
             String s = DatatypeConverter.printBase64Binary(src);
-            s = StringUtils.replace(s, StringConstant.PLUS, StringConstant.MINUS);
-            s = StringUtils.replace(s, StringConstant.SLASH, StringConstant.UNDERLINE);
+            s = StringUtils.replace(s, Const.PLUS, Const.MINUS);
+            s = StringUtils.replace(s, Const.SLASH, Const.UNDERLINE);
             return s.getBytes();
         }
 
@@ -200,8 +200,8 @@ public class Base64 {
         public byte[] decodeUrlSafe(byte[] src) {
             if (ArrayUtils.isEmpty(src)) { return src; }
             String s = new String(src);
-            s = StringUtils.replace(s, StringConstant.MINUS, StringConstant.PLUS);
-            s = StringUtils.replace(s, StringConstant.UNDERLINE, StringConstant.SLASH);
+            s = StringUtils.replace(s, Const.MINUS, Const.PLUS);
+            s = StringUtils.replace(s, Const.UNDERLINE, Const.SLASH);
             return DatatypeConverter.parseBase64Binary(s);
         }
 

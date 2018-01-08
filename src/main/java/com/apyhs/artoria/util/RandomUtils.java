@@ -44,8 +44,8 @@ public class RandomUtils {
 
     public static String nextUUID(String separator) {
         String uuid = UUID.randomUUID().toString();
-        if (separator != null && !StringConstant.MINUS.equals(separator)) {
-            return StringUtils.replace(uuid, StringConstant.MINUS, separator);
+        if (separator != null && !Const.MINUS.equals(separator)) {
+            return StringUtils.replace(uuid, Const.MINUS, separator);
         }
         else {
             return uuid;
