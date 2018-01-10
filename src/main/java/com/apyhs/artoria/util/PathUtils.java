@@ -5,31 +5,41 @@ import com.apyhs.artoria.exception.UncheckedException;
 import java.io.File;
 import java.net.URL;
 
+import static com.apyhs.artoria.util.Const.*;
+
 /**
  * Path tools.
  * @author Kahle
  */
 public class PathUtils {
+    private static final Class<?> THIS_CLASS = PathUtils.class;
 
     protected static String getRootPath() {
         try {
-            URL res = PathUtils.class.getResource(Const.SLASH);
+            URL res = THIS_CLASS.getResource(SLASH);
             File path = res != null ? new File(res.toURI().getPath()) : null;
-            return path != null ? path.getParentFile().getParent() : Const.EMPTY_STRING;
+            return path != null ? path.getParentFile().getParent() : EMPTY_STRING;
         }
-        catch (Throwable t) {
-            throw new UncheckedException(t.getMessage(), t);
+        catch (Exception e) {
+            throw new UncheckedException(e.getMessage(), e);
         }
     }
 
     protected static String getClasspath() {
         try {
-            URL res = ClassUtils.getDefaultClassLoader().getResource(Const.EMPTY_STRING);
-            return res != null ? new File(res.toURI().getPath()).toString() : Const.EMPTY_STRING;
+            URL res = ClassUtils.getDefaultClassLoader().getResource(EMPTY_STRING);
+            return res != null ? new File(res.toURI().getPath()).toString() : EMPTY_STRING;
         }
-        catch (Throwable t) {
-            throw new UncheckedException(t.getMessage(), t);
+        catch (Exception e) {
+            throw new UncheckedException(e.getMessage(), e);
         }
+    }
+
+    public static URL findJarClasspath(String name) {
+        if (!name.startsWith(SLASH)) {
+            name = SLASH + name;
+        }
+        return THIS_CLASS.getResource(name);
     }
 
     public static String subPath(File src, File parent) {
@@ -44,23 +54,23 @@ public class PathUtils {
         Assert.notBlank(src, "Source must is not blank. ");
         Assert.notBlank(parent, "Parent must is not blank. ");
         Assert.state(src.startsWith(parent), "Source must start with parent. ");
-        return StringUtils.replace(src, parent, Const.EMPTY_STRING);
+        return StringUtils.replace(src, parent, EMPTY_STRING);
     }
 
     public static String getExtension(String path) {
-        if (path == null) { return Const.EMPTY_STRING; }
-        int extIndex = path.lastIndexOf(Const.DOT);
-        if (extIndex == -1) { return Const.EMPTY_STRING; }
-        int folderIndex = path.lastIndexOf(Const.FILE_SEPARATOR);
-        if (folderIndex > extIndex) { return Const.EMPTY_STRING; }
+        if (path == null) { return EMPTY_STRING; }
+        int extIndex = path.lastIndexOf(DOT);
+        if (extIndex == -1) { return EMPTY_STRING; }
+        int folderIndex = path.lastIndexOf(FILE_SEPARATOR);
+        if (folderIndex > extIndex) { return EMPTY_STRING; }
         return path.substring(extIndex + 1);
     }
 
     public static String stripExtension(String path) {
         if (path == null) { return null; }
-        int extIndex = path.lastIndexOf(Const.DOT);
+        int extIndex = path.lastIndexOf(DOT);
         if (extIndex == -1) { return path; }
-        int folderIndex = path.lastIndexOf(Const.FILE_SEPARATOR);
+        int folderIndex = path.lastIndexOf(FILE_SEPARATOR);
         if (folderIndex > extIndex) { return path; }
         return path.substring(0, extIndex);
     }
@@ -69,18 +79,18 @@ public class PathUtils {
         Assert.notNull(clazz, "Clazz must is not null. ");
         Package p = clazz.getPackage();
         String pName = p != null ? p.getName() : null;
-        return pName != null ? StringUtils.replace(pName, Const.DOT, Const.SLASH) : Const.EMPTY_STRING;
+        return pName != null ? StringUtils.replace(pName, DOT, SLASH) : EMPTY_STRING;
     }
 
     public static String getClassFilePath(Class<?> clazz) {
         Assert.notNull(clazz, "Clazz must is not null. ");
         try {
-            URL res = clazz.getResource(Const.EMPTY_STRING);
+            URL res = clazz.getResource(EMPTY_STRING);
             String path = res != null ? res.toURI().getPath() : null;
-            return path != null ? new File(path).toString() : Const.EMPTY_STRING;
+            return path != null ? new File(path).toString() : EMPTY_STRING;
         }
-        catch (Throwable t) {
-            throw new UncheckedException(t.getMessage(), t);
+        catch (Exception e) {
+            throw new UncheckedException(e.getMessage(), e);
         }
     }
 

@@ -3,10 +3,7 @@ package com.apyhs.artoria.logging;
 import com.apyhs.artoria.util.ClassUtils;
 import com.apyhs.artoria.util.IOUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Properties;
 import java.util.logging.LogManager;
 
 import static com.apyhs.artoria.util.Const.EMPTY_STRING;
@@ -38,24 +35,7 @@ public class JdkLoggerAdapter implements LoggerAdapter {
 		if (in == null) {
 			log.info("Logger config file \"" + LOGGER_CONFIG_FILENAME
 					+ "\" can not find in classpath, will using default. ");
-			try {
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				Properties prop = new Properties();
-				prop.setProperty("java.util.logging.ConsoleHandler.level", "INFO");
-				prop.setProperty("java.util.logging.ConsoleHandler.formatter"
-						, "com.apyhs.artoria.logging.SimpleFormatter");
-				prop.setProperty("java.util.logging.SocketHandler.formatter"
-						, "com.apyhs.artoria.logging.SimpleFormatter");
-				prop.setProperty("java.util.logging.FileHandler.formatter"
-						, "com.apyhs.artoria.logging.SimpleFormatter");
-				prop.setProperty(".level", "INFO");
-				prop.setProperty("handlers", "java.util.logging.ConsoleHandler");
-				prop.store(out, null);
-				in = new ByteArrayInputStream(out.toByteArray());
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+			in = IOUtils.findJarClasspath(LOGGER_CONFIG_FILENAME);
 		}
 		if (in != null) {
 			try {
