@@ -94,7 +94,7 @@ public class BeanHandlerTest {
     public void test() {
         System.err.println(JSON.toJSONString(list, true));
         System.err.println(">>>>>>>>>>>>>> multilevel : ");
-        List<Menu> vos = BeanUtils.multilevel(list, "sonMenuList", "code", "parentCode");
+        List<Menu> vos = DataUtils.multilevelList(list, "sonMenuList", "code", "parentCode");
         System.err.println(JSON.toJSONString(vos, true));
     }
 
@@ -102,7 +102,7 @@ public class BeanHandlerTest {
     public void test1() {
         System.err.println(JSON.toJSONString(list1, true));
         System.err.println(">>>>>>>>>>>>>> multilevel : ");
-        List<Menu> vos = BeanUtils.multilevel(list1, "sonMenuList", "code", "parentCode", "module");
+        List<Menu> vos = DataUtils.multilevelList(list1, "sonMenuList", "code", "parentCode", "module");
         System.err.println(JSON.toJSONString(vos, true));
     }
 
