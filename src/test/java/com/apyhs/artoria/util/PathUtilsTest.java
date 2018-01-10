@@ -6,7 +6,7 @@ public class PathUtilsTest {
 
     @Test
     public void test() {
-        System.out.println();
+        System.out.println(PathUtils.findJarClasspath("logging.properties"));
     }
 
     @Test

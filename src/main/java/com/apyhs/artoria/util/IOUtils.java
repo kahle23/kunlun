@@ -10,17 +10,27 @@ import java.net.URLConnection;
 import java.nio.channels.Selector;
 import java.nio.charset.Charset;
 
+import static com.apyhs.artoria.util.Const.SLASH;
+
 /**
  * IO tools.
  * @author Kahle
  */
 public class IOUtils {
+    private static final Class<?> THIS_CLASS = IOUtils.class;
     public static final int DEFAULT_BUFFER_SIZE = 8192;
     public static final int EOF = -1;
 
     public static InputStream findClasspath(String fileName) {
         ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
         return classLoader.getResourceAsStream(fileName);
+    }
+
+    public static InputStream findJarClasspath(String name) {
+        if (!name.startsWith(SLASH)) {
+            name = SLASH + name;
+        }
+        return THIS_CLASS.getResourceAsStream(name);
     }
 
     public static void closeQuietly(URLConnection conn) {
