@@ -9,7 +9,7 @@ import static com.apyhs.artoria.util.Const.ENDL;
  * Business exception.
  * @author Kahle
  */
-public class BusinessException extends Exception {
+public class BusinessException extends UncheckedException {
 
     private ErrorCode errorCode;
     private String description;
