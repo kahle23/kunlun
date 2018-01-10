@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BeanHandlerTest {
+public class DataUtilsTest {
 
     private List<Menu> list = new ArrayList<Menu>();
     private List<Menu> list1 = new ArrayList<Menu>();
