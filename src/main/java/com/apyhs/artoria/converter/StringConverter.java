@@ -1,7 +1,5 @@
 package com.apyhs.artoria.converter;
 
-import com.apyhs.artoria.logging.Logger;
-import com.apyhs.artoria.logging.LoggerFactory;
 import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.ClassUtils;
 import com.apyhs.artoria.util.DateUtils;
@@ -12,20 +10,19 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Date;
 
+import static com.apyhs.artoria.util.Const.FALSE;
+import static com.apyhs.artoria.util.Const.TRUE;
 import static com.apyhs.artoria.util.DateUtils.DEFAULT_DATE_PATTERN;
-import static com.apyhs.artoria.util.Const.*;
 
 /**
  * String converter.
  * @author Kahle
  */
 public class StringConverter implements Converter {
-    private static final Logger log = LoggerFactory.getLogger(StringConverter.class);
 
     private String pattern = DEFAULT_DATE_PATTERN;
 
-    public StringConverter() {
-    }
+    public StringConverter() {}
 
     public StringConverter(String datePattern) {
         this.setPattern(datePattern);
@@ -71,10 +68,9 @@ public class StringConverter implements Converter {
 
     @Override
     public Object convert(Object source, Class<?> target) {
-        Assert.notNull(source, "Source must is not null. ");
-        Assert.notNull(target, "Target must is not null. ");
+        Assert.notNull(source, "Parameter \"source\" must not null. ");
+        Assert.notNull(target, "Parameter \"target\" must not null. ");
         Class<?> clazz = source.getClass();
-        log.debug(StringConverter.class.getSimpleName() + COLON + clazz.getName() + " >> " + target.getName());
         target = ClassUtils.getWrapper(target);
         if (target.isAssignableFrom(clazz)) {
             return source;
