@@ -1,11 +1,12 @@
 package com.apyhs.artoria.entity;
 
-public class Person implements Fly {
+public abstract class Person implements Fly {
 
     protected static final String DEFAULT_SAY = "Hello, World! ";
     private static final String DEFAULT_TYPE = "Person";
 
     public String foo = "foo";
+    protected String foo1 = "foo1";
 
     private String name;
     private Integer age;
