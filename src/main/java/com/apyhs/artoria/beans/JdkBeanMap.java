@@ -21,8 +21,8 @@ import static com.apyhs.artoria.util.Const.*;
  */
 public class JdkBeanMap extends BeanMap {
 
-    private HashMap<Object, Method> getters = new HashMap<Object, Method>();
-    private HashMap<Object, Method> setters = new HashMap<Object, Method>();
+    private HashMap<Object, Method> readMethods = new HashMap<Object, Method>();
+    private HashMap<Object, Method> writeMethods = new HashMap<Object, Method>();
     private Class<?> beanClass;
 
     public JdkBeanMap() {}
@@ -39,24 +39,20 @@ public class JdkBeanMap extends BeanMap {
             return;
         }
         this.beanClass = bean.getClass();
-        Map<String, Method> map = ReflectUtils.findAllGetterAndSetter(bean.getClass());
-        for (Entry<String, Method> entry : map.entrySet()) {
-            String key = entry.getKey();
-            String name = key.substring(GET_OR_SET_LENGTH);
-            name = StringUtils.uncapitalize(name);
-            Method method = entry.getValue();
-            if (key.startsWith(GET)) {
-                getters.put(name, method);
-            }
-            else if (key.startsWith(SET)) {
-                setters.put(name, method);
-            }
-        }
+        Map<String, Method> readMethods = ReflectUtils.findReadMethods(this.beanClass);
+        this.readMethods.putAll(readMethods);
+        Map<String, Method> writeMethods = ReflectUtils.findWriteMethods(this.beanClass);
+        this.writeMethods.putAll(writeMethods);
     }
 
     @Override
     protected Object get(Object bean, Object key) {
-        Method method = getters.get(key);
+        Assert.notNull(key, "Parameter \"key\" must not null. ");
+        String methodName = key + EMPTY_STRING;
+        if (!methodName.startsWith(GET)) {
+            methodName = GET + StringUtils.capitalize(methodName);
+        }
+        Method method = readMethods.get(methodName);
         if (method == null) { return null; }
         try {
             return method.invoke(bean);
@@ -68,7 +64,12 @@ public class JdkBeanMap extends BeanMap {
 
     @Override
     protected Object put(Object bean, Object key, Object value) {
-        Method method = setters.get(key);
+        Assert.notNull(key, "Parameter \"key\" must not null. ");
+        String methodName = key + EMPTY_STRING;
+        if (!methodName.startsWith(SET)) {
+            methodName = SET + StringUtils.capitalize(methodName);
+        }
+        Method method = writeMethods.get(methodName);
         if (method == null) { return null; }
         Converter cvt = this.getConverter();
         Class<?>[] types = method.getParameterTypes();
@@ -87,7 +88,7 @@ public class JdkBeanMap extends BeanMap {
 
     @Override
     public Set keySet() {
-        Set<Object> keys = getters.keySet();
+        Set<Object> keys = readMethods.keySet();
         return Collections.unmodifiableSet(keys);
     }
 

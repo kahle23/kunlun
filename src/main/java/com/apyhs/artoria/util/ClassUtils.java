@@ -1,5 +1,7 @@
 package com.apyhs.artoria.util;
 
+import com.apyhs.artoria.reflect.ReflectUtils;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -88,14 +90,11 @@ public class ClassUtils {
     }
 
     public static Class<?> forName(String className) throws ClassNotFoundException {
-        ClassLoader loader = ClassUtils.getDefaultClassLoader();
-        return ClassUtils.forName(className, true, loader);
+        return ReflectUtils.getReflecter().forName(className);
     }
 
     public static Class<?> forName(String className, boolean initialize, ClassLoader loader) throws ClassNotFoundException {
-        Assert.notBlank(className, "Class name must is not blank. ");
-        Assert.notNull(loader, "Class loader must is not null. ");
-        return Class.forName(className, initialize, loader);
+        return ReflectUtils.getReflecter().forName(className, initialize, loader);
     }
 
 }

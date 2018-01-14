@@ -7,6 +7,18 @@ public class Student extends Person {
     private Integer score;
     private String email;
 
+    public Student() {
+    }
+
+    protected Student(Integer score, String email) {
+        this.score = score;
+        this.email = email;
+    }
+
+    private Student(String tmp) {
+
+    }
+
     public Integer getScore() {
         return score;
     }
@@ -32,5 +44,10 @@ public class Student extends Person {
                 ", score=" + score +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    @Override
+    public void fly() {
+        System.out.println("fly");
     }
 }

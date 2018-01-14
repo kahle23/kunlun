@@ -5,12 +5,14 @@ import com.apyhs.artoria.exception.UncheckedException;
 import com.apyhs.artoria.reflect.ReflectUtils;
 import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.CollectionUtils;
+import com.apyhs.artoria.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-import static com.apyhs.artoria.util.Const.*;
+import static com.apyhs.artoria.util.Const.GET_OR_SET_LENGTH;
+import static com.apyhs.artoria.util.Const.SET;
 
 /**
  * Jdk bean copier.
@@ -34,20 +36,20 @@ public class JdkBeanCopier implements BeanCopier {
         Assert.notNull(to, "Parameter \"to\" must is not null. ");
         boolean hasIgnore = CollectionUtils.isNotEmpty(ignoreProperties);
         boolean hasCvt = converter != null;
-        Class<?> srcClass = from.getClass();
-        Class<?> destClass = to.getClass();
-        Map<String, Method> srcMths = ReflectUtils.findAllGetterAndSetter(srcClass);
-        Map<String, Method> destMths = ReflectUtils.findAllGetterAndSetter(destClass);
-        for (Map.Entry<String, Method> entry : srcMths.entrySet()) {
+        Class<?> fromClass = from.getClass();
+        Class<?> toClass = to.getClass();
+        Map<String, Method> fromMths = ReflectUtils.findReadMethods(fromClass);
+        Map<String, Method> toMths = ReflectUtils.findWriteMethods(toClass);
+        for (Map.Entry<String, Method> entry : fromMths.entrySet()) {
             String name = entry.getKey();
-            if (!name.startsWith(GET)) { continue; }
             name = name.substring(GET_OR_SET_LENGTH);
             // do ignore
-            if (hasIgnore && ignoreProperties.contains(name)) {
+            if (hasIgnore && ignoreProperties
+                    .contains(StringUtils.uncapitalize(name))) {
                 continue;
             }
             name = SET + name;
-            Method destMth = destMths.get(name);
+            Method destMth = toMths.get(name);
             if (destMth == null) { continue; }
             Method srcMth = entry.getValue();
             try {

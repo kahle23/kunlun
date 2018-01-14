@@ -1,11 +1,10 @@
 package com.apyhs.artoria.crypto;
 
-import com.apyhs.artoria.exception.ReflectionException;
 import com.apyhs.artoria.logging.Logger;
 import com.apyhs.artoria.logging.LoggerFactory;
+import com.apyhs.artoria.reflect.ReflectUtils;
 import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.ClassUtils;
-import com.apyhs.artoria.reflect.ReflectUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -17,6 +16,8 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+
+import static com.apyhs.artoria.util.Const.BLANK_SPACE;
 
 /**
  * Cipher tools.
@@ -46,11 +47,11 @@ public class CipherUtils {
             Provider provider = (Provider) o;
             Security.addProvider(provider);
             String msg = "Init " + provider.getClass().getName();
-            msg += " " + provider.getVersion();
+            msg += BLANK_SPACE + provider.getVersion();
             log.info(msg);
         }
-        catch (ReflectionException e) {
-            // ignore
+        catch (Exception e) {
+            log.debug(e.getMessage(), e);
         }
     }
 

@@ -1,11 +1,15 @@
 package com.apyhs.artoria.converter;
 
-import com.apyhs.artoria.exception.ReflectionException;
+import com.apyhs.artoria.exception.UncheckedException;
 import com.apyhs.artoria.logging.Logger;
 import com.apyhs.artoria.logging.LoggerFactory;
 import com.apyhs.artoria.reflect.ReflectUtils;
-import com.apyhs.artoria.util.*;
+import com.apyhs.artoria.util.Assert;
+import com.apyhs.artoria.util.ClassUtils;
+import com.apyhs.artoria.util.DateUtils;
+import com.apyhs.artoria.util.StringUtils;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
@@ -24,20 +28,19 @@ public class NumberConverter implements Converter {
 
     private Boolean isUnixTimestamp = false;
 
-    public NumberConverter() {
-    }
+    public NumberConverter() {}
 
     public NumberConverter(Boolean isUxTp) {
-        this.setUnixTimestamp(isUxTp);
+        this.setIsUnixTimestamp(isUxTp);
     }
 
-    public Boolean getUnixTimestamp() {
+    public Boolean getIsUnixTimestamp() {
         return isUnixTimestamp;
     }
 
-    public void setUnixTimestamp(Boolean unixTimestamp) {
-        Assert.notNull(unixTimestamp, "Is Unix timestamp must is not null. ");
-        isUnixTimestamp = unixTimestamp;
+    public void setIsUnixTimestamp(Boolean isUnixTimestamp) {
+        Assert.notNull(isUnixTimestamp, "Parameter \"isUnixTimestamp\" must not null. ");
+        this.isUnixTimestamp = isUnixTimestamp;
     }
 
     protected Object numberToNumber(Object source, Class<?> target) {
@@ -53,13 +56,12 @@ public class NumberConverter implements Converter {
         name = INTEGER.equals(name) ? INT : name;
         name = StringUtils.uncapitalize(name);
         name = name + VALUE;
-        ReflectUtils ref = ReflectUtils.create(clazz);
-        ref.setBean(source);
         try {
-            return ref.call(name);
+            Method method = ReflectUtils.findMethod(clazz, name);
+            return method.invoke(source);
         }
-        catch (ReflectionException e) {
-            return source;
+        catch (Exception e) {
+            throw new UncheckedException(e);
         }
     }
 
