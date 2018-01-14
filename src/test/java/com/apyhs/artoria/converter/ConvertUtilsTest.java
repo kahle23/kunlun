@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class TypeUtilsTest {
+public class ConvertUtilsTest {
 
     @Test
     public void test1() {

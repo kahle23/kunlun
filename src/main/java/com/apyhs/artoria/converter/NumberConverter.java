@@ -1,8 +1,6 @@
 package com.apyhs.artoria.converter;
 
 import com.apyhs.artoria.exception.UncheckedException;
-import com.apyhs.artoria.logging.Logger;
-import com.apyhs.artoria.logging.LoggerFactory;
 import com.apyhs.artoria.reflect.ReflectUtils;
 import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.ClassUtils;
@@ -14,14 +12,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
-import static com.apyhs.artoria.util.Const.COLON;
-
 /**
  * Number converter.
  * @author Kahle
  */
 public class NumberConverter implements Converter {
-    private static final Logger log = LoggerFactory.getLogger(NumberConverter.class);
     private static final String INTEGER = "Integer";
     private static final String VALUE = "Value";
     private static final String INT = "int";
@@ -76,10 +71,9 @@ public class NumberConverter implements Converter {
 
     @Override
     public Object convert(Object source, Class<?> target) {
-        Assert.notNull(source, "Source must is not null. ");
-        Assert.notNull(target, "Target must is not null. ");
+        Assert.notNull(source, "Parameter \"source\" must not null. ");
+        Assert.notNull(target, "Parameter \"target\" must not null. ");
         Class<?> clazz = source.getClass();
-        log.debug(NumberConverter.class.getSimpleName() + COLON + clazz.getName() + " >> " + target.getName());
         target = ClassUtils.getWrapper(target);
         if (target.isAssignableFrom(clazz)) {
             return source;

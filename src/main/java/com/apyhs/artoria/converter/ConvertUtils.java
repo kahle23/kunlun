@@ -2,12 +2,9 @@ package com.apyhs.artoria.converter;
 
 import com.apyhs.artoria.logging.Logger;
 import com.apyhs.artoria.logging.LoggerFactory;
-import com.apyhs.artoria.util.ArrayUtils;
 import com.apyhs.artoria.util.Assert;
 
-import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,21 +41,10 @@ public class ConvertUtils {
 
     public static Object convert(Object source, Class<?> target) {
         Class<?> clazz = source.getClass();
-        LinkedList<Class<?>> list = new LinkedList<Class<?>>();
-        list.addLast(clazz);
-        while (list.size() != 0) {
-            clazz = list.removeFirst();
-            Converter converter = CONVERTERS.get(clazz);
-            if (converter != null) {
-                return converter.convert(source, target);
-            }
-            Class<?>[] interfaces = clazz.getInterfaces();
-            if (ArrayUtils.isNotEmpty(interfaces)) {
-                Collections.addAll(list, interfaces);
-            }
-            Class<?> superclass = clazz.getSuperclass();
-            if (superclass != null) {
-                list.addLast(superclass);
+        for (Class<?> cClass : CONVERTERS.keySet()) {
+            if (cClass.isAssignableFrom(clazz)) {
+                Converter converter = CONVERTERS.get(cClass);
+                source = converter.convert(source, target);
             }
         }
         return source;
