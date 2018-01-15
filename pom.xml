@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.apyhs</groupId>
 	<artifactId>artoria</artifactId>
-	<version>0.0.5-beta26</version>
+	<version>0.0.5-beta27</version>
 	<packaging>jar</packaging>
 	<name>Artoria</name>
     <url>https://github.com/apyhs/artoria</url>
