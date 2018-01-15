@@ -39,19 +39,34 @@ public class JdkBeanMap extends BeanMap {
         }
         this.beanClass = bean.getClass();
         Map<String, Method> readMethods = ReflectUtils.findReadMethods(this.beanClass);
-        this.readMethods.putAll(readMethods);
+        for (Entry<String, Method> entry : readMethods.entrySet()) {
+            String key = entry.getKey();
+            if (key.startsWith(GET)) {
+                key = key.substring(GET_OR_SET_LENGTH);
+                key = StringUtils.uncapitalize(key);
+            }
+            this.readMethods.put(key, entry.getValue());
+        }
         Map<String, Method> writeMethods = ReflectUtils.findWriteMethods(this.beanClass);
-        this.writeMethods.putAll(writeMethods);
+        for (Entry<String, Method> entry : writeMethods.entrySet()) {
+            String key = entry.getKey();
+            if (key.startsWith(SET)) {
+                key = key.substring(GET_OR_SET_LENGTH);
+                key = StringUtils.uncapitalize(key);
+            }
+            this.writeMethods.put(key, entry.getValue());
+        }
     }
 
     @Override
     protected Object get(Object bean, Object key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        String methodName = key + EMPTY_STRING;
-        if (!methodName.startsWith(GET)) {
-            methodName = GET + StringUtils.capitalize(methodName);
+        String keyString = key + EMPTY_STRING;
+        if (keyString.startsWith(GET)) {
+            keyString = keyString.substring(GET_OR_SET_LENGTH);
+            keyString = StringUtils.uncapitalize(keyString);
         }
-        Method method = readMethods.get(methodName);
+        Method method = readMethods.get(keyString);
         if (method == null) { return null; }
         try {
             return method.invoke(bean);
@@ -64,11 +79,12 @@ public class JdkBeanMap extends BeanMap {
     @Override
     protected Object put(Object bean, Object key, Object value) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        String methodName = key + EMPTY_STRING;
-        if (!methodName.startsWith(SET)) {
-            methodName = SET + StringUtils.capitalize(methodName);
+        String keyString = key + EMPTY_STRING;
+        if (keyString.startsWith(SET)) {
+            keyString = keyString.substring(GET_OR_SET_LENGTH);
+            keyString = StringUtils.uncapitalize(keyString);
         }
-        Method method = writeMethods.get(methodName);
+        Method method = writeMethods.get(keyString);
         if (method == null) { return null; }
         Converter cvt = this.getConverter();
         Class<?>[] types = method.getParameterTypes();
