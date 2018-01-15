@@ -1,6 +1,7 @@
 package com.apyhs.artoria.beans;
 
 import com.apyhs.artoria.converter.Converter;
+import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.ObjectUtils;
 
 import java.util.*;
@@ -23,6 +24,7 @@ public abstract class BeanMap implements Map, Cloneable {
     }
 
     public void setBean(Object bean) {
+        Assert.notNull(bean, "Parameter \"bean\" must not null. ");
         this.bean = bean;
     }
 

@@ -40,6 +40,7 @@ public class ConvertUtils {
     }
 
     public static Object convert(Object source, Class<?> target) {
+        if (source == null) { return null; }
         Class<?> clazz = source.getClass();
         for (Class<?> cClass : CONVERTERS.keySet()) {
             if (cClass.isAssignableFrom(clazz)) {
