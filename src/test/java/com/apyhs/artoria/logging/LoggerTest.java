@@ -4,7 +4,7 @@ import com.apyhs.artoria.exception.UncheckedException;
 import org.junit.Test;
 
 public class LoggerTest {
-    private static Logger log = LoggerFactory.getLogger(LoggerTest.class);
+    private static Logger log = LoggerFactory.getLogger(LoggerTest.class.getName());
 
     @Test
     public void logMessage() {
