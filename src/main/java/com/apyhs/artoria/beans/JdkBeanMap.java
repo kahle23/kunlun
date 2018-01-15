@@ -33,7 +33,6 @@ public class JdkBeanMap extends BeanMap {
 
     @Override
     public void setBean(Object bean) {
-        Assert.notNull(bean, "Parameter \"bean\" must not null. ");
         super.setBean(bean);
         if (this.beanClass != null && this.beanClass == bean.getClass()) {
             return;
