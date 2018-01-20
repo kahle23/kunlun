@@ -136,4 +136,14 @@ public class DateUtilsTest {
         System.out.println();
     }
 
+    @Test
+    public void test1() {
+        Date date = new Date();
+        System.out.println(DateUtils.create(date)
+                .setHour(23)
+                .setMinute(59)
+                .setSecond(59)
+                .setMillisecond(999).getTimeInMillis());
+    }
+
 }
