@@ -24,7 +24,7 @@ import static com.apyhs.artoria.util.Const.BLANK_SPACE;
  * @author Kahle
  */
 public class CipherUtils {
-    private static final Logger log = LoggerFactory.getLogger(CipherUtils.class);
+    private static Logger log = LoggerFactory.getLogger(CipherUtils.class);
 
     static {
         CipherUtils.loadBouncyCastle();

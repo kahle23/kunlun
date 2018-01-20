@@ -31,7 +31,7 @@ public class LoggerFactory {
 				entry.getValue().setLogger(LOGGER_ADAPTER.getLogger(entry.getKey()));
 			}
 			Logger logger = LoggerFactory.getLogger(LoggerFactory.class.getName());
-			logger.info("using logger: " + loggerAdapter.getClass().getName());
+			logger.info("Using logger: " + loggerAdapter.getClass().getName());
 		}
 	}
 

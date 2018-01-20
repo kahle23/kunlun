@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Kahle
  */
 public class ConvertUtils {
-    private static final Logger log = LoggerFactory.getLogger(ConvertUtils.class);
+    private static Logger log = LoggerFactory.getLogger(ConvertUtils.class);
 
     private static final Map<Class<?>, Converter> CONVERTERS;
 

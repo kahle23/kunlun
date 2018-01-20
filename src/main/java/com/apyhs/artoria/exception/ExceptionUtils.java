@@ -11,7 +11,7 @@ import java.io.StringWriter;
  * @author Kahle
  */
 public class ExceptionUtils {
-    private static final Logger log = LoggerFactory.getLogger(ExceptionUtils.class);
+    private static Logger log = LoggerFactory.getLogger(ExceptionUtils.class);
 
     public static BusinessException wrap(Throwable cause) {
         return cause instanceof BusinessException
