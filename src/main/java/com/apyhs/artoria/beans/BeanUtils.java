@@ -7,6 +7,7 @@ import com.apyhs.artoria.logging.Logger;
 import com.apyhs.artoria.logging.LoggerFactory;
 import com.apyhs.artoria.reflect.ReflectUtils;
 import com.apyhs.artoria.util.Assert;
+import com.apyhs.artoria.util.ClassUtils;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -30,8 +31,10 @@ public class BeanUtils extends BeanHandler {
     private static Constructor<? extends BeanMap> beanMapConstructor;
 
     static {
-        BeanUtils.setBeanCopier(new JdkBeanCopier());
-        BeanUtils.setBeanMapClass(JdkBeanMap.class);
+        ClassLoader loader = ClassUtils.getDefaultClassLoader();
+        boolean hasCglib = ClassUtils.isPresent("net.sf.cglib.beans.BeanCopier", loader);
+        BeanUtils.setBeanCopier(hasCglib ? new CglibBeanCopier() : new JdkBeanCopier());
+        BeanUtils.setBeanMapClass(hasCglib ? CglibBeanMap.class : JdkBeanMap.class);
     }
 
     public static BeanCopier getBeanCopier() {

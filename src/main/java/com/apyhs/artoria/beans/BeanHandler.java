@@ -15,19 +15,11 @@ class BeanHandler {
     private static final Integer MAP_INIT_CAPACITY = 20;
 
     public static <T> T mapToBean(Map<String, Object> from, T to) {
-        BeanUtils.copy(from, to);
-        return to;
+        return beanToBean(from, to);
     }
 
     public static <T> T mapToBean(Map<String, Object> from, Class<T> toClass) {
-        try {
-            T to = toClass.newInstance();
-            BeanUtils.copy((Map<String, ?>) from, to);
-            return to;
-        }
-        catch (Exception e) {
-            throw new UncheckedException(e);
-        }
+        return beanToBean(from, toClass);
     }
 
     public static <F> Map<String, Object> beanToMap(F from) {
@@ -36,15 +28,27 @@ class BeanHandler {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     public static <F, T> T beanToBean(F from, T to) {
-        BeanUtils.copy(from, to);
+        if (from instanceof Map) {
+            BeanUtils.copy((Map<String, ?>) from, to);
+        }
+        else {
+            BeanUtils.copy(from, to);
+        }
         return to;
     }
 
+    @SuppressWarnings("unchecked")
     public static <F, T> T beanToBean(F from, Class<T> toClass) {
         try {
             T to = toClass.newInstance();
-            BeanUtils.copy(from, to);
+            if (from instanceof Map) {
+                BeanUtils.copy((Map<String, ?>) from, to);
+            }
+            else {
+                BeanUtils.copy(from, to);
+            }
             return to;
         }
         catch (Exception e) {
