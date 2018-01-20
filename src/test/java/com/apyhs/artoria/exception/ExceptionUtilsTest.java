@@ -5,7 +5,7 @@ import com.apyhs.artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 public class ExceptionUtilsTest {
-    private static final Logger log = LoggerFactory.getLogger(ExceptionUtilsTest.class);
+    private static Logger log = LoggerFactory.getLogger(ExceptionUtilsTest.class);
 
     @Test
     public void createAndSetOthers() {

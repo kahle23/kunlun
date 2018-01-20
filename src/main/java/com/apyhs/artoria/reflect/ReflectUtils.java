@@ -12,7 +12,7 @@ import java.util.Map;
  * @author Kahle
  */
 public class ReflectUtils {
-    private static final Logger log = LoggerFactory.getLogger(ReflectUtils.class);
+    private static Logger log = LoggerFactory.getLogger(ReflectUtils.class);
     private static Reflecter reflecter;
 
     static {

@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Kahle
  */
 public class BeanUtils extends BeanHandler {
-    private static final Logger log = LoggerFactory.getLogger(BeanUtils.class);
+    private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
     private static final Converter CONVERTER = new Converter() {
         @Override
         public Object convert(Object source, Class<?> target) {

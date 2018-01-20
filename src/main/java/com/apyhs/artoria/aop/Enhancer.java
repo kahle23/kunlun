@@ -10,7 +10,7 @@ import com.apyhs.artoria.util.ClassUtils;
  * @author Kahle
  */
 public class Enhancer {
-    private static final Logger log = LoggerFactory.getLogger(Enhancer.class);
+    private static Logger log = LoggerFactory.getLogger(Enhancer.class);
     private static ProxyFactory proxyFactory;
 
     static {
