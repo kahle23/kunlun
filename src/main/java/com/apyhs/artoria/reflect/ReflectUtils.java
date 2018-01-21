@@ -16,7 +16,9 @@ public class ReflectUtils {
     private static Reflecter reflecter;
 
     static {
-        ReflectUtils.setReflecter(new JdkReflecter());
+        Reflecter reflecter = new JdkReflecter();
+        reflecter = ReflecterCache.getInstance(reflecter);
+        ReflectUtils.setReflecter(reflecter);
     }
 
     public static Reflecter getReflecter() {
