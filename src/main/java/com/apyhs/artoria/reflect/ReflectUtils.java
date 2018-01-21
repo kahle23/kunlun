@@ -72,12 +72,28 @@ public class ReflectUtils {
         return reflecter.findFields(clazz);
     }
 
+    public static Field[] findDeclaredFields(Class<?> clazz) {
+        return reflecter.findDeclaredFields(clazz);
+    }
+
+    public static Field[] findAccessFields(Class<?> clazz) {
+        return reflecter.findAccessFields(clazz);
+    }
+
     public static Field findField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
         return reflecter.findField(clazz, fieldName);
     }
 
     public static Method[] findMethods(Class<?> clazz) {
         return reflecter.findMethods(clazz);
+    }
+
+    public static Method[] findDeclaredMethods(Class<?> clazz) {
+        return reflecter.findDeclaredMethods(clazz);
+    }
+
+    public static Method[] findAccessMethods(Class<?> clazz) {
+        return reflecter.findAccessMethods(clazz);
     }
 
     public static Map<String, Method> findReadMethods(Class<?> clazz) {

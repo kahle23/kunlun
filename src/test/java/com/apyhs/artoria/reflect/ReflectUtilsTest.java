@@ -26,7 +26,7 @@ public class ReflectUtilsTest {
         student.setName("zhangsan");
         student.setScore(79);
         student.setEmail("zhangsan@email.com");
-        Field[] fields = ReflectUtils.findFields(Student.class);
+        Field[] fields = ReflectUtils.findAccessFields(Student.class);
         for (Field field : fields) {
             ReflectUtils.makeAccessible(field);
             System.out.println(field.getName() + " | " + field.get(student));
@@ -35,7 +35,7 @@ public class ReflectUtilsTest {
 
     @Test
     public void findMethods() throws Exception {
-        Method[] methods = ReflectUtils.findMethods(Student.class);
+        Method[] methods = ReflectUtils.findAccessMethods(Student.class);
         for (Method method : methods) {
             System.out.println(method.getName());
         }
