@@ -36,6 +36,10 @@ public class Person implements Fly {
         this.height = height;
     }
 
+    protected void protectedMethod() {
+
+    }
+
     @Override
     public String toString() {
         return "Person{" +

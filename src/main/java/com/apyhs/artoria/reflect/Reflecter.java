@@ -61,14 +61,14 @@ public interface Reflecter {
     <T extends AccessibleObject> void makeAccessible(T accessible);
 
     /**
-     * Find constructors.
+     * Find all constructors.
      * @param clazz The class will be find
      * @return Constructors array
      */
     Constructor<?>[] findConstructors(Class<?> clazz);
 
     /**
-     * Find constructor.
+     * Find constructor and type similar.
      * @param clazz The class will be find
      * @param parameterTypes parameter types
      * @return The constructor
@@ -77,11 +77,25 @@ public interface Reflecter {
     Constructor<?> findConstructor(Class<?> clazz, Class<?>... parameterTypes) throws NoSuchMethodException;
 
     /**
-     * Find fields.
+     * Find all public fields.
      * @param clazz The class will be find
      * @return Fields array
      */
     Field[] findFields(Class<?> clazz);
+
+    /**
+     * Find all declared fields.
+     * @param clazz The class will be find
+     * @return Fields array
+     */
+    Field[] findDeclaredFields(Class<?> clazz);
+
+    /**
+     * Find all access fields.
+     * @param clazz The class will be find
+     * @return Fields array
+     */
+    Field[] findAccessFields(Class<?> clazz);
 
     /**
      * Find field.
@@ -93,11 +107,25 @@ public interface Reflecter {
     Field findField(Class<?> clazz, String fieldName) throws NoSuchFieldException;
 
     /**
-     * Find methods.
+     * Find all public methods.
      * @param clazz The class will be find
      * @return Methods array
      */
     Method[] findMethods(Class<?> clazz);
+
+    /**
+     * Find all declared methods.
+     * @param clazz The class will be find
+     * @return Methods array
+     */
+    Method[] findDeclaredMethods(Class<?> clazz);
+
+    /**
+     * Find all access methods.
+     * @param clazz The class will be find
+     * @return Methods array
+     */
+    Method[] findAccessMethods(Class<?> clazz);
 
     /**
      * Find all read methods (getter).

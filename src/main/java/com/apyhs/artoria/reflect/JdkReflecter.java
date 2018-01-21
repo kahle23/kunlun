@@ -9,9 +9,18 @@ import java.util.*;
 import static com.apyhs.artoria.util.Const.GET;
 import static com.apyhs.artoria.util.Const.SET;
 
+/**
+ * Reflect tools implements by jdk.
+ * @author Kahle
+ */
 public class JdkReflecter implements Reflecter {
     private static final Integer MAP_INITIAL_CAPACITY = 8;
     private static final String GET_CLASS = "getClass";
+
+    protected boolean notAccess(Class<?> thisClazz, Class<?> superClazz, Member member) {
+        // In this class all, and super class not private.
+        return thisClazz != superClazz && Modifier.isPrivate(member.getModifiers());
+    }
 
     @Override
     public Class<?> forName(String className) throws ClassNotFoundException {
@@ -98,7 +107,7 @@ public class JdkReflecter implements Reflecter {
         // If there is no exact match, try to find one that has a "similar"
         // signature if primitive argument types are converted to their wrappers
         catch (NoSuchMethodException e) {
-            Constructor<?>[] cts = clazz.getDeclaredConstructors();
+            Constructor<?>[] cts = this.findConstructors(clazz);
             for (Constructor<?> ct : cts) {
                 Class<?>[] pTypes = ct.getParameterTypes();
                 boolean b = this.matchParameterTypes(pTypes, parameterTypes);
@@ -108,27 +117,37 @@ public class JdkReflecter implements Reflecter {
         }
     }
 
-    private boolean notAvailable(Class<?> thisClazz, Class<?> clazz, Member member) {
-        // In this class all, and super class not private.
-        return thisClazz != clazz && Modifier.isPrivate(member.getModifiers());
-    }
-
     @Override
     public Field[] findFields(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        return clazz.getFields();
+    }
+
+    @Override
+    public Field[] findDeclaredFields(Class<?> clazz) {
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        return clazz.getDeclaredFields();
+    }
+
+    @Override
+    public Field[] findAccessFields(Class<?> clazz) {
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Class<?> inputClazz = clazz;
         List<Field> list = new ArrayList<Field>();
+        List<String> names = new ArrayList<String>();
         while (clazz != null) {
-            Field[] fields = clazz.getDeclaredFields();
+            Field[] fields = this.findDeclaredFields(clazz);
             for (Field field : fields) {
                 // find this class all, and super class not private.
-                if (this.notAvailable(inputClazz, clazz, field)) {
+                if (this.notAccess(inputClazz, clazz, field)) {
                     continue;
                 }
-                if (list.contains(field)) {
+                String fieldName = field.getName();
+                if (names.contains(fieldName)) {
                     continue;
                 }
                 list.add(field);
+                names.add(fieldName);
             }
             // Field in interface is public
             // Will inherit subclass
@@ -153,7 +172,7 @@ public class JdkReflecter implements Reflecter {
             do {
                 try {
                     Field field = clazz.getDeclaredField(fieldName);
-                    if (this.notAvailable(inputClazz, clazz, field)) {
+                    if (this.notAccess(inputClazz, clazz, field)) {
                         continue;
                     }
                     return field;
@@ -171,18 +190,34 @@ public class JdkReflecter implements Reflecter {
     @Override
     public Method[] findMethods(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        return clazz.getMethods();
+    }
+
+    @Override
+    public Method[] findDeclaredMethods(Class<?> clazz) {
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        return clazz.getDeclaredMethods();
+    }
+
+    @Override
+    public Method[] findAccessMethods(Class<?> clazz) {
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Class<?> inputClazz = clazz;
         List<Method> list = new ArrayList<Method>();
+        List<String> names = new ArrayList<String>();
         while (clazz != null) {
-            Method[] methods = clazz.getDeclaredMethods();
+            Method[] methods = this.findDeclaredMethods(clazz);
             for (Method method : methods) {
-                if (this.notAvailable(inputClazz, clazz, method)) {
+                if (this.notAccess(inputClazz, clazz, method)) {
                     continue;
                 }
-                if (list.contains(method)) {
+                String methodName = method.getName()
+                        + Arrays.toString(method.getParameterTypes());
+                if (names.contains(methodName)) {
                     continue;
                 }
                 list.add(method);
+                names.add(methodName);
             }
             clazz = clazz.getSuperclass();
         }
@@ -195,7 +230,7 @@ public class JdkReflecter implements Reflecter {
     public Map<String, Method> findReadMethods(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Map<String, Method> result = new HashMap<String, Method>(MAP_INITIAL_CAPACITY);
-        Method[] methods = clazz.getMethods();
+        Method[] methods = this.findMethods(clazz);
         for (Method method : methods) {
             String name = method.getName();
             int pSize = method.getParameterTypes().length;
@@ -215,7 +250,7 @@ public class JdkReflecter implements Reflecter {
     public Map<String, Method> findWriteMethods(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Map<String, Method> result = new HashMap<String, Method>(MAP_INITIAL_CAPACITY);
-        Method[] methods = clazz.getMethods();
+        Method[] methods = this.findMethods(clazz);
         for (Method method : methods) {
             String name = method.getName();
             int pSize = method.getParameterTypes().length;
@@ -244,7 +279,7 @@ public class JdkReflecter implements Reflecter {
             do {
                 try {
                     Method method = clazz.getDeclaredMethod(methodName, parameterTypes);
-                    if (this.notAvailable(inputClazz, clazz, method)) {
+                    if (this.notAccess(inputClazz, clazz, method)) {
                         continue;
                     }
                     return method;
@@ -265,7 +300,7 @@ public class JdkReflecter implements Reflecter {
         Assert.notBlank(methodName, "Parameter \"methodName\" must not blank. ");
         // first priority : find a public method with a "similar" signature in class hierarchy
         // similar interpreted in when primitive argument types are converted to their wrappers
-        for (Method method : clazz.getMethods()) {
+        for (Method method : this.findMethods(clazz)) {
             if (methodName.equals(method.getName()) &&
                     this.matchParameterTypes(method.getParameterTypes(), parameterTypes)) {
                 return method;
@@ -274,8 +309,8 @@ public class JdkReflecter implements Reflecter {
         // second priority : find a non-public method with a "similar" signature on declaring class
         Class<?> inputClazz = clazz;
         do {
-            for (Method method : clazz.getDeclaredMethods()) {
-                if (this.notAvailable(inputClazz, clazz, method)) {
+            for (Method method : this.findDeclaredMethods(clazz)) {
+                if (this.notAccess(inputClazz, clazz, method)) {
                     continue;
                 }
                 if (methodName.equals(method.getName()) &&
