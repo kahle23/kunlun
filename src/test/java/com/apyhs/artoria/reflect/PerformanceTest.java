@@ -3,6 +3,7 @@ package com.apyhs.artoria.reflect;
 import com.apyhs.artoria.entity.Student;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -15,8 +16,10 @@ public class PerformanceTest {
     private static final Integer loopCount = 100000;
 
     @Test
-    public void test1() {
-        ReflectUtils.setReflecter(new JdkReflecter());
+    public void test1() throws Exception {
+        Field reflecter = ReflectUtils.findField(ReflectUtils.class, "reflecter");
+        ReflectUtils.makeAccessible(reflecter);
+        reflecter.set(null, new JdkReflecter());
         System.out.print("ReflectUtils not cache: ");
         for (int i = 0; i < count; i++) {
             long start = System.currentTimeMillis();
@@ -30,10 +33,8 @@ public class PerformanceTest {
     }
 
     @Test
-    public void test2() {
-        Reflecter reflecter = new JdkReflecter();
-        reflecter = ReflecterCache.getInstance(reflecter);
-        ReflectUtils.setReflecter(reflecter);
+    public void test2() throws Exception {
+        ReflectUtils.setReflecter(new JdkReflecter());
         System.out.print("ReflectUtils has cache: ");
         for (int i = 0; i < count; i++) {
             long start = System.currentTimeMillis();
@@ -48,7 +49,9 @@ public class PerformanceTest {
 
     @Test
     public void test3() throws Exception {
-        ReflectUtils.setReflecter(new JdkReflecter());
+        Field reflecter = ReflectUtils.findField(ReflectUtils.class, "reflecter");
+        ReflectUtils.makeAccessible(reflecter);
+        reflecter.set(null, new JdkReflecter());
         System.out.print("ReflectUtils no cache(multithreaded): ");
 
         ExecutorService pool = Executors.newFixedThreadPool(count);
@@ -80,9 +83,7 @@ public class PerformanceTest {
 
     @Test
     public void test4() throws Exception {
-        Reflecter reflecter = new JdkReflecter();
-        reflecter = ReflecterCache.getInstance(reflecter);
-        ReflectUtils.setReflecter(reflecter);
+        ReflectUtils.setReflecter(new JdkReflecter());
         System.out.print("ReflectUtils has cache(multithreaded): ");
 
         ExecutorService pool = Executors.newFixedThreadPool(count);
