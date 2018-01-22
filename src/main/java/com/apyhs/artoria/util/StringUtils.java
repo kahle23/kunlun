@@ -1,6 +1,6 @@
 package com.apyhs.artoria.util;
 
-import static com.apyhs.artoria.util.Const.*;
+import static com.apyhs.artoria.constant.Const.*;
 
 /**
  * String tools.

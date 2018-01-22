@@ -9,7 +9,7 @@ import com.apyhs.artoria.util.StringUtils;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static com.apyhs.artoria.util.Const.*;
+import static com.apyhs.artoria.constant.Const.*;
 
 /**
  * Data handle tools.

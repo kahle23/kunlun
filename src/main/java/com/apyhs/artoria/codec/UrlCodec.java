@@ -2,7 +2,7 @@ package com.apyhs.artoria.codec;
 
 import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.MapUtils;
-import com.apyhs.artoria.util.Const;
+import com.apyhs.artoria.constant.Const;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -10,7 +10,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.apyhs.artoria.util.Const.DEFAULT_CHARSET_NAME;
+import static com.apyhs.artoria.constant.Const.DEFAULT_CHARSET_NAME;
 
 /**
  * Url codec, and map to string tools.

@@ -1,4 +1,4 @@
-package com.apyhs.artoria.util;
+package com.apyhs.artoria.constant;
 
 /**
  * Const.

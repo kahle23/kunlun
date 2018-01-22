@@ -9,7 +9,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 
-import static com.apyhs.artoria.util.Const.DEFAULT_CHARSET_NAME;
+import static com.apyhs.artoria.constant.Const.DEFAULT_CHARSET_NAME;
 
 /**
  * Hmac tools.

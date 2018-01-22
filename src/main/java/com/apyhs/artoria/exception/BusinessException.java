@@ -2,8 +2,8 @@ package com.apyhs.artoria.exception;
 
 import com.apyhs.artoria.util.StringUtils;
 
-import static com.apyhs.artoria.util.Const.EMPTY_STRING;
-import static com.apyhs.artoria.util.Const.ENDL;
+import static com.apyhs.artoria.constant.Const.EMPTY_STRING;
+import static com.apyhs.artoria.constant.Const.ENDL;
 
 /**
  * Business exception.

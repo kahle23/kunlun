@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.apyhs.artoria.util.Const.*;
+import static com.apyhs.artoria.constant.Const.*;
 
 /**
  * Jdk bean map.

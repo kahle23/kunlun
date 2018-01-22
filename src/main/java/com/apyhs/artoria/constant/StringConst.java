@@ -1,4 +1,6 @@
-package com.apyhs.artoria.util;
+package com.apyhs.artoria.constant;
+
+import com.apyhs.artoria.util.PathUtils;
 
 import java.nio.charset.Charset;
 
