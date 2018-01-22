@@ -5,7 +5,7 @@ import com.apyhs.artoria.exception.UncheckedException;
 import java.io.File;
 import java.net.URL;
 
-import static com.apyhs.artoria.util.Const.*;
+import static com.apyhs.artoria.constant.Const.*;
 
 /**
  * Path tools.
@@ -14,7 +14,7 @@ import static com.apyhs.artoria.util.Const.*;
 public class PathUtils {
     private static final Class<?> THIS_CLASS = PathUtils.class;
 
-    protected static String getRootPath() {
+    public static String getRootPath() {
         try {
             URL res = THIS_CLASS.getResource(SLASH);
             File path = res != null ? new File(res.toURI().getPath()) : null;
@@ -25,7 +25,7 @@ public class PathUtils {
         }
     }
 
-    protected static String getClasspath() {
+    public static String getClasspath() {
         try {
             URL res = ClassUtils.getDefaultClassLoader().getResource(EMPTY_STRING);
             return res != null ? new File(res.toURI().getPath()).toString() : EMPTY_STRING;

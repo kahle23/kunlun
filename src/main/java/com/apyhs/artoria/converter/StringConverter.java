@@ -10,8 +10,8 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Date;
 
-import static com.apyhs.artoria.util.Const.FALSE;
-import static com.apyhs.artoria.util.Const.TRUE;
+import static com.apyhs.artoria.constant.Const.FALSE;
+import static com.apyhs.artoria.constant.Const.TRUE;
 import static com.apyhs.artoria.util.DateUtils.DEFAULT_DATE_PATTERN;
 
 /**

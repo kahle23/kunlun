@@ -17,7 +17,7 @@ import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
-import static com.apyhs.artoria.util.Const.BLANK_SPACE;
+import static com.apyhs.artoria.constant.Const.BLANK_SPACE;
 
 /**
  * Cipher tools.

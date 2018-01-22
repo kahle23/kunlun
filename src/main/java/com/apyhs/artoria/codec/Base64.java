@@ -1,5 +1,6 @@
 package com.apyhs.artoria.codec;
 
+import com.apyhs.artoria.constant.Const;
 import com.apyhs.artoria.logging.Logger;
 import com.apyhs.artoria.logging.LoggerFactory;
 import com.apyhs.artoria.util.*;

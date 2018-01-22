@@ -17,7 +17,7 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.apyhs.artoria.util.Const.*;
+import static com.apyhs.artoria.constant.Const.*;
 
 /**
  * @author Kahle

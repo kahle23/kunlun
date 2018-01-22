@@ -6,7 +6,7 @@ import com.apyhs.artoria.util.ObjectUtils;
 
 import java.util.*;
 
-import static com.apyhs.artoria.util.Const.*;
+import static com.apyhs.artoria.constant.Const.*;
 
 /**
  * Bean map.

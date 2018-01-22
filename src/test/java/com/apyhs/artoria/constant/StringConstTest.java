@@ -1,8 +1,8 @@
-package com.apyhs.artoria.util;
+package com.apyhs.artoria.constant;
 
 import org.junit.Test;
 
-import static com.apyhs.artoria.util.Const.*;
+import static com.apyhs.artoria.constant.Const.*;
 
 public class StringConstTest {
 
