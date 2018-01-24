@@ -157,7 +157,6 @@ public class ReflectUtils {
         private static class ReflecterInterceptor implements Interceptor {
             private static final List<String> METHOD_NAMES;
             private Reflecter original;
-            private String className;
 
             static {
                 List<String> list = new ArrayList<String>();
@@ -174,14 +173,13 @@ public class ReflectUtils {
 
             ReflecterInterceptor(Reflecter original) {
                 this.original = original;
-                this.className = original.getClass().getName();
             }
 
             @Override
             public Object intercept(Object proxyObject, Method method, Object[] args) throws Throwable {
                 if (METHOD_NAMES.contains(method.getName())) {
                     DataLoader loader = new DataLoaderImpl(original, method, args);
-                    String key = className + method.getName() + Arrays.toString(args);
+                    String key = method.getName() + Arrays.toString(args);
                     return CACHE_UTILS.get(key, loader);
                 }
                 else {

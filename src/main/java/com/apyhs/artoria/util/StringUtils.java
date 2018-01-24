@@ -20,15 +20,15 @@ public class StringUtils {
         return obj != null && !EMPTY_STRING.equals(obj);
     }
 
-    public static boolean isBlank(CharSequence str) {
-        return !StringUtils.isNotBlank(str);
+    public static boolean isBlank(CharSequence cs) {
+        return !StringUtils.isNotBlank(cs);
     }
 
-    public static boolean isNotBlank(CharSequence str) {
-        if (StringUtils.isEmpty(str)) { return false; }
-        int strLen = str.length();
+    public static boolean isNotBlank(CharSequence cs) {
+        if (StringUtils.isEmpty(cs)) { return false; }
+        int strLen = cs.length();
         for (int i = 0; i < strLen; i++) {
-            int codePoint = (int) str.charAt(i);
+            int codePoint = (int) cs.charAt(i);
             boolean isWs = Character.isWhitespace(codePoint);
             if (!isWs) { return true; }
         }
@@ -36,6 +36,9 @@ public class StringUtils {
     }
 
     public static boolean isNumeric(String str) {
+        if (StringUtils.isBlank(str)) {
+            return false;
+        }
         boolean b = str.startsWith(MINUS);
         b = b || str.startsWith(PLUS);
         if (b) { str = str.substring(1); }
@@ -47,8 +50,10 @@ public class StringUtils {
         return true;
     }
 
-    public static boolean containsWhitespace(CharSequence str) {
-        if (StringUtils.isEmpty(str)) { return false; }
+    public static boolean containsWhitespace(String str) {
+        if (StringUtils.isEmpty(str)) {
+            return false;
+        }
         int strLen = str.length();
         for (int i = 0; i < strLen; i++) {
             int codePoint = (int) str.charAt(i);
