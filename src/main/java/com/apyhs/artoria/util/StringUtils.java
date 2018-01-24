@@ -7,6 +7,7 @@ import static com.apyhs.artoria.constant.Const.*;
  * @author Kahle
  */
 public class StringUtils {
+    private static final char UNDERLINE = '_';
 
     public static boolean equals(String str1, String str2) {
         return ObjectUtils.equals(str1, str2);
@@ -138,6 +139,43 @@ public class StringUtils {
                 Character.toLowerCase(c));
         sb.append(str.substring(1));
         return sb.toString();
+    }
+
+    public static String camelToUnderline(String str) {
+        if (str == null) { return null; }
+        int length = str.length();
+        StringBuilder builder = new StringBuilder();
+        char ch;
+        for (int i = 0; i < length; i++) {
+            ch = str.charAt(i);
+            if (!Character.isLowerCase(ch)) {
+                builder.append(UNDERLINE).append(ch);
+            }
+            else {
+                ch = Character.toUpperCase(ch);
+                builder.append(ch);
+            }
+        }
+        return builder.toString();
+    }
+
+    public static String underlineToCamel(String str) {
+        if (str == null) { return null; }
+        int length = str.length();
+        StringBuilder builder = new StringBuilder();
+        char ch;
+        for (int i = 0; i < length; i++) {
+            if (str.charAt(i) == UNDERLINE) {
+                ch = str.charAt(++i);
+                ch = Character.toUpperCase(ch);
+            }
+            else {
+                ch = str.charAt(i);
+                ch = Character.toLowerCase(ch);
+            }
+            builder.append(ch);
+        }
+        return builder.toString();
     }
 
 }
