@@ -25,4 +25,20 @@ public class StringUtilsTest {
         System.out.println(StringUtils.isNumeric("+345347"));
     }
 
+    @Test
+    public void test3() {
+        System.out.println(StringUtils.camelToUnderline("helloWorld"));
+        System.out.println(StringUtils.camelToUnderline("LocalHost"));
+        System.out.println(StringUtils.camelToUnderline("localhost"));
+        System.out.println(StringUtils.camelToUnderline("LOCALHOST"));
+        System.out.println(StringUtils.camelToUnderline(""));
+        System.out.println(StringUtils.camelToUnderline(null));
+        System.out.println(StringUtils.underlineToCamel("HELLO_WORLD"));
+        System.out.println(StringUtils.underlineToCamel("_LOCAL_HOST"));
+        System.out.println(StringUtils.underlineToCamel("LOCALHOST"));
+        System.out.println(StringUtils.underlineToCamel("localhost"));
+        System.out.println(StringUtils.underlineToCamel(""));
+        System.out.println(StringUtils.underlineToCamel(null));
+    }
+
 }
