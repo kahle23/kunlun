@@ -1,6 +1,7 @@
 package com.apyhs.artoria.util;
 
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -23,6 +24,12 @@ public class CollectionUtils {
             E temp = list.get(end);
             list.set(end, list.get(start));
             list.set(start, temp);
+        }
+    }
+
+    public static <E> void addAll(Collection<E> collection, Enumeration<E> enumeration) {
+        while (enumeration.hasMoreElements()) {
+            collection.add(enumeration.nextElement());
         }
     }
 
