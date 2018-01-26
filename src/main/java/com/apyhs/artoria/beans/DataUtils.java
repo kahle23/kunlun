@@ -113,7 +113,7 @@ public class DataUtils {
             if (data.size() == 0) {
                 continue;
             }
-            else if (data.size() > groupSize) {
+            else if (data.size() >= groupSize) {
                 groupData = data.subList(0, groupSize);
                 data = data.subList(groupSize, data.size());
             }
