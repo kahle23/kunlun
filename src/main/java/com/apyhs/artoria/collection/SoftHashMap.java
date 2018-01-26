@@ -29,16 +29,16 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         return null;
     }
 
-    public SoftHashMap(int initialCapacity, float loadFactor) {
-        this.hash = new HashMap(initialCapacity, loadFactor);
+    public SoftHashMap() {
+        this.hash = new HashMap();
     }
 
     public SoftHashMap(int initialCapacity) {
         this.hash = new HashMap(initialCapacity);
     }
 
-    public SoftHashMap() {
-        this.hash = new HashMap();
+    public SoftHashMap(int initialCapacity, float loadFactor) {
+        this.hash = new HashMap(initialCapacity, loadFactor);
     }
 
     @Override
