@@ -1,265 +1,123 @@
 package com.apyhs.artoria.logging;
 
-import com.apyhs.artoria.exception.ExceptionUtils;
-import com.apyhs.artoria.util.DateUtils;
-import com.apyhs.artoria.util.StringUtils;
-
-import static com.apyhs.artoria.constant.Const.EMPTY_STRING;
-import static com.apyhs.artoria.constant.Const.ENDL;
-
 /**
  * Failsafe logger.
  * @author Kahle
  */
 public class FailsafeLogger implements Logger {
 
-	private static final String LOGGER_ERROR_MESSAGE = "The logger component has a error. ";
-	private static final int STACK_TRACE_INDEX = 3;
+    private Logger logger;
 
-	private Logger logger;
-
-	public FailsafeLogger(Logger logger) {
-		this.logger = logger;
-	}
-
-	public Logger getLogger() {
-		return logger;
-	}
-
-	public void setLogger(Logger logger) {
-		this.logger = logger;
-	}
-
-	private void logp(Level level, String message, Throwable t) {
-		Thread thread = Thread.currentThread();
-		StackTraceElement[] stackTrace = thread.getStackTrace();
-		System.err.println(">> [" + DateUtils.format() + "] [" + level + "] ["
-				+ thread.getName() + "] ["
-				+ stackTrace[STACK_TRACE_INDEX].getClassName() + "."
-				+ stackTrace[STACK_TRACE_INDEX].getMethodName() + "()]"
-				+ (StringUtils.isNotBlank(message) ? " [" + message + "]" : EMPTY_STRING)
-				+ (t != null ? " [" + ENDL + ExceptionUtils.toString(t) + "]" : EMPTY_STRING)
-		);
-	}
-
-	@Override
-	public void trace(String msg) {
-		try {
-			logger.trace(msg);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.TRACE, msg, null);
-		}
-	}
-
-	@Override
-	public void trace(Throwable e) {
-		try {
-			logger.trace(e);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.TRACE, e.getMessage(), e);
-		}
-	}
-
-	@Override
-	public void trace(String msg, Throwable e) {
-		try {
-			logger.trace(msg, e);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.TRACE, msg, e);
-		}
-	}
-
-	@Override
-	public void debug(String msg) {
-		try {
-			logger.debug(msg);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.DEBUG, msg, null);
-		}
-	}
-
-	@Override
-	public void debug(Throwable e) {
-		try {
-			logger.debug(e);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.DEBUG, e.getMessage(), e);
-		}
-	}
-
-	@Override
-	public void debug(String msg, Throwable e) {
-		try {
-			logger.debug(msg, e);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.DEBUG, msg, e);
-		}
-	}
-
-	@Override
-	public void info(String msg) {
-		try {
-			logger.info(msg);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.INFO, msg, null);
-		}
-	}
-
-	@Override
-	public void info(Throwable e) {
-		try {
-			logger.info(e);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.INFO, e.getMessage(), e);
-		}
-	}
-
-	@Override
-	public void info(String msg, Throwable e) {
-		try {
-			logger.info(msg, e);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.INFO, msg, e);
-		}
-	}
-
-	@Override
-	public void warn(String msg) {
-		try {
-			logger.warn(msg);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.WARN, msg, null);
-		}
-	}
-
-	@Override
-	public void warn(Throwable e) {
-		try {
-			logger.warn(e);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.WARN, e.getMessage(), e);
-		}
-	}
-
-	@Override
-	public void warn(String msg, Throwable e) {
-		try {
-			logger.warn(msg, e);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.WARN, msg, e);
-		}
-	}
-
-	@Override
-	public void error(String msg) {
-		try {
-			logger.error(msg);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.ERROR, msg, null);
-		}
-	}
-
-	@Override
-	public void error(Throwable e) {
-		try {
-			logger.error(e);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.ERROR, e.getMessage(), e);
-		}
-	}
-
-	@Override
-	public void error(String msg, Throwable e) {
-		try {
-			logger.error(msg, e);
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			this.logp(Level.ERROR, msg, e);
-		}
-	}
-
-	@Override
-    public boolean isTraceEnabled() {
-		try {
-			return logger.isTraceEnabled();
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			return false;
-		}
+    public FailsafeLogger(Logger logger) {
+        this.logger = logger;
     }
 
-	@Override
-	public boolean isDebugEnabled() {
-		try {
-			return logger.isDebugEnabled();
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			return false;
-		}
-	}
+    public Logger getLogger() {
+        return logger;
+    }
 
-	@Override
-	public boolean isInfoEnabled() {
-		try {
-			return logger.isInfoEnabled();
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			return false;
-		}
-	}
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
 
-	@Override
-	public boolean isWarnEnabled() {
-		try {
-			return logger.isWarnEnabled();
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			return false;
-		}
-	}
+    @Override
+    public void trace(String msg) {
+        logger.trace(msg);
+    }
 
-	@Override
-	public boolean isErrorEnabled() {
-		try {
-			return logger.isErrorEnabled();
-		}
-		catch (Throwable t) {
-			this.logp(Level.ERROR, LOGGER_ERROR_MESSAGE, t);
-			return false;
-		}
-	}
+    @Override
+    public void trace(Throwable e) {
+        logger.trace(e);
+    }
+
+    @Override
+    public void trace(String msg, Throwable e) {
+        logger.trace(msg, e);
+    }
+
+    @Override
+    public void debug(String msg) {
+        logger.debug(msg);
+    }
+
+    @Override
+    public void debug(Throwable e) {
+        logger.debug(e);
+    }
+
+    @Override
+    public void debug(String msg, Throwable e) {
+        logger.debug(msg, e);
+    }
+
+    @Override
+    public void info(String msg) {
+        logger.info(msg);
+    }
+
+    @Override
+    public void info(Throwable e) {
+        logger.info(e);
+    }
+
+    @Override
+    public void info(String msg, Throwable e) {
+        logger.info(msg, e);
+    }
+
+    @Override
+    public void warn(String msg) {
+        logger.warn(msg);
+    }
+
+    @Override
+    public void warn(Throwable e) {
+        logger.warn(e);
+    }
+
+    @Override
+    public void warn(String msg, Throwable e) {
+        logger.warn(msg, e);
+    }
+
+    @Override
+    public void error(String msg) {
+        logger.error(msg);
+    }
+
+    @Override
+    public void error(Throwable e) {
+        logger.error(e);
+    }
+
+    @Override
+    public void error(String msg, Throwable e) {
+        logger.error(msg, e);
+    }
+
+    @Override
+    public boolean isTraceEnabled() {
+        return logger.isTraceEnabled();
+    }
+
+    @Override
+    public boolean isDebugEnabled() {
+        return logger.isDebugEnabled();
+    }
+
+    @Override
+    public boolean isInfoEnabled() {
+        return logger.isInfoEnabled();
+    }
+
+    @Override
+    public boolean isWarnEnabled() {
+        return logger.isWarnEnabled();
+    }
+
+    @Override
+    public boolean isErrorEnabled() {
+        return logger.isErrorEnabled();
+    }
 
 }
