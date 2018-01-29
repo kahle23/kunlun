@@ -13,41 +13,31 @@ import java.util.*;
  * @param <K> The key type
  * @param <V> The value type
  */
-@SuppressWarnings("unchecked")
 public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
-    private final Map hash;
+    private final Map<K, ValueCell<V>> hash;
     private final Type type;
-    private Set entrySet = null;
-    private final ReferenceQueue queue = new ReferenceQueue();
-
-    private void processQueue() {
-        ValueCell cell;
-        while((cell = (ValueCell) this.queue.poll()) != null) {
-            if (cell.isValid()) {
-                this.hash.remove(cell.getKey());
-            }
-        }
-    }
+    private Set<Map.Entry<K, V>> entrySet = null;
+    private final ReferenceQueue<V> queue = new ReferenceQueue<V>();
 
     public ReferenceHashMap(Type type) {
-        this.hash = new HashMap();
+        this.hash = new HashMap<K, ValueCell<V>>();
         this.type = type;
     }
 
     public ReferenceHashMap(int initialCapacity, Type type) {
-        this.hash = new HashMap(initialCapacity);
+        this.hash = new HashMap<K, ValueCell<V>>(initialCapacity);
         this.type = type;
     }
 
     public ReferenceHashMap(int initialCapacity, float loadFactor, Type type) {
-        this.hash = new HashMap(initialCapacity, loadFactor);
+        this.hash = new HashMap<K, ValueCell<V>>(initialCapacity, loadFactor);
         this.type = type;
     }
 
     @Override
     public int size() {
-        Set<Map.Entry<K, V>> set = this.entrySet();
-        return set.size();
+        Set<Map.Entry<K, V>> entries = this.entrySet();
+        return entries.size();
     }
 
     @Override
@@ -58,35 +48,35 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
 
     @Override
     public boolean isEmpty() {
-        Set<Map.Entry<K, V>> set = this.entrySet();
-        return set.isEmpty();
+        Set<Map.Entry<K, V>> entries = this.entrySet();
+        return entries.isEmpty();
     }
 
     @Override
     public V get(Object key) {
         this.processQueue();
-        Object cell = this.hash.get(key);
-        return (V) this.stripValueCell(cell, false);
+        ValueCell<V> cell = this.hash.get(key);
+        return this.stripValueCell(cell, false);
     }
 
     @Override
     public V remove(Object key) {
         this.processQueue();
-        Object oldValue = this.hash.remove(key);
-        return (V) this.stripValueCell(oldValue, true);
+        ValueCell<V> oldValue = this.hash.remove(key);
+        return this.stripValueCell(oldValue, true);
     }
 
     @Override
     public V put(K key, V value) {
         this.processQueue();
-        ValueCell cell = this.newValueCell(key, value, this.queue);
-        Object oldValue = this.hash.put(key, cell);
-        return (V) this.stripValueCell(oldValue, true);
+        ValueCell<V> cell = this.newValueCell(key, value, this.queue);
+        ValueCell<V> oldValue = this.hash.put(key, cell);
+        return this.stripValueCell(oldValue, true);
     }
 
     @Override
     public boolean containsKey(Object key) {
-        Object cell = this.hash.get(key);
+        ValueCell<V> cell = this.hash.get(key);
         return this.stripValueCell(cell, false) != null;
     }
 
@@ -98,26 +88,34 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
         return this.entrySet;
     }
 
-    private ValueCell newValueCell(Object key, Object value, ReferenceQueue queue) {
+    private void processQueue() {
+        ValueCell cell;
+        while ((cell = (ValueCell) this.queue.poll()) != null) {
+            if (cell.isValid()) {
+                this.hash.remove(cell.getKey());
+            }
+        }
+    }
+
+    private ValueCell<V> newValueCell(K key, V value, ReferenceQueue<V> queue) {
         if (value == null) {
             return null;
         }
         switch (type) {
-            case WEAK: return new WeakValueCell(key, value, queue);
-            case SOFT: return new SoftValueCell(key, value, queue);
-            default: return new WeakValueCell(key, value, queue);
+            case WEAK: return new WeakValueCell<V>(key, value, queue);
+            case SOFT: return new SoftValueCell<V>(key, value, queue);
+            default: return new WeakValueCell<V>(key, value, queue);
         }
     }
 
-    private Object stripValueCell(Object cell, boolean doDrop) {
+    private V stripValueCell(ValueCell<V> cell, boolean doDrop) {
         if (cell == null) {
             return null;
         }
         else {
-            ValueCell cellObj = (ValueCell) cell;
-            Object value = cellObj.get();
+            V value = cell.get();
             if (doDrop) {
-                cellObj.drop();
+                cell.drop();
             }
             return value;
         }
@@ -128,8 +126,8 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
         SOFT
     }
 
-    private class EntrySet extends AbstractSet {
-        Set hashEntries;
+    private class EntrySet extends AbstractSet<Map.Entry<K, V>> {
+        Set<Map.Entry<K, ValueCell<V>>> hashEntries;
 
         private EntrySet() {
             this.hashEntries = hash.entrySet();
@@ -138,7 +136,7 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
         @Override
         public int size() {
             int count = 0;
-            Iterator iterator = this.iterator();
+            Iterator<Map.Entry<K, V>> iterator = this.iterator();
             while (iterator.hasNext()) {
                 ++count;
                 iterator.next();
@@ -150,7 +148,7 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
         public boolean remove(Object entry) {
             ReferenceHashMap.this.processQueue();
             boolean b = entry instanceof ReferenceHashMap.Entry;
-            return b && this.hashEntries.remove(((Entry) entry).entry);
+            return b && this.hashEntries.remove(((ReferenceHashMap.Entry) entry).entry);
         }
 
         @Override
@@ -159,18 +157,18 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
         }
 
         @Override
-        public Iterator iterator() {
-            return new Iterator() {
-                Iterator hashIterator = hashEntries.iterator();
+        public Iterator<Map.Entry<K, V>> iterator() {
+            return new Iterator<Map.Entry<K, V>>() {
+                Iterator<Map.Entry<K, ValueCell<V>>> hashIterator = hashEntries.iterator();
                 Entry next = null;
 
                 @Override
                 public boolean hasNext() {
                     while (true) {
                         if (this.hashIterator.hasNext()) {
-                            java.util.Map.Entry entry = (java.util.Map.Entry) this.hashIterator.next();
-                            ValueCell cell = (ValueCell) entry.getValue();
-                            Object value = null;
+                            Map.Entry<K, ValueCell<V>> entry = this.hashIterator.next();
+                            ValueCell<V> cell = entry.getValue();
+                            V value = null;
                             if (cell != null && (value = cell.get()) == null) {
                                 continue;
                             }
@@ -182,7 +180,7 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
                 }
 
                 @Override
-                public Object next() {
+                public Map.Entry<K, V> next() {
                     if (this.next == null && !this.hasNext()) {
                         throw new NoSuchElementException();
                     }
@@ -203,31 +201,32 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
 
     }
 
-    private class Entry implements java.util.Map.Entry {
-        private java.util.Map.Entry entry;
-        private Object value;
+    private class Entry implements java.util.Map.Entry<K, V> {
+        private java.util.Map.Entry<K, ValueCell<V>> entry;
+        private V value;
 
-        Entry(java.util.Map.Entry entry, Object value) {
+        Entry(java.util.Map.Entry<K, ValueCell<V>> entry, V value) {
             this.entry = entry;
             this.value = value;
         }
 
         @Override
-        public Object getKey() {
+        public K getKey() {
             return this.entry.getKey();
         }
 
         @Override
-        public Object getValue() {
+        public V getValue() {
             return this.value;
         }
 
         @Override
-        public Object setValue(Object value) {
-            Object key = this.entry.getKey();
+        public V setValue(V value) {
+            K key = this.entry.getKey();
             this.value = value;
-            ValueCell cell = ReferenceHashMap.this.newValueCell(key, value, queue);
-            return this.entry.setValue(cell);
+            ValueCell<V> cell = ReferenceHashMap.this.newValueCell(key, value, queue);
+            ValueCell<V> oldValue = this.entry.setValue(cell);
+            return oldValue.get();
         }
 
         @Override
@@ -253,18 +252,18 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
 
     }
 
-    private interface ValueCell {
+    private interface ValueCell<T> {
+        T get();
         void drop();
-        Object get();
         Object getKey();
         boolean isValid();
     }
 
-    private static class WeakValueCell extends WeakReference implements ValueCell {
+    private static class WeakValueCell<T> extends WeakReference<T> implements ValueCell<T> {
         private static Object INVALID_KEY = new Object();
         private Object key;
 
-        private WeakValueCell(Object key, Object value, ReferenceQueue queue) {
+        private WeakValueCell(Object key, T value, ReferenceQueue<T> queue) {
             super(value, queue);
             this.key = key;
         }
@@ -284,11 +283,11 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
 
     }
 
-    private static class SoftValueCell extends SoftReference implements ValueCell {
+    private static class SoftValueCell<T> extends SoftReference<T> implements ValueCell<T> {
         private static Object INVALID_KEY = new Object();
         private Object key;
 
-        private SoftValueCell(Object key, Object value, ReferenceQueue queue) {
+        private SoftValueCell(Object key, T value, ReferenceQueue<T> queue) {
             super(value, queue);
             this.key = key;
         }
