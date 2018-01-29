@@ -4,13 +4,21 @@ import com.apyhs.artoria.util.ObjectUtils;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.util.*;
 
+/**
+ * Reference hash map, has weak and soft reference.
+ * @author Kahle
+ * @param <K> The key type
+ * @param <V> The value type
+ */
 @SuppressWarnings("unchecked")
-public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
+public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     private Map hash;
     private Set entrySet = null;
     private ReferenceQueue queue = new ReferenceQueue();
+    private final Type type;
 
     private void processQueue() {
         ValueCell cell;
@@ -21,16 +29,19 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         }
     }
 
-    public SoftHashMap() {
+    public ReferenceHashMap(Type type) {
         this.hash = new HashMap();
+        this.type = type;
     }
 
-    public SoftHashMap(int initialCapacity) {
+    public ReferenceHashMap(int initialCapacity, Type type) {
         this.hash = new HashMap(initialCapacity);
+        this.type = type;
     }
 
-    public SoftHashMap(int initialCapacity, float loadFactor) {
+    public ReferenceHashMap(int initialCapacity, float loadFactor, Type type) {
         this.hash = new HashMap(initialCapacity, loadFactor);
+        this.type = type;
     }
 
     @Override
@@ -55,28 +66,28 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     public V get(Object key) {
         this.processQueue();
         Object cell = this.hash.get(key);
-        return (V) ValueCell.strip(cell, false);
+        return (V) this.stripValueCell(cell, false);
     }
 
     @Override
     public V remove(Object key) {
         this.processQueue();
         Object oldValue = this.hash.remove(key);
-        return (V) ValueCell.strip(oldValue, true);
+        return (V) this.stripValueCell(oldValue, true);
     }
 
     @Override
     public V put(K key, V value) {
         this.processQueue();
-        ValueCell cell = ValueCell.create(key, value, this.queue);
+        ValueCell cell = this.newValueCell(key, value, this.queue);
         Object oldValue = this.hash.put(key, cell);
-        return (V) ValueCell.strip(oldValue, true);
+        return (V) this.stripValueCell(oldValue, true);
     }
 
     @Override
     public boolean containsKey(Object key) {
         Object cell = this.hash.get(key);
-        return ValueCell.strip(cell, false) != null;
+        return this.stripValueCell(cell, false) != null;
     }
 
     @Override
@@ -85,6 +96,36 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             this.entrySet = new EntrySet();
         }
         return this.entrySet;
+    }
+
+    private ValueCell newValueCell(Object key, Object value, ReferenceQueue queue) {
+        if (value == null) {
+            return null;
+        }
+        switch (type) {
+            case WEAK: return new WeakValueCell(key, value, queue);
+            case SOFT: return new SoftValueCell(key, value, queue);
+            default: return new WeakValueCell(key, value, queue);
+        }
+    }
+
+    private Object stripValueCell(Object cell, boolean doDrop) {
+        if (cell == null) {
+            return null;
+        }
+        else {
+            ValueCell cellObj = (ValueCell) cell;
+            Object value = cellObj.get();
+            if (doDrop) {
+                cellObj.drop();
+            }
+            return value;
+        }
+    }
+
+    public enum Type {
+        WEAK,
+        SOFT
     }
 
     private class EntrySet extends AbstractSet {
@@ -98,7 +139,7 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         public int size() {
             int count = 0;
             Iterator iterator = this.iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 ++count;
                 iterator.next();
             }
@@ -107,8 +148,8 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
         @Override
         public boolean remove(Object entry) {
-            SoftHashMap.this.processQueue();
-            boolean b = entry instanceof SoftHashMap.Entry;
+            ReferenceHashMap.this.processQueue();
+            boolean b = entry instanceof ReferenceHashMap.Entry;
             return b && this.hashEntries.remove(((Entry) entry).entry);
         }
 
@@ -127,7 +168,7 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
                 public boolean hasNext() {
                     while (true) {
                         if (this.hashIterator.hasNext()) {
-                            Entry entry = (Entry) this.hashIterator.next();
+                            java.util.Map.Entry entry = (java.util.Map.Entry) this.hashIterator.next();
                             ValueCell cell = (ValueCell) entry.getValue();
                             Object value = null;
                             if (cell != null && (value = cell.get()) == null) {
@@ -185,7 +226,7 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         public Object setValue(Object value) {
             Object key = this.entry.getKey();
             this.value = value;
-            ValueCell cell = ValueCell.create(key, value, queue);
+            ValueCell cell = ReferenceHashMap.this.newValueCell(key, value, queue);
             return this.entry.setValue(cell);
         }
 
@@ -212,44 +253,57 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
     }
 
-    private static class ValueCell extends SoftReference {
+    private interface ValueCell {
+        void drop();
+        Object get();
+        Object getKey();
+        boolean isValid();
+    }
+
+    private static class WeakValueCell extends WeakReference implements ValueCell {
         private static Object INVALID_KEY = new Object();
         private Object key;
 
-        private ValueCell(Object key, Object value, ReferenceQueue queue) {
+        private WeakValueCell(Object key, Object value, ReferenceQueue queue) {
             super(value, queue);
             this.key = key;
         }
 
-        private Object getKey() {
-            return key;
-        }
-
-        private void drop() {
+        public void drop() {
             super.clear();
             this.key = INVALID_KEY;
         }
 
-        private boolean isValid() {
+        public Object getKey() {
+            return key;
+        }
+
+        public boolean isValid() {
             return this.key != INVALID_KEY;
         }
 
-        private static Object strip(Object cell, boolean doDrop) {
-            if (cell == null) {
-                return null;
-            }
-            else {
-                ValueCell cellObj = (ValueCell) cell;
-                Object value = cellObj.get();
-                if (doDrop) {
-                    cellObj.drop();
-                }
-                return value;
-            }
+    }
+
+    private static class SoftValueCell extends SoftReference implements ValueCell {
+        private static Object INVALID_KEY = new Object();
+        private Object key;
+
+        private SoftValueCell(Object key, Object value, ReferenceQueue queue) {
+            super(value, queue);
+            this.key = key;
         }
 
-        private static ValueCell create(Object key, Object value, ReferenceQueue queue) {
-            return value == null ? null : new ValueCell(key, value, queue);
+        public void drop() {
+            super.clear();
+            this.key = INVALID_KEY;
+        }
+
+        public Object getKey() {
+            return key;
+        }
+
+        public boolean isValid() {
+            return this.key != INVALID_KEY;
         }
 
     }
