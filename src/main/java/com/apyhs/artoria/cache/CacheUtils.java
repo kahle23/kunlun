@@ -10,7 +10,7 @@ public class CacheUtils {
     private Cache cache;
 
     public CacheUtils() {
-        this.cache = new WeakSynCache();
+        this.cache = new SimpleCache();
     }
 
     public CacheUtils(Cache cache) {
