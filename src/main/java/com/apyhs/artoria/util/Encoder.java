@@ -1,5 +1,7 @@
 package com.apyhs.artoria.util;
 
+import com.apyhs.artoria.io.IOUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;

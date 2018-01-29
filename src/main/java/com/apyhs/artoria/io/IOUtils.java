@@ -1,7 +1,7 @@
-package com.apyhs.artoria.util;
+package com.apyhs.artoria.io;
 
 import com.apyhs.artoria.constant.Const;
-import com.apyhs.artoria.io.StringBuilderWriter;
+import com.apyhs.artoria.util.ClassUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;

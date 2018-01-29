@@ -2,6 +2,7 @@ package com.apyhs.artoria.util;
 
 import com.apyhs.artoria.constant.Const;
 import com.apyhs.artoria.exception.UncheckedException;
+import com.apyhs.artoria.io.IOUtils;
 
 import java.io.*;
 import java.util.Properties;
