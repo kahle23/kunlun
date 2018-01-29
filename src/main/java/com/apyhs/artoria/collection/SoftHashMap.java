@@ -9,24 +9,16 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     private Map hash;
-    private ReferenceQueue queue = new ReferenceQueue();
     private Set entrySet = null;
+    private ReferenceQueue queue = new ReferenceQueue();
 
     private void processQueue() {
-        SoftHashMap.ValueCell cell;
-        while((cell = (SoftHashMap.ValueCell)this.queue.poll()) != null) {
+        ValueCell cell;
+        while((cell = (ValueCell) this.queue.poll()) != null) {
             if (cell.isValid()) {
-                this.hash.remove(cell.key);
-            }
-            else {
-                SoftHashMap.ValueCell.dropped--;
+                this.hash.remove(cell.getKey());
             }
         }
-
-    }
-
-    private Object fill(Object o) {
-        return null;
     }
 
     public SoftHashMap() {
@@ -43,45 +35,8 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
     @Override
     public int size() {
-        return this.entrySet().size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.entrySet().isEmpty();
-    }
-
-    @Override
-    public boolean containsKey(Object key) {
-        return SoftHashMap.ValueCell.strip(this.hash.get(key), false) != null;
-    }
-
-    @Override
-    public V get(Object key) {
-        this.processQueue();
-        Object cell = this.hash.get(key);
-        if (cell == null) {
-            cell = this.fill(key);
-            if (cell != null) {
-                this.hash.put(key, SoftHashMap.ValueCell.create(key, cell, this.queue));
-                return (V) cell;
-            }
-        }
-
-        return (V) SoftHashMap.ValueCell.strip(cell, false);
-    }
-
-    @Override
-    public V put(K key, V value) {
-        this.processQueue();
-        SoftHashMap.ValueCell cell = SoftHashMap.ValueCell.create(key, value, this.queue);
-        return (V) SoftHashMap.ValueCell.strip(this.hash.put(key, cell), true);
-    }
-
-    @Override
-    public V remove(Object key) {
-        this.processQueue();
-        return (V) SoftHashMap.ValueCell.strip(this.hash.remove(key), true);
+        Set<Map.Entry<K, V>> set = this.entrySet();
+        return set.size();
     }
 
     @Override
@@ -91,11 +46,44 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     }
 
     @Override
+    public boolean isEmpty() {
+        Set<Map.Entry<K, V>> set = this.entrySet();
+        return set.isEmpty();
+    }
+
+    @Override
+    public V get(Object key) {
+        this.processQueue();
+        Object cell = this.hash.get(key);
+        return (V) ValueCell.strip(cell, false);
+    }
+
+    @Override
+    public V remove(Object key) {
+        this.processQueue();
+        Object oldValue = this.hash.remove(key);
+        return (V) ValueCell.strip(oldValue, true);
+    }
+
+    @Override
+    public V put(K key, V value) {
+        this.processQueue();
+        ValueCell cell = ValueCell.create(key, value, this.queue);
+        Object oldValue = this.hash.put(key, cell);
+        return (V) ValueCell.strip(oldValue, true);
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        Object cell = this.hash.get(key);
+        return ValueCell.strip(cell, false) != null;
+    }
+
+    @Override
     public Set<Map.Entry<K, V>> entrySet() {
         if (this.entrySet == null) {
-            this.entrySet = new SoftHashMap.EntrySet();
+            this.entrySet = new EntrySet();
         }
-
         return this.entrySet;
     }
 
@@ -103,60 +91,7 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         Set hashEntries;
 
         private EntrySet() {
-            this.hashEntries = SoftHashMap.this.hash.entrySet();
-        }
-
-        @Override
-        public Iterator iterator() {
-            return new Iterator() {
-                Iterator hashIterator;
-                SoftHashMap.Entry next;
-
-                {
-                    this.hashIterator = SoftHashMap.EntrySet.this.hashEntries.iterator();
-                    this.next = null;
-                }
-
-                @Override
-                public boolean hasNext() {
-                    while(true) {
-                        if (this.hashIterator.hasNext()) {
-                            java.util.Map.Entry entry = (java.util.Map.Entry)this.hashIterator.next();
-                            SoftHashMap.ValueCell cell = (SoftHashMap.ValueCell)entry.getValue();
-                            Object value = null;
-                            if (cell != null && (value = cell.get()) == null) {
-                                continue;
-                            }
-
-                            this.next = SoftHashMap.this.new Entry(entry, value);
-                            return true;
-                        }
-
-                        return false;
-                    }
-                }
-
-                @Override
-                public Object next() {
-                    if (this.next == null && !this.hasNext()) {
-                        throw new NoSuchElementException();
-                    } else {
-                        SoftHashMap.Entry entry = this.next;
-                        this.next = null;
-                        return entry;
-                    }
-                }
-
-                @Override
-                public void remove() {
-                    this.hashIterator.remove();
-                }
-            };
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return !this.iterator().hasNext();
+            this.hashEntries = hash.entrySet();
         }
 
         @Override
@@ -173,7 +108,56 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         @Override
         public boolean remove(Object entry) {
             SoftHashMap.this.processQueue();
-            return entry instanceof SoftHashMap.Entry && this.hashEntries.remove(((Entry) entry).entry);
+            boolean b = entry instanceof SoftHashMap.Entry;
+            return b && this.hashEntries.remove(((Entry) entry).entry);
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return !this.iterator().hasNext();
+        }
+
+        @Override
+        public Iterator iterator() {
+            return new Iterator() {
+                Iterator hashIterator = hashEntries.iterator();
+                Entry next = null;
+
+                @Override
+                public boolean hasNext() {
+                    while (true) {
+                        if (this.hashIterator.hasNext()) {
+                            Entry entry = (Entry) this.hashIterator.next();
+                            ValueCell cell = (ValueCell) entry.getValue();
+                            Object value = null;
+                            if (cell != null && (value = cell.get()) == null) {
+                                continue;
+                            }
+                            this.next = new Entry(entry, value);
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+
+                @Override
+                public Object next() {
+                    if (this.next == null && !this.hasNext()) {
+                        throw new NoSuchElementException();
+                    }
+                    else {
+                        Entry entry = this.next;
+                        this.next = null;
+                        return entry;
+                    }
+                }
+
+                @Override
+                public void remove() {
+                    this.hashIterator.remove();
+                }
+
+            };
         }
 
     }
@@ -199,7 +183,10 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
         @Override
         public Object setValue(Object value) {
-            return this.entry.setValue(SoftHashMap.ValueCell.create(this.entry.getKey(), value, SoftHashMap.this.queue));
+            Object key = this.entry.getKey();
+            this.value = value;
+            ValueCell cell = ValueCell.create(key, value, queue);
+            return this.entry.setValue(cell);
         }
 
         @Override
@@ -209,20 +196,24 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             }
             else {
                 java.util.Map.Entry entryObj = (java.util.Map.Entry) entry;
-                return ObjectUtils.equals(this.entry.getKey(), entryObj.getKey()) && ObjectUtils.equals(this.value, entryObj.getValue());
+                boolean keyEqu = ObjectUtils.equals(this.entry.getKey(), entryObj.getKey());
+                return keyEqu && ObjectUtils.equals(this.value, entryObj.getValue());
             }
         }
 
         @Override
         public int hashCode() {
-            Object key;
-            return ((key = this.getKey()) == null ? 0 : key.hashCode()) ^ (this.value == null ? 0 : this.value.hashCode());
+            Object key = this.getKey();
+            int keyHc = key == null ? 0 : key.hashCode();
+            Object val = this.value;
+            int valHc = val == null ? 0 : val.hashCode();
+            return keyHc ^ valHc;
         }
+
     }
 
     private static class ValueCell extends SoftReference {
         private static Object INVALID_KEY = new Object();
-        private static int dropped = 0;
         private Object key;
 
         private ValueCell(Object key, Object value, ReferenceQueue queue) {
@@ -230,8 +221,17 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             this.key = key;
         }
 
-        private static SoftHashMap.ValueCell create(Object key, Object value, ReferenceQueue queue) {
-            return value == null ? null : new SoftHashMap.ValueCell(key, value, queue);
+        private Object getKey() {
+            return key;
+        }
+
+        private void drop() {
+            super.clear();
+            this.key = INVALID_KEY;
+        }
+
+        private boolean isValid() {
+            return this.key != INVALID_KEY;
         }
 
         private static Object strip(Object cell, boolean doDrop) {
@@ -239,7 +239,7 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
                 return null;
             }
             else {
-                SoftHashMap.ValueCell cellObj = (SoftHashMap.ValueCell)cell;
+                ValueCell cellObj = (ValueCell) cell;
                 Object value = cellObj.get();
                 if (doDrop) {
                     cellObj.drop();
@@ -248,15 +248,10 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             }
         }
 
-        private boolean isValid() {
-            return this.key != INVALID_KEY;
-        }
-
-        private void drop() {
-            super.clear();
-            this.key = INVALID_KEY;
-            ++dropped;
+        private static ValueCell create(Object key, Object value, ReferenceQueue queue) {
+            return value == null ? null : new ValueCell(key, value, queue);
         }
 
     }
+
 }

@@ -21,8 +21,8 @@ public class SoftHashMapTest {
             builder.append(i);
         }
         String content = builder.toString();
-        Map<String, Object> map = new SoftHashMap<String, Object>();
-        // Map<String, Object> map = new HashMap<String, Object>();
+        SoftHashMap<String, Object> map = new SoftHashMap<String, Object>();
+//        HashMap<String, Object> map = new HashMap<String, Object>();
         for (long i = 0; i < 999999; i++) {
             map.put(i + "", new String(content + i));
         }
