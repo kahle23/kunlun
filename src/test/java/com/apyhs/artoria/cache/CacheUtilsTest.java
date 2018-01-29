@@ -8,7 +8,7 @@ public class CacheUtilsTest {
 
     @Test
     public void testFunction() {
-        cacheUtils.getCache().next(new WeakSynCache());
+        cacheUtils.getCache().next(new SimpleCache());
         DataLoader loader = new DataLoader() {
             @Override
             public Object load() {

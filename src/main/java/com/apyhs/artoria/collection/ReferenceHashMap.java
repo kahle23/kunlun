@@ -15,10 +15,10 @@ import java.util.*;
  */
 @SuppressWarnings("unchecked")
 public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
-    private Map hash;
-    private Set entrySet = null;
-    private ReferenceQueue queue = new ReferenceQueue();
+    private final Map hash;
     private final Type type;
+    private Set entrySet = null;
+    private final ReferenceQueue queue = new ReferenceQueue();
 
     private void processQueue() {
         ValueCell cell;
