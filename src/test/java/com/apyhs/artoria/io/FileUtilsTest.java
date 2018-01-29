@@ -1,5 +1,6 @@
-package com.apyhs.artoria.util;
+package com.apyhs.artoria.io;
 
+import com.apyhs.artoria.io.FileUtils;
 import org.junit.Test;
 
 import java.io.File;

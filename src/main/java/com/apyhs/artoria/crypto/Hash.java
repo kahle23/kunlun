@@ -2,7 +2,7 @@ package com.apyhs.artoria.crypto;
 
 import com.apyhs.artoria.codec.Hex;
 import com.apyhs.artoria.util.Assert;
-import com.apyhs.artoria.util.IOUtils;
+import com.apyhs.artoria.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,8 +12,8 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import static com.apyhs.artoria.util.IOUtils.DEFAULT_BUFFER_SIZE;
-import static com.apyhs.artoria.util.IOUtils.EOF;
+import static com.apyhs.artoria.io.IOUtils.DEFAULT_BUFFER_SIZE;
+import static com.apyhs.artoria.io.IOUtils.EOF;
 import static com.apyhs.artoria.constant.Const.DEFAULT_CHARSET_NAME;
 
 /**

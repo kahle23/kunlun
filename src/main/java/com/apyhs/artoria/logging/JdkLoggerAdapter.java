@@ -1,7 +1,7 @@
 package com.apyhs.artoria.logging;
 
 import com.apyhs.artoria.util.ClassUtils;
-import com.apyhs.artoria.util.IOUtils;
+import com.apyhs.artoria.io.IOUtils;
 
 import java.io.InputStream;
 import java.util.logging.LogManager;

@@ -1,5 +1,6 @@
 package com.apyhs.artoria.util;
 
+import com.apyhs.artoria.io.IOUtils;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
