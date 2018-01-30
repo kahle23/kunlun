@@ -1,6 +1,6 @@
 package com.apyhs.artoria.converter;
 
-import com.apyhs.artoria.util.DateUtils;
+import com.apyhs.artoria.time.DateUtils;
 import org.junit.Test;
 
 import java.sql.Timestamp;

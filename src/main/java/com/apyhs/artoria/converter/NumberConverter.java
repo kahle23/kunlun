@@ -4,7 +4,7 @@ import com.apyhs.artoria.exception.UncheckedException;
 import com.apyhs.artoria.reflect.ReflectUtils;
 import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.ClassUtils;
-import com.apyhs.artoria.util.DateUtils;
+import com.apyhs.artoria.time.DateUtils;
 import com.apyhs.artoria.util.StringUtils;
 
 import java.lang.reflect.Method;
