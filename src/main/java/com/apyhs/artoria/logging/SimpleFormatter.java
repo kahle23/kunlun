@@ -1,7 +1,7 @@
 package com.apyhs.artoria.logging;
 
 import com.apyhs.artoria.exception.ExceptionUtils;
-import com.apyhs.artoria.util.DateUtils;
+import com.apyhs.artoria.time.DateUtils;
 import com.apyhs.artoria.util.StringUtils;
 import com.apyhs.artoria.util.ThreadUtils;
 
