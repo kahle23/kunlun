@@ -1,5 +1,12 @@
-package com.apyhs.artoria.util;
+package com.apyhs.artoria.net;
 
+import com.apyhs.artoria.exception.UncheckedException;
+import com.apyhs.artoria.io.IOUtils;
+import com.apyhs.artoria.util.ArrayUtils;
+import com.apyhs.artoria.util.Assert;
+import com.apyhs.artoria.util.CollectionUtils;
+
+import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -11,6 +18,48 @@ import java.util.List;
  * @author Kahle
  */
 public class NetUtils {
+    private static final Integer DEFAULT_PING_TIMEOUT = 1000;
+    private static final Integer DEFAULT_TELNET_OPEN_TIMEOUT = 1000;
+
+    public static boolean telnetOpen(String ip, int port) {
+        return NetUtils.telnetOpen(ip, port, DEFAULT_TELNET_OPEN_TIMEOUT);
+    }
+
+    public static boolean telnetOpen(String ip, int port, int timeout) {
+        SocketAddress address = new InetSocketAddress(ip, port);
+        return NetUtils.telnetOpen(address, timeout);
+    }
+
+    public static boolean telnetOpen(SocketAddress address, int timeout) {
+        Socket socket = new Socket();
+        try {
+            socket.connect(address, timeout);
+            return true;
+        }
+        catch (IOException e) {
+            return false;
+        }
+        finally {
+            IOUtils.closeQuietly(socket);
+        }
+    }
+
+    public static boolean ping(String ip) {
+        return NetUtils.ping(ip, DEFAULT_PING_TIMEOUT);
+    }
+
+    public static boolean ping(String ip, int timeout) {
+        try {
+            return NetUtils.ping(InetAddress.getByName(ip), timeout);
+        }
+        catch (IOException e) {
+            throw new UncheckedException(e);
+        }
+    }
+
+    public static boolean ping(InetAddress in, int timeout) throws IOException {
+        return in.isReachable(timeout);
+    }
 
     public static List<String> findInet4Address() throws SocketException {
         List<String> result = new ArrayList<String>();

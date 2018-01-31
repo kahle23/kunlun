@@ -6,6 +6,8 @@ import com.apyhs.artoria.util.StringUtils;
 import com.apyhs.artoria.util.ThreadUtils;
 
 import java.lang.management.ThreadInfo;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -41,7 +43,9 @@ public class SimpleFormatter extends Formatter {
 
     private String printfTime(LogRecord record) {
         long millis = record.getMillis();
-        return DateUtils.format(millis);
+        SimpleDateFormat dateFormat =
+                new SimpleDateFormat(DateUtils.DEFAULT_DATE_PATTERN);
+        return dateFormat.format(new Date(millis));
     }
 
     private String printfLevel(LogRecord record) {
