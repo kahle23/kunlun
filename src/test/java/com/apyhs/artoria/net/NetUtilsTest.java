@@ -1,13 +1,39 @@
-package com.apyhs.artoria.util;
+package com.apyhs.artoria.net;
 
-import com.apyhs.artoria.net.NetUtils;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.Socket;
 import java.util.List;
 
 public class NetUtilsTest {
+
+    @Test
+    public void testTelnetOpen() throws Exception {
+        System.out.println(NetUtils.telnetOpen("www.baidu.com", 80));
+        System.out.println(NetUtils.telnetOpen("www.taobao.com", 80));
+        System.out.println(NetUtils.telnetOpen("www.sohu.com", 80));
+        System.out.println(NetUtils.telnetOpen("192.168.1.1", 80));
+        System.out.println(NetUtils.telnetOpen("www.baidu.com", 999));
+    }
+
+    @Test
+    public void testTelnetOpen1() throws Exception {
+        for (int i = 0; i < 1024; i++) {
+            System.out.println(i + " " + NetUtils.telnetOpen("www.baidu.com", i, 500));
+        }
+    }
+
+    @Test
+    public void testPing() throws Exception {
+        System.out.println(NetUtils.ping("192.168.1.1"));
+        System.out.println(NetUtils.ping("192.168.98.253"));
+        System.out.println(NetUtils.ping("111.13.100.92"));
+        System.out.println(NetUtils.ping("www.baidu.com"));
+        System.out.println(NetUtils.ping("www.taobao.com"));
+    }
 
     @Test
     public void testGetNetworkInterfaces() throws Exception {

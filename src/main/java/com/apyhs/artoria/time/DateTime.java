@@ -6,6 +6,10 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Date time object.
+ * @author Kahle
+ */
 public class DateTime {
 
     public static DateTime create() {
