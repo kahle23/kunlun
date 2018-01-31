@@ -1,5 +1,6 @@
 package com.apyhs.artoria.util;
 
+import com.apyhs.artoria.net.NetUtils;
 import org.junit.Test;
 
 import java.net.InetAddress;
