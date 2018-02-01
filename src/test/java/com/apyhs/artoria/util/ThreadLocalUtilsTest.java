@@ -30,6 +30,8 @@ public class ThreadLocalUtilsTest {
         doGetFromThreadLocal();
         ThreadLocalUtils.clear();
         doGetFromThreadLocal();
+        ThreadLocalUtils.setValue(testKey, "rt.jar");
+        doGetFromThreadLocal();
     }
 
 }

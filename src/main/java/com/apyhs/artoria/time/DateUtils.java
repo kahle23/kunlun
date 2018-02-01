@@ -6,14 +6,12 @@ import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.ObjectUtils;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 /**
  * Date tools.
  * @author Kahle
- * // TODO: Optimize DateTime and SimpleDateFormater and SimpleDateParser by ThreadLocal
  */
 public class DateUtils {
     public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
@@ -22,8 +20,9 @@ public class DateUtils {
     private static DateParser dateParser;
 
     static {
-        DateUtils.setDateFormater(new SimpleDateFormater());
-        DateUtils.setDateParser(new SimpleDateParser());
+        SimpleDateHandler handler = new SimpleDateHandler();
+        DateUtils.setDateFormater(handler);
+        DateUtils.setDateParser(handler);
     }
 
     public static DateFormater getDateFormater() {
@@ -187,30 +186,6 @@ public class DateUtils {
 
     public static String format(Date date, String pattern) {
         return dateFormater.format(date, pattern);
-    }
-
-    private static class SimpleDateParser implements DateParser {
-
-        @Override
-        public Date parse(String dateString, String pattern) throws ParseException {
-            Assert.notBlank(dateString, "Parameter \"dateString\" must not blank. ");
-            Assert.notBlank(pattern, "Parameter \"pattern\" must not blank. ");
-            SimpleDateFormat format = new SimpleDateFormat(pattern);
-            return format.parse(dateString);
-        }
-
-    }
-
-    private static class SimpleDateFormater implements DateFormater {
-
-        @Override
-        public String format(Date date, String pattern) {
-            Assert.notNull(date, "Parameter \"date\" must not null. ");
-            Assert.notBlank(pattern, "Parameter \"pattern\" must not blank. ");
-            SimpleDateFormat format = new SimpleDateFormat(pattern);
-            return format.format(date);
-        }
-
     }
 
 }

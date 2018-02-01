@@ -35,11 +35,7 @@ public class ThreadLocalUtils {
     }
 
     public static void clear() {
-        Map<Object, Object> bucket = THREAD_BUCKET.get();
-        if (bucket == null) {
-            return;
-        }
-        bucket.clear();
+        THREAD_BUCKET.remove();
     }
 
 }
