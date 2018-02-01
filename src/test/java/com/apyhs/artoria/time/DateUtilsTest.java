@@ -61,4 +61,40 @@ public class DateUtilsTest {
         System.out.println();
     }
 
+    @Test
+    public void testAddAmount() {
+        Date date = new Date();
+        System.out.println(DateUtils.format(DateUtils.addYear(date, 10)));
+        System.out.println(DateUtils.format(DateUtils.addMonth(date, 10)));
+        System.out.println(DateUtils.format(DateUtils.addDay(date, 10)));
+        System.out.println(DateUtils.format(DateUtils.addHour(date, 10)));
+        System.out.println(DateUtils.format(DateUtils.addMinute(date, 10)));
+        System.out.println(DateUtils.format(DateUtils.addSecond(date, 10)));
+        System.out.println(DateUtils.format(DateUtils.addMillisecond(date, 10)));
+    }
+
+    @Test
+    public void testGetAmount() {
+        Date date = new Date();
+        System.out.println(DateUtils.getYear(date));
+        System.out.println(DateUtils.getMonth(date));
+        System.out.println(DateUtils.getDay(date));
+        System.out.println(DateUtils.getHour(date));
+        System.out.println(DateUtils.getMinute(date));
+        System.out.println(DateUtils.getSecond(date));
+        System.out.println(DateUtils.getMillisecond(date));
+    }
+
+    @Test
+    public void testSetAmount() {
+        Date date = new Date();
+        System.out.println(DateUtils.format(DateUtils.setYear(date, 10)));
+        System.out.println(DateUtils.format(DateUtils.setMonth(date, 10)));
+        System.out.println(DateUtils.format(DateUtils.setDay(date, 10)));
+        System.out.println(DateUtils.format(DateUtils.setHour(date, 10)));
+        System.out.println(DateUtils.format(DateUtils.setMinute(date, 10)));
+        System.out.println(DateUtils.format(DateUtils.setSecond(date, 10)));
+        System.out.println(DateUtils.format(DateUtils.setMillisecond(date, 10)));
+    }
+
 }

@@ -43,6 +43,7 @@ public class SimpleFormatter extends Formatter {
 
     private String printfTime(LogRecord record) {
         long millis = record.getMillis();
+        // TODO: Optimize SimpleDateFormat by ThreadLocal
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat(DateUtils.DEFAULT_DATE_PATTERN);
         return dateFormat.format(new Date(millis));
