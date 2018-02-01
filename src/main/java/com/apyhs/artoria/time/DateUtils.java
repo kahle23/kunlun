@@ -20,7 +20,7 @@ public class DateUtils {
     private static DateParser dateParser;
 
     static {
-        SimpleDateHandler handler = new SimpleDateHandler();
+        DateHandler handler = new DateHandler();
         DateUtils.setDateFormater(handler);
         DateUtils.setDateParser(handler);
     }

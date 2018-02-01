@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class SimpleDateHandler implements DateFormater, DateParser {
+public class DateHandler implements DateFormater, DateParser {
     private ThreadLocal<Map<String, SimpleDateFormat>> dateFormatCache = new ThreadLocal<Map<String, SimpleDateFormat>>();
 
     private SimpleDateFormat takeSimpleDateFormat(String pattern) {
