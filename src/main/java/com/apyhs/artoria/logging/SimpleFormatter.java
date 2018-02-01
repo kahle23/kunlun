@@ -3,6 +3,7 @@ package com.apyhs.artoria.logging;
 import com.apyhs.artoria.exception.ExceptionUtils;
 import com.apyhs.artoria.time.DateUtils;
 import com.apyhs.artoria.util.StringUtils;
+import com.apyhs.artoria.util.ThreadLocalUtils;
 import com.apyhs.artoria.util.ThreadUtils;
 
 import java.lang.management.ThreadInfo;
@@ -19,18 +20,17 @@ import static com.apyhs.artoria.constant.Const.*;
  * @author Kahle
  */
 public class SimpleFormatter extends Formatter {
-
+    private static final String DEFAULT_DATE_FORMAT_KEY = SimpleDateFormat.class.getName() + UNDERLINE + DateUtils.DEFAULT_DATE_PATTERN;
     private static final int MAX_LEVEL_LENGTH = 7;
 
     @Override
     public String format(LogRecord record) {
-        String time = printfTime(record);
-        String level = printfLevel(record);
-        String thread = printfThread(record);
-        String source = printfSource(record);
-        String message = printfMessage(record);
-        String throwable = printfThrowable(record);
-
+        String time = this.printfTime(record);
+        String level = this.printfLevel(record);
+        String thread = this.printfThread(record);
+        String source = this.printfSource(record);
+        String message = this.printfMessage(record);
+        String throwable = this.printfThrowable(record);
         String result = LEFT_SQUARE_BRACKET + time + RIGHT_SQUARE_BRACKET;
         if (level != null) { result += BLANK_SPACE + LEFT_SQUARE_BRACKET + level + RIGHT_SQUARE_BRACKET; }
         if (thread != null) { result += BLANK_SPACE + LEFT_SQUARE_BRACKET + thread + RIGHT_SQUARE_BRACKET; }
@@ -43,9 +43,13 @@ public class SimpleFormatter extends Formatter {
 
     private String printfTime(LogRecord record) {
         long millis = record.getMillis();
-        // TODO: Optimize SimpleDateFormat by ThreadLocal
         SimpleDateFormat dateFormat =
-                new SimpleDateFormat(DateUtils.DEFAULT_DATE_PATTERN);
+                (SimpleDateFormat) ThreadLocalUtils.getValue(DEFAULT_DATE_FORMAT_KEY);
+        if (dateFormat == null) {
+            dateFormat =
+                    new SimpleDateFormat(DateUtils.DEFAULT_DATE_PATTERN);
+            ThreadLocalUtils.setValue(DEFAULT_DATE_FORMAT_KEY, dateFormat);
+        }
         return dateFormat.format(new Date(millis));
     }
 
