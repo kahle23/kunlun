@@ -13,6 +13,7 @@ import java.util.Date;
 /**
  * Date tools.
  * @author Kahle
+ * // TODO: Optimize DateTime and SimpleDateFormater and SimpleDateParser by ThreadLocal
  */
 public class DateUtils {
     public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
@@ -57,13 +58,97 @@ public class DateUtils {
         return ObjectUtils.equals(dateTime1, dateTime2);
     }
 
+    public static long getTimestamp() {
+        return System.currentTimeMillis();
+    }
+
     public static long getUnixTimestamp() {
         long millis = System.currentTimeMillis();
         return millis / 1000;
     }
 
-    public static long getTimestamp() {
-        return System.currentTimeMillis();
+    public static Date addYear(Date date, int addYear) {
+        return DateTime.create(date).addYear(addYear).getDate();
+    }
+
+    public static Date addMonth(Date date, int addMonth) {
+        return DateTime.create(date).addMonth(addMonth).getDate();
+    }
+
+    public static Date addDay(Date date, int addDay) {
+        return DateTime.create(date).addDay(addDay).getDate();
+    }
+
+    public static Date addHour(Date date, int addHour) {
+        return DateTime.create(date).addHour(addHour).getDate();
+    }
+
+    public static Date addMinute(Date date, int addMinute) {
+        return DateTime.create(date).addMinute(addMinute).getDate();
+    }
+
+    public static Date addSecond(Date date, int addSecond) {
+        return DateTime.create(date).addSecond(addSecond).getDate();
+    }
+
+    public static Date addMillisecond(Date date, int addMillisecond) {
+        return DateTime.create(date).addMillisecond(addMillisecond).getDate();
+    }
+
+    public static int getYear(Date date) {
+        return DateTime.create(date).getYear();
+    }
+
+    public static Date setYear(Date date, int year) {
+        return DateTime.create(date).setYear(year).getDate();
+    }
+
+    public static int getMonth(Date date) {
+        return DateTime.create(date).getMonth();
+    }
+
+    public static Date setMonth(Date date, int month) {
+        return DateTime.create(date).setMonth(month).getDate();
+    }
+
+    public static int getDay(Date date) {
+        return DateTime.create(date).getDay();
+    }
+
+    public static Date setDay(Date date, int day) {
+        return DateTime.create(date).setDay(day).getDate();
+    }
+
+    public static int getHour(Date date) {
+        return DateTime.create(date).getHour();
+    }
+
+    public static Date setHour(Date date, int hour) {
+        return DateTime.create(date).setHour(hour).getDate();
+    }
+
+    public static int getMinute(Date date) {
+        return DateTime.create(date).getMinute();
+    }
+
+    public static Date setMinute(Date date, int minute) {
+        return DateTime.create(date).setMinute(minute).getDate();
+    }
+
+    public static int getSecond(Date date) {
+        return DateTime.create(date).getSecond();
+    }
+
+    public static Date setSecond(Date date, int second) {
+        return DateTime.create(date).setSecond(second).getDate();
+    }
+
+    public static int getMillisecond(Date date) {
+        return DateTime.create(date).getMillisecond();
+    }
+
+    public static Date setMillisecond(Date date, int millisecond) {
+        return DateTime.create(date).setMillisecond(millisecond).getDate();
     }
 
     public static Date parse(Long timestamp) {
