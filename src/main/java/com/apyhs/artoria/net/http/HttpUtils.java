@@ -1,4 +1,4 @@
-package com.apyhs.artoria.net;
+package com.apyhs.artoria.net.http;
 
 import com.apyhs.artoria.codec.Base64;
 import com.apyhs.artoria.exception.UncheckedException;
