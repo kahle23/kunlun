@@ -8,6 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * Date handler is a formater and parser.
+ * @author Kahle
+ */
 public class DateHandler implements DateFormater, DateParser {
     private ThreadLocal<Map<String, SimpleDateFormat>> dateFormatCache = new ThreadLocal<Map<String, SimpleDateFormat>>();
 
@@ -19,7 +23,7 @@ public class DateHandler implements DateFormater, DateParser {
         }
         SimpleDateFormat format = cache.get(pattern);
         if (format == null) {
-            format = new SimpleDateFormat();
+            format = new SimpleDateFormat(pattern);
             cache.put(pattern, format);
         }
         return format;
