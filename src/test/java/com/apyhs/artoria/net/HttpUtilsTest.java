@@ -1,6 +1,5 @@
 package com.apyhs.artoria.net;
 
-import com.apyhs.artoria.net.http.HttpUtils;
 import org.junit.Test;
 
 public class HttpUtilsTest {

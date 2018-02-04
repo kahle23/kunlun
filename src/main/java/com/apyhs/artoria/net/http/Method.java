@@ -1,28 +1,30 @@
 package com.apyhs.artoria.net.http;
 
-/**
- * Http method.
- * @author Kahle
- */
 public enum Method {
-    GET(     "GET"      ),
-    POST(    "POST"     ),
-    PUT(     "PUT"      ),
-    DELETE(  "DELETE"   ),
-    PATCH(   "PATCH"    ),
-    HEAD(    "HEAD"     ),
-    OPTIONS( "OPTIONS"  ),
-    TRACE(   "TRACE"    ),
+    GET(      "GET"      , false ),
+    POST(     "POST"     , true  ),
+    PUT(      "PUT"      , true  ),
+    DELETE(   "DELETE"   , false ),
+    PATCH(    "PATCH"    , true  ),
+    HEAD(     "HEAD"     , false ),
+    OPTIONS(  "OPTIONS"  , false ),
+    TRACE(    "TRACE"    , false )
     ;
 
     private String name;
+    private boolean hasBody;
 
-    Method(String name) {
+    Method(String name, boolean hasBody) {
         this.name = name;
+        this.hasBody = hasBody;
     }
 
     public String getName() {
         return name;
+    }
+
+    public boolean getHasBody() {
+        return hasBody;
     }
 
     @Override
