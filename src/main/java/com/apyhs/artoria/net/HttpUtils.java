@@ -1,4 +1,4 @@
-package com.apyhs.artoria.net.http;
+package com.apyhs.artoria.net;
 
 import com.apyhs.artoria.codec.Base64;
 import com.apyhs.artoria.exception.UncheckedException;
@@ -15,11 +15,10 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.charset.Charset;
-import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.apyhs.artoria.constant.Const.*;
@@ -32,17 +31,19 @@ public class HttpUtils {
     private static final String DEFAULT_CONTENT_TYPE = "application/x-www-form-urlencoded";
     private static final TrustAnyHostnameVerifier TRUST_ANY_HOSTNAME_VERIFIER = new TrustAnyHostnameVerifier();
     private static final SSLSocketFactory SSL_SOCKET_FACTORY = HttpUtils.initSSLSocketFactory();
-    private static final String STRING_PROXY_AUTHORIZATION = "Proxy-Authorization";
-    private static final String STRING_CONTENT_TYPE = "Content-Type";
-    private static final String STRING_USER_AGENT = "User-Agent";
+    private static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String USER_AGENT = "User-Agent";
     private static final String BASIC = "Basic ";
+
     private static final String GET     = "GET";
     private static final String POST    = "POST";
     private static final String PUT     = "PUT";
     private static final String DELETE  = "DELETE";
+    private static final String PATCH   = "PATCH";
     private static final String HEAD    = "HEAD";
-    private static final String TRACE   = "TRACE";
     private static final String OPTIONS = "OPTIONS";
+    private static final String TRACE   = "TRACE";
 
     /**
      * Https certificate manager
@@ -98,19 +99,116 @@ public class HttpUtils {
         return new HttpUtils().setUrl(url);
     }
 
-    private Map<String, String> parameters = new HashMap<String, String>();
-    private Map<String, String> headers = new HashMap<String, String>();
+    private String charset = DEFAULT_CHARSET_NAME;
     private int connectTimeout = 19000;
     private int readTimeout = 19000;
+    private String url;
+    private String method;
+    private Map<String, String> headers = new LinkedHashMap<String, String>();
+    private Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+    private byte[] data;
+    private Proxy proxy;
     private String proxyUser;
     private String proxyPassword;
-    private String charset = DEFAULT_CHARSET_NAME;
-    private String method;
-    private Proxy proxy;
-    private byte[] data;
-    private String url;
 
     private HttpUtils() {}
+
+    public String handleUrl() throws UnsupportedEncodingException {
+        Assert.notBlank(url, "Url must is not blank. ");
+        Assert.notBlank(charset, "Charset must is not blank. ");
+        if (MapUtils.isEmpty(parameters)) { return url; }
+        StringBuilder builder = new StringBuilder(url);
+        if (!url.contains(QUESTION_MARK)) {
+            builder.append(QUESTION_MARK);
+        }
+        else {
+            builder.append(AMPERSAND);
+        }
+        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+            builder.append(entry.getKey())
+                    .append(EQUAL)
+                    .append(URLEncoder.encode(entry.getValue().toString(), charset))
+                    .append(AMPERSAND);
+        }
+        int len = builder.length();
+        builder.delete(len - 1, len);
+        return builder.toString();
+    }
+
+    public HttpURLConnection connect() throws IOException {
+        Assert.notBlank(url, "Url must is not blank. ");
+        Assert.notBlank(method, "Method must is not blank. ");
+        Assert.notBlank(charset, "Charset must is not blank. ");
+
+        String buildUrl = this.handleUrl();
+        URL urlObj = new URL(buildUrl);
+        boolean hasProxy = proxy != null;
+        URLConnection c = hasProxy ? urlObj.openConnection(proxy) : urlObj.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) c;
+
+        if (conn instanceof HttpsURLConnection) {
+            ((HttpsURLConnection) conn).setSSLSocketFactory(SSL_SOCKET_FACTORY);
+            ((HttpsURLConnection) conn).setHostnameVerifier(TRUST_ANY_HOSTNAME_VERIFIER);
+        }
+
+        conn.setRequestMethod(method);
+        conn.setDoOutput(true);
+        conn.setDoInput(true);
+
+        conn.setConnectTimeout(connectTimeout);
+        conn.setReadTimeout(readTimeout);
+
+        if (MapUtils.isEmpty(headers) || !headers.containsKey(CONTENT_TYPE)) {
+            conn.setRequestProperty(CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
+        }
+        if (MapUtils.isEmpty(headers) || !headers.containsKey(USER_AGENT)) {
+            conn.setRequestProperty(USER_AGENT, DEFAULT_USER_AGENT);
+        }
+        if (MapUtils.isNotEmpty(headers)) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                conn.setRequestProperty(entry.getKey(), entry.getValue());
+            }
+        }
+        if (StringUtils.isNotBlank(proxyUser)) {
+            boolean hasPwd = StringUtils.isNotBlank(proxyPassword);
+            proxyPassword = hasPwd ? proxyPassword : EMPTY_STRING;
+            String auth = proxyUser + COLON + proxyPassword;
+            Charset encoding = Charset.forName(this.charset);
+            byte[] bytes = auth.getBytes(encoding);
+            auth = BASIC + Base64.encodeToString(bytes);
+            conn.setRequestProperty(PROXY_AUTHORIZATION, auth);
+        }
+
+        conn.connect();
+        return conn;
+    }
+
+    public String execute() throws IOException {
+        HttpURLConnection conn = null;
+        OutputStream out = null;
+        InputStream in = null;
+        try {
+            conn = this.connect();
+            if (ArrayUtils.isNotEmpty(data)) {
+                out = conn.getOutputStream();
+                out.write(data);
+                out.flush();
+            }
+            in = conn.getInputStream();
+            return IOUtils.toString(in, charset);
+        }
+        finally {
+            IOUtils.closeQuietly(out);
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(conn);
+        }
+    }
+
+    public String execute(String url, String method) throws IOException {
+        this.url = url;
+        this.method = method;
+        return this.execute();
+    }
 
     public int getConnectTimeout() {
         return connectTimeout;
@@ -261,11 +359,11 @@ public class HttpUtils {
         return this;
     }
 
-    public String getParameter(String paraName) {
+    public Object getParameter(String paraName) {
         return parameters.get(paraName);
     }
 
-    public HttpUtils addParameter(String paraName, String paraValue) {
+    public HttpUtils addParameter(String paraName, Object paraValue) {
         Assert.notBlank(paraName, "Parameter name must is not blank. ");
         parameters.put(paraName, paraValue);
         return this;
@@ -277,7 +375,7 @@ public class HttpUtils {
         return this;
     }
 
-    public Map<String, String> getParameters() {
+    public Map<String, Object> getParameters() {
         return parameters;
     }
 
@@ -294,188 +392,91 @@ public class HttpUtils {
 
     public HttpUtils setContentType(String contentType) {
         Assert.notBlank(contentType, "Content type must is not blank. ");
-        headers.put(STRING_CONTENT_TYPE, contentType);
+        headers.put(CONTENT_TYPE, contentType);
         return this;
     }
 
     public HttpUtils setUserAgent(String userAgent) {
         Assert.notBlank(userAgent, "User agent must is not blank. ");
-        headers.put(STRING_USER_AGENT, userAgent);
+        headers.put(USER_AGENT, userAgent);
         return this;
     }
 
-    public String buildUrl() throws UnsupportedEncodingException {
-        Assert.notBlank(url, "Url must is not blank. ");
-        Assert.notBlank(charset, "Charset must is not blank. ");
-        if (MapUtils.isEmpty(parameters)) { return url; }
-        StringBuilder builder = new StringBuilder(url);
-        if (!url.contains(QUESTION_MARK)) {
-            builder.append(QUESTION_MARK);
-        }
-        else {
-            builder.append(AMPERSAND);
-        }
-        for (Map.Entry<String, String> entry : parameters.entrySet()) {
-            builder.append(entry.getKey())
-                    .append(EQUAL)
-                    .append(URLEncoder.encode(entry.getValue(), charset))
-                    .append(AMPERSAND);
-        }
-        int len = builder.length();
-        builder.delete(len - 1, len);
-        return builder.toString();
-    }
-
-    public HttpURLConnection connect() throws IOException, GeneralSecurityException {
-        Assert.notBlank(url, "Url must is not blank. ");
-        Assert.notBlank(method, "Method must is not blank. ");
-        Assert.notBlank(charset, "Charset must is not blank. ");
-
-        String buildUrl = this.buildUrl();
-        URL urlObj = new URL(buildUrl);
-        boolean hasProxy = proxy != null;
-        URLConnection c = hasProxy ? urlObj.openConnection(proxy) : urlObj.openConnection();
-        HttpURLConnection conn = (HttpURLConnection) c;
-
-        if (conn instanceof HttpsURLConnection) {
-            ((HttpsURLConnection) conn).setSSLSocketFactory(SSL_SOCKET_FACTORY);
-            ((HttpsURLConnection) conn).setHostnameVerifier(TRUST_ANY_HOSTNAME_VERIFIER);
-        }
-
-        conn.setRequestMethod(method);
-        conn.setDoOutput(true);
-        conn.setDoInput(true);
-
-        conn.setConnectTimeout(connectTimeout);
-        conn.setReadTimeout(readTimeout);
-
-        if (MapUtils.isEmpty(headers) || !headers.containsKey(STRING_CONTENT_TYPE)) {
-            conn.setRequestProperty(STRING_CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
-        }
-        if (MapUtils.isEmpty(headers) || !headers.containsKey(STRING_USER_AGENT)) {
-            conn.setRequestProperty(STRING_USER_AGENT, DEFAULT_USER_AGENT);
-        }
-        if (MapUtils.isNotEmpty(headers)) {
-            for (Map.Entry<String, String> entry : headers.entrySet()) {
-                conn.setRequestProperty(entry.getKey(), entry.getValue());
-            }
-        }
-        if (StringUtils.isNotBlank(proxyUser)) {
-            boolean hasPwd = StringUtils.isNotBlank(proxyPassword);
-            proxyPassword = hasPwd ? proxyPassword : EMPTY_STRING;
-            String auth = proxyUser + COLON + proxyPassword;
-            Charset encoding = Charset.forName(this.charset);
-            byte[] bytes = auth.getBytes(encoding);
-            auth = BASIC + Base64.encodeToString(bytes);
-            conn.setRequestProperty(STRING_PROXY_AUTHORIZATION, auth);
-        }
-
-        conn.connect();
-        return conn;
-    }
-
-    public String send() throws IOException, GeneralSecurityException {
-        HttpURLConnection conn = null;
-        OutputStream out = null;
-        InputStream in = null;
-        try {
-            conn = this.connect();
-            if (ArrayUtils.isNotEmpty(data)) {
-                out = conn.getOutputStream();
-                out.write(data);
-                out.flush();
-            }
-            in = conn.getInputStream();
-            return IOUtils.toString(in, charset);
-        }
-        finally {
-            IOUtils.closeQuietly(out);
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(conn);
-        }
-    }
-
-    public String send(String url, String method) throws IOException, GeneralSecurityException {
-        this.url = url;
-        this.method = method;
-        return this.send();
-    }
-
-    public String get() throws IOException, GeneralSecurityException {
+    public String get() throws IOException {
         this.method = GET;
-        return send();
+        return this.execute();
     }
 
-    public String get(String url) throws IOException, GeneralSecurityException {
+    public String get(String url) throws IOException {
         this.url = url;
         this.method = GET;
-        return send();
+        return this.execute();
     }
 
-    public String post() throws IOException, GeneralSecurityException {
+    public String post() throws IOException {
         this.method = POST;
-        return send();
+        return this.execute();
     }
 
-    public String post(String url) throws IOException, GeneralSecurityException {
+    public String post(String url) throws IOException {
         this.url = url;
         this.method = POST;
-        return send();
+        return this.execute();
     }
 
-    public String put() throws IOException, GeneralSecurityException {
+    public String put() throws IOException {
         this.method = PUT;
-        return send();
+        return this.execute();
     }
 
-    public String put(String url) throws IOException, GeneralSecurityException {
+    public String put(String url) throws IOException {
         this.url = url;
         this.method = PUT;
-        return send();
+        return this.execute();
     }
 
-    public String delete() throws IOException, GeneralSecurityException {
+    public String delete() throws IOException {
         this.method = DELETE;
-        return send();
+        return this.execute();
     }
 
-    public String delete(String url) throws IOException, GeneralSecurityException {
+    public String delete(String url) throws IOException {
         this.url = url;
         this.method = DELETE;
-        return send();
+        return this.execute();
     }
 
-    public String head() throws IOException, GeneralSecurityException {
+    public String head() throws IOException {
         this.method = HEAD;
-        return send();
+        return this.execute();
     }
 
-    public String head(String url) throws IOException, GeneralSecurityException {
+    public String head(String url) throws IOException {
         this.url = url;
         this.method = HEAD;
-        return send();
+        return this.execute();
     }
 
-    public String trace() throws IOException, GeneralSecurityException {
+    public String trace() throws IOException {
         this.method = TRACE;
-        return send();
+        return this.execute();
     }
 
-    public String trace(String url) throws IOException, GeneralSecurityException {
+    public String trace(String url) throws IOException {
         this.url = url;
         this.method = TRACE;
-        return send();
+        return this.execute();
     }
 
-    public String options() throws IOException, GeneralSecurityException {
+    public String options() throws IOException {
         this.method = OPTIONS;
-        return send();
+        return this.execute();
     }
 
-    public String options(String url) throws IOException, GeneralSecurityException {
+    public String options(String url) throws IOException {
         this.url = url;
         this.method = OPTIONS;
-        return send();
+        return this.execute();
     }
 
 }
