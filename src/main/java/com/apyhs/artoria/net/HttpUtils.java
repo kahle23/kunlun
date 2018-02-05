@@ -23,6 +23,7 @@ import java.util.Map;
 import static com.apyhs.artoria.constant.Const.*;
 
 /**
+ * Simple http tools.
  * @author Kahle
  */
 public class HttpUtils {

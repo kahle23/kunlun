@@ -77,15 +77,15 @@ public class BusinessException extends UncheckedException {
                     .append(": ")
                     .append(errorCode.getCode())
                     .append(" (")
-                    .append(errorCode.toString())
+                    .append(errorCode.getContent())
                     .append(")").append(ENDL);
         }
         if (StringUtils.isNotBlank(description)) {
-            builder.append("description: ")
+            builder.append("Description: ")
                     .append(description)
                     .append(ENDL);
         }
-        return builder.append("stack trace: ").toString();
+        return builder.append("StackTrace: ").toString();
     }
 
 }
