@@ -10,7 +10,7 @@ public class ExceptionUtilsTest {
     @Test
     public void createAndSetOthers() {
         try {
-            throw new BusinessException(SystemCode.MEMORY_OVERFLOW)
+            throw new BusinessException(SystemCode.code1)
                     .setDescription("address in %s, say \"%s\". ", "0364294", "hello");
         }
         catch (BusinessException e) {
@@ -20,7 +20,7 @@ public class ExceptionUtilsTest {
 
     private void throwException1() throws BusinessException {
         try {
-            throw new BusinessException(SystemCode.MEMORY_OVERFLOW)
+            throw new BusinessException(SystemCode.code1)
                     .setDescription("[BusinessException]: Just Test...");
         }
         catch (BusinessException e) {
