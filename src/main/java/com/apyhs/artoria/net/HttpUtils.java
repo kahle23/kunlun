@@ -12,7 +12,6 @@ import javax.net.ssl.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
@@ -40,7 +39,6 @@ public class HttpUtils {
     private static final String POST    = "POST";
     private static final String PUT     = "PUT";
     private static final String DELETE  = "DELETE";
-    private static final String PATCH   = "PATCH";
     private static final String HEAD    = "HEAD";
     private static final String OPTIONS = "OPTIONS";
     private static final String TRACE   = "TRACE";
@@ -113,17 +111,23 @@ public class HttpUtils {
 
     private HttpUtils() {}
 
-    public String handleUrl() throws UnsupportedEncodingException {
-        Assert.notBlank(url, "Url must is not blank. ");
-        Assert.notBlank(charset, "Charset must is not blank. ");
-        if (MapUtils.isEmpty(parameters)) { return url; }
-        StringBuilder builder = new StringBuilder(url);
-        if (!url.contains(QUESTION_MARK)) {
-            builder.append(QUESTION_MARK);
-        }
+    private boolean hasBody() {
+        if (GET.equals(method)) { return false; }
+        else if (POST.equals(method)) { return true; }
+        else if (PUT.equals(method)) { return true; }
+        else if (DELETE.equals(method)) { return false; }
+        else if (HEAD.equals(method)) { return false; }
+        else if (OPTIONS.equals(method)) { return false; }
+        else if (TRACE.equals(method)) { return false; }
         else {
-            builder.append(AMPERSAND);
+            throw new UnsupportedOperationException(
+                "Method \"" + method + "\" is unsupported. "
+            );
         }
+    }
+
+    private String urlCodec() throws IOException {
+        StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             builder.append(entry.getKey())
                     .append(EQUAL)
@@ -136,39 +140,59 @@ public class HttpUtils {
     }
 
     public HttpURLConnection connect() throws IOException {
-        Assert.notBlank(url, "Url must is not blank. ");
-        Assert.notBlank(method, "Method must is not blank. ");
-        Assert.notBlank(charset, "Charset must is not blank. ");
+        // Validate.
+        Assert.notBlank(url, "Parameter \"url\" must not blank. ");
+        Assert.notBlank(method, "Parameter \"method\" must not blank. ");
+        Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
 
-        String buildUrl = this.handleUrl();
-        URL urlObj = new URL(buildUrl);
+        // Handle url.
+        String handleUrl = url;
+        if (!this.hasBody() && MapUtils.isNotEmpty(parameters)) {
+            String params = this.urlCodec();
+            handleUrl += url.contains(QUESTION_MARK) ? AMPERSAND : QUESTION_MARK;
+            handleUrl = handleUrl + params;
+            parameters.clear();
+        }
+
+        // Build URLConnection.
+        URL urlObj = new URL(handleUrl);
         boolean hasProxy = proxy != null;
         URLConnection c = hasProxy ? urlObj.openConnection(proxy) : urlObj.openConnection();
         HttpURLConnection conn = (HttpURLConnection) c;
 
+        // Set SSL and trust hostname.
         if (conn instanceof HttpsURLConnection) {
             ((HttpsURLConnection) conn).setSSLSocketFactory(SSL_SOCKET_FACTORY);
             ((HttpsURLConnection) conn).setHostnameVerifier(TRUST_ANY_HOSTNAME_VERIFIER);
         }
 
+        // Set method.
         conn.setRequestMethod(method);
         conn.setDoOutput(true);
         conn.setDoInput(true);
 
+        // Set timeout.
         conn.setConnectTimeout(connectTimeout);
         conn.setReadTimeout(readTimeout);
 
+        // Set default content-type.
         if (MapUtils.isEmpty(headers) || !headers.containsKey(CONTENT_TYPE)) {
-            conn.setRequestProperty(CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
+            conn.setRequestProperty(CONTENT_TYPE, DEFAULT_CONTENT_TYPE + ";charset=" + charset);
         }
+
+        // Set default user-agent.
         if (MapUtils.isEmpty(headers) || !headers.containsKey(USER_AGENT)) {
             conn.setRequestProperty(USER_AGENT, DEFAULT_USER_AGENT);
         }
+
+        // Set headers.
         if (MapUtils.isNotEmpty(headers)) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
                 conn.setRequestProperty(entry.getKey(), entry.getValue());
             }
         }
+
+        // Set proxy auth.
         if (StringUtils.isNotBlank(proxyUser)) {
             boolean hasPwd = StringUtils.isNotBlank(proxyPassword);
             proxyPassword = hasPwd ? proxyPassword : EMPTY_STRING;
@@ -189,11 +213,22 @@ public class HttpUtils {
         InputStream in = null;
         try {
             conn = this.connect();
-            if (ArrayUtils.isNotEmpty(data)) {
-                out = conn.getOutputStream();
-                out.write(data);
-                out.flush();
+
+            boolean hasParams = this.hasBody() && MapUtils.isNotEmpty(parameters);
+            boolean hasData = ArrayUtils.isNotEmpty(data);
+            boolean needOutput = hasParams || hasData;
+
+            out = needOutput ? conn.getOutputStream() : null;
+            if (hasParams) {
+                String params = this.urlCodec();
+                Charset encoding = Charset.forName(this.charset);
+                out.write(params.getBytes(encoding));
             }
+            if (hasData) {
+                out.write(data);
+            }
+            if (needOutput) { out.flush(); }
+
             in = conn.getInputStream();
             return IOUtils.toString(in, charset);
         }
@@ -216,7 +251,7 @@ public class HttpUtils {
 
     public HttpUtils setConnectTimeout(int connectTimeout) {
         boolean b = connectTimeout > 0;
-        Assert.state(b, "Connect timeout must greater than 0. ");
+        Assert.state(b, "Parameter \"connectTimeout\" must greater than 0. ");
         this.connectTimeout = connectTimeout;
         return this;
     }
@@ -227,7 +262,7 @@ public class HttpUtils {
 
     public HttpUtils setReadTimeout(int readTimeout) {
         boolean b = readTimeout > 0;
-        Assert.state(b, "Read timeout must greater than 0. ");
+        Assert.state(b, "Parameter \"readTimeout\" must greater than 0. ");
         this.readTimeout = readTimeout;
         return this;
     }
@@ -237,7 +272,7 @@ public class HttpUtils {
     }
 
     public HttpUtils setCharset(String charset) {
-        Assert.notBlank(charset, "Charset must is not blank. ");
+        Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         this.charset = charset;
         return this;
     }
@@ -247,7 +282,7 @@ public class HttpUtils {
     }
 
     public HttpUtils setMethod(String method) {
-        Assert.notBlank(method, "Method must is not blank. ");
+        Assert.notBlank(method, "Parameter \"method\" must not blank. ");
         this.method = method.toUpperCase();
         return this;
     }
@@ -262,7 +297,7 @@ public class HttpUtils {
     }
 
     public HttpUtils setData(String data) {
-        Assert.notBlank(data, "Data must is not blank. ");
+        Assert.notBlank(data, "Parameter \"data\" must not blank. ");
         Charset encoding = Charset.forName(this.charset);
         this.data = data.getBytes(encoding);
         return this;
@@ -273,7 +308,7 @@ public class HttpUtils {
     }
 
     public HttpUtils setUrl(String url) {
-        Assert.notBlank(url, "Url must is not blank. ");
+        Assert.notBlank(url, "Parameter \"url\" must not blank. ");
         this.url = url;
         return this;
     }
@@ -283,8 +318,8 @@ public class HttpUtils {
     }
 
     public HttpUtils setProxyAuth(String username, String password) {
-        Assert.notBlank(username, "Username must is not blank. ");
-        Assert.notBlank(password, "Password must is not blank. ");
+        Assert.notBlank(username, "Parameter \"username\" must not blank. ");
+        Assert.notBlank(password, "Parameter \"password\" must not blank. ");
         this.proxyUser = username;
         this.proxyPassword = password;
         return this;
@@ -295,7 +330,7 @@ public class HttpUtils {
     }
 
     public HttpUtils setProxyUser(String proxyUser) {
-        Assert.notBlank(proxyUser, "Username must is not blank. ");
+        Assert.notBlank(proxyUser, "Parameter \"proxyUser\" must not blank. ");
         this.proxyUser = proxyUser;
         return this;
     }
@@ -305,7 +340,7 @@ public class HttpUtils {
     }
 
     public HttpUtils setProxyPassword(String proxyPassword) {
-        Assert.notBlank(proxyPassword, "Password must is not blank. ");
+        Assert.notBlank(proxyPassword, "Parameter \"proxyPassword\" must not blank. ");
         this.proxyPassword = proxyPassword;
         return this;
     }
@@ -315,14 +350,14 @@ public class HttpUtils {
     }
 
     public HttpUtils setProxy(Proxy proxy) {
-        Assert.notNull(proxy, "Proxy must is not null. ");
+        Assert.notNull(proxy, "Parameter \"proxy\" must not null. ");
         this.proxy = proxy;
         return this;
     }
 
     public HttpUtils setHttpProxy(String hostname, int port) {
-        Assert.notBlank(hostname, "Hostname must is not blank. ");
-        Assert.state(port > 0, "Port must greater than 0. ");
+        Assert.notBlank(hostname, "Parameter \"hostname\" must not blank. ");
+        Assert.state(port > 0, "Parameter \"port\" must greater than 0. ");
         SocketAddress address = new InetSocketAddress(hostname, port);
         this.proxy = new Proxy(Proxy.Type.HTTP, address);
         return this;
@@ -333,13 +368,13 @@ public class HttpUtils {
     }
 
     public HttpUtils addHeader(String headerName, String headerValue) {
-        Assert.notBlank(headerName, "Header name must is not blank. ");
+        Assert.notBlank(headerName, "Parameter \"headerName\" must not blank. ");
         headers.put(headerName, headerValue);
         return this;
     }
 
     public HttpUtils removeHeader(String headerName) {
-        Assert.notBlank(headerName, "Header name must is not blank. ");
+        Assert.notBlank(headerName, "Parameter \"headerName\" must not blank. ");
         headers.remove(headerName);
         return this;
     }
@@ -354,24 +389,24 @@ public class HttpUtils {
     }
 
     public HttpUtils addHeaders(Map<String, String> headers) {
-        Assert.notNull(headers, "Headers must is not null. ");
+        Assert.notNull(headers, "Parameter \"headers\" must not null. ");
         this.headers.putAll(headers);
         return this;
     }
 
-    public Object getParameter(String paraName) {
-        return parameters.get(paraName);
+    public Object getParameter(String paramName) {
+        return parameters.get(paramName);
     }
 
-    public HttpUtils addParameter(String paraName, Object paraValue) {
-        Assert.notBlank(paraName, "Parameter name must is not blank. ");
-        parameters.put(paraName, paraValue);
+    public HttpUtils addParameter(String paramName, Object paraValue) {
+        Assert.notBlank(paramName, "Parameter \"paramName\" must not blank. ");
+        parameters.put(paramName, paraValue);
         return this;
     }
 
-    public HttpUtils removeParameter(String paraName) {
-        Assert.notBlank(paraName, "Parameter name must is not blank. ");
-        parameters.remove(paraName);
+    public HttpUtils removeParameter(String paramName) {
+        Assert.notBlank(paramName, "Parameter \"paramName\" must not blank. ");
+        parameters.remove(paramName);
         return this;
     }
 
@@ -385,19 +420,19 @@ public class HttpUtils {
     }
 
     public HttpUtils addParameters(Map<String, String> parameters) {
-        Assert.notNull(parameters, "Parameters must is not null. ");
+        Assert.notNull(parameters, "Parameter \"parameters\" must not null. ");
         this.parameters.putAll(parameters);
         return this;
     }
 
     public HttpUtils setContentType(String contentType) {
-        Assert.notBlank(contentType, "Content type must is not blank. ");
+        Assert.notBlank(contentType, "Parameter \"contentType\" must not blank. ");
         headers.put(CONTENT_TYPE, contentType);
         return this;
     }
 
     public HttpUtils setUserAgent(String userAgent) {
-        Assert.notBlank(userAgent, "User agent must is not blank. ");
+        Assert.notBlank(userAgent, "Parameter \"userAgent\" must not blank. ");
         headers.put(USER_AGENT, userAgent);
         return this;
     }
@@ -457,17 +492,6 @@ public class HttpUtils {
         return this.execute();
     }
 
-    public String trace() throws IOException {
-        this.method = TRACE;
-        return this.execute();
-    }
-
-    public String trace(String url) throws IOException {
-        this.url = url;
-        this.method = TRACE;
-        return this.execute();
-    }
-
     public String options() throws IOException {
         this.method = OPTIONS;
         return this.execute();
@@ -476,6 +500,17 @@ public class HttpUtils {
     public String options(String url) throws IOException {
         this.url = url;
         this.method = OPTIONS;
+        return this.execute();
+    }
+
+    public String trace() throws IOException {
+        this.method = TRACE;
+        return this.execute();
+    }
+
+    public String trace(String url) throws IOException {
+        this.url = url;
+        this.method = TRACE;
         return this.execute();
     }
 
