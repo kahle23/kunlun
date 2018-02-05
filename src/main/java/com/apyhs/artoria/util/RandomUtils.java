@@ -1,12 +1,12 @@
 package com.apyhs.artoria.util;
 
-import com.apyhs.artoria.constant.Const;
-
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import static com.apyhs.artoria.util.Const.MINUS;
 
 /**
  * Random tools.
@@ -46,8 +46,8 @@ public class RandomUtils {
 
     public static String nextUUID(String separator) {
         String uuid = UUID.randomUUID().toString();
-        if (separator != null && !Const.MINUS.equals(separator)) {
-            return StringUtils.replace(uuid, Const.MINUS, separator);
+        if (separator != null && !MINUS.equals(separator)) {
+            return StringUtils.replace(uuid, MINUS, separator);
         }
         else {
             return uuid;

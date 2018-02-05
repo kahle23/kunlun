@@ -1,11 +1,12 @@
 package com.apyhs.artoria.util;
 
-import com.apyhs.artoria.constant.Const;
 import com.apyhs.artoria.exception.UncheckedException;
 import com.apyhs.artoria.io.IOUtils;
 
 import java.io.*;
 import java.util.Properties;
+
+import static com.apyhs.artoria.util.Const.*;
 
 /**
  * Properties tools.
@@ -14,7 +15,7 @@ import java.util.Properties;
 public class PropertiesUtils {
 
     public static PropertiesUtils create(String fileName) {
-        return PropertiesUtils.create(fileName, Const.DEFAULT_CHARSET_NAME);
+        return PropertiesUtils.create(fileName, DEFAULT_CHARSET_NAME);
     }
 
     public static PropertiesUtils create(String fileName, String charset) {
@@ -38,7 +39,7 @@ public class PropertiesUtils {
     }
 
     public static PropertiesUtils create(File dest) {
-        return PropertiesUtils.create(dest, Const.DEFAULT_CHARSET_NAME);
+        return PropertiesUtils.create(dest, DEFAULT_CHARSET_NAME);
     }
 
     public static PropertiesUtils create(File dest, String charset) {
@@ -62,7 +63,7 @@ public class PropertiesUtils {
     }
 
     public static PropertiesUtils create(InputStream in) throws IOException {
-        return PropertiesUtils.create(in, Const.DEFAULT_CHARSET_NAME);
+        return PropertiesUtils.create(in, DEFAULT_CHARSET_NAME);
     }
 
     public static PropertiesUtils create(InputStream in, String charset) throws IOException {
@@ -138,10 +139,10 @@ public class PropertiesUtils {
             return defaultValue;
         }
         value = value.toLowerCase().trim();
-        if (Const.TRUE.equals(value)) {
+        if (TRUE.equals(value)) {
             return true;
         }
-        else if (Const.FALSE.equals(value)) {
+        else if (FALSE.equals(value)) {
             return false;
         }
         else {

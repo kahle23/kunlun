@@ -2,10 +2,8 @@ package com.apyhs.artoria.net;
 
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.Socket;
 import java.util.List;
 
 public class NetUtilsTest {

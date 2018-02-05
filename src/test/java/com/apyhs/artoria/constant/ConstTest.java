@@ -1,5 +1,6 @@
 package com.apyhs.artoria.constant;
 
+import com.apyhs.artoria.util.Const;
 import org.junit.Test;
 
 public class ConstTest {

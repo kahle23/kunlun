@@ -1,6 +1,5 @@
 package com.apyhs.artoria.io;
 
-import com.apyhs.artoria.io.IOUtils;
 import org.junit.Test;
 
 import java.io.IOException;

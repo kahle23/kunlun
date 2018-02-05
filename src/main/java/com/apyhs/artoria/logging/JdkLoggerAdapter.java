@@ -1,12 +1,12 @@
 package com.apyhs.artoria.logging;
 
-import com.apyhs.artoria.util.ClassUtils;
 import com.apyhs.artoria.io.IOUtils;
+import com.apyhs.artoria.util.ClassUtils;
 
 import java.io.InputStream;
 import java.util.logging.LogManager;
 
-import static com.apyhs.artoria.constant.Const.EMPTY_STRING;
+import static com.apyhs.artoria.util.Const.EMPTY_STRING;
 
 /**
  * Jdk logger adapter.

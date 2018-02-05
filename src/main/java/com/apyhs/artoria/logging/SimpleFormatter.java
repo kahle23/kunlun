@@ -13,7 +13,7 @@ import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import static com.apyhs.artoria.constant.Const.*;
+import static com.apyhs.artoria.util.Const.*;
 
 /**
  * Simple jdk logger formatter.

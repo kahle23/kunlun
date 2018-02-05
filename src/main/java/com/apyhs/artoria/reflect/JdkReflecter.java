@@ -6,8 +6,8 @@ import com.apyhs.artoria.util.ClassUtils;
 import java.lang.reflect.*;
 import java.util.*;
 
-import static com.apyhs.artoria.constant.Const.GET;
-import static com.apyhs.artoria.constant.Const.SET;
+import static com.apyhs.artoria.util.Const.GET;
+import static com.apyhs.artoria.util.Const.SET;
 
 /**
  * Reflect tools implements by jdk.
