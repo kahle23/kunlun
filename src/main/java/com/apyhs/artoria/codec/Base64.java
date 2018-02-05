@@ -1,14 +1,18 @@
 package com.apyhs.artoria.codec;
 
-import com.apyhs.artoria.constant.Const;
 import com.apyhs.artoria.logging.Logger;
 import com.apyhs.artoria.logging.LoggerFactory;
-import com.apyhs.artoria.util.*;
+import com.apyhs.artoria.util.ArrayUtils;
+import com.apyhs.artoria.util.Assert;
+import com.apyhs.artoria.util.ClassUtils;
+import com.apyhs.artoria.util.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.apyhs.artoria.util.Const.*;
 
 /**
  * Base64 encode and decode tools.
@@ -88,7 +92,7 @@ public class Base64 {
 
     public static String encodeToString(byte[] src) {
         byte[] encode = Base64.encode(src);
-        Charset charset = Charset.forName(Const.DEFAULT_CHARSET_NAME);
+        Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
         return new String(encode, charset);
     }
 
@@ -101,7 +105,7 @@ public class Base64 {
 
     public static byte[] decodeFromString(String src) {
         Assert.notNull(src, "Source must is not null. ");
-        Charset charset = Charset.forName(Const.DEFAULT_CHARSET_NAME);
+        Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
         byte[] srcBytes = src.getBytes(charset);
         return Base64.decode(srcBytes);
     }
@@ -116,7 +120,7 @@ public class Base64 {
 
     public static String encodeToUrlSafeString(byte[] src) {
         byte[] urlSafe = Base64.encodeUrlSafe(src);
-        Charset charset = Charset.forName(Const.DEFAULT_CHARSET_NAME);
+        Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
         return new String(urlSafe, charset);
     }
 
@@ -129,7 +133,7 @@ public class Base64 {
 
     public static byte[] decodeFromUrlSafeString(String src) {
         Assert.notNull(src, "Source must is not null. ");
-        Charset charset = Charset.forName(Const.DEFAULT_CHARSET_NAME);
+        Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
         byte[] srcBytes = src.getBytes(charset);
         return Base64.decodeUrlSafe(srcBytes);
     }
@@ -192,8 +196,8 @@ public class Base64 {
         public byte[] encodeUrlSafe(byte[] src) {
             if (ArrayUtils.isEmpty(src)) { return src; }
             String s = DatatypeConverter.printBase64Binary(src);
-            s = StringUtils.replace(s, Const.PLUS, Const.MINUS);
-            s = StringUtils.replace(s, Const.SLASH, Const.UNDERLINE);
+            s = StringUtils.replace(s, PLUS, MINUS);
+            s = StringUtils.replace(s, SLASH, UNDERLINE);
             return s.getBytes();
         }
 
@@ -201,8 +205,8 @@ public class Base64 {
         public byte[] decodeUrlSafe(byte[] src) {
             if (ArrayUtils.isEmpty(src)) { return src; }
             String s = new String(src);
-            s = StringUtils.replace(s, Const.MINUS, Const.PLUS);
-            s = StringUtils.replace(s, Const.UNDERLINE, Const.SLASH);
+            s = StringUtils.replace(s, MINUS, PLUS);
+            s = StringUtils.replace(s, UNDERLINE, SLASH);
             return DatatypeConverter.parseBase64Binary(s);
         }
 

@@ -2,7 +2,7 @@ package com.apyhs.artoria.constant;
 
 import org.junit.Test;
 
-import static com.apyhs.artoria.constant.Const.*;
+import static com.apyhs.artoria.util.Const.*;
 
 public class StringConstTest {
 

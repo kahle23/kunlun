@@ -1,14 +1,14 @@
-package com.apyhs.artoria.constant;
-
-import com.apyhs.artoria.util.PathUtils;
+package com.apyhs.artoria.util;
 
 import java.nio.charset.Charset;
 
 /**
- * String const.
+ * Const.
  * @author Kahle
  */
-interface StringConst {
+public interface Const {
+
+    Integer GET_OR_SET_LENGTH = 3;
 
     String ENDL = System.getProperty("line.separator");
     String CLASSPATH = PathUtils.getClasspath();

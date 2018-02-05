@@ -5,7 +5,7 @@ import com.apyhs.artoria.exception.UncheckedException;
 import java.io.File;
 import java.net.URL;
 
-import static com.apyhs.artoria.constant.Const.*;
+import static com.apyhs.artoria.util.Const.*;
 
 /**
  * Path tools.

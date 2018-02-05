@@ -6,7 +6,7 @@ public class UnicodeTest {
 
     @Test
     public void test1() {
-        String unicode = Unicode.encode("你好，Java！");
+        String unicode = Unicode.encode("Hello，Java！");
         System.out.println(unicode);
         System.out.println(Unicode.decode(unicode));
     }

@@ -1,7 +1,7 @@
 package com.apyhs.artoria.io;
 
-import com.apyhs.artoria.constant.Const;
 import com.apyhs.artoria.util.ClassUtils;
+import com.apyhs.artoria.util.Const;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -11,7 +11,7 @@ import java.net.URLConnection;
 import java.nio.channels.Selector;
 import java.nio.charset.Charset;
 
-import static com.apyhs.artoria.constant.Const.SLASH;
+import static com.apyhs.artoria.util.Const.SLASH;
 
 /**
  * IO tools.

@@ -9,12 +9,14 @@ import com.apyhs.artoria.util.StringUtils;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static com.apyhs.artoria.constant.Const.*;
+import static com.apyhs.artoria.util.Const.*;
 
 /**
  * Data handle tools.
  * @author Kahle
  */
+@Deprecated
+// TODO: Not finished.
 public class DataUtils {
 
     public static <T> List<T> multilevelList(List<T> data, String sonList, String sign, String parentSign, String... relationProperties) {

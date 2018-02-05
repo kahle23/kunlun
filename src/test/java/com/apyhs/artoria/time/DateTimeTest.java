@@ -9,7 +9,7 @@ import java.util.Date;
 public class DateTimeTest {
 
     @Test
-    public void _ifUnixTimestampUsingInteger() {
+    public void ifUnixTimestampUsingInteger() {
         System.out.println();
         System.out.println("If unix timestamp using Integer. ");
         DateTime dateTime = DateTime.create(2038, 1, 23);
@@ -67,16 +67,6 @@ public class DateTimeTest {
         System.out.println("The method create().getTimeInSeconds(), result : " + DateTime.create().getTimeInSeconds());
 
         System.out.println();
-    }
-
-    @Test
-    public void test1() {
-        Date date = new Date();
-        System.out.println(DateTime.create(date)
-                .setHour(23)
-                .setMinute(59)
-                .setSecond(59)
-                .setMillisecond(999).getTimeInMillis());
     }
 
 }

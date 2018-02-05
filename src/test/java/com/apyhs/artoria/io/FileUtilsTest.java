@@ -1,6 +1,5 @@
 package com.apyhs.artoria.io;
 
-import com.apyhs.artoria.io.FileUtils;
 import org.junit.Test;
 
 import java.io.File;
@@ -9,7 +8,7 @@ import java.io.IOException;
 public class FileUtilsTest {
 
     @Test
-    public void test() throws Exception {
+    public void testFindClasspath() throws Exception {
         File file = FileUtils.findClasspath("logging.properties");
         System.out.println(new String(FileUtils.read(file)));
         File file1 = FileUtils.findClasspath("hello.txt");
@@ -17,7 +16,7 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void test_renameTo() {
+    public void testRenameTo() {
         File file = new File("E:\\hello.txt");
         boolean rnSc = file.renameTo(new File("D:\\123.txt"));
         System.out.println(rnSc);
@@ -28,7 +27,7 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void test_rename() {
+    public void testRename() {
         File file = new File("E:\\hello.txt");
         System.out.println(FileUtils.rename(file, "123.txt"));
         file = new File("E:\\123.txt");
@@ -36,28 +35,28 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void test_copyFileToFile() throws IOException {
+    public void testCopyFileToFile() throws IOException {
         File src = new File("E:\\src\\1.txt");
         File dest = new File("E:\\dest\\11.txt");
         FileUtils.copyFileToFile(src, dest, false);
     }
 
     @Test
-    public void test_copyFileToDirectory() throws IOException {
+    public void testCopyFileToDirectory() throws IOException {
         File src = new File("E:\\src\\1.txt");
         File dest = new File("E:\\dest");
         FileUtils.copyFileToDirectory(src, dest, false);
     }
 
     @Test
-    public void test_copyDirectoryToDirectory() throws IOException {
+    public void testCopyDirectoryToDirectory() throws IOException {
         File src = new File("E:\\src");
         File dest = new File("E:\\dest");
         FileUtils.copyDirectoryToDirectory(src, dest);
     }
 
     @Test
-    public void test_moveDirectory() throws IOException {
+    public void testMoveDirectory() throws IOException {
         File src = new File("E:\\src");
         File dest = new File("E:\\dest");
         FileUtils.moveDirectory(src, dest);
