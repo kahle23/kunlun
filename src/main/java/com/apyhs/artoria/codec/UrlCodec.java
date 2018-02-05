@@ -1,8 +1,8 @@
 package com.apyhs.artoria.codec;
 
+import com.apyhs.artoria.constant.Const;
 import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.MapUtils;
-import com.apyhs.artoria.constant.Const;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -93,7 +93,7 @@ public class UrlCodec {
         for (Map.Entry entry : map.entrySet()) {
             builder.append(entry.getKey());
             builder.append(keySeparator);
-            builder.append(URLEncoder.encode(entry.getValue() + "", charset));
+            builder.append(URLEncoder.encode(entry.getValue().toString(), charset));
             builder.append(valueSeparator);
         }
         int len = builder.length();
