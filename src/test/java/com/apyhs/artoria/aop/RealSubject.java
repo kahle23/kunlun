@@ -8,8 +8,8 @@ public class RealSubject implements Subject {
     }
 
     @Override
-    public String sayGoodBye(String name) {
-        return "Good bye, " + name;
+    public String sayGoodbye(String name) {
+        return "Goodbye, " + name;
     }
 
 }

@@ -1,10 +1,10 @@
-package com.apyhs.artoria.constant;
+package com.apyhs.artoria.util;
 
 import org.junit.Test;
 
 import static com.apyhs.artoria.util.Const.*;
 
-public class StringConstTest {
+public class ConstTest {
 
     @Test
     public void test1() {
@@ -13,6 +13,8 @@ public class StringConstTest {
         System.out.println(FILE_SEPARATOR);
         System.out.println(PATH_SEPARATOR);
         System.out.println(DEFAULT_CHARSET_NAME);
+        System.out.println(ENDL);
+        System.out.println(GET);
     }
 
 }

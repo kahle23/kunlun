@@ -19,7 +19,7 @@ public class NetUtilsTest {
 
     @Test
     public void testTelnetOpen1() throws Exception {
-        for (int i = 0; i < 1024; i++) {
+        for (int i = 0; i < 100; i++) {
             System.out.println(i + " " + NetUtils.telnetOpen("www.baidu.com", i, 500));
         }
     }
