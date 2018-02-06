@@ -1,6 +1,5 @@
 package com.apyhs.artoria.beans;
 
-import com.apyhs.artoria.callback.Fn;
 import com.apyhs.artoria.exception.UncheckedException;
 import com.apyhs.artoria.util.Assert;
 import com.apyhs.artoria.util.CollectionUtils;
@@ -107,23 +106,23 @@ public class DataUtils {
         }
     }
 
-    public static <T> void packetList(List<T> data, Fn<Void, List<T>> fn, int groupSize) {
-        Assert.notEmpty(data, "Parameter \"data\" must not empty. ");
-        Assert.notNull(fn, "Parameter \"fn\" must not empty. ");
-        for (int i = 0, c = data.size() / groupSize + 1; i < c; i++) {
-            List<T> groupData;
-            if (data.size() == 0) {
-                continue;
-            }
-            else if (data.size() >= groupSize) {
-                groupData = data.subList(0, groupSize);
-                data = data.subList(groupSize, data.size());
-            }
-            else {
-                groupData = data;
-            }
-            fn.call(groupData);
-        }
-    }
+//    public static <T> void packetList(List<T> data, Fn<Void, List<T>> fn, int groupSize) {
+//        Assert.notEmpty(data, "Parameter \"data\" must not empty. ");
+//        Assert.notNull(fn, "Parameter \"fn\" must not empty. ");
+//        for (int i = 0, c = data.size() / groupSize + 1; i < c; i++) {
+//            List<T> groupData;
+//            if (data.size() == 0) {
+//                continue;
+//            }
+//            else if (data.size() >= groupSize) {
+//                groupData = data.subList(0, groupSize);
+//                data = data.subList(groupSize, data.size());
+//            }
+//            else {
+//                groupData = data;
+//            }
+//            fn.call(groupData);
+//        }
+//    }
 
 }

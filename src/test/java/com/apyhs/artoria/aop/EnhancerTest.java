@@ -1,10 +1,13 @@
 package com.apyhs.artoria.aop;
 
+import com.apyhs.artoria.logging.Logger;
+import com.apyhs.artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
 
 public class EnhancerTest {
+    private static Logger log = LoggerFactory.getLogger(EnhancerTest.class);
 
     public static class TestInterceptor implements Interceptor {
         private Object proxiedObject;
@@ -23,12 +26,14 @@ public class EnhancerTest {
 
         @Override
         public Object intercept(Object proxyObject, Method method, Object[] args) throws Throwable {
-            System.out.println("Proxy object's class is " + proxyObject.getClass().getName());
-            System.out.println("Why i am in here. ");
+            log.info("Proxy object's class is " + proxyObject.getClass().getName());
+            System.out.println("Hello, this is intercept. ");
             return method.invoke(proxiedObject, args);
         }
 
     }
+
+    private String name = "zhangsan";
 
     @Test
     public void testJdkEnhancer() {
@@ -36,8 +41,8 @@ public class EnhancerTest {
         RealSubject subject = new RealSubject();
         TestInterceptor intertr = new TestInterceptor(subject);
         Subject subjectProxy = (Subject) Enhancer.enhance(subject, intertr);
-        System.out.println(subjectProxy.sayHello("zhangsan"));
-        System.out.println(subjectProxy.sayGoodBye("zhangsan"));
+        System.out.println(subjectProxy.sayHello(name));
+        System.out.println(subjectProxy.sayGoodbye(name));
     }
 
     @Test
@@ -46,8 +51,8 @@ public class EnhancerTest {
         RealSubject subject = new RealSubject();
         TestInterceptor intertr = new TestInterceptor(subject);
         RealSubject subjectProxy = (RealSubject) Enhancer.enhance(subject, intertr);
-        System.out.println(subjectProxy.sayHello("zhangsan"));
-        System.out.println(subjectProxy.sayGoodBye("zhangsan"));
+        System.out.println(subjectProxy.sayHello(name));
+        System.out.println(subjectProxy.sayGoodbye(name));
     }
 
 }
