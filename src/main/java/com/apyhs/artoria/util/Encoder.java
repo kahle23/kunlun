@@ -16,30 +16,30 @@ import java.nio.charset.Charset;
 public class Encoder {
 
     public static String encode(String data, String oldCharset, String newCharset) {
-        Assert.notBlank(oldCharset, "Old charset must is not blank. ");
-        Assert.notBlank(newCharset, "New charset must is not blank. ");
+        Assert.notBlank(oldCharset, "Parameter \"oldCharset\" must not blank. ");
+        Assert.notBlank(newCharset, "Parameter \"newCharset\" must not blank. ");
         Charset older = Charset.forName(oldCharset);
         Charset newer = Charset.forName(newCharset);
         return Encoder.encode(data, older, newer);
     }
 
     public static String encode(String data, Charset oldCharset, Charset newCharset) {
-        Assert.notNull(data, "Data must is not null. ");
-        Assert.notNull(oldCharset, "Old charset must is not null. ");
-        Assert.notNull(newCharset, "New charset must is not null. ");
+        Assert.notBlank(data, "Parameter \"data\" must not blank. ");
+        Assert.notNull(oldCharset, "Parameter \"oldCharset\" must not null. ");
+        Assert.notNull(newCharset, "Parameter \"newCharset\" must not null. ");
         byte[] bytes = data.getBytes(oldCharset);
         return new String(bytes, newCharset);
     }
 
     public static String recode(String data, String newCharset) throws IOException {
-        Assert.notBlank(newCharset, "New charset must is not blank. ");
+        Assert.notBlank(newCharset, "Parameter \"newCharset\" must not blank. ");
         Charset newer = Charset.forName(newCharset);
         return Encoder.recode(data, newer);
     }
 
     public static String recode(String data, Charset newCharset) throws IOException {
-        Assert.notNull(data, "Data must is not null. ");
-        Assert.notNull(newCharset, "New charset must is not null. ");
+        Assert.notBlank(data, "Parameter \"data\" must not blank. ");
+        Assert.notNull(newCharset, "Parameter \"newCharset\" must not null. ");
         StringReader reader = new StringReader(data);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(bos, newCharset);
@@ -50,17 +50,17 @@ public class Encoder {
     }
 
     public static byte[] recode(byte[] data, String oldCharset, String newCharset) throws IOException {
-        Assert.notBlank(oldCharset, "Old charset must is not blank. ");
-        Assert.notBlank(newCharset, "New charset must is not blank. ");
+        Assert.notBlank(oldCharset, "Parameter \"oldCharset\" must not blank. ");
+        Assert.notBlank(newCharset, "Parameter \"newCharset\" must not blank. ");
         Charset older = Charset.forName(oldCharset);
         Charset newer = Charset.forName(newCharset);
         return Encoder.recode(data, older, newer);
     }
 
     public static byte[] recode(byte[] data, Charset oldCharset, Charset newCharset) throws IOException {
-        Assert.notNull(data, "Data must is not null. ");
-        Assert.notNull(oldCharset, "Old charset must is not null. ");
-        Assert.notNull(newCharset, "New charset must is not null. ");
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
+        Assert.notNull(oldCharset, "Parameter \"oldCharset\" must not null. ");
+        Assert.notNull(newCharset, "Parameter \"newCharset\" must not null. ");
         String dataStr = new String(data, oldCharset);
         StringReader reader = new StringReader(dataStr);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
