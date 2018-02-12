@@ -1,6 +1,7 @@
 package com.apyhs.artoria.crypto;
 
 import com.apyhs.artoria.util.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -23,6 +24,7 @@ public class HashTest {
     }
 
     @Test
+    @Ignore
     public void hashFile() throws Exception {
         System.out.println("Please insure file is exists. ");
         File data = new File("e:\\123.md");

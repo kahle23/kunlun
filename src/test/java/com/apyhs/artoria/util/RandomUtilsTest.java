@@ -5,7 +5,7 @@ import org.junit.Test;
 public class RandomUtilsTest {
 
     @Test
-    public void test_nextInt() {
+    public void testNextInt() {
         int bound = 100;
         System.out.println(RandomUtils.nextInt(bound));
         System.out.println(RandomUtils.nextInt(bound));
@@ -16,7 +16,7 @@ public class RandomUtilsTest {
     }
 
     @Test
-    public void test_nextUUID() {
+    public void testNextUUID() {
         System.out.println(RandomUtils.nextUUID());
         System.out.println(RandomUtils.nextUUID(null));
         System.out.println(RandomUtils.nextUUID(""));
@@ -25,8 +25,8 @@ public class RandomUtilsTest {
     }
 
     @Test
-    public void test_nextBigDecimal() {
-        for (int i = 0; i < 1000; i++) {
+    public void testNextBigDecimal() {
+        for (int i = 0; i < 100; i++) {
             System.out.println(RandomUtils.nextBigDecimal(1000));
         }
     }

@@ -2,52 +2,52 @@ package com.apyhs.artoria.entity;
 
 public class Student extends Person {
 
-    private static final Integer DEFAULT_SCORE = 0;
+    private static final Integer PASSING_SCORE = 60;
 
-    private Integer score;
-    private String email;
+    private Long studentId;
+    private String schoolName;
+    private Integer nationalLanguageScore;
+    private Integer mathematicsScore;
+    private Integer englishScore;
 
-    public Student() {
+    public Long getStudentId() {
+        return studentId;
     }
 
-    protected Student(Integer score, String email) {
-        this.score = score;
-        this.email = email;
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
     }
 
-    private Student(String tmp) {
-
+    public String getSchoolName() {
+        return schoolName;
     }
 
-    public Integer getScore() {
-        return score;
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
     }
 
-    public void setScore(Integer score) {
-        this.score = score;
+    public Integer getNationalLanguageScore() {
+        return nationalLanguageScore;
     }
 
-    public String getEmail() {
-        return email;
+    public void setNationalLanguageScore(Integer nationalLanguageScore) {
+        this.nationalLanguageScore = nationalLanguageScore;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public Integer getMathematicsScore() {
+        return mathematicsScore;
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "name='" + getName() + '\'' +
-                ", age=" + getAge() +
-                ", height=" + getHeight() +
-                ", score=" + score +
-                ", email='" + email + '\'' +
-                '}';
+    public void setMathematicsScore(Integer mathematicsScore) {
+        this.mathematicsScore = mathematicsScore;
     }
 
-    @Override
-    public void fly() {
-        System.out.println("fly");
+    public Integer getEnglishScore() {
+        return englishScore;
     }
+
+    public void setEnglishScore(Integer englishScore) {
+        this.englishScore = englishScore;
+    }
+
 }

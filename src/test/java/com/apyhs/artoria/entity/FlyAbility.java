@@ -1,7 +1,7 @@
 package com.apyhs.artoria.entity;
 
-public interface Fly {
-    String DEFAULT_FLY = "No";
+public interface FlyAbility {
 
     void fly();
+
 }

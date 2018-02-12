@@ -1,5 +1,6 @@
 package com.apyhs.artoria.io;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -16,6 +17,7 @@ public class FileUtilsTest {
     }
 
     @Test
+    @Ignore
     public void testRenameTo() {
         File file = new File("E:\\hello.txt");
         boolean rnSc = file.renameTo(new File("D:\\123.txt"));
@@ -27,6 +29,7 @@ public class FileUtilsTest {
     }
 
     @Test
+    @Ignore
     public void testRename() {
         File file = new File("E:\\hello.txt");
         System.out.println(FileUtils.rename(file, "123.txt"));
@@ -35,6 +38,7 @@ public class FileUtilsTest {
     }
 
     @Test
+    @Ignore
     public void testCopyFileToFile() throws IOException {
         File src = new File("E:\\src\\1.txt");
         File dest = new File("E:\\dest\\11.txt");
@@ -42,6 +46,7 @@ public class FileUtilsTest {
     }
 
     @Test
+    @Ignore
     public void testCopyFileToDirectory() throws IOException {
         File src = new File("E:\\src\\1.txt");
         File dest = new File("E:\\dest");
@@ -49,6 +54,7 @@ public class FileUtilsTest {
     }
 
     @Test
+    @Ignore
     public void testCopyDirectoryToDirectory() throws IOException {
         File src = new File("E:\\src");
         File dest = new File("E:\\dest");
@@ -56,6 +62,7 @@ public class FileUtilsTest {
     }
 
     @Test
+    @Ignore
     public void testMoveDirectory() throws IOException {
         File src = new File("E:\\src");
         File dest = new File("E:\\dest");
