@@ -1,5 +1,6 @@
 package com.apyhs.artoria.collection;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Map;
@@ -36,6 +37,7 @@ public class ReferenceHashMapTest {
     }
 
     @Test
+    @Ignore
     public void test2() throws Exception {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < 999999; i++) {

@@ -1,5 +1,6 @@
 package com.apyhs.artoria.reflect;
 
+import com.apyhs.artoria.entity.EntityUtils;
 import com.apyhs.artoria.entity.Student;
 import org.junit.Test;
 
@@ -21,11 +22,7 @@ public class ReflectUtilsTest {
 
     @Test
     public void findFields() throws Exception {
-        Student student = new Student();
-        student.setAge(19);
-        student.setName("zhangsan");
-        student.setScore(79);
-        student.setEmail("zhangsan@email.com");
+        Student student = EntityUtils.getZhangSan();
         Field[] fields = ReflectUtils.findAccessFields(Student.class);
         for (Field field : fields) {
             ReflectUtils.makeAccessible(field);

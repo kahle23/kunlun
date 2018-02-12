@@ -1,11 +1,13 @@
 package com.apyhs.artoria.net;
 
 import com.alibaba.fastjson.JSON;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Ignore
 public class HttpUtilsTest {
     private String testUrl = "https://apyhs.blog/";
     private String testUrl1 = "https://www.taobao.com";
@@ -48,7 +50,7 @@ public class HttpUtilsTest {
                 .get());
     }
 
-    // @Test
+    @Test
     public void test5() throws Exception {
         String url = "https://";
         Map<String, Object> data = new HashMap<String, Object>();

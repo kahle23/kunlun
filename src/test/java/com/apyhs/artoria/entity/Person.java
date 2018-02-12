@@ -1,16 +1,11 @@
 package com.apyhs.artoria.entity;
 
-public class Person implements Fly {
-
-    protected static final String DEFAULT_SAY = "Hello, World! ";
-    private static final String DEFAULT_TYPE = "Person";
-
-    public String foo = "foo";
-    protected String foo1 = "foo1";
-
+public class Person {
     private String name;
     private Integer age;
+    private Integer sex;
     private Double height;
+    private Double weight;
 
     public String getName() {
         return name;
@@ -28,6 +23,14 @@ public class Person implements Fly {
         this.age = age;
     }
 
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
     public Double getHeight() {
         return height;
     }
@@ -36,21 +39,12 @@ public class Person implements Fly {
         this.height = height;
     }
 
-    protected void protectedMethod() {
-
+    public Double getWeight() {
+        return weight;
     }
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                ", height=" + height +
-                '}';
+    public void setWeight(Double weight) {
+        this.weight = weight;
     }
 
-    @Override
-    public void fly() {
-
-    }
 }

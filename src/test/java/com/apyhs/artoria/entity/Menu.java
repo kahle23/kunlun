@@ -7,12 +7,20 @@ import java.util.List;
  * one menu more module
  */
 public class Menu {
+    private String module;
     private Integer id;
-    private String name;
     private String code;
+    private String name;
     private String parentCode;
     private List<Menu> sonMenuList;
-    private String module;
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
 
     public Integer getId() {
         return id;
@@ -52,14 +60,6 @@ public class Menu {
 
     public void setSonMenuList(List<Menu> sonMenuList) {
         this.sonMenuList = sonMenuList;
-    }
-
-    public String getModule() {
-        return module;
-    }
-
-    public void setModule(String module) {
-        this.module = module;
     }
 
 }
