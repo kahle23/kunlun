@@ -94,19 +94,19 @@ public class BeanUtils extends BeanHandler {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static void copy(Object from, Map<String, ?> to) {
+    @SuppressWarnings("unchecked")
+    public static void copy(Object from, Map to) {
         Assert.notNull(from, "Parameter \"from\" must not null. ");
         Assert.notNull(to, "Parameter \"to\" must not null. ");
         BeanMap map = BeanUtils.createBeanMap(from);
         to.putAll(map);
     }
 
-    public static void copy(Map<String, ?> from, Object to) {
+    public static void copy(Map from, Object to) {
         BeanUtils.copy(from, to, CONVERTER);
     }
 
-    public static void copy(Map<String, ?> from, Object to, Converter cvt) {
+    public static void copy(Map from, Object to, Converter cvt) {
         Assert.notNull(from, "Parameter \"from\" must not null. ");
         Assert.notNull(to, "Parameter \"to\" must not null. ");
         BeanMap map = BeanUtils.createBeanMap(to);
