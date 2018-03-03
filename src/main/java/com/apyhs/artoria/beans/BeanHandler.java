@@ -14,24 +14,25 @@ import java.util.Map;
 class BeanHandler {
     private static final Integer MAP_INIT_CAPACITY = 20;
 
-    public static <T> T mapToBean(Map<String, Object> from, T to) {
+    public static <R, K, V> R mapToBean(Map<K, V> from, R to) {
         return beanToBean(from, to);
     }
 
-    public static <T> T mapToBean(Map<String, Object> from, Class<T> toClass) {
+    public static <R, K, V> R mapToBean(Map<K, V> from, Class<R> toClass) {
         return beanToBean(from, toClass);
     }
 
     public static <F> Map<String, Object> beanToMap(F from) {
-        HashMap<String, Object> result = new HashMap<String, Object>(MAP_INIT_CAPACITY);
+        if (from == null) { return null; }
+        Map<String, Object> result = new HashMap<String, Object>(MAP_INIT_CAPACITY);
         BeanUtils.copy(from, result);
         return result;
     }
 
-    @SuppressWarnings("unchecked")
     public static <F, T> T beanToBean(F from, T to) {
+        if (from == null) { return null; }
         if (from instanceof Map) {
-            BeanUtils.copy((Map<String, ?>) from, to);
+            BeanUtils.copy((Map) from, to);
         }
         else {
             BeanUtils.copy(from, to);
@@ -39,12 +40,12 @@ class BeanHandler {
         return to;
     }
 
-    @SuppressWarnings("unchecked")
     public static <F, T> T beanToBean(F from, Class<T> toClass) {
+        if (from == null) { return null; }
         try {
             T to = toClass.newInstance();
             if (from instanceof Map) {
-                BeanUtils.copy((Map<String, ?>) from, to);
+                BeanUtils.copy((Map) from, to);
             }
             else {
                 BeanUtils.copy(from, to);
@@ -56,15 +57,17 @@ class BeanHandler {
         }
     }
 
-    public static <T> List<T> mapToBeanInList(List<Map<String, Object>> from, Class<T> toClass) {
-        List<T> result = new ArrayList<T>();
-        for (Map<String, Object> m : from) {
+    public static <R, K, V> List<R> mapToBeanInList(List<Map<K, V>> from, Class<R> toClass) {
+        if (from == null) { return null; }
+        List<R> result = new ArrayList<R>();
+        for (Map<K, V> m : from) {
             result.add(mapToBean(m, toClass));
         }
         return result;
     }
 
     public static <F> List<Map<String, Object>> beanToMapInList(List<F> from) {
+        if (from == null) { return null; }
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         for (F f : from) {
             result.add(beanToMap(f));
@@ -73,6 +76,7 @@ class BeanHandler {
     }
 
     public static <F, T> List<T> beanToBeanInList(List<F> from, Class<T> toClass) {
+        if (from == null) { return null; }
         List<T> result = new ArrayList<T>();
         for (F f : from) {
             result.add(beanToBean(f, toClass));

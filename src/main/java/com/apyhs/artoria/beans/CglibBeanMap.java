@@ -1,5 +1,7 @@
 package com.apyhs.artoria.beans;
 
+import com.apyhs.artoria.converter.Converter;
+
 import java.util.Set;
 
 /**
@@ -23,6 +25,11 @@ public class CglibBeanMap extends BeanMap {
 
     @Override
     protected Object put(Object bean, Object key, Object value) {
+        if (key != null) {
+            Converter cvt = this.getConverter();
+            Class type = beanMap.getPropertyType((String) key);
+            value = cvt.convert(value, type);
+        }
         return beanMap.put(key, value);
     }
 
