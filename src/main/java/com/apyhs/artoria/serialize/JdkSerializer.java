@@ -15,15 +15,11 @@ public class JdkSerializer implements Serializer<Object> {
 
     @Override
     public void serialize(Object object, OutputStream outputStream) throws IOException {
-        Assert.notNull(object, "Object must is not null. ");
-        Assert.notNull(outputStream, "OutputStream must is not null. ");
-        if (!(object instanceof Serializable)) {
-            String msg = SerializeUtils.class.getSimpleName();
-            msg += " requires a Serializable payload ";
-            msg += "but received an object of type [";
-            msg += object.getClass().getName() + "]";
-            throw new IllegalArgumentException(msg);
-        }
+        Assert.notNull(object, "Parameter \"object\" must not null. ");
+        Assert.notNull(outputStream, "Parameter \"outputStream\" must not null. ");
+        Assert.isInstanceOf(Serializable.class, object, JdkSerializer.class.getSimpleName()
+                + " requires a Serializable payload but received an object of type ["
+                + object.getClass().getName() + "]. ");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         objectOutputStream.writeObject(object);
         objectOutputStream.flush();
