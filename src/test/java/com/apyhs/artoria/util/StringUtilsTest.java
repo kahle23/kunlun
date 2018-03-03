@@ -30,13 +30,22 @@ public class StringUtilsTest {
         System.out.println(StringUtils.camelToUnderline("helloWorld"));
         System.out.println(StringUtils.camelToUnderline("LocalHost"));
         System.out.println(StringUtils.camelToUnderline("localhost"));
+        System.out.println(StringUtils.camelToUnderline("localhostVO"));
+        System.out.println(StringUtils.camelToUnderline("local_host"));
+        System.out.println(StringUtils.camelToUnderline("local_Host"));
+        System.out.println(StringUtils.camelToUnderline("locaL_Host"));
         System.out.println(StringUtils.camelToUnderline("LOCALHOST"));
+        System.out.println(StringUtils.camelToUnderline("HELLO_WORLD"));
+        System.out.println(StringUtils.camelToUnderline("_LOCAL_HOST"));
         System.out.println(StringUtils.camelToUnderline(""));
         System.out.println(StringUtils.camelToUnderline(null));
+        System.out.println("----");
         System.out.println(StringUtils.underlineToCamel("HELLO_WORLD"));
         System.out.println(StringUtils.underlineToCamel("_LOCAL_HOST"));
         System.out.println(StringUtils.underlineToCamel("LOCALHOST"));
         System.out.println(StringUtils.underlineToCamel("localhost"));
+        System.out.println(StringUtils.underlineToCamel("local_host"));
+        System.out.println(StringUtils.underlineToCamel("helloWorld"));
         System.out.println(StringUtils.underlineToCamel(""));
         System.out.println(StringUtils.underlineToCamel(null));
     }

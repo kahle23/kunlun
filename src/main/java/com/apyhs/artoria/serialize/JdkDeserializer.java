@@ -15,8 +15,8 @@ public class JdkDeserializer implements Deserializer<Object> {
 
     @Override
     public Object deserialize(InputStream inputStream) throws IOException {
+        Assert.notNull(inputStream, "Parameter \"inputStream\" must not null. ");
         try {
-            Assert.notNull(inputStream, "InputStream must is not null. ");
             ObjectInputStream ois = new ObjectInputStream(inputStream);
             return ois.readObject();
         }
