@@ -113,37 +113,30 @@ public class Assert {
     }
 
     public static void isContain(String textToSearch, String substring, String message) {
-        Assert.notEmpty(textToSearch, "Parameter \"textToSearch\" must not empty. ");
-        Assert.notEmpty(substring, "Parameter \"substring\" must not empty. ");
         if (!textToSearch.contains(substring)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void notContain(String textToSearch, String substring, String message) {
-        Assert.notEmpty(textToSearch, "Parameter \"textToSearch\" must not empty. ");
-        Assert.notEmpty(substring, "Parameter \"substring\" must not empty. ");
         if (textToSearch.contains(substring)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void isAssignable(Class<?> superType, Class<?> subType, String message) {
-        Assert.notNull(superType, "Parameter \"superType\" must not null. ");
         if (subType == null || !superType.isAssignableFrom(subType)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void isInstanceOf(Class<?> type, Object obj, String message) {
-        Assert.notNull(type, "Parameter \"type\" must not null. ");
         if (obj == null || !type.isInstance(obj)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     public static void noNullElements(Object[] array, String message) {
-        Assert.notEmpty(array, "Parameter \"array\" must not empty. ");
         for (Object element : array) {
             if (element == null) {
                 throw new IllegalArgumentException(message);

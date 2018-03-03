@@ -12,13 +12,13 @@ import static com.apyhs.artoria.util.Const.*;
  * Properties tools.
  * @author Kahle
  */
-public class PropertiesUtils {
+public class PropUtils {
 
-    public static PropertiesUtils create(String fileName) {
-        return PropertiesUtils.create(fileName, DEFAULT_CHARSET_NAME);
+    public static PropUtils create(String fileName) {
+        return PropUtils.create(fileName, DEFAULT_CHARSET_NAME);
     }
 
-    public static PropertiesUtils create(String fileName, String charset) {
+    public static PropUtils create(String fileName, String charset) {
         Assert.notBlank(fileName, "File name must is not blank. ");
         Assert.notBlank(charset, "Charset must is not blank. ");
         InputStream inputStream = null;
@@ -27,7 +27,7 @@ public class PropertiesUtils {
             if (inputStream == null) {
                 throw new IllegalArgumentException("Properties file not found in classpath : " + fileName);
             }
-            return PropertiesUtils.create(inputStream, charset);
+            return PropUtils.create(inputStream, charset);
         }
         catch (IOException e) {
             String msg = "Loading properties file[classpath : " + fileName + "] error. ";
@@ -38,11 +38,11 @@ public class PropertiesUtils {
         }
     }
 
-    public static PropertiesUtils create(File dest) {
-        return PropertiesUtils.create(dest, DEFAULT_CHARSET_NAME);
+    public static PropUtils create(File dest) {
+        return PropUtils.create(dest, DEFAULT_CHARSET_NAME);
     }
 
-    public static PropertiesUtils create(File dest, String charset) {
+    public static PropUtils create(File dest, String charset) {
         Assert.notNull(dest, "Destination must is not null. ");
         Assert.notBlank(charset, "Charset must is not blank. ");
         Assert.state(dest.exists(), "Destination must is exists. ");
@@ -51,7 +51,7 @@ public class PropertiesUtils {
         try {
             inputStream = new FileInputStream(dest);
             Reader reader = new InputStreamReader(inputStream, charset);
-            return PropertiesUtils.create(reader);
+            return PropUtils.create(reader);
         }
         catch (IOException e) {
             String msg = "Loading properties file[" + dest.toString() + "] error. ";
@@ -62,36 +62,36 @@ public class PropertiesUtils {
         }
     }
 
-    public static PropertiesUtils create(InputStream in) throws IOException {
-        return PropertiesUtils.create(in, DEFAULT_CHARSET_NAME);
+    public static PropUtils create(InputStream in) throws IOException {
+        return PropUtils.create(in, DEFAULT_CHARSET_NAME);
     }
 
-    public static PropertiesUtils create(InputStream in, String charset) throws IOException {
+    public static PropUtils create(InputStream in, String charset) throws IOException {
         Assert.notNull(in, "InputStream must is not null. ");
         Assert.notBlank(charset, "Charset must is not blank. ");
         Reader reader = new InputStreamReader(in, charset);
-        return PropertiesUtils.create(reader);
+        return PropUtils.create(reader);
     }
 
-    public static PropertiesUtils create(Reader reader) throws IOException {
+    public static PropUtils create(Reader reader) throws IOException {
         Assert.notNull(reader, "Reader must is not null. ");
         Properties properties = new Properties();
         properties.load(reader);
-        return new PropertiesUtils(properties);
+        return new PropUtils(properties);
     }
 
-    public static PropertiesUtils create(Properties properties) {
+    public static PropUtils create(Properties properties) {
         Assert.notNull(properties, "Properties must is not null. ");
-        return new PropertiesUtils(properties);
+        return new PropUtils(properties);
     }
 
-    public static PropertiesUtils create() {
-        return new PropertiesUtils(new Properties());
+    public static PropUtils create() {
+        return new PropUtils(new Properties());
     }
 
     private Properties properties;
 
-    private PropertiesUtils(Properties properties) {
+    private PropUtils(Properties properties) {
         this.properties = properties;
     }
 

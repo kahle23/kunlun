@@ -146,15 +146,35 @@ public class StringUtils {
         int length = str.length();
         StringBuilder builder = new StringBuilder();
         char ch;
+        int lowerCaseCount = 0;
+        boolean lastIsUpper = false, lastIsUnderline = false;
         for (int i = 0; i < length; i++) {
             ch = str.charAt(i);
-            if (!Character.isLowerCase(ch)) {
-                builder.append(UNDERLINE).append(ch);
+            if (UNDERLINE == ch) {
+                lastIsUnderline = true;
+                builder.append(ch);
+                continue;
+            }
+            if (Character.isUpperCase(ch)) {
+                // Last is not upper case and is not underline,
+                // So can append underline.
+                if (!lastIsUpper && !lastIsUnderline) {
+                    builder.append(UNDERLINE);
+                }
+                builder.append(ch);
+                lastIsUpper = true;
             }
             else {
+                lowerCaseCount++;
+                lastIsUpper = false;
                 ch = Character.toUpperCase(ch);
                 builder.append(ch);
             }
+            lastIsUnderline = false;
+        }
+        if (lowerCaseCount == 0) {
+            // No lower case is underline.
+            return str;
         }
         return builder.toString();
     }
@@ -164,16 +184,27 @@ public class StringUtils {
         int length = str.length();
         StringBuilder builder = new StringBuilder();
         char ch;
+        int underlineCount = 0, lowerCaseCount = 0;
         for (int i = 0; i < length; i++) {
             if (str.charAt(i) == UNDERLINE) {
                 ch = str.charAt(++i);
                 ch = Character.toUpperCase(ch);
+                underlineCount++;
             }
             else {
                 ch = str.charAt(i);
-                ch = Character.toLowerCase(ch);
+                if (Character.isLowerCase(ch)) {
+                    lowerCaseCount++;
+                }
+                else {
+                    ch = Character.toLowerCase(ch);
+                }
             }
             builder.append(ch);
+        }
+        if (underlineCount == 0 && lowerCaseCount > 0) {
+            // No underline and have lower case is camel.
+            return str;
         }
         return builder.toString();
     }
