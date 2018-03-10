@@ -7,7 +7,7 @@
 	<version>0.0.5-beta28</version>
 	<packaging>jar</packaging>
 	<name>Artoria</name>
-    <url>https://github.com/apyhs/artoria</url>
+    <url>https://github.com/kahlkn/artoria</url>
     <description>A toolkit only rely on the JDK.</description>
 
 	<properties>
@@ -26,12 +26,12 @@
         <developer>
             <name>Kahle Kernel</name>
             <email>kahlkn@gmail.com</email>
-            <url>http://www.apyhs.com</url>
+            <url>https://kahlkn.github.io/</url>
         </developer>
     </developers>
 
     <scm>
-        <url>https://github.com/apyhs/artoria</url>
+        <url>https://github.com/kahlkn/artoria</url>
         <connection>scm:git:https://github.com/apyhs/artoria.git</connection>
         <developerConnection>http://www.apyhs.com</developerConnection>
     </scm>
@@ -66,6 +66,13 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>1.2.43</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.32</version>
 			<scope>test</scope>
 		</dependency>
 

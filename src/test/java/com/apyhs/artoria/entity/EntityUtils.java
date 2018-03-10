@@ -9,7 +9,7 @@ public class EntityUtils {
         student.setSex(1);
         student.setHeight(170d);
         student.setWeight(140d);
-        student.setStudentId(209909217789L);
+        student.setStudentId(209909017789L);
         student.setSchoolName("Mars Human Studies School");
         student.setNationalLanguageScore(87);
         student.setMathematicsScore(50);
@@ -24,7 +24,7 @@ public class EntityUtils {
         student.setSex(1);
         student.setHeight(180d);
         student.setWeight(140d);
-        student.setStudentId(209909218574L);
+        student.setStudentId(209909018574L);
         student.setSchoolName("Mars Human Studies School");
         student.setNationalLanguageScore(93);
         student.setMathematicsScore(81);
