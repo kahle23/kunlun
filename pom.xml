@@ -2,9 +2,9 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.apyhs</groupId>
+	<groupId>com.github.kahlkn</groupId>
 	<artifactId>artoria</artifactId>
-	<version>0.0.5-beta28</version>
+	<version>0.5.28.BETA</version>
 	<packaging>jar</packaging>
 	<name>Artoria</name>
     <url>https://github.com/kahlkn/artoria</url>
@@ -26,14 +26,14 @@
         <developer>
             <name>Kahle Kernel</name>
             <email>kahlkn@gmail.com</email>
-            <url>https://kahlkn.github.io/</url>
+            <url>https://kahlkn.github.io</url>
         </developer>
     </developers>
 
     <scm>
         <url>https://github.com/kahlkn/artoria</url>
-        <connection>scm:git:https://github.com/apyhs/artoria.git</connection>
-        <developerConnection>http://www.apyhs.com</developerConnection>
+        <connection>scm:git:https://github.com/kahlkn/artoria.git</connection>
+        <developerConnection>https://kahlkn.github.io</developerConnection>
     </scm>
 
 	<parent>
