@@ -9,9 +9,9 @@ import java.util.Map;
 
 @Ignore
 public class HttpUtilsTest {
-    private String testUrl = "https://apyhs.blog/";
-    private String testUrl1 = "https://www.taobao.com";
-    private String testUrl2 = "https://www.baidu.com";
+    private String testUrl = "https://kahlkn.github.io";
+    private String testUrl1 = "https://www.github.com";
+    private String testUrl2 = "https://www.bing.com";
 
     @Test
     public void test1() throws Exception {
