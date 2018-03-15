@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.LinkedList;
 
-import static com.github.kahlkn.artoria.util.Const.CLASSPATH;
+import static com.github.kahlkn.artoria.util.Const.*;
 
 /**
  * File tools.
@@ -25,6 +25,14 @@ public class FileUtils {
 
     public static File findClasspath(String fileName) {
         return new File(CLASSPATH, fileName);
+    }
+
+    public static String getExtension(String filename) {
+        if (filename == null) { return null; }
+        int dotIndex = filename.lastIndexOf(DOT);
+        int lastSeparator = filename.lastIndexOf(FILE_SEPARATOR);
+        int index = lastSeparator > dotIndex ? -1 : dotIndex;
+        return index == -1 ? EMPTY_STRING : filename.substring(index + 1);
     }
 
     public static boolean rename(File path, String newName) {
