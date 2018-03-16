@@ -18,15 +18,21 @@ import java.util.*;
  */
 public class ReflectUtils {
     private static Logger log = LoggerFactory.getLogger(ReflectUtils.class);
-    private static final CacheUtils CACHE_UTILS = new CacheUtils();
+    private static CacheUtils cacheUtils;
     private static Reflecter reflecter;
 
     static {
+        ReflectUtils.setCacheUtils(new CacheUtils());
         ReflectUtils.setReflecter(new JdkReflecter());
     }
 
     public static CacheUtils getCacheUtils() {
-        return CACHE_UTILS;
+        return cacheUtils;
+    }
+
+    public static void setCacheUtils(CacheUtils cacheUtils) {
+        Assert.notNull(cacheUtils, "Parameter \"cacheUtils\" must not null. ");
+        ReflectUtils.cacheUtils = cacheUtils;
     }
 
     public static Reflecter getReflecter() {
@@ -180,7 +186,7 @@ public class ReflectUtils {
                 if (METHOD_NAMES.contains(method.getName())) {
                     DataLoader loader = new DataLoaderImpl(original, method, args);
                     String key = method.getName() + Arrays.toString(args);
-                    return CACHE_UTILS.get(key, loader);
+                    return cacheUtils.get(key, loader);
                 }
                 else {
                     return method.invoke(original, args);

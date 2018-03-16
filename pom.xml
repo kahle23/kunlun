@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 	<name>Artoria</name>
     <url>https://github.com/kahlkn/artoria</url>
-    <description>A toolkit only rely on the JDK.</description>
+    <description>A toolkit only rely on the jdk.</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,11 +44,11 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>oss</id>
+			<id>ossrh</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
 		<repository>
-			<id>oss</id>
+			<id>ossrh</id>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
@@ -197,7 +197,7 @@
 						<version>1.6.4</version>
 						<extensions>true</extensions>
 						<configuration>
-							<serverId>oss</serverId>
+							<serverId>ossrh</serverId>
 							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 							<autoReleaseAfterClose>true</autoReleaseAfterClose>
 						</configuration>
