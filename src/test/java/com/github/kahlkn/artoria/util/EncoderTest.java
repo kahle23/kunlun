@@ -13,8 +13,8 @@ public class EncoderTest {
 
     @Test
     public void test1() throws IOException {
-        System.out.println(new String("Hello, World! ".getBytes(), "GB2312"));
-        StringReader reader = new StringReader("Hello, World! ");
+        System.out.println(new String("世界，你好！".getBytes(), "GB2312"));
+        StringReader reader = new StringReader("世界，你好！");
         ByteArrayOutputStream o = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(o, "GB2312");
         IOUtils.copyLarge(reader, writer);
@@ -23,21 +23,21 @@ public class EncoderTest {
 
     @Test
     public void test2() throws IOException {
-        String data = "Hello, World! ";
+        String data = "世界，你好！";
         System.out.println(new String(data.getBytes(), "GB2312"));
         System.out.println(Encoder.recode(data, "GB2312"));
     }
 
     @Test
     public void test3() throws IOException {
-        byte[] data = "Hello, World! ".getBytes();
+        byte[] data = "世界，你好！".getBytes();
         System.out.println(Arrays.toString(data));
         System.out.println(Arrays.toString(Encoder.recode(data, "utf-8", "GB2312")));
     }
 
     @Test
     public void test4() throws IOException {
-        byte[] data = "Hello, World! ".getBytes();
+        byte[] data = "世界，你好！".getBytes();
         System.out.println(Arrays.toString(data));
         System.out.println(new String(data));
 
@@ -52,9 +52,10 @@ public class EncoderTest {
 
     @Test
     public void test5() throws IOException {
-        byte[] data = "Hello, World! ".getBytes();
+        byte[] data = "世界，你好！".getBytes();
         System.out.println(Arrays.toString(data));
-        System.out.println(new String(data));
+        System.out.println(new String(data, "GBK"));
+        System.out.println(Arrays.toString(data));
 
         byte[] newData = Encoder.recode(data, "utf-8", "gbk");
         System.out.println(Arrays.toString(newData));
