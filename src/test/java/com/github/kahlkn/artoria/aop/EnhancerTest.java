@@ -40,7 +40,8 @@ public class EnhancerTest {
         Enhancer.setProxyFactory(new JdkProxyFactory());
         RealSubject subject = new RealSubject();
         TestInterceptor intertr = new TestInterceptor(subject);
-        Subject subjectProxy = (Subject) Enhancer.enhance(subject, intertr);
+        // Subject subjectProxy = (Subject) Enhancer.enhance(subject, intertr);
+        Subject subjectProxy = (Subject) Enhancer.enhance(Subject.class, intertr);
         System.out.println(subjectProxy.sayHello(name));
         System.out.println(subjectProxy.sayGoodbye(name));
     }
@@ -50,7 +51,8 @@ public class EnhancerTest {
         Enhancer.setProxyFactory(new CglibProxyFactory());
         RealSubject subject = new RealSubject();
         TestInterceptor intertr = new TestInterceptor(subject);
-        RealSubject subjectProxy = (RealSubject) Enhancer.enhance(subject, intertr);
+        // RealSubject subjectProxy = (RealSubject) Enhancer.enhance(subject, intertr);
+        Subject subjectProxy = (Subject) Enhancer.enhance(Subject.class, intertr);
         System.out.println(subjectProxy.sayHello(name));
         System.out.println(subjectProxy.sayGoodbye(name));
     }

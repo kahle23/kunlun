@@ -40,9 +40,8 @@ public class JdkProxyFactory implements ProxyFactory {
     public Object getInstance(Class<?> originalClass, Interceptor interceptor) {
         Assert.notNull(originalClass, "Parameter \"originalClass\" must not null. ");
         Assert.notNull(interceptor, "Parameter \"interceptor\" must not null. ");
-        Class<?>[] interfaces = originalClass.getInterfaces();
-        Assert.notEmpty(interfaces, "Original class \""
-                + originalClass.getName() + "\" not implements any interfaces. ");
+        Class<?>[] interfaces = originalClass.isInterface() ?
+                new Class[]{originalClass} : originalClass.getInterfaces();
         InvocationHandler handler = new InvocationHandlerAdapter(interceptor);
         return Proxy.newProxyInstance(LOADER, interfaces, handler);
     }
