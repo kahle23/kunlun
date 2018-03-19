@@ -1,5 +1,8 @@
 package com.github.kahlkn.artoria.util;
 
+import com.alibaba.fastjson.JSON;
+import com.github.kahlkn.artoria.entity.Menu;
+import com.github.kahlkn.artoria.entity.Student;
 import org.junit.Test;
 
 public class RandomUtilsTest {
@@ -10,9 +13,9 @@ public class RandomUtilsTest {
         System.out.println(RandomUtils.nextInt(bound));
         System.out.println(RandomUtils.nextInt(bound));
         System.out.println(RandomUtils.nextInt(bound));
-        System.out.println(RandomUtils.nextInt(bound));
-        System.out.println(RandomUtils.nextInt(bound));
-        System.out.println(RandomUtils.nextInt(bound));
+        System.out.println(RandomUtils.nextInt());
+        System.out.println(RandomUtils.nextInt());
+        System.out.println(RandomUtils.nextInt());
     }
 
     @Test
@@ -29,6 +32,12 @@ public class RandomUtilsTest {
         for (int i = 0; i < 100; i++) {
             System.out.println(RandomUtils.nextBigDecimal(1000));
         }
+    }
+
+    @Test
+    public void testtt() {
+        Menu student = RandomUtils.nextObject(Menu.class);
+        System.out.println(JSON.toJSONString(student));
     }
 
 }
