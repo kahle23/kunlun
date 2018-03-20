@@ -6,6 +6,7 @@ import com.github.kahlkn.artoria.entity.Student;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 public class RandomUtilsTest {
 
@@ -46,18 +47,30 @@ public class RandomUtilsTest {
     }
 
     @Test
+    public void testNextBean() {
+        Student student = RandomUtils.nextBean(Student.class);
+        System.out.println(JSON.toJSONString(student, true));
+    }
+
+    @Test
+    public void testNextArray() {
+        Student[] students = RandomUtils.nextArray(Student.class);
+        System.out.println(JSON.toJSONString(students, true));
+
+        Menu[] menus = RandomUtils.nextObject(Menu[].class);
+        System.out.println(JSON.toJSONString(menus, true));
+    }
+
+    @Test
     public void testNextList() {
         List<Student> students = RandomUtils.nextList(Student.class);
         System.out.println(JSON.toJSONString(students, true));
     }
 
     @Test
-    public void testNextArray() {
-//        Student[] students = RandomUtils.nextArray(Student.class);
-//        System.out.println(JSON.toJSONString(students, true));
-
-        Student[] students = RandomUtils.nextObject(Student[].class);
-        System.out.println(JSON.toJSONString(students, true));
+    public void testNextMap() {
+        Map<String, Student> map = RandomUtils.nextMap(String.class, Student.class);
+        System.out.println(JSON.toJSONString(map, true));
     }
 
 }
