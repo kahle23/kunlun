@@ -24,7 +24,7 @@ public class RandomUtils {
     private static final Random RANDOM = new SecureRandom();
     private static final Integer DEFAULT_BOUND = 8192;
     private static final Integer DEFAULT_SIZE = 8;
-    private static final Integer COLLECTION_NEST_COUNT = 2;
+    private static final Integer COLLECTION_NEST_COUNT = 3;
     private static final String METHOD_NEXT_ARRAY = "nextArray";
     private static final String METHOD_NEXT_LIST = "nextList";
     private static final String METHOD_NEXT_MAP = "nextMap";
@@ -119,7 +119,7 @@ public class RandomUtils {
             return (T) ConvertUtils.convert(new Date(), wrapper);
         }
         else if (String.class.isAssignableFrom(wrapper)) {
-            int size = RandomUtils.nextInt(DEFAULT_SIZE) + 2;
+            int size = RandomUtils.nextInt(DEFAULT_SIZE);
             return (T) RandomUtils.nextString(size);
         }
         else if (Object.class.equals(wrapper)) {
@@ -175,14 +175,13 @@ public class RandomUtils {
     }
 
     public static <T> T[] nextArray(Class<T> clazz) {
-        int size = RandomUtils.nextInt(DEFAULT_SIZE) + 2;
+        int size = RandomUtils.nextInt(DEFAULT_SIZE);
         T[] array = (T[]) Array.newInstance(clazz, size);
-        if (Object.class.equals(clazz)) {
-            return array;
-        }
-        if (METHOD_NEXT_ARRAY.equals(new Throwable().getStackTrace()[COLLECTION_NEST_COUNT].getMethodName())) {
-            return array;
-        }
+        StackTraceElement[] elements;
+        boolean isEmpty = Object.class.equals(clazz) ||
+                ((elements = new Throwable().getStackTrace()).length >= COLLECTION_NEST_COUNT &&
+                        METHOD_NEXT_ARRAY.equals(elements[COLLECTION_NEST_COUNT].getMethodName()));
+        if (isEmpty) { return array; }
         for (int i = 0; i < size; i++) {
             Object obj = RandomUtils.nextObject(clazz);
             Array.set(array, i, obj);
@@ -191,12 +190,12 @@ public class RandomUtils {
     }
 
     public static <T> List<T> nextList(Class<T> clazz) {
-        boolean isEmpty = Object.class.equals(clazz);
-        isEmpty = isEmpty || METHOD_NEXT_LIST.equals(new Throwable().getStackTrace()[COLLECTION_NEST_COUNT].getMethodName());
-        if (isEmpty) {
-            return new ArrayList<T>(DEFAULT_SIZE);
-        }
-        int size = RandomUtils.nextInt(DEFAULT_SIZE) + 2;
+        StackTraceElement[] elements;
+        boolean isEmpty = Object.class.equals(clazz) ||
+                ((elements = new Throwable().getStackTrace()).length >= COLLECTION_NEST_COUNT &&
+                        METHOD_NEXT_LIST.equals(elements[COLLECTION_NEST_COUNT].getMethodName()));
+        if (isEmpty) { return new ArrayList<T>(DEFAULT_SIZE); }
+        int size = RandomUtils.nextInt(DEFAULT_SIZE);
         List<T> list = new ArrayList<T>(size);
         for (int i = 0; i < size; i++) {
             list.add(RandomUtils.nextObject(clazz));
@@ -205,13 +204,12 @@ public class RandomUtils {
     }
 
     public static <K, V> Map<K, V> nextMap(Class<K> keyClass, Class<V> valClass) {
-        if (Object.class.equals(keyClass) || Object.class.equals(valClass)) {
-            return new HashMap<K, V>(DEFAULT_SIZE);
-        }
-        if (METHOD_NEXT_MAP.equals(new Throwable().getStackTrace()[COLLECTION_NEST_COUNT].getMethodName())) {
-            return new HashMap<K, V>(DEFAULT_SIZE);
-        }
-        int size = RandomUtils.nextInt(DEFAULT_SIZE) + 2;
+        StackTraceElement[] elements;
+        boolean isEmpty = Object.class.equals(keyClass) || Object.class.equals(valClass) ||
+                ((elements = new Throwable().getStackTrace()).length >= COLLECTION_NEST_COUNT &&
+                        METHOD_NEXT_MAP.equals(elements[COLLECTION_NEST_COUNT].getMethodName()));
+        if (isEmpty) { return new HashMap<K, V>(DEFAULT_SIZE); }
+        int size = RandomUtils.nextInt(DEFAULT_SIZE);
         Map<K, V> map = new HashMap<K, V>(size);
         for (int i = 0; i < size; i++) {
             K key = RandomUtils.nextObject(keyClass);
