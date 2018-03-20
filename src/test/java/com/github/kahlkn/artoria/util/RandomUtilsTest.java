@@ -5,6 +5,8 @@ import com.github.kahlkn.artoria.entity.Menu;
 import com.github.kahlkn.artoria.entity.Student;
 import org.junit.Test;
 
+import java.util.List;
+
 public class RandomUtilsTest {
 
     @Test
@@ -13,9 +15,9 @@ public class RandomUtilsTest {
         System.out.println(RandomUtils.nextInt(bound));
         System.out.println(RandomUtils.nextInt(bound));
         System.out.println(RandomUtils.nextInt(bound));
-        System.out.println(RandomUtils.nextInt());
-        System.out.println(RandomUtils.nextInt());
-        System.out.println(RandomUtils.nextInt());
+        System.out.println(RandomUtils.nextInt(bound));
+        System.out.println(RandomUtils.nextInt(bound));
+        System.out.println(RandomUtils.nextInt(bound));
     }
 
     @Test
@@ -35,9 +37,27 @@ public class RandomUtilsTest {
     }
 
     @Test
-    public void testtt() {
-        Menu student = RandomUtils.nextObject(Menu.class);
-        System.out.println(JSON.toJSONString(student));
+    public void testNextObject() {
+        Student student = RandomUtils.nextObject(Student.class);
+        System.out.println(JSON.toJSONString(student, true));
+
+        Menu menu = RandomUtils.nextObject(Menu.class);
+        System.out.println(JSON.toJSONString(menu, true));
+    }
+
+    @Test
+    public void testNextList() {
+        List<Student> students = RandomUtils.nextList(Student.class);
+        System.out.println(JSON.toJSONString(students, true));
+    }
+
+    @Test
+    public void testNextArray() {
+//        Student[] students = RandomUtils.nextArray(Student.class);
+//        System.out.println(JSON.toJSONString(students, true));
+
+        Student[] students = RandomUtils.nextObject(Student[].class);
+        System.out.println(JSON.toJSONString(students, true));
     }
 
 }

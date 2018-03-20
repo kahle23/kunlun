@@ -1,11 +1,14 @@
 package com.github.kahlkn.artoria.entity;
 
+import java.util.List;
+
 public class Person {
     private String name;
     private Integer age;
     private Integer sex;
     private Double height;
     private Double weight;
+    private List<Person> kinsfolk;
 
     public String getName() {
         return name;
@@ -47,4 +50,11 @@ public class Person {
         this.weight = weight;
     }
 
+    public List<Person> getKinsfolk() {
+        return kinsfolk;
+    }
+
+    public void setKinsfolk(List<Person> kinsfolk) {
+        this.kinsfolk = kinsfolk;
+    }
 }
