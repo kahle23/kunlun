@@ -17,13 +17,6 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void testGetExtension() throws Exception {
-        System.out.println(FileUtils.getExtension("logging.properties"));
-        System.out.println(FileUtils.getExtension("e:\\logging.properties"));
-        System.out.println(FileUtils.getExtension("e:\\aa\\bb.cc\\dd"));
-    }
-
-    @Test
     @Ignore
     public void testRenameTo() {
         File file = new File("E:\\hello.txt");

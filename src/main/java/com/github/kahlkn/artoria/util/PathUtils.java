@@ -58,12 +58,12 @@ public class PathUtils {
     }
 
     public static String getExtension(String path) {
-        if (path == null) { return EMPTY_STRING; }
-        int extIndex = path.lastIndexOf(DOT);
-        if (extIndex == -1) { return EMPTY_STRING; }
+        if (path == null) { return null; }
+        int dotIndex = path.lastIndexOf(DOT);
+        if (dotIndex == -1) { return EMPTY_STRING; }
         int folderIndex = path.lastIndexOf(FILE_SEPARATOR);
-        if (folderIndex > extIndex) { return EMPTY_STRING; }
-        return path.substring(extIndex + 1);
+        if (folderIndex > dotIndex) { return EMPTY_STRING; }
+        return path.substring(dotIndex + 1);
     }
 
     public static String stripExtension(String path) {
