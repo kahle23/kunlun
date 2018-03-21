@@ -18,6 +18,12 @@ import static com.github.kahlkn.artoria.util.Const.GET;
  */
 public class DataUtils {
 
+    /**
+     * Take java bean list first not null element.
+     * @param list A java bean list
+     * @param <T> Java bean type
+     * @return A not null java bean
+     */
     public static <T> T takeFirstNotNullElement(List<T> list) {
         if (list == null) {
             return null;
@@ -30,6 +36,13 @@ public class DataUtils {
         return null;
     }
 
+    /**
+     * A java bean list to divide into groups.
+     * @param list A java bean list
+     * @param groupSize Grouping size
+     * @param <T> Java bean type
+     * @return A list bean list
+     */
     public static <T> List<List<T>> listToListList(List<T> list, int groupSize) {
         List<List<T>> result = new ArrayList<List<T>>();
         if (CollectionUtils.isEmpty(list)) { return result; }
@@ -49,6 +62,14 @@ public class DataUtils {
         return result;
     }
 
+    /**
+     * A java bean list to convert a map who key is bean property and value is bean.
+     * This means if bean property is repeated and value will override.
+     * @param list A java bean list
+     * @param propertyNames Method property names
+     * @param <T> Java bean type
+     * @return A map key is bean property and value is bean
+     */
     public static <T> Map<String, T> listToMapBean(List<T> list, String... propertyNames) {
         try {
             // Handle parameters
@@ -76,6 +97,14 @@ public class DataUtils {
         }
     }
 
+    /**
+     * A java bean list to convert a map who key is bean property and value is bean list.
+     * This means bean property in bean list have repeated.
+     * @param list A java bean list
+     * @param propertyNames Method property names
+     * @param <T> Java bean type
+     * @return A map key is bean property and value is bean list
+     */
     public static <T> Map<String, List<T>> listToMapList(List<T> list, String... propertyNames) {
         try {
             // Handle parameters
@@ -109,6 +138,15 @@ public class DataUtils {
         }
     }
 
+    /**
+     * A java bean list to convert a java bean property list.
+     * @param list A java bean list
+     * @param propertyName Java bean property name
+     * @param propertyClass Java bean property type
+     * @param <R> Java bean property type
+     * @param <P> Java bean type
+     * @return Java bean property list
+     */
     @SuppressWarnings("unchecked")
     public static <R, P> List<R> listToListProperty(List<P> list, String propertyName, Class<R> propertyClass) {
         try {
@@ -134,11 +172,25 @@ public class DataUtils {
         }
     }
 
+    /**
+     * Find Method object by method name.
+     * @param clazz Method come from class
+     * @param propertyName Method property name
+     * @return Method object
+     * @throws NoSuchMethodException No such method
+     */
     private static Method findMethodByName(Class<?> clazz, String propertyName) throws NoSuchMethodException {
         String methodName = GET + StringUtils.capitalize(propertyName);
         return ReflectUtils.findMethod(clazz, methodName);
     }
 
+    /**
+     * Find Method objects by method names.
+     * @param clazz Method come from class
+     * @param propertyNames Method property names
+     * @return Method list
+     * @throws NoSuchMethodException No such method
+     */
     private static List<Method> findMethodsByNames(Class<?> clazz, String... propertyNames) throws NoSuchMethodException {
         List<Method> methods = new ArrayList<Method>();
         for (String name : propertyNames) {

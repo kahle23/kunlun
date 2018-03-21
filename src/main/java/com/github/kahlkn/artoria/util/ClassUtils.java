@@ -33,6 +33,10 @@ public class ClassUtils {
         PRIMITIVE = Collections.unmodifiableMap(pMap);
     }
 
+    /**
+     *
+     * @return
+     */
     public static ClassLoader getDefaultClassLoader() {
         ClassLoader classLoader = null;
         try {
@@ -57,6 +61,11 @@ public class ClassUtils {
         return classLoader;
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     public static Class<?> getWrapper(Class<?> type) {
         Assert.notNull(type, "Type must is not null. ");
         if (!type.isPrimitive() || !WRAPPER.containsKey(type)) {
@@ -65,6 +74,11 @@ public class ClassUtils {
         return WRAPPER.get(type);
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     public static Class<?> getPrimitive(Class<?> type) {
         Assert.notNull(type, "Type must is not null. ");
         if (type.isPrimitive() || !PRIMITIVE.containsKey(type)) {
@@ -73,10 +87,23 @@ public class ClassUtils {
         return WRAPPER.get(type);
     }
 
+    /**
+     *
+     * @param className
+     * @param classLoader
+     * @return
+     */
     public static boolean isPresent(String className, ClassLoader classLoader) {
         return ClassUtils.isPresent(className, true, classLoader);
     }
 
+    /**
+     *
+     * @param className
+     * @param initialize
+     * @param classLoader
+     * @return
+     */
     public static boolean isPresent(String className, boolean initialize, ClassLoader classLoader) {
         Assert.notNull(className, "Class name must is not null. ");
         Assert.notNull(classLoader, "Class loader must is not null. ");
@@ -89,10 +116,24 @@ public class ClassUtils {
         }
     }
 
+    /**
+     *
+     * @param className
+     * @return
+     * @throws ClassNotFoundException
+     */
     public static Class<?> forName(String className) throws ClassNotFoundException {
         return ReflectUtils.getReflecter().forName(className);
     }
 
+    /**
+     *
+     * @param className
+     * @param initialize
+     * @param loader
+     * @return
+     * @throws ClassNotFoundException
+     */
     public static Class<?> forName(String className, boolean initialize, ClassLoader loader) throws ClassNotFoundException {
         return ReflectUtils.getReflecter().forName(className, initialize, loader);
     }

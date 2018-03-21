@@ -14,6 +14,10 @@ import static com.github.kahlkn.artoria.util.Const.*;
 public class PathUtils {
     private static final Class<?> THIS_CLASS = PathUtils.class;
 
+    /**
+     *
+     * @return
+     */
     public static String getRootPath() {
         try {
             URL res = THIS_CLASS.getResource(SLASH);
@@ -25,6 +29,10 @@ public class PathUtils {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public static String getClasspath() {
         try {
             URL res = ClassUtils.getDefaultClassLoader().getResource(EMPTY_STRING);
@@ -35,6 +43,11 @@ public class PathUtils {
         }
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     public static URL findJarClasspath(String name) {
         if (!name.startsWith(SLASH)) {
             name = SLASH + name;
@@ -42,6 +55,12 @@ public class PathUtils {
         return THIS_CLASS.getResource(name);
     }
 
+    /**
+     *
+     * @param src
+     * @param parent
+     * @return
+     */
     public static String subPath(File src, File parent) {
         Assert.notNull(src, "Source must is not null. ");
         Assert.notNull(parent, "Parent must is not null. ");
@@ -50,6 +69,12 @@ public class PathUtils {
         return PathUtils.subPath(srcStr, parentStr);
     }
 
+    /**
+     *
+     * @param src
+     * @param parent
+     * @return
+     */
     public static String subPath(String src, String parent) {
         Assert.notBlank(src, "Source must is not blank. ");
         Assert.notBlank(parent, "Parent must is not blank. ");
@@ -57,6 +82,11 @@ public class PathUtils {
         return StringUtils.replace(src, parent, EMPTY_STRING);
     }
 
+    /**
+     *
+     * @param path
+     * @return
+     */
     public static String getExtension(String path) {
         if (path == null) { return null; }
         int dotIndex = path.lastIndexOf(DOT);
@@ -66,6 +96,11 @@ public class PathUtils {
         return path.substring(dotIndex + 1);
     }
 
+    /**
+     *
+     * @param path
+     * @return
+     */
     public static String stripExtension(String path) {
         if (path == null) { return null; }
         int extIndex = path.lastIndexOf(DOT);
@@ -75,6 +110,11 @@ public class PathUtils {
         return path.substring(0, extIndex);
     }
 
+    /**
+     *
+     * @param clazz
+     * @return
+     */
     public static String getPackagePath(Class<?> clazz) {
         Assert.notNull(clazz, "Clazz must is not null. ");
         Package p = clazz.getPackage();
@@ -82,6 +122,11 @@ public class PathUtils {
         return pName != null ? StringUtils.replace(pName, DOT, SLASH) : EMPTY_STRING;
     }
 
+    /**
+     *
+     * @param clazz
+     * @return
+     */
     public static String getClassFilePath(Class<?> clazz) {
         Assert.notNull(clazz, "Clazz must is not null. ");
         try {
