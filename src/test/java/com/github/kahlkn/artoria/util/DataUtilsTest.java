@@ -1,9 +1,7 @@
 package com.github.kahlkn.artoria.util;
 
 import com.alibaba.fastjson.JSON;
-import com.github.kahlkn.artoria.entity.EntityUtils;
 import com.github.kahlkn.artoria.entity.Person;
-import com.github.kahlkn.artoria.entity.Student;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,16 +15,12 @@ public class DataUtilsTest {
     @Before
     public void init() {
         list.add(null);
-        list.add(EntityUtils.getZhangSan());
-        list.add(EntityUtils.getZhangSan());
-        list.add(EntityUtils.getLisi());
+        list.add(RandomUtils.nextObject(Person.class));
+        list.add(RandomUtils.nextObject(Person.class));
+        list.add(RandomUtils.nextObject(Person.class));
         list.add(null);
-        Student bean = EntityUtils.getZhangSan();
-        bean.setName("wangwu");
-        list.add(bean);
-        bean = EntityUtils.getZhangSan();
-        bean.setName("wangwu");
-        list.add(bean);
+        list.add(RandomUtils.nextObject(Person.class));
+        list.add(RandomUtils.nextObject(Person.class));
     }
 
     @Test
@@ -36,7 +30,7 @@ public class DataUtilsTest {
     }
 
     @Test
-    public void listToListList() {
+    public void testListToListList() {
         List<List<Person>> lists = DataUtils.listToListList(list, 2);
         for (List<Person> people : lists) {
             System.out.println(JSON.toJSONString(people));
@@ -44,7 +38,7 @@ public class DataUtilsTest {
     }
 
     @Test
-    public void listToMapBean() {
+    public void testListToMapBean() {
         Map<String, Person> map = DataUtils.listToMapBean(list, "name");
         System.out.println(JSON.toJSONString(map, true));
     }

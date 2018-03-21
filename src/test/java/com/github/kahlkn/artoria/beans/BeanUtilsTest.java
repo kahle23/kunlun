@@ -1,17 +1,17 @@
 package com.github.kahlkn.artoria.beans;
 
 import com.alibaba.fastjson.JSON;
-import com.github.kahlkn.artoria.entity.EntityUtils;
 import com.github.kahlkn.artoria.entity.Person;
 import com.github.kahlkn.artoria.entity.Student;
+import com.github.kahlkn.artoria.util.RandomUtils;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class BeanUtilsTest {
-    private static Person person = EntityUtils.getZhangSan();
-    private static Map<String, Object> personMap = BeanUtils.beanToMap(EntityUtils.getLisi());
+    private static Person person = RandomUtils.nextObject(Person.class);
+    private static Map<String, Object> personMap = BeanUtils.beanToMap(RandomUtils.nextObject(Person.class));
 
     @Test
     public void copyBeanToMap() {
