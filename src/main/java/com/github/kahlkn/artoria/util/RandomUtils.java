@@ -29,6 +29,12 @@ public class RandomUtils {
     private static final String METHOD_NEXT_LIST = "nextList";
     private static final String METHOD_NEXT_MAP = "nextMap";
 
+    /**
+     * Confuse array elements.
+     * @param arr A array will be confuse
+     * @param <T> Array element type
+     * @return A array reference inputted
+     */
     public static <T> T[] confuse(T[] arr) {
         for (int i = arr.length - 1; i > 1; --i) {
             int nextInt = RANDOM.nextInt(i);
@@ -39,6 +45,12 @@ public class RandomUtils {
         return arr;
     }
 
+    /**
+     * Confuse list elements.
+     * @param list A list will be confuse
+     * @param <T> List element type
+     * @return A list reference inputted
+     */
     public static <T> List<T> confuse(List<T> list) {
         for (int i = list.size() - 1; i > 1; --i) {
             int nextInt = RANDOM.nextInt(i);
@@ -49,10 +61,19 @@ public class RandomUtils {
         return list;
     }
 
+    /**
+     * Random generation UUID.
+     * @return A UUID string
+     */
     public static String nextUUID() {
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * Random generation UUID.
+     * @param separator UUID separator
+     * @return A UUID string
+     */
     public static String nextUUID(String separator) {
         String uuid = UUID.randomUUID().toString();
         if (separator != null && !MINUS.equals(separator)) {
@@ -63,24 +84,49 @@ public class RandomUtils {
         }
     }
 
+    /**
+     * Random generation boolean.
+     * @return A random boolean
+     */
     public static boolean nextBoolean() {
         return RANDOM.nextBoolean();
     }
 
+    /**
+     * Random generation int.
+     * @param bound The int value bound
+     * @return A random int
+     */
     public static int nextInt(int bound) {
         return RANDOM.nextInt(bound);
     }
 
+    /**
+     * Random generation byte array.
+     * @param length The byte array length
+     * @return A random byte array
+     */
     public static byte[] nextBytes(int length) {
         byte[] bytes = new byte[length];
         RANDOM.nextBytes(bytes);
         return bytes;
     }
 
+    /**
+     * Random generation string.
+     * @param length The string length
+     * @return A random string
+     */
     public static String nextString(int length) {
         return RandomUtils.nextString(DEFAULT_CHAR_ARRAY, length);
     }
 
+    /**
+     * Random generation string.
+     * @param charArray Candidate char array
+     * @param length The string length
+     * @return A random string
+     */
     public static String nextString(char[] charArray, int length) {
         StringBuilder result = new StringBuilder();
         int len = charArray.length;
@@ -91,6 +137,11 @@ public class RandomUtils {
         return result.toString();
     }
 
+    /**
+     * Random generation decimal.
+     * @param length The decimal length
+     * @return A random decimal
+     */
     public static BigDecimal nextBigDecimal(int length) {
         StringBuilder result = new StringBuilder();
         result.append(RANDOM.nextInt(9) + 1);
@@ -101,6 +152,12 @@ public class RandomUtils {
         return new BigDecimal(result.toString());
     }
 
+    /**
+     * Random generation object who type is specified.
+     * @param clazz The object class
+     * @param <T> The object type
+     * @return A random object
+     */
     public static <T> T nextObject(Class<T> clazz) {
         Class<?> wrapper = ClassUtils.getWrapper(clazz);
         if (Number.class.isAssignableFrom(wrapper)) {
@@ -140,6 +197,12 @@ public class RandomUtils {
         }
     }
 
+    /**
+     * Random generation bean who type is specified.
+     * @param clazz The bean class
+     * @param <T> The bean type
+     * @return A random bean
+     */
     public static <T> T nextBean(Class<T> clazz) {
         try {
             Object bean = ReflectUtils.newInstance(clazz);
@@ -174,6 +237,12 @@ public class RandomUtils {
         }
     }
 
+    /**
+     * Random generation array who type is specified.
+     * @param clazz The array class
+     * @param <T> The array type
+     * @return A random array
+     */
     public static <T> T[] nextArray(Class<T> clazz) {
         int size = RandomUtils.nextInt(DEFAULT_SIZE);
         T[] array = (T[]) Array.newInstance(clazz, size);
@@ -189,6 +258,12 @@ public class RandomUtils {
         return array;
     }
 
+    /**
+     * Random generation list who generic type is specified.
+     * @param clazz The list generic type class
+     * @param <T> The list generic type
+     * @return A random list
+     */
     public static <T> List<T> nextList(Class<T> clazz) {
         StackTraceElement[] elements;
         boolean isEmpty = Object.class.equals(clazz) ||
@@ -203,6 +278,14 @@ public class RandomUtils {
         return list;
     }
 
+    /**
+     * Random generation map who generic type is specified.
+     * @param keyClass The map key class
+     * @param valClass The map value class
+     * @param <K> The map key type
+     * @param <V> The map value type
+     * @return A random map
+     */
     public static <K, V> Map<K, V> nextMap(Class<K> keyClass, Class<V> valClass) {
         StackTraceElement[] elements;
         boolean isEmpty = Object.class.equals(keyClass) || Object.class.equals(valClass) ||

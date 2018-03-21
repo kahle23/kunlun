@@ -15,6 +15,13 @@ import java.nio.charset.Charset;
  */
 public class Encoder {
 
+    /**
+     *
+     * @param data
+     * @param oldCharset
+     * @param newCharset
+     * @return
+     */
     public static String encode(String data, String oldCharset, String newCharset) {
         Assert.notBlank(oldCharset, "Parameter \"oldCharset\" must not blank. ");
         Assert.notBlank(newCharset, "Parameter \"newCharset\" must not blank. ");
@@ -23,6 +30,13 @@ public class Encoder {
         return Encoder.encode(data, older, newer);
     }
 
+    /**
+     *
+     * @param data
+     * @param oldCharset
+     * @param newCharset
+     * @return
+     */
     public static String encode(String data, Charset oldCharset, Charset newCharset) {
         Assert.notBlank(data, "Parameter \"data\" must not blank. ");
         Assert.notNull(oldCharset, "Parameter \"oldCharset\" must not null. ");
@@ -31,12 +45,26 @@ public class Encoder {
         return new String(bytes, newCharset);
     }
 
+    /**
+     *
+     * @param data
+     * @param newCharset
+     * @return
+     * @throws IOException
+     */
     public static String recode(String data, String newCharset) throws IOException {
         Assert.notBlank(newCharset, "Parameter \"newCharset\" must not blank. ");
         Charset newer = Charset.forName(newCharset);
         return Encoder.recode(data, newer);
     }
 
+    /**
+     *
+     * @param data
+     * @param newCharset
+     * @return
+     * @throws IOException
+     */
     public static String recode(String data, Charset newCharset) throws IOException {
         Assert.notBlank(data, "Parameter \"data\" must not blank. ");
         Assert.notNull(newCharset, "Parameter \"newCharset\" must not null. ");
@@ -49,6 +77,14 @@ public class Encoder {
         return new String(bytes, newCharset);
     }
 
+    /**
+     *
+     * @param data
+     * @param oldCharset
+     * @param newCharset
+     * @return
+     * @throws IOException
+     */
     public static byte[] recode(byte[] data, String oldCharset, String newCharset) throws IOException {
         Assert.notBlank(oldCharset, "Parameter \"oldCharset\" must not blank. ");
         Assert.notBlank(newCharset, "Parameter \"newCharset\" must not blank. ");
@@ -57,6 +93,14 @@ public class Encoder {
         return Encoder.recode(data, older, newer);
     }
 
+    /**
+     *
+     * @param data
+     * @param oldCharset
+     * @param newCharset
+     * @return
+     * @throws IOException
+     */
     public static byte[] recode(byte[] data, Charset oldCharset, Charset newCharset) throws IOException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         Assert.notNull(oldCharset, "Parameter \"oldCharset\" must not null. ");

@@ -122,8 +122,17 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
     }
 
     public enum Type {
+
+        /**
+         * Reference type weak.
+         */
         WEAK,
+
+        /**
+         * Reference type soft.
+         */
         SOFT
+
     }
 
     private class EntrySet extends AbstractSet<Map.Entry<K, V>> {
@@ -253,10 +262,30 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
     }
 
     private interface ValueCell<T> {
+
+        /**
+         * Get value from cell.
+         * @return The value cell saved
+         */
         T get();
+
+        /**
+         * Clear cell value.
+         */
         void drop();
+
+        /**
+         * Get cell key.
+         * @return The key cell saved
+         */
         Object getKey();
+
+        /**
+         * Judge the cell is valid.
+         * @return If true is valid, and false not valid
+         */
         boolean isValid();
+
     }
 
     private static class WeakValueCell<T> extends WeakReference<T> implements ValueCell<T> {
@@ -268,15 +297,18 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
             this.key = key;
         }
 
+        @Override
         public void drop() {
             super.clear();
             this.key = INVALID_KEY;
         }
 
+        @Override
         public Object getKey() {
             return key;
         }
 
+        @Override
         public boolean isValid() {
             return this.key != INVALID_KEY;
         }
@@ -292,15 +324,18 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
             this.key = key;
         }
 
+        @Override
         public void drop() {
             super.clear();
             this.key = INVALID_KEY;
         }
 
+        @Override
         public Object getKey() {
             return key;
         }
 
+        @Override
         public boolean isValid() {
             return this.key != INVALID_KEY;
         }
