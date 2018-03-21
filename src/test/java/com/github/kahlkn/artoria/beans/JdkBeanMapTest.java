@@ -1,12 +1,12 @@
 package com.github.kahlkn.artoria.beans;
 
 import com.alibaba.fastjson.JSON;
-import com.github.kahlkn.artoria.entity.EntityUtils;
 import com.github.kahlkn.artoria.entity.Student;
+import com.github.kahlkn.artoria.util.RandomUtils;
 import org.junit.Test;
 
 public class JdkBeanMapTest {
-    private Student student = EntityUtils.getZhangSan();
+    private Student student = RandomUtils.nextObject(Student.class);
 
     @Test
     public void test1() {

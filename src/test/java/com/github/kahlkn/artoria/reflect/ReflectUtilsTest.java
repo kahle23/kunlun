@@ -1,7 +1,7 @@
 package com.github.kahlkn.artoria.reflect;
 
-import com.github.kahlkn.artoria.entity.EntityUtils;
 import com.github.kahlkn.artoria.entity.Student;
+import com.github.kahlkn.artoria.util.RandomUtils;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
@@ -22,7 +22,7 @@ public class ReflectUtilsTest {
 
     @Test
     public void findFields() throws Exception {
-        Student student = EntityUtils.getZhangSan();
+        Student student = RandomUtils.nextObject(Student.class);
         Field[] fields = ReflectUtils.findAccessFields(Student.class);
         for (Field field : fields) {
             ReflectUtils.makeAccessible(field);
