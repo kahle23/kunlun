@@ -5,22 +5,26 @@ import org.junit.Test;
 public class PathUtilsTest {
 
     @Test
-    public void test() {
+    public void testFindJarClasspath() {
         System.out.println(PathUtils.findJarClasspath("logging.properties"));
     }
 
     @Test
-    public void test1() {
+    public void testGetExtension() {
         System.out.println(PathUtils.getExtension("C:\\windows\\system\\123.txt"));
-        System.out.println(PathUtils.getExtension("C:\\windows\\system"));
+        System.out.println(PathUtils.getExtension("C:\\win.dows\\system"));
         System.out.println(PathUtils.getExtension("C:\\windows\\system\\"));
+    }
+
+    @Test
+    public void testStripExtension() {
         System.out.println(PathUtils.stripExtension("C:\\windows\\system\\123.txt"));
         System.out.println(PathUtils.stripExtension("C:\\windows\\system"));
         System.out.println(PathUtils.stripExtension("C:\\windows\\system\\"));
     }
 
     @Test
-    public void test2() {
+    public void testPath() {
         System.out.println(PathUtils.getPackagePath(PathUtilsTest.class));
         System.out.println(PathUtils.getClassFilePath(PathUtilsTest.class));
     }
