@@ -56,18 +56,7 @@ public class SimpleFormatter extends Formatter {
     private String printfLevel(LogRecord record) {
         Level level = record.getLevel();
         if (level == null) { return null; }
-        String levelString = level.toString();
-        if (levelString.length() < MAX_LEVEL_LENGTH) {
-            int count = MAX_LEVEL_LENGTH - levelString.length();
-            StringBuilder builder = new StringBuilder(levelString);
-            for (int i = 0; i < count; i++) {
-                builder.append(BLANK_SPACE);
-            }
-            return builder.toString();
-        }
-        else {
-            return levelString;
-        }
+        return level.toString();
     }
 
     private String printfThread(LogRecord record) {
