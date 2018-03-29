@@ -17,46 +17,64 @@ public class LockUtilsTest {
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
         pool = new ThreadPoolExecutor(10, 10, 0L
                 , TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), threadFactory);
+        // Must register lock before use
+        LockUtils.registerLock(LockUtilsTest.class.getName(), ReentrantLock.class);
     }
 
     @After
     public void destroy() {
         pool.shutdown();
+        // Unregister lock is better
+        LockUtils.unregisterLock(LockUtilsTest.class.getName());
     }
 
     @Test
-    public void testRegister() {
+    public void testRegisterFactory() {
         SimpleLockFactory lockFactory = new SimpleLockFactory();
-        LockUtils.register(ReentrantLock.class, lockFactory);
+        LockUtils.registerFactory(ReentrantLock.class, lockFactory);
     }
 
     @Test
-    public void testUnregister() {
-        LockUtils.unregister(ReentrantLock.class);
+    public void testUnregisterFactory() {
+        LockUtils.unregisterFactory(ReentrantLock.class);
     }
 
     @Test
     public void test1() {
+//        final ReentrantLock reentrantLock = new ReentrantLock();
         for (int i = 0; i < 10; i++) {
             pool.submit(new Runnable() {
                 @Override
                 public void run() {
-                    for (int j = 0; j < 1000000; j++) {
-                        if (num >= 0) {
-                            LockUtils.lock(LockUtilsTest.class.getName());
-                            try {
-                                if (num >= 0) {
-                                    System.out.println(Thread.currentThread().getName() + " | " + (num--));
+                    try {
+                        long millis = System.currentTimeMillis();
+                        for (int j = 0; j < 1000000; j++) {
+                            if (num >= 0) {
+//                                reentrantLock.lock();
+                                LockUtils.lock(LockUtilsTest.class.getName());
+                                try {
+//                                synchronized (this) {
+                                    if (num >= 0) {
+                                        System.out.println(Thread.currentThread().getName() + " | " + (num--));
+//                                        Thread.sleep(60);
+                                    }
+//                                }
+                                }
+                                finally {
+//                                    reentrantLock.unlock();
+                                    LockUtils.unlock(LockUtilsTest.class.getName());
                                 }
                             }
-                            finally {
-                                LockUtils.unlock(LockUtilsTest.class.getName());
-                            }
                         }
+                        System.out.println(System.currentTimeMillis() - millis);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             });
         }
         ThreadUtils.sleepQuietly(10000);
     }
+
 }
