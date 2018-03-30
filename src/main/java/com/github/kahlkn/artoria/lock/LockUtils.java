@@ -6,6 +6,8 @@ import com.github.kahlkn.artoria.util.Assert;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -89,10 +91,34 @@ public class LockUtils {
         lock.lock();
     }
 
+    public static void lockInterruptibly(String lockName) throws InterruptedException {
+        Assert.notBlank(lockName, "Parameter \"lockName\" must not blank. ");
+        Lock lock = LockUtils.getLock(lockName);
+        lock.lockInterruptibly();
+    }
+
+    public static boolean tryLock(String lockName) {
+        Assert.notBlank(lockName, "Parameter \"lockName\" must not blank. ");
+        Lock lock = LockUtils.getLock(lockName);
+        return lock.tryLock();
+    }
+
+    public static boolean tryLock(String lockName, long time, TimeUnit unit) throws InterruptedException {
+        Assert.notBlank(lockName, "Parameter \"lockName\" must not blank. ");
+        Lock lock = LockUtils.getLock(lockName);
+        return lock.tryLock(time, unit);
+    }
+
     public static void unlock(String lockName) {
         Assert.notBlank(lockName, "Parameter \"lockName\" must not blank. ");
         Lock lock = LockUtils.getLock(lockName);
         lock.unlock();
+    }
+
+    public static Condition newCondition(String lockName) {
+        Assert.notBlank(lockName, "Parameter \"lockName\" must not blank. ");
+        Lock lock = LockUtils.getLock(lockName);
+        return lock.newCondition();
     }
 
 }
