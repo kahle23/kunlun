@@ -3,6 +3,7 @@ package com.github.kahlkn.artoria.lock;
 import com.github.kahlkn.artoria.util.ThreadUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.concurrent.*;
@@ -35,6 +36,7 @@ public class LockUtilsTest {
     }
 
     @Test
+    @Ignore
     public void testUnregisterFactory() {
         LockUtils.unregisterFactory(ReentrantLock.class);
     }
@@ -63,6 +65,42 @@ public class LockUtilsTest {
                                 finally {
 //                                    reentrantLock.unlock();
                                     LockUtils.unlock(LockUtilsTest.class.getName());
+                                }
+                            }
+                        }
+                        System.out.println(System.currentTimeMillis() - millis);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        ThreadUtils.sleepQuietly(10000);
+    }
+
+    @Test
+    public void test2() {
+        for (int i = 0; i < 10; i++) {
+            pool.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        long millis = System.currentTimeMillis();
+                        for (int j = 0; j < 1000000; j++) {
+                            if (num >= 0) {
+//                                boolean tryLock = LockUtils.tryLock(LockUtilsTest.class.getName());
+                                boolean tryLock = LockUtils.tryLock(LockUtilsTest.class.getName(), 500, TimeUnit.MILLISECONDS);
+                                System.out.println(tryLock);
+                                if (tryLock) {
+                                    try {
+                                        if (num >= 0) {
+                                            System.out.println(Thread.currentThread().getName() + " | " + (num--));
+                                        }
+                                    }
+                                    finally {
+                                        LockUtils.unlock(LockUtilsTest.class.getName());
+                                    }
                                 }
                             }
                         }
