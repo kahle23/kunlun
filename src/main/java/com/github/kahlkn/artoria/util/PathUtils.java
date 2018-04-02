@@ -1,6 +1,7 @@
 package com.github.kahlkn.artoria.util;
 
 import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.time.DateUtils;
 
 import java.io.File;
 import java.net.URL;
@@ -108,6 +109,21 @@ public class PathUtils {
         int folderIndex = path.lastIndexOf(FILE_SEPARATOR);
         if (folderIndex > extIndex) { return path; }
         return path.substring(0, extIndex);
+    }
+
+    /**
+     *
+     * @param path
+     * @return
+     */
+    public static String notRepeatPath(String path) {
+        if (path == null) { return null; }
+        while (new File(path).exists()) {
+            String body = PathUtils.stripExtension(path);
+            String ext = PathUtils.getExtension(path);
+            path = body + UNDERLINE + DateUtils.getTimestamp() + DOT + ext;
+        }
+        return path;
     }
 
     /**
