@@ -24,6 +24,13 @@ public class PathUtilsTest {
     }
 
     @Test
+    public void testNotRepeatFilename() {
+        System.out.println(PathUtils.notRepeatPath("E:\\_cache\\123.csv"));
+        System.out.println(PathUtils.notRepeatPath("E:\\_cache\\1231.csv"));
+        System.out.println(PathUtils.notRepeatPath("E:\\_cache\\1232.csv"));
+    }
+
+    @Test
     public void testPath() {
         System.out.println(PathUtils.getPackagePath(PathUtilsTest.class));
         System.out.println(PathUtils.getClassFilePath(PathUtilsTest.class));
