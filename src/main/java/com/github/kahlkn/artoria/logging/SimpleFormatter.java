@@ -21,7 +21,6 @@ import static com.github.kahlkn.artoria.util.Const.*;
  */
 public class SimpleFormatter extends Formatter {
     private static final String DEFAULT_DATE_FORMAT_KEY = SimpleDateFormat.class.getName() + UNDERLINE + DateUtils.DEFAULT_DATE_PATTERN;
-    private static final int MAX_LEVEL_LENGTH = 7;
 
     @Override
     public String format(LogRecord record) {
