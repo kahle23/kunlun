@@ -18,8 +18,10 @@ public interface Cache {
      * Put data in cache.
      * @param key The data's key
      * @param value The data
+     * @param timeToLive The amount of time for the value to live
+     *                   , in millisecond, negative number indicates unlimited
      */
-    void put(Object key, Object value);
+    void put(Object key, Object value, long timeToLive);
 
     /**
      * Remove data by key.

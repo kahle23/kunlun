@@ -55,4 +55,20 @@ public class CacheUtilsTest {
         ThreadUtils.sleepQuietly(2000);
     }
 
+    @Test
+    public void testTimeToLive() {
+        cacheUtils.setTimeToLive(-8);
+        DataLoader loader = new DataLoader() {
+            @Override
+            public Object load() {
+                return System.currentTimeMillis();
+            }
+        };
+        Object obj = cacheUtils.get("123", loader);
+        System.out.println(obj);
+        ThreadUtils.sleepQuietly(5000);
+        obj = cacheUtils.get("123", loader);
+        System.out.println(obj);
+    }
+
 }
