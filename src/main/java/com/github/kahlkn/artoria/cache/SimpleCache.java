@@ -2,6 +2,7 @@ package com.github.kahlkn.artoria.cache;
 
 import com.github.kahlkn.artoria.collection.ReferenceHashMap;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -24,14 +25,16 @@ public class SimpleCache implements Cache {
     @Override
     public Object get(Object key, DataLoader loader) {
         synchronized (storage) {
-            return storage.get(key);
+            Element element = (Element) storage.get(key);
+            return element != null ? element.getValue() : null;
         }
     }
 
     @Override
-    public void put(Object key, Object value) {
+    public void put(Object key, Object value, long timeToLive) {
         synchronized (storage) {
-            storage.put(key, value);
+            Element element = new Element(key, value, timeToLive);
+            storage.put(key, element);
         }
     }
 
@@ -57,6 +60,26 @@ public class SimpleCache implements Cache {
     @Override
     public void next(Cache next) {
         this.next = next;
+    }
+
+    private static class Element implements Serializable {
+        private final Object key;
+        private final Object value;
+        private final long createTime;
+        private final long timeToLive;
+
+        public Element(Object key, Object value, long timeToLive) {
+            this.key = key;
+            this.value = value;
+            this.createTime = System.currentTimeMillis();
+            this.timeToLive = timeToLive;
+        }
+
+        public Object getValue() {
+            long differ = System.currentTimeMillis() - createTime;
+            return timeToLive >= 0 ? differ <= timeToLive ? value : null : value;
+        }
+
     }
 
 }

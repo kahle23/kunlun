@@ -7,7 +7,15 @@ import com.github.kahlkn.artoria.util.Assert;
  * @author Kahle
  */
 public class CacheUtils {
+    /**
+     * The cache implement object.
+     */
     private Cache cache;
+    /**
+     * The value to live
+     * , in millisecond, negative number indicates unlimited.
+     */
+    private long timeToLive = -1;
 
     public CacheUtils() {
         this.cache = new SimpleCache();
@@ -26,6 +34,15 @@ public class CacheUtils {
         this.cache = cache;
     }
 
+    public long getTimeToLive() {
+        return timeToLive;
+    }
+
+    public void setTimeToLive(long timeToLive) {
+        // timeToLive can any value.
+        this.timeToLive = timeToLive;
+    }
+
     public Object get(Object key, DataLoader loader) {
         Object data;
         Cache current = null;
@@ -38,7 +55,7 @@ public class CacheUtils {
             }
             else {
                 if (current != null) {
-                    current.put(key, data);
+                    current.put(key, data, timeToLive);
                 }
                 return data;
             }
@@ -48,7 +65,7 @@ public class CacheUtils {
             return null;
         }
         if (current != null) {
-            current.put(key, data);
+            current.put(key, data, timeToLive);
         }
         return data;
     }
