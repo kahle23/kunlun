@@ -1,10 +1,10 @@
 package com.github.kahlkn.artoria.converter;
 
-import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.reflect.ReflectUtils;
+import com.github.kahlkn.artoria.time.DateUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.ClassUtils;
-import com.github.kahlkn.artoria.time.DateUtils;
 import com.github.kahlkn.artoria.util.StringUtils;
 
 import java.lang.reflect.Method;
@@ -56,7 +56,7 @@ public class NumberConverter implements Converter {
             return method.invoke(source);
         }
         catch (Exception e) {
-            throw new UncheckedException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

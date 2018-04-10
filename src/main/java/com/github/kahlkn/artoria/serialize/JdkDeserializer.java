@@ -1,6 +1,6 @@
 package com.github.kahlkn.artoria.serialize;
 
-import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.util.Assert;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class JdkDeserializer implements Deserializer<Object> {
             return ois.readObject();
         }
         catch (ClassNotFoundException e) {
-            throw new UncheckedException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

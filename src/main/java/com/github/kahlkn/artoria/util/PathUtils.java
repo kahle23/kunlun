@@ -1,6 +1,6 @@
 package com.github.kahlkn.artoria.util;
 
-import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.time.DateUtils;
 
 import java.io.File;
@@ -26,7 +26,7 @@ public class PathUtils {
             return path != null ? path.getParentFile().getParent() : EMPTY_STRING;
         }
         catch (Exception e) {
-            throw new UncheckedException(e.getMessage(), e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 
@@ -40,7 +40,7 @@ public class PathUtils {
             return res != null ? new File(res.toURI().getPath()).toString() : EMPTY_STRING;
         }
         catch (Exception e) {
-            throw new UncheckedException(e.getMessage(), e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 
@@ -151,7 +151,7 @@ public class PathUtils {
             return path != null ? new File(path).toString() : EMPTY_STRING;
         }
         catch (Exception e) {
-            throw new UncheckedException(e.getMessage(), e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

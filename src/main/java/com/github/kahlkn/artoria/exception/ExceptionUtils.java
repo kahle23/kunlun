@@ -2,32 +2,18 @@ package com.github.kahlkn.artoria.exception;
 
 import com.github.kahlkn.artoria.logging.Logger;
 import com.github.kahlkn.artoria.logging.LoggerFactory;
+import com.github.kahlkn.artoria.reflect.ReflectUtils;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Constructor;
 
 /**
- * Throwable tools.
+ * Exception tools.
  * @author Kahle
  */
 public class ExceptionUtils {
     private static Logger log = LoggerFactory.getLogger(ExceptionUtils.class);
-
-    public static BusinessException wrap(Throwable cause) {
-        return cause instanceof BusinessException
-                ? (BusinessException) cause : new BusinessException(cause);
-    }
-
-    public static BusinessException wrap(Throwable cause, ErrorCode code) {
-        if (code != null) {
-            BusinessException e = (BusinessException) cause;
-            return code.equals(e.getErrorCode())
-                    ? e : new BusinessException(code, cause);
-        }
-        else {
-            return ExceptionUtils.wrap(cause);
-        }
-    }
 
     public static String toString(Throwable t) {
         if (t == null) { return null; }
@@ -35,6 +21,26 @@ public class ExceptionUtils {
         PrintWriter pw = new PrintWriter(sw);
         t.printStackTrace(pw);
         return sw.toString();
+    }
+
+    public static RuntimeException wrap(Exception cause) {
+        boolean isRE = cause instanceof RuntimeException;
+        return isRE ? (RuntimeException) cause : new UncheckedException(cause);
+    }
+
+    public static RuntimeException wrap(Exception cause, Class<? extends RuntimeException> clazz) {
+        if (cause instanceof RuntimeException) {
+            return (RuntimeException) cause;
+        }
+        else {
+            try {
+                Constructor<?> cstr = ReflectUtils.findConstructor(clazz, Throwable.class);
+                return (RuntimeException) cstr.newInstance(cause);
+            }
+            catch (Exception e) {
+                throw new UncheckedException(e);
+            }
+        }
     }
 
 }
