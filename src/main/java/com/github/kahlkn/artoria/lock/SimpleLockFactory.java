@@ -1,6 +1,6 @@
 package com.github.kahlkn.artoria.lock;
 
-import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 
 import java.util.concurrent.locks.Lock;
 
@@ -16,7 +16,7 @@ public class SimpleLockFactory implements LockFactory {
             return lockClass.newInstance();
         }
         catch (Exception e) {
-            throw new UncheckedException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

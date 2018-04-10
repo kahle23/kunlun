@@ -1,6 +1,6 @@
 package com.github.kahlkn.artoria.net;
 
-import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.io.IOUtils;
 import com.github.kahlkn.artoria.util.ArrayUtils;
 import com.github.kahlkn.artoria.util.Assert;
@@ -53,7 +53,7 @@ public class NetUtils {
             return NetUtils.ping(InetAddress.getByName(ip), timeout);
         }
         catch (IOException e) {
-            throw new UncheckedException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

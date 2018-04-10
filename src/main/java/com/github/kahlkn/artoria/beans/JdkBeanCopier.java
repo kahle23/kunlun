@@ -1,7 +1,7 @@
 package com.github.kahlkn.artoria.beans;
 
 import com.github.kahlkn.artoria.converter.Converter;
-import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.reflect.ReflectUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.CollectionUtils;
@@ -61,7 +61,7 @@ public class JdkBeanCopier implements BeanCopier {
             }
             catch (Exception e) {
                 if (ignoreException) { continue; }
-                throw new UncheckedException(e.getMessage(), e);
+                throw ExceptionUtils.wrap(e);
             }
         }
 

@@ -4,7 +4,7 @@ import com.github.kahlkn.artoria.aop.Enhancer;
 import com.github.kahlkn.artoria.aop.Interceptor;
 import com.github.kahlkn.artoria.cache.CacheUtils;
 import com.github.kahlkn.artoria.cache.DataLoader;
-import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.logging.Logger;
 import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
@@ -154,7 +154,7 @@ public class ReflectUtils {
                     return method.invoke(object, args);
                 }
                 catch (Exception e) {
-                    throw new UncheckedException(e);
+                    throw ExceptionUtils.wrap(e);
                 }
             }
 

@@ -4,57 +4,46 @@ import com.github.kahlkn.artoria.logging.Logger;
 import com.github.kahlkn.artoria.logging.LoggerFactory;
 import org.junit.Test;
 
+import java.io.IOException;
+
 public class ExceptionUtilsTest {
     private static Logger log = LoggerFactory.getLogger(ExceptionUtilsTest.class);
 
-    @Test
-    public void createAndSetOthers() {
+    private void throwException1() throws Exception {
         try {
-            throw new BusinessException(SystemCode.code1)
-                    .setDescription("address in %s, say \"%s\". ", "0364294", "hello");
-        }
-        catch (BusinessException e) {
-            log.error(e.getMessage(), e);
-        }
-    }
-
-    private void throwException1() throws BusinessException {
-        try {
-            throw new BusinessException(SystemCode.code1)
-                    .setDescription("[BusinessException]: Just Test...");
-        }
-        catch (BusinessException e) {
-            throw ExceptionUtils.wrap(e);
-        }
-    }
-
-    private void throwException2() throws BusinessException {
-        try {
-            throw new UncheckedException(
-                    "[UncheckedException]: Just Test...");
+            throw new UncheckedException("throwException1");
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
         }
     }
 
-    @Test
-    public void testWrap1() {
+    private void throwException2() throws Exception {
         try {
-            this.throwException1();
+            throw new IOException("throwException1");
         }
-        catch (BusinessException e) {
-            log.error(e.getMessage(), e);
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e, UncheckedException.class);
         }
     }
 
     @Test
-    public void testWrap2() {
+    public void test1() {
         try {
-            this.throwException2();
+            throwException1();
         }
         catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.info(e.getMessage(), e);
+        }
+    }
+
+    @Test
+    public void test2() {
+        try {
+            throwException2();
+        }
+        catch (Exception e) {
+            log.info(e.getMessage(), e);
         }
     }
 

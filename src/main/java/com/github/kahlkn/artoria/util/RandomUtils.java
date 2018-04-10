@@ -1,7 +1,7 @@
 package com.github.kahlkn.artoria.util;
 
 import com.github.kahlkn.artoria.converter.ConvertUtils;
-import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.reflect.ReflectUtils;
 
 import java.lang.reflect.Array;
@@ -233,7 +233,7 @@ public class RandomUtils {
             return (T) bean;
         }
         catch (Exception e) {
-            throw new UncheckedException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

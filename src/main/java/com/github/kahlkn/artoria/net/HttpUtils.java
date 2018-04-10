@@ -1,7 +1,7 @@
 package com.github.kahlkn.artoria.net;
 
 import com.github.kahlkn.artoria.codec.Base64;
-import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.io.IOUtils;
 import com.github.kahlkn.artoria.util.ArrayUtils;
 import com.github.kahlkn.artoria.util.Assert;
@@ -86,7 +86,7 @@ public class HttpUtils {
             return sslContext.getSocketFactory();
         }
         catch (Exception e) {
-            throw new UncheckedException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

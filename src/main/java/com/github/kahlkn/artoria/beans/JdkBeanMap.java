@@ -1,7 +1,7 @@
 package com.github.kahlkn.artoria.beans;
 
 import com.github.kahlkn.artoria.converter.Converter;
-import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.reflect.ReflectUtils;
 import com.github.kahlkn.artoria.util.ArrayUtils;
 import com.github.kahlkn.artoria.util.Assert;
@@ -72,7 +72,7 @@ public class JdkBeanMap extends BeanMap {
             return method.invoke(bean);
         }
         catch (Exception e) {
-            throw new UncheckedException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 
@@ -97,7 +97,7 @@ public class JdkBeanMap extends BeanMap {
             return method.invoke(bean, value);
         }
         catch (Exception e) {
-            throw new UncheckedException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

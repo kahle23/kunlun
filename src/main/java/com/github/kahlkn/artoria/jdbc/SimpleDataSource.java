@@ -2,7 +2,7 @@ package com.github.kahlkn.artoria.jdbc;
 
 import com.github.kahlkn.artoria.aop.Enhancer;
 import com.github.kahlkn.artoria.aop.Interceptor;
-import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.PropUtils;
 import com.github.kahlkn.artoria.util.StringUtils;
@@ -72,7 +72,7 @@ public class SimpleDataSource implements DataSource {
             }
         }
         catch (Exception e) {
-            throw new UncheckedException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

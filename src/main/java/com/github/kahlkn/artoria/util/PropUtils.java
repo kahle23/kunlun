@@ -30,7 +30,7 @@ public class PropUtils {
             return PropUtils.create(inputStream, charset);
         }
         catch (IOException e) {
-            String msg = "Loading properties file[classpath : " + fileName + "] error. ";
+            String msg = "Loading properties file[classpath: " + fileName + "] error. ";
             throw new UncheckedException(msg, e);
         }
         finally {

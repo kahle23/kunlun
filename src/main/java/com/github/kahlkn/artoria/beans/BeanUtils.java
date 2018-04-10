@@ -2,7 +2,7 @@ package com.github.kahlkn.artoria.beans;
 
 import com.github.kahlkn.artoria.converter.ConvertUtils;
 import com.github.kahlkn.artoria.converter.Converter;
-import com.github.kahlkn.artoria.exception.UncheckedException;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.logging.Logger;
 import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.reflect.ReflectUtils;
@@ -63,7 +63,7 @@ public class BeanUtils extends BeanHandler {
             log.info("Set bean map class: " + beanMapClass.getName());
         }
         catch (Exception e) {
-            throw new UncheckedException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 
@@ -72,7 +72,7 @@ public class BeanUtils extends BeanHandler {
             return beanMapConstructor.newInstance();
         }
         catch (Exception e) {
-            throw new UncheckedException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 
@@ -90,7 +90,7 @@ public class BeanUtils extends BeanHandler {
             return clone;
         }
         catch (Exception e) {
-            throw new UncheckedException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 
