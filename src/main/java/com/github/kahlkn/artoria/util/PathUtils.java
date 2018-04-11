@@ -1,7 +1,6 @@
 package com.github.kahlkn.artoria.util;
 
 import com.github.kahlkn.artoria.exception.ExceptionUtils;
-import com.github.kahlkn.artoria.time.DateUtils;
 
 import java.io.File;
 import java.net.URL;
@@ -116,14 +115,17 @@ public class PathUtils {
      * @param path
      * @return
      */
-    public static String notRepeatPath(String path) {
+    public static String notExistPath(String path) {
         if (path == null) { return null; }
-        while (new File(path).exists()) {
-            String body = PathUtils.stripExtension(path);
-            String ext = PathUtils.getExtension(path);
-            path = body + UNDERLINE + DateUtils.getTimestamp() + DOT + ext;
+        int count = 1;
+        String tmp = path;
+        while (new File(tmp).exists()) {
+            tmp = path;
+            String body = PathUtils.stripExtension(tmp);
+            String ext = PathUtils.getExtension(tmp);
+            tmp = body + "_repeat" + count++ + DOT + ext;
         }
-        return path;
+        return tmp;
     }
 
     /**

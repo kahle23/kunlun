@@ -75,6 +75,10 @@ public class SimpleCache implements Cache {
             this.timeToLive = timeToLive;
         }
 
+        public Object getKey() {
+            return key;
+        }
+
         public Object getValue() {
             long differ = System.currentTimeMillis() - createTime;
             return timeToLive >= 0 ? differ <= timeToLive ? value : null : value;

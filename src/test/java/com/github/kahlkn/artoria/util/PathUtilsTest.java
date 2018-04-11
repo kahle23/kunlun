@@ -24,10 +24,10 @@ public class PathUtilsTest {
     }
 
     @Test
-    public void testNotRepeatFilename() {
-        System.out.println(PathUtils.notRepeatPath("E:\\_cache\\123.csv"));
-        System.out.println(PathUtils.notRepeatPath("E:\\_cache\\1231.csv"));
-        System.out.println(PathUtils.notRepeatPath("E:\\_cache\\1232.csv"));
+    public void testNotExistPath() {
+        System.out.println(PathUtils.notExistPath("E:\\_cache\\123.csv"));
+        System.out.println(PathUtils.notExistPath("E:\\_cache\\123_1.csv"));
+        System.out.println(PathUtils.notExistPath("E:\\_cache\\123_2.csv"));
     }
 
     @Test

@@ -31,6 +31,7 @@ public class HookUtilsTest {
     public void test1() {
         HookUtils.removeShutdownHook(hook3);
         System.out.println("I am running now. ");
+        HookUtils.execute(hook3);
     }
 
 }
