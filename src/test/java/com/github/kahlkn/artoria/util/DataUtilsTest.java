@@ -24,12 +24,6 @@ public class DataUtilsTest {
     }
 
     @Test
-    public void testTakeFirstNotNullElement() {
-        Person person = DataUtils.takeFirstNotNullElement(list);
-        System.out.println(JSON.toJSONString(person, true));
-    }
-
-    @Test
     public void testListToListList() {
         List<List<Person>> lists = DataUtils.listToListList(list, 2);
         for (List<Person> people : lists) {
