@@ -19,24 +19,6 @@ import static com.github.kahlkn.artoria.util.Const.GET;
 public class DataUtils {
 
     /**
-     * Take java bean list first not null element.
-     * @param list A java bean list
-     * @param <T> Java bean type
-     * @return A not null java bean
-     */
-    public static <T> T takeFirstNotNullElement(List<T> list) {
-        if (list == null) {
-            return null;
-        }
-        for (T bean : list) {
-            if (bean != null) {
-                return bean;
-            }
-        }
-        return null;
-    }
-
-    /**
      * A java bean list to divide into groups.
      * @param list A java bean list
      * @param groupSize Grouping size
@@ -76,7 +58,7 @@ public class DataUtils {
             Map<String, T> result = new HashMap<String, T>(list.size());
             if (CollectionUtils.isEmpty(list)) { return result; }
             Assert.notEmpty(propertyNames, "Parameter \"propertyNames\" must not empty. ");
-            T tmp = DataUtils.takeFirstNotNullElement(list);
+            T tmp = CollectionUtils.takeFirstNotNullElement(list);
             Assert.notNull(tmp, "Elements in list all is null. ");
             List<Method> methods = DataUtils.findMethodsByNames(tmp.getClass(), propertyNames);
             // Convert to map
@@ -111,7 +93,7 @@ public class DataUtils {
             Map<String, List<T>> result = new HashMap<String, List<T>>(list.size());
             if (CollectionUtils.isEmpty(list)) { return result; }
             Assert.notEmpty(propertyNames, "Parameter \"propertyNames\" must not empty. ");
-            T tmp = DataUtils.takeFirstNotNullElement(list);
+            T tmp = CollectionUtils.takeFirstNotNullElement(list);
             Assert.notNull(tmp, "Elements in list all is null. ");
             List<Method> methods = DataUtils.findMethodsByNames(tmp.getClass(), propertyNames);
             // Convert to map
@@ -155,7 +137,7 @@ public class DataUtils {
             if (CollectionUtils.isEmpty(list)) { return result; }
             Assert.notBlank(propertyName, "Parameter \"propertyName\" must not blank. ");
             Assert.notNull(propertyClass, "Parameter \"propertyClass\" must not null. ");
-            P tmp = DataUtils.takeFirstNotNullElement(list);
+            P tmp = CollectionUtils.takeFirstNotNullElement(list);
             Assert.notNull(tmp, "Elements in list all is null. ");
             Method method = DataUtils.findMethodByName(tmp.getClass(), propertyName);
             // Handle result
