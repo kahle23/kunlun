@@ -1,10 +1,13 @@
 package com.github.kahlkn.artoria.logging;
 
 import com.github.kahlkn.artoria.io.IOUtils;
+import com.github.kahlkn.artoria.util.ArrayUtils;
 import com.github.kahlkn.artoria.util.ClassUtils;
 import com.github.kahlkn.artoria.util.Const;
 
 import java.io.InputStream;
+import java.util.logging.Formatter;
+import java.util.logging.Handler;
 import java.util.logging.LogManager;
 
 /**
@@ -32,8 +35,6 @@ public class JdkLoggerAdapter implements LoggerAdapter {
 				? loader.getResourceAsStream(LOGGER_CONFIG_FILENAME)
 				: ClassLoader.getSystemResourceAsStream(LOGGER_CONFIG_FILENAME);
 		if (in == null) {
-			log.info("Logger config file \"" + LOGGER_CONFIG_FILENAME
-					+ "\" can not find in classpath, will using default. ");
 			in = IOUtils.findJarClasspath(LOGGER_CONFIG_FILENAME);
 		}
 		if (in != null) {
@@ -45,6 +46,20 @@ public class JdkLoggerAdapter implements LoggerAdapter {
 			}
 			finally {
 				IOUtils.closeQuietly(in);
+			}
+		}
+		// Because LogManager's class will other.
+		// So maybe readConfiguration is not useful.
+		Handler[] handlers = log.getHandlers();
+		if (ArrayUtils.isEmpty(handlers)) { return; }
+		SimpleFormatter formatter = new SimpleFormatter();
+		for (Handler handler : handlers) {
+			if (handler == null) { continue; }
+			Formatter fm = handler.getFormatter();
+			if (fm == null) { continue; }
+			Class<? extends Formatter> cls = fm.getClass();
+			if (cls.equals(java.util.logging.SimpleFormatter.class)) {
+				handler.setFormatter(formatter);
 			}
 		}
 	}
