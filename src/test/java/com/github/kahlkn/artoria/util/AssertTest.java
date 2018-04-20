@@ -1,8 +1,8 @@
 package com.github.kahlkn.artoria.util;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AssertTest {
     private static Logger log = LoggerFactory.getLogger(AssertTest.class);
@@ -13,7 +13,7 @@ public class AssertTest {
             Assert.notNull(null, null);
         }
         catch (Exception e) {
-            log.error(e);
+            log.error(e.getMessage(), e);
         }
     }
 

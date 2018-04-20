@@ -1,8 +1,8 @@
 package com.github.kahlkn.artoria.serialize;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
@@ -27,7 +27,7 @@ public class SerializeUtils {
 
     public static void setSerializer(Serializer<Object> serializer) {
         Assert.notNull(serializer, "Parameter \"serializer\" must not null. ");
-        log.info("Set serializer: " + serializer.getClass().getName());
+        log.info("Set serializer: {}", serializer.getClass().getName());
         SerializeUtils.serializer = serializer;
     }
 
@@ -37,7 +37,7 @@ public class SerializeUtils {
 
     public static void setDeserializer(Deserializer<Object> deserializer) {
         Assert.notNull(deserializer, "Parameter \"deserializer\" must not null. ");
-        log.info("Set deserializer: " + deserializer.getClass().getName());
+        log.info("Set deserializer: {}", deserializer.getClass().getName());
         SerializeUtils.deserializer = deserializer;
     }
 

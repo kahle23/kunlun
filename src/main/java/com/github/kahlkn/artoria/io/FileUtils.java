@@ -1,10 +1,10 @@
 package com.github.kahlkn.artoria.io;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.ArrayUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.PathUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -94,13 +94,13 @@ public class FileUtils {
                     }
                     else {
                         if (!file.delete()) {
-                            log.info("File[" + file + "] delete fail. ");
+                            log.info("File[{}] delete fail. ", file);
                         }
                     }
                 }
             }
             if (!addCurrent && !current.delete()) {
-                log.info("File[" + current + "] delete fail. ");
+                log.info("File[{}] delete fail. ", current);
             }
         }
     }

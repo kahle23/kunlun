@@ -1,8 +1,8 @@
 package com.github.kahlkn.artoria.lock;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,7 +50,7 @@ public class LockUtils {
         FACTORYS.put(lockClass, lockFactory);
         String lockName = lockClass.getName();
         String lockFactoryName = lockFactory.getClass().getName();
-        log.info("Register lock factory: " + lockName + " >> " + lockFactoryName);
+        log.info("Register lock factory: {} >> {}", lockName, lockFactoryName);
     }
 
     public static void unregisterFactory(Class<? extends Lock> lockClass) {
@@ -59,7 +59,7 @@ public class LockUtils {
         if (lockFactory == null) { return; }
         String lockName = lockClass.getName();
         String lockFactoryName = lockFactory.getClass().getName();
-        log.info("Unregister lock factory: " + lockName + " >> " + lockFactoryName);
+        log.info("Unregister lock factory: {} >> {}", lockName, lockFactoryName);
     }
 
     public static void registerLock(String lockName, Lock lock) {

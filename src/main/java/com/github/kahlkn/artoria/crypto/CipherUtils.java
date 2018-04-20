@@ -1,10 +1,10 @@
 package com.github.kahlkn.artoria.crypto;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.reflect.ReflectUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.ClassUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -17,8 +17,6 @@ import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
-import static com.github.kahlkn.artoria.util.Const.BLANK_SPACE;
-
 /**
  * Cipher tools.
  * @author Kahle
@@ -30,9 +28,8 @@ public class CipherUtils {
         CipherUtils.loadBouncyCastle();
         Provider[] providers = Security.getProviders();
         for (Provider provider : providers) {
-            String msg = "Provider: " + provider.getClass().getName();
-            msg += "(Version: " + provider.getVersion() + ")";
-            log.debug(msg);
+            log.debug("Provider: {}(Version: {})"
+                    , provider.getClass().getName(), provider.getVersion());
         }
     }
 
@@ -46,9 +43,8 @@ public class CipherUtils {
             Object o = ReflectUtils.newInstance(className);
             Provider provider = (Provider) o;
             Security.addProvider(provider);
-            String msg = "Init " + provider.getClass().getName();
-            msg += BLANK_SPACE + provider.getVersion();
-            log.info(msg);
+            log.info("Init {} {}"
+                    , provider.getClass().getName(), provider.getVersion());
         }
         catch (Exception e) {
             log.debug(e.getMessage(), e);

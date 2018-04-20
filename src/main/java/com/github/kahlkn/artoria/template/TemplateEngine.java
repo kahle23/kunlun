@@ -1,9 +1,9 @@
 package com.github.kahlkn.artoria.template;
 
 import com.github.kahlkn.artoria.io.StringBuilderWriter;
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Reader;
 import java.io.StringReader;

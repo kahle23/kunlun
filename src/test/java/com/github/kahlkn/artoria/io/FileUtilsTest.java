@@ -10,7 +10,7 @@ public class FileUtilsTest {
 
     @Test
     public void testFindClasspath() throws Exception {
-        File file = FileUtils.findClasspath("logging.properties");
+        File file = FileUtils.findClasspath("jdbc.properties");
         System.out.println(new String(FileUtils.read(file)));
         File file1 = FileUtils.findClasspath("hello.txt");
         System.out.println(file1);
