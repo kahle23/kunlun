@@ -3,11 +3,11 @@ package com.github.kahlkn.artoria.beans;
 import com.github.kahlkn.artoria.converter.ConvertUtils;
 import com.github.kahlkn.artoria.converter.Converter;
 import com.github.kahlkn.artoria.exception.ExceptionUtils;
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.reflect.ReflectUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.ClassUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -45,7 +45,7 @@ public class BeanUtils extends BeanHandler {
         Assert.notNull(beanCopier,
                 "Parameter \"beanCopier\" must not null. ");
         BeanUtils.beanCopier = beanCopier;
-        log.info("Set bean copier: " + beanCopier.getClass().getName());
+        log.info("Set bean copier: {}", beanCopier.getClass().getName());
     }
 
     public static Class<? extends BeanMap> getBeanMapClass() {
@@ -60,7 +60,7 @@ public class BeanUtils extends BeanHandler {
         try {
             BeanUtils.beanMapClass = beanMapClass;
             BeanUtils.beanMapConstructor = beanMapClass.getConstructor();
-            log.info("Set bean map class: " + beanMapClass.getName());
+            log.info("Set bean map class: {}", beanMapClass.getName());
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);

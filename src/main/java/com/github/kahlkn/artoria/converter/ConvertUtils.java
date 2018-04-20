@@ -1,8 +1,8 @@
 package com.github.kahlkn.artoria.converter;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class ConvertUtils {
     public static Converter unregister(Class<?> clazz) {
         Assert.notNull(clazz, "Clazz must is not null. ");
         Converter remove = CONVERTERS.remove(clazz);
-        log.info("Unregister: " + clazz.getName() + " >> " + remove.getClass().getName());
+        log.info("Unregister: {} >> {}", clazz.getName(), remove.getClass().getName());
         return remove;
     }
 
@@ -36,7 +36,7 @@ public class ConvertUtils {
         Assert.notNull(clazz, "Clazz must is not null. ");
         Assert.notNull(converter, "Converter must is not null. ");
         CONVERTERS.put(clazz, converter);
-        log.info("Register: " + clazz.getName() + " >> " + converter.getClass().getName());
+        log.info("Register: {} >> {}", clazz.getName(), converter.getClass().getName());
     }
 
     public static Object convert(Object source, Class<?> target) {
