@@ -6,31 +6,50 @@ import com.github.kahlkn.artoria.entity.Student;
 import com.github.kahlkn.artoria.util.RandomUtils;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class BeanUtilsTest {
     private static Person person = RandomUtils.nextObject(Person.class);
     private static Map<String, Object> personMap = BeanUtils.beanToMap(RandomUtils.nextObject(Person.class));
 
     @Test
-    public void copyBeanToMap() {
+    public void testCopyBeanToMap() {
         Map<String, Object> map = new HashMap<String, Object>();
         BeanUtils.copy(person, map);
         System.out.println(map);
     }
 
     @Test
-    public void copyMapToBean() {
+    public void testCopyMapToBean() {
         Student student = new Student();
         BeanUtils.copy(personMap, student);
         System.out.println(JSON.toJSONString(student));
     }
 
     @Test
-    public void copyBeanToBean() {
+    public void testCopyBeanToBean() {
         Student student = new Student();
         BeanUtils.copy(person, student);
+        System.out.println(JSON.toJSONString(student));
+    }
+
+    @Test
+    public void testIgnoreCglibCopy() {
+        BeanUtils.setBeanCopier(new CglibBeanCopier());
+        List<String> ignore = new ArrayList<String>();
+        Collections.addAll(ignore, "name", "age", "123test");
+        Student student = new Student();
+        BeanUtils.copy(person, student, ignore);
+        System.out.println(JSON.toJSONString(student));
+    }
+
+    @Test
+    public void testIgnoreJdkCopy() {
+        BeanUtils.setBeanCopier(new JdkBeanCopier());
+        List<String> ignore = new ArrayList<String>();
+        Collections.addAll(ignore, "name", "age", "123test");
+        Student student = new Student();
+        BeanUtils.copy(person, student, ignore);
         System.out.println(JSON.toJSONString(student));
     }
 
