@@ -52,8 +52,8 @@ public class CipherUtils {
     }
 
     public static byte[] fill(byte[] data, int multiple) {
-        Assert.notEmpty(data, "Data must is not empty. ");
-        Assert.state(multiple > 0, "Multiple length must greater than 0. ");
+        Assert.notEmpty(data, "Parameter \"data\" must not empty. ");
+        Assert.state(multiple > 0, "Parameter \"multiple\" must greater than 0. ");
         int len = data.length;
         int fill = len % multiple;
         fill = fill != 0 ? multiple - fill : 0;
@@ -82,7 +82,7 @@ public class CipherUtils {
 
     public static PublicKey parsePublicKey(String algorithmName, byte[] key)
             throws GeneralSecurityException {
-        Assert.notEmpty(key, "Key must is not empty. ");
+        Assert.notEmpty(key, "Parameter \"key\" must not empty. ");
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(key);
         KeyFactory factory = KeyFactory.getInstance(algorithmName);
         return factory.generatePublic(x509EncodedKeySpec);
@@ -90,7 +90,7 @@ public class CipherUtils {
 
     public static PrivateKey parsePrivateKey(String algorithmName, byte[] key)
             throws GeneralSecurityException {
-        Assert.notEmpty(key, "Key must is not empty. ");
+        Assert.notEmpty(key, "Parameter \"key\" must not empty. ");
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(key);
         KeyFactory factory = KeyFactory.getInstance(algorithmName);
         return factory.generatePrivate(pkcs8EncodedKeySpec);

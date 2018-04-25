@@ -53,7 +53,7 @@ public class Hash {
     }
 
     public Hash setCharset(String charset) {
-        Assert.notBlank(charset, "Charset must is not blank. ");
+        Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         this.charset = charset;
         return this;
     }
@@ -63,7 +63,7 @@ public class Hash {
     }
 
     public Hash setHex(Hex hex) {
-        Assert.notNull(hex, "Hex must is not null. ");
+        Assert.notNull(hex, "Parameter \"hex\" must not null. ");
         this.hex = hex;
         return this;
     }
@@ -73,34 +73,37 @@ public class Hash {
     }
 
     public Hash setAlgorithm(String algorithm) {
-        Assert.notBlank(algorithm, "Algorithm must is not blank. ");
+        Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
         this.algorithm = algorithm;
         return this;
     }
 
     public byte[] calc(String data) throws NoSuchAlgorithmException {
-        Assert.notNull(data, "Data must is not null. ");
+        Assert.notBlank(data, "Parameter \"data\" must not blank. ");
         Charset charset = Charset.forName(this.charset);
         byte[] bytes = data.getBytes(charset);
         return this.calc(bytes);
     }
 
     public byte[] calc(byte[] data) throws NoSuchAlgorithmException {
-        Assert.notNull(data, "Data must is not null. ");
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
         MessageDigest md = MessageDigest.getInstance(algorithm);
         return md.digest(data);
     }
 
     public byte[] calc(File file) throws NoSuchAlgorithmException, IOException {
-        Assert.notNull(file, "File must is not null. ");
-        Assert.state(file.isFile(), "File object must is a file. ");
+        Assert.notNull(file, "Parameter \"file\" must not null. ");
         FileInputStream in = new FileInputStream(file);
-        try { return this.calc(in); }
-        finally { IOUtils.closeQuietly(in); }
+        try {
+            return this.calc(in);
+        }
+        finally {
+            IOUtils.closeQuietly(in);
+        }
     }
 
     public byte[] calc(InputStream in) throws NoSuchAlgorithmException, IOException {
-        Assert.notNull(in, "InputStream must is not null. ");
+        Assert.notNull(in, "Parameter \"in\" must not null. ");
         MessageDigest md = MessageDigest.getInstance(algorithm);
         byte[] buffer = new byte[IOUtils.DEFAULT_BUFFER_SIZE];
         for (int len; (len = in.read(buffer)) != IOUtils.EOF;) {

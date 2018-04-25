@@ -7,6 +7,8 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.kahlkn.artoria.net.HttpUtils.Method.GET;
+
 @Ignore
 public class HttpUtilsTest {
     private String testUrl = "https://kahlkn.github.io";
@@ -22,13 +24,13 @@ public class HttpUtilsTest {
 
     @Test
     public void test2() throws Exception {
-        System.out.println(HttpUtils.create(testUrl).get());
-        System.out.println(HttpUtils.create(testUrl).post());
-        System.out.println(HttpUtils.create(testUrl).put());
-        System.out.println(HttpUtils.create(testUrl).delete());
-        System.out.println(HttpUtils.create(testUrl).head());
-        System.out.println(HttpUtils.create(testUrl).options());
-        System.out.println(HttpUtils.create(testUrl).setMethod("GET").execute());
+        System.out.println(HttpUtils.create(testUrl1).get());
+        System.out.println(HttpUtils.create(testUrl1).post());
+        System.out.println(HttpUtils.create(testUrl1).put());
+        System.out.println(HttpUtils.create(testUrl1).delete());
+        System.out.println(HttpUtils.create(testUrl1).head());
+        System.out.println(HttpUtils.create(testUrl1).options());
+        System.out.println(HttpUtils.create(testUrl1).setMethod(GET).execute());
     }
 
     @Test

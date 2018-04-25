@@ -45,7 +45,7 @@ public class Hex {
     }
 
     public char[] encode(byte[] data) {
-        Assert.notNull(data, "Data must is not null. ");
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
         char[] toDigits = toUpperCase ? DIGITS_UPPER : DIGITS_LOWER;
         int len = data.length;
         char[] out = new char[len << 1];
@@ -58,7 +58,7 @@ public class Hex {
     }
 
     public byte[] decode(char[] data) {
-        Assert.notNull(data, "Data must is not null. ");
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
         int len = data.length;
         if ((len & HEX_01) != 0) {
             throw new IllegalArgumentException("Odd number of characters.");
@@ -81,7 +81,7 @@ public class Hex {
     }
 
     public byte[] decodeFromString(String data) {
-        Assert.notNull(data, "Data must is not null. ");
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
         char[] chars = data.toCharArray();
         return this.decode(chars);
     }

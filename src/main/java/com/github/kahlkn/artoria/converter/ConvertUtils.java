@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ConvertUtils {
     private static Logger log = LoggerFactory.getLogger(ConvertUtils.class);
-
     private static final Map<Class<?>, Converter> CONVERTERS;
 
     static {
@@ -26,25 +25,29 @@ public class ConvertUtils {
     }
 
     public static Converter unregister(Class<?> clazz) {
-        Assert.notNull(clazz, "Clazz must is not null. ");
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Converter remove = CONVERTERS.remove(clazz);
         log.info("Unregister: {} >> {}", clazz.getName(), remove.getClass().getName());
         return remove;
     }
 
     public static void register(Class<?> clazz, Converter converter) {
-        Assert.notNull(clazz, "Clazz must is not null. ");
-        Assert.notNull(converter, "Converter must is not null. ");
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        Assert.notNull(converter, "Parameter \"converter\" must not null. ");
         CONVERTERS.put(clazz, converter);
         log.info("Register: {} >> {}", clazz.getName(), converter.getClass().getName());
     }
 
     public static Object convert(Object source, Class<?> target) {
         if (source == null) { return null; }
-        Class<?> clazz = source.getClass();
-        for (Class<?> cClass : CONVERTERS.keySet()) {
-            if (cClass.isAssignableFrom(clazz)) {
-                Converter converter = CONVERTERS.get(cClass);
+        for (Map.Entry<Class<?>, Converter> entry : CONVERTERS.entrySet()) {
+            Class<?> clazz = source.getClass();
+            if (target.isAssignableFrom(clazz)) {
+                return source;
+            }
+            Class<?> cvtClass = entry.getKey();
+            Converter converter = entry.getValue();
+            if (cvtClass.isAssignableFrom(clazz)) {
                 source = converter.convert(source, target);
             }
         }
