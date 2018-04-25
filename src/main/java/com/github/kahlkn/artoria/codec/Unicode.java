@@ -10,10 +10,10 @@ public class Unicode {
     private static final String BACKLASH_U = "\\u";
     private static final int RADIX = 16;
 
-    public static String encode(String string) {
-        Assert.notNull(string, "String must is not null. ");
+    public static String encode(String data) {
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
         StringBuilder unicode = new StringBuilder();
-        char[] chars = string.toCharArray();
+        char[] chars = data.toCharArray();
         for (char c : chars) {
             String hexString = Integer.toHexString(c);
             int len = hexString.length();
@@ -26,7 +26,7 @@ public class Unicode {
     }
 
     public static String decode(String unicode) {
-        Assert.notNull(unicode, "Unicode must is not null. ");
+        Assert.notNull(unicode, "Parameter \"unicode\" must not null. ");
         int index, pos = 0;
         StringBuilder result = new StringBuilder();
         while ((index = unicode.indexOf(BACKLASH_U, pos)) != -1) {

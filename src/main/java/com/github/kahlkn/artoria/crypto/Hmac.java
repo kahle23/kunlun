@@ -51,7 +51,7 @@ public class Hmac {
     }
 
     public Hmac setCharset(String charset) {
-        Assert.notBlank(charset, "Charset must is not blank. ");
+        Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         this.charset = charset;
         return this;
     }
@@ -61,7 +61,7 @@ public class Hmac {
     }
 
     public Hmac setHex(Hex hex) {
-        Assert.notNull(hex, "Hex must is not null. ");
+        Assert.notNull(hex, "Parameter \"hex\" must not null. ");
         this.hex = hex;
         return this;
     }
@@ -71,7 +71,7 @@ public class Hmac {
     }
 
     public Hmac setAlgorithm(String algorithm) {
-        Assert.notBlank(algorithm, "Algorithm must is not blank. ");
+        Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
         this.algorithm = algorithm;
         return this;
     }
@@ -81,27 +81,27 @@ public class Hmac {
     }
 
     public Hmac setKey(byte[] key) {
-        Assert.notNull(key, "Key must is not null. ");
+        Assert.notNull(key, "Parameter \"key\" must not null. ");
         this.key = key;
         return this;
     }
 
     public Hmac setKey(String key) {
-        Assert.notNull(key, "Key must is not null. ");
+        Assert.notNull(key, "Parameter \"key\" must not null. ");
         Charset charset = Charset.forName(this.charset);
         this.key = key.getBytes(charset);
         return this;
     }
 
     public byte[] calc(String data) throws GeneralSecurityException {
-        Assert.notNull(data, "Data must is not null. ");
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
         Charset charset = Charset.forName(this.charset);
         byte[] bytes = data.getBytes(charset);
         return this.calc(bytes);
     }
 
     public byte[] calc(byte[] data) throws GeneralSecurityException {
-        Assert.notNull(data, "Data must is not null. ");
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
         SecretKey secretKey = new SecretKeySpec(key, algorithm);
         Mac mac = Mac.getInstance(algorithm);
         mac.init(secretKey);

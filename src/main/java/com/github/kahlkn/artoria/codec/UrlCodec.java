@@ -49,7 +49,7 @@ public class UrlCodec {
     }
 
     public UrlCodec setCharset(String charset) {
-        Assert.notBlank(charset, "Charset must is not blank. ");
+        Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         this.charset = charset;
         return this;
     }
@@ -59,7 +59,7 @@ public class UrlCodec {
     }
 
     public UrlCodec setKeySeparator(String keySeparator) {
-        Assert.notBlank(keySeparator, "Key separator must is not blank. ");
+        Assert.notBlank(keySeparator, "Parameter \"keySeparator\" must not blank. ");
         this.keySeparator = keySeparator;
         return this;
     }
@@ -69,28 +69,28 @@ public class UrlCodec {
     }
 
     public UrlCodec setValueSeparator(String valueSeparator) {
-        Assert.notBlank(valueSeparator, "Value separator must is not blank. ");
+        Assert.notBlank(valueSeparator, "Parameter \"valueSeparator\" must not blank. ");
         this.valueSeparator = valueSeparator;
         return this;
     }
 
     public String encode(String data) throws UnsupportedEncodingException {
-        Assert.notNull(data, "Data must is not null. ");
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
         return URLEncoder.encode(data, charset);
     }
 
     public String decode(String data) throws UnsupportedEncodingException {
-        Assert.notNull(data, "Data must is not null. ");
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
         return URLDecoder.decode(data, charset);
     }
 
-    public String encodeToString(Map<?, ?> map) throws UnsupportedEncodingException {
-        Assert.notNull(map, "Map must is not null. ");
+    public String encodeToString(Map<?, ?> data) throws UnsupportedEncodingException {
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
         StringBuilder builder = new StringBuilder();
-        if (MapUtils.isEmpty(map)) {
+        if (MapUtils.isEmpty(data)) {
             return builder.toString();
         }
-        for (Map.Entry entry : map.entrySet()) {
+        for (Map.Entry entry : data.entrySet()) {
             builder.append(entry.getKey());
             builder.append(keySeparator);
             builder.append(URLEncoder.encode(entry.getValue().toString(), charset));
@@ -103,7 +103,7 @@ public class UrlCodec {
     }
 
     public Map<String, String> decodeFromString(String data) throws UnsupportedEncodingException {
-        Assert.notNull(data, "Data must is not null. ");
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
         String[] split = data.split(valueSeparator);
         Map<String, String> result = new HashMap<String, String>(split.length);
         if (split.length <= 0) {

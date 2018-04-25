@@ -36,16 +36,8 @@ public class HttpUtils {
     private static final String USER_AGENT = "User-Agent";
     private static final String BASIC = "Basic ";
 
-    private static final String GET     = "GET";
-    private static final String POST    = "POST";
-    private static final String PUT     = "PUT";
-    private static final String DELETE  = "DELETE";
-    private static final String HEAD    = "HEAD";
-    private static final String OPTIONS = "OPTIONS";
-    private static final String TRACE   = "TRACE";
-
     /**
-     * Https certificate manager
+     * Https certificate manager.
      */
     private static class TrustAnyTrustManager implements X509TrustManager {
 
@@ -65,13 +57,80 @@ public class HttpUtils {
     }
 
     /**
-     * Https hostname verifier
+     * Https hostname verifier.
      */
     private static class TrustAnyHostnameVerifier implements HostnameVerifier {
 
         @Override
         public boolean verify(String hostname, SSLSession session) {
             return true;
+        }
+
+    }
+
+    /**
+     * Http method.
+     */
+    public enum Method {
+
+        /**
+         * Http get method.
+         */
+        GET(     "GET",     false),
+
+        /**
+         * Http post method.
+         */
+        POST(    "POST",    true),
+
+        /**
+         * Http put method.
+         */
+        PUT(     "PUT",     true),
+
+        /**
+         * Http delete method.
+         */
+        DELETE(  "DELETE",  false),
+
+        /**
+         * Http head method.
+         */
+        HEAD(    "HEAD",    false),
+
+        /**
+         * Http options method.
+         */
+        OPTIONS( "OPTIONS", false),
+
+        /**
+         * Http trace method.
+         */
+        TRACE(   "TRACE",   false),
+        ;
+
+        private String name;
+        private boolean hasBody;
+
+        Method(String name, boolean hasBody) {
+            this.name = name;
+            this.hasBody = hasBody;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public boolean getHasBody() {
+            return hasBody;
+        }
+
+        public void setHasBody(boolean hasBody) {
+            this.hasBody = hasBody;
         }
 
     }
@@ -102,7 +161,7 @@ public class HttpUtils {
     private int connectTimeout = 19000;
     private int readTimeout = 19000;
     private String url;
-    private String method;
+    private Method method;
     private Map<String, String> headers = new LinkedHashMap<String, String>();
     private Map<String, Object> parameters = new LinkedHashMap<String, Object>();
     private byte[] data;
@@ -111,21 +170,6 @@ public class HttpUtils {
     private String proxyPassword;
 
     private HttpUtils() {}
-
-    private boolean hasBody() {
-        if (GET.equals(method)) { return false; }
-        else if (POST.equals(method)) { return true; }
-        else if (PUT.equals(method)) { return true; }
-        else if (DELETE.equals(method)) { return false; }
-        else if (HEAD.equals(method)) { return false; }
-        else if (OPTIONS.equals(method)) { return false; }
-        else if (TRACE.equals(method)) { return false; }
-        else {
-            throw new UnsupportedOperationException(
-                "Method \"" + method + "\" is unsupported. "
-            );
-        }
-    }
 
     private String urlCodec() throws IOException {
         StringBuilder builder = new StringBuilder();
@@ -141,14 +185,10 @@ public class HttpUtils {
     }
 
     public HttpURLConnection connect() throws IOException {
-        // Validate.
-        Assert.notBlank(url, "Parameter \"url\" must not blank. ");
-        Assert.notBlank(method, "Parameter \"method\" must not blank. ");
-        Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
-
+        // No need validate, because validate in setter.
         // Handle url.
         String handleUrl = url;
-        if (!this.hasBody() && MapUtils.isNotEmpty(parameters)) {
+        if (!method.getHasBody() && MapUtils.isNotEmpty(parameters)) {
             String params = this.urlCodec();
             handleUrl += url.contains(QUESTION_MARK) ? AMPERSAND : QUESTION_MARK;
             handleUrl = handleUrl + params;
@@ -168,7 +208,7 @@ public class HttpUtils {
         }
 
         // Set method.
-        conn.setRequestMethod(method);
+        conn.setRequestMethod(method.getName());
         conn.setDoOutput(true);
         conn.setDoInput(true);
 
@@ -215,7 +255,7 @@ public class HttpUtils {
         try {
             conn = this.connect();
 
-            boolean hasParams = this.hasBody() && MapUtils.isNotEmpty(parameters);
+            boolean hasParams = method.getHasBody() && MapUtils.isNotEmpty(parameters);
             boolean hasData = ArrayUtils.isNotEmpty(data);
             boolean needOutput = hasParams || hasData;
 
@@ -240,9 +280,9 @@ public class HttpUtils {
         }
     }
 
-    public String execute(String url, String method) throws IOException {
-        this.url = url;
-        this.method = method;
+    public String execute(String url, Method method) throws IOException {
+        this.setUrl(url);
+        this.setMethod(method);
         return this.execute();
     }
 
@@ -278,13 +318,13 @@ public class HttpUtils {
         return this;
     }
 
-    public String getMethod() {
+    public Method getMethod() {
         return method;
     }
 
-    public HttpUtils setMethod(String method) {
-        Assert.notBlank(method, "Parameter \"method\" must not blank. ");
-        this.method = method.toUpperCase();
+    public HttpUtils setMethod(Method method) {
+        Assert.notNull(method, "Parameter \"method\" must not null. ");
+        this.method = method;
         return this;
     }
 
@@ -318,11 +358,9 @@ public class HttpUtils {
         return this.proxyUser + COLON + this.proxyPassword;
     }
 
-    public HttpUtils setProxyAuth(String username, String password) {
-        Assert.notBlank(username, "Parameter \"username\" must not blank. ");
-        Assert.notBlank(password, "Parameter \"password\" must not blank. ");
-        this.proxyUser = username;
-        this.proxyPassword = password;
+    public HttpUtils setProxyAuth(String proxyUser, String proxyPassword) {
+        this.setProxyUser(proxyUser);
+        this.setProxyPassword(proxyPassword);
         return this;
     }
 
@@ -439,80 +477,73 @@ public class HttpUtils {
     }
 
     public String get() throws IOException {
-        this.method = GET;
+        this.method = Method.GET;
         return this.execute();
     }
 
     public String get(String url) throws IOException {
         this.url = url;
-        this.method = GET;
-        return this.execute();
+        return this.get();
     }
 
     public String post() throws IOException {
-        this.method = POST;
+        this.method = Method.POST;
         return this.execute();
     }
 
     public String post(String url) throws IOException {
         this.url = url;
-        this.method = POST;
-        return this.execute();
+        return this.post();
     }
 
     public String put() throws IOException {
-        this.method = PUT;
+        this.method = Method.PUT;
         return this.execute();
     }
 
     public String put(String url) throws IOException {
         this.url = url;
-        this.method = PUT;
-        return this.execute();
+        return this.put();
     }
 
     public String delete() throws IOException {
-        this.method = DELETE;
+        this.method = Method.DELETE;
         return this.execute();
     }
 
     public String delete(String url) throws IOException {
         this.url = url;
-        this.method = DELETE;
-        return this.execute();
+        return this.delete();
     }
 
     public String head() throws IOException {
-        this.method = HEAD;
+        this.method = Method.HEAD;
         return this.execute();
     }
 
     public String head(String url) throws IOException {
         this.url = url;
-        this.method = HEAD;
-        return this.execute();
+        return this.head();
     }
 
     public String options() throws IOException {
-        this.method = OPTIONS;
+        this.method = Method.OPTIONS;
         return this.execute();
     }
 
     public String options(String url) throws IOException {
         this.url = url;
-        this.method = OPTIONS;
-        return this.execute();
+        return this.options();
     }
 
     public String trace() throws IOException {
-        this.method = TRACE;
+        this.method = Method.TRACE;
         return this.execute();
     }
 
     public String trace(String url) throws IOException {
         this.url = url;
-        this.method = TRACE;
-        return this.execute();
+        return this.trace();
     }
 
 }
