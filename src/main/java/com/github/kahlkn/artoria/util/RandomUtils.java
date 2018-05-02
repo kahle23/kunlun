@@ -177,7 +177,7 @@ public class RandomUtils {
         }
         else if (String.class.isAssignableFrom(wrapper)) {
             int size = RandomUtils.nextInt(DEFAULT_SIZE);
-            return (T) RandomUtils.nextString(size);
+            return (T) RandomUtils.nextString(++ size);
         }
         else if (Object.class.equals(wrapper)) {
             return (T) new Object();
