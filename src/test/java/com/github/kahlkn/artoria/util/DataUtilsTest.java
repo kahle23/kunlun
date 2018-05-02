@@ -32,6 +32,12 @@ public class DataUtilsTest {
     }
 
     @Test
+    public void testListToListProperty() {
+        List<String> list = DataUtils.listToListProperty(this.list, "name", String.class);
+        System.out.println(JSON.toJSONString(list, true));
+    }
+
+    @Test
     public void testListToMapBean() {
         Map<String, Person> map = DataUtils.listToMapBean(list, "name");
         System.out.println(JSON.toJSONString(map, true));
@@ -44,9 +50,9 @@ public class DataUtilsTest {
     }
 
     @Test
-    public void testListToListProperty() {
-        List<String> list = DataUtils.listToListProperty(this.list, "name", String.class);
-        System.out.println(JSON.toJSONString(list, true));
+    public void testListToMapProperty() {
+        Map<String, Object> map = DataUtils.listToMapProperty(list, "age", "name");
+        System.out.println(JSON.toJSONString(map, true));
     }
 
 }

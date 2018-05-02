@@ -45,7 +45,41 @@ public class DataUtils {
     }
 
     /**
-     * A java bean list to convert a map who key is bean property and value is bean.
+     * A java bean list to convert a java bean property list.
+     * @param list A java bean list
+     * @param propertyName Java bean property name
+     * @param propertyClass Java bean property type
+     * @param <R> Java bean property type
+     * @param <P> Java bean type
+     * @return Java bean property list
+     */
+    @SuppressWarnings("unchecked")
+    public static <R, P> List<R> listToListProperty(List<P> list, String propertyName, Class<R> propertyClass) {
+        try {
+            // Handle parameters
+            List<R> result = new ArrayList<R>();
+            if (CollectionUtils.isEmpty(list)) { return result; }
+            Assert.notBlank(propertyName, "Parameter \"propertyName\" must not blank. ");
+            Assert.notNull(propertyClass, "Parameter \"propertyClass\" must not null. ");
+            P tmp = CollectionUtils.takeFirstNotNullElement(list);
+            Assert.notNull(tmp, "Elements in list all is null. ");
+            Method method = DataUtils.findMethodByName(tmp.getClass(), propertyName);
+            // Handle result
+            for (P bean : list) {
+                if (bean == null) { continue; }
+                Object val = method.invoke(bean);
+                val = ConvertUtils.convert(val, propertyClass);
+                result.add((R) val);
+            }
+            return result;
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
+        }
+    }
+
+    /**
+     * A java bean list to convert a map who key is bean properties and value is bean.
      * This means if bean property is repeated and value will override.
      * @param list A java bean list
      * @param propertyNames Method property names
@@ -80,7 +114,7 @@ public class DataUtils {
     }
 
     /**
-     * A java bean list to convert a map who key is bean property and value is bean list.
+     * A java bean list to convert a map who key is bean properties and value is bean list.
      * This means bean property in bean list have repeated.
      * @param list A java bean list
      * @param propertyNames Method property names
@@ -121,31 +155,38 @@ public class DataUtils {
     }
 
     /**
-     * A java bean list to convert a java bean property list.
+     * A java bean list to convert a map who key is bean properties and value is bean property.
      * @param list A java bean list
-     * @param propertyName Java bean property name
-     * @param propertyClass Java bean property type
-     * @param <R> Java bean property type
+     * @param valueProperty Map's value corresponding method property names
+     * @param keyProperties Map's key corresponding method properties names
+     * @param <R> Map's value type
      * @param <P> Java bean type
-     * @return Java bean property list
+     * @return A map key is bean properties and value is bean property
      */
     @SuppressWarnings("unchecked")
-    public static <R, P> List<R> listToListProperty(List<P> list, String propertyName, Class<R> propertyClass) {
+    public static <R, P> Map<String, R> listToMapProperty(List<P> list, String valueProperty, String... keyProperties) {
         try {
             // Handle parameters
-            List<R> result = new ArrayList<R>();
+            Map<String, R> result = new HashMap<String, R>(list.size());
             if (CollectionUtils.isEmpty(list)) { return result; }
-            Assert.notBlank(propertyName, "Parameter \"propertyName\" must not blank. ");
-            Assert.notNull(propertyClass, "Parameter \"propertyClass\" must not null. ");
+            Assert.notBlank(valueProperty, "Parameter \"valueProperty\" must not blank. ");
+            Assert.notEmpty(keyProperties, "Parameter \"keyProperties\" must not empty. ");
             P tmp = CollectionUtils.takeFirstNotNullElement(list);
             Assert.notNull(tmp, "Elements in list all is null. ");
-            Method method = DataUtils.findMethodByName(tmp.getClass(), propertyName);
-            // Handle result
+            Class<?> tmpClass = tmp.getClass();
+            Method valMethod = DataUtils.findMethodByName(tmpClass, valueProperty);
+            List<Method> keyMethods = DataUtils.findMethodsByNames(tmp.getClass(), keyProperties);
+            // Convert to map
+            StringBuilder keyBuilder = new StringBuilder();
             for (P bean : list) {
                 if (bean == null) { continue; }
-                Object val = method.invoke(bean);
-                val = ConvertUtils.convert(val, propertyClass);
-                result.add((R) val);
+                keyBuilder.setLength(0);
+                for (Method method : keyMethods) {
+                    Object key = method.invoke(bean);
+                    keyBuilder.append(key);
+                }
+                R val = (R) valMethod.invoke(bean);
+                result.put(keyBuilder.toString(), val);
             }
             return result;
         }
