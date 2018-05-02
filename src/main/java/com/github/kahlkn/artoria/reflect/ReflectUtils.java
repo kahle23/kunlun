@@ -2,10 +2,10 @@ package com.github.kahlkn.artoria.reflect;
 
 import com.github.kahlkn.artoria.aop.Enhancer;
 import com.github.kahlkn.artoria.aop.Interceptor;
-import com.github.kahlkn.artoria.cache.CacheUtils;
-import com.github.kahlkn.artoria.cache.DataLoader;
 import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.util.Assert;
+import com.github.kahlkn.artoria.util.DataLoader;
+import com.github.kahlkn.artoria.util.SimpleCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,21 +18,11 @@ import java.util.*;
  */
 public class ReflectUtils {
     private static Logger log = LoggerFactory.getLogger(ReflectUtils.class);
-    private static CacheUtils cacheUtils;
+    private static SimpleCache simpleCache = new SimpleCache();
     private static Reflecter reflecter;
 
     static {
-        ReflectUtils.setCacheUtils(new CacheUtils());
         ReflectUtils.setReflecter(new JdkReflecter());
-    }
-
-    public static CacheUtils getCacheUtils() {
-        return cacheUtils;
-    }
-
-    public static void setCacheUtils(CacheUtils cacheUtils) {
-        Assert.notNull(cacheUtils, "Parameter \"cacheUtils\" must not null. ");
-        ReflectUtils.cacheUtils = cacheUtils;
     }
 
     public static Reflecter getReflecter() {
@@ -186,7 +176,7 @@ public class ReflectUtils {
                 if (METHOD_NAMES.contains(method.getName())) {
                     DataLoader loader = new DataLoaderImpl(original, method, args);
                     String key = method.getName() + Arrays.toString(args);
-                    return cacheUtils.get(key, loader);
+                    return simpleCache.get(key, loader);
                 }
                 else {
                     return method.invoke(original, args);

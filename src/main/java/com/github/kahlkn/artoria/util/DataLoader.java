@@ -1,4 +1,4 @@
-package com.github.kahlkn.artoria.cache;
+package com.github.kahlkn.artoria.util;
 
 /**
  * Data loader.
