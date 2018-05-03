@@ -9,23 +9,27 @@ import java.util.List;
  * @author Kahle
  */
 public class HookUtils {
-    private static List<Hook> shutdownHooks = new ArrayList<Hook>();
+    private static final List<Hook> SHUTDOWN_HOOKS = new ArrayList<Hook>();
 
     static {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-                HookUtils.execute(shutdownHooks);
+                HookUtils.execute(SHUTDOWN_HOOKS);
             }
         });
     }
 
     public static void addShutdownHook(Hook hook) {
-        shutdownHooks.add(hook);
+        synchronized (SHUTDOWN_HOOKS) {
+            SHUTDOWN_HOOKS.add(hook);
+        }
     }
 
     public static boolean removeShutdownHook(Hook hook) {
-        return shutdownHooks.remove(hook);
+        synchronized (SHUTDOWN_HOOKS) {
+            return SHUTDOWN_HOOKS.remove(hook);
+        }
     }
 
     public static void execute(Hook... hooks) {
