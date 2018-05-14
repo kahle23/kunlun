@@ -34,16 +34,6 @@ public class BeanUtilsTest {
     }
 
     @Test
-    public void testIgnoreCglibCopy() {
-        BeanUtils.setBeanCopier(new CglibBeanCopier());
-        List<String> ignore = new ArrayList<String>();
-        Collections.addAll(ignore, "name", "age", "123test");
-        Student student = new Student();
-        BeanUtils.copy(person, student, ignore);
-        System.out.println(JSON.toJSONString(student));
-    }
-
-    @Test
     public void testIgnoreJdkCopy() {
         BeanUtils.setBeanCopier(new JdkBeanCopier());
         List<String> ignore = new ArrayList<String>();

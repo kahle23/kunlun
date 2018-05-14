@@ -40,12 +40,14 @@ public class StringUtils {
         if (StringUtils.isBlank(str)) {
             return false;
         }
-        boolean b = str.startsWith(MINUS);
-        b = b || str.startsWith(PLUS);
-        if (b) { str = str.substring(1); }
-        for (int i = str.length() - 1; i >= 0; i--) {
+        boolean b = str.startsWith(MINUS)
+                || str.startsWith(PLUS);
+        int start = b ? 1 : 0;
+        boolean firstDot = false;
+        for (int i = str.length() - 1; i >= start; i--) {
             char c = str.charAt(i);
-            boolean isDg = Character.isDigit(c);
+            boolean isDg = Character.isDigit(c)
+                    || (!firstDot && (firstDot = 0x2E == c));
             if (!isDg) { return false; }
         }
         return true;

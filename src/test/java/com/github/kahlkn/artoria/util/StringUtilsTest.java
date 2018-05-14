@@ -19,10 +19,13 @@ public class StringUtilsTest {
         BigDecimal decimal1 = new BigDecimal("+3456");
         System.out.println(decimal1);
         System.out.println(StringUtils.isNumeric("3452347"));
-        System.out.println(StringUtils.isNumeric("43734"));
+        System.out.println(StringUtils.isNumeric("4373.4"));
         System.out.println(StringUtils.isNumeric("345f347"));
         System.out.println(StringUtils.isNumeric("-345347"));
-        System.out.println(StringUtils.isNumeric("+345347"));
+        System.out.println(StringUtils.isNumeric("-345."));
+        System.out.println(StringUtils.isNumeric("+0345.00.7"));
+        System.out.println(StringUtils.isNumeric("+3486.40"));
+        System.out.println(StringUtils.isNumeric("+3486..40"));
     }
 
     @Test

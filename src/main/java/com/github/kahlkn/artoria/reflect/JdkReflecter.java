@@ -1,13 +1,14 @@
 package com.github.kahlkn.artoria.reflect;
 
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.ClassUtils;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 import java.util.*;
-
-import static com.github.kahlkn.artoria.util.Const.GET;
-import static com.github.kahlkn.artoria.util.Const.SET;
 
 /**
  * Reflect tools implements by jdk.
@@ -15,7 +16,6 @@ import static com.github.kahlkn.artoria.util.Const.SET;
  */
 public class JdkReflecter implements Reflecter {
     private static final Integer MAP_INITIAL_CAPACITY = 8;
-    private static final String GET_CLASS = "getClass";
 
     protected boolean notAccess(Class<?> thisClazz, Class<?> superClazz, Member member) {
         // In this class all, and super class not private.
@@ -230,18 +230,18 @@ public class JdkReflecter implements Reflecter {
     public Map<String, Method> findReadMethods(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Map<String, Method> result = new HashMap<String, Method>(MAP_INITIAL_CAPACITY);
-        Method[] methods = this.findMethods(clazz);
-        for (Method method : methods) {
-            String name = method.getName();
-            int pSize = method.getParameterTypes().length;
-            int mod = method.getModifiers();
-            boolean isStc = Modifier.isStatic(mod);
-            boolean stGet = name.startsWith(GET);
-            // has get and parameters must equal 0
-            boolean b = isStc || !stGet || pSize != 0;
-            b = b || GET_CLASS.equals(name);
-            if (b) { continue; }
-            result.put(name, method);
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
+            PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
+            if (descriptors == null) { return result; }
+            for (PropertyDescriptor descriptor : descriptors) {
+                Method readMethod = descriptor.getReadMethod();
+                if (readMethod == null) { continue; }
+                result.put(readMethod.getName(), readMethod);
+            }
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
         }
         return result;
     }
@@ -250,17 +250,18 @@ public class JdkReflecter implements Reflecter {
     public Map<String, Method> findWriteMethods(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Map<String, Method> result = new HashMap<String, Method>(MAP_INITIAL_CAPACITY);
-        Method[] methods = this.findMethods(clazz);
-        for (Method method : methods) {
-            String name = method.getName();
-            int pSize = method.getParameterTypes().length;
-            int mod = method.getModifiers();
-            boolean isStc = Modifier.isStatic(mod);
-            boolean stSet = name.startsWith(SET);
-            // has set and parameters not equal 1
-            boolean b = isStc || !stSet || pSize != 1;
-            if (b) { continue; }
-            result.put(name, method);
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
+            PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
+            if (descriptors == null) { return result; }
+            for (PropertyDescriptor descriptor : descriptors) {
+                Method writeMethod = descriptor.getWriteMethod();
+                if (writeMethod == null) { continue; }
+                result.put(writeMethod.getName(), writeMethod);
+            }
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
         }
         return result;
     }

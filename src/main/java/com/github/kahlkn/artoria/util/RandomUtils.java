@@ -162,7 +162,7 @@ public class RandomUtils {
         Class<?> wrapper = ClassUtils.getWrapper(clazz);
         if (Number.class.isAssignableFrom(wrapper)) {
             double num = RANDOM.nextDouble() * DEFAULT_BOUND;
-            num = NumberUtils.round(num);
+            num = NumberUtils.round(num).doubleValue();
             return (T) ConvertUtils.convert(num, wrapper);
         }
         else if (Boolean.class.isAssignableFrom(wrapper)) {

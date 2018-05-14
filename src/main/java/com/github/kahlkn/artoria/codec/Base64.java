@@ -17,65 +17,60 @@ import static com.github.kahlkn.artoria.util.Const.*;
 /**
  * Base64 encode and decode tools.
  * @author Kahle
- * @see org.apache.commons.codec.binary.Base64
  * @see java.util.Base64
  * @see DatatypeConverter#printBase64Binary
  * @see DatatypeConverter#parseBase64Binary
  */
 public class Base64 {
     private static final String JAVAX_XML_DATATYPE_CONVERTER = "javax.xml.bind.DatatypeConverter";
-    private static final String COMMONS_CODEC_BASE64 = "org.apache.commons.codec.binary.Base64";
     private static final String JAVA_UTIL_BASE64 = "java.util.Base64";
     private static final Pattern BASE64_URL_SAFE = Pattern.compile("^[a-zA-Z0-9-_]+={0,2}$");
     private static final Pattern BASE64_URL_UNSAFE = Pattern.compile("^[a-zA-Z0-9+/]+={0,2}$");
-    private static final Base64Delegate DELEGATE;
-
     private static Logger log = LoggerFactory.getLogger(Base64.class);
+    private static Base64Delegate base64Delegate;
 
     static {
-        Base64Delegate delegateToUse = null;
-        ClassLoader classLoader = Base64.class.getClassLoader();
-        // Apache Commons Codec present on the classpath?
-        if (ClassUtils.isPresent(COMMONS_CODEC_BASE64, classLoader)) {
-            log.info("Use base64 class: " + COMMONS_CODEC_BASE64);
-            delegateToUse = new CommonsCodecBase64Delegate();
+        Base64.setBase64Delegate(null);
+    }
+
+    public static Base64Delegate getBase64Delegate() {
+        return base64Delegate;
+    }
+
+    public static void setBase64Delegate(Base64Delegate delegate) {
+        if (delegate != null) {
+            log.info("Use base64 delegate: " + delegate.getClass().getName());
+            base64Delegate = delegate;
+            return;
         }
+        if (base64Delegate != null) { return; }
+        ClassLoader classLoader = Base64.class.getClassLoader();
         // JDK 8's java.util.Base64 class present?
-        else if (ClassUtils.isPresent(JAVA_UTIL_BASE64, classLoader)) {
-            log.info("Use base64 class: " + JAVA_UTIL_BASE64);
-            delegateToUse = new Java8Base64Delegate();
+        if (ClassUtils.isPresent(JAVA_UTIL_BASE64, classLoader)) {
+            log.info("Use base64 provider: " + JAVA_UTIL_BASE64);
+            base64Delegate = new Java8Base64Delegate();
         }
         // maybe all jdk is ok?
         else if (ClassUtils.isPresent(JAVAX_XML_DATATYPE_CONVERTER, classLoader)) {
-            log.info("Use base64 class: " + JAVAX_XML_DATATYPE_CONVERTER);
-            delegateToUse = new Java7Base64Delegate();
+            log.info("Use base64 provider: " + JAVAX_XML_DATATYPE_CONVERTER);
+            base64Delegate = new Java7Base64Delegate();
         }
-        DELEGATE = delegateToUse;
-    }
-
-    private static void assertDelegateAvailable() {
-        Assert.notNull(DELEGATE, "Neither Java 8, Java 7, Java 6 " +
-                "nor Apache Commons Codec found - Base64 encoding between byte arrays not supported");
     }
 
     public static byte[] encode(byte[] src) {
-        Base64.assertDelegateAvailable();
-        return DELEGATE.encode(src);
+        return base64Delegate.encode(src);
     }
 
     public static byte[] decode(byte[] src) {
-        Base64.assertDelegateAvailable();
-        return DELEGATE.decode(src);
+        return base64Delegate.decode(src);
     }
 
     public static byte[] encodeUrlSafe(byte[] src) {
-        Base64.assertDelegateAvailable();
-        return DELEGATE.encodeUrlSafe(src);
+        return base64Delegate.encodeUrlSafe(src);
     }
 
     public static byte[] decodeUrlSafe(byte[] src) {
-        Base64.assertDelegateAvailable();
-        return DELEGATE.decodeUrlSafe(src);
+        return base64Delegate.decodeUrlSafe(src);
     }
 
     public static boolean isUrlSafeString(String base64) {
@@ -146,7 +141,7 @@ public class Base64 {
         return Base64.decodeUrlSafe(srcBytes);
     }
 
-    interface Base64Delegate {
+    public interface Base64Delegate {
 
         /**
          * Base64 encode
@@ -236,36 +231,6 @@ public class Base64 {
         public byte[] decodeUrlSafe(byte[] source) {
             if (ArrayUtils.isEmpty(source)) { return source; }
             return java.util.Base64.getUrlDecoder().decode(source);
-        }
-
-    }
-
-    static class CommonsCodecBase64Delegate implements Base64Delegate {
-
-        private final org.apache.commons.codec.binary.Base64 base64 =
-                new org.apache.commons.codec.binary.Base64();
-
-        private final org.apache.commons.codec.binary.Base64 base64UrlSafe =
-                new org.apache.commons.codec.binary.Base64(0, null, true);
-
-        @Override
-        public byte[] encode(byte[] source) {
-            return this.base64.encode(source);
-        }
-
-        @Override
-        public byte[] decode(byte[] source) {
-            return this.base64.decode(source);
-        }
-
-        @Override
-        public byte[] encodeUrlSafe(byte[] source) {
-            return this.base64UrlSafe.encode(source);
-        }
-
-        @Override
-        public byte[] decodeUrlSafe(byte[] source) {
-            return this.base64UrlSafe.decode(source);
         }
 
     }

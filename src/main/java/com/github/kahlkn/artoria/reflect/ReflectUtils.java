@@ -1,16 +1,11 @@
 package com.github.kahlkn.artoria.reflect;
 
-import com.github.kahlkn.artoria.aop.Enhancer;
-import com.github.kahlkn.artoria.aop.Interceptor;
-import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.logging.Logger;
 import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
-import com.github.kahlkn.artoria.util.DataLoader;
-import com.github.kahlkn.artoria.util.SimpleCache;
 
 import java.lang.reflect.*;
-import java.util.*;
+import java.util.Map;
 
 /**
  * Reflect tools.
@@ -18,7 +13,6 @@ import java.util.*;
  */
 public class ReflectUtils {
     private static Logger log = LoggerFactory.getLogger(ReflectUtils.class);
-    private static SimpleCache simpleCache = new SimpleCache();
     private static Reflecter reflecter;
 
     static {
@@ -31,7 +25,6 @@ public class ReflectUtils {
 
     public static void setReflecter(Reflecter reflecter) {
         Assert.notNull(reflecter, "Parameter \"reflecter\" must not null. ");
-        reflecter = CacheEnhancer.getInstance(reflecter);
         log.info("Set reflecter: " + reflecter.getClass().getName());
         ReflectUtils.reflecter = reflecter;
     }
@@ -117,74 +110,6 @@ public class ReflectUtils {
 
     public static Method findSimilarMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
         return reflecter.findSimilarMethod(clazz, methodName, parameterTypes);
-    }
-
-    private static class CacheEnhancer {
-
-        public static Reflecter getInstance(Reflecter reflecter) {
-            Assert.notNull(reflecter, "Parameter \"reflecter\" must not null. ");
-            ReflecterInterceptor intr = new ReflecterInterceptor(reflecter);
-            return (Reflecter) Enhancer.enhance(reflecter, intr);
-        }
-
-        private static class DataLoaderImpl implements DataLoader {
-            private Object object;
-            private Method method;
-            private Object[] args;
-
-            public DataLoaderImpl(Object object, Method method, Object[] args) {
-                this.object = object;
-                this.method = method;
-                this.args = args;
-            }
-
-            @Override
-            public Object load() {
-                try {
-                    return method.invoke(object, args);
-                }
-                catch (Exception e) {
-                    throw ExceptionUtils.wrap(e);
-                }
-            }
-
-        }
-
-        private static class ReflecterInterceptor implements Interceptor {
-            private static final List<String> METHOD_NAMES;
-            private Reflecter original;
-
-            static {
-                List<String> list = new ArrayList<String>();
-                Collections.addAll(list, "forName"
-                        , "findConstructors", "findConstructor"
-                        , "findFields", "findDeclaredFields"
-                        , "findAccessFields", "findField"
-                        , "findMethods", "findDeclaredMethods"
-                        , "findAccessMethods", "findReadMethods"
-                        , "findWriteMethods", "findMethod"
-                        , "findSimilarMethod");
-                METHOD_NAMES = Collections.unmodifiableList(list);
-            }
-
-            ReflecterInterceptor(Reflecter original) {
-                this.original = original;
-            }
-
-            @Override
-            public Object intercept(Object proxyObject, Method method, Object[] args) throws Throwable {
-                if (METHOD_NAMES.contains(method.getName())) {
-                    DataLoader loader = new DataLoaderImpl(original, method, args);
-                    String key = method.getName() + Arrays.toString(args);
-                    return simpleCache.get(key, loader);
-                }
-                else {
-                    return method.invoke(original, args);
-                }
-            }
-
-        }
-
     }
 
 }

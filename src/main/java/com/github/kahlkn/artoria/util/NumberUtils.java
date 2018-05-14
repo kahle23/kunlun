@@ -38,52 +38,37 @@ public class NumberUtils {
         defaultScale = scale;
     }
 
-    public static double round(double input) {
-        return NumberUtils.round(input
-                , defaultScale, defaultRoundMode).doubleValue();
+    public static BigDecimal round(Object input) {
+        return NumberUtils.round(input, defaultScale, defaultRoundMode);
     }
 
-    public static double round(String input) {
-        return NumberUtils.round(input
-                , defaultScale, defaultRoundMode).doubleValue();
-    }
-
-    public static double round(BigDecimal input) {
-        return NumberUtils.round(input
-                , defaultScale, defaultRoundMode).doubleValue();
-    }
-
-    public static BigDecimal round(double input, int newScale) {
+    public static BigDecimal round(Object input, int newScale) {
         return NumberUtils.round(input, newScale, defaultRoundMode);
     }
 
-    public static BigDecimal round(String input, int newScale) {
-        return NumberUtils.round(input, newScale, defaultRoundMode);
-    }
-
-    public static BigDecimal round(BigDecimal input, int newScale) {
-        return NumberUtils.round(input, newScale, defaultRoundMode);
-    }
-
-    public static BigDecimal round(double input, int newScale, RoundingMode roundingMode) {
-        BigDecimal decimal = new BigDecimal(input);
+    public static BigDecimal round(Object input, int newScale, RoundingMode roundingMode) {
+        BigDecimal decimal;
+        if (input instanceof BigDecimal) {
+            decimal = (BigDecimal) input;
+        }
+        else if (input instanceof String) {
+            decimal = new BigDecimal((String) input);
+        }
+        else if (input instanceof Number) {
+            double value = ((Number) input).doubleValue();
+            decimal = BigDecimal.valueOf(value);
+        }
+        else {
+            throw new IllegalArgumentException("Parameter \"input\" must String or Number. ");
+        }
         return decimal.setScale(newScale, roundingMode);
-    }
-
-    public static BigDecimal round(String input, int newScale, RoundingMode roundingMode) {
-        BigDecimal decimal = new BigDecimal(input);
-        return decimal.setScale(newScale, roundingMode);
-    }
-
-    public static BigDecimal round(BigDecimal input, int newScale, RoundingMode roundingMode) {
-        return input.setScale(newScale, roundingMode);
     }
 
     public static String format(Object input) {
-        return NumberUtils.format(defaultPattern, input);
+        return NumberUtils.format(input, defaultPattern);
     }
 
-    public static String format(String pattern, Object input) {
+    public static String format(Object input, String pattern) {
         Format format = new DecimalFormat(pattern);
         return format.format(input);
     }
