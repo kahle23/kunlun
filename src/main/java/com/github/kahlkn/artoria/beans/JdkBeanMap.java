@@ -2,15 +2,16 @@ package com.github.kahlkn.artoria.beans;
 
 import com.github.kahlkn.artoria.converter.Converter;
 import com.github.kahlkn.artoria.exception.ExceptionUtils;
-import com.github.kahlkn.artoria.reflect.ReflectUtils;
 import com.github.kahlkn.artoria.util.ArrayUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.StringUtils;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import static com.github.kahlkn.artoria.util.Const.*;
@@ -34,27 +35,33 @@ public class JdkBeanMap extends BeanMap {
     @Override
     public void setBean(Object bean) {
         super.setBean(bean);
-        if (this.beanClass != null && this.beanClass == bean.getClass()) {
+        if (this.beanClass != null && this.beanClass.equals(bean.getClass())) {
             return;
         }
         this.beanClass = bean.getClass();
-        Map<String, Method> readMethods = ReflectUtils.findReadMethods(this.beanClass);
-        for (Entry<String, Method> entry : readMethods.entrySet()) {
-            String key = entry.getKey();
-            if (key.startsWith(GET)) {
-                key = key.substring(GET_OR_SET_LENGTH);
-                key = StringUtils.uncapitalize(key);
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(this.beanClass);
+            PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
+            if (descriptors == null) { return; }
+            for (PropertyDescriptor descriptor : descriptors) {
+                Method readMethod = descriptor.getReadMethod();
+                if (readMethod != null) {
+                    String name = readMethod.getName();
+                    name = name.substring(GET_OR_SET_LENGTH);
+                    name = StringUtils.uncapitalize(name);
+                    this.readMethods.put(name, readMethod);
+                }
+                Method writeMethod = descriptor.getWriteMethod();
+                if (writeMethod != null) {
+                    String name = writeMethod.getName();
+                    name = name.substring(GET_OR_SET_LENGTH);
+                    name = StringUtils.uncapitalize(name);
+                    this.writeMethods.put(name, writeMethod);
+                }
             }
-            this.readMethods.put(key, entry.getValue());
         }
-        Map<String, Method> writeMethods = ReflectUtils.findWriteMethods(this.beanClass);
-        for (Entry<String, Method> entry : writeMethods.entrySet()) {
-            String key = entry.getKey();
-            if (key.startsWith(SET)) {
-                key = key.substring(GET_OR_SET_LENGTH);
-                key = StringUtils.uncapitalize(key);
-            }
-            this.writeMethods.put(key, entry.getValue());
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
         }
     }
 

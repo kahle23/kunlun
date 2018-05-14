@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.kahlkn</groupId>
 	<artifactId>artoria</artifactId>
-	<version>0.5.31.beta</version>
+	<version>0.5.32.beta</version>
 	<packaging>jar</packaging>
 	<name>Artoria</name>
     <url>https://github.com/kahlkn/artoria</url>
@@ -54,27 +54,6 @@
 	</distributionManagement>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-			<version>2.2.2</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.10</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk16</artifactId>
-			<version>1.46</version>
-			<scope>provided</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>

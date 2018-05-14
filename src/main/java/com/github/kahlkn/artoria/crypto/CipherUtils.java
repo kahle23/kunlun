@@ -2,9 +2,7 @@ package com.github.kahlkn.artoria.crypto;
 
 import com.github.kahlkn.artoria.logging.Logger;
 import com.github.kahlkn.artoria.logging.LoggerFactory;
-import com.github.kahlkn.artoria.reflect.ReflectUtils;
 import com.github.kahlkn.artoria.util.Assert;
-import com.github.kahlkn.artoria.util.ClassUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -23,33 +21,6 @@ import java.security.spec.X509EncodedKeySpec;
  */
 public class CipherUtils {
     private static Logger log = LoggerFactory.getLogger(CipherUtils.class);
-
-    static {
-        CipherUtils.loadBouncyCastle();
-        Provider[] providers = Security.getProviders();
-        for (Provider provider : providers) {
-            log.debug("Provider: " + provider.getClass().getName()
-                    + "(Version: " + provider.getVersion() + ")");
-        }
-    }
-
-    private static void loadBouncyCastle() {
-        String className = "org.bouncycastle.jce.provider.BouncyCastleProvider";
-        ClassLoader loader = ClassUtils.getDefaultClassLoader();
-        if (!ClassUtils.isPresent(className, loader)) {
-            return;
-        }
-        try {
-            Object o = ReflectUtils.newInstance(className);
-            Provider provider = (Provider) o;
-            Security.addProvider(provider);
-            log.info("Init " + provider.getClass().getName()
-                    + " " + provider.getVersion());
-        }
-        catch (Exception e) {
-            log.debug(e.getMessage(), e);
-        }
-    }
 
     public static byte[] fill(byte[] data, int multiple) {
         Assert.notEmpty(data, "Parameter \"data\" must not empty. ");

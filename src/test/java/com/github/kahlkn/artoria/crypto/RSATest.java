@@ -1,6 +1,7 @@
 package com.github.kahlkn.artoria.crypto;
 
 import com.github.kahlkn.artoria.codec.Base64;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.crypto.Cipher;
@@ -9,11 +10,11 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 
 public class RSATest {
-
     private String algorithmName = "RSA";
     private byte[] data = "Hello，Java！".getBytes();
 
     @Test
+    @Ignore
     public void noneNoPaddingAndDecrypterBySelf() throws Exception {
         String trsft = "RSA/None/NoPadding";
         KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
@@ -42,6 +43,7 @@ public class RSATest {
     }
 
     @Test
+    @Ignore
     public void nonePKCS1Padding() throws Exception {
         String trsft = "RSA/None/PKCS1Padding";
         KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);

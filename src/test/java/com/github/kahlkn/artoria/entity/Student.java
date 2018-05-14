@@ -9,6 +9,7 @@ public class Student extends Person {
     private Integer nationalLanguageScore;
     private Integer mathematicsScore;
     private Integer englishScore;
+    private boolean graduate;
 
     public Long getStudentId() {
         return studentId;
@@ -48,6 +49,14 @@ public class Student extends Person {
 
     public void setEnglishScore(Integer englishScore) {
         this.englishScore = englishScore;
+    }
+
+    public boolean isGraduate() {
+        return graduate;
+    }
+
+    public void setGraduate(boolean graduate) {
+        this.graduate = graduate;
     }
 
 }

@@ -3,7 +3,6 @@ package com.github.kahlkn.artoria.aop;
 import com.github.kahlkn.artoria.logging.Logger;
 import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
-import com.github.kahlkn.artoria.util.ClassUtils;
 
 /**
  * Object enhancer.
@@ -14,9 +13,7 @@ public class Enhancer {
     private static ProxyFactory proxyFactory;
 
     static {
-        ClassLoader loader = ClassUtils.getDefaultClassLoader();
-        boolean hasCglib = ClassUtils.isPresent("net.sf.cglib.proxy.Enhancer", loader);
-        Enhancer.setProxyFactory(hasCglib ? new CglibProxyFactory() : new JdkProxyFactory());
+        Enhancer.setProxyFactory(new JdkProxyFactory());
     }
 
     public static ProxyFactory getProxyFactory() {
