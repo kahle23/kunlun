@@ -1,11 +1,11 @@
 package com.github.kahlkn.artoria.codec;
 
+import com.github.kahlkn.artoria.logging.Logger;
+import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.ArrayUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.ClassUtils;
 import com.github.kahlkn.artoria.util.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.Charset;
@@ -37,17 +37,17 @@ public class Base64 {
         ClassLoader classLoader = Base64.class.getClassLoader();
         // Apache Commons Codec present on the classpath?
         if (ClassUtils.isPresent(COMMONS_CODEC_BASE64, classLoader)) {
-            log.info("Use base64 class: {}", COMMONS_CODEC_BASE64);
+            log.info("Use base64 class: " + COMMONS_CODEC_BASE64);
             delegateToUse = new CommonsCodecBase64Delegate();
         }
         // JDK 8's java.util.Base64 class present?
         else if (ClassUtils.isPresent(JAVA_UTIL_BASE64, classLoader)) {
-            log.info("Use base64 class: {}", JAVA_UTIL_BASE64);
+            log.info("Use base64 class: " + JAVA_UTIL_BASE64);
             delegateToUse = new Java8Base64Delegate();
         }
         // maybe all jdk is ok?
         else if (ClassUtils.isPresent(JAVAX_XML_DATATYPE_CONVERTER, classLoader)) {
-            log.info("Use base64 class: {}", JAVAX_XML_DATATYPE_CONVERTER);
+            log.info("Use base64 class: " + JAVAX_XML_DATATYPE_CONVERTER);
             delegateToUse = new Java7Base64Delegate();
         }
         DELEGATE = delegateToUse;

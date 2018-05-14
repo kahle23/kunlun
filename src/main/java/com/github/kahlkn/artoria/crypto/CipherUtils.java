@@ -1,10 +1,10 @@
 package com.github.kahlkn.artoria.crypto;
 
+import com.github.kahlkn.artoria.logging.Logger;
+import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.reflect.ReflectUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.ClassUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -28,8 +28,8 @@ public class CipherUtils {
         CipherUtils.loadBouncyCastle();
         Provider[] providers = Security.getProviders();
         for (Provider provider : providers) {
-            log.debug("Provider: {}(Version: {})"
-                    , provider.getClass().getName(), provider.getVersion());
+            log.debug("Provider: " + provider.getClass().getName()
+                    + "(Version: " + provider.getVersion() + ")");
         }
     }
 
@@ -43,8 +43,8 @@ public class CipherUtils {
             Object o = ReflectUtils.newInstance(className);
             Provider provider = (Provider) o;
             Security.addProvider(provider);
-            log.info("Init {} {}"
-                    , provider.getClass().getName(), provider.getVersion());
+            log.info("Init " + provider.getClass().getName()
+                    + " " + provider.getVersion());
         }
         catch (Exception e) {
             log.debug(e.getMessage(), e);

@@ -37,7 +37,7 @@ System.out.println(JSON.toJSONString(map));
 LockUtils.registerLock("Lock-Name", ReentrantLock.class);
 // No2. try get lock, if don't get, will block
 LockUtils.lock("Lock-Name");
-// No2. try get lock, if don't get, will return false
+// Or No2. try get lock, if don't get, will return false
 boolean tryLock = LockUtils.tryLock("Lock-Name", 500, TimeUnit.MILLISECONDS);
 ```
 
