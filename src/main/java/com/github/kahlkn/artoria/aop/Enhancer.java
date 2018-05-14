@@ -1,9 +1,9 @@
 package com.github.kahlkn.artoria.aop;
 
+import com.github.kahlkn.artoria.logging.Logger;
+import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.ClassUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Object enhancer.
@@ -25,7 +25,7 @@ public class Enhancer {
 
     public static void setProxyFactory(ProxyFactory proxyFactory) {
         Assert.notNull(proxyFactory, "Parameter \"proxyFactory\" must not null. ");
-        log.info("Set proxy factory: {}", proxyFactory.getClass().getName());
+        log.info("Set proxy factory: " + proxyFactory.getClass().getName());
         Enhancer.proxyFactory = proxyFactory;
     }
 

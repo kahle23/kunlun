@@ -1,9 +1,9 @@
 package com.github.kahlkn.artoria.time;
 
+import com.github.kahlkn.artoria.logging.Logger;
+import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.ObjectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -31,7 +31,7 @@ public class DateUtils {
 
     public static void setDateFormater(DateFormater formater) {
         Assert.notNull(formater, "Parameter \"formater\" must not null. ");
-        log.info("Set date formater: {}", formater.getClass().getName());
+        log.info("Set date formater: " + formater.getClass().getName());
         dateFormater = formater;
     }
 
@@ -41,7 +41,7 @@ public class DateUtils {
 
     public static void setDateParser(DateParser parser) {
         Assert.notNull(parser, "Parameter \"parser\" must not null. ");
-        log.info("Set date parser: {}", parser.getClass().getName());
+        log.info("Set date parser: " + parser.getClass().getName());
         dateParser = parser;
     }
 

@@ -3,11 +3,11 @@ package com.github.kahlkn.artoria.reflect;
 import com.github.kahlkn.artoria.aop.Enhancer;
 import com.github.kahlkn.artoria.aop.Interceptor;
 import com.github.kahlkn.artoria.exception.ExceptionUtils;
+import com.github.kahlkn.artoria.logging.Logger;
+import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.DataLoader;
 import com.github.kahlkn.artoria.util.SimpleCache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -32,7 +32,7 @@ public class ReflectUtils {
     public static void setReflecter(Reflecter reflecter) {
         Assert.notNull(reflecter, "Parameter \"reflecter\" must not null. ");
         reflecter = CacheEnhancer.getInstance(reflecter);
-        log.info("Set reflecter: {}", reflecter.getClass().getName());
+        log.info("Set reflecter: " + reflecter.getClass().getName());
         ReflectUtils.reflecter = reflecter;
     }
 

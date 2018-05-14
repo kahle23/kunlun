@@ -1,8 +1,8 @@
 package com.github.kahlkn.artoria.aop;
 
+import com.github.kahlkn.artoria.logging.Logger;
+import com.github.kahlkn.artoria.logging.LoggerFactory;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 
@@ -26,7 +26,7 @@ public class EnhancerTest {
 
         @Override
         public Object intercept(Object proxyObject, Method method, Object[] args) throws Throwable {
-            log.info("Proxy object's class is {}", proxyObject.getClass().getName());
+            log.info("Proxy object's class is " + proxyObject.getClass().getName());
             System.out.println("Hello, this is intercept. ");
             return method.invoke(proxiedObject, args);
         }
