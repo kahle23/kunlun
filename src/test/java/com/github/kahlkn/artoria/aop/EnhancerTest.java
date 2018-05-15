@@ -1,13 +1,12 @@
 package com.github.kahlkn.artoria.aop;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
+import java.util.logging.Logger;
 
 public class EnhancerTest {
-    private static Logger log = LoggerFactory.getLogger(EnhancerTest.class);
+    private static Logger log = Logger.getLogger(EnhancerTest.class.getName());
 
     public static class TestInterceptor implements Interceptor {
         private Object proxiedObject;

@@ -3,21 +3,20 @@ package com.github.kahlkn.artoria.beans;
 import com.github.kahlkn.artoria.converter.ConvertUtils;
 import com.github.kahlkn.artoria.converter.Converter;
 import com.github.kahlkn.artoria.exception.ExceptionUtils;
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.reflect.ReflectUtils;
 import com.github.kahlkn.artoria.util.Assert;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Bean tools.
  * @author Kahle
  */
 public class BeanUtils extends BeanHandler {
-    private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
+    private static Logger log = Logger.getLogger(BeanUtils.class.getName());
     private static final Converter CONVERTER = new Converter() {
         @Override
         public Object convert(Object source, Class<?> target) {

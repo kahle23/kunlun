@@ -1,11 +1,12 @@
 package com.github.kahlkn.artoria.util;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import org.junit.Test;
 
+import java.util.logging.Logger;
+
 public class AssertTest {
-    private static Logger log = LoggerFactory.getLogger(AssertTest.class);
+    private static Logger log = Logger.getLogger(AssertTest.class.getName());
 
     @Test
     public void testNotNull() {
@@ -13,7 +14,7 @@ public class AssertTest {
             Assert.notNull(null, null);
         }
         catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.severe(ExceptionUtils.toString(e));
         }
     }
 

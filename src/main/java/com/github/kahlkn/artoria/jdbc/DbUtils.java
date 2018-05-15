@@ -1,8 +1,7 @@
 package com.github.kahlkn.artoria.jdbc;
 
 import com.github.kahlkn.artoria.beans.BeanUtils;
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.CollectionUtils;
 import com.github.kahlkn.artoria.util.StringUtils;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Db tools.
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class DbUtils {
     public static final int DEFAULT_TRANSACTION_LEVEL = Connection.TRANSACTION_REPEATABLE_READ;
-    private static Logger log = LoggerFactory.getLogger(DbUtils.class);
+    private static Logger log = Logger.getLogger(DbUtils.class.getName());
 
     public static void close(Connection conn) {
         if (conn != null) {
@@ -111,7 +111,7 @@ public class DbUtils {
                     conn.rollback();
                 }
                 catch (Exception ex) {
-                    log.error(ex.getMessage(), ex);
+                    log.severe(ExceptionUtils.toString(ex));
                 }
             }
             throw new JdbcException(e);
@@ -126,7 +126,7 @@ public class DbUtils {
                 }
             }
             catch (Exception e) {
-                log.error(e.getMessage(), e);
+                log.severe(ExceptionUtils.toString(e));
             }
             finally {
                 threadConnection.remove();

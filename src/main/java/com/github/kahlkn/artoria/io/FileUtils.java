@@ -1,7 +1,5 @@
 package com.github.kahlkn.artoria.io;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.ArrayUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.PathUtils;
@@ -12,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
 import static com.github.kahlkn.artoria.util.Const.CLASSPATH;
 
@@ -20,7 +19,7 @@ import static com.github.kahlkn.artoria.util.Const.CLASSPATH;
  * @author Kahle
  */
 public class FileUtils {
-    private static Logger log = LoggerFactory.getLogger(FileUtils.class);
+    private static Logger log = Logger.getLogger(FileUtils.class.getName());
     private static final long FILE_COPY_BUFFER_SIZE = 1024 * 1024 * 10;
 
     public static File findClasspath(String fileName) {

@@ -1,19 +1,18 @@
 package com.github.kahlkn.artoria.converter;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 /**
  * Convert tools.
  * @author Kahle
  */
 public class ConvertUtils {
-    private static Logger log = LoggerFactory.getLogger(ConvertUtils.class);
+    private static Logger log = Logger.getLogger(ConvertUtils.class.getName());
     private static final Map<Class<?>, Converter> CONVERTERS;
 
     static {

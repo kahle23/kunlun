@@ -1,13 +1,12 @@
 package com.github.kahlkn.artoria.time;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.ObjectUtils;
 
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * Date tools.
@@ -15,7 +14,7 @@ import java.util.Date;
  */
 public class DateUtils {
     public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
-    private static Logger log = LoggerFactory.getLogger(DateUtils.class);
+    private static Logger log = Logger.getLogger(DateUtils.class.getName());
     private static DateFormater dateFormater;
     private static DateParser dateParser;
 

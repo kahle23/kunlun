@@ -1,19 +1,18 @@
 package com.github.kahlkn.artoria.exception;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.reflect.ReflectUtils;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
+import java.util.logging.Logger;
 
 /**
  * Exception tools.
  * @author Kahle
  */
 public class ExceptionUtils {
-    private static Logger log = LoggerFactory.getLogger(ExceptionUtils.class);
+    private static Logger log = Logger.getLogger(ExceptionUtils.class.getName());
 
     public static String toString(Throwable t) {
         if (t == null) { return null; }

@@ -1,15 +1,15 @@
 package com.github.kahlkn.artoria.aop;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
+
+import java.util.logging.Logger;
 
 /**
  * Object enhancer.
  * @author Kahle
  */
 public class Enhancer {
-    private static Logger log = LoggerFactory.getLogger(Enhancer.class);
+    private static Logger log = Logger.getLogger(Enhancer.class.getName());
     private static ProxyFactory proxyFactory;
 
     static {

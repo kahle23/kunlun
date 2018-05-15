@@ -1,18 +1,17 @@
 package com.github.kahlkn.artoria.reflect;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
 
 import java.lang.reflect.*;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Reflect tools.
  * @author Kahle
  */
 public class ReflectUtils {
-    private static Logger log = LoggerFactory.getLogger(ReflectUtils.class);
+    private static Logger log = Logger.getLogger(ReflectUtils.class.getName());
     private static Reflecter reflecter;
 
     static {
