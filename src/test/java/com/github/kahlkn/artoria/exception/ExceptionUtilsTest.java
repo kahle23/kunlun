@@ -1,13 +1,12 @@
 package com.github.kahlkn.artoria.exception;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class ExceptionUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(ExceptionUtilsTest.class);
+    private static Logger log = Logger.getLogger(ExceptionUtilsTest.class.getName());
 
     private void throwException1() throws Exception {
         try {
@@ -33,7 +32,7 @@ public class ExceptionUtilsTest {
             throwException1();
         }
         catch (Exception e) {
-            log.info(e.getMessage(), e);
+            log.info(ExceptionUtils.toString(e));
         }
     }
 
@@ -43,7 +42,7 @@ public class ExceptionUtilsTest {
             throwException2();
         }
         catch (Exception e) {
-            log.info(e.getMessage(), e);
+            log.info(ExceptionUtils.toString(e));
         }
     }
 

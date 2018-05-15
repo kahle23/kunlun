@@ -1,7 +1,5 @@
 package com.github.kahlkn.artoria.lock;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
 
 import java.util.Map;
@@ -10,13 +8,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Logger;
 
 /**
  * Lock tools.
  * @author Kahle
  */
 public class LockUtils {
-    private static Logger log = LoggerFactory.getLogger(LockUtils.class);
+    private static Logger log = Logger.getLogger(LockUtils.class.getName());
     private static final Map<Class<? extends Lock>, LockFactory> FACTORYS;
     private static final Map<String, Lock> LOCKS;
 

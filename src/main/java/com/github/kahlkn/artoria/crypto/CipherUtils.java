@@ -1,7 +1,5 @@
 package com.github.kahlkn.artoria.crypto;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.Assert;
 
 import javax.crypto.Cipher;
@@ -14,13 +12,14 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.logging.Logger;
 
 /**
  * Cipher tools.
  * @author Kahle
  */
 public class CipherUtils {
-    private static Logger log = LoggerFactory.getLogger(CipherUtils.class);
+    private static Logger log = Logger.getLogger(CipherUtils.class.getName());
 
     public static byte[] fill(byte[] data, int multiple) {
         Assert.notEmpty(data, "Parameter \"data\" must not empty. ");

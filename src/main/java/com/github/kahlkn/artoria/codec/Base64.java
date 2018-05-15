@@ -1,7 +1,5 @@
 package com.github.kahlkn.artoria.codec;
 
-import com.github.kahlkn.artoria.logging.Logger;
-import com.github.kahlkn.artoria.logging.LoggerFactory;
 import com.github.kahlkn.artoria.util.ArrayUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.ClassUtils;
@@ -9,6 +7,7 @@ import com.github.kahlkn.artoria.util.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.Charset;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,7 +25,7 @@ public class Base64 {
     private static final String JAVA_UTIL_BASE64 = "java.util.Base64";
     private static final Pattern BASE64_URL_SAFE = Pattern.compile("^[a-zA-Z0-9-_]+={0,2}$");
     private static final Pattern BASE64_URL_UNSAFE = Pattern.compile("^[a-zA-Z0-9+/]+={0,2}$");
-    private static Logger log = LoggerFactory.getLogger(Base64.class);
+    private static Logger log = Logger.getLogger(Base64.class.getName());
     private static Base64Delegate base64Delegate;
 
     static {
