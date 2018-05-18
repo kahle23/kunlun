@@ -12,12 +12,12 @@ public class DateUtilsTest {
     public void testEquals() {
         System.out.println();
 
-        Date date1 = DateTime.create(1000, 1, 1).getDate();
-        Date date2 = DateTime.create(1000, 1, 1).getDate();
+        Date date1 = DateUtils.create(1000, 1, 1).getDate();
+        Date date2 = DateUtils.create(1000, 1, 1).getDate();
         System.out.println("date1 equals date2 is true ? result : " + DateUtils.equals(date1, date2));
 
-        Calendar calendar1 = DateTime.create(2000, 1, 1).getCalendar();
-        Calendar calendar2 = DateTime.create(2000, 1, 1).getCalendar();
+        Calendar calendar1 = DateUtils.create(2000, 1, 1).getCalendar();
+        Calendar calendar2 = DateUtils.create(2000, 1, 1).getCalendar();
         System.out.println("calendar1 equals calendar2 is true ? result : " + DateUtils.equals(calendar1, calendar2));
 
         System.out.println();
@@ -43,10 +43,10 @@ public class DateUtilsTest {
     public void testParseFormat() throws ParseException {
         System.out.println();
 
-        System.out.println("The method parse(Long), result : " + DateUtils.parse(DateTime.create().getTimeInMillis()));
-        System.out.println("The method parse(String), result : " + DateUtils.parse(DateTime.create().toString()));
+        System.out.println("The method parse(Long), result : " + DateUtils.parse(DateUtils.create().getTimeInMillis()));
+        System.out.println("The method parse(String), result : " + DateUtils.parse(DateUtils.create().toString()));
         System.out.println("The method parse(String, String), the pattern is \"yyyy-MM-dd HH:mm:ss SSS\", result : "
-                + DateUtils.format(DateUtils.parse(DateTime.create().toString(), "yyyy-MM-dd HH:mm:ss SSS")));
+                + DateUtils.format(DateUtils.parse(DateUtils.create().toString(), "yyyy-MM-dd HH:mm:ss SSS")));
 
         System.out.println();
     }

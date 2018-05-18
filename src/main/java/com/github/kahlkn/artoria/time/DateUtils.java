@@ -1,5 +1,6 @@
 package com.github.kahlkn.artoria.time;
 
+import com.github.kahlkn.artoria.exception.ExceptionUtils;
 import com.github.kahlkn.artoria.util.Assert;
 import com.github.kahlkn.artoria.util.ObjectUtils;
 
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
 public class DateUtils {
     public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
     private static Logger log = Logger.getLogger(DateUtils.class.getName());
+    private static Class<? extends DateTime> dateTimeClass;
     private static DateFormater dateFormater;
     private static DateParser dateParser;
 
@@ -22,6 +24,17 @@ public class DateUtils {
         DateHandler handler = new DateHandler();
         DateUtils.setDateFormater(handler);
         DateUtils.setDateParser(handler);
+        DateUtils.setDateTimeClass(SimpleDateTime.class);
+    }
+
+    public static Class<? extends DateTime> getDateTimeClass() {
+        return dateTimeClass;
+    }
+
+    public static void setDateTimeClass(Class<? extends DateTime> dateTimeClass) {
+        Assert.notNull(dateTimeClass, "Parameter \"dateTimeClass\" must not null. ");
+        log.info("Set dateTime class: " + dateTimeClass.getName());
+        DateUtils.dateTimeClass = dateTimeClass;
     }
 
     public static DateFormater getDateFormater() {
@@ -42,6 +55,63 @@ public class DateUtils {
         Assert.notNull(parser, "Parameter \"parser\" must not null. ");
         log.info("Set date parser: " + parser.getClass().getName());
         dateParser = parser;
+    }
+
+    public static DateTime create() {
+        try {
+            return dateTimeClass.newInstance();
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
+        }
+    }
+
+    public static DateTime create(Date date) {
+        Assert.notNull(date, "Parameter \"date\" must not null. ");
+        DateTime dateTime = DateUtils.create();
+        return dateTime.setDate(date);
+    }
+
+    public static DateTime create(Calendar calendar) {
+        Assert.notNull(calendar, "Parameter \"calendar\" must not null. ");
+        DateTime dateTime = DateUtils.create();
+        return dateTime.setCalendar(calendar);
+    }
+
+    public static DateTime create(Long timestamp) {
+        DateTime dateTime = DateUtils.create();
+        timestamp = timestamp != null ? timestamp : 0;
+        return dateTime.setTimeInMillis(timestamp);
+    }
+
+    public static DateTime create(String dateString) throws ParseException {
+        Date date = DateUtils.parse(dateString);
+        DateTime dateTime = DateUtils.create();
+        return dateTime.setDate(date);
+    }
+
+    public static DateTime create(String dateString, String pattern) throws ParseException {
+        DateTime dateTime = DateUtils.create();
+        Date date = DateUtils.parse(dateString, pattern);
+        return dateTime.setDate(date);
+    }
+
+    public static DateTime create(int year, int month, int day) {
+        DateTime dateTime = DateUtils.create();
+        return dateTime.setYear(year).setMonth(month)
+                .setDay(day).setHour(0).setMinute(0).setSecond(0).setMillisecond(0);
+    }
+
+    public static DateTime create(int year, int month, int day, int hour, int minute, int second) {
+        DateTime dateTime = DateUtils.create();
+        return dateTime.setYear(year).setMonth(month).setDay(day)
+                .setHour(hour).setMinute(minute).setSecond(second).setMillisecond(0);
+    }
+
+    public static DateTime create(int year, int month, int day, int hour, int minute, int second, int millisecond) {
+        DateTime dateTime = DateUtils.create();
+        return dateTime.setYear(year).setMonth(month).setDay(day)
+                .setHour(hour).setMinute(minute).setSecond(second).setMillisecond(millisecond);
     }
 
     public static boolean equals(Date date1, Date date2) {
@@ -66,87 +136,87 @@ public class DateUtils {
     }
 
     public static Date addYear(Date date, int addYear) {
-        return DateTime.create(date).addYear(addYear).getDate();
+        return DateUtils.create(date).addYear(addYear).getDate();
     }
 
     public static Date addMonth(Date date, int addMonth) {
-        return DateTime.create(date).addMonth(addMonth).getDate();
+        return DateUtils.create(date).addMonth(addMonth).getDate();
     }
 
     public static Date addDay(Date date, int addDay) {
-        return DateTime.create(date).addDay(addDay).getDate();
+        return DateUtils.create(date).addDay(addDay).getDate();
     }
 
     public static Date addHour(Date date, int addHour) {
-        return DateTime.create(date).addHour(addHour).getDate();
+        return DateUtils.create(date).addHour(addHour).getDate();
     }
 
     public static Date addMinute(Date date, int addMinute) {
-        return DateTime.create(date).addMinute(addMinute).getDate();
+        return DateUtils.create(date).addMinute(addMinute).getDate();
     }
 
     public static Date addSecond(Date date, int addSecond) {
-        return DateTime.create(date).addSecond(addSecond).getDate();
+        return DateUtils.create(date).addSecond(addSecond).getDate();
     }
 
     public static Date addMillisecond(Date date, int addMillisecond) {
-        return DateTime.create(date).addMillisecond(addMillisecond).getDate();
+        return DateUtils.create(date).addMillisecond(addMillisecond).getDate();
     }
 
     public static int getYear(Date date) {
-        return DateTime.create(date).getYear();
+        return DateUtils.create(date).getYear();
     }
 
     public static Date setYear(Date date, int year) {
-        return DateTime.create(date).setYear(year).getDate();
+        return DateUtils.create(date).setYear(year).getDate();
     }
 
     public static int getMonth(Date date) {
-        return DateTime.create(date).getMonth();
+        return DateUtils.create(date).getMonth();
     }
 
     public static Date setMonth(Date date, int month) {
-        return DateTime.create(date).setMonth(month).getDate();
+        return DateUtils.create(date).setMonth(month).getDate();
     }
 
     public static int getDay(Date date) {
-        return DateTime.create(date).getDay();
+        return DateUtils.create(date).getDay();
     }
 
     public static Date setDay(Date date, int day) {
-        return DateTime.create(date).setDay(day).getDate();
+        return DateUtils.create(date).setDay(day).getDate();
     }
 
     public static int getHour(Date date) {
-        return DateTime.create(date).getHour();
+        return DateUtils.create(date).getHour();
     }
 
     public static Date setHour(Date date, int hour) {
-        return DateTime.create(date).setHour(hour).getDate();
+        return DateUtils.create(date).setHour(hour).getDate();
     }
 
     public static int getMinute(Date date) {
-        return DateTime.create(date).getMinute();
+        return DateUtils.create(date).getMinute();
     }
 
     public static Date setMinute(Date date, int minute) {
-        return DateTime.create(date).setMinute(minute).getDate();
+        return DateUtils.create(date).setMinute(minute).getDate();
     }
 
     public static int getSecond(Date date) {
-        return DateTime.create(date).getSecond();
+        return DateUtils.create(date).getSecond();
     }
 
     public static Date setSecond(Date date, int second) {
-        return DateTime.create(date).setSecond(second).getDate();
+        return DateUtils.create(date).setSecond(second).getDate();
     }
 
     public static int getMillisecond(Date date) {
-        return DateTime.create(date).getMillisecond();
+        return DateUtils.create(date).getMillisecond();
     }
 
     public static Date setMillisecond(Date date, int millisecond) {
-        return DateTime.create(date).setMillisecond(millisecond).getDate();
+        return DateUtils.create(date).setMillisecond(millisecond).getDate();
     }
 
     public static Date parse(Long timestamp) {

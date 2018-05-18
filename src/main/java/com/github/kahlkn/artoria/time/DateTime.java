@@ -1,235 +1,233 @@
 package com.github.kahlkn.artoria.time;
 
-import com.github.kahlkn.artoria.util.Assert;
-
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Date time object.
+ * Date time interface.
  * @author Kahle
  */
-public class DateTime {
+public interface DateTime extends java.io.Serializable {
 
-    public static DateTime create() {
-        return new DateTime();
-    }
+    /**
+     * Get date from DateTime object.
+     * @return The date object from DateTime
+     */
+    Date getDate();
 
-    public static DateTime create(Date date) {
-        Assert.notNull(date, "Parameter \"date\" must not null. ");
-        DateTime dateTime = new DateTime();
-        return dateTime.setDate(date);
-    }
+    /**
+     * Set date to DateTime object.
+     * @param date The date object you want
+     * @return Current DateTime object
+     */
+    DateTime setDate(Date date);
 
-    public static DateTime create(Calendar calendar) {
-        Assert.notNull(calendar, "Parameter \"calendar\" must not null. ");
-        return new DateTime(calendar);
-    }
+    /**
+     * Get calendar from DateTime object.
+     * @return The calendar object from DateTime
+     */
+    Calendar getCalendar();
 
-    public static DateTime create(Long timestamp) {
-        DateTime dateTime = new DateTime();
-        timestamp = timestamp != null ? timestamp : 0;
-        return dateTime.setTimeInMillis(timestamp);
-    }
+    /**
+     * Set calendar to DateTime object.
+     * @param calendar The calendar object you want
+     * @return Current DateTime object
+     */
+    DateTime setCalendar(Calendar calendar);
 
-    public static DateTime create(String dateString) throws ParseException {
-        Date date = DateUtils.parse(dateString);
-        return new DateTime().setDate(date);
-    }
+    /**
+     * Take current timestamp.
+     * @return Current timestamp
+     */
+    long getTimeInMillis();
 
-    public static DateTime create(String dateString, String pattern) throws ParseException {
-        Date date = DateUtils.parse(dateString, pattern);
-        return new DateTime().setDate(date);
-    }
+    /**
+     * Set timestamp to DateTime object.
+     * @param timestamp The timestamp you want
+     * @return Current DateTime object
+     */
+    DateTime setTimeInMillis(long timestamp);
 
-    public static DateTime create(int year, int month, int day) {
-        return new DateTime().setYear(year).setMonth(month)
-                .setDay(day).setHour(0).setMinute(0).setSecond(0).setMillisecond(0);
-    }
+    /**
+     * Take current unix timestamp.
+     * @return Current unix timestamp
+     */
+    long getTimeInSeconds();
 
-    public static DateTime create(int year, int month, int day, int hour, int minute, int second) {
-        return new DateTime().setYear(year).setMonth(month).setDay(day)
-                .setHour(hour).setMinute(minute).setSecond(second).setMillisecond(0);
-    }
+    /**
+     * Set unix timestamp to DateTime object.
+     * @param unixTimestamp The unix timestamp you want
+     * @return Current DateTime object
+     */
+    DateTime setTimeInSeconds(long unixTimestamp);
 
-    public static DateTime create(int year, int month, int day, int hour, int minute, int second, int millisecond) {
-        return new DateTime().setYear(year).setMonth(month).setDay(day)
-                .setHour(hour).setMinute(minute).setSecond(second).setMillisecond(millisecond);
-    }
+    /**
+     * Add year for DateTime object.
+     * @param addYear Year you want add (the num can minus)
+     * @return Current DateTime object
+     */
+    DateTime addYear(int addYear);
 
-    private static final Calendar CALENDAR_TEMPLATE = Calendar.getInstance();
-    private Calendar calendar;
+    /**
+     * Add month for DateTime object.
+     * @param addMonth Month you want add (the num can minus)
+     * @return Current DateTime object
+     */
+    DateTime addMonth(int addMonth);
 
-    private DateTime() {
-        calendar = (Calendar) CALENDAR_TEMPLATE.clone();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-    }
+    /**
+     * Add day for DateTime object.
+     * @param addDay Day you want add (the num can minus)
+     * @return Current DateTime object
+     */
+    DateTime addDay(int addDay);
 
-    private DateTime(Calendar calendar) {
-        Assert.notNull(calendar, "Parameter \"calendar\" must not null. ");
-        this.calendar = calendar;
-    }
+    /**
+     * Add hour for DateTime object.
+     * @param addHour Hour you want add (the num can minus)
+     * @return Current DateTime object
+     */
+    DateTime addHour(int addHour);
 
-    public Date getDate() {
-        return calendar.getTime();
-    }
+    /**
+     * Add minute for DateTime object.
+     * @param addMinute Minute you want add (the num can minus)
+     * @return Current DateTime object
+     */
+    DateTime addMinute(int addMinute);
 
-    public DateTime setDate(Date date) {
-        Assert.notNull(date, "Parameter \"date\" must not null. ");
-        calendar.setTime(date);
-        return this;
-    }
+    /**
+     * Add second for DateTime object.
+     * @param addSecond Second you want add (the num can minus)
+     * @return Current DateTime object
+     */
+    DateTime addSecond(int addSecond);
 
-    public Calendar getCalendar() {
-        return calendar;
-    }
+    /**
+     * Add millisecond for DateTime object.
+     * @param addMillisecond Millisecond you want add (the num can minus)
+     * @return Current DateTime object
+     */
+    DateTime addMillisecond(int addMillisecond);
 
-    public DateTime setCalendar(Calendar calendar) {
-        Assert.notNull(calendar, "Parameter \"calendar\" must not null. ");
-        this.calendar = calendar;
-        return this;
-    }
+    /**
+     * Get year from DateTime object.
+     * @return The year from DateTime
+     */
+    int getYear();
 
-    public long getTimeInMillis() {
-        return calendar.getTimeInMillis();
-    }
+    /**
+     * Set year to DateTime object.
+     * @param year The year you want
+     * @return Current DateTime object
+     */
+    DateTime setYear(int year);
 
-    public DateTime setTimeInMillis(long timestamp) {
-        calendar.setTimeInMillis(timestamp);
-        return this;
-    }
+    /**
+     * Get month from DateTime object.
+     * @return The month from DateTime
+     */
+    int getMonth();
 
-    public long getTimeInSeconds() {
-        long millis = calendar.getTimeInMillis();
-        return millis / 1000L;
-    }
+    /**
+     * Set month to DateTime object.
+     * @param month The month you want
+     * @return Current DateTime object
+     */
+    DateTime setMonth(int month);
 
-    public DateTime setTimeInSeconds(long unixTimestamp) {
-        long millis = unixTimestamp * 1000L;
-        calendar.setTimeInMillis(millis);
-        return this;
-    }
+    /**
+     * Get day from DateTime object.
+     * @return The day from DateTime
+     */
+    int getDay();
 
-    public DateTime addYear(int addYear) {
-        calendar.set(Calendar.YEAR, getYear() + addYear);
-        return this;
-    }
+    /**
+     * Set day to DateTime object.
+     * @param day The day you want
+     * @return Current DateTime object
+     */
+    DateTime setDay(int day);
 
-    public DateTime addMonth(int addMonth) {
-        calendar.set(Calendar.MONTH, getMonth() - 1 + addMonth);
-        return this;
-    }
+    /**
+     * Get hour from DateTime object.
+     * @return The hour from DateTime
+     */
+    int getHour();
 
-    public DateTime addDay(int addDay) {
-        calendar.set(Calendar.DATE, getDay() + addDay);
-        return this;
-    }
+    /**
+     * Set hour to DateTime object.
+     * @param hour The hour you want
+     * @return Current DateTime object
+     */
+    DateTime setHour(int hour);
 
-    public DateTime addHour(int addHour) {
-        calendar.set(Calendar.HOUR_OF_DAY, getHour() + addHour);
-        return this;
-    }
+    /**
+     * Get minute from DateTime object.
+     * @return The minute from DateTime
+     */
+    int getMinute();
 
-    public DateTime addMinute(int addMinute) {
-        calendar.set(Calendar.MINUTE, getMinute() + addMinute);
-        return this;
-    }
+    /**
+     * Set minute to DateTime object.
+     * @param minute The minute you want
+     * @return Current DateTime object
+     */
+    DateTime setMinute(int minute);
 
-    public DateTime addSecond(int addSecond) {
-        calendar.set(Calendar.SECOND, getSecond() + addSecond);
-        return this;
-    }
+    /**
+     * Get second from DateTime object.
+     * @return The second from DateTime
+     */
+    int getSecond();
 
-    public DateTime addMillisecond(int addMillisecond) {
-        calendar.set(Calendar.MILLISECOND, getMillisecond() + addMillisecond);
-        return this;
-    }
+    /**
+     * Set second to DateTime object.
+     * @param second The second you want
+     * @return Current DateTime object
+     */
+    DateTime setSecond(int second);
 
-    public int getYear() {
-        return calendar.get(Calendar.YEAR);
-    }
+    /**
+     * Get millisecond from DateTime object.
+     * @return The millisecond from DateTime
+     */
+    int getMillisecond();
 
-    public DateTime setYear(int year) {
-        calendar.set(Calendar.YEAR, year);
-        return this;
-    }
+    /**
+     * Set millisecond to DateTime object.
+     * @param millisecond The millisecond you want
+     * @return Current DateTime object
+     */
+    DateTime setMillisecond(int millisecond);
 
-    public int getMonth() {
-        return calendar.get(Calendar.MONTH) + 1;
-    }
+    /**
+     * Judge this DateTime is before the input.
+     * @param when The DateTime you want judge
+     * @return If true this is before input, false is not
+     */
+    boolean before(DateTime when);
 
-    public DateTime setMonth(int month) {
-        boolean b = this.getYear() == 0 || this.getYear() == 1;
-        month = b && month == 0 ? month : month - 1;
-        calendar.set(Calendar.MONTH, month);
-        return this;
-    }
+    /**
+     * Judge this DateTime is after the input.
+     * @param when The DateTime you want judge
+     * @return If true this is after input, false is not
+     */
+    boolean after(DateTime when);
 
-    public int getDay() {
-        return calendar.get(Calendar.DATE);
-    }
-
-    public DateTime setDay(int day) {
-        boolean by = this.getYear() == 0 || this.getYear() == 1;
-        boolean bm = this.getMonth() == 0 || this.getMonth() == 1;
-        day = by && bm && day == 0 ? 1 : day;
-        calendar.set(Calendar.DATE, day);
-        return this;
-    }
-
-    public int getHour() {
-        return calendar.get(Calendar.HOUR_OF_DAY);
-    }
-
-    public DateTime setHour(int hour) {
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        return this;
-    }
-
-    public int getMinute() {
-        return calendar.get(Calendar.MINUTE);
-    }
-
-    public DateTime setMinute(int minute) {
-        calendar.set(Calendar.MINUTE, minute);
-        return this;
-    }
-
-    public int getSecond() {
-        return calendar.get(Calendar.SECOND);
-    }
-
-    public DateTime setSecond(int second) {
-        calendar.set(Calendar.SECOND, second);
-        return this;
-    }
-
-    public int getMillisecond() {
-        return calendar.get(Calendar.MILLISECOND);
-    }
-
-    public DateTime setMillisecond(int millisecond) {
-        calendar.set(Calendar.MILLISECOND, millisecond);
-        return this;
-    }
-
+    /**
+     * Judge this DateTime is equals the input.
+     * @param o The DateTime you want judge
+     * @return If true this is equals input, false is not
+     */
     @Override
-    public boolean equals(Object o) {
-        if (o == null) { return false; }
-        if (this == o) { return true; }
-        if (o instanceof DateTime) {
-            Calendar cal = this.getCalendar();
-            Calendar cal1 = ((DateTime) o).getCalendar();
-            return DateUtils.equals(cal, cal1);
-        }
-        return false;
-    }
+    boolean equals(Object o);
 
+    /**
+     * Formatting output DateTime to string.
+     * @return The DateTime formatted string
+     */
     @Override
-    public String toString() {
-        Date date = this.getDate();
-        return DateUtils.format(date);
-    }
+    String toString();
 
 }
