@@ -47,12 +47,6 @@ public class RandomUtilsTest {
     }
 
     @Test
-    public void testNextBean() {
-        Student student = RandomUtils.nextBean(Student.class);
-        System.out.println(JSON.toJSONString(student, true));
-    }
-
-    @Test
     public void testNextArray() {
         Student[] students = RandomUtils.nextArray(Student.class);
         System.out.println(JSON.toJSONString(students, true));
