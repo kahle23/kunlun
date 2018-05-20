@@ -18,16 +18,11 @@ import static com.github.kahlkn.artoria.util.Const.MINUS;
  * Random tools.
  * @author Kahle
  */
-@SuppressWarnings("unchecked")
 public class RandomUtils {
     private static final char[] DEFAULT_CHAR_ARRAY = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private static final Random RANDOM = new SecureRandom();
     private static final Integer DEFAULT_BOUND = 8192;
     private static final Integer DEFAULT_SIZE = 8;
-    private static final Integer COLLECTION_NEST_COUNT = 3;
-    private static final String METHOD_NEXT_ARRAY = "nextArray";
-    private static final String METHOD_NEXT_LIST = "nextList";
-    private static final String METHOD_NEXT_MAP = "nextMap";
 
     /**
      * Confuse array elements.
@@ -79,9 +74,7 @@ public class RandomUtils {
         if (separator != null && !MINUS.equals(separator)) {
             return StringUtils.replace(uuid, MINUS, separator);
         }
-        else {
-            return uuid;
-        }
+        else { return uuid; }
     }
 
     /**
@@ -158,6 +151,7 @@ public class RandomUtils {
      * @param <T> The object type
      * @return A random object
      */
+    @SuppressWarnings("unchecked")
     public static <T> T nextObject(Class<T> clazz) {
         Class<?> wrapper = ClassUtils.getWrapper(clazz);
         if (Number.class.isAssignableFrom(wrapper)) {
@@ -165,45 +159,33 @@ public class RandomUtils {
             num = NumberUtils.round(num).doubleValue();
             return (T) ConvertUtils.convert(num, wrapper);
         }
-        else if (Boolean.class.isAssignableFrom(wrapper)) {
+        if (Boolean.class.isAssignableFrom(wrapper)) {
             return (T) (Object) RandomUtils.nextBoolean();
         }
-        else if (Character.class.isAssignableFrom(wrapper)) {
+        if (Character.class.isAssignableFrom(wrapper)) {
             int index = RandomUtils.nextInt(DEFAULT_CHAR_ARRAY.length);
             return (T) (Object) DEFAULT_CHAR_ARRAY[index];
         }
-        else if (Date.class.isAssignableFrom(wrapper)) {
+        if (Date.class.isAssignableFrom(wrapper)) {
             return (T) ConvertUtils.convert(new Date(), wrapper);
         }
-        else if (String.class.isAssignableFrom(wrapper)) {
+        if (String.class.isAssignableFrom(wrapper)) {
             int size = RandomUtils.nextInt(DEFAULT_SIZE);
-            return (T) RandomUtils.nextString(++ size);
+            return (T) RandomUtils.nextString(++size);
         }
-        else if (Object.class.equals(wrapper)) {
+        if (Object.class.equals(wrapper)) {
             return (T) new Object();
         }
-        else if (wrapper.isArray()) {
+        if (wrapper.isArray()) {
             Class<?> componentType = wrapper.getComponentType();
             return (T) RandomUtils.nextArray(componentType);
         }
-        else if (List.class.isAssignableFrom(wrapper)) {
-            return (T) new ArrayList(DEFAULT_SIZE);
+        if (List.class.isAssignableFrom(wrapper)) {
+            return null;
         }
-        else if (Map.class.isAssignableFrom(wrapper)) {
-            return (T) new HashMap(DEFAULT_SIZE);
+        if (Map.class.isAssignableFrom(wrapper)) {
+            return null;
         }
-        else {
-            return (T) RandomUtils.nextBean(wrapper);
-        }
-    }
-
-    /**
-     * Random generation bean who type is specified.
-     * @param clazz The bean class
-     * @param <T> The bean type
-     * @return A random bean
-     */
-    public static <T> T nextBean(Class<T> clazz) {
         try {
             Object bean = ReflectUtils.newInstance(clazz);
             Map<String, Method> methods = ReflectUtils.findWriteMethods(clazz);
@@ -220,14 +202,9 @@ public class RandomUtils {
                     isMap = isMap && hasArgs && args.length >= 2;
                     boolean isList = List.class.isAssignableFrom(rawType);
                     isList = isList && hasArgs && args.length >= 1;
-                    val = isMap ? RandomUtils.nextMap((Class<?>) args[0]
-                            , (Class<?>) args[1]) : isList
-                            ? RandomUtils.nextList((Class<?>) args[0])
-                            : RandomUtils.nextObject(rawType);
+                    val = isMap || isList ? null : RandomUtils.nextObject(rawType);
                 }
-                else {
-                    val = RandomUtils.nextObject((Class<?>) type);
-                }
+                else { val = RandomUtils.nextObject((Class<?>) type); }
                 method.invoke(bean, val);
             }
             return (T) bean;
@@ -243,14 +220,10 @@ public class RandomUtils {
      * @param <T> The array type
      * @return A random array
      */
+    @SuppressWarnings("unchecked")
     public static <T> T[] nextArray(Class<T> clazz) {
         int size = RandomUtils.nextInt(DEFAULT_SIZE);
-        T[] array = (T[]) Array.newInstance(clazz, size);
-        StackTraceElement[] elements;
-        boolean isEmpty = Object.class.equals(clazz) ||
-                ((elements = new Throwable().getStackTrace()).length >= COLLECTION_NEST_COUNT &&
-                        METHOD_NEXT_ARRAY.equals(elements[COLLECTION_NEST_COUNT].getMethodName()));
-        if (isEmpty) { return array; }
+        T[] array = (T[]) Array.newInstance(clazz, ++size);
         for (int i = 0; i < size; i++) {
             Object obj = RandomUtils.nextObject(clazz);
             Array.set(array, i, obj);
@@ -265,13 +238,8 @@ public class RandomUtils {
      * @return A random list
      */
     public static <T> List<T> nextList(Class<T> clazz) {
-        StackTraceElement[] elements;
-        boolean isEmpty = Object.class.equals(clazz) ||
-                ((elements = new Throwable().getStackTrace()).length >= COLLECTION_NEST_COUNT &&
-                        METHOD_NEXT_LIST.equals(elements[COLLECTION_NEST_COUNT].getMethodName()));
-        if (isEmpty) { return new ArrayList<T>(DEFAULT_SIZE); }
         int size = RandomUtils.nextInt(DEFAULT_SIZE);
-        List<T> list = new ArrayList<T>(size);
+        List<T> list = new ArrayList<T>(++size);
         for (int i = 0; i < size; i++) {
             list.add(RandomUtils.nextObject(clazz));
         }
@@ -287,13 +255,8 @@ public class RandomUtils {
      * @return A random map
      */
     public static <K, V> Map<K, V> nextMap(Class<K> keyClass, Class<V> valClass) {
-        StackTraceElement[] elements;
-        boolean isEmpty = Object.class.equals(keyClass) || Object.class.equals(valClass) ||
-                ((elements = new Throwable().getStackTrace()).length >= COLLECTION_NEST_COUNT &&
-                        METHOD_NEXT_MAP.equals(elements[COLLECTION_NEST_COUNT].getMethodName()));
-        if (isEmpty) { return new HashMap<K, V>(DEFAULT_SIZE); }
         int size = RandomUtils.nextInt(DEFAULT_SIZE);
-        Map<K, V> map = new HashMap<K, V>(size);
+        Map<K, V> map = new HashMap<K, V>(++size);
         for (int i = 0; i < size; i++) {
             K key = RandomUtils.nextObject(keyClass);
             V val = RandomUtils.nextObject(valClass);
