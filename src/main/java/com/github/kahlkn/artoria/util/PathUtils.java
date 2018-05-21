@@ -1,7 +1,5 @@
 package com.github.kahlkn.artoria.util;
 
-import com.github.kahlkn.artoria.exception.ExceptionUtils;
-
 import java.io.File;
 import java.net.URL;
 
@@ -19,11 +17,14 @@ public class PathUtils {
      * @param name
      * @return
      */
-    public static URL findClasspath(String name) {
+    public static String findClasspath(String name) {
+        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         if (!name.startsWith(SLASH)) {
             name = SLASH + name;
         }
-        return THIS_CLASS.getResource(name);
+        URL res = THIS_CLASS.getResource(name);
+        File file = res != null ? new File(res.getFile()) : null;
+        return file != null ? file.toString() : null;
     }
 
     /**
@@ -31,14 +32,9 @@ public class PathUtils {
      * @return
      */
     public static String getRootPath() {
-        try {
-            URL res = THIS_CLASS.getResource(SLASH);
-            File path = res != null ? new File(res.toURI().getPath()) : null;
-            return path != null ? path.getParentFile().getParent() : EMPTY_STRING;
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
+        URL res = THIS_CLASS.getResource(SLASH);
+        File file = res != null ? new File(res.getFile()) : null;
+        return file != null ? file.getParentFile().getParent() : null;
     }
 
     /**
@@ -46,40 +42,37 @@ public class PathUtils {
      * @return
      */
     public static String getClasspath() {
-        try {
-            URL res = THIS_CLASS.getResource(SLASH);
-            return res != null ? new File(res.toURI().getPath()).toString() : EMPTY_STRING;
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
+        URL res = THIS_CLASS.getResource(SLASH);
+        File file = res != null ? new File(res.getFile()) : null;
+        return file != null ? file.toString() : null;
     }
 
     /**
      *
-     * @param src
+     * @param source
      * @param parent
      * @return
      */
-    public static String subPath(File src, File parent) {
-        Assert.notNull(src, "Source must is not null. ");
-        Assert.notNull(parent, "Parent must is not null. ");
-        String srcStr = src.toString();
+    public static String subPath(File source, File parent) {
+        Assert.notNull(source, "Parameter \"source\" must not null. ");
+        Assert.notNull(parent, "Parameter \"parent\" must not null. ");
+        String sourceStr = source.toString();
         String parentStr = parent.toString();
-        return PathUtils.subPath(srcStr, parentStr);
+        return PathUtils.subPath(sourceStr, parentStr);
     }
 
     /**
      *
-     * @param src
+     * @param source
      * @param parent
      * @return
      */
-    public static String subPath(String src, String parent) {
-        Assert.notBlank(src, "Source must is not blank. ");
-        Assert.notBlank(parent, "Parent must is not blank. ");
-        Assert.state(src.startsWith(parent), "Source must start with parent. ");
-        return StringUtils.replace(src, parent, EMPTY_STRING);
+    public static String subPath(String source, String parent) {
+        Assert.notBlank(source, "Parameter \"source\" must not blank. ");
+        Assert.notBlank(parent, "Parameter \"parent\" must not blank. ");
+        Assert.state(source.startsWith(parent)
+                , "Parameter \"source\" must start with parameter \"parent\". ");
+        return StringUtils.replace(source, parent, EMPTY_STRING);
     }
 
     /**
@@ -134,10 +127,10 @@ public class PathUtils {
      * @return
      */
     public static String getPackagePath(Class<?> clazz) {
-        Assert.notNull(clazz, "Clazz must is not null. ");
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Package p = clazz.getPackage();
         String pName = p != null ? p.getName() : null;
-        return pName != null ? StringUtils.replace(pName, DOT, SLASH) : EMPTY_STRING;
+        return pName != null ? StringUtils.replace(pName, DOT, SLASH) : null;
     }
 
     /**
@@ -146,15 +139,10 @@ public class PathUtils {
      * @return
      */
     public static String getClassFilePath(Class<?> clazz) {
-        Assert.notNull(clazz, "Clazz must is not null. ");
-        try {
-            URL res = clazz.getResource(EMPTY_STRING);
-            String path = res != null ? res.toURI().getPath() : null;
-            return path != null ? new File(path).toString() : EMPTY_STRING;
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        URL res = clazz.getResource(EMPTY_STRING);
+        File file = res != null ? new File(res.getFile()) : null;
+        return file != null ? file.toString() : null;
     }
 
 }
