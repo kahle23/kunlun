@@ -12,8 +12,6 @@ import java.nio.channels.FileChannel;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
-import static com.github.kahlkn.artoria.util.Const.CLASSPATH;
-
 /**
  * File tools.
  * @author Kahle
@@ -21,10 +19,6 @@ import static com.github.kahlkn.artoria.util.Const.CLASSPATH;
 public class FileUtils {
     private static Logger log = Logger.getLogger(FileUtils.class.getName());
     private static final long FILE_COPY_BUFFER_SIZE = 1024 * 1024 * 10;
-
-    public static File findClasspath(String fileName) {
-        return new File(CLASSPATH, fileName);
-    }
 
     public static boolean rename(File path, String newName) {
         File dest = new File(path.getParent(), newName);
@@ -80,22 +74,27 @@ public class FileUtils {
         while (!fileList.isEmpty()) {
             File current = fileList.removeFirst();
             File[] files = current.listFiles();
+            // don't have subfile or subdirectory, try delete
+            if (ArrayUtils.isEmpty(files)) {
+                if (!current.delete()) {
+                    log.info("File[" + current + "] delete fail. ");
+                }
+                continue;
+            }
             // is add current ?
             boolean addCurrent = false;
-            if (ArrayUtils.isNotEmpty(files)) {
-                for (File file : files) {
-                    if (file.isDirectory()) {
-                        if (!addCurrent) {
-                            fileList.addLast(current);
-                            addCurrent = true;
-                        }
-                        fileList.addFirst(file);
-                    }
-                    else {
-                        if (!file.delete()) {
-                            log.info("File[" + file + "] delete fail. ");
-                        }
-                    }
+            boolean isDirectory;
+            for (File file : files) {
+                isDirectory = file.isDirectory();
+                if (isDirectory && !addCurrent) {
+                    fileList.addLast(current);
+                    addCurrent = true;
+                }
+                if (isDirectory) {
+                    fileList.addFirst(file);
+                }
+                else if (!file.delete()) {
+                    log.info("File[" + file + "] delete fail. ");
                 }
             }
             if (!addCurrent && !current.delete()) {

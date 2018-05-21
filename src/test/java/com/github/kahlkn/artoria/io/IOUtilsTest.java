@@ -9,7 +9,7 @@ public class IOUtilsTest {
 
     @Test
     public void test1() throws IOException {
-        InputStream in = IOUtils.findJarClasspath("jdbc.properties");
+        InputStream in = IOUtils.findClasspath("jdbc.properties");
         System.out.println(IOUtils.toString(in));
     }
 

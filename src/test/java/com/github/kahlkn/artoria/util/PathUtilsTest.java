@@ -5,8 +5,15 @@ import org.junit.Test;
 public class PathUtilsTest {
 
     @Test
-    public void testFindJarClasspath() {
-        System.out.println(PathUtils.findJarClasspath("logging.properties"));
+    public void testRootPathAndClasspath() {
+        System.out.println(PathUtils.getRootPath());
+        System.out.println(PathUtils.getClasspath());
+    }
+
+    @Test
+    public void testFindClasspath() {
+        System.out.println(PathUtils.findClasspath("logging.properties"));
+        System.out.println(PathUtils.findClasspath("logging111.properties"));
     }
 
     @Test
