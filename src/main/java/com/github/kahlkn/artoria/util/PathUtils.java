@@ -16,6 +16,18 @@ public class PathUtils {
 
     /**
      *
+     * @param name
+     * @return
+     */
+    public static URL findClasspath(String name) {
+        if (!name.startsWith(SLASH)) {
+            name = SLASH + name;
+        }
+        return THIS_CLASS.getResource(name);
+    }
+
+    /**
+     *
      * @return
      */
     public static String getRootPath() {
@@ -35,24 +47,12 @@ public class PathUtils {
      */
     public static String getClasspath() {
         try {
-            URL res = ClassUtils.getDefaultClassLoader().getResource(EMPTY_STRING);
+            URL res = THIS_CLASS.getResource(SLASH);
             return res != null ? new File(res.toURI().getPath()).toString() : EMPTY_STRING;
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
         }
-    }
-
-    /**
-     *
-     * @param name
-     * @return
-     */
-    public static URL findJarClasspath(String name) {
-        if (!name.startsWith(SLASH)) {
-            name = SLASH + name;
-        }
-        return THIS_CLASS.getResource(name);
     }
 
     /**

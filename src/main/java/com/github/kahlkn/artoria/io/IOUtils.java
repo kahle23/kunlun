@@ -1,6 +1,5 @@
 package com.github.kahlkn.artoria.io;
 
-import com.github.kahlkn.artoria.util.ClassUtils;
 import com.github.kahlkn.artoria.util.Const;
 
 import java.io.*;
@@ -23,15 +22,10 @@ public class IOUtils {
     public static final int EOF = -1;
 
     public static InputStream findClasspath(String fileName) {
-        ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
-        return classLoader.getResourceAsStream(fileName);
-    }
-
-    public static InputStream findJarClasspath(String name) {
-        if (!name.startsWith(SLASH)) {
-            name = SLASH + name;
+        if (!fileName.startsWith(SLASH)) {
+            fileName = SLASH + fileName;
         }
-        return THIS_CLASS.getResourceAsStream(name);
+        return THIS_CLASS.getResourceAsStream(fileName);
     }
 
     public static void closeQuietly(URLConnection conn) {

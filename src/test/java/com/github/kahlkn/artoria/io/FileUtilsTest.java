@@ -6,18 +6,10 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
+@Ignore
 public class FileUtilsTest {
 
     @Test
-    public void testFindClasspath() throws Exception {
-        File file = FileUtils.findClasspath("jdbc.properties");
-        System.out.println(new String(FileUtils.read(file)));
-        File file1 = FileUtils.findClasspath("hello.txt");
-        System.out.println(file1);
-    }
-
-    @Test
-    @Ignore
     public void testRenameTo() {
         File file = new File("E:\\hello.txt");
         boolean rnSc = file.renameTo(new File("D:\\123.txt"));
@@ -29,7 +21,6 @@ public class FileUtilsTest {
     }
 
     @Test
-    @Ignore
     public void testRename() {
         File file = new File("E:\\hello.txt");
         System.out.println(FileUtils.rename(file, "123.txt"));
@@ -38,7 +29,12 @@ public class FileUtilsTest {
     }
 
     @Test
-    @Ignore
+    public void testDeleteDirectory() throws IOException {
+        File dest = new File("E:\\test");
+        FileUtils.deleteDirectory(dest);
+    }
+
+    @Test
     public void testCopyFileToFile() throws IOException {
         File src = new File("E:\\src\\1.txt");
         File dest = new File("E:\\dest\\11.txt");
@@ -46,7 +42,6 @@ public class FileUtilsTest {
     }
 
     @Test
-    @Ignore
     public void testCopyFileToDirectory() throws IOException {
         File src = new File("E:\\src\\1.txt");
         File dest = new File("E:\\dest");
@@ -54,7 +49,6 @@ public class FileUtilsTest {
     }
 
     @Test
-    @Ignore
     public void testCopyDirectoryToDirectory() throws IOException {
         File src = new File("E:\\src");
         File dest = new File("E:\\dest");
@@ -62,7 +56,6 @@ public class FileUtilsTest {
     }
 
     @Test
-    @Ignore
     public void testMoveDirectory() throws IOException {
         File src = new File("E:\\src");
         File dest = new File("E:\\dest");
