@@ -76,7 +76,7 @@ public class LockUtilsTest {
                 }
             });
         }
-        ThreadUtils.sleepQuietly(10000);
+        ThreadUtils.sleepQuietly(1000);
     }
 
     @Test
@@ -112,7 +112,7 @@ public class LockUtilsTest {
                 }
             });
         }
-        ThreadUtils.sleepQuietly(10000);
+        ThreadUtils.sleepQuietly(1000);
     }
 
 }
