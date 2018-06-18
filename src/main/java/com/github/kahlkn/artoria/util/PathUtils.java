@@ -34,7 +34,8 @@ public class PathUtils {
     public static String getRootPath() {
         URL res = THIS_CLASS.getResource(SLASH);
         File file = res != null ? new File(res.getFile()) : null;
-        return file != null ? file.getParentFile().getParent() : null;
+        file = file != null ? file.getParentFile() : null;
+        return file != null ? file.getParent() : null;
     }
 
     /**

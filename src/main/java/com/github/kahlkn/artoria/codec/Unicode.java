@@ -11,7 +11,7 @@ public class Unicode {
     private static final int RADIX = 16;
 
     public static String encode(String data) {
-        Assert.notNull(data, "Parameter \"data\" must not null. ");
+        Assert.notBlank(data, "Parameter \"data\" must not blank. ");
         StringBuilder unicode = new StringBuilder();
         char[] chars = data.toCharArray();
         for (char c : chars) {
@@ -26,7 +26,7 @@ public class Unicode {
     }
 
     public static String decode(String unicode) {
-        Assert.notNull(unicode, "Parameter \"unicode\" must not null. ");
+        Assert.notBlank(unicode, "Parameter \"unicode\" must not blank. ");
         int index, pos = 0;
         StringBuilder result = new StringBuilder();
         while ((index = unicode.indexOf(BACKLASH_U, pos)) != -1) {
@@ -37,6 +37,10 @@ public class Unicode {
                 char ch = (char) Integer.parseInt(hex, RADIX);
                 result.append(ch);
             }
+        }
+        if (unicode.length() > pos + 1) {
+            String tmp = unicode.substring(pos, unicode.length());
+            result.append(tmp);
         }
         return result.toString();
     }

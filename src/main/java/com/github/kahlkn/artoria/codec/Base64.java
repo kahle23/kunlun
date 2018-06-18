@@ -44,12 +44,12 @@ public class Base64 {
         }
         if (base64Delegate != null) { return; }
         ClassLoader classLoader = Base64.class.getClassLoader();
-        // JDK 8's java.util.Base64 class present?
+        // If have JDK 8's java.util.Base64, to use it.
         if (ClassUtils.isPresent(JAVA_UTIL_BASE64, classLoader)) {
             log.info("Use base64 provider: " + JAVA_UTIL_BASE64);
             base64Delegate = new Java8Base64Delegate();
         }
-        // maybe all jdk is ok?
+        // Maybe all jdk is ok.
         else if (ClassUtils.isPresent(JAVAX_XML_DATATYPE_CONVERTER, classLoader)) {
             log.info("Use base64 provider: " + JAVAX_XML_DATATYPE_CONVERTER);
             base64Delegate = new Java7Base64Delegate();
