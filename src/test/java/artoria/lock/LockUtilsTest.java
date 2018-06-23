@@ -16,101 +16,177 @@ public class LockUtilsTest {
     @Before
     public void init() {
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
-        pool = new ThreadPoolExecutor(10, 10, 0L
+        pool = new ThreadPoolExecutor(20, 20, 0L
                 , TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), threadFactory);
-        // Must register lock before use
-        LockUtils.registerLock(LockUtilsTest.class.getName(), ReentrantLock.class);
     }
 
     @After
     public void destroy() {
         pool.shutdown();
-        // Unregister lock is better
-        LockUtils.unregisterLock(LockUtilsTest.class.getName());
-    }
-
-    @Test
-    public void testRegisterFactory() {
-        SimpleLockFactory lockFactory = new SimpleLockFactory();
-        LockUtils.registerFactory(ReentrantLock.class, lockFactory);
-    }
-
-    @Test
-    @Ignore
-    public void testUnregisterFactory() {
-        LockUtils.unregisterFactory(ReentrantLock.class);
     }
 
     @Test
     public void test1() {
-//        final ReentrantLock reentrantLock = new ReentrantLock();
-        for (int i = 0; i < 10; i++) {
-            pool.submit(new Runnable() {
-                @Override
-                public void run() {
+        final String lockName = "test1";
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                String threadName = Thread.currentThread().getName();
+                long millis = System.currentTimeMillis();
+                for (int j = 0; j < 1000000; j++) {
+                    if (num < 0) { continue; }
                     try {
-                        long millis = System.currentTimeMillis();
-                        for (int j = 0; j < 1000000; j++) {
-                            if (num >= 0) {
-//                                reentrantLock.lock();
-                                LockUtils.lock(LockUtilsTest.class.getName());
-                                try {
-//                                synchronized (this) {
-                                    if (num >= 0) {
-                                        System.out.println(Thread.currentThread().getName() + " | " + (num--));
-//                                        Thread.sleep(60);
-                                    }
-//                                }
-                                }
-                                finally {
-//                                    reentrantLock.unlock();
-                                    LockUtils.unlock(LockUtilsTest.class.getName());
-                                }
-                            }
-                        }
-                        System.out.println(System.currentTimeMillis() - millis);
+                        System.out.println(threadName);
+                        LockUtils.lock(lockName);
+                        if (num < 0) { continue; }
+                        System.out.println(threadName + " | " + (num--));
                     }
-                    catch (Exception e) {
-                        e.printStackTrace();
+                    finally {
+                        System.out.println(threadName + " unlock");
+                        LockUtils.unlock(lockName);
                     }
                 }
-            });
+                System.out.println(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+            }
+        };
+        for (int i = 0; i < 20; i++) {
+            pool.submit(runnable);
         }
         ThreadUtils.sleepQuietly(1000);
     }
 
     @Test
     public void test2() {
-        for (int i = 0; i < 10; i++) {
-            pool.submit(new Runnable() {
-                @Override
-                public void run() {
+        final String lockName = "test2";
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                String threadName = Thread.currentThread().getName();
+                long millis = System.currentTimeMillis();
+                for (int j = 0; j < 1000000; j++) {
+                    if (num < 0) { continue; }
+                    // boolean tryLock = LockUtils.tryLock(lockName);
+                    boolean tryLock = false;
                     try {
-                        long millis = System.currentTimeMillis();
-                        for (int j = 0; j < 1000000; j++) {
-                            if (num >= 0) {
-//                                boolean tryLock = LockUtils.tryLock(LockUtilsTest.class.getName());
-                                boolean tryLock = LockUtils.tryLock(LockUtilsTest.class.getName(), 500, TimeUnit.MILLISECONDS);
-                                System.out.println(tryLock);
-                                if (tryLock) {
-                                    try {
-                                        if (num >= 0) {
-                                            System.out.println(Thread.currentThread().getName() + " | " + (num--));
-                                        }
-                                    }
-                                    finally {
-                                        LockUtils.unlock(LockUtilsTest.class.getName());
-                                    }
-                                }
-                            }
-                        }
-                        System.out.println(System.currentTimeMillis() - millis);
+                        tryLock = LockUtils.tryLock(lockName, 50, TimeUnit.MILLISECONDS);
                     }
-                    catch (Exception e) {
+                    catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    System.out.println(threadName + " tryLock: " + tryLock);
+                    if (!tryLock) { continue; }
+                    try {
+                        if (num < 0) { continue; }
+                        System.out.println(threadName + " | " + (num--));
+                    }
+                    finally {
+                        System.out.println(threadName + " unlock");
+                        LockUtils.unlock(lockName);
+                    }
                 }
-            });
+                System.out.println(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+            }
+        };
+        for (int i = 0; i < 20; i++) {
+            pool.submit(runnable);
+        }
+        ThreadUtils.sleepQuietly(1000);
+    }
+
+    @Test
+    @Ignore
+    public void test3() {
+        final ReentrantLock lock = new ReentrantLock();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                String threadName = Thread.currentThread().getName();
+                long millis = System.currentTimeMillis();
+                for (int j = 0; j < 1000000; j++) {
+                    if (num < 0) { continue; }
+                    try {
+                        System.out.println(threadName);
+                        lock.lock();
+                        if (num < 0) { continue; }
+                        System.out.println(threadName + " | " + (num--));
+                    }
+                    finally {
+                        System.out.println(threadName + " unlock");
+                        lock.unlock();
+                    }
+                }
+                System.out.println(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+            }
+        };
+        for (int i = 0; i < 20; i++) {
+            pool.submit(runnable);
+        }
+        ThreadUtils.sleepQuietly(1000);
+    }
+
+    @Test
+    @Ignore
+    public void test4() {
+        final ReentrantLock lock = new ReentrantLock();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                String threadName = Thread.currentThread().getName();
+                long millis = System.currentTimeMillis();
+                for (int j = 0; j < 1000000; j++) {
+                    if (num < 0) { continue; }
+                    // boolean tryLock = lock.tryLock();
+                    boolean tryLock = false;
+                    try {
+                        tryLock = lock.tryLock(50, TimeUnit.MILLISECONDS);
+                    }
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(threadName + " tryLock: " + tryLock);
+                    if (!tryLock) { continue; }
+                    try {
+                        if (num < 0) { continue; }
+                        System.out.println(threadName + " | " + (num--));
+                    }
+                    finally {
+                        System.out.println(threadName + " unlock");
+                        lock.unlock();
+                    }
+                }
+                System.out.println(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+            }
+        };
+        for (int i = 0; i < 20; i++) {
+            pool.submit(runnable);
+        }
+        ThreadUtils.sleepQuietly(1000);
+    }
+
+    @Test
+    @Ignore
+    public void test5() {
+        final Object lock = new Object();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                String threadName = Thread.currentThread().getName();
+                long millis = System.currentTimeMillis();
+                for (int j = 0; j < 1000000; j++) {
+                    if (num < 0) { continue; }
+                    System.out.println(threadName);
+                    synchronized (lock) {
+                        if (num >= 0) {
+                            System.out.println(threadName + " | " + (num--));
+                        }
+                        System.out.println(threadName + " unlock");
+                    }
+                }
+                System.out.println(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+            }
+        };
+        for (int i = 0; i < 20; i++) {
+            pool.submit(runnable);
         }
         ThreadUtils.sleepQuietly(1000);
     }
