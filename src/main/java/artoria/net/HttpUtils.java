@@ -171,7 +171,7 @@ public class HttpUtils {
 
     private HttpUtils() {}
 
-    private String urlCodec() throws IOException {
+    private String handleParameters() throws IOException {
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             builder.append(entry.getKey())
@@ -189,7 +189,7 @@ public class HttpUtils {
         // Handle url.
         String handleUrl = url;
         if (!method.getHasBody() && MapUtils.isNotEmpty(parameters)) {
-            String params = this.urlCodec();
+            String params = this.handleParameters();
             handleUrl += url.contains(QUESTION_MARK) ? AMPERSAND : QUESTION_MARK;
             handleUrl = handleUrl + params;
             parameters.clear();
@@ -261,7 +261,7 @@ public class HttpUtils {
 
             out = needOutput ? conn.getOutputStream() : null;
             if (hasParams) {
-                String params = this.urlCodec();
+                String params = this.handleParameters();
                 Charset encoding = Charset.forName(this.charset);
                 out.write(params.getBytes(encoding));
             }
