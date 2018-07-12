@@ -68,4 +68,14 @@ public class DateTimeTest {
         System.out.println();
     }
 
+    @Test
+    public void testNew() {
+        SimpleDateTime dateTime = new SimpleDateTime();
+        System.out.println(dateTime);
+        SimpleDateTime dateTime1 = new SimpleDateTime(Calendar.getInstance());
+        System.out.println(dateTime1);
+        SimpleDateTime dateTime2 = new SimpleDateTime(new Date());
+        System.out.println(dateTime2);
+    }
+
 }
