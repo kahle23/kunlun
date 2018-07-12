@@ -20,6 +20,7 @@ public class ReentrantLocker implements Locker {
     private Map<String, Lock> storage;
 
     private Lock takeLock(String lockName) {
+        Assert.notBlank(lockName, "Parameter \"lockName\" must not blank. ");
         Lock lock = storage.get(lockName);
         if (lock != null) { return lock; }
         try {

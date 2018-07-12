@@ -19,8 +19,12 @@ public class SimpleDateTime implements DateTime {
     }
 
     public SimpleDateTime(Calendar calendar) {
-        Assert.notNull(calendar, "Parameter \"calendar\" must not null. ");
-        this.calendar = calendar;
+        this.setCalendar(calendar);
+    }
+
+    public SimpleDateTime(Date date) {
+        this();
+        this.setDate(date);
     }
 
     @Override
