@@ -28,9 +28,14 @@ public class IOUtils {
         return THIS_CLASS.getResourceAsStream(fileName);
     }
 
-    public static void closeQuietly(URLConnection conn) {
-        if (conn != null && conn instanceof HttpURLConnection) {
-            ((HttpURLConnection) conn).disconnect();
+    public static void closeQuietly(AutoCloseable closeable) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            }
+            catch (Exception e) {
+                // ignore
+            }
         }
     }
 
@@ -42,6 +47,12 @@ public class IOUtils {
             catch (IOException ioe) {
                 // ignore
             }
+        }
+    }
+
+    public static void closeQuietly(URLConnection conn) {
+        if (conn != null && conn instanceof HttpURLConnection) {
+            ((HttpURLConnection) conn).disconnect();
         }
     }
 
