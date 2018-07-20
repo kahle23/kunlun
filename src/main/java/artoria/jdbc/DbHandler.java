@@ -2,6 +2,7 @@ package artoria.jdbc;
 
 import artoria.beans.BeanUtils;
 import artoria.exception.ExceptionUtils;
+import artoria.io.IOUtils;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
 import artoria.util.StringUtils;
@@ -14,29 +15,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import static artoria.util.Const.COMMA;
+
 /**
- * Db tools.
+ * Db handler.
  * @author Kahle
  */
-public class DbUtils {
-    public static final int DEFAULT_TRANSACTION_LEVEL = Connection.TRANSACTION_REPEATABLE_READ;
-    private static Logger log = Logger.getLogger(DbUtils.class.getName());
-
-    public static void close(Connection conn) {
-        if (conn != null) {
-            try {
-                conn.close();
-            }
-            catch (SQLException e) {
-                conn = null;
-            }
-        }
-    }
-
+public class DbHandler {
+    private static final int DEFAULT_TRANSACTION_LEVEL = Connection.TRANSACTION_REPEATABLE_READ;
+    private static Logger log = Logger.getLogger(DbHandler.class.getName());
     private final ThreadLocal<Connection> threadConnection = new ThreadLocal<Connection>();
     private DataSource dataSource;
 
-    public DbUtils(DataSource dataSource) {
+    public DbHandler(DataSource dataSource) {
         this.setDataSource(dataSource);
     }
 
@@ -57,6 +48,90 @@ public class DbUtils {
         return connection;
     }
 
+    public List<TableMeta> getTableMeta() throws SQLException {
+        List<TableMeta> tableMetaList = new ArrayList<TableMeta>();
+        ResultSet tableResultSet = null;
+        Connection conn = null;
+        try {
+            conn = this.getConnection();
+            DatabaseMetaData databaseMetaData = conn.getMetaData();
+            tableResultSet = databaseMetaData.getTables(null, null, null, new String[]{"TABLE"});
+            StringBuilder primaryKey = new StringBuilder();
+            while (tableResultSet.next()) {
+                String tableName = tableResultSet.getString("TABLE_NAME");
+                TableMeta tableMeta = new TableMeta();
+                tableMetaList.add(tableMeta);
+                tableMeta.setName(tableName);
+                tableMeta.setRemarks(tableResultSet.getString("REMARKS"));
+
+                primaryKey.setLength(0);
+                ResultSet primaryKeysResultSet = null;
+                try {
+                    primaryKeysResultSet = databaseMetaData.getPrimaryKeys(null, null, tableName);
+                    while (primaryKeysResultSet.next()) {
+                        primaryKey.append(primaryKeysResultSet.getString("COLUMN_NAME")).append(COMMA);
+                    }
+                }
+                finally {
+                    IOUtils.closeQuietly(primaryKeysResultSet);
+                }
+                if (primaryKey.length() > 0) {
+                    primaryKey.deleteCharAt(primaryKey.length() - 1);
+                }
+                tableMeta.setPrimaryKey(primaryKey.toString());
+
+                Map<String, ColumnMeta> columnMap = new HashMap<String, ColumnMeta>(16);
+                ResultSet columnResultSet = null;
+                try {
+                    columnResultSet = databaseMetaData.getColumns(null, null, tableName, null);
+                    tableMeta.setColumns(new ArrayList<ColumnMeta>());
+                    while (columnResultSet.next()) {
+                        ColumnMeta columnMeta = new ColumnMeta();
+                        String columnName = columnResultSet.getString("COLUMN_NAME");
+                        columnMeta.setName(columnName);
+                        columnMeta.setType(columnResultSet.getString("TYPE_NAME"));
+                        columnMeta.setSize(columnResultSet.getInt("COLUMN_SIZE"));
+                        columnMeta.setDecimalDigits(columnResultSet.getInt("DECIMAL_DIGITS"));
+                        columnMeta.setRemarks(columnResultSet.getString("REMARKS"));
+                        columnMeta.setNullable(columnResultSet.getString("IS_NULLABLE"));
+                        columnMeta.setAutoincrement(columnResultSet.getString("IS_AUTOINCREMENT"));
+                        columnMeta.setPrimaryKey(primaryKey.indexOf(columnMeta.getName()) > 0);
+                        tableMeta.getColumns().add(columnMeta);
+                        columnMap.put(columnName, columnMeta);
+                    }
+                }
+                finally {
+                    IOUtils.closeQuietly(columnResultSet);
+                }
+
+                Statement statement = null;
+                ResultSet resultSet = null;
+                try {
+                    statement = conn.createStatement();
+                    resultSet = statement.executeQuery("select * from " + tableName + " where 1 = 2");
+                    ResultSetMetaData metaData = resultSet.getMetaData();
+                    for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                        String columnName = metaData.getColumnName(i);
+                        String columnClassName = metaData.getColumnClassName(i);
+                        ColumnMeta columnMeta = columnMap.get(columnName);
+                        if (columnMeta == null) { continue; }
+                        columnMeta.setClassName(columnClassName);
+                    }
+                }
+                finally {
+                    IOUtils.closeQuietly(resultSet);
+                    IOUtils.closeQuietly(statement);
+                }
+            }
+
+            return tableMetaList;
+        }
+        finally {
+            IOUtils.closeQuietly(tableResultSet);
+            IOUtils.closeQuietly(conn);
+        }
+    }
+
     public <T> T execute(DbCallback<T> callback) throws SQLException {
         Connection conn = null;
         try {
@@ -64,7 +139,7 @@ public class DbUtils {
             return callback.call(conn);
         }
         finally {
-            DbUtils.close(conn);
+            IOUtils.closeQuietly(conn);
         }
     }
 
@@ -135,29 +210,33 @@ public class DbUtils {
     }
 
     public int update(String sql, Object... params) throws SQLException {
+        PreparedStatement prepStat = null;
         Connection conn = null;
         try {
             conn = this.getConnection();
-            PreparedStatement prepStat = conn.prepareStatement(sql);
+            prepStat = conn.prepareStatement(sql);
             for (int i = 0; i < params.length; i++) {
                 prepStat.setObject(i + 1, params[i]);
             }
             return prepStat.executeUpdate();
         }
         finally {
-            DbUtils.close(conn);
+            IOUtils.closeQuietly(prepStat);
+            IOUtils.closeQuietly(conn);
         }
     }
 
     public List<Map<String, Object>> query(String sql, Object... params) throws SQLException {
+        PreparedStatement prepStat = null;
+        ResultSet resSet = null;
         Connection conn = null;
         try {
             conn = this.getConnection();
-            PreparedStatement prepStat = conn.prepareStatement(sql);
+            prepStat = conn.prepareStatement(sql);
             for (int i = 0; i < params.length; i++) {
                 prepStat.setObject(i + 1, params[i]);
             }
-            ResultSet resSet = prepStat.executeQuery();
+            resSet = prepStat.executeQuery();
             ResultSetMetaData metaData = resSet.getMetaData();
             int count = metaData.getColumnCount();
             // Handle keys.
@@ -178,7 +257,9 @@ public class DbUtils {
             return result;
         }
         finally {
-            DbUtils.close(conn);
+            IOUtils.closeQuietly(resSet);
+            IOUtils.closeQuietly(prepStat);
+            IOUtils.closeQuietly(conn);
         }
     }
 
