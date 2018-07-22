@@ -27,7 +27,10 @@ public interface Const {
     String COMMA = ",";
     String COMMA_SPACE = ", ";
     String UNDERLINE = "_";
+    String ASTERISK = "*";
     String AMPERSAND = "&";
+    String POUND_SIGN = "#";
+    String DOLLAR_SIGN = "$";
     String QUESTION_MARK = "?";
     String BACKLASH = "\\";
     String EMPTY_STRING = "";

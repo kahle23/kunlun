@@ -1,13 +1,16 @@
 package artoria.template;
 
+import artoria.io.IOUtils;
 import artoria.io.StringBuilderWriter;
 import artoria.util.Assert;
+import artoria.util.StringUtils;
 
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.Writer;
+import java.io.*;
+import java.text.ParseException;
+import java.util.Map;
 
-import static artoria.util.Const.DEFAULT_CHARSET_NAME;
+import static artoria.io.IOUtils.EOF;
+import static artoria.util.Const.*;
 
 /**
  * Template renderer by jdk.
@@ -22,7 +25,13 @@ public class JdkRenderer implements Renderer {
 
     @Override
     public void render(String name, String encoding, Object data, Writer writer) throws Exception {
-        throw new UnsupportedOperationException();
+        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
+        InputStream in = IOUtils.findClasspath(name);
+        if (in == null) {
+            throw new IOException("Can not find template by \"" + name + "\" in classpath. ");
+        }
+        Reader reader = new InputStreamReader(in, encoding);
+        this.render(data, writer, name, reader);
     }
 
     @Override
@@ -34,7 +43,9 @@ public class JdkRenderer implements Renderer {
 
     @Override
     public void render(Object data, Writer writer, String logTag, Reader reader) throws Exception {
-        throw new UnsupportedOperationException();
+        Assert.notNull(reader, "Parameter \"reader\" must not null. ");
+        String template = IOUtils.toString(reader);
+        this.render(data, writer, template);
     }
 
     @Override
@@ -61,6 +72,27 @@ public class JdkRenderer implements Renderer {
         StringBuilderWriter writer = new StringBuilderWriter();
         this.render(data, writer, logTag, reader);
         return writer.toString();
+    }
+
+    private void render(Object data, Writer writer, String template) throws Exception {
+        Assert.notNull(data, "Parameter \"data\" must not null. ");
+        Assert.isInstanceOf(Map.class, data, "Parameter \"data\" must instance of \"Map.class\". ");
+        Assert.notNull(writer, "Parameter \"writer\" must not null. ");
+        if (StringUtils.isBlank(template)) { writer.write(template); return; }
+        Map dataMap = (Map) data;
+        for (int finish = template.length(), begin = 0, end = 0; end != finish; ) {
+            end = template.indexOf(DOLLAR_SIGN + LEFT_CURLY_BRACKET, begin);
+            end = end == EOF ? finish : end;
+            writer.write(template.substring(begin, end));
+            if (end == finish) { continue; }
+            end = template.indexOf(RIGHT_CURLY_BRACKET, (begin = end + 2));
+            if (end == EOF) {
+                throw new ParseException("After \"${\" must be \"}\" in index \"" + begin + "\". ", begin);
+            }
+            Object obj = dataMap.get(template.substring(begin, end));
+            writer.write(obj != null ? obj.toString() : EMPTY_STRING);
+            begin = ++end;
+        }
     }
 
 }
