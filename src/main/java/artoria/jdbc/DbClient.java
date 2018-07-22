@@ -18,16 +18,16 @@ import java.util.logging.Logger;
 import static artoria.util.Const.COMMA;
 
 /**
- * Db handler.
+ * Database client.
  * @author Kahle
  */
-public class DbHandler {
+public class DbClient {
     private static final int DEFAULT_TRANSACTION_LEVEL = Connection.TRANSACTION_REPEATABLE_READ;
-    private static Logger log = Logger.getLogger(DbHandler.class.getName());
+    private static Logger log = Logger.getLogger(DbClient.class.getName());
     private final ThreadLocal<Connection> threadConnection = new ThreadLocal<Connection>();
     private DataSource dataSource;
 
-    public DbHandler(DataSource dataSource) {
+    public DbClient(DataSource dataSource) {
         this.setDataSource(dataSource);
     }
 
