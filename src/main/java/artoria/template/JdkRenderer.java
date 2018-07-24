@@ -81,7 +81,7 @@ public class JdkRenderer implements Renderer {
         if (StringUtils.isBlank(template)) { writer.write(template); return; }
         Map dataMap = (Map) data;
         for (int finish = template.length(), begin = 0, end = 0; end != finish; ) {
-            end = template.indexOf(DOLLAR_SIGN + LEFT_CURLY_BRACKET, begin);
+            end = template.indexOf(DOLLAR_MARK + LEFT_CURLY_BRACKET, begin);
             end = end == EOF ? finish : end;
             writer.write(template.substring(begin, end));
             if (end == finish) { continue; }

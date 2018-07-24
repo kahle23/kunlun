@@ -48,7 +48,7 @@ public class DbClient {
         return connection;
     }
 
-    public List<TableMeta> getTableMeta() throws SQLException {
+    public List<TableMeta> getTableMetaList() throws SQLException {
         List<TableMeta> tableMetaList = new ArrayList<TableMeta>();
         ResultSet tableResultSet = null;
         Connection conn = null;
@@ -84,7 +84,7 @@ public class DbClient {
                 ResultSet columnResultSet = null;
                 try {
                     columnResultSet = databaseMetaData.getColumns(null, null, tableName, null);
-                    tableMeta.setColumns(new ArrayList<ColumnMeta>());
+                    tableMeta.setColumnMetaList(new ArrayList<ColumnMeta>());
                     while (columnResultSet.next()) {
                         ColumnMeta columnMeta = new ColumnMeta();
                         String columnName = columnResultSet.getString("COLUMN_NAME");
@@ -95,8 +95,8 @@ public class DbClient {
                         columnMeta.setRemarks(columnResultSet.getString("REMARKS"));
                         columnMeta.setNullable(columnResultSet.getString("IS_NULLABLE"));
                         columnMeta.setAutoincrement(columnResultSet.getString("IS_AUTOINCREMENT"));
-                        columnMeta.setPrimaryKey(primaryKey.indexOf(columnMeta.getName()) > 0);
-                        tableMeta.getColumns().add(columnMeta);
+                        columnMeta.setPrimaryKey(primaryKey.indexOf(columnName) >= 0);
+                        tableMeta.getColumnMetaList().add(columnMeta);
                         columnMap.put(columnName, columnMeta);
                     }
                 }

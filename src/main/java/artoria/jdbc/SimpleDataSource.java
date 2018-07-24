@@ -56,9 +56,9 @@ public class SimpleDataSource implements DataSource {
         if (StringUtils.isNotBlank(driverClass)) { this.driverClass = driverClass; }
         Assert.notBlank(jdbcUrl, "Parameter \"jdbcUrl\" must not blank. ");
         this.jdbcUrl = jdbcUrl;
-        Assert.notBlank(user, "Parameter \"user\" must not blank. ");
+        Assert.notNull(user, "Parameter \"user\" must not null. ");
         this.user = user;
-        Assert.notBlank(password, "Parameter \"password\" must not blank. ");
+        Assert.notNull(password, "Parameter \"password\" must not null. ");
         this.password = password;
         if (maxPoolSize > 0) { this.maxPoolSize = maxPoolSize; }
         Assert.state(minPoolSize <= this.maxPoolSize
