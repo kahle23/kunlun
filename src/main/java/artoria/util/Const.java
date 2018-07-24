@@ -29,8 +29,9 @@ public interface Const {
     String UNDERLINE = "_";
     String ASTERISK = "*";
     String AMPERSAND = "&";
-    String POUND_SIGN = "#";
-    String DOLLAR_SIGN = "$";
+    String POUND_MARK = "#";
+    String QUOTE_MARK = "\"";
+    String DOLLAR_MARK = "$";
     String QUESTION_MARK = "?";
     String BACKLASH = "\\";
     String EMPTY_STRING = "";

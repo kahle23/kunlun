@@ -32,7 +32,7 @@ public interface Renderer {
      * Rendering template by content.
      * @param data Template filled model
      * @param writer Render result
-     * @param logTag Template name and log messages name
+     * @param logTag Log messages name
      * @param template Template string
      * @throws Exception Have more different exception
      */
@@ -42,7 +42,7 @@ public interface Renderer {
      * Rendering template by content.
      * @param data Template filled model
      * @param writer Render result
-     * @param logTag Template name and log messages name
+     * @param logTag Log messages name
      * @param reader Template input stream
      * @throws Exception Have more different exception
      */
@@ -70,7 +70,7 @@ public interface Renderer {
     /**
      * Rendering template by content.
      * @param data Template filled model
-     * @param logTag Template name and log messages name
+     * @param logTag Log messages name
      * @param template Template string
      * @return Render result
      * @throws Exception Have more different exception
@@ -80,7 +80,7 @@ public interface Renderer {
     /**
      * Rendering template by content.
      * @param data Template filled model
-     * @param logTag Template name and log messages name
+     * @param logTag Log messages name
      * @param reader Template input stream
      * @return Render result
      * @throws Exception Have more different exception

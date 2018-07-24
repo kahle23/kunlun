@@ -20,12 +20,12 @@ public class DbClientTest {
 
     @Test
     public void getTableMeta() throws Exception {
-        List<TableMeta> tableMetaList = client.getTableMeta();
+        List<TableMeta> tableMetaList = client.getTableMetaList();
         for (TableMeta tableMeta : tableMetaList) {
             System.out.println("--------");
             System.out.println(tableMeta.getName() + " | " + tableMeta.getRemarks());
             System.out.println(tableMeta.getPrimaryKey());
-            for (ColumnMeta columnMeta : tableMeta.getColumns()) {
+            for (ColumnMeta columnMeta : tableMeta.getColumnMetaList()) {
                 System.out.println(JSON.toJSONString(columnMeta, true));
             }
             System.out.println("--------");

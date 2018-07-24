@@ -26,9 +26,9 @@ public class TableMeta implements Serializable {
     private String primaryKey;
 
     /**
-     * Table all columns.
+     * Table's column meta list.
      */
-    private List<ColumnMeta> columns;
+    private List<ColumnMeta> columnMetaList;
 
     public String getName() {
         return name;
@@ -54,12 +54,12 @@ public class TableMeta implements Serializable {
         this.primaryKey = primaryKey;
     }
 
-    public List<ColumnMeta> getColumns() {
-        return columns;
+    public List<ColumnMeta> getColumnMetaList() {
+        return columnMetaList;
     }
 
-    public void setColumns(List<ColumnMeta> columns) {
-        this.columns = columns;
+    public void setColumnMetaList(List<ColumnMeta> columnMetaList) {
+        this.columnMetaList = columnMetaList;
     }
 
 }
