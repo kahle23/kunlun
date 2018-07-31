@@ -10,7 +10,7 @@ import java.text.ParseException;
 import java.util.Map;
 
 import static artoria.io.IOUtils.EOF;
-import static artoria.util.Const.*;
+import static artoria.common.Constants.*;
 
 /**
  * Template renderer by jdk.

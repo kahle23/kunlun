@@ -1,7 +1,5 @@
 package artoria.io;
 
-import artoria.util.Const;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.ServerSocket;
@@ -10,7 +8,8 @@ import java.net.URLConnection;
 import java.nio.channels.Selector;
 import java.nio.charset.Charset;
 
-import static artoria.util.Const.SLASH;
+import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
+import static artoria.common.Constants.SLASH;
 
 /**
  * IO tools.
@@ -90,7 +89,7 @@ public class IOUtils {
     }
 
     public static Reader toReader(byte[] data) {
-        return IOUtils.toReader(data, Const.DEFAULT_CHARSET_NAME);
+        return IOUtils.toReader(data, DEFAULT_CHARSET_NAME);
     }
 
     public static Reader toReader(byte[] data, String charset) {
@@ -103,7 +102,7 @@ public class IOUtils {
     }
 
     public static InputStream toInputStream(String data) {
-        return IOUtils.toInputStream(data, Const.DEFAULT_CHARSET_NAME);
+        return IOUtils.toInputStream(data, DEFAULT_CHARSET_NAME);
     }
 
     public static InputStream toInputStream(String data, String charset) {
@@ -117,7 +116,7 @@ public class IOUtils {
     }
 
     public static byte[] toByteArray(Reader input) throws IOException {
-        return IOUtils.toByteArray(input, Const.DEFAULT_CHARSET_NAME);
+        return IOUtils.toByteArray(input, DEFAULT_CHARSET_NAME);
     }
 
     public static byte[] toByteArray(Reader input, String charset) throws IOException {
@@ -134,7 +133,7 @@ public class IOUtils {
     }
 
     public static String toString(InputStream input) throws IOException {
-        return IOUtils.toString(input, Const.DEFAULT_CHARSET_NAME);
+        return IOUtils.toString(input, DEFAULT_CHARSET_NAME);
     }
 
     public static String toString(InputStream input, String charset) throws IOException {

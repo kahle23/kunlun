@@ -20,7 +20,7 @@ import java.security.cert.X509Certificate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static artoria.util.Const.*;
+import static artoria.common.Constants.*;
 
 /**
  * Simple http tools.

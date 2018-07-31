@@ -1,7 +1,6 @@
 package artoria.codec;
 
 import artoria.util.Assert;
-import artoria.util.Const;
 import artoria.util.MapUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -10,7 +9,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import static artoria.util.Const.DEFAULT_CHARSET_NAME;
+import static artoria.common.Constants.*;
 
 /**
  * Url codec, and map to string tools.
@@ -22,8 +21,8 @@ public class UrlCodec {
 
     public static UrlCodec create() {
         UrlCodec urlCodec = new UrlCodec();
-        urlCodec.keySeparator = Const.EQUAL;
-        urlCodec.valueSeparator = Const.AMPERSAND;
+        urlCodec.keySeparator = EQUAL;
+        urlCodec.valueSeparator = AMPERSAND;
         return urlCodec;
     }
 

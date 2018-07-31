@@ -3,9 +3,10 @@ package artoria.beans;
 import artoria.converter.Converter;
 import artoria.util.Assert;
 import artoria.util.ObjectUtils;
-import artoria.util.Const;
 
 import java.util.*;
+
+import static artoria.common.Constants.*;
 
 /**
  * Bean map.
@@ -159,7 +160,7 @@ public abstract class BeanMap implements Map, Cloneable {
         int code = 0;
         Set keys = this.keySet();
         for (Object key : keys) {
-            Object val = get(key);
+            Object val = this.get(key);
             int keyCode = key == null ? 0 : key.hashCode();
             int valCode = val == null ? 0 : val.hashCode();
             code += keyCode ^ valCode;
@@ -170,17 +171,20 @@ public abstract class BeanMap implements Map, Cloneable {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(Const.LEFT_CURLY_BRACKET);
+        builder.append(LEFT_CURLY_BRACKET);
         Set keys = this.keySet();
         for (Object key : keys) {
             builder.append(key);
-            builder.append(Const.EQUAL);
-            builder.append(get(key));
-            builder.append(Const.COMMA_SPACE);
+            builder.append(EQUAL);
+            builder.append(this.get(key));
+            builder.append(COMMA);
+            builder.append(BLANK_SPACE);
         }
-        int index = builder.length() - 1;
-        builder.deleteCharAt(index);
-        builder.append(Const.RIGHT_CURLY_BRACKET);
+        if (!keys.isEmpty()) {
+            builder.deleteCharAt(builder.length() - 1);
+            builder.deleteCharAt(builder.length() - 1);
+        }
+        builder.append(RIGHT_CURLY_BRACKET);
         return builder.toString();
     }
 

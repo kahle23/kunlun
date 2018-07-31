@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static artoria.util.Const.COMMA;
+import static artoria.common.Constants.COMMA;
 
 /**
  * Database client.

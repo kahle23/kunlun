@@ -6,7 +6,7 @@ import artoria.io.IOUtils;
 import java.io.*;
 import java.util.Properties;
 
-import static artoria.util.Const.*;
+import static artoria.common.Constants.*;
 
 /**
  * Properties tools.

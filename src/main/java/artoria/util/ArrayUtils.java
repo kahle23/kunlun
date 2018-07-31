@@ -6,7 +6,7 @@ import artoria.reflect.ReflectUtils;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static artoria.util.Const.GET;
+import static artoria.common.Constants.GET;
 
 /**
  * Array tools.

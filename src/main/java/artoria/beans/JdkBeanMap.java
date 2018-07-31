@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
-import static artoria.util.Const.*;
+import static artoria.common.Constants.*;
 
 /**
  * Jdk bean map.
