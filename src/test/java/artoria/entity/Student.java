@@ -1,15 +1,14 @@
 package artoria.entity;
 
-public class Student extends Person {
+import java.io.Serializable;
 
-    private static final Integer PASSING_SCORE = 60;
+public class Student extends Person implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long studentId;
     private String schoolName;
-    private Integer nationalLanguageScore;
-    private Integer mathematicsScore;
-    private Integer englishScore;
-    private boolean graduate;
+    private Boolean graduated;
 
     public Long getStudentId() {
         return studentId;
@@ -27,36 +26,12 @@ public class Student extends Person {
         this.schoolName = schoolName;
     }
 
-    public Integer getNationalLanguageScore() {
-        return nationalLanguageScore;
+    public Boolean getGraduated() {
+        return graduated;
     }
 
-    public void setNationalLanguageScore(Integer nationalLanguageScore) {
-        this.nationalLanguageScore = nationalLanguageScore;
-    }
-
-    public Integer getMathematicsScore() {
-        return mathematicsScore;
-    }
-
-    public void setMathematicsScore(Integer mathematicsScore) {
-        this.mathematicsScore = mathematicsScore;
-    }
-
-    public Integer getEnglishScore() {
-        return englishScore;
-    }
-
-    public void setEnglishScore(Integer englishScore) {
-        this.englishScore = englishScore;
-    }
-
-    public boolean isGraduate() {
-        return graduate;
-    }
-
-    public void setGraduate(boolean graduate) {
-        this.graduate = graduate;
+    public void setGraduated(Boolean graduated) {
+        this.graduated = graduated;
     }
 
 }

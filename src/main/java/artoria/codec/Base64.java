@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static artoria.util.Const.*;
+import static artoria.common.Constants.*;
 
 /**
  * Base64 encode and decode tools.

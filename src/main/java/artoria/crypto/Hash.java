@@ -12,7 +12,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import static artoria.util.Const.DEFAULT_CHARSET_NAME;
+import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
 
 /**
  * Hash tools.

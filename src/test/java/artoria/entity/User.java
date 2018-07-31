@@ -1,59 +1,73 @@
 package artoria.entity;
 
-public class User {
-    private Integer id;
-    private String name;
-    private Integer age;
-    private String phone;
-    private String email;
-    private String blog;
+import java.io.Serializable;
 
-    public Integer getId() {
-        return id;
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private String uid;
+    private String username;
+    private String password;
+    private String nickname;
+    private String realName;
+    private String avatar;
+    private String intro;
+
+    public String getUid() {
+        return uid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Integer getAge() {
-        return age;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getEmail() {
-        return email;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
-    public String getBlog() {
-        return blog;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setBlog(String blog) {
-        this.blog = blog;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
     }
 
 }

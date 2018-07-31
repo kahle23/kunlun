@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.*;
 
-import static artoria.util.Const.MINUS;
+import static artoria.common.Constants.MINUS;
 
 /**
  * Random tools.

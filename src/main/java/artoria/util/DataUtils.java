@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static artoria.util.Const.GET;
+import static artoria.common.Constants.GET;
 
 /**
  * Data handle tools.

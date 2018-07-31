@@ -3,7 +3,7 @@ package artoria.util;
 import java.io.File;
 import java.net.URL;
 
-import static artoria.util.Const.*;
+import static artoria.common.Constants.*;
 
 /**
  * Path tools.

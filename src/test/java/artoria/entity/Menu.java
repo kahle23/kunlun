@@ -1,12 +1,16 @@
 package artoria.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * one module more menu
  * one menu more module
  */
-public class Menu {
+public class Menu implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String module;
     private Integer id;
     private String code;

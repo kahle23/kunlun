@@ -3,13 +3,15 @@ package artoria.converter;
 import artoria.time.DateUtils;
 import artoria.util.Assert;
 import artoria.util.ClassUtils;
-import artoria.util.Const;
 import artoria.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Date;
+
+import static artoria.common.Constants.FALSE;
+import static artoria.common.Constants.TRUE;
 
 /**
  * String converter.
@@ -52,10 +54,10 @@ public class StringConverter implements Converter {
     }
 
     protected Object stringToBoolean(Object source, Class<?> target) {
-        if (Const.TRUE.equalsIgnoreCase((String) source)) {
+        if (TRUE.equalsIgnoreCase((String) source)) {
             return true;
         }
-        else if (Const.FALSE.equalsIgnoreCase((String) source)) {
+        else if (FALSE.equalsIgnoreCase((String) source)) {
             return false;
         }
         else {

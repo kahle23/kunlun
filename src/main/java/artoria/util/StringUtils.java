@@ -1,6 +1,6 @@
 package artoria.util;
 
-import static artoria.util.Const.*;
+import static artoria.common.Constants.*;
 
 /**
  * String tools.

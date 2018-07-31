@@ -11,8 +11,8 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-import static artoria.util.Const.GET_OR_SET_LENGTH;
-import static artoria.util.Const.SET;
+import static artoria.common.Constants.GET_OR_SET_LENGTH;
+import static artoria.common.Constants.SET;
 
 /**
  * Jdk bean copier.

@@ -1,8 +1,8 @@
 package artoria.beans;
 
-import com.alibaba.fastjson.JSON;
 import artoria.entity.Student;
 import artoria.util.RandomUtils;
+import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 
 public class JdkBeanMapTest {

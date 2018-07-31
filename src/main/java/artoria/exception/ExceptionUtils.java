@@ -31,14 +31,12 @@ public class ExceptionUtils {
         if (cause instanceof RuntimeException) {
             return (RuntimeException) cause;
         }
-        else {
-            try {
-                Constructor<?> cstr = ReflectUtils.findConstructor(clazz, Throwable.class);
-                return (RuntimeException) cstr.newInstance(cause);
-            }
-            catch (Exception e) {
-                throw new UncheckedException(e);
-            }
+        try {
+            Constructor<?> cstr = ReflectUtils.findConstructor(clazz, Throwable.class);
+            return (RuntimeException) cstr.newInstance(cause);
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
         }
     }
 
