@@ -1,6 +1,5 @@
 package artoria.crypto;
 
-import artoria.codec.Hex;
 import artoria.util.Assert;
 
 import javax.crypto.Mac;
@@ -29,20 +28,11 @@ public class Hmac {
     public static final String HMAC_SHA384 = "HmacSHA384";
     public static final String HMAC_SHA512 = "HmacSHA512";
 
-    public static Hmac create() {
-        return new Hmac(Hmac.HMAC_MD5);
-    }
-
-    public static Hmac create(String algorithm) {
-        return new Hmac(algorithm);
-    }
-
     private String charset = DEFAULT_CHARSET_NAME;
-    private Hex hex = Hex.ME;
     private String algorithm;
     private byte[] key;
 
-    private Hmac(String algorithm) {
+    public Hmac(String algorithm) {
         this.setAlgorithm(algorithm);
     }
 
@@ -50,47 +40,33 @@ public class Hmac {
         return charset;
     }
 
-    public Hmac setCharset(String charset) {
+    public void setCharset(String charset) {
         Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         this.charset = charset;
-        return this;
-    }
-
-    public Hex getHex() {
-        return hex;
-    }
-
-    public Hmac setHex(Hex hex) {
-        Assert.notNull(hex, "Parameter \"hex\" must not null. ");
-        this.hex = hex;
-        return this;
     }
 
     public String getAlgorithm() {
         return algorithm;
     }
 
-    public Hmac setAlgorithm(String algorithm) {
+    public void setAlgorithm(String algorithm) {
         Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
         this.algorithm = algorithm;
-        return this;
     }
 
     public byte[] getKey() {
         return key;
     }
 
-    public Hmac setKey(byte[] key) {
+    public void setKey(byte[] key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         this.key = key;
-        return this;
     }
 
-    public Hmac setKey(String key) {
+    public void setKey(String key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         Charset charset = Charset.forName(this.charset);
         this.key = key.getBytes(charset);
-        return this;
     }
 
     public byte[] calc(String data) throws GeneralSecurityException {
@@ -102,20 +78,11 @@ public class Hmac {
 
     public byte[] calc(byte[] data) throws GeneralSecurityException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
+        Assert.notNull(key, "Parameter \"key\" must not null. ");
         SecretKey secretKey = new SecretKeySpec(key, algorithm);
         Mac mac = Mac.getInstance(algorithm);
         mac.init(secretKey);
         return mac.doFinal(data);
-    }
-
-    public String calcToHexString(String data) throws GeneralSecurityException {
-        byte[] calc = this.calc(data);
-        return hex.encodeToString(calc);
-    }
-
-    public String calcToHexString(byte[] data) throws GeneralSecurityException {
-        byte[] calc = this.calc(data);
-        return hex.encodeToString(calc);
     }
 
 }

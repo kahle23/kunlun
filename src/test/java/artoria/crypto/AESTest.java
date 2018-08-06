@@ -1,6 +1,6 @@
 package artoria.crypto;
 
-import artoria.codec.Base64;
+import artoria.codec.Base64Utils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -16,8 +16,17 @@ import javax.crypto.spec.IvParameterSpec;
 
 // NoPadding     when encrypt need fill
 
-public class AESTest {
+// AES data Multiple 16
+// AES Key length only is 16 or 24 or 32 (JDK not 32)
+// AES Iv length 16
+// SecretKeySpec key = new SecretKeySpec(inputKey, "AES");
+// new IvParameterSpec(iv);
+// "AES/ECB/NoPadding"
+// "AES/ECB/PKCS5Padding"
+// "AES/CBC/NoPadding"
+// "AES/CBC/PKCS5Padding"
 
+public class AESTest {
     private String algorithmName = "AES";
     private byte[] data = "Hello，Java！".getBytes();
 
@@ -30,7 +39,7 @@ public class AESTest {
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -47,7 +56,7 @@ public class AESTest {
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -64,7 +73,7 @@ public class AESTest {
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -80,7 +89,7 @@ public class AESTest {
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -98,7 +107,7 @@ public class AESTest {
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -116,7 +125,7 @@ public class AESTest {
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -124,14 +133,3 @@ public class AESTest {
     }
 
 }
-
-// AES data Multiple 16
-// AES Key length only is 16 or 24 or 32 (JDK not 32)
-// AES Iv length 16
-// SecretKeySpec key = new SecretKeySpec(inputKey, "AES");
-// new IvParameterSpec(iv);
-// "AES/ECB/NoPadding"
-// "AES/ECB/PKCS5Padding"
-// "AES/CBC/NoPadding"
-// "AES/CBC/PKCS5Padding"
-

@@ -1,14 +1,24 @@
 package artoria.crypto;
 
-import artoria.codec.Base64;
+import artoria.codec.Base64Utils;
 import org.junit.Test;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
-public class DESedeTest {
+// DESede data Multiple 8
+// DESede Key length 24
+// DESede Iv length 8
+// SecretKeySpec key = new SecretKeySpec(inputKey, "DESede");
+// new IvParameterSpec(iv);
+// JDK
+// "DESede/ECB/NoPadding"
+// "DESede/ECB/PKCS5Padding"
+// "DESede/CBC/NoPadding"
+// "DESede/CBC/PKCS5Padding"
 
+public class DESedeTest {
     private String algorithmName = "DESede";
     private byte[] data = "Hello，Java！".getBytes();
 
@@ -20,7 +30,7 @@ public class DESedeTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -35,7 +45,7 @@ public class DESedeTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         byte[] bytes = encrypter.doFinal(data);
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -52,7 +62,7 @@ public class DESedeTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -69,7 +79,7 @@ public class DESedeTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         byte[] bytes = encrypter.doFinal(data);
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -77,14 +87,3 @@ public class DESedeTest {
     }
 
 }
-
-// DESede data Multiple 8
-// DESede Key length 24
-// DESede Iv length 8
-// SecretKeySpec key = new SecretKeySpec(inputKey, "DESede");
-// new IvParameterSpec(iv);
-// JDK
-// "DESede/ECB/NoPadding"
-// "DESede/ECB/PKCS5Padding"
-// "DESede/CBC/NoPadding"
-// "DESede/CBC/PKCS5Padding"

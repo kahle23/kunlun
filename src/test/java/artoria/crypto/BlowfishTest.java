@@ -1,6 +1,6 @@
 package artoria.crypto;
 
-import artoria.codec.Base64;
+import artoria.codec.Base64Utils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -8,8 +8,18 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
-public class BlowfishTest {
+// Blowfish data Multiple 8
+// Blowfish Key length <= 56
+// Blowfish Iv length 8
+// SecretKeySpec key = new SecretKeySpec(inputKey, "Blowfish");
+// new IvParameterSpec(iv);
+// JDK
+// "Blowfish/ECB/NoPadding"
+// "Blowfish/ECB/PKCS5Padding"
+// "Blowfish/CBC/NoPadding"
+// "Blowfish/CBC/PKCS5Padding"
 
+public class BlowfishTest {
     private String algorithmName = "Blowfish";
     private byte[] data = "Hello，Java！".getBytes();
 
@@ -22,7 +32,7 @@ public class BlowfishTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -38,7 +48,7 @@ public class BlowfishTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         byte[] bytes = encrypter.doFinal(data);
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -56,7 +66,7 @@ public class BlowfishTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -74,7 +84,7 @@ public class BlowfishTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         byte[] bytes = encrypter.doFinal(data);
-        System.out.println(Base64.encodeToString(bytes));
+        System.out.println(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
@@ -82,14 +92,3 @@ public class BlowfishTest {
     }
 
 }
-
-// Blowfish data Multiple 8
-// Blowfish Key length <= 56
-// Blowfish Iv length 8
-// SecretKeySpec key = new SecretKeySpec(inputKey, "Blowfish");
-// new IvParameterSpec(iv);
-// JDK
-// "Blowfish/ECB/NoPadding"
-// "Blowfish/ECB/PKCS5Padding"
-// "Blowfish/CBC/NoPadding"
-// "Blowfish/CBC/PKCS5Padding"

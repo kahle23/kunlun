@@ -1,6 +1,6 @@
 package artoria.serialize;
 
-import artoria.codec.Hex;
+import artoria.codec.HexUtils;
 import org.junit.Test;
 
 import java.io.Serializable;
@@ -12,7 +12,7 @@ public class SerializeUtilsTest implements Serializable {
         SerializeUtilsTest obj = new SerializeUtilsTest();
         System.out.println(obj);
         byte[] bytes = SerializeUtils.serialize(obj);
-        String encode = Hex.ME.encodeToString(bytes);
+        String encode = HexUtils.encodeToString(bytes);
         System.out.println(encode);
 
         SerializeUtilsTest obj1 = (SerializeUtilsTest) SerializeUtils.deserialize(bytes);

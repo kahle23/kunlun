@@ -4,7 +4,7 @@ import artoria.aop.Enhancer;
 import artoria.aop.Interceptor;
 import artoria.exception.ExceptionUtils;
 import artoria.util.Assert;
-import artoria.util.PropUtils;
+import artoria.util.PropertiesUtils;
 import artoria.util.StringUtils;
 
 import javax.sql.DataSource;
@@ -36,7 +36,7 @@ public class SimpleDataSource implements DataSource {
     private int minPoolSize = 2;
 
     public SimpleDataSource() {
-        this(PropUtils.create(DEFAULT_CONFIG_NAME).getProperties());
+        this(PropertiesUtils.create(DEFAULT_CONFIG_NAME));
     }
 
     public SimpleDataSource(Properties prop) {
