@@ -1,6 +1,5 @@
 package artoria.crypto;
 
-import artoria.codec.Hex;
 import artoria.io.IOUtils;
 import artoria.util.Assert;
 
@@ -13,6 +12,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
+import static artoria.io.IOUtils.DEFAULT_BUFFER_SIZE;
+import static artoria.io.IOUtils.EOF;
 
 /**
  * Hash tools.
@@ -32,19 +33,10 @@ public class Hash {
     public static final String SHA384 = "SHA-384";
     public static final String SHA512 = "SHA-512";
 
-    public static Hash create() {
-        return new Hash(Hash.MD5);
-    }
-
-    public static Hash create(String algorithm) {
-        return new Hash(algorithm);
-    }
-
     private String charset = DEFAULT_CHARSET_NAME;
-    private Hex hex = Hex.ME;
     private String algorithm;
 
-    private Hash(String algorithm) {
+    public Hash(String algorithm) {
         this.setAlgorithm(algorithm);
     }
 
@@ -52,30 +44,18 @@ public class Hash {
         return charset;
     }
 
-    public Hash setCharset(String charset) {
+    public void setCharset(String charset) {
         Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         this.charset = charset;
-        return this;
-    }
-
-    public Hex getHex() {
-        return hex;
-    }
-
-    public Hash setHex(Hex hex) {
-        Assert.notNull(hex, "Parameter \"hex\" must not null. ");
-        this.hex = hex;
-        return this;
     }
 
     public String getAlgorithm() {
         return algorithm;
     }
 
-    public Hash setAlgorithm(String algorithm) {
+    public void setAlgorithm(String algorithm) {
         Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
         this.algorithm = algorithm;
-        return this;
     }
 
     public byte[] calc(String data) throws NoSuchAlgorithmException {
@@ -105,31 +85,11 @@ public class Hash {
     public byte[] calc(InputStream in) throws NoSuchAlgorithmException, IOException {
         Assert.notNull(in, "Parameter \"in\" must not null. ");
         MessageDigest md = MessageDigest.getInstance(algorithm);
-        byte[] buffer = new byte[IOUtils.DEFAULT_BUFFER_SIZE];
-        for (int len; (len = in.read(buffer)) != IOUtils.EOF;) {
+        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+        for (int len; (len = in.read(buffer)) != EOF;) {
             md.update(buffer, 0, len);
         }
         return md.digest();
-    }
-
-    public String calcToHexString(String data) throws NoSuchAlgorithmException {
-        byte[] digest = this.calc(data);
-        return hex.encodeToString(digest);
-    }
-
-    public String calcToHexString(byte[] data) throws NoSuchAlgorithmException {
-        byte[] digest = this.calc(data);
-        return hex.encodeToString(digest);
-    }
-
-    public String calcToHexString(File file) throws NoSuchAlgorithmException, IOException {
-        byte[] digest = this.calc(file);
-        return hex.encodeToString(digest);
-    }
-
-    public String calcToHexString(InputStream in) throws NoSuchAlgorithmException, IOException {
-        byte[] digest = this.calc(in);
-        return hex.encodeToString(digest);
     }
 
 }

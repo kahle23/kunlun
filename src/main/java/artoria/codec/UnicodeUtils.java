@@ -2,12 +2,15 @@ package artoria.codec;
 
 import artoria.util.Assert;
 
+import static artoria.io.IOUtils.EOF;
+
 /**
  * Unicode encode and decode tools.
  * @author Kahle
  */
-public class Unicode {
+public class UnicodeUtils {
     private static final String BACKLASH_U = "\\u";
+    private static final int UNICODE_LENGTH = 6;
     private static final int RADIX = 16;
 
     public static String encode(String data) {
@@ -29,11 +32,11 @@ public class Unicode {
         Assert.notBlank(unicode, "Parameter \"unicode\" must not blank. ");
         int index, pos = 0;
         StringBuilder result = new StringBuilder();
-        while ((index = unicode.indexOf(BACKLASH_U, pos)) != -1) {
+        while ((index = unicode.indexOf(BACKLASH_U, pos)) != EOF) {
             result.append(unicode.substring(pos, index));
             if (index + 5 < unicode.length()) {
-                pos = index + 6;
-                String hex = unicode.substring(index + 2, index + 6);
+                pos = index + UNICODE_LENGTH;
+                String hex = unicode.substring(index + 2, pos);
                 char ch = (char) Integer.parseInt(hex, RADIX);
                 result.append(ch);
             }

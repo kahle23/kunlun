@@ -20,56 +20,57 @@ import static artoria.common.Constants.*;
  * @see DatatypeConverter#printBase64Binary
  * @see DatatypeConverter#parseBase64Binary
  */
-public class Base64 {
+public class Base64Utils {
     private static final String JAVAX_XML_DATATYPE_CONVERTER = "javax.xml.bind.DatatypeConverter";
     private static final String JAVA_UTIL_BASE64 = "java.util.Base64";
     private static final Pattern BASE64_URL_SAFE = Pattern.compile("^[a-zA-Z0-9-_]+={0,2}$");
     private static final Pattern BASE64_URL_UNSAFE = Pattern.compile("^[a-zA-Z0-9+/]+={0,2}$");
-    private static Logger log = Logger.getLogger(Base64.class.getName());
-    private static Base64Delegate base64Delegate;
+    private static Logger log = Logger.getLogger(Base64Utils.class.getName());
+    private static Base64Delegate delegate;
 
     static {
-        Base64.setBase64Delegate(null);
+        // Do auto select.
+        Base64Utils.setDelegate(null);
     }
 
-    public static Base64Delegate getBase64Delegate() {
-        return base64Delegate;
+    public static Base64Delegate getDelegate() {
+        return delegate;
     }
 
-    public static void setBase64Delegate(Base64Delegate delegate) {
+    public static void setDelegate(Base64Delegate delegate) {
         if (delegate != null) {
             log.info("Use base64 delegate: " + delegate.getClass().getName());
-            base64Delegate = delegate;
+            Base64Utils.delegate = delegate;
             return;
         }
-        if (base64Delegate != null) { return; }
-        ClassLoader classLoader = Base64.class.getClassLoader();
+        if (Base64Utils.delegate != null) { return; }
+        ClassLoader classLoader = Base64Utils.class.getClassLoader();
         // If have JDK 8's java.util.Base64, to use it.
         if (ClassUtils.isPresent(JAVA_UTIL_BASE64, classLoader)) {
             log.info("Use base64 provider: " + JAVA_UTIL_BASE64);
-            base64Delegate = new Java8Base64Delegate();
+            Base64Utils.delegate = new Java8Base64Delegate();
         }
         // Maybe all jdk is ok.
         else if (ClassUtils.isPresent(JAVAX_XML_DATATYPE_CONVERTER, classLoader)) {
             log.info("Use base64 provider: " + JAVAX_XML_DATATYPE_CONVERTER);
-            base64Delegate = new Java7Base64Delegate();
+            Base64Utils.delegate = new Java7Base64Delegate();
         }
     }
 
     public static byte[] encode(byte[] src) {
-        return base64Delegate.encode(src);
+        return delegate.encode(src);
     }
 
     public static byte[] decode(byte[] src) {
-        return base64Delegate.decode(src);
+        return delegate.decode(src);
     }
 
     public static byte[] encodeUrlSafe(byte[] src) {
-        return base64Delegate.encodeUrlSafe(src);
+        return delegate.encodeUrlSafe(src);
     }
 
     public static byte[] decodeUrlSafe(byte[] src) {
-        return base64Delegate.decodeUrlSafe(src);
+        return delegate.decodeUrlSafe(src);
     }
 
     public static boolean isUrlSafeString(String base64) {
@@ -85,7 +86,7 @@ public class Base64 {
     }
 
     public static String encodeToString(byte[] src) {
-        byte[] encode = Base64.encode(src);
+        byte[] encode = Base64Utils.encode(src);
         Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
         return new String(encode, charset);
     }
@@ -93,7 +94,7 @@ public class Base64 {
     public static String encodeToString(byte[] src, String charset) {
         Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         Charset encoding = Charset.forName(charset);
-        byte[] encode = Base64.encode(src);
+        byte[] encode = Base64Utils.encode(src);
         return new String(encode, encoding);
     }
 
@@ -101,7 +102,7 @@ public class Base64 {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
         byte[] srcBytes = source.getBytes(charset);
-        return Base64.decode(srcBytes);
+        return Base64Utils.decode(srcBytes);
     }
 
     public static byte[] decodeFromString(String source, String charset) {
@@ -109,11 +110,11 @@ public class Base64 {
         Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         Charset encoding = Charset.forName(charset);
         byte[] srcBytes = source.getBytes(encoding);
-        return Base64.decode(srcBytes);
+        return Base64Utils.decode(srcBytes);
     }
 
     public static String encodeToUrlSafeString(byte[] src) {
-        byte[] urlSafe = Base64.encodeUrlSafe(src);
+        byte[] urlSafe = Base64Utils.encodeUrlSafe(src);
         Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
         return new String(urlSafe, charset);
     }
@@ -121,7 +122,7 @@ public class Base64 {
     public static String encodeToUrlSafeString(byte[] src, String charset) {
         Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         Charset encoding = Charset.forName(charset);
-        byte[] urlSafe = Base64.encodeUrlSafe(src);
+        byte[] urlSafe = Base64Utils.encodeUrlSafe(src);
         return new String(urlSafe, encoding);
     }
 
@@ -129,7 +130,7 @@ public class Base64 {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
         byte[] srcBytes = source.getBytes(charset);
-        return Base64.decodeUrlSafe(srcBytes);
+        return Base64Utils.decodeUrlSafe(srcBytes);
     }
 
     public static byte[] decodeFromUrlSafeString(String source, String charset) {
@@ -137,7 +138,7 @@ public class Base64 {
         Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         Charset encoding = Charset.forName(charset);
         byte[] srcBytes = source.getBytes(encoding);
-        return Base64.decodeUrlSafe(srcBytes);
+        return Base64Utils.decodeUrlSafe(srcBytes);
     }
 
     public interface Base64Delegate {

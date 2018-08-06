@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
  * And recode string charset.
  * @author Kahle
  */
-public class Encoder {
+public class CharsetUtils {
 
     /**
      *
@@ -27,7 +27,7 @@ public class Encoder {
         Assert.notBlank(newCharset, "Parameter \"newCharset\" must not blank. ");
         Charset older = Charset.forName(oldCharset);
         Charset newer = Charset.forName(newCharset);
-        return Encoder.encode(data, older, newer);
+        return CharsetUtils.encode(data, older, newer);
     }
 
     /**
@@ -55,7 +55,7 @@ public class Encoder {
     public static String recode(String data, String newCharset) throws IOException {
         Assert.notBlank(newCharset, "Parameter \"newCharset\" must not blank. ");
         Charset newer = Charset.forName(newCharset);
-        return Encoder.recode(data, newer);
+        return CharsetUtils.recode(data, newer);
     }
 
     /**
@@ -90,7 +90,7 @@ public class Encoder {
         Assert.notBlank(newCharset, "Parameter \"newCharset\" must not blank. ");
         Charset older = Charset.forName(oldCharset);
         Charset newer = Charset.forName(newCharset);
-        return Encoder.recode(data, older, newer);
+        return CharsetUtils.recode(data, older, newer);
     }
 
     /**
