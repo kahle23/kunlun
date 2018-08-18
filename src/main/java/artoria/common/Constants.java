@@ -22,8 +22,9 @@ public class Constants {
     public static final String MINUS = "-";
     public static final String SLASH = "/";
     public static final String EQUAL = "=";
-    public static final String COLON = ":";
     public static final String COMMA = ",";
+    public static final String COLON = ":";
+    public static final String SEMICOLON = ";";
     public static final String UNDERLINE = "_";
     public static final String ASTERISK = "*";
     public static final String AMPERSAND = "&";
