@@ -4,10 +4,7 @@ import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.PathUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.LinkedList;
 import java.util.logging.Logger;
@@ -55,6 +52,25 @@ public class FileUtils {
             out.write(data);
             out.flush();
             return data.length;
+        }
+        finally {
+            IOUtils.closeQuietly(out);
+        }
+    }
+
+    public static long write(InputStream inputStream, File dest) throws IOException {
+        return FileUtils.write(inputStream, dest, false);
+    }
+
+    public static long write(InputStream inputStream, File dest, boolean append) throws IOException {
+        Assert.notNull(dest, "Destination must not null. ");
+        if (!dest.exists() && !dest.createNewFile()) {
+            throw new IOException("Create destination file fail. ");
+        }
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(dest, append);
+            return IOUtils.copyLarge(inputStream, out);
         }
         finally {
             IOUtils.closeQuietly(out);
