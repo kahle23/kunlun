@@ -1,7 +1,7 @@
 package artoria.beans;
 
-import artoria.converter.ConvertUtils;
-import artoria.converter.Converter;
+import artoria.converter.TypeConvertUtils;
+import artoria.converter.TypeConverter;
 import artoria.exception.ExceptionUtils;
 import artoria.reflect.ReflectUtils;
 import artoria.util.Assert;
@@ -19,14 +19,14 @@ import java.util.logging.Logger;
  */
 public class BeanUtils {
 
-    static class ConvertUtilsConverter implements Converter {
+    static class TypeConvertUtilsConverter implements TypeConverter {
         @Override
         public Object convert(Object source, Class<?> target) {
-            return ConvertUtils.convert(source, target);
+            return TypeConvertUtils.convert(source, target);
         }
     }
 
-    private static final Converter CONVERTER = new ConvertUtilsConverter();
+    private static final TypeConverter CONVERTER = new TypeConvertUtilsConverter();
     private static final Integer MAP_INIT_CAPACITY = 32;
     private static Logger log = Logger.getLogger(BeanUtils.class.getName());
     private static BeanCopier beanCopier;
@@ -34,8 +34,8 @@ public class BeanUtils {
     private static Constructor<? extends BeanMap> beanMapConstructor;
 
     static {
-        BeanUtils.setBeanCopier(new JdkBeanCopier());
-        BeanUtils.setBeanMapClass(JdkBeanMap.class);
+        BeanUtils.setBeanCopier(new SimpleBeanCopier());
+        BeanUtils.setBeanMapClass(SimpleBeanMap.class);
     }
 
     public static BeanCopier getBeanCopier() {
@@ -107,11 +107,11 @@ public class BeanUtils {
         BeanUtils.copy(from, to, CONVERTER);
     }
 
-    public static void copy(Map from, Object to, Converter cvt) {
+    public static void copy(Map from, Object to, TypeConverter cvt) {
         Assert.notNull(from, "Parameter \"from\" must not null. ");
         Assert.notNull(to, "Parameter \"to\" must not null. ");
         BeanMap map = BeanUtils.createBeanMap(to);
-        map.setConverter(cvt);
+        map.setTypeConverter(cvt);
         map.putAll(from);
     }
 
@@ -119,7 +119,7 @@ public class BeanUtils {
         beanCopier.copy(from, to, null, CONVERTER);
     }
 
-    public static void copy(Object from, Object to, Converter cvt) {
+    public static void copy(Object from, Object to, TypeConverter cvt) {
         beanCopier.copy(from, to, null, cvt);
     }
 
@@ -127,7 +127,7 @@ public class BeanUtils {
         beanCopier.copy(from, to, ignore, CONVERTER);
     }
 
-    public static void copy(Object from, Object to, List<String> ignore, Converter cvt) {
+    public static void copy(Object from, Object to, List<String> ignore, TypeConverter cvt) {
         beanCopier.copy(from, to, ignore, cvt);
     }
 

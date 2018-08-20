@@ -3,8 +3,10 @@ package artoria.io;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Ignore
 public class FileUtilsTest {
@@ -26,6 +28,15 @@ public class FileUtilsTest {
         System.out.println(FileUtils.rename(file, "123.txt"));
         file = new File("E:\\123.txt");
         System.out.println(FileUtils.rename(file, "hello.txt"));
+    }
+
+    @Test
+    public void testWrite() throws IOException {
+        File destination = new File("e:\\test.txt");
+        byte[] data = "Hello, World! ".getBytes();
+        InputStream in = new ByteArrayInputStream(data);
+        FileUtils.write(in, destination);
+//        FileUtils.write(data, destination);
     }
 
     @Test

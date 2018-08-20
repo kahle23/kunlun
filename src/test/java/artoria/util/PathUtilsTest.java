@@ -31,13 +31,6 @@ public class PathUtilsTest {
     }
 
     @Test
-    public void testNotExistPath() {
-        System.out.println(PathUtils.notExistPath("E:\\_cache\\123.csv"));
-        System.out.println(PathUtils.notExistPath("E:\\_cache\\123_1.csv"));
-        System.out.println(PathUtils.notExistPath("E:\\_cache\\123_2.csv"));
-    }
-
-    @Test
     public void testPath() {
         System.out.println(PathUtils.getPackagePath(PathUtilsTest.class));
         System.out.println(PathUtils.getClassFilePath(PathUtilsTest.class));

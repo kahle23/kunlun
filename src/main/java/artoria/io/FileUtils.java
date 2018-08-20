@@ -22,13 +22,13 @@ public class FileUtils {
         return path.renameTo(dest);
     }
 
-    public static byte[] read(File dest) throws IOException {
-        Assert.notNull(dest, "Destination must not null. ");
-        Assert.state(dest.exists(), "Destination must exists. ");
-        Assert.state(dest.isFile(), "Destination must is a file. ");
+    public static byte[] read(File destination) throws IOException {
+        Assert.notNull(destination, "Parameter \"destination\" must not null. ");
+        Assert.state(destination.exists(), "Parameter \"destination\" must exists. ");
+        Assert.state(destination.isFile(), "Parameter \"destination\" must be a file. ");
         FileInputStream in = null;
         try {
-            in = new FileInputStream(dest);
+            in = new FileInputStream(destination);
             return IOUtils.toByteArray(in);
         }
         finally {
@@ -36,68 +36,73 @@ public class FileUtils {
         }
     }
 
-    public static int write(byte[] data, File dest) throws IOException {
-        return FileUtils.write(data, dest, false);
+    public static long write(Object input, File destination) throws IOException {
+        return FileUtils.write(input, destination, false);
     }
 
-    public static int write(byte[] data, File dest, boolean append) throws IOException {
-        Assert.notNull(dest, "Destination must not null. ");
-        if (!dest.exists() && !dest.createNewFile()) {
-            throw new IOException("Create destination file fail. ");
+    public static long write(Object input, File destination, boolean append) throws IOException {
+        Assert.notNull(destination, "Parameter \"destination\" must not null. ");
+        if (input == null) { return 0; }
+        if (destination.exists()) {
+            if (destination.isDirectory()) {
+                throw new IOException("Parameter \"destination\" must be a file. ");
+            }
         }
-        if (ArrayUtils.isEmpty(data)) { return 0; }
+        else {
+            File parentFile = destination.getParentFile();
+            boolean noParent = parentFile != null && !parentFile.exists();
+            if (noParent && !parentFile.mkdirs()) {
+                throw new IOException("Create destination parent directory \"" + parentFile + "\" fail. ");
+            }
+            if (!destination.createNewFile()) {
+                throw new IOException("Create destination file \"" + destination + "\" fail. ");
+            }
+        }
         FileOutputStream out = null;
+        long count;
         try {
-            out = new FileOutputStream(dest, append);
-            out.write(data);
+            out = new FileOutputStream(destination, append);
+            if (input instanceof byte[]) {
+                byte[] bytes = (byte[]) input;
+                out.write(bytes);
+                count = bytes.length;
+            }
+            else if (input instanceof InputStream) {
+                count = IOUtils.copyLarge((InputStream) input, out);
+            }
+            else {
+                throw new UnsupportedOperationException(
+                        "Support only \"byte[]\" and \"InputStream\". ");
+            }
             out.flush();
-            return data.length;
+            return count;
         }
         finally {
             IOUtils.closeQuietly(out);
         }
     }
 
-    public static long write(InputStream inputStream, File dest) throws IOException {
-        return FileUtils.write(inputStream, dest, false);
+    public static boolean deleteFile(File destination) {
+        return destination == null || !destination.exists() || destination.delete();
     }
 
-    public static long write(InputStream inputStream, File dest, boolean append) throws IOException {
-        Assert.notNull(dest, "Destination must not null. ");
-        if (!dest.exists() && !dest.createNewFile()) {
-            throw new IOException("Create destination file fail. ");
-        }
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(dest, append);
-            return IOUtils.copyLarge(inputStream, out);
-        }
-        finally {
-            IOUtils.closeQuietly(out);
-        }
-    }
-
-    public static boolean deleteFile(File dest) {
-        return dest == null || !dest.exists() || dest.delete();
-    }
-
-    public static void deleteDirectory(File dest) {
-        Assert.notNull(dest, "Destination must not null. ");
-        Assert.state(dest.isDirectory(), "Destination must is a directory. ");
-        // stack model
+    public static void deleteDirectory(File destination) {
+        Assert.notNull(destination, "Parameter \"destination\" must not null. ");
+        Assert.state(destination.isDirectory(), "Parameter \"destination\" must be a directory. ");
+        // Stack model.
         LinkedList<File> fileList = new LinkedList<File>();
-        fileList.addFirst(dest);
+        fileList.addFirst(destination);
         while (!fileList.isEmpty()) {
             File current = fileList.removeFirst();
             File[] files = current.listFiles();
-            // don't have subfile or subdirectory, try delete
+            // Don't have subfile or subdirectory, try delete.
             if (ArrayUtils.isEmpty(files)) {
                 if (!current.delete()) {
-                    log.info("File[" + current + "] delete fail. ");
+                    log.info("Directory \"" + current + "\" delete fail. ");
                 }
                 continue;
             }
-            // is add current ?
+            // Is add current?
             boolean addCurrent = false;
             boolean isDirectory;
             for (File file : files) {
@@ -110,44 +115,50 @@ public class FileUtils {
                     fileList.addFirst(file);
                 }
                 else if (!file.delete()) {
-                    log.info("File[" + file + "] delete fail. ");
+                    log.info("File \"" + file + "\" delete fail. ");
                 }
             }
             if (!addCurrent && !current.delete()) {
-                log.info("File[" + current + "] delete fail. ");
+                log.info("Directory \"" + current + "\" delete fail. ");
             }
         }
     }
 
-    public static void moveFile(File src, File dest) throws IOException {
-        // The append is false meaning
-        // the destination directory not exists the source file name's file.
-        FileUtils.copyFileToDirectory(src, dest, false);
-        FileUtils.deleteFile(src);
+    public static void moveFile(File source, File destination) throws IOException {
+        // The append is false.
+        // Meaning the destination directory not exists the source file name's file.
+        FileUtils.copyFileToDirectory(source, destination, false);
+        FileUtils.deleteFile(source);
     }
 
-    public static void moveDirectory(File src, File dest) throws IOException {
-        FileUtils.copyDirectoryToDirectory(src, dest);
-        FileUtils.deleteDirectory(src);
+    public static void moveDirectory(File source, File destination) throws IOException {
+        FileUtils.copyDirectoryToDirectory(source, destination);
+        FileUtils.deleteDirectory(source);
     }
 
-    public static void copyFileToFile(File src, File dest, boolean append) throws IOException {
-        // copy file to file the meaning the destination must be a file.
-        Assert.notNull(src, "Source must not null. ");
-        Assert.notNull(dest, "Destination must not null. ");
-        Assert.state(src.exists(), "Source must exists. ");
-        Assert.state(src.isFile(), "Source must is a file. ");
-        if (!dest.exists() && !dest.createNewFile()) {
-            throw new IOException("Create destination file fail. ");
+    public static void copyFileToFile(File source, File destination, boolean append) throws IOException {
+        // Copy file to file the meaning the destination must be a file.
+        Assert.notNull(source, "Parameter \"source\" must not null. ");
+        Assert.notNull(destination, "Parameter \"destination\" must not null. ");
+        Assert.state(source.exists(), "Parameter \"source\" must exists. ");
+        Assert.state(source.isFile(), "Parameter \"source\" must be a file. ");
+        if (!destination.exists()) {
+            File parentFile = destination.getParentFile();
+            boolean noParent = parentFile != null && !parentFile.exists();
+            if (noParent && !parentFile.mkdirs()) {
+                throw new IOException("Create destination parent directory \"" + parentFile + "\" fail. ");
+            }
+            if (!destination.createNewFile()) {
+                throw new IOException("Create destination file \"" + destination + "\" fail. ");
+            }
         }
-
         FileInputStream fis = null;
         FileOutputStream fos = null;
         FileChannel input = null;
         FileChannel output = null;
         try {
-            fis = new FileInputStream(src);
-            fos = new FileOutputStream(dest, append);
+            fis = new FileInputStream(source);
+            fos = new FileOutputStream(destination, append);
             input  = fis.getChannel();
             output = fos.getChannel();
             long size = input.size();
@@ -165,42 +176,39 @@ public class FileUtils {
             IOUtils.closeQuietly(input);
             IOUtils.closeQuietly(fis);
         }
-
-        if (src.length() != dest.length()) {
-            throw new IOException("Failed to copy full contents from '" + src + "' to '" + dest + "'");
+        if (source.length() != destination.length()) {
+            throw new IOException("Failed to copy full contents from \"" + source + "\" to \"" + destination + "\". ");
         }
     }
 
-    public static void copyFileToDirectory(File src, File dest, boolean append) throws IOException {
-        if (!dest.exists() && !dest.mkdirs()) {
-            throw new IOException("Destination directory mkdirs fail. ");
-        }
-        Assert.notNull(src, "Source must not null. ");
-        String srcFileName = src.getName();
-        Assert.notBlank(srcFileName, "Source file name must not blank. ");
-        File destFile = new File(dest, srcFileName);
-        FileUtils.copyFileToFile(src, destFile, append);
+    public static void copyFileToDirectory(File source, File destination, boolean append) throws IOException {
+        Assert.notNull(source, "Parameter \"source\" must not null. ");
+        Assert.notNull(destination, "Parameter \"destination\" must not null. ");
+        String sourceFileName = source.getName();
+        Assert.notBlank(sourceFileName, "Source file name must not blank. ");
+        File destFile = new File(destination, sourceFileName);
+        FileUtils.copyFileToFile(source, destFile, append);
     }
 
-    public static void copyDirectoryToDirectory(File src, File dest) throws IOException {
-        Assert.notNull(src, "Source must not null. ");
-        Assert.notNull(dest, "Destination must not null. ");
-        Assert.state(src.exists(), "Source must exists. ");
-        Assert.state(src.isDirectory(), "Source must is a file. ");
-        if (!dest.exists() && !dest.mkdirs()) {
-            throw new IOException("Destination directory mkdirs fail. ");
+    public static void copyDirectoryToDirectory(File source, File destination) throws IOException {
+        Assert.notNull(source, "Parameter \"source\" must not null. ");
+        Assert.notNull(destination, "Parameter \"destination\" must not null. ");
+        Assert.state(source.exists(), "Parameter \"source\" must exists. ");
+        Assert.state(source.isDirectory(), "Parameter \"source\" must be a directory. ");
+        if (!destination.exists() && !destination.mkdirs()) {
+            throw new IOException("Create destination directory \"" + destination + "\" fail. ");
         }
         LinkedList<File> fileList = new LinkedList<File>();
-        fileList.add(src);
+        fileList.add(source);
         while (!fileList.isEmpty()) {
             File[] files = fileList.removeFirst().listFiles();
             if (ArrayUtils.isEmpty(files)) { continue; }
             for (File file : files) {
-                String subPath = PathUtils.subPath(file, src);
-                File destPath = new File(dest, subPath);
+                String subPath = PathUtils.subPath(file, source);
+                File destPath = new File(destination, subPath);
                 if (file.isDirectory()) {
                     if (!destPath.exists() && !destPath.mkdirs()) {
-                        throw new IOException("Directory[" + destPath.toString() + "] mkdirs fail. ");
+                        throw new IOException("Create directory \"" + destPath + "\" fail. ");
                     }
                     fileList.addFirst(file);
                 }

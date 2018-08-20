@@ -10,7 +10,7 @@ import java.util.Date;
  * Date converter.
  * @author Kahle
  */
-public class DateConverter implements Converter {
+public class DateConverter implements TypeConverter {
 
     protected Object dateToDate(Object source, Class<?> target) {
         long time = ((Date) source).getTime();

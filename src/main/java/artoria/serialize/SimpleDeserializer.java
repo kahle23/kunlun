@@ -8,10 +8,10 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 
 /**
- * JDK deserializer.
+ * Deserializer simple implement by jdk.
  * @author Kahle
  */
-public class JdkDeserializer implements Deserializer<Object> {
+public class SimpleDeserializer implements Deserializer<Object> {
 
     @Override
     public Object deserialize(InputStream inputStream) throws IOException {

@@ -36,7 +36,7 @@ public class EnhancerTest {
 
     @Test
     public void testJdkEnhancer() {
-        Enhancer.setProxyFactory(new JdkProxyFactory());
+        Enhancer.setProxyFactory(new SimpleProxyFactory());
         RealSubject subject = new RealSubject();
         TestInterceptor intertr = new TestInterceptor(subject);
         // Subject subjectProxy = (Subject) Enhancer.enhance(subject, intertr);

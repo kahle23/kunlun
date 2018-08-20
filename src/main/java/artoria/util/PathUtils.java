@@ -106,24 +106,6 @@ public class PathUtils {
 
     /**
      *
-     * @param path
-     * @return
-     */
-    public static String notExistPath(String path) {
-        if (path == null) { return null; }
-        int count = 1;
-        String tmp = path;
-        while (new File(tmp).exists()) {
-            tmp = path;
-            String body = PathUtils.stripExtension(tmp);
-            String ext = PathUtils.getExtension(tmp);
-            tmp = body + "_repeat" + count++ + DOT + ext;
-        }
-        return tmp;
-    }
-
-    /**
-     *
      * @param clazz
      * @return
      */

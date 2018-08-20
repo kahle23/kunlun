@@ -7,7 +7,7 @@ import artoria.util.ClassUtils;
  * Simple converter, So is mapping Object.
  * @author Kahle
  */
-public class ObjectConverter implements Converter {
+public class ObjectConverter implements TypeConverter {
 
     @Override
     public Object convert(Object source, Class<?> target) {

@@ -13,7 +13,7 @@ public class Enhancer {
     private static ProxyFactory proxyFactory;
 
     static {
-        Enhancer.setProxyFactory(new JdkProxyFactory());
+        Enhancer.setProxyFactory(new SimpleProxyFactory());
     }
 
     public static ProxyFactory getProxyFactory() {

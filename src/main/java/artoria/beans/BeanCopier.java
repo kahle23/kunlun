@@ -1,6 +1,6 @@
 package artoria.beans;
 
-import artoria.converter.Converter;
+import artoria.converter.TypeConverter;
 
 import java.util.List;
 
@@ -20,6 +20,6 @@ public interface BeanCopier {
      * @param converter The property converter
      *                  and this value can be null
      */
-    void copy(Object from, Object to, List<String> ignoreProperties, Converter converter);
+    void copy(Object from, Object to, List<String> ignoreProperties, TypeConverter converter);
 
 }

@@ -1,6 +1,6 @@
 package artoria.beans;
 
-import artoria.converter.Converter;
+import artoria.converter.TypeConverter;
 import artoria.exception.ExceptionUtils;
 import artoria.reflect.ReflectUtils;
 import artoria.util.Assert;
@@ -10,16 +10,17 @@ import artoria.util.StringUtils;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import static artoria.common.Constants.GET_OR_SET_LENGTH;
 import static artoria.common.Constants.SET;
 
 /**
- * Jdk bean copier.
+ * Bean copier simple implement by jdk.
  * @author Kahle
  */
-public class JdkBeanCopier implements BeanCopier {
-
+public class SimpleBeanCopier implements BeanCopier {
+    private static Logger log = Logger.getLogger(SimpleBeanCopier.class.getName());
     private Boolean ignoreException = true;
 
     public Boolean getIgnoreException() {
@@ -31,7 +32,7 @@ public class JdkBeanCopier implements BeanCopier {
     }
 
     @Override
-    public void copy(Object from, Object to, List<String> ignoreProperties, Converter converter) {
+    public void copy(Object from, Object to, List<String> ignoreProperties, TypeConverter converter) {
         Assert.notNull(from, "Parameter \"from\" must is not null. ");
         Assert.notNull(to, "Parameter \"to\" must is not null. ");
         boolean hasIgnore = CollectionUtils.isNotEmpty(ignoreProperties);
@@ -60,11 +61,14 @@ public class JdkBeanCopier implements BeanCopier {
                 destMth.invoke(to, input);
             }
             catch (Exception e) {
-                if (ignoreException) { continue; }
-                throw ExceptionUtils.wrap(e);
+                if (ignoreException) {
+                    log.fine(ExceptionUtils.toString(e));
+                }
+                else {
+                    throw ExceptionUtils.wrap(e);
+                }
             }
         }
-
     }
 
 }

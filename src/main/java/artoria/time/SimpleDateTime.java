@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Date time simple implement.
+ * Date time simple implement by jdk.
  * @author Kahle
  */
 public class SimpleDateTime implements DateTime {

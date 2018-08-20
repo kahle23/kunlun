@@ -12,10 +12,10 @@ import static artoria.common.Constants.COLON;
 import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
 
 @Ignore
-public class JdkHttpClientTest {
+public class SimpleHttpClientTest {
     private static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
     private static final String BASIC = "Basic ";
-    private HttpClient httpClient = new JdkHttpClient();
+    private HttpClient httpClient = new SimpleHttpClient();
     private String testUrl0 = "https://www.github.com";
     private String testUrl1 = "https://www.bing.com";
 
@@ -23,8 +23,13 @@ public class JdkHttpClientTest {
     public void test1() throws IOException {
         HttpRequest request = new HttpRequest();
         request.setMethod(HttpMethod.GET);
-        request.setUrl(testUrl1);
+        request.setUrl(testUrl0);
         HttpResponse response = httpClient.execute(request);
+        System.out.println(response.getStatusCode() + " | " + response.getStatusMessage());
+        System.out.println(response.getBodyAsString());
+
+        request.setUrl(testUrl1);
+        response = httpClient.execute(request);
         System.out.println(response.getStatusCode() + " | " + response.getStatusMessage());
         System.out.println(response.getBodyAsString());
     }
