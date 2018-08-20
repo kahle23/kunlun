@@ -1,6 +1,6 @@
 package artoria.util;
 
-import artoria.converter.ConvertUtils;
+import artoria.converter.TypeConvertUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.reflect.ReflectUtils;
 
@@ -68,7 +68,7 @@ public class DataUtils {
             for (P bean : list) {
                 if (bean == null) { continue; }
                 Object val = method.invoke(bean);
-                val = ConvertUtils.convert(val, propertyClass);
+                val = TypeConvertUtils.convert(val, propertyClass);
                 result.add((R) val);
             }
             return result;

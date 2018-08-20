@@ -1,13 +1,13 @@
 package artoria.converter;
 
 /**
- * Converter.
+ * Type converter.
  * @author Kahle
  */
-public interface Converter {
+public interface TypeConverter {
 
     /**
-     * Do convert
+     * Converts the given value object to the specified destination type.
      * @param source Will converting object
      * @param target Target type
      * @return Converted object

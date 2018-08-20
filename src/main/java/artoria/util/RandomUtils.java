@@ -1,6 +1,6 @@
 package artoria.util;
 
-import artoria.converter.ConvertUtils;
+import artoria.converter.TypeConvertUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.reflect.ReflectUtils;
 
@@ -157,7 +157,7 @@ public class RandomUtils {
         if (Number.class.isAssignableFrom(wrapper)) {
             double num = RANDOM.nextDouble() * DEFAULT_BOUND;
             num = NumberUtils.round(num).doubleValue();
-            return (T) ConvertUtils.convert(num, wrapper);
+            return (T) TypeConvertUtils.convert(num, wrapper);
         }
         if (Boolean.class.isAssignableFrom(wrapper)) {
             return (T) (Object) RandomUtils.nextBoolean();
@@ -167,7 +167,7 @@ public class RandomUtils {
             return (T) (Object) DEFAULT_CHAR_ARRAY[index];
         }
         if (Date.class.isAssignableFrom(wrapper)) {
-            return (T) ConvertUtils.convert(new Date(), wrapper);
+            return (T) TypeConvertUtils.convert(new Date(), wrapper);
         }
         if (String.class.isAssignableFrom(wrapper)) {
             int size = RandomUtils.nextInt(DEFAULT_SIZE);

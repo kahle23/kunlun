@@ -43,7 +43,7 @@ public class BeanUtilsTest {
 
     @Test
     public void testIgnoreJdkCopy() {
-        BeanUtils.setBeanCopier(new JdkBeanCopier());
+        BeanUtils.setBeanCopier(new SimpleBeanCopier());
         List<String> ignore = new ArrayList<String>();
         Collections.addAll(ignore, "name", "age", "123test");
         Student student = new Student();

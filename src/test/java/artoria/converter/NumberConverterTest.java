@@ -7,7 +7,7 @@ import java.math.BigInteger;
 
 public class NumberConverterTest {
 
-    private Converter converter = new NumberConverter();
+    private TypeConverter converter = new NumberConverter();
 
     @Test
     public void test1() {

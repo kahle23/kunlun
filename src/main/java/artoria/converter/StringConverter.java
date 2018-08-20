@@ -17,7 +17,7 @@ import static artoria.common.Constants.TRUE;
  * String converter.
  * @author Kahle
  */
-public class StringConverter implements Converter {
+public class StringConverter implements TypeConverter {
 
     private String pattern = DateUtils.DEFAULT_DATE_PATTERN;
 
@@ -42,11 +42,11 @@ public class StringConverter implements Converter {
             BigInteger bInt = new BigInteger(srcStr);
             // Maybe is unix timestamp
             // so hand on NumberConverter
-            return ConvertUtils.convert(bInt, target);
+            return TypeConvertUtils.convert(bInt, target);
         }
         try {
             Date date = DateUtils.parse(srcStr, pattern);
-            return ConvertUtils.convert(date, target);
+            return TypeConvertUtils.convert(date, target);
         }
         catch (ParseException e) {
             return source;
@@ -79,7 +79,7 @@ public class StringConverter implements Converter {
         }
         if (Number.class.isAssignableFrom(target)) {
             BigDecimal d = new BigDecimal((String) source);
-            return ConvertUtils.convert(d, target);
+            return TypeConvertUtils.convert(d, target);
         }
         if (Boolean.class.isAssignableFrom(target)) {
             return this.stringToBoolean(source, target);

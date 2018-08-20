@@ -11,10 +11,10 @@ import java.lang.reflect.*;
 import java.util.*;
 
 /**
- * Reflect tools implements by jdk.
+ * Reflect simple implement by jdk.
  * @author Kahle
  */
-public class JdkReflecter implements Reflecter {
+public class SimpleReflecter implements Reflecter {
     private static final Integer MAP_INITIAL_CAPACITY = 8;
 
     protected boolean notAccess(Class<?> thisClazz, Class<?> superClazz, Member member) {

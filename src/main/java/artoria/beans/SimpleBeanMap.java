@@ -1,6 +1,6 @@
 package artoria.beans;
 
-import artoria.converter.Converter;
+import artoria.converter.TypeConverter;
 import artoria.exception.ExceptionUtils;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
@@ -17,18 +17,18 @@ import java.util.Set;
 import static artoria.common.Constants.*;
 
 /**
- * Jdk bean map.
+ * Bean map simple implement by jdk.
  * @author Kahle
  */
-public class JdkBeanMap extends BeanMap {
+public class SimpleBeanMap extends BeanMap {
 
     private HashMap<Object, Method> readMethods = new HashMap<Object, Method>();
     private HashMap<Object, Method> writeMethods = new HashMap<Object, Method>();
     private Class<?> beanClass;
 
-    public JdkBeanMap() {}
+    public SimpleBeanMap() {}
 
-    public JdkBeanMap(Object bean) {
+    public SimpleBeanMap(Object bean) {
         this.setBean(bean);
     }
 
@@ -93,7 +93,7 @@ public class JdkBeanMap extends BeanMap {
         }
         Method method = writeMethods.get(keyString);
         if (method == null) { return null; }
-        Converter cvt = this.getConverter();
+        TypeConverter cvt = this.getTypeConverter();
         Class<?>[] types = method.getParameterTypes();
         if (cvt != null && ArrayUtils.isNotEmpty(types)) {
             value = cvt.convert(value, types[0]);

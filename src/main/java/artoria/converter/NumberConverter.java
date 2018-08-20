@@ -16,7 +16,7 @@ import java.util.Date;
  * Number converter.
  * @author Kahle
  */
-public class NumberConverter implements Converter {
+public class NumberConverter implements TypeConverter {
     private static final String INTEGER = "Integer";
     private static final String VALUE = "Value";
     private static final String INT = "int";
@@ -66,7 +66,7 @@ public class NumberConverter implements Converter {
         lg = isUnixTimestamp ? lg * 1000L : lg;
         Date date = DateUtils.parse(lg);
         // Maybe target is sql date or timestamp
-        return ConvertUtils.convert(date, target);
+        return TypeConvertUtils.convert(date, target);
     }
 
     @Override

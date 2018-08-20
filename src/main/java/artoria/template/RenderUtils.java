@@ -15,7 +15,7 @@ public class RenderUtils {
     private static Renderer renderer;
 
     static {
-        RenderUtils.setRenderer(new JdkRenderer());
+        RenderUtils.setRenderer(new SimpleRenderer());
     }
 
     public static Renderer getRenderer() {
@@ -24,8 +24,8 @@ public class RenderUtils {
 
     public static void setRenderer(Renderer renderer) {
         Assert.notNull(renderer, "Parameter \"renderer\" must not null. ");
-        RenderUtils.renderer = renderer;
         log.info("Set template renderer: " + renderer.getClass().getName());
+        RenderUtils.renderer = renderer;
     }
 
     public static void render(String name, Object data, Writer writer) throws Exception {

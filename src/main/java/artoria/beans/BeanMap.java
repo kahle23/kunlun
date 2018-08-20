@@ -1,6 +1,6 @@
 package artoria.beans;
 
-import artoria.converter.Converter;
+import artoria.converter.TypeConverter;
 import artoria.util.Assert;
 import artoria.util.ObjectUtils;
 
@@ -15,12 +15,12 @@ import static artoria.common.Constants.*;
 public abstract class BeanMap implements Map, Cloneable {
 
     private Object bean;
-    private Converter converter;
+    private TypeConverter typeConverter;
 
     protected BeanMap() {}
 
     public Object getBean() {
-        return bean;
+        return this.bean;
     }
 
     public void setBean(Object bean) {
@@ -28,12 +28,12 @@ public abstract class BeanMap implements Map, Cloneable {
         this.bean = bean;
     }
 
-    public Converter getConverter() {
-        return converter;
+    public TypeConverter getTypeConverter() {
+        return this.typeConverter;
     }
 
-    public void setConverter(Converter converter) {
-        this.converter = converter;
+    public void setTypeConverter(TypeConverter typeConverter) {
+        this.typeConverter = typeConverter;
     }
 
     /**

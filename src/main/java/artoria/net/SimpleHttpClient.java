@@ -24,10 +24,10 @@ import static artoria.net.HttpMessage.CONTENT_TYPE;
 import static artoria.net.HttpMethod.HEAD;
 
 /**
- * Http client tools implements by jdk.
+ * Http client simple implement by jdk.
  * @author Kahle
  */
-public class JdkHttpClient implements HttpClient {
+public class SimpleHttpClient implements HttpClient {
     private static final char[] MIME_BOUNDARY_CHARS = "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private static final char SLASH_CHAR = '/';
     private static final String FORM_URL_ENCODED = "application/x-www-form-urlencoded";
@@ -172,6 +172,7 @@ public class JdkHttpClient implements HttpClient {
     private void handleResponseCharset(HttpResponse response) {
         String contentType = response.getHeader(CONTENT_TYPE);
         if (StringUtils.isNotBlank(contentType)) {
+            contentType = contentType.toLowerCase();
             int begin = contentType.indexOf(CHARSET_EQUAL);
             if (begin == EOF) { return; }
             int end = contentType.indexOf(SEMICOLON, begin);
@@ -287,12 +288,13 @@ public class JdkHttpClient implements HttpClient {
         if (StringUtils.isBlank(redirectUrl)) {
             throw new MalformedURLException("Redirect url must not blank. ");
         }
+        String lowerRedirUrl = redirectUrl.toLowerCase();
         // Fix broken Location: http:/temp/AAG_New/en/index.php
-        if (redirectUrl.startsWith(MALFORMED_HTTP) && redirectUrl.charAt(MALFORMED_HTTP_LENGTH) != SLASH_CHAR) {
+        if (lowerRedirUrl.startsWith(MALFORMED_HTTP) && redirectUrl.charAt(MALFORMED_HTTP_LENGTH) != SLASH_CHAR) {
             redirectUrl = redirectUrl.substring(MALFORMED_HTTP_LENGTH);
         }
         // Fix broken Location: https:/temp/AAG_New/en/index.php
-        if (redirectUrl.startsWith(MALFORMED_HTTPS) && redirectUrl.charAt(MALFORMED_HTTPS_LENGTH) != SLASH_CHAR) {
+        if (lowerRedirUrl.startsWith(MALFORMED_HTTPS) && redirectUrl.charAt(MALFORMED_HTTPS_LENGTH) != SLASH_CHAR) {
             redirectUrl = redirectUrl.substring(MALFORMED_HTTPS_LENGTH);
         }
         // Workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
@@ -300,8 +302,9 @@ public class JdkHttpClient implements HttpClient {
             redirectUrl = oldUrl.getPath() + redirectUrl;
         }
         // Workaround: //example.com + ./foo = //example.com/./foo, not //example.com/foo
-        if (redirectUrl.startsWith(DOT) && !oldUrl.getFile().startsWith(SLASH)) {
-            oldUrl = new URL(oldUrl.getProtocol(), oldUrl.getHost(), oldUrl.getPort(), SLASH + oldUrl.getFile());
+        String oldUrlFile = oldUrl.getFile();
+        if (redirectUrl.startsWith(DOT) && !oldUrlFile.startsWith(SLASH)) {
+            oldUrl = new URL(oldUrl.getProtocol(), oldUrl.getHost(), oldUrl.getPort(), SLASH + oldUrlFile);
         }
         return new URL(oldUrl, redirectUrl);
     }
@@ -333,7 +336,8 @@ public class JdkHttpClient implements HttpClient {
                 request.removeHeader(CONTENT_TYPE);
                 return this.handleContentType(request);
             }
-            boolean isMultipart = contentType.toLowerCase().startsWith(MULTIPART_FORM_DATA);
+            String lowerContentType = contentType.toLowerCase();
+            boolean isMultipart = lowerContentType.startsWith(MULTIPART_FORM_DATA);
             if (!isMultipart && !contentType.contains(CHARSET_EQUAL)) {
                 if (!contentType.trim().endsWith(SEMICOLON)) {
                     contentType += SEMICOLON;
@@ -343,7 +347,7 @@ public class JdkHttpClient implements HttpClient {
                 contentType += request.getCharset().toLowerCase();
                 request.addHeader(CONTENT_TYPE, contentType);
             }
-            if (isMultipart && !contentType.contains(BOUNDARY_EQUAL)) {
+            if (isMultipart && !lowerContentType.contains(BOUNDARY_EQUAL)) {
                 boundary = this.generateMimeBoundary();
                 if (!contentType.trim().endsWith(SEMICOLON)) {
                     contentType += SEMICOLON;

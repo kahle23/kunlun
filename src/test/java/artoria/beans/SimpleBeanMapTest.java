@@ -5,12 +5,12 @@ import artoria.util.RandomUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 
-public class JdkBeanMapTest {
+public class SimpleBeanMapTest {
     private Student student = RandomUtils.nextObject(Student.class);
 
     @Test
     public void test1() {
-        BeanMap map = new JdkBeanMap();
+        BeanMap map = new SimpleBeanMap();
         map.setBean(student);
         System.out.println(JSON.toJSONString(student));
         System.out.println(map);
@@ -21,10 +21,10 @@ public class JdkBeanMapTest {
 
     @Test
     public void testClone() throws CloneNotSupportedException {
-        BeanMap map = new JdkBeanMap(student);
+        BeanMap map = new SimpleBeanMap(student);
         System.out.println(map);
 
-        BeanMap newMap = (JdkBeanMap) map.clone();
+        BeanMap newMap = (SimpleBeanMap) map.clone();
         System.out.println(student == newMap.getBean());
         newMap.put("name", "lisi");
         System.out.println(newMap);

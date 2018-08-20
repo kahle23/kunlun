@@ -8,10 +8,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
- * Proxy factory implements by jdk.
+ * Proxy factory simple implement by jdk.
  * @author Kahle
  */
-public class JdkProxyFactory implements ProxyFactory {
+public class SimpleProxyFactory implements ProxyFactory {
     private static final ClassLoader LOADER = ClassUtils.getDefaultClassLoader();
 
     private static class InvocationHandlerAdapter implements InvocationHandler {
