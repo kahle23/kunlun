@@ -1,5 +1,6 @@
 package artoria.util;
 
+import artoria.random.RandomUtils;
 import com.alibaba.fastjson.JSON;
 import artoria.entity.Person;
 import org.junit.Before;

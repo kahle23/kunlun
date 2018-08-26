@@ -54,7 +54,7 @@ public class ArrayUtils {
     }
 
     public static byte[] reverse(byte[] arr) {
-        Assert.notNull(arr, "Array must is not null. ");
+        Assert.notNull(arr, "Parameter \"arr\" must not null. ");
         for (int start = 0, end = arr.length - 1; start < end; start++, end--) {
             byte temp = arr[end];
             arr[end] = arr[start];
@@ -85,7 +85,7 @@ public class ArrayUtils {
     }
 
     public static <T> T[] reverse(T[] arr) {
-        Assert.notNull(arr, "Array must is not null. ");
+        Assert.notNull(arr, "Parameter \"arr\" must not null. ");
         for (int start = 0, end = arr.length - 1; start < end; start++, end--) {
             T temp = arr[end];
             arr[end] = arr[start];
@@ -95,13 +95,14 @@ public class ArrayUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> void sort(T[] arr, final boolean isAsc, String... properties) {
+    public static <T> void sort(T[] arr, boolean isAsc, String... properties) {
         if (ArrayUtils.isEmpty(arr) || ArrayUtils.isEmpty(properties)) {
             return;
         }
         T bean = ArrayUtils.takeFirstNotNullElement(arr);
-        Assert.notNull(bean, "Elements in array all is null. ");
+        Assert.notNull(bean, "Elements in array parameter \"arr\" all is null. ");
         Class<?> clazz = bean.getClass();
+        final boolean sortAsc = isAsc;
         final List<Method> methods = new ArrayList<Method>();
         Map<String, Method> readMethods = ReflectUtils.findReadMethods(clazz);
         for (String property : properties) {
@@ -113,7 +114,7 @@ public class ArrayUtils {
             @Override
             public int compare(T o1, T o2) {
                 if (o1 == null || o2 == null) {
-                    return isAsc ?
+                    return sortAsc ?
                             // Asc null element in first.
                             o1 == null ? o2 == null ? 0 : -1 : 1 :
                             // Desc null element in last.
@@ -132,7 +133,7 @@ public class ArrayUtils {
                         if (res1.getClass().equals(res2.getClass())
                                 && res1 instanceof Comparable
                                 && res2 instanceof Comparable) {
-                            return isAsc ?
+                            return sortAsc ?
                                     ((Comparable) res1).compareTo(res2) :
                                     ((Comparable) res2).compareTo(res1);
                         }

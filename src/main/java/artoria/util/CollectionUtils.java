@@ -38,7 +38,7 @@ public class CollectionUtils {
     }
 
     public static <E> void reverse(List<E> list) {
-        Assert.notNull(list, "List must is not null. ");
+        Assert.notNull(list, "Parameter \"list\" must not null. ");
         for (int start = 0, end = list.size() - 1; start < end; start++, end--) {
             E temp = list.get(end);
             list.set(end, list.get(start));

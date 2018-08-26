@@ -9,10 +9,10 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * Date handler is a formater and parser.
+ * Date formater and parser simple implement by jdk.
  * @author Kahle
  */
-public class DateHandler implements DateFormater, DateParser {
+public class SimpleDateHandler implements DateFormater, DateParser {
     private ThreadLocal<Map<String, SimpleDateFormat>> dateFormatCache = new ThreadLocal<Map<String, SimpleDateFormat>>();
 
     private SimpleDateFormat takeSimpleDateFormat(String pattern) {

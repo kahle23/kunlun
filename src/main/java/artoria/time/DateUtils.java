@@ -21,7 +21,7 @@ public class DateUtils {
     private static DateParser dateParser;
 
     static {
-        DateHandler handler = new DateHandler();
+        SimpleDateHandler handler = new SimpleDateHandler();
         DateUtils.setDateFormater(handler);
         DateUtils.setDateParser(handler);
         DateUtils.setDateTimeClass(SimpleDateTime.class);

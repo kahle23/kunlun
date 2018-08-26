@@ -33,8 +33,8 @@ public class TypeConvertUtils {
     public static void register(Class<?> clazz, TypeConverter converter) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
-        CONVERTERS.put(clazz, converter);
         log.info("Register: " + clazz.getName() + " >> " + converter.getClass().getName());
+        CONVERTERS.put(clazz, converter);
     }
 
     public static Object convert(Object source, Class<?> target) {

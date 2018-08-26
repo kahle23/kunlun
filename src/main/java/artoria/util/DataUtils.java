@@ -62,7 +62,7 @@ public class DataUtils {
             Assert.notBlank(propertyName, "Parameter \"propertyName\" must not blank. ");
             Assert.notNull(propertyClass, "Parameter \"propertyClass\" must not null. ");
             P tmp = CollectionUtils.takeFirstNotNullElement(list);
-            Assert.notNull(tmp, "Elements in list all is null. ");
+            Assert.notNull(tmp, "Elements in list parameter \"list\" all is null. ");
             Method method = DataUtils.findMethodByName(tmp.getClass(), propertyName);
             // Handle result
             for (P bean : list) {
@@ -93,7 +93,7 @@ public class DataUtils {
             if (CollectionUtils.isEmpty(list)) { return result; }
             Assert.notEmpty(propertyNames, "Parameter \"propertyNames\" must not empty. ");
             T tmp = CollectionUtils.takeFirstNotNullElement(list);
-            Assert.notNull(tmp, "Elements in list all is null. ");
+            Assert.notNull(tmp, "Elements in list parameter \"list\" all is null. ");
             List<Method> methods = DataUtils.findMethodsByNames(tmp.getClass(), propertyNames);
             // Convert to map
             StringBuilder key = new StringBuilder();
@@ -128,7 +128,7 @@ public class DataUtils {
             if (CollectionUtils.isEmpty(list)) { return result; }
             Assert.notEmpty(propertyNames, "Parameter \"propertyNames\" must not empty. ");
             T tmp = CollectionUtils.takeFirstNotNullElement(list);
-            Assert.notNull(tmp, "Elements in list all is null. ");
+            Assert.notNull(tmp, "Elements in list parameter \"list\" all is null. ");
             List<Method> methods = DataUtils.findMethodsByNames(tmp.getClass(), propertyNames);
             // Convert to map
             StringBuilder builder = new StringBuilder();
@@ -172,7 +172,7 @@ public class DataUtils {
             Assert.notBlank(valueProperty, "Parameter \"valueProperty\" must not blank. ");
             Assert.notEmpty(keyProperties, "Parameter \"keyProperties\" must not empty. ");
             P tmp = CollectionUtils.takeFirstNotNullElement(list);
-            Assert.notNull(tmp, "Elements in list all is null. ");
+            Assert.notNull(tmp, "Elements in list parameter \"list\" all is null. ");
             Class<?> tmpClass = tmp.getClass();
             Method valMethod = DataUtils.findMethodByName(tmpClass, valueProperty);
             List<Method> keyMethods = DataUtils.findMethodsByNames(tmp.getClass(), keyProperties);

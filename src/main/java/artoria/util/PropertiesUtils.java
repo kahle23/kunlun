@@ -43,14 +43,14 @@ public class PropertiesUtils {
         return PropertiesUtils.create(dest, DEFAULT_CHARSET_NAME);
     }
 
-    public static Properties create(File dest, String charset) {
-        Assert.notNull(dest, "Parameter \"dest\" must not null. ");
+    public static Properties create(File destination, String charset) {
+        Assert.notNull(destination, "Parameter \"destination\" must not null. ");
         Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
-        Assert.state(dest.exists(), "Destination file is not exists. ");
-        Assert.state(dest.isFile(), "Destination file is not a file. ");
+        Assert.state(destination.exists(), "Parameter \"destination\" must be exists. ");
+        Assert.state(destination.isFile(), "Parameter \"destination\" must be a file. ");
         InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream(dest);
+            inputStream = new FileInputStream(destination);
             Reader reader = new InputStreamReader(inputStream, charset);
             return PropertiesUtils.create(reader);
         }
@@ -62,9 +62,9 @@ public class PropertiesUtils {
         }
     }
 
-    public static Properties create(InputStream in) throws IOException {
+    public static Properties create(InputStream inputStream) throws IOException {
         // Use default charset.
-        return PropertiesUtils.create(in, DEFAULT_CHARSET_NAME);
+        return PropertiesUtils.create(inputStream, DEFAULT_CHARSET_NAME);
     }
 
     public static Properties create(InputStream inputStream, String charset) throws IOException {
