@@ -1,7 +1,7 @@
 package artoria.beans;
 
 import artoria.entity.Student;
-import artoria.util.RandomUtils;
+import artoria.random.RandomUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 

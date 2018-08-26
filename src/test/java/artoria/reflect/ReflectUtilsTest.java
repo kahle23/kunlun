@@ -1,7 +1,7 @@
 package artoria.reflect;
 
 import artoria.entity.Student;
-import artoria.util.RandomUtils;
+import artoria.random.RandomUtils;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;

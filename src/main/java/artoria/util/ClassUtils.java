@@ -67,7 +67,7 @@ public class ClassUtils {
      * @return
      */
     public static Class<?> getWrapper(Class<?> type) {
-        Assert.notNull(type, "Type must is not null. ");
+        Assert.notNull(type, "Parameter \"type\" must not null. ");
         if (!type.isPrimitive() || !WRAPPER.containsKey(type)) {
             return type;
         }
@@ -80,7 +80,7 @@ public class ClassUtils {
      * @return
      */
     public static Class<?> getPrimitive(Class<?> type) {
-        Assert.notNull(type, "Type must is not null. ");
+        Assert.notNull(type, "Parameter \"type\" must not null. ");
         if (type.isPrimitive() || !PRIMITIVE.containsKey(type)) {
             return type;
         }
@@ -105,8 +105,8 @@ public class ClassUtils {
      * @return
      */
     public static boolean isPresent(String className, boolean initialize, ClassLoader classLoader) {
-        Assert.notNull(className, "Class name must is not null. ");
-        Assert.notNull(classLoader, "Class loader must is not null. ");
+        Assert.notNull(className, "Parameter \"className\" must not null. ");
+        Assert.notNull(classLoader, "Parameter \"classLoader\" must not null. ");
         try {
             Class.forName(className, initialize, classLoader);
             return true;
