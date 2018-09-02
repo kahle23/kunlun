@@ -29,38 +29,47 @@ public class HttpResponse extends HttpMessage {
     }
 
     public int getNumRedirects() {
+
         return this.numRedirects;
     }
 
     public HttpRequest getRequest() {
+
         return this.request;
     }
 
     public void setRequest(HttpRequest request) {
+
         this.request = request;
     }
 
     public int getStatusCode() {
+
         return this.statusCode;
     }
 
     public void setStatusCode(int statusCode) {
+
         this.statusCode = statusCode;
     }
 
     public String getStatusMessage() {
+
         return this.statusMessage;
     }
 
     public void setStatusMessage(String statusMessage) {
+
         this.statusMessage = statusMessage;
     }
 
     public byte[] getBody() {
+
         return this.body;
     }
 
     public void setBody(byte[] body) {
+
         this.body = body;
     }
 

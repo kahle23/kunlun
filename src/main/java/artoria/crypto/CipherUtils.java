@@ -41,6 +41,7 @@ public class CipherUtils {
 
     public static SecretKey parseSecretKey(String algorithmName, byte[] key)
             throws GeneralSecurityException {
+
         return new SecretKeySpec(key, algorithmName);
     }
 

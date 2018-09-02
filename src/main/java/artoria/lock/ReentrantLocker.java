@@ -49,26 +49,31 @@ public class ReentrantLocker implements Locker {
 
     @Override
     public void lock(String lockName) {
+
         this.takeLock(lockName).lock();
     }
 
     @Override
     public void unlock(String lockName) {
+
         this.takeLock(lockName).unlock();
     }
 
     @Override
     public void lockInterruptibly(String lockName) throws InterruptedException {
+
         this.takeLock(lockName).lockInterruptibly();
     }
 
     @Override
     public boolean tryLock(String lockName) {
+
         return this.takeLock(lockName).tryLock();
     }
 
     @Override
     public boolean tryLock(String lockName, long time, TimeUnit unit) throws InterruptedException {
+
         return this.takeLock(lockName).tryLock(time, unit);
     }
 

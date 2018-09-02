@@ -12,14 +12,17 @@ public class EnhancerTest {
         private Object proxiedObject;
 
         public Object getProxiedObject() {
-            return proxiedObject;
+
+            return this.proxiedObject;
         }
 
         public void setProxiedObject(Object proxiedObject) {
+
             this.proxiedObject = proxiedObject;
         }
 
         public TestInterceptor(Object proxiedObject) {
+
             this.proxiedObject = proxiedObject;
         }
 
@@ -27,7 +30,7 @@ public class EnhancerTest {
         public Object intercept(Object proxyObject, Method method, Object[] args) throws Throwable {
             log.info("Proxy object's class is " + proxyObject.getClass().getName());
             System.out.println("Hello, this is intercept. ");
-            return method.invoke(proxiedObject, args);
+            return method.invoke(this.proxiedObject, args);
         }
 
     }

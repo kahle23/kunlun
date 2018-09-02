@@ -15,29 +15,46 @@ public class SerializeUtils {
     private static Serializer<Object> serializer;
     private static Deserializer<Object> deserializer;
 
-    static {
-        SerializeUtils.setSerializer(new SimpleSerializer());
-        SerializeUtils.setDeserializer(new SimpleDeserializer());
-    }
-
     public static Serializer<Object> getSerializer() {
-        return serializer;
+        if (serializer != null) {
+            return serializer;
+        }
+        synchronized (Serializer.class) {
+            if (serializer != null) {
+                return serializer;
+            }
+            setSerializer(new SimpleSerializer());
+            return serializer;
+        }
     }
 
     public static void setSerializer(Serializer<Object> serializer) {
         Assert.notNull(serializer, "Parameter \"serializer\" must not null. ");
-        log.info("Set serializer: " + serializer.getClass().getName());
-        SerializeUtils.serializer = serializer;
+        synchronized (Serializer.class) {
+            log.info("Set serializer: " + serializer.getClass().getName());
+            SerializeUtils.serializer = serializer;
+        }
     }
 
     public static Deserializer<Object> getDeserializer() {
-        return deserializer;
+        if (deserializer != null) {
+            return deserializer;
+        }
+        synchronized (Deserializer.class) {
+            if (deserializer != null) {
+                return deserializer;
+            }
+            setDeserializer(new SimpleDeserializer());
+            return deserializer;
+        }
     }
 
     public static void setDeserializer(Deserializer<Object> deserializer) {
         Assert.notNull(deserializer, "Parameter \"deserializer\" must not null. ");
-        log.info("Set deserializer: " + deserializer.getClass().getName());
-        SerializeUtils.deserializer = deserializer;
+        synchronized (Deserializer.class) {
+            log.info("Set deserializer: " + deserializer.getClass().getName());
+            SerializeUtils.deserializer = deserializer;
+        }
     }
 
     public static Object clone(Object obj) {
@@ -72,12 +89,12 @@ public class SerializeUtils {
     public static void serialize(Object object, OutputStream outputStream) throws IOException {
         Assert.notNull(object, "Parameter \"object\" must not null. ");
         Assert.notNull(outputStream, "Parameter \"outputStream\" must not null. ");
-        serializer.serialize(object, outputStream);
+        getSerializer().serialize(object, outputStream);
     }
 
     public static Object deserialize(InputStream inputStream) throws IOException {
         Assert.notNull(inputStream, "Parameter \"inputStream\" must not null. ");
-        return deserializer.deserialize(inputStream);
+        return getDeserializer().deserialize(inputStream);
     }
 
 }

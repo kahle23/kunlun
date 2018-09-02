@@ -31,34 +31,42 @@ public class TableMeta implements Serializable {
     private List<ColumnMeta> columnMetaList;
 
     public String getName() {
-        return name;
+
+        return this.name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public String getRemarks() {
-        return remarks;
+
+        return this.remarks;
     }
 
     public void setRemarks(String remarks) {
+
         this.remarks = remarks;
     }
 
     public String getPrimaryKey() {
-        return primaryKey;
+
+        return this.primaryKey;
     }
 
     public void setPrimaryKey(String primaryKey) {
+
         this.primaryKey = primaryKey;
     }
 
     public List<ColumnMeta> getColumnMetaList() {
-        return columnMetaList;
+
+        return this.columnMetaList;
     }
 
     public void setColumnMetaList(List<ColumnMeta> columnMetaList) {
+
         this.columnMetaList = columnMetaList;
     }
 

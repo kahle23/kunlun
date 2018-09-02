@@ -45,6 +45,7 @@ public enum HttpMethod {
     private final boolean hasBody;
 
     HttpMethod(boolean hasBody) {
+
         this.hasBody = hasBody;
     }
 
@@ -53,7 +54,8 @@ public enum HttpMethod {
      * @return If body needed
      */
     public final boolean getHasBody() {
-        return hasBody;
+
+        return this.hasBody;
     }
 
 }

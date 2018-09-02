@@ -10,25 +10,24 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Date;
 
-import static artoria.common.Constants.FALSE;
-import static artoria.common.Constants.TRUE;
-
 /**
  * String converter.
  * @author Kahle
  */
 public class StringConverter implements TypeConverter {
-
     private String pattern = DateUtils.DEFAULT_DATE_PATTERN;
 
-    public StringConverter() {}
+    public StringConverter() {
+    }
 
     public StringConverter(String datePattern) {
+
         this.setPattern(datePattern);
     }
 
     public String getPattern() {
-        return pattern;
+
+        return this.pattern;
     }
 
     public void setPattern(String datePattern) {
@@ -45,7 +44,7 @@ public class StringConverter implements TypeConverter {
             return TypeConvertUtils.convert(bInt, target);
         }
         try {
-            Date date = DateUtils.parse(srcStr, pattern);
+            Date date = DateUtils.parse(srcStr, this.pattern);
             return TypeConvertUtils.convert(date, target);
         }
         catch (ParseException e) {
@@ -54,15 +53,8 @@ public class StringConverter implements TypeConverter {
     }
 
     protected Object stringToBoolean(Object source, Class<?> target) {
-        if (TRUE.equalsIgnoreCase((String) source)) {
-            return true;
-        }
-        else if (FALSE.equalsIgnoreCase((String) source)) {
-            return false;
-        }
-        else {
-            return source;
-        }
+
+        return Boolean.valueOf((String) source);
     }
 
     @Override

@@ -14,29 +14,37 @@ public class ReflectUtils {
     private static Logger log = Logger.getLogger(ReflectUtils.class.getName());
     private static Reflecter reflecter;
 
-    static {
-        ReflectUtils.setReflecter(new SimpleReflecter());
-    }
-
     public static Reflecter getReflecter() {
-        return reflecter;
+        if (reflecter != null) {
+            return reflecter;
+        }
+        synchronized (Reflecter.class) {
+            if (reflecter != null) {
+                return reflecter;
+            }
+            setReflecter(new SimpleReflecter());
+            return reflecter;
+        }
     }
 
     public static void setReflecter(Reflecter reflecter) {
         Assert.notNull(reflecter, "Parameter \"reflecter\" must not null. ");
-        log.info("Set reflecter: " + reflecter.getClass().getName());
-        ReflectUtils.reflecter = reflecter;
+        synchronized (Reflecter.class) {
+            log.info("Set reflecter: " + reflecter.getClass().getName());
+            ReflectUtils.reflecter = reflecter;
+        }
     }
 
     public static Object newInstance(String className, Object... args) throws ClassNotFoundException
             , InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Class<?> clazz = reflecter.forName(className);
-        return args.length == 0 ? clazz.newInstance() : ReflectUtils.newInstance(clazz, args);
+        Class<?> clazz = getReflecter().forName(className);
+        return args.length == 0 ? clazz.newInstance() : newInstance(clazz, args);
     }
 
     public static Object newInstance(Class<?> clazz, Object... args) throws InvocationTargetException
             , NoSuchMethodException, InstantiationException, IllegalAccessException {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        Reflecter reflecter = ReflectUtils.getReflecter();
         Class<?>[] types = reflecter.findParameterTypes(args);
         Constructor<?> constructor = reflecter.findConstructor(clazz, types);
         reflecter.makeAccessible(constructor);
@@ -44,71 +52,88 @@ public class ReflectUtils {
     }
 
     public static Class<?>[] findParameterTypes(Object... values) {
-        return reflecter.findParameterTypes(values);
+
+        return getReflecter().findParameterTypes(values);
     }
 
     public static boolean matchParameterTypes(Class<?>[] declaredTypes, Class<?>[] actualTypes) {
-        return reflecter.matchParameterTypes(declaredTypes, actualTypes);
+
+        return getReflecter().matchParameterTypes(declaredTypes, actualTypes);
     }
 
     public static <T extends AccessibleObject> boolean checkAccessible(T accessible) {
-        return reflecter.checkAccessible(accessible);
+
+        return getReflecter().checkAccessible(accessible);
     }
 
     public static <T extends AccessibleObject> void makeAccessible(T accessible) {
-        reflecter.makeAccessible(accessible);
+
+        getReflecter().makeAccessible(accessible);
     }
 
     public static Constructor<?>[] findConstructors(Class<?> clazz) {
-        return reflecter.findConstructors(clazz);
+
+        return getReflecter().findConstructors(clazz);
     }
 
     public static Constructor<?> findConstructor(Class<?> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
-        return reflecter.findConstructor(clazz, parameterTypes);
+
+        return getReflecter().findConstructor(clazz, parameterTypes);
     }
 
     public static Field[] findFields(Class<?> clazz) {
-        return reflecter.findFields(clazz);
+
+        return getReflecter().findFields(clazz);
     }
 
     public static Field[] findDeclaredFields(Class<?> clazz) {
-        return reflecter.findDeclaredFields(clazz);
+
+        return getReflecter().findDeclaredFields(clazz);
     }
 
     public static Field[] findAccessFields(Class<?> clazz) {
-        return reflecter.findAccessFields(clazz);
+
+        return getReflecter().findAccessFields(clazz);
     }
 
     public static Field findField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
-        return reflecter.findField(clazz, fieldName);
+
+        return getReflecter().findField(clazz, fieldName);
     }
 
     public static Method[] findMethods(Class<?> clazz) {
-        return reflecter.findMethods(clazz);
+
+        return getReflecter().findMethods(clazz);
     }
 
     public static Method[] findDeclaredMethods(Class<?> clazz) {
-        return reflecter.findDeclaredMethods(clazz);
+
+        return getReflecter().findDeclaredMethods(clazz);
     }
 
     public static Method[] findAccessMethods(Class<?> clazz) {
-        return reflecter.findAccessMethods(clazz);
+
+        return getReflecter().findAccessMethods(clazz);
     }
 
     public static Map<String, Method> findReadMethods(Class<?> clazz) {
-        return reflecter.findReadMethods(clazz);
+
+        return getReflecter().findReadMethods(clazz);
     }
 
     public static Map<String, Method> findWriteMethods(Class<?> clazz) {
-        return reflecter.findWriteMethods(clazz);
+
+        return getReflecter().findWriteMethods(clazz);
     }
 
     public static Method findMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
-        return reflecter.findMethod(clazz, methodName, parameterTypes);
+
+        return getReflecter().findMethod(clazz, methodName, parameterTypes);
     }
 
     public static Method findSimilarMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
-        return reflecter.findSimilarMethod(clazz, methodName, parameterTypes);
+
+        return getReflecter().findSimilarMethod(clazz, methodName, parameterTypes);
     }
 
 }

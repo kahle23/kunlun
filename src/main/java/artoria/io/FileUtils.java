@@ -37,6 +37,7 @@ public class FileUtils {
     }
 
     public static long write(Object input, File destination) throws IOException {
+
         return FileUtils.write(input, destination, false);
     }
 
@@ -83,6 +84,7 @@ public class FileUtils {
     }
 
     public static boolean deleteFile(File destination) {
+
         return destination == null || !destination.exists() || destination.delete();
     }
 

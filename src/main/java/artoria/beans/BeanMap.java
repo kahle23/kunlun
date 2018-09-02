@@ -13,13 +13,14 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public abstract class BeanMap implements Map, Cloneable {
-
     private Object bean;
     private TypeConverter typeConverter;
 
-    protected BeanMap() {}
+    protected BeanMap() {
+    }
 
     public Object getBean() {
+
         return this.bean;
     }
 
@@ -29,10 +30,12 @@ public abstract class BeanMap implements Map, Cloneable {
     }
 
     public TypeConverter getTypeConverter() {
+
         return this.typeConverter;
     }
 
     public void setTypeConverter(TypeConverter typeConverter) {
+
         this.typeConverter = typeConverter;
     }
 
@@ -55,16 +58,19 @@ public abstract class BeanMap implements Map, Cloneable {
 
     @Override
     public int size() {
+
         return this.keySet().size();
     }
 
     @Override
     public boolean isEmpty() {
+
         return this.size() == 0;
     }
 
     @Override
     public boolean containsKey(Object key) {
+
         return this.keySet().contains(key);
     }
 
@@ -82,16 +88,19 @@ public abstract class BeanMap implements Map, Cloneable {
 
     @Override
     public Object get(Object key) {
-        return this.get(bean, key);
+
+        return this.get(this.bean, key);
     }
 
     @Override
     public Object put(Object key, Object value) {
-        return this.put(bean, key, value);
+
+        return this.put(this.bean, key, value);
     }
 
     @Override
     public Object remove(Object key) {
+
         throw new UnsupportedOperationException();
     }
 
@@ -105,6 +114,7 @@ public abstract class BeanMap implements Map, Cloneable {
 
     @Override
     public void clear() {
+
         throw new UnsupportedOperationException();
     }
 

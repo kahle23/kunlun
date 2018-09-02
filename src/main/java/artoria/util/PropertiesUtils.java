@@ -15,7 +15,7 @@ import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
 public class PropertiesUtils {
 
     public static Properties create(String fileName) {
-        // Use default charset.
+
         return PropertiesUtils.create(fileName, DEFAULT_CHARSET_NAME);
     }
 
@@ -39,7 +39,7 @@ public class PropertiesUtils {
     }
 
     public static Properties create(File dest) {
-        // Use default charset.
+
         return PropertiesUtils.create(dest, DEFAULT_CHARSET_NAME);
     }
 
@@ -63,7 +63,7 @@ public class PropertiesUtils {
     }
 
     public static Properties create(InputStream inputStream) throws IOException {
-        // Use default charset.
+
         return PropertiesUtils.create(inputStream, DEFAULT_CHARSET_NAME);
     }
 

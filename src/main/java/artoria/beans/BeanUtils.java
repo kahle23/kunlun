@@ -19,9 +19,10 @@ import java.util.logging.Logger;
  */
 public class BeanUtils {
 
-    static class TypeConvertUtilsConverter implements TypeConverter {
+    private static class TypeConvertUtilsConverter implements TypeConverter {
         @Override
         public Object convert(Object source, Class<?> target) {
+
             return TypeConvertUtils.convert(source, target);
         }
     }
@@ -29,28 +30,20 @@ public class BeanUtils {
     private static final TypeConverter CONVERTER = new TypeConvertUtilsConverter();
     private static final Integer MAP_INIT_CAPACITY = 32;
     private static Logger log = Logger.getLogger(BeanUtils.class.getName());
-    private static BeanCopier beanCopier;
     private static Class<? extends BeanMap> beanMapClass;
-    private static Constructor<? extends BeanMap> beanMapConstructor;
-
-    static {
-        BeanUtils.setBeanCopier(new SimpleBeanCopier());
-        BeanUtils.setBeanMapClass(SimpleBeanMap.class);
-    }
-
-    public static BeanCopier getBeanCopier() {
-        return beanCopier;
-    }
-
-    public static void setBeanCopier(BeanCopier beanCopier) {
-        Assert.notNull(beanCopier,
-                "Parameter \"beanCopier\" must not null. ");
-        BeanUtils.beanCopier = beanCopier;
-        log.info("Set bean copier: " + beanCopier.getClass().getName());
-    }
+    private static BeanCopier beanCopier;
 
     public static Class<? extends BeanMap> getBeanMapClass() {
-        return beanMapClass;
+        if (beanMapClass != null) {
+            return beanMapClass;
+        }
+        synchronized (BeanMap.class) {
+            if (beanMapClass != null) {
+                return beanMapClass;
+            }
+            setBeanMapClass(SimpleBeanMap.class);
+            return beanMapClass;
+        }
     }
 
     public static void setBeanMapClass(Class<? extends BeanMap> beanMapClass) {
@@ -58,19 +51,39 @@ public class BeanUtils {
                 "Parameter \"beanMapClass\" must not null. ");
         Assert.state(beanMapClass != BeanMap.class,
                 "Parameter \"beanMapClass\" must not \"BeanMap.class\". ");
-        try {
-            BeanUtils.beanMapClass = beanMapClass;
-            BeanUtils.beanMapConstructor = beanMapClass.getConstructor();
+        synchronized (BeanMap.class) {
             log.info("Set bean map class: " + beanMapClass.getName());
+            BeanUtils.beanMapClass = beanMapClass;
         }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+    }
+
+    public static BeanCopier getBeanCopier() {
+        if (beanCopier != null) {
+            return beanCopier;
+        }
+        synchronized (BeanCopier.class) {
+            if (beanCopier != null) {
+                return beanCopier;
+            }
+            setBeanCopier(new SimpleBeanCopier());
+            return beanCopier;
+        }
+    }
+
+    public static void setBeanCopier(BeanCopier beanCopier) {
+        Assert.notNull(beanCopier,
+                "Parameter \"beanCopier\" must not null. ");
+        synchronized (BeanCopier.class) {
+            log.info("Set bean copier: " + beanCopier.getClass().getName());
+            BeanUtils.beanCopier = beanCopier;
         }
     }
 
     public static BeanMap createBeanMap() {
         try {
-            return beanMapConstructor.newInstance();
+            Class<? extends BeanMap> beanMapClass = BeanUtils.getBeanMapClass();
+            Constructor<?> cst = ReflectUtils.findConstructor(beanMapClass);
+            return (BeanMap) cst.newInstance();
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
@@ -104,6 +117,7 @@ public class BeanUtils {
     }
 
     public static void copy(Map from, Object to) {
+
         BeanUtils.copy(from, to, CONVERTER);
     }
 
@@ -116,26 +130,32 @@ public class BeanUtils {
     }
 
     public static void copy(Object from, Object to) {
-        beanCopier.copy(from, to, null, CONVERTER);
+
+        getBeanCopier().copy(from, to, null, CONVERTER);
     }
 
     public static void copy(Object from, Object to, TypeConverter cvt) {
-        beanCopier.copy(from, to, null, cvt);
+
+        getBeanCopier().copy(from, to, null, cvt);
     }
 
     public static void copy(Object from, Object to, List<String> ignore) {
-        beanCopier.copy(from, to, ignore, CONVERTER);
+
+        getBeanCopier().copy(from, to, ignore, CONVERTER);
     }
 
     public static void copy(Object from, Object to, List<String> ignore, TypeConverter cvt) {
-        beanCopier.copy(from, to, ignore, cvt);
+
+        getBeanCopier().copy(from, to, ignore, cvt);
     }
 
     public static <R, K, V> R mapToBean(Map<K, V> from, R to) {
+
         return BeanUtils.beanToBean(from, to);
     }
 
     public static <R, K, V> R mapToBean(Map<K, V> from, Class<R> toClass) {
+
         return BeanUtils.beanToBean(from, toClass);
     }
 

@@ -20,17 +20,19 @@ public class NumberConverter implements TypeConverter {
     private static final String INTEGER = "Integer";
     private static final String VALUE = "Value";
     private static final String INT = "int";
-
     private Boolean isUnixTimestamp = false;
 
-    public NumberConverter() {}
+    public NumberConverter() {
+    }
 
     public NumberConverter(Boolean isUxTp) {
+
         this.setIsUnixTimestamp(isUxTp);
     }
 
     public Boolean getIsUnixTimestamp() {
-        return isUnixTimestamp;
+
+        return this.isUnixTimestamp;
     }
 
     public void setIsUnixTimestamp(Boolean isUnixTimestamp) {
@@ -63,7 +65,7 @@ public class NumberConverter implements TypeConverter {
     protected Object numberToDate(Object source, Class<?> target) {
         Number number = (Number) source;
         long lg = number.longValue();
-        lg = isUnixTimestamp ? lg * 1000L : lg;
+        lg = this.isUnixTimestamp ? lg * 1000L : lg;
         Date date = DateUtils.parse(lg);
         // Maybe target is sql date or timestamp
         return TypeConvertUtils.convert(date, target);

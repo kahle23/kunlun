@@ -32,16 +32,17 @@ public class Hash {
     public static final String SHA256 = "SHA-256";
     public static final String SHA384 = "SHA-384";
     public static final String SHA512 = "SHA-512";
-
     private String charset = DEFAULT_CHARSET_NAME;
     private String algorithm;
 
     public Hash(String algorithm) {
+
         this.setAlgorithm(algorithm);
     }
 
     public String getCharset() {
-        return charset;
+
+        return this.charset;
     }
 
     public void setCharset(String charset) {
@@ -50,7 +51,8 @@ public class Hash {
     }
 
     public String getAlgorithm() {
-        return algorithm;
+
+        return this.algorithm;
     }
 
     public void setAlgorithm(String algorithm) {
@@ -67,7 +69,7 @@ public class Hash {
 
     public byte[] calc(byte[] data) throws NoSuchAlgorithmException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
-        MessageDigest md = MessageDigest.getInstance(algorithm);
+        MessageDigest md = MessageDigest.getInstance(this.algorithm);
         return md.digest(data);
     }
 
@@ -84,7 +86,7 @@ public class Hash {
 
     public byte[] calc(InputStream in) throws NoSuchAlgorithmException, IOException {
         Assert.notNull(in, "Parameter \"in\" must not null. ");
-        MessageDigest md = MessageDigest.getInstance(algorithm);
+        MessageDigest md = MessageDigest.getInstance(this.algorithm);
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         for (int len; (len = in.read(buffer)) != EOF;) {
             md.update(buffer, 0, len);

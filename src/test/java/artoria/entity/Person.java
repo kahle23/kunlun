@@ -13,42 +13,52 @@ public class Person implements Serializable {
     private Double weight;
 
     public String getName() {
-        return name;
+
+        return this.name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public Integer getAge() {
-        return age;
+
+        return this.age;
     }
 
     public void setAge(Integer age) {
+
         this.age = age;
     }
 
     public Integer getSex() {
-        return sex;
+
+        return this.sex;
     }
 
     public void setSex(Integer sex) {
+
         this.sex = sex;
     }
 
     public Double getHeight() {
-        return height;
+
+        return this.height;
     }
 
     public void setHeight(Double height) {
+
         this.height = height;
     }
 
     public Double getWeight() {
-        return weight;
+
+        return this.weight;
     }
 
     public void setWeight(Double weight) {
+
         this.weight = weight;
     }
 

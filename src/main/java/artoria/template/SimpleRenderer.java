@@ -9,8 +9,8 @@ import java.io.*;
 import java.text.ParseException;
 import java.util.Map;
 
-import static artoria.io.IOUtils.EOF;
 import static artoria.common.Constants.*;
+import static artoria.io.IOUtils.EOF;
 
 /**
  * Template renderer simple implement by jdk.
@@ -20,6 +20,7 @@ public class SimpleRenderer implements Renderer {
 
     @Override
     public void render(String name, Object data, Writer writer) throws Exception {
+
         this.render(name, DEFAULT_CHARSET_NAME, data, writer);
     }
 
@@ -50,6 +51,7 @@ public class SimpleRenderer implements Renderer {
 
     @Override
     public String renderToString(String name, Object data) throws Exception {
+
         return this.renderToString(name, DEFAULT_CHARSET_NAME, data);
     }
 

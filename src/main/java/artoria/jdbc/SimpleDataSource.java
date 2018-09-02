@@ -36,6 +36,7 @@ public class SimpleDataSource implements DataSource {
     private int minPoolSize = 2;
 
     public SimpleDataSource() {
+
         this(PropertiesUtils.create(DEFAULT_CONFIG_NAME));
     }
 
@@ -49,6 +50,7 @@ public class SimpleDataSource implements DataSource {
     }
 
     public SimpleDataSource(String driverClass, String jdbcUrl, String user, String password) {
+
         this(driverClass, jdbcUrl, user, password, -1, -1);
     }
 
@@ -68,7 +70,7 @@ public class SimpleDataSource implements DataSource {
         try {
             Class.forName(this.driverClass);
             for (int i = 0; i < this.minPoolSize; i++) {
-                queue.offer(this.createConnection());
+                this.queue.offer(this.createConnection());
             }
         }
         catch (Exception e) {
@@ -77,14 +79,14 @@ public class SimpleDataSource implements DataSource {
     }
 
     public Connection createConnection() throws SQLException {
-        Connection conn = DriverManager.getConnection(jdbcUrl, user, password);
-        ConnectionInterceptor intp = new ConnectionInterceptor(queue, conn);
+        Connection conn = DriverManager.getConnection(this.jdbcUrl, this.user, this.password);
+        ConnectionInterceptor intp = new ConnectionInterceptor(this.queue, conn);
         return (Connection) Enhancer.enhance(Connection.class, intp);
     }
 
     @Override
     public Connection getConnection() throws SQLException {
-        Connection conn = queue.poll();
+        Connection conn = this.queue.poll();
         if (conn == null) {
             conn = this.createConnection();
         }
@@ -93,41 +95,49 @@ public class SimpleDataSource implements DataSource {
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
+
         throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
+
         throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
+
         throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public PrintWriter getLogWriter() throws SQLException {
+
         throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public void setLogWriter(PrintWriter out) throws SQLException {
+
         throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public void setLoginTimeout(int seconds) throws SQLException {
+
         throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public int getLoginTimeout() throws SQLException {
+
         throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+
         throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
@@ -145,7 +155,7 @@ public class SimpleDataSource implements DataSource {
         public Object intercept(Object proxyObject, Method method, Object[] args) throws Throwable {
             boolean offer = false;
             if (PROXY_METHOD.equals(method.getName())) {
-                offer = queue.offer(connection);
+                offer = this.queue.offer(connection);
             }
             if (!offer) {
                 return method.invoke(connection, args);

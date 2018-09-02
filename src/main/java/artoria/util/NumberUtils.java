@@ -15,34 +15,42 @@ public class NumberUtils {
     private static int defaultScale = 2;
 
     public static RoundingMode getDefaultRoundMode() {
+
         return defaultRoundMode;
     }
 
     public static void setDefaultRoundMode(RoundingMode roundMode) {
+
         defaultRoundMode = roundMode;
     }
 
     public static String getDefaultPattern() {
+
         return defaultPattern;
     }
 
     public static void setDefaultPattern(String pattern) {
+
         defaultPattern = pattern;
     }
 
     public static int getDefaultScale() {
+
         return defaultScale;
     }
 
     public static void setDefaultScale(int scale) {
+
         defaultScale = scale;
     }
 
     public static BigDecimal round(Object input) {
+
         return NumberUtils.round(input, defaultScale, defaultRoundMode);
     }
 
     public static BigDecimal round(Object input, int newScale) {
+
         return NumberUtils.round(input, newScale, defaultRoundMode);
     }
 
@@ -65,6 +73,7 @@ public class NumberUtils {
     }
 
     public static String format(Object input) {
+
         return NumberUtils.format(input, defaultPattern);
     }
 

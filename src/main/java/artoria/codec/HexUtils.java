@@ -21,6 +21,7 @@ public class HexUtils {
     }
 
     public static Boolean getDefaultToUpperCase() {
+
         return defaultToUpperCase;
     }
 
@@ -30,7 +31,7 @@ public class HexUtils {
     }
 
     public static char[] encode(byte[] data) {
-        // Use default to uppercase.
+
         return HexUtils.encode(data, defaultToUpperCase);
     }
 

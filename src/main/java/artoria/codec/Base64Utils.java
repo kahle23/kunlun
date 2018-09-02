@@ -28,49 +28,53 @@ public class Base64Utils {
     private static Logger log = Logger.getLogger(Base64Utils.class.getName());
     private static Base64Delegate delegate;
 
-    static {
-        // Do auto select.
-        Base64Utils.setDelegate(null);
-    }
-
     public static Base64Delegate getDelegate() {
-        return delegate;
+        if (delegate != null) {
+            return delegate;
+        }
+        synchronized (Base64Delegate.class) {
+            if (delegate != null) {
+                return delegate;
+            }
+            ClassLoader classLoader = Base64Utils.class.getClassLoader();
+            // If have JDK 8's java.util.Base64, to use it.
+            if (ClassUtils.isPresent(JAVA_UTIL_BASE64, classLoader)) {
+                setDelegate(new Java8Base64Delegate());
+            }
+            // Maybe all jdk is ok.
+            else if (ClassUtils.isPresent(JAVAX_XML_DATATYPE_CONVERTER, classLoader)) {
+                setDelegate(new Java7Base64Delegate());
+            }
+            return delegate;
+        }
     }
 
     public static void setDelegate(Base64Delegate delegate) {
-        if (delegate != null) {
-            log.info("Use base64 delegate: " + delegate.getClass().getName());
+        Assert.notNull(delegate, "Parameter \"delegate\" must not null. ");
+        synchronized (Base64Delegate.class) {
+            log.info("Set base64 delegate: " + delegate.getClass().getName());
             Base64Utils.delegate = delegate;
-            return;
-        }
-        if (Base64Utils.delegate != null) { return; }
-        ClassLoader classLoader = Base64Utils.class.getClassLoader();
-        // If have JDK 8's java.util.Base64, to use it.
-        if (ClassUtils.isPresent(JAVA_UTIL_BASE64, classLoader)) {
-            log.info("Use base64 provider: " + JAVA_UTIL_BASE64);
-            Base64Utils.delegate = new Java8Base64Delegate();
-        }
-        // Maybe all jdk is ok.
-        else if (ClassUtils.isPresent(JAVAX_XML_DATATYPE_CONVERTER, classLoader)) {
-            log.info("Use base64 provider: " + JAVAX_XML_DATATYPE_CONVERTER);
-            Base64Utils.delegate = new Java7Base64Delegate();
         }
     }
 
     public static byte[] encode(byte[] src) {
-        return delegate.encode(src);
+
+        return getDelegate().encode(src);
     }
 
     public static byte[] decode(byte[] src) {
-        return delegate.decode(src);
+
+        return getDelegate().decode(src);
     }
 
     public static byte[] encodeUrlSafe(byte[] src) {
-        return delegate.encodeUrlSafe(src);
+
+        return getDelegate().encodeUrlSafe(src);
     }
 
     public static byte[] decodeUrlSafe(byte[] src) {
-        return delegate.decodeUrlSafe(src);
+
+        return getDelegate().decodeUrlSafe(src);
     }
 
     public static boolean isUrlSafeString(String base64) {
@@ -173,7 +177,7 @@ public class Base64Utils {
 
     }
 
-    static class Java7Base64Delegate implements Base64Delegate {
+    public static class Java7Base64Delegate implements Base64Delegate {
 
         @Override
         public byte[] encode(byte[] source) {
@@ -207,7 +211,7 @@ public class Base64Utils {
 
     }
 
-    static class Java8Base64Delegate implements Base64Delegate {
+    public static class Java8Base64Delegate implements Base64Delegate {
 
         @Override
         public byte[] encode(byte[] source) {
