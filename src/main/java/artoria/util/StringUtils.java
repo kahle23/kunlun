@@ -10,18 +10,22 @@ public class StringUtils {
     private static final char UNDERLINE = '_';
 
     public static boolean equals(String str1, String str2) {
+
         return ObjectUtils.equals(str1, str2);
     }
 
     public static boolean isEmpty(Object obj) {
+
         return obj == null || EMPTY_STRING.equals(obj);
     }
 
     public static boolean isNotEmpty(Object obj) {
+
         return obj != null && !EMPTY_STRING.equals(obj);
     }
 
     public static boolean isBlank(CharSequence cs) {
+
         return !StringUtils.isNotBlank(cs);
     }
 
@@ -121,14 +125,17 @@ public class StringUtils {
     }
 
     public static String delete(String inString, String pattern) {
+
         return StringUtils.replace(inString, pattern, EMPTY_STRING);
     }
 
     public static String capitalize(String str) {
+
         return StringUtils.changeFirstCharacterCase(str, true);
     }
 
     public static String uncapitalize(String str) {
+
         return StringUtils.changeFirstCharacterCase(str, false);
     }
 

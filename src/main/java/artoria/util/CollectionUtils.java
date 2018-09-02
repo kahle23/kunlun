@@ -30,10 +30,12 @@ public class CollectionUtils {
     }
 
     public static <E> boolean isEmpty(Collection<E> col) {
+
         return col == null || col.isEmpty();
     }
 
     public static <E> boolean isNotEmpty(Collection<E> col) {
+
         return col != null && !col.isEmpty();
     }
 

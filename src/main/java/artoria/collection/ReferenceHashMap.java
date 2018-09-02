@@ -101,7 +101,7 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
         if (value == null) {
             return null;
         }
-        switch (type) {
+        switch (this.type) {
             case WEAK: return new WeakValueCell<V>(key, value, queue);
             case SOFT: return new SoftValueCell<V>(key, value, queue);
             default: return new WeakValueCell<V>(key, value, queue);
@@ -139,6 +139,7 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
         Set<Map.Entry<K, ValueCell<V>>> hashEntries;
 
         private EntrySet() {
+
             this.hashEntries = hash.entrySet();
         }
 
@@ -162,6 +163,7 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
 
         @Override
         public boolean isEmpty() {
+
             return !this.iterator().hasNext();
         }
 
@@ -202,6 +204,7 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
 
                 @Override
                 public void remove() {
+
                     this.hashIterator.remove();
                 }
 
@@ -221,11 +224,13 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
 
         @Override
         public K getKey() {
+
             return this.entry.getKey();
         }
 
         @Override
         public V getValue() {
+
             return this.value;
         }
 
@@ -305,11 +310,13 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
 
         @Override
         public Object getKey() {
+
             return key;
         }
 
         @Override
         public boolean isValid() {
+
             return this.key != INVALID_KEY;
         }
 
@@ -332,11 +339,13 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
 
         @Override
         public Object getKey() {
+
             return key;
         }
 
         @Override
         public boolean isValid() {
+
             return this.key != INVALID_KEY;
         }
 

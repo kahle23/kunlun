@@ -18,19 +18,23 @@ public class SimpleProxyFactory implements ProxyFactory {
         private Interceptor interceptor;
 
         public Interceptor getInterceptor() {
+
             return interceptor;
         }
 
         public void setInterceptor(Interceptor interceptor) {
+
             this.interceptor = interceptor;
         }
 
         public InvocationHandlerAdapter(Interceptor interceptor) {
+
             this.interceptor = interceptor;
         }
 
         @Override
         public Object invoke(Object proxyObject, Method method, Object[] args) throws Throwable {
+
             return interceptor.intercept(proxyObject, method, args);
         }
 
@@ -41,7 +45,7 @@ public class SimpleProxyFactory implements ProxyFactory {
         Assert.notNull(originalClass, "Parameter \"originalClass\" must not null. ");
         Assert.notNull(interceptor, "Parameter \"interceptor\" must not null. ");
         Class<?>[] interfaces = originalClass.isInterface() ?
-                new Class[]{originalClass} : originalClass.getInterfaces();
+                new Class[]{ originalClass } : originalClass.getInterfaces();
         InvocationHandler handler = new InvocationHandlerAdapter(interceptor);
         return Proxy.newProxyInstance(LOADER, interfaces, handler);
     }

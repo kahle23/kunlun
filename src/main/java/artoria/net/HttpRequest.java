@@ -38,30 +38,37 @@ public class HttpRequest extends HttpMessage {
     }
 
     public boolean getValidateTLSCertificate() {
+
         return this.validateTLSCertificate;
     }
 
     public void setValidateTLSCertificate(boolean validateTLSCertificate) {
+
         this.validateTLSCertificate = validateTLSCertificate;
     }
 
     public boolean getIgnoreHttpError() {
+
         return this.ignoreHttpError;
     }
 
     public void setIgnoreHttpError(boolean ignoreHttpError) {
+
         this.ignoreHttpError = ignoreHttpError;
     }
 
     public boolean getFollowRedirect() {
+
         return this.followRedirect;
     }
 
     public void setFollowRedirect(boolean followRedirect) {
+
         this.followRedirect = followRedirect;
     }
 
     public int getConnectTimeout() {
+
         return this.connectTimeout;
     }
 
@@ -71,6 +78,7 @@ public class HttpRequest extends HttpMessage {
     }
 
     public int getReadTimeout() {
+
         return this.readTimeout;
     }
 
@@ -80,6 +88,7 @@ public class HttpRequest extends HttpMessage {
     }
 
     public Proxy getProxy() {
+
         return this.proxy;
     }
 
@@ -122,23 +131,28 @@ public class HttpRequest extends HttpMessage {
     }
 
     public Map<String, Object> getParameters() {
+
         return Collections.unmodifiableMap(this.parameters);
     }
 
     public void clearParameters() {
+
         this.parameters.clear();
     }
 
     public Object getBody() {
+
         return this.body;
     }
 
     public void setBody(Object body) {
+
         this.body = body;
     }
 
     public File getResponseBodyToFile() {
-        return responseBodyToFile;
+
+        return this.responseBodyToFile;
     }
 
     public void setResponseBodyToFile(File file) {
@@ -147,7 +161,8 @@ public class HttpRequest extends HttpMessage {
     }
 
     public OutputStream getResponseBodyToStream() {
-        return responseBodyToStream;
+
+        return this.responseBodyToStream;
     }
 
     public void setResponseBodyToStream(OutputStream outputStream) {
@@ -156,7 +171,8 @@ public class HttpRequest extends HttpMessage {
     }
 
     public Writer getResponseBodyToWriter() {
-        return responseBodyToWriter;
+
+        return this.responseBodyToWriter;
     }
 
     public void setResponseBodyToWriter(Writer writer) {

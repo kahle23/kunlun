@@ -21,14 +21,15 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class SimpleBeanMap extends BeanMap {
-
     private HashMap<Object, Method> readMethods = new HashMap<Object, Method>();
     private HashMap<Object, Method> writeMethods = new HashMap<Object, Method>();
     private Class<?> beanClass;
 
-    public SimpleBeanMap() {}
+    public SimpleBeanMap() {
+    }
 
     public SimpleBeanMap(Object bean) {
+
         this.setBean(bean);
     }
 
@@ -73,7 +74,7 @@ public class SimpleBeanMap extends BeanMap {
             keyString = keyString.substring(GET_OR_SET_LENGTH);
             keyString = StringUtils.uncapitalize(keyString);
         }
-        Method method = readMethods.get(keyString);
+        Method method = this.readMethods.get(keyString);
         if (method == null) { return null; }
         try {
             return method.invoke(bean);
@@ -91,7 +92,7 @@ public class SimpleBeanMap extends BeanMap {
             keyString = keyString.substring(GET_OR_SET_LENGTH);
             keyString = StringUtils.uncapitalize(keyString);
         }
-        Method method = writeMethods.get(keyString);
+        Method method = this.writeMethods.get(keyString);
         if (method == null) { return null; }
         TypeConverter cvt = this.getTypeConverter();
         Class<?>[] types = method.getParameterTypes();
@@ -110,7 +111,7 @@ public class SimpleBeanMap extends BeanMap {
 
     @Override
     public Set keySet() {
-        Set<Object> keys = readMethods.keySet();
+        Set<Object> keys = this.readMethods.keySet();
         return Collections.unmodifiableSet(keys);
     }
 

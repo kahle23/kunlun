@@ -22,6 +22,7 @@ public class LockUtilsTest {
 
     @After
     public void destroy() {
+
         pool.shutdown();
     }
 

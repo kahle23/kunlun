@@ -35,6 +35,7 @@ public class ThreadLocalUtils {
     }
 
     public static void clear() {
+
         THREAD_BUCKET.remove();
     }
 

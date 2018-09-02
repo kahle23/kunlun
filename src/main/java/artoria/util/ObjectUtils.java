@@ -11,18 +11,22 @@ import java.util.Map;
 public class ObjectUtils {
 
     public static boolean equals(Object o1, Object o2) {
+
         return o1 == null ? o2 == null : o1.equals(o2);
     }
 
     public static boolean isNull(Object obj) {
+
         return obj == null;
     }
 
     public static <T> T ifNull(T value, T defaultValue) {
+
         return value != null ? value : defaultValue;
     }
 
     public static boolean isArray(Object obj) {
+
         return obj != null && obj.getClass().isArray();
     }
 

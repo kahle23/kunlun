@@ -89,6 +89,7 @@ public class IOUtils {
     }
 
     public static Reader toReader(byte[] data) {
+
         return IOUtils.toReader(data, DEFAULT_CHARSET_NAME);
     }
 
@@ -98,10 +99,12 @@ public class IOUtils {
     }
 
     public static Reader toReader(String data) {
+
         return new StringReader(data);
     }
 
     public static InputStream toInputStream(String data) {
+
         return IOUtils.toInputStream(data, DEFAULT_CHARSET_NAME);
     }
 
@@ -112,10 +115,12 @@ public class IOUtils {
     }
 
     public static InputStream toInputStream(byte[] data) {
+
         return new ByteArrayInputStream(data);
     }
 
     public static byte[] toByteArray(Reader input) throws IOException {
+
         return IOUtils.toByteArray(input, DEFAULT_CHARSET_NAME);
     }
 
@@ -133,6 +138,7 @@ public class IOUtils {
     }
 
     public static String toString(InputStream input) throws IOException {
+
         return IOUtils.toString(input, DEFAULT_CHARSET_NAME);
     }
 

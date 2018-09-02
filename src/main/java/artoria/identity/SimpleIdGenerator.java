@@ -50,27 +50,29 @@ public class SimpleIdGenerator implements IdGenerator {
     @Override
     public synchronized Number nextNumber() {
         long currentTime = this.takeCurrentTime();
-        boolean isNormal = lastTime <= currentTime;
+        boolean isNormal = this.lastTime <= currentTime;
         Assert.state(isNormal, "Clock is moving backwards, last time is "
-                + lastTime + " milliseconds, current time is " + currentTime + " milliseconds. ");
-        if (lastTime == currentTime) {
-            if ((sequence = ++sequence & SEQUENCE_MASK) == 0L) {
+                + this.lastTime + " milliseconds, current time is " + currentTime + " milliseconds. ");
+        if (this.lastTime == currentTime) {
+            if ((this.sequence = ++this.sequence & SEQUENCE_MASK) == 0L) {
                 currentTime = this.waitUntilNextTime(currentTime);
             }
         }
         else {
-            sequence = 0;
+            this.sequence = 0;
         }
-        lastTime = currentTime;
-        log.fine(DateUtils.format(lastTime) + MINUS + workerId + MINUS + sequence);
+        this.lastTime = currentTime;
+        log.fine(DateUtils.format(this.lastTime) + MINUS + this.workerId + MINUS + this.sequence);
         long timeInterval = currentTime - TIME_OFFSET;
-        return (timeInterval << TIMESTAMP_LEFT_SHIFT_BITS) | (workerId << WORKER_ID_LEFT_SHIFT_BITS) | sequence;
+        return (timeInterval << TIMESTAMP_LEFT_SHIFT_BITS)
+                | (this.workerId << WORKER_ID_LEFT_SHIFT_BITS) | this.sequence;
     }
 
     private String separator;
 
     public String getSeparator() {
-        return separator;
+
+        return this.separator;
     }
 
     public void setSeparator(String separator) {
@@ -81,8 +83,8 @@ public class SimpleIdGenerator implements IdGenerator {
     @Override
     public String nextString() {
         String uuid = UUID.randomUUID().toString();
-        if (separator != null && !MINUS.equals(separator)) {
-            return StringUtils.replace(uuid, MINUS, separator);
+        if (this.separator != null && !MINUS.equals(this.separator)) {
+            return StringUtils.replace(uuid, MINUS, this.separator);
         }
         else {
             return uuid;

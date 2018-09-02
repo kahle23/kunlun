@@ -28,11 +28,13 @@ public class DbClient {
     private DataSource dataSource;
 
     public DbClient(DataSource dataSource) {
+
         this.setDataSource(dataSource);
     }
 
     public DataSource getDataSource() {
-        return dataSource;
+
+        return this.dataSource;
     }
 
     public void setDataSource(DataSource dataSource) {
@@ -41,9 +43,9 @@ public class DbClient {
     }
 
     public Connection getConnection() throws SQLException {
-        Connection connection = threadConnection.get();
+        Connection connection = this.threadConnection.get();
         if (connection == null) {
-            connection = dataSource.getConnection();
+            connection = this.dataSource.getConnection();
         }
         return connection;
     }
@@ -144,11 +146,12 @@ public class DbClient {
     }
 
     public boolean transaction(DbAtom atom) throws SQLException {
+
         return this.transaction(atom, DEFAULT_TRANSACTION_LEVEL);
     }
 
     public boolean transaction(DbAtom atom, int transactionLevel) throws SQLException {
-        Connection conn = threadConnection.get();
+        Connection conn = this.threadConnection.get();
 
         // Nested transaction support.
         if (conn != null) {
@@ -168,7 +171,7 @@ public class DbClient {
         try {
             conn = this.getConnection();
             autoCommit = conn.getAutoCommit();
-            threadConnection.set(conn);
+            this.threadConnection.set(conn);
             conn.setTransactionIsolation(transactionLevel);
             conn.setAutoCommit(false);
             boolean result = atom.run();
@@ -204,7 +207,7 @@ public class DbClient {
                 log.severe(ExceptionUtils.toString(e));
             }
             finally {
-                threadConnection.remove();
+                this.threadConnection.remove();
             }
         }
     }

@@ -15,53 +15,69 @@ public class HttpUtils {
     private static Logger log = Logger.getLogger(HttpUtils.class.getName());
     private static HttpClient httpClient;
 
-    static {
-        HttpUtils.setHttpClient(new SimpleHttpClient());
-    }
-
     public static HttpClient getHttpClient() {
-        return httpClient;
+        if (httpClient != null) {
+            return httpClient;
+        }
+        synchronized (HttpClient.class) {
+            if (httpClient != null) {
+                return httpClient;
+            }
+            setHttpClient(new SimpleHttpClient());
+            return httpClient;
+        }
     }
 
     public static void setHttpClient(HttpClient httpClient) {
         Assert.notNull(httpClient, "Parameter \"httpClient\" must not null. ");
-        log.info("Set http client: " + httpClient.getClass().getName());
-        HttpUtils.httpClient = httpClient;
+        synchronized (HttpClient.class) {
+            log.info("Set http client: " + httpClient.getClass().getName());
+            HttpUtils.httpClient = httpClient;
+        }
     }
 
     public static String get(String url) {
+
         return HttpUtils.execute(url, HttpMethod.GET, null);
     }
 
     public static String get(String url, Map<String, Object> params) {
+
         return HttpUtils.execute(url, HttpMethod.GET, params);
     }
 
     public static String post(String url) {
+
         return HttpUtils.execute(url, HttpMethod.POST, null);
     }
 
     public static String post(String url, Map<String, Object> params) {
+
         return HttpUtils.execute(url, HttpMethod.POST, params);
     }
 
     public static String put(String url) {
+
         return HttpUtils.execute(url, HttpMethod.PUT, null);
     }
 
     public static String put(String url, Map<String, Object> params) {
+
         return HttpUtils.execute(url, HttpMethod.PUT, params);
     }
 
     public static String delete(String url) {
+
         return HttpUtils.execute(url, HttpMethod.DELETE, null);
     }
 
     public static String delete(String url, Map<String, Object> params) {
+
         return HttpUtils.execute(url, HttpMethod.PUT, params);
     }
 
     public static String execute(String url, HttpMethod method) {
+
         return HttpUtils.execute(url, method, null);
     }
 
@@ -73,7 +89,7 @@ public class HttpUtils {
             if (MapUtils.isNotEmpty(params)) {
                 request.addParameters(params);
             }
-            HttpResponse response = httpClient.execute(request);
+            HttpResponse response = getHttpClient().execute(request);
             return response.getBodyAsString();
         }
         catch (Exception e) {

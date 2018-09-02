@@ -94,6 +94,7 @@ public class ClassUtils {
      * @return
      */
     public static boolean isPresent(String className, ClassLoader classLoader) {
+
         return ClassUtils.isPresent(className, true, classLoader);
     }
 
@@ -123,6 +124,7 @@ public class ClassUtils {
      * @throws ClassNotFoundException
      */
     public static Class<?> forName(String className) throws ClassNotFoundException {
+
         return ReflectUtils.getReflecter().forName(className);
     }
 
@@ -135,6 +137,7 @@ public class ClassUtils {
      * @throws ClassNotFoundException
      */
     public static Class<?> forName(String className, boolean initialize, ClassLoader loader) throws ClassNotFoundException {
+
         return ReflectUtils.getReflecter().forName(className, initialize, loader);
     }
 

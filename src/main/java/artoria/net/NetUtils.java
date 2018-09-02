@@ -26,6 +26,7 @@ public class NetUtils {
     private static final Integer DEFAULT_TELNET_OPEN_TIMEOUT = 1000;
 
     public static boolean tryTelnet(String ip, int port) {
+
         return NetUtils.tryTelnet(ip, port, DEFAULT_TELNET_OPEN_TIMEOUT);
     }
 
@@ -49,7 +50,7 @@ public class NetUtils {
     }
 
     public static boolean ping(String ip) {
-        // Default timeout.
+
         return NetUtils.ping(ip, DEFAULT_PING_TIMEOUT);
     }
 

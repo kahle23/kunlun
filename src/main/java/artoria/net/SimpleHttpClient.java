@@ -686,6 +686,7 @@ public class SimpleHttpClient implements HttpClient {
 
     @Override
     public HttpResponse execute(HttpRequest request) throws IOException {
+
         return this.execute(request, null);
     }
 

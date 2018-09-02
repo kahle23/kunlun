@@ -19,50 +19,62 @@ public class Menu implements Serializable {
     private List<Menu> sonMenuList;
 
     public String getModule() {
-        return module;
+
+        return this.module;
     }
 
     public void setModule(String module) {
+
         this.module = module;
     }
 
     public Integer getId() {
-        return id;
+
+        return this.id;
     }
 
     public void setId(Integer id) {
+
         this.id = id;
     }
 
     public String getName() {
-        return name;
+
+        return this.name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public String getCode() {
-        return code;
+
+        return this.code;
     }
 
     public void setCode(String code) {
+
         this.code = code;
     }
 
     public String getParentCode() {
-        return parentCode;
+
+        return this.parentCode;
     }
 
     public void setParentCode(String parentCode) {
+
         this.parentCode = parentCode;
     }
 
     public List<Menu> getSonMenuList() {
-        return sonMenuList;
+
+        return this.sonMenuList;
     }
 
     public void setSonMenuList(List<Menu> sonMenuList) {
+
         this.sonMenuList = sonMenuList;
     }
 

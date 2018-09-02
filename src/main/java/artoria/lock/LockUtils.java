@@ -13,38 +13,50 @@ public class LockUtils {
     private static Logger log = Logger.getLogger(LockUtils.class.getName());
     private static Locker locker;
 
-    static {
-        LockUtils.setLocker(new ReentrantLocker());
-    }
-
     public static Locker getLocker() {
-        return locker;
+        if (locker != null) {
+            return locker;
+        }
+        synchronized (Locker.class) {
+            if (locker != null) {
+                return locker;
+            }
+            setLocker(new ReentrantLocker());
+            return locker;
+        }
     }
 
     public static void setLocker(Locker locker) {
         Assert.notNull(locker, "Parameter \"locker\" must not null. ");
-        LockUtils.locker = locker;
-        log.info("Set locker: " + locker.getClass().getName());
+        synchronized (Locker.class) {
+            LockUtils.locker = locker;
+            log.info("Set locker: " + locker.getClass().getName());
+        }
     }
 
     public static void lock(String lockName) {
-        locker.lock(lockName);
+
+        getLocker().lock(lockName);
     }
 
     public static void unlock(String lockName) {
-        locker.unlock(lockName);
+
+        getLocker().unlock(lockName);
     }
 
-    public void lockInterruptibly(String lockName) throws InterruptedException {
-        locker.lockInterruptibly(lockName);
+    public static void lockInterruptibly(String lockName) throws InterruptedException {
+
+        getLocker().lockInterruptibly(lockName);
     }
 
     public static boolean tryLock(String lockName) {
-        return locker.tryLock(lockName);
+
+        return getLocker().tryLock(lockName);
     }
 
     public static boolean tryLock(String lockName, long time, TimeUnit unit) throws InterruptedException {
-        return locker.tryLock(lockName, time, unit);
+
+        return getLocker().tryLock(lockName, time, unit);
     }
 
 }

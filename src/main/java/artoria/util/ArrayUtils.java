@@ -46,10 +46,12 @@ public class ArrayUtils {
     }
 
     public static boolean isEmpty(byte[] arr) {
+
         return arr == null || arr.length == 0;
     }
 
     public static boolean isNotEmpty(byte[] arr) {
+
         return arr != null && arr.length > 0;
     }
 
@@ -77,10 +79,12 @@ public class ArrayUtils {
     }
 
     public static <T> boolean isEmpty(T[] arr) {
+
         return arr == null || arr.length == 0;
     }
 
     public static <T> boolean isNotEmpty(T[] arr) {
+
         return arr != null && arr.length > 0;
     }
 

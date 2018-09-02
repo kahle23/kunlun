@@ -24,10 +24,12 @@ public class SimpleBeanCopier implements BeanCopier {
     private Boolean ignoreException = true;
 
     public Boolean getIgnoreException() {
+
         return ignoreException;
     }
 
     public void setIgnoreException(Boolean ignoreException) {
+
         this.ignoreException = ignoreException;
     }
 
@@ -61,7 +63,7 @@ public class SimpleBeanCopier implements BeanCopier {
                 destMth.invoke(to, input);
             }
             catch (Exception e) {
-                if (ignoreException) {
+                if (this.ignoreException) {
                     log.fine(ExceptionUtils.toString(e));
                 }
                 else {

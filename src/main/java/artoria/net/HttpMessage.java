@@ -27,6 +27,7 @@ public abstract class HttpMessage {
     }
 
     public URL getUrl() {
+
         return this.url;
     }
 
@@ -46,6 +47,7 @@ public abstract class HttpMessage {
     }
 
     public HttpMethod getMethod() {
+
         return this.method;
     }
 
@@ -55,6 +57,7 @@ public abstract class HttpMessage {
     }
 
     public String getCharset() {
+
         return this.charset;
     }
 
@@ -90,10 +93,12 @@ public abstract class HttpMessage {
     }
 
     public Map<String, String> getHeaders() {
+
         return Collections.unmodifiableMap(this.headers);
     }
 
     public void clearHeaders() {
+
         this.headers.clear();
     }
 
@@ -124,10 +129,12 @@ public abstract class HttpMessage {
     }
 
     public Map<String, String> getCookies() {
+
         return Collections.unmodifiableMap(this.cookies);
     }
 
     public void clearCookies() {
+
         this.cookies.clear();
     }
 

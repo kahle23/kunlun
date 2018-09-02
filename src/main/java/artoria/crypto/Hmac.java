@@ -27,17 +27,18 @@ public class Hmac {
     public static final String HMAC_SHA256 = "HmacSHA256";
     public static final String HMAC_SHA384 = "HmacSHA384";
     public static final String HMAC_SHA512 = "HmacSHA512";
-
     private String charset = DEFAULT_CHARSET_NAME;
     private String algorithm;
     private byte[] key;
 
     public Hmac(String algorithm) {
+
         this.setAlgorithm(algorithm);
     }
 
     public String getCharset() {
-        return charset;
+
+        return this.charset;
     }
 
     public void setCharset(String charset) {
@@ -46,7 +47,8 @@ public class Hmac {
     }
 
     public String getAlgorithm() {
-        return algorithm;
+
+        return this.algorithm;
     }
 
     public void setAlgorithm(String algorithm) {
@@ -55,7 +57,8 @@ public class Hmac {
     }
 
     public byte[] getKey() {
-        return key;
+
+        return this.key;
     }
 
     public void setKey(byte[] key) {
@@ -78,9 +81,9 @@ public class Hmac {
 
     public byte[] calc(byte[] data) throws GeneralSecurityException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
-        Assert.notNull(key, "Parameter \"key\" must not null. ");
-        SecretKey secretKey = new SecretKeySpec(key, algorithm);
-        Mac mac = Mac.getInstance(algorithm);
+        Assert.notNull(this.key, "Parameter \"key\" must not null. ");
+        SecretKey secretKey = new SecretKeySpec(this.key, this.algorithm);
+        Mac mac = Mac.getInstance(this.algorithm);
         mac.init(secretKey);
         return mac.doFinal(data);
     }

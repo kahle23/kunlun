@@ -11,26 +11,32 @@ public class Student extends Person implements Serializable {
     private Boolean graduated;
 
     public Long getStudentId() {
-        return studentId;
+
+        return this.studentId;
     }
 
     public void setStudentId(Long studentId) {
+
         this.studentId = studentId;
     }
 
     public String getSchoolName() {
-        return schoolName;
+
+        return this.schoolName;
     }
 
     public void setSchoolName(String schoolName) {
+
         this.schoolName = schoolName;
     }
 
     public Boolean getGraduated() {
-        return graduated;
+
+        return this.graduated;
     }
 
     public void setGraduated(Boolean graduated) {
+
         this.graduated = graduated;
     }
 

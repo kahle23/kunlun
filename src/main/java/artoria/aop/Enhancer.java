@@ -12,27 +12,35 @@ public class Enhancer {
     private static Logger log = Logger.getLogger(Enhancer.class.getName());
     private static ProxyFactory proxyFactory;
 
-    static {
-        Enhancer.setProxyFactory(new SimpleProxyFactory());
-    }
-
     public static ProxyFactory getProxyFactory() {
-        return proxyFactory;
+        if (proxyFactory != null) {
+            return proxyFactory;
+        }
+        synchronized (ProxyFactory.class) {
+            if (proxyFactory != null) {
+                return proxyFactory;
+            }
+            setProxyFactory(new SimpleProxyFactory());
+            return proxyFactory;
+        }
     }
 
     public static void setProxyFactory(ProxyFactory proxyFactory) {
         Assert.notNull(proxyFactory, "Parameter \"proxyFactory\" must not null. ");
-        log.info("Set proxy factory: " + proxyFactory.getClass().getName());
-        Enhancer.proxyFactory = proxyFactory;
+        synchronized (ProxyFactory.class) {
+            log.info("Set proxy factory: " + proxyFactory.getClass().getName());
+            Enhancer.proxyFactory = proxyFactory;
+        }
     }
 
     public static Object enhance(Class<?> originalClass, Interceptor interceptor) {
-        return proxyFactory.getInstance(originalClass, interceptor);
+
+        return getProxyFactory().getInstance(originalClass, interceptor);
     }
 
     public static Object enhance(Object original, Interceptor interceptor) {
         Assert.notNull(original, "Parameter \"original\" must not null. ");
-        return proxyFactory.getInstance(original.getClass(), interceptor);
+        return getProxyFactory().getInstance(original.getClass(), interceptor);
     }
 
 }
