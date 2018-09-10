@@ -50,7 +50,7 @@ public class IOUtils {
     }
 
     public static void closeQuietly(URLConnection conn) {
-        if (conn != null && conn instanceof HttpURLConnection) {
+        if (conn instanceof HttpURLConnection) {
             ((HttpURLConnection) conn).disconnect();
         }
     }

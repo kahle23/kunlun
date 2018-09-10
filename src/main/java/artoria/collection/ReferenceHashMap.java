@@ -14,10 +14,11 @@ import java.util.*;
  * @param <V> The value type
  */
 public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
+    private final static Object INVALID_KEY = new Object();
+    private final ReferenceQueue<V> queue = new ReferenceQueue<V>();
+    private Set<Map.Entry<K, V>> entrySet = null;
     private final Map<K, ValueCell<V>> hash;
     private final Type type;
-    private Set<Map.Entry<K, V>> entrySet = null;
-    private final ReferenceQueue<V> queue = new ReferenceQueue<V>();
 
     public ReferenceHashMap(Type type) {
         this.hash = new HashMap<K, ValueCell<V>>();
@@ -75,8 +76,9 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean containsKey(Object key) {
-        ValueCell<V> cell = this.hash.get(key);
+        ValueCell<V> cell = this.hash.get((K) key);
         return this.stripValueCell(cell, false) != null;
     }
 
@@ -88,11 +90,12 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
         return this.entrySet;
     }
 
+    @SuppressWarnings("unchecked")
     private void processQueue() {
         ValueCell cell;
         while ((cell = (ValueCell) this.queue.poll()) != null) {
             if (cell.isValid()) {
-                this.hash.remove(cell.getKey());
+                this.hash.remove((K) cell.getKey());
             }
         }
     }
@@ -146,10 +149,8 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
         @Override
         public int size() {
             int count = 0;
-            Iterator<Map.Entry<K, V>> iterator = this.iterator();
-            while (iterator.hasNext()) {
+            for (Map.Entry<K, V> entry : this) {
                 ++count;
-                iterator.next();
             }
             return count;
         }
@@ -176,17 +177,17 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
                 @Override
                 public boolean hasNext() {
                     while (true) {
-                        if (this.hashIterator.hasNext()) {
-                            Map.Entry<K, ValueCell<V>> entry = this.hashIterator.next();
-                            ValueCell<V> cell = entry.getValue();
-                            V value = null;
-                            if (cell != null && (value = cell.get()) == null) {
-                                continue;
-                            }
-                            this.next = new Entry(entry, value);
-                            return true;
+                        if (!this.hashIterator.hasNext()) {
+                            return false;
                         }
-                        return false;
+                        Map.Entry<K, ValueCell<V>> entry = this.hashIterator.next();
+                        ValueCell<V> cell = entry.getValue();
+                        V value = null;
+                        if (cell != null && (value = cell.get()) == null) {
+                            continue;
+                        }
+                        this.next = new Entry(entry, value);
+                        return true;
                     }
                 }
 
@@ -238,7 +239,7 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
         public V setValue(V value) {
             K key = this.entry.getKey();
             this.value = value;
-            ValueCell<V> cell = ReferenceHashMap.this.newValueCell(key, value, queue);
+            ValueCell<V> cell = newValueCell(key, value, queue);
             ValueCell<V> oldValue = this.entry.setValue(cell);
             return oldValue.get();
         }
@@ -258,10 +259,10 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
         @Override
         public int hashCode() {
             Object key = this.getKey();
-            int keyHc = key == null ? 0 : key.hashCode();
+            int keyCode = key == null ? 0 : key.hashCode();
             Object val = this.value;
-            int valHc = val == null ? 0 : val.hashCode();
-            return keyHc ^ valHc;
+            int valCode = val == null ? 0 : val.hashCode();
+            return keyCode ^ valCode;
         }
 
     }
@@ -294,7 +295,6 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
     }
 
     private static class WeakValueCell<T> extends WeakReference<T> implements ValueCell<T> {
-        private static Object INVALID_KEY = new Object();
         private Object key;
 
         private WeakValueCell(Object key, T value, ReferenceQueue<T> queue) {
@@ -323,7 +323,6 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
     }
 
     private static class SoftValueCell<T> extends SoftReference<T> implements ValueCell<T> {
-        private static Object INVALID_KEY = new Object();
         private Object key;
 
         private SoftValueCell(Object key, T value, ReferenceQueue<T> queue) {

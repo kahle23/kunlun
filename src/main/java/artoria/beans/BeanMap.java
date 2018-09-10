@@ -13,20 +13,10 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public abstract class BeanMap implements Map, Cloneable {
-    private Object bean;
     private TypeConverter typeConverter;
+    private Object bean;
 
     protected BeanMap() {
-    }
-
-    public Object getBean() {
-
-        return this.bean;
-    }
-
-    public void setBean(Object bean) {
-        Assert.notNull(bean, "Parameter \"bean\" must not null. ");
-        this.bean = bean;
     }
 
     public TypeConverter getTypeConverter() {
@@ -37,6 +27,16 @@ public abstract class BeanMap implements Map, Cloneable {
     public void setTypeConverter(TypeConverter typeConverter) {
 
         this.typeConverter = typeConverter;
+    }
+
+    public Object getBean() {
+
+        return this.bean;
+    }
+
+    public void setBean(Object bean) {
+        Assert.notNull(bean, "Parameter \"bean\" must not null. ");
+        this.bean = bean;
     }
 
     /**
@@ -78,9 +78,9 @@ public abstract class BeanMap implements Map, Cloneable {
     public boolean containsValue(Object value) {
         Set keys = this.keySet();
         for (Object key : keys) {
-            Object tsVal = this.get(key);
-            boolean b = value == null && tsVal == null;
-            b = b || (value != null && value.equals(tsVal));
+            Object thisVal = this.get(key);
+            boolean b = value == null && thisVal == null;
+            b = b || (value != null && value.equals(thisVal));
             if (b) { return true; }
         }
         return false;
@@ -144,10 +144,10 @@ public abstract class BeanMap implements Map, Cloneable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof Map)) {
+        if (!(o instanceof Map)) {
             return false;
         }
-        Map other = (Map)o;
+        Map other = (Map) o;
         if (this.size() != other.size()) {
             return false;
         }
@@ -156,9 +156,9 @@ public abstract class BeanMap implements Map, Cloneable {
             if (!other.containsKey(key)) {
                 return false;
             }
-            Object tsVal = this.get(key);
-            Object otVal = other.get(key);
-            if (!ObjectUtils.equals(tsVal, otVal)) {
+            Object thisVal = this.get(key);
+            Object otherVal = other.get(key);
+            if (!ObjectUtils.equals(thisVal, otherVal)) {
                 return false;
             }
         }
