@@ -51,6 +51,7 @@ public class Constants {
     public static final Integer GET_OR_SET_LENGTH = 3;
 
     private Constants() {
+
         throw new UnsupportedOperationException("Don't allow instantiation. ");
     }
 
