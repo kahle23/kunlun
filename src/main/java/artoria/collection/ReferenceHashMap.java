@@ -1,11 +1,15 @@
 package artoria.collection;
 
-import artoria.util.ObjectUtils;
+import artoria.util.CollectionUtils;
+import artoria.util.MapUtils;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Reference hash map, has weak and soft reference.
@@ -13,115 +17,203 @@ import java.util.*;
  * @param <K> The key type
  * @param <V> The value type
  */
-public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
-    private final static Object INVALID_KEY = new Object();
-    private final ReferenceQueue<V> queue = new ReferenceQueue<V>();
-    private Set<Map.Entry<K, V>> entrySet = null;
-    private final Map<K, ValueCell<V>> hash;
+public class ReferenceHashMap<K, V> implements Map<K, V> {
+    private static final int DEFAULT_RETENTION_SIZE = 100;
+    private final ReentrantLock strongReferencesLock;
+    private final Queue<V> strongReferences;
+    private final int retentionSize;
+    private final Map<K, ValueCell<K, V>> internalMap;
+    private final ReferenceQueue<? super V> queue;
     private final Type type;
 
     public ReferenceHashMap(Type type) {
-        this.hash = new HashMap<K, ValueCell<V>>();
+
+        this(type, DEFAULT_RETENTION_SIZE);
+    }
+
+    public ReferenceHashMap(Type type, int retentionSize) {
+        this(
+                new ConcurrentHashMap<K, ValueCell<K, V>>(Math.max(32, retentionSize)),
+                new ConcurrentLinkedQueue<V>(),
+                type,
+                retentionSize
+        );
+    }
+
+    public ReferenceHashMap(Map<K, ValueCell<K, V>> internalMap
+            , Queue<V> strongReferences, Type type, int retentionSize) {
+        this.strongReferencesLock = new ReentrantLock();
+        this.strongReferences = strongReferences;
+        this.retentionSize = Math.max(0, retentionSize);
+        this.internalMap = internalMap;
+        this.queue = new ReferenceQueue<V>();
         this.type = type;
-    }
-
-    public ReferenceHashMap(int initialCapacity, Type type) {
-        this.hash = new HashMap<K, ValueCell<V>>(initialCapacity);
-        this.type = type;
-    }
-
-    public ReferenceHashMap(int initialCapacity, float loadFactor, Type type) {
-        this.hash = new HashMap<K, ValueCell<V>>(initialCapacity, loadFactor);
-        this.type = type;
-    }
-
-    @Override
-    public int size() {
-        Set<Map.Entry<K, V>> entries = this.entrySet();
-        return entries.size();
-    }
-
-    @Override
-    public void clear() {
-        this.processQueue();
-        this.hash.clear();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        Set<Map.Entry<K, V>> entries = this.entrySet();
-        return entries.isEmpty();
-    }
-
-    @Override
-    public V get(Object key) {
-        this.processQueue();
-        ValueCell<V> cell = this.hash.get(key);
-        return this.stripValueCell(cell, false);
-    }
-
-    @Override
-    public V remove(Object key) {
-        this.processQueue();
-        ValueCell<V> oldValue = this.hash.remove(key);
-        return this.stripValueCell(oldValue, true);
-    }
-
-    @Override
-    public V put(K key, V value) {
-        this.processQueue();
-        ValueCell<V> cell = this.newValueCell(key, value, this.queue);
-        ValueCell<V> oldValue = this.hash.put(key, cell);
-        return this.stripValueCell(oldValue, true);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public boolean containsKey(Object key) {
-        ValueCell<V> cell = this.hash.get((K) key);
-        return this.stripValueCell(cell, false) != null;
-    }
-
-    @Override
-    public Set<Map.Entry<K, V>> entrySet() {
-        if (this.entrySet == null) {
-            this.entrySet = new EntrySet();
-        }
-        return this.entrySet;
     }
 
     @SuppressWarnings("unchecked")
     private void processQueue() {
-        ValueCell cell;
-        while ((cell = (ValueCell) this.queue.poll()) != null) {
-            if (cell.isValid()) {
-                this.hash.remove((K) cell.getKey());
-            }
+        ValueCell<K, V> valueCell;
+        while ((valueCell = (ValueCell) queue.poll()) != null) {
+            internalMap.remove(valueCell.getKey());
         }
     }
 
-    private ValueCell<V> newValueCell(K key, V value, ReferenceQueue<V> queue) {
-        if (value == null) {
-            return null;
+    private void trimStrongReferences() {
+        while (strongReferences.size() > retentionSize) {
+            strongReferences.poll();
         }
+    }
+
+    private void addToStrongReferences(V result) {
+        strongReferencesLock.lock();
+        try {
+            strongReferences.add(result);
+            this.trimStrongReferences();
+        }
+        finally {
+            strongReferencesLock.unlock();
+        }
+    }
+
+    private ValueCell<K, V> newValueCell(K key, V value
+            , ReferenceQueue<? super V> queue) {
         switch (this.type) {
-            case WEAK: return new WeakValueCell<V>(key, value, queue);
-            case SOFT: return new SoftValueCell<V>(key, value, queue);
-            default: return new WeakValueCell<V>(key, value, queue);
+            case WEAK: return new WeakValueCell<K, V>(key, value, queue);
+            case SOFT: return new SoftValueCell<K, V>(key, value, queue);
+            default: return new WeakValueCell<K, V>(key, value, queue);
         }
     }
 
-    private V stripValueCell(ValueCell<V> cell, boolean doDrop) {
-        if (cell == null) {
-            return null;
+    @SuppressWarnings("unchecked")
+    @Override
+    public V get(Object key) {
+        this.processQueue();
+        ValueCell<K, V> value = internalMap.get(key);
+        if (value == null) { return null; }
+        // Unwrap the 'real' value from the Reference.
+        V result = value.get();
+        if (result == null) {
+            // The wrapped value was garbage collected,
+            // So remove this entry from the backing internalMap.
+            internalMap.remove((K) key);
         }
         else {
-            V value = cell.get();
-            if (doDrop) {
-                cell.drop();
-            }
-            return value;
+            // Add this value to the beginning of the strong reference queue (FIFO).
+            this.addToStrongReferences(result);
         }
+        return result;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        this.processQueue();
+        return internalMap.isEmpty();
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        this.processQueue();
+        return internalMap.containsKey(key);
+    }
+
+    @Override
+    public boolean containsValue(Object value) {
+        this.processQueue();
+        Collection values = this.values();
+        return CollectionUtils.isNotEmpty(values) && values.contains(value);
+    }
+
+    @Override
+    public void putAll(Map<? extends K, ? extends V> map) {
+        if (MapUtils.isEmpty(map)) {
+            this.processQueue();
+            return;
+        }
+        for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
+            this.put(entry.getKey(), entry.getValue());
+        }
+    }
+
+    @Override
+    public Set<K> keySet() {
+        // Throw out garbage collected values first.
+        this.processQueue();
+        return internalMap.keySet();
+    }
+
+    @Override
+    public Collection<V> values() {
+        // Throw out garbage collected values first.
+        this.processQueue();
+        Collection<K> keys = internalMap.keySet();
+        if (CollectionUtils.isEmpty(keys)) {
+            return Collections.emptyList();
+        }
+        Collection<V> values = new ArrayList<V>(keys.size());
+        for (K key : keys) {
+            V val = get(key);
+            if (val != null) {
+                values.add(val);
+            }
+        }
+        return values;
+    }
+
+    @Override
+    public V put(K key, V value) {
+        // Throw out garbage collected values first.
+        this.processQueue();
+        ValueCell<K, V> newValue = this.newValueCell(key, value, queue);
+        ValueCell<K, V> oldValue = internalMap.put(key, newValue);
+        this.addToStrongReferences(value);
+        return oldValue != null ? oldValue.get() : null;
+    }
+
+    @Override
+    public V remove(Object key) {
+        // Throw out garbage collected values first.
+        this.processQueue();
+        ValueCell<K, V> raw = internalMap.remove(key);
+        return raw != null ? raw.get() : null;
+    }
+
+    @Override
+    public void clear() {
+        strongReferencesLock.lock();
+        try {
+            strongReferences.clear();
+        }
+        finally {
+            strongReferencesLock.unlock();
+        }
+        // Throw out garbage collected values.
+        this.processQueue();
+        internalMap.clear();
+    }
+
+    @Override
+    public int size() {
+        // Throw out garbage collected values first.
+        this.processQueue();
+        return internalMap.size();
+    }
+
+    @Override
+    public Set<Map.Entry<K, V>> entrySet() {
+        // Throw out garbage collected values first.
+        this.processQueue();
+        Collection<K> keys = internalMap.keySet();
+        if (CollectionUtils.isEmpty(keys)) {
+            return Collections.emptySet();
+        }
+        Map<K, V> kvPairs = new HashMap<K, V>(keys.size());
+        for (K key : keys) {
+            V val = this.get(key);
+            if (val != null) {
+                kvPairs.put(key, val);
+            }
+        }
+        return kvPairs.entrySet();
     }
 
     public enum Type {
@@ -138,214 +230,50 @@ public class ReferenceHashMap<K, V> extends AbstractMap<K, V> implements Map<K, 
 
     }
 
-    private class EntrySet extends AbstractSet<Map.Entry<K, V>> {
-        Set<Map.Entry<K, ValueCell<V>>> hashEntries;
-
-        private EntrySet() {
-
-            this.hashEntries = hash.entrySet();
-        }
-
-        @Override
-        public int size() {
-            int count = 0;
-            for (Map.Entry<K, V> entry : this) {
-                ++count;
-            }
-            return count;
-        }
-
-        @Override
-        public boolean remove(Object entry) {
-            ReferenceHashMap.this.processQueue();
-            boolean b = entry instanceof ReferenceHashMap.Entry;
-            return b && this.hashEntries.remove(((ReferenceHashMap.Entry) entry).entry);
-        }
-
-        @Override
-        public boolean isEmpty() {
-
-            return !this.iterator().hasNext();
-        }
-
-        @Override
-        public Iterator<Map.Entry<K, V>> iterator() {
-            return new Iterator<Map.Entry<K, V>>() {
-                Iterator<Map.Entry<K, ValueCell<V>>> hashIterator = hashEntries.iterator();
-                Entry next = null;
-
-                @Override
-                public boolean hasNext() {
-                    while (true) {
-                        if (!this.hashIterator.hasNext()) {
-                            return false;
-                        }
-                        Map.Entry<K, ValueCell<V>> entry = this.hashIterator.next();
-                        ValueCell<V> cell = entry.getValue();
-                        V value = null;
-                        if (cell != null && (value = cell.get()) == null) {
-                            continue;
-                        }
-                        this.next = new Entry(entry, value);
-                        return true;
-                    }
-                }
-
-                @Override
-                public Map.Entry<K, V> next() {
-                    if (this.next == null && !this.hasNext()) {
-                        throw new NoSuchElementException();
-                    }
-                    else {
-                        Entry entry = this.next;
-                        this.next = null;
-                        return entry;
-                    }
-                }
-
-                @Override
-                public void remove() {
-
-                    this.hashIterator.remove();
-                }
-
-            };
-        }
-
-    }
-
-    private class Entry implements java.util.Map.Entry<K, V> {
-        private java.util.Map.Entry<K, ValueCell<V>> entry;
-        private V value;
-
-        Entry(java.util.Map.Entry<K, ValueCell<V>> entry, V value) {
-            this.entry = entry;
-            this.value = value;
-        }
-
-        @Override
-        public K getKey() {
-
-            return this.entry.getKey();
-        }
-
-        @Override
-        public V getValue() {
-
-            return this.value;
-        }
-
-        @Override
-        public V setValue(V value) {
-            K key = this.entry.getKey();
-            this.value = value;
-            ValueCell<V> cell = newValueCell(key, value, queue);
-            ValueCell<V> oldValue = this.entry.setValue(cell);
-            return oldValue.get();
-        }
-
-        @Override
-        public boolean equals(Object entry) {
-            if (!(entry instanceof java.util.Map.Entry)) {
-                return false;
-            }
-            else {
-                java.util.Map.Entry entryObj = (java.util.Map.Entry) entry;
-                boolean keyEqu = ObjectUtils.equals(this.entry.getKey(), entryObj.getKey());
-                return keyEqu && ObjectUtils.equals(this.value, entryObj.getValue());
-            }
-        }
-
-        @Override
-        public int hashCode() {
-            Object key = this.getKey();
-            int keyCode = key == null ? 0 : key.hashCode();
-            Object val = this.value;
-            int valCode = val == null ? 0 : val.hashCode();
-            return keyCode ^ valCode;
-        }
-
-    }
-
-    private interface ValueCell<T> {
+    private interface ValueCell<K, V> {
 
         /**
          * Get value from cell.
          * @return The value cell saved
          */
-        T get();
-
-        /**
-         * Clear cell value.
-         */
-        void drop();
+        V get();
 
         /**
          * Get cell key.
          * @return The key cell saved
          */
-        Object getKey();
-
-        /**
-         * Judge the cell is valid.
-         * @return If true is valid, and false not valid
-         */
-        boolean isValid();
+        K getKey();
 
     }
 
-    private static class WeakValueCell<T> extends WeakReference<T> implements ValueCell<T> {
-        private Object key;
+    private static class WeakValueCell<K, V> extends WeakReference<V> implements ValueCell<K, V> {
+        private final K key;
 
-        private WeakValueCell(Object key, T value, ReferenceQueue<T> queue) {
+        private WeakValueCell(K key, V value, ReferenceQueue<? super V> queue) {
             super(value, queue);
             this.key = key;
         }
 
         @Override
-        public void drop() {
-            super.clear();
-            this.key = INVALID_KEY;
-        }
-
-        @Override
-        public Object getKey() {
+        public K getKey() {
 
             return key;
         }
 
-        @Override
-        public boolean isValid() {
-
-            return this.key != INVALID_KEY;
-        }
-
     }
 
-    private static class SoftValueCell<T> extends SoftReference<T> implements ValueCell<T> {
-        private Object key;
+    private static class SoftValueCell<K, V> extends SoftReference<V> implements ValueCell<K, V> {
+        private final K key;
 
-        private SoftValueCell(Object key, T value, ReferenceQueue<T> queue) {
+        private SoftValueCell(K key, V value, ReferenceQueue<? super V> queue) {
             super(value, queue);
             this.key = key;
         }
 
         @Override
-        public void drop() {
-            super.clear();
-            this.key = INVALID_KEY;
-        }
-
-        @Override
-        public Object getKey() {
+        public K getKey() {
 
             return key;
-        }
-
-        @Override
-        public boolean isValid() {
-
-            return this.key != INVALID_KEY;
         }
 
     }
