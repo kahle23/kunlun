@@ -25,8 +25,17 @@ public class RSATest {
     public void noneNoPaddingAndDecrypterBySelf() throws Exception {
         String trsft = "RSA/None/NoPadding";
         KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
+
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
+
+        byte[] publicKeyByteArray = publicKey.getEncoded();
+        System.out.println(Base64Utils.encodeToString(publicKeyByteArray));
+        byte[] privateKeyByteArray = privateKey.getEncoded();
+        System.out.println(Base64Utils.encodeToString(privateKeyByteArray));
+
+        publicKey = CipherUtils.parsePublicKey(algorithmName, publicKeyByteArray);
+        privateKey = CipherUtils.parsePrivateKey(algorithmName, privateKeyByteArray);
 
         Cipher encrypterPublic = CipherUtils.getEncrypter(trsft, publicKey);
         Cipher decrypterPublic = CipherUtils.getDecrypter(trsft, publicKey);
@@ -54,8 +63,17 @@ public class RSATest {
     public void nonePKCS1Padding() throws Exception {
         String trsft = "RSA/None/PKCS1Padding";
         KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
+
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
+
+        byte[] publicKeyByteArray = publicKey.getEncoded();
+        System.out.println(Base64Utils.encodeToString(publicKeyByteArray));
+        byte[] privateKeyByteArray = privateKey.getEncoded();
+        System.out.println(Base64Utils.encodeToString(privateKeyByteArray));
+
+        publicKey = CipherUtils.parsePublicKey(algorithmName, publicKeyByteArray);
+        privateKey = CipherUtils.parsePrivateKey(algorithmName, privateKeyByteArray);
 
         Cipher encrypterPublic = CipherUtils.getEncrypter(trsft, publicKey);
         Cipher decrypterPublic = CipherUtils.getDecrypter(trsft, publicKey);
@@ -78,8 +96,17 @@ public class RSATest {
     public void ecbNoPadding() throws Exception {
         String trsft = "RSA/ECB/NoPadding";
         KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
+
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
+
+        byte[] publicKeyByteArray = publicKey.getEncoded();
+        System.out.println(Base64Utils.encodeToString(publicKeyByteArray));
+        byte[] privateKeyByteArray = privateKey.getEncoded();
+        System.out.println(Base64Utils.encodeToString(privateKeyByteArray));
+
+        publicKey = CipherUtils.parsePublicKey(algorithmName, publicKeyByteArray);
+        privateKey = CipherUtils.parsePrivateKey(algorithmName, privateKeyByteArray);
 
         Cipher encrypterPublic = CipherUtils.getEncrypter(trsft, publicKey);
         Cipher decrypterPublic = CipherUtils.getDecrypter(trsft, publicKey);
@@ -102,8 +129,17 @@ public class RSATest {
     public void ecbPKCS1Padding() throws Exception {
         String trsft = "RSA/ECB/PKCS1Padding";
         KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
+
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
+
+        byte[] publicKeyByteArray = publicKey.getEncoded();
+        System.out.println(Base64Utils.encodeToString(publicKeyByteArray));
+        byte[] privateKeyByteArray = privateKey.getEncoded();
+        System.out.println(Base64Utils.encodeToString(privateKeyByteArray));
+
+        publicKey = CipherUtils.parsePublicKey(algorithmName, publicKeyByteArray);
+        privateKey = CipherUtils.parsePrivateKey(algorithmName, privateKeyByteArray);
 
         Cipher encrypterPublic = CipherUtils.getEncrypter(trsft, publicKey);
         Cipher decrypterPublic = CipherUtils.getDecrypter(trsft, publicKey);

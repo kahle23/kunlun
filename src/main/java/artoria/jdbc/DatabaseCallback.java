@@ -8,7 +8,7 @@ import java.sql.SQLException;
  * @param <T> Call return type
  * @author Kahle
  */
-public interface DbCallback<T> {
+public interface DatabaseCallback<T> {
 
     /**
      * Callback will invoke.

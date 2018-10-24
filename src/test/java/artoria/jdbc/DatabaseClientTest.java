@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.Map;
 
 @Ignore
-public class DbClientTest {
+public class DatabaseClientTest {
     private DataSource dataSource = new SimpleDataSource();
-    private DbClient client = new DbClient(dataSource);
+    private DatabaseClient dbClient = new DatabaseClient(dataSource);
 
     @Test
     public void getTableMeta() throws Exception {
-        List<TableMeta> tableMetaList = client.getTableMetaList();
+        List<TableMeta> tableMetaList = dbClient.getTableMetaList();
         for (TableMeta tableMeta : tableMetaList) {
             System.out.println("--------");
             System.out.println(tableMeta.getName() + " | " + tableMeta.getRemarks());
@@ -35,7 +35,7 @@ public class DbClientTest {
 
     @Test
     public void execute() throws Exception {
-        Integer execute = client.execute(new DbCallback<Integer>() {
+        Integer execute = dbClient.execute(new DatabaseCallback<Integer>() {
             @Override
             public Integer call(Connection connection) throws SQLException {
                 PreparedStatement statement = connection.prepareStatement("select count(0) from t_user");
@@ -48,14 +48,14 @@ public class DbClientTest {
 
     @Test
     public void transaction() throws Exception {
-        boolean transaction = client.transaction(new DbAtom() {
+        boolean transaction = dbClient.transaction(new DatabaseAtom() {
             @Override
             public boolean run() throws SQLException {
-                client.update("insert into t_user values(?, ?, ?, ?, ?, ?)", 997, "transaction", 19, "transaction@email.com", "", "");
-                boolean transaction = client.transaction(new DbAtom() {
+                dbClient.update("insert into t_user values(?, ?, ?, ?, ?, ?)", 997, "transaction", 19, "transaction@email.com", "", "");
+                boolean transaction = dbClient.transaction(new DatabaseAtom() {
                     @Override
                     public boolean run() throws SQLException {
-                        client.update("insert into t_user values(?, ?, ?, ?, ?, ?)", 998, "nestedTransaction", 19, "nestedTransaction@email.com", "", "");
+                        dbClient.update("insert into t_user values(?, ?, ?, ?, ?, ?)", 998, "nestedTransaction", 19, "nestedTransaction@email.com", "", "");
                         // if (true) { throw new RuntimeException("Test throw a exception. "); }
                         return true;
                     }
@@ -69,14 +69,14 @@ public class DbClientTest {
 
     @Test
     public void update() throws Exception {
-        int i = client.update("insert into t_user values(?, ?, ?, ?, ?, ?)", 1, "zhangsan", 19, "zhangsan@email.com", "", "");
+        int i = dbClient.update("insert into t_user values(?, ?, ?, ?, ?, ?)", 1, "zhangsan", 19, "zhangsan@email.com", "", "");
         System.out.println(i);
     }
 
     @Test
     public void query() throws Exception {
-        List<Map<String, Object>> list = client.query("select * from t_user");
-        // List<Map<String, Object>> list = client.query("select * from t_user where name = ?", "zhangsan");
+        List<Map<String, Object>> list = dbClient.query("select * from t_user");
+        // List<Map<String, Object>> list = dbClient.query("select * from t_user where name = ?", "zhangsan");
         for (Map<String, Object> map : list) {
             System.out.println(map);
         }
@@ -84,8 +84,8 @@ public class DbClientTest {
 
     @Test
     public void query1() throws Exception {
-        List<User> users = client.query(User.class, "select * from t_user");
-        // List<User> users = client.query(User.class, "select * from t_user where name = ?", "zhangsan");
+        List<User> users = dbClient.query(User.class, "select * from t_user");
+        // List<User> users = dbClient.query(User.class, "select * from t_user where name = ?", "zhangsan");
         for (User user : users) {
             System.out.println(JSON.toJSONString(user));
         }
@@ -93,15 +93,15 @@ public class DbClientTest {
 
     @Test
     public void queryFirst() throws Exception {
-        Map<String, Object> map = client.queryFirst("select * from t_user");
-        // Map<String, Object> map = client.queryFirst("select * from t_user where name = ?", "zhangsan");
+        Map<String, Object> map = dbClient.queryFirst("select * from t_user");
+        // Map<String, Object> map = dbClient.queryFirst("select * from t_user where name = ?", "zhangsan");
         System.out.println(map);
     }
 
     @Test
     public void queryFirst1() throws Exception {
-        User user = client.queryFirst(User.class, "select * from t_user");
-        // User user = client.queryFirst(User.class, "select * from t_user where name = ?", "zhangsan");
+        User user = dbClient.queryFirst(User.class, "select * from t_user");
+        // User user = dbClient.queryFirst(User.class, "select * from t_user where name = ?", "zhangsan");
         System.out.println(JSON.toJSONString(user));
     }
 

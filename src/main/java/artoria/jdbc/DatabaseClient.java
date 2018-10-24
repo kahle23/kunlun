@@ -21,13 +21,13 @@ import static artoria.common.Constants.COMMA;
  * Database client.
  * @author Kahle
  */
-public class DbClient {
+public class DatabaseClient {
     private static final int DEFAULT_TRANSACTION_LEVEL = Connection.TRANSACTION_REPEATABLE_READ;
-    private static Logger log = Logger.getLogger(DbClient.class.getName());
+    private static Logger log = Logger.getLogger(DatabaseClient.class.getName());
     private final ThreadLocal<Connection> threadConnection = new ThreadLocal<Connection>();
     private DataSource dataSource;
 
-    public DbClient(DataSource dataSource) {
+    public DatabaseClient(DataSource dataSource) {
 
         this.setDataSource(dataSource);
     }
@@ -154,7 +154,7 @@ public class DbClient {
         }
     }
 
-    public <T> T execute(DbCallback<T> callback) throws SQLException {
+    public <T> T execute(DatabaseCallback<T> callback) throws SQLException {
         Connection conn = null;
         try {
             conn = this.getConnection();
@@ -165,7 +165,7 @@ public class DbClient {
         }
     }
 
-    public boolean transaction(DbAtom atom) throws SQLException {
+    public boolean transaction(DatabaseAtom atom) throws SQLException {
 
         return this.transaction(atom, DEFAULT_TRANSACTION_LEVEL);
     }
@@ -200,7 +200,7 @@ public class DbClient {
         }
     }
 
-    public boolean transaction(DbAtom atom, int transactionLevel) throws SQLException {
+    public boolean transaction(DatabaseAtom atom, int transactionLevel) throws SQLException {
         Connection conn = this.threadConnection.get();
         // Nested transaction support.
         if (conn != null) {
@@ -212,7 +212,7 @@ public class DbClient {
                 return true;
             }
             // Important: can not return false
-            throw new JdbcException("Notice the outer transaction that the nested transaction return false");
+            throw new DatabaseException("Notice the outer transaction that the nested transaction return false");
         }
         // Normal transaction support.
         Boolean autoCommit = null;
@@ -233,7 +233,7 @@ public class DbClient {
         }
         catch (Exception e) {
             this.rollback(conn);
-            throw new JdbcException(e);
+            throw ExceptionUtils.wrap(e, DatabaseException.class);
         }
         finally {
             this.closing(conn, autoCommit);

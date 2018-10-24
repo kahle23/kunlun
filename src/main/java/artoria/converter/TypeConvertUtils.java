@@ -1,5 +1,6 @@
 package artoria.converter;
 
+import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 
 import java.util.Date;
@@ -39,17 +40,27 @@ public class TypeConvertUtils {
 
     public static Object convert(Object source, Class<?> target) {
         if (source == null) { return null; }
-        for (Map.Entry<Class<?>, TypeConverter> entry : CONVERTERS.entrySet()) {
-            Class<?> clazz = source.getClass();
-            if (target.isAssignableFrom(clazz)) {
-                return source;
-            }
-            Class<?> cvtClass = entry.getKey();
-            TypeConverter converter = entry.getValue();
-            if (cvtClass.isAssignableFrom(clazz)) {
+        Class<?> clazz = source.getClass();
+        if (target.isAssignableFrom(clazz)) { return source; }
+        do {
+            TypeConverter converter = CONVERTERS.get(clazz);
+            if (converter != null) {
                 source = converter.convert(source, target);
+                if (target.isAssignableFrom(source.getClass())) {
+                    return source;
+                }
             }
-        }
+            Class<?>[] interfaces = clazz.getInterfaces();
+            if (ArrayUtils.isEmpty(interfaces)) { continue; }
+            for (Class<?> inter : interfaces) {
+                converter = CONVERTERS.get(inter);
+                if (converter == null) { continue; }
+                source = converter.convert(source, target);
+                if (target.isAssignableFrom(source.getClass())) {
+                    return source;
+                }
+            }
+        } while ((clazz = clazz.getSuperclass()) != null);
         return source;
     }
 
