@@ -29,7 +29,7 @@ public class ReferenceHashMapTest {
 
     @Test
     public void test1() throws Exception {
-        Map<String, Object> map = new ReferenceHashMap<String, Object>(ReferenceHashMap.Type.WEAK);
+        Map<String, Object> map = new ReferenceHashMap<String, Object>(ReferenceHashMap.Type.WEAK, 0);
         map.put("test1", new Object());
         System.out.println(map.get("test1"));
         System.gc();
@@ -44,12 +44,23 @@ public class ReferenceHashMapTest {
             builder.append(i);
         }
         String content = builder.toString();
-        ReferenceHashMap<String, Object> map = new ReferenceHashMap<String, Object>(ReferenceHashMap.Type.SOFT);
-//        HashMap<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new ReferenceHashMap<String, Object>(ReferenceHashMap.Type.SOFT, 0);
+//        Map<String, Object> map = new HashMap<String, Object>();
         for (long i = 0; i < 999999; i++) {
             map.put(i + "", content + i);
         }
         System.out.println(map.get("1"));
+    }
+
+    @Test
+    public void test3() throws Exception {
+        Map<String, Object> map = new ReferenceHashMap<String, Object>(ReferenceHashMap.Type.WEAK, 1);
+        for (int i = 0; i < 100; i++) {
+            map.put("data" + i, "data - - " + i);
+        }
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + " | " + entry.getValue());
+        }
     }
 
 }
