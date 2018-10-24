@@ -6,7 +6,7 @@ import java.sql.SQLException;
  * Db atom.
  * @author Kahle
  */
-public interface DbAtom {
+public interface DatabaseAtom {
 
     /**
      * Code run in atom.

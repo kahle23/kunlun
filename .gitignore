@@ -4,6 +4,7 @@
 /.idea
 /*.iml
 /target
+/*.log
 
 /*/.project
 /*/.classpath
@@ -11,5 +12,5 @@
 /*/.idea
 /*/*.iml
 /*/target
-
+/*/*.log
 
