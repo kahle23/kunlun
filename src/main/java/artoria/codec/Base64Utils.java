@@ -57,24 +57,24 @@ public class Base64Utils {
         }
     }
 
-    public static byte[] encode(byte[] src) {
+    public static byte[] encode(byte[] source) {
 
-        return getDelegate().encode(src);
+        return getDelegate().encode(source);
     }
 
-    public static byte[] decode(byte[] src) {
+    public static byte[] decode(byte[] source) {
 
-        return getDelegate().decode(src);
+        return getDelegate().decode(source);
     }
 
-    public static byte[] encodeUrlSafe(byte[] src) {
+    public static byte[] encodeUrlSafe(byte[] source) {
 
-        return getDelegate().encodeUrlSafe(src);
+        return getDelegate().encodeUrlSafe(source);
     }
 
-    public static byte[] decodeUrlSafe(byte[] src) {
+    public static byte[] decodeUrlSafe(byte[] source) {
 
-        return getDelegate().decodeUrlSafe(src);
+        return getDelegate().decodeUrlSafe(source);
     }
 
     public static boolean isUrlSafeString(String base64) {
@@ -89,77 +89,63 @@ public class Base64Utils {
         return matcher.matches();
     }
 
-    public static String encodeToString(byte[] src) {
-        byte[] encode = Base64Utils.encode(src);
+    public static String encodeToString(byte[] source) {
+        byte[] encode = Base64Utils.encode(source);
         Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
         return new String(encode, charset);
     }
 
-    public static String encodeToString(byte[] src, String charset) {
+    public static String encodeToString(byte[] source, String charset) {
         Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         Charset encoding = Charset.forName(charset);
-        byte[] encode = Base64Utils.encode(src);
+        byte[] encode = Base64Utils.encode(source);
         return new String(encode, encoding);
     }
 
     public static byte[] decodeFromString(String source) {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
-        byte[] srcBytes = source.getBytes(charset);
-        return Base64Utils.decode(srcBytes);
+        byte[] sourceBytes = source.getBytes(charset);
+        return Base64Utils.decode(sourceBytes);
     }
 
     public static byte[] decodeFromString(String source, String charset) {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         Charset encoding = Charset.forName(charset);
-        byte[] srcBytes = source.getBytes(encoding);
-        return Base64Utils.decode(srcBytes);
+        byte[] sourceBytes = source.getBytes(encoding);
+        return Base64Utils.decode(sourceBytes);
     }
 
-    public static String encodeToUrlSafeString(byte[] src) {
-        byte[] urlSafe = Base64Utils.encodeUrlSafe(src);
+    public static String encodeToUrlSafeString(byte[] source) {
+        byte[] urlSafe = Base64Utils.encodeUrlSafe(source);
         Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
         return new String(urlSafe, charset);
     }
 
-    public static String encodeToUrlSafeString(byte[] src, String charset) {
+    public static String encodeToUrlSafeString(byte[] source, String charset) {
         Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         Charset encoding = Charset.forName(charset);
-        byte[] urlSafe = Base64Utils.encodeUrlSafe(src);
+        byte[] urlSafe = Base64Utils.encodeUrlSafe(source);
         return new String(urlSafe, encoding);
     }
 
     public static byte[] decodeFromUrlSafeString(String source) {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
-        byte[] srcBytes = source.getBytes(charset);
-        return Base64Utils.decodeUrlSafe(srcBytes);
+        byte[] sourceBytes = source.getBytes(charset);
+        return Base64Utils.decodeUrlSafe(sourceBytes);
     }
 
     public static byte[] decodeFromUrlSafeString(String source, String charset) {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         Assert.notBlank(charset, "Parameter \"charset\" must not blank. ");
         Charset encoding = Charset.forName(charset);
-        byte[] srcBytes = source.getBytes(encoding);
-        return Base64Utils.decodeUrlSafe(srcBytes);
+        byte[] sourceBytes = source.getBytes(encoding);
+        return Base64Utils.decodeUrlSafe(sourceBytes);
     }
 
-    public interface Base64Delegate {
-
-        /**
-         * Base64 encode
-         * @param source something will encode
-         * @return something encoded
-         */
-        byte[] encode(byte[] source);
-
-        /**
-         * Base64 decode
-         * @param source something will decode
-         * @return something encoded
-         */
-        byte[] decode(byte[] source);
+    public interface Base64Delegate extends Encoder<byte[]>, Decoder<byte[]> {
 
         /**
          * Base64 url safe encode
@@ -180,13 +166,13 @@ public class Base64Utils {
     public static class Java7Base64Delegate implements Base64Delegate {
 
         @Override
-        public byte[] encode(byte[] source) {
+        public byte[] encode(byte[] source) throws EncodeException {
             if (ArrayUtils.isEmpty(source)) { return source; }
             return DatatypeConverter.printBase64Binary(source).getBytes();
         }
 
         @Override
-        public byte[] decode(byte[] source) {
+        public byte[] decode(byte[] source) throws DecodeException {
             if (ArrayUtils.isEmpty(source)) { return source; }
             return DatatypeConverter.parseBase64Binary(new String(source));
         }
@@ -194,19 +180,19 @@ public class Base64Utils {
         @Override
         public byte[] encodeUrlSafe(byte[] source) {
             if (ArrayUtils.isEmpty(source)) { return source; }
-            String s = DatatypeConverter.printBase64Binary(source);
-            s = StringUtils.replace(s, PLUS, MINUS);
-            s = StringUtils.replace(s, SLASH, UNDERLINE);
-            return s.getBytes();
+            String encode = DatatypeConverter.printBase64Binary(source);
+            encode = StringUtils.replace(encode, PLUS, MINUS);
+            encode = StringUtils.replace(encode, SLASH, UNDERLINE);
+            return encode.getBytes();
         }
 
         @Override
         public byte[] decodeUrlSafe(byte[] source) {
             if (ArrayUtils.isEmpty(source)) { return source; }
-            String s = new String(source);
-            s = StringUtils.replace(s, MINUS, PLUS);
-            s = StringUtils.replace(s, UNDERLINE, SLASH);
-            return DatatypeConverter.parseBase64Binary(s);
+            String decode = new String(source);
+            decode = StringUtils.replace(decode, MINUS, PLUS);
+            decode = StringUtils.replace(decode, UNDERLINE, SLASH);
+            return DatatypeConverter.parseBase64Binary(decode);
         }
 
     }
@@ -214,13 +200,13 @@ public class Base64Utils {
     public static class Java8Base64Delegate implements Base64Delegate {
 
         @Override
-        public byte[] encode(byte[] source) {
+        public byte[] encode(byte[] source) throws EncodeException {
             if (ArrayUtils.isEmpty(source)) { return source; }
             return java.util.Base64.getEncoder().encode(source);
         }
 
         @Override
-        public byte[] decode(byte[] source) {
+        public byte[] decode(byte[] source) throws DecodeException {
             if (ArrayUtils.isEmpty(source)) { return source; }
             return java.util.Base64.getDecoder().decode(source);
         }

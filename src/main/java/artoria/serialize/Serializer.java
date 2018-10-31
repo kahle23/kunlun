@@ -4,16 +4,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Serializer.
+ * Serializer for streaming an object to an OutputStream.
  * @author Kahle
  */
 public interface Serializer<T> {
 
     /**
-     * Do serialize
-     * @param object The object will serialize
-     * @param outputStream Serialize to output stream
-     * @throws IOException IO exception
+     * Write an object of type T to the given OutputStream.
+     * @param object The object to serialize
+     * @param outputStream The output stream
+     * @throws IOException In case of errors writing to the stream
      */
     void serialize(T object, OutputStream outputStream) throws IOException;
 
