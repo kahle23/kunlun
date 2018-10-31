@@ -1,4 +1,4 @@
-package artoria.template;
+package artoria.render;
 
 import java.io.Reader;
 import java.io.Writer;

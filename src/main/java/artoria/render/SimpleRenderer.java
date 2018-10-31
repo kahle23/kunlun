@@ -1,4 +1,4 @@
-package artoria.template;
+package artoria.render;
 
 import artoria.io.IOUtils;
 import artoria.io.StringBuilderWriter;

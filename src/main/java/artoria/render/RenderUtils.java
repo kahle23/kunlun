@@ -1,4 +1,4 @@
-package artoria.template;
+package artoria.render;
 
 import artoria.util.Assert;
 
