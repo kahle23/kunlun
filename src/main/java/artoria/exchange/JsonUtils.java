@@ -10,28 +10,19 @@ import java.util.logging.Logger;
  * @author Kahle
  */
 public class JsonUtils {
+    private static final JsonHandler DEFAULT_JSON_HANDLER = new SimpleJsonHandler();
     private static Logger log = Logger.getLogger(JsonUtils.class.getName());
     private static JsonHandler jsonHandler;
 
     public static JsonHandler getJsonHandler() {
-        if (jsonHandler != null) {
-            return jsonHandler;
-        }
-        synchronized (JsonHandler.class) {
-            if (jsonHandler != null) {
-                return jsonHandler;
-            }
-            setJsonHandler(new SimpleJsonHandler());
-            return jsonHandler;
-        }
+        return jsonHandler != null
+                ? jsonHandler : DEFAULT_JSON_HANDLER;
     }
 
     public static void setJsonHandler(JsonHandler jsonHandler) {
         Assert.notNull(jsonHandler, "Parameter \"jsonHandler\" must not null. ");
-        synchronized (JsonHandler.class) {
-            log.info("Set json handler: " + jsonHandler.getClass().getName());
-            JsonUtils.jsonHandler = jsonHandler;
-        }
+        log.info("Set json handler: " + jsonHandler.getClass().getName());
+        JsonUtils.jsonHandler = jsonHandler;
     }
 
     public static <T> T parseObject(String text, Class<T> clazz) {

@@ -12,28 +12,19 @@ import java.util.logging.Logger;
  * @author Kahle
  */
 public class HttpUtils {
+    private static final HttpClient DEFAULT_HTTP_CLIENT = new SimpleHttpClient();
     private static Logger log = Logger.getLogger(HttpUtils.class.getName());
     private static HttpClient httpClient;
 
     public static HttpClient getHttpClient() {
-        if (httpClient != null) {
-            return httpClient;
-        }
-        synchronized (HttpClient.class) {
-            if (httpClient != null) {
-                return httpClient;
-            }
-            setHttpClient(new SimpleHttpClient());
-            return httpClient;
-        }
+        return httpClient != null
+                ? httpClient : DEFAULT_HTTP_CLIENT;
     }
 
     public static void setHttpClient(HttpClient httpClient) {
         Assert.notNull(httpClient, "Parameter \"httpClient\" must not null. ");
-        synchronized (HttpClient.class) {
-            log.info("Set http client: " + httpClient.getClass().getName());
-            HttpUtils.httpClient = httpClient;
-        }
+        log.info("Set http client: " + httpClient.getClass().getName());
+        HttpUtils.httpClient = httpClient;
     }
 
     public static String get(String url) {

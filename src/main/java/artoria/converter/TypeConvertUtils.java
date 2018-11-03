@@ -13,8 +13,8 @@ import java.util.logging.Logger;
  * @author Kahle
  */
 public class TypeConvertUtils {
-    private static Logger log = Logger.getLogger(TypeConvertUtils.class.getName());
     private static final Map<Class<?>, TypeConverter> CONVERTERS;
+    private static Logger log = Logger.getLogger(TypeConvertUtils.class.getName());
 
     static {
         CONVERTERS = new ConcurrentHashMap<Class<?>, TypeConverter>();
@@ -27,7 +27,9 @@ public class TypeConvertUtils {
     public static TypeConverter unregister(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         TypeConverter remove = CONVERTERS.remove(clazz);
-        log.info("Unregister: " + clazz.getName() + " >> " + remove.getClass().getName());
+        if (remove != null) {
+            log.info("Unregister: " + clazz.getName() + " >> " + remove.getClass().getName());
+        }
         return remove;
     }
 

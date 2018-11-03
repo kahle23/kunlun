@@ -19,6 +19,17 @@ public class ReentrantLocker implements Locker {
     private final ReentrantLock PRODUCT_LOCK = new ReentrantLock();
     private Map<String, Lock> storage;
 
+    public ReentrantLocker() {
+        ReferenceHashMap.Type type = ReferenceHashMap.Type.SOFT;
+        Map<String, Lock> map = new ReferenceHashMap<String, Lock>(type);
+        this.storage = Collections.synchronizedMap(map);
+    }
+
+    public ReentrantLocker(Map<String, Lock> storage) {
+        Assert.notNull(storage, "Parameter \"storage\" must not null. ");
+        this.storage = storage;
+    }
+
     private Lock takeLock(String lockName) {
         Assert.notBlank(lockName, "Parameter \"lockName\" must not blank. ");
         Lock lock = storage.get(lockName);
@@ -34,17 +45,6 @@ public class ReentrantLocker implements Locker {
         finally {
             PRODUCT_LOCK.unlock();
         }
-    }
-
-    public ReentrantLocker() {
-        ReferenceHashMap.Type type = ReferenceHashMap.Type.SOFT;
-        Map<String, Lock> map = new ReferenceHashMap<String, Lock>(type);
-        this.storage = Collections.synchronizedMap(map);
-    }
-
-    public ReentrantLocker(Map<String, Lock> storage) {
-        Assert.notNull(storage, "Parameter \"storage\" must not null. ");
-        this.storage = storage;
     }
 
     @Override

@@ -4,18 +4,12 @@ package artoria.identity;
  * Id generator.
  * @author Kahle
  */
-public interface IdGenerator {
+public interface IdGenerator<T> {
 
     /**
-     * Randomly generate the number identity.
-     * @return Number identity
+     * Random generate the generic type identity.
+     * @return The generic type identity
      */
-    Number nextNumber();
-
-    /**
-     * Randomly generate the string identity.
-     * @return String identity
-     */
-    String nextString();
+    T next();
 
 }

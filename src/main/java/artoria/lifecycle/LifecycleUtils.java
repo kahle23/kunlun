@@ -21,7 +21,7 @@ public class LifecycleUtils {
         }
     }
 
-    public static void initialize(Collection collection) throws LifecycleException {
+    public static void initialize(Collection<?> collection) throws LifecycleException {
         if (CollectionUtils.isEmpty(collection)) {
             return;
         }
@@ -46,7 +46,7 @@ public class LifecycleUtils {
         }
     }
 
-    public static void destroy(Collection collection) {
+    public static void destroy(Collection<?> collection) {
         if (CollectionUtils.isEmpty(collection)) {
             return;
         }

@@ -9,38 +9,42 @@ import java.util.logging.Logger;
  * @author Kahle
  */
 public class IdUtils {
+    private static final IdGenerator<String> DEFAULT_STRING_ID_GENERATOR = new SimpleIdGenerator();
+    private static final IdGenerator<Long> DEFAULT_NUMBER_ID_GENERATOR = new SnowFlakeIdGenerator();
     private static Logger log = Logger.getLogger(IdUtils.class.getName());
-    private static IdGenerator idGenerator;
+    private static IdGenerator<String> stringIdGenerator;
+    private static IdGenerator<Long> numberIdGenerator;
 
-    public static IdGenerator getIdGenerator() {
-        if (idGenerator != null) {
-            return idGenerator;
-        }
-        synchronized (IdGenerator.class) {
-            if (idGenerator != null) {
-                return idGenerator;
-            }
-            setIdGenerator(new SimpleIdGenerator());
-            return idGenerator;
-        }
+    public static IdGenerator<String> getStringIdGenerator() {
+        return stringIdGenerator != null
+                ? stringIdGenerator : DEFAULT_STRING_ID_GENERATOR;
     }
 
-    public static void setIdGenerator(IdGenerator idGenerator) {
-        Assert.notNull(idGenerator, "Parameter \"idGenerator\" must not null. ");
-        synchronized (IdGenerator.class) {
-            log.info("Set id generator: " + idGenerator.getClass().getName());
-            IdUtils.idGenerator = idGenerator;
-        }
+    public static void setStringIdGenerator(IdGenerator<String> stringIdGenerator) {
+        Assert.notNull(stringIdGenerator, "Parameter \"stringIdGenerator\" must not null. ");
+        log.info("Set id generator: " + stringIdGenerator.getClass().getName());
+        IdUtils.stringIdGenerator = stringIdGenerator;
     }
 
-    public static Number nextNumber() {
+    public static IdGenerator<Long> getNumberIdGenerator() {
+        return numberIdGenerator != null
+                ? numberIdGenerator : DEFAULT_NUMBER_ID_GENERATOR;
+    }
 
-        return getIdGenerator().nextNumber();
+    public static void setNumberIdGenerator(IdGenerator<Long> numberIdGenerator) {
+        Assert.notNull(numberIdGenerator, "Parameter \"numberIdGenerator\" must not null. ");
+        log.info("Set id generator: " + numberIdGenerator.getClass().getName());
+        IdUtils.numberIdGenerator = numberIdGenerator;
     }
 
     public static String nextString() {
 
-        return getIdGenerator().nextString();
+        return getStringIdGenerator().next();
+    }
+
+    public static Long nextNumber() {
+
+        return getNumberIdGenerator().next();
     }
 
 }

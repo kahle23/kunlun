@@ -14,8 +14,8 @@ import java.util.logging.Logger;
  * @author Kahle
  */
 public class FileUtils {
-    private static Logger log = Logger.getLogger(FileUtils.class.getName());
     private static final long FILE_COPY_BUFFER_SIZE = 1024 * 1024 * 10;
+    private static Logger log = Logger.getLogger(FileUtils.class.getName());
 
     public static boolean rename(File path, String newName) {
         File dest = new File(path.getParent(), newName);

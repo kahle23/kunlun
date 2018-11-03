@@ -10,51 +10,33 @@ import java.util.logging.Logger;
  * @author Kahle
  */
 public class SerializeUtils {
-    private static Logger log = Logger.getLogger(SerializeUtils.class.getName());
+    private static final Serializer<Object> DEFAULT_SERIALIZER = new SimpleSerializer();
+    private static final Deserializer<Object> DEFAULT_DESERIALIZER = new SimpleDeserializer();
     private static final int INITIAL_SIZE = 128;
+    private static Logger log = Logger.getLogger(SerializeUtils.class.getName());
     private static Serializer<Object> serializer;
     private static Deserializer<Object> deserializer;
 
     public static Serializer<Object> getSerializer() {
-        if (serializer != null) {
-            return serializer;
-        }
-        synchronized (Serializer.class) {
-            if (serializer != null) {
-                return serializer;
-            }
-            setSerializer(new SimpleSerializer());
-            return serializer;
-        }
+        return serializer != null
+                ? serializer : DEFAULT_SERIALIZER;
     }
 
     public static void setSerializer(Serializer<Object> serializer) {
         Assert.notNull(serializer, "Parameter \"serializer\" must not null. ");
-        synchronized (Serializer.class) {
-            log.info("Set serializer: " + serializer.getClass().getName());
-            SerializeUtils.serializer = serializer;
-        }
+        log.info("Set serializer: " + serializer.getClass().getName());
+        SerializeUtils.serializer = serializer;
     }
 
     public static Deserializer<Object> getDeserializer() {
-        if (deserializer != null) {
-            return deserializer;
-        }
-        synchronized (Deserializer.class) {
-            if (deserializer != null) {
-                return deserializer;
-            }
-            setDeserializer(new SimpleDeserializer());
-            return deserializer;
-        }
+        return deserializer != null
+                ? deserializer : DEFAULT_DESERIALIZER;
     }
 
     public static void setDeserializer(Deserializer<Object> deserializer) {
         Assert.notNull(deserializer, "Parameter \"deserializer\" must not null. ");
-        synchronized (Deserializer.class) {
-            log.info("Set deserializer: " + deserializer.getClass().getName());
-            SerializeUtils.deserializer = deserializer;
-        }
+        log.info("Set deserializer: " + deserializer.getClass().getName());
+        SerializeUtils.deserializer = deserializer;
     }
 
     public static Object clone(Object obj) {

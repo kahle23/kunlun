@@ -10,28 +10,19 @@ import java.util.logging.Logger;
  * @author Kahle
  */
 public class LockUtils {
+    private static final Locker DEFAULT_LOCKER = new ReentrantLocker();
     private static Logger log = Logger.getLogger(LockUtils.class.getName());
     private static Locker locker;
 
     public static Locker getLocker() {
-        if (locker != null) {
-            return locker;
-        }
-        synchronized (Locker.class) {
-            if (locker != null) {
-                return locker;
-            }
-            setLocker(new ReentrantLocker());
-            return locker;
-        }
+        return locker != null
+                ? locker : DEFAULT_LOCKER;
     }
 
     public static void setLocker(Locker locker) {
         Assert.notNull(locker, "Parameter \"locker\" must not null. ");
-        synchronized (Locker.class) {
-            LockUtils.locker = locker;
-            log.info("Set locker: " + locker.getClass().getName());
-        }
+        log.info("Set locker: " + locker.getClass().getName());
+        LockUtils.locker = locker;
     }
 
     public static void lock(String lockName) {

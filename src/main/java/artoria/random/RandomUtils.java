@@ -10,28 +10,19 @@ import java.util.logging.Logger;
  * @author Kahle
  */
 public class RandomUtils {
+    private static final Randomizer DEFAULT_RANDOMIZER = new SimpleRandomizer();
     private static Logger log = Logger.getLogger(RandomUtils.class.getName());
     private static Randomizer randomizer;
 
     public static Randomizer getRandomizer() {
-        if (randomizer != null) {
-            return randomizer;
-        }
-        synchronized (Randomizer.class) {
-            if (randomizer != null) {
-                return randomizer;
-            }
-            setRandomizer(new SimpleRandomizer());
-            return randomizer;
-        }
+        return randomizer != null
+                ? randomizer : DEFAULT_RANDOMIZER;
     }
 
     public static void setRandomizer(Randomizer randomizer) {
         Assert.notNull(randomizer, "Parameter \"randomizer\" must not null. ");
-        synchronized (Randomizer.class) {
-            log.info("Set randomizer: " + randomizer.getClass().getName());
-            RandomUtils.randomizer = randomizer;
-        }
+        log.info("Set randomizer: " + randomizer.getClass().getName());
+        RandomUtils.randomizer = randomizer;
     }
 
     public static <T> T[] confuse(T[] arr) {

@@ -11,28 +11,19 @@ import java.util.logging.Logger;
  * @author Kahle
  */
 public class RenderUtils {
+    private static final Renderer DEFAULT_RENDERER = new SimpleRenderer();
     private static Logger log = Logger.getLogger(RenderUtils.class.getName());
     private static Renderer renderer;
 
     public static Renderer getRenderer() {
-        if (renderer != null) {
-            return renderer;
-        }
-        synchronized (Renderer.class) {
-            if (renderer != null) {
-                return renderer;
-            }
-            setRenderer(new SimpleRenderer());
-            return renderer;
-        }
+        return renderer != null
+                ? renderer : DEFAULT_RENDERER;
     }
 
     public static void setRenderer(Renderer renderer) {
         Assert.notNull(renderer, "Parameter \"renderer\" must not null. ");
-        synchronized (Renderer.class) {
-            log.info("Set template renderer: " + renderer.getClass().getName());
-            RenderUtils.renderer = renderer;
-        }
+        log.info("Set template renderer: " + renderer.getClass().getName());
+        RenderUtils.renderer = renderer;
     }
 
     public static void render(String name, Object data, Writer writer) throws Exception {
