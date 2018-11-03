@@ -25,36 +25,31 @@ public class Base64Utils {
     private static final String JAVA_UTIL_BASE64 = "java.util.Base64";
     private static final Pattern BASE64_URL_SAFE = Pattern.compile("^[a-zA-Z0-9-_]+={0,2}$");
     private static final Pattern BASE64_URL_UNSAFE = Pattern.compile("^[a-zA-Z0-9+/]+={0,2}$");
+    private static final Base64Delegate DEFAULT_BASE64_DELEGATE;
     private static Logger log = Logger.getLogger(Base64Utils.class.getName());
     private static Base64Delegate delegate;
 
-    public static Base64Delegate getDelegate() {
-        if (delegate != null) {
-            return delegate;
-        }
-        synchronized (Base64Delegate.class) {
-            if (delegate != null) {
-                return delegate;
-            }
-            ClassLoader classLoader = Base64Utils.class.getClassLoader();
+    static {
+        ClassLoader classLoader = Base64Utils.class.getClassLoader();
+        if (ClassUtils.isPresent(JAVA_UTIL_BASE64, classLoader)) {
             // If have JDK 8's java.util.Base64, to use it.
-            if (ClassUtils.isPresent(JAVA_UTIL_BASE64, classLoader)) {
-                setDelegate(new Java8Base64Delegate());
-            }
-            // Maybe all jdk is ok.
-            else if (ClassUtils.isPresent(JAVAX_XML_DATATYPE_CONVERTER, classLoader)) {
-                setDelegate(new Java7Base64Delegate());
-            }
-            return delegate;
+            DEFAULT_BASE64_DELEGATE = new Java8Base64Delegate();
         }
+        else {
+            // Maybe all jdk is ok.
+            DEFAULT_BASE64_DELEGATE = new Java7Base64Delegate();
+        }
+    }
+
+    public static Base64Delegate getDelegate() {
+        return delegate != null
+                ? delegate : DEFAULT_BASE64_DELEGATE;
     }
 
     public static void setDelegate(Base64Delegate delegate) {
         Assert.notNull(delegate, "Parameter \"delegate\" must not null. ");
-        synchronized (Base64Delegate.class) {
-            log.info("Set base64 delegate: " + delegate.getClass().getName());
-            Base64Utils.delegate = delegate;
-        }
+        log.info("Set base64 delegate: " + delegate.getClass().getName());
+        Base64Utils.delegate = delegate;
     }
 
     public static byte[] encode(byte[] source) {

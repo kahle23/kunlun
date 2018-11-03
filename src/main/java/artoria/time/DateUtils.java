@@ -15,72 +15,45 @@ import java.util.logging.Logger;
  */
 public class DateUtils {
     public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
+    private static final Class<? extends DateTime> DEFAULT_DATE_TIME_CLASS = SimpleDateTime.class;
+    private static final DateFormater DEFAULT_DATE_FORMATER = new SimpleDateHandler();
+    private static final DateParser DEFAULT_DATE_PARSER = (DateParser) DEFAULT_DATE_FORMATER;
     private static Logger log = Logger.getLogger(DateUtils.class.getName());
     private static Class<? extends DateTime> dateTimeClass;
     private static DateFormater dateFormater;
     private static DateParser dateParser;
 
     public static Class<? extends DateTime> getDateTimeClass() {
-        if (dateTimeClass != null) {
-            return dateTimeClass;
-        }
-        synchronized (DateTime.class) {
-            if (dateTimeClass != null) {
-                return dateTimeClass;
-            }
-            setDateTimeClass(SimpleDateTime.class);
-            return dateTimeClass;
-        }
+        return dateTimeClass != null
+                ? dateTimeClass : DEFAULT_DATE_TIME_CLASS;
     }
 
     public static void setDateTimeClass(Class<? extends DateTime> dateTimeClass) {
         Assert.notNull(dateTimeClass, "Parameter \"dateTimeClass\" must not null. ");
-        synchronized (DateTime.class) {
-            log.info("Set dateTime class: " + dateTimeClass.getName());
-            DateUtils.dateTimeClass = dateTimeClass;
-        }
+        log.info("Set dateTime class: " + dateTimeClass.getName());
+        DateUtils.dateTimeClass = dateTimeClass;
     }
 
     public static DateFormater getDateFormater() {
-        if (dateFormater != null) {
-            return dateFormater;
-        }
-        synchronized (DateFormater.class) {
-            if (dateFormater != null) {
-                return dateFormater;
-            }
-            setDateFormater(new SimpleDateHandler());
-            return dateFormater;
-        }
+        return dateFormater != null
+                ? dateFormater : DEFAULT_DATE_FORMATER;
     }
 
     public static void setDateFormater(DateFormater formater) {
         Assert.notNull(formater, "Parameter \"formater\" must not null. ");
-        synchronized (DateFormater.class) {
-            log.info("Set date formater: " + formater.getClass().getName());
-            dateFormater = formater;
-        }
+        log.info("Set date formater: " + formater.getClass().getName());
+        DateUtils.dateFormater = formater;
     }
 
     public static DateParser getDateParser() {
-        if (dateParser != null) {
-            return dateParser;
-        }
-        synchronized (DateParser.class) {
-            if (dateParser != null) {
-                return dateParser;
-            }
-            setDateParser(new SimpleDateHandler());
-            return dateParser;
-        }
+        return dateParser != null
+                ? dateParser : DEFAULT_DATE_PARSER;
     }
 
     public static void setDateParser(DateParser parser) {
         Assert.notNull(parser, "Parameter \"parser\" must not null. ");
-        synchronized (DateParser.class) {
-            log.info("Set date parser: " + parser.getClass().getName());
-            dateParser = parser;
-        }
+        log.info("Set date parser: " + parser.getClass().getName());
+        DateUtils.dateParser = parser;
     }
 
     public static DateTime create() {

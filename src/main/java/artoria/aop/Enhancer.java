@@ -9,28 +9,19 @@ import java.util.logging.Logger;
  * @author Kahle
  */
 public class Enhancer {
+    private static final ProxyFactory DEFAULT_PROXY_FACTORY = new SimpleProxyFactory();
     private static Logger log = Logger.getLogger(Enhancer.class.getName());
     private static ProxyFactory proxyFactory;
 
     public static ProxyFactory getProxyFactory() {
-        if (proxyFactory != null) {
-            return proxyFactory;
-        }
-        synchronized (ProxyFactory.class) {
-            if (proxyFactory != null) {
-                return proxyFactory;
-            }
-            setProxyFactory(new SimpleProxyFactory());
-            return proxyFactory;
-        }
+        return proxyFactory != null
+                ? proxyFactory : DEFAULT_PROXY_FACTORY;
     }
 
     public static void setProxyFactory(ProxyFactory proxyFactory) {
         Assert.notNull(proxyFactory, "Parameter \"proxyFactory\" must not null. ");
-        synchronized (ProxyFactory.class) {
-            log.info("Set proxy factory: " + proxyFactory.getClass().getName());
-            Enhancer.proxyFactory = proxyFactory;
-        }
+        log.info("Set proxy factory: " + proxyFactory.getClass().getName());
+        Enhancer.proxyFactory = proxyFactory;
     }
 
     public static Object enhance(Class<?> originalClass, Interceptor interceptor) {

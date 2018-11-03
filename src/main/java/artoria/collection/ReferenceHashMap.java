@@ -116,11 +116,13 @@ public class ReferenceHashMap<K, V> implements Map<K, V> {
         return internalMap.containsKey(key);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean containsValue(Object value) {
         this.processQueue();
-        Collection values = this.values();
-        return CollectionUtils.isNotEmpty(values) && values.contains(value);
+        Collection<V> values = this.values();
+        boolean notEmpty = CollectionUtils.isNotEmpty(values);
+        return notEmpty && values.contains((V) value);
     }
 
     @Override

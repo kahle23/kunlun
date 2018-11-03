@@ -11,28 +11,19 @@ import java.util.logging.Logger;
  * @author Kahle
  */
 public class ReflectUtils {
+    private static final Reflecter DEFAULT_REFLECTER = new SimpleReflecter();
     private static Logger log = Logger.getLogger(ReflectUtils.class.getName());
     private static Reflecter reflecter;
 
     public static Reflecter getReflecter() {
-        if (reflecter != null) {
-            return reflecter;
-        }
-        synchronized (Reflecter.class) {
-            if (reflecter != null) {
-                return reflecter;
-            }
-            setReflecter(new SimpleReflecter());
-            return reflecter;
-        }
+        return reflecter != null
+                ? reflecter : DEFAULT_REFLECTER;
     }
 
     public static void setReflecter(Reflecter reflecter) {
         Assert.notNull(reflecter, "Parameter \"reflecter\" must not null. ");
-        synchronized (Reflecter.class) {
-            log.info("Set reflecter: " + reflecter.getClass().getName());
-            ReflectUtils.reflecter = reflecter;
-        }
+        log.info("Set reflecter: " + reflecter.getClass().getName());
+        ReflectUtils.reflecter = reflecter;
     }
 
     public static Object newInstance(String className, Object... args) throws ClassNotFoundException
