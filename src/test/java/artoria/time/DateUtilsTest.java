@@ -97,4 +97,26 @@ public class DateUtilsTest {
         System.out.println(DateUtils.format(DateUtils.setMillisecond(date, 10)));
     }
 
+    @Test
+    public void testOfStartOfEnd() {
+        DateTime dateTime = DateUtils.create();
+        System.out.println("Now time: " + DateUtils.format(dateTime));
+        DateTime dayOfStart = DateUtils.getDayOfStart(dateTime);
+        System.out.println("Day Of Start: " + DateUtils.format(dayOfStart));
+        DateTime dayOfEnd = DateUtils.getDayOfEnd(dateTime);
+        System.out.println("Day Of End: " + DateUtils.format(dayOfEnd));
+        DateTime monthOfStart = DateUtils.getMonthOfStart(dateTime);
+        System.out.println("Month Of Start: " + DateUtils.format(monthOfStart));
+        DateTime monthOfEnd = DateUtils.getMonthOfEnd(dateTime);
+        System.out.println("Month Of End: " + DateUtils.format(monthOfEnd));
+        DateTime yearOfStart = DateUtils.getYearOfStart(dateTime);
+        System.out.println("Year Of Start: " + DateUtils.format(yearOfStart));
+        DateTime yearOfEnd = DateUtils.getYearOfEnd(dateTime);
+        System.out.println("Year Of End: " + DateUtils.format(yearOfEnd));
+        DateTime weekOfStart = DateUtils.getWeekOfStart(dateTime, 1);
+        System.out.println("Week Of Start: " + DateUtils.format(weekOfStart));
+        DateTime weekOfEnd = DateUtils.getWeekOfEnd(dateTime, 1);
+        System.out.println("Week Of End: " + DateUtils.format(weekOfEnd));
+    }
+
 }

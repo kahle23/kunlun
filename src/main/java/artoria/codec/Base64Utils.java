@@ -21,10 +21,9 @@ import static artoria.common.Constants.*;
  * @see DatatypeConverter#parseBase64Binary
  */
 public class Base64Utils {
-    private static final String JAVAX_XML_DATATYPE_CONVERTER = "javax.xml.bind.DatatypeConverter";
-    private static final String JAVA_UTIL_BASE64 = "java.util.Base64";
-    private static final Pattern BASE64_URL_SAFE = Pattern.compile("^[a-zA-Z0-9-_]+={0,2}$");
     private static final Pattern BASE64_URL_UNSAFE = Pattern.compile("^[a-zA-Z0-9+/]+={0,2}$");
+    private static final Pattern BASE64_URL_SAFE = Pattern.compile("^[a-zA-Z0-9-_]+={0,2}$");
+    private static final String JAVA_UTIL_BASE64 = "java.util.Base64";
     private static final Base64Delegate DEFAULT_BASE64_DELEGATE;
     private static Logger log = Logger.getLogger(Base64Utils.class.getName());
     private static Base64Delegate delegate;

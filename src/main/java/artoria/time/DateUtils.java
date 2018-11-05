@@ -138,6 +138,72 @@ public class DateUtils {
         return millis / 1000;
     }
 
+    public static DateTime getDayOfStart(DateTime dateTime) {
+        Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
+        DateTime result = DateUtils.create(dateTime.getTimeInMillis());
+        result.setHour(0).setMinute(0).setSecond(0).setMillisecond(0);
+        return result;
+    }
+
+    public static DateTime getDayOfEnd(DateTime dateTime) {
+        Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
+        DateTime result = DateUtils.create(dateTime.getTimeInMillis());
+        result.setHour(23).setMinute(59).setSecond(59).setMillisecond(999);
+        return result;
+    }
+
+    public static DateTime getMonthOfStart(DateTime dateTime) {
+        Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
+        DateTime result = DateUtils.getDayOfStart(dateTime);
+        result.setDay(1);
+        return result;
+    }
+
+    public static DateTime getMonthOfEnd(DateTime dateTime) {
+        Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
+        DateTime result = DateUtils.getDayOfStart(dateTime);
+        result.setDay(1).addMonth(1).addMillisecond(-1);
+        return result;
+    }
+
+    public static DateTime getYearOfStart(DateTime dateTime) {
+        Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
+        DateTime result = DateUtils.getMonthOfStart(dateTime);
+        result.setMonth(1);
+        return result;
+    }
+
+    public static DateTime getYearOfEnd(DateTime dateTime) {
+        Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
+        DateTime result = DateUtils.getMonthOfStart(dateTime);
+        result.setMonth(1).addYear(1).addMillisecond(-1);
+        return result;
+    }
+
+    public static DateTime getWeekOfStart(DateTime dateTime, int firstDayNum) {
+        Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
+        Assert.state(firstDayNum >= 1 && firstDayNum <= 7
+                , "Parameter \"firstDayNum\" must >= 1 and <= 7. ");
+        DateTime result = DateUtils.getDayOfStart(dateTime);
+        // Default first day of week is sunday and value is "1".
+        int dayOfWeek = result.getDayOfWeek();
+        dayOfWeek = dayOfWeek == 1 ? 7 : dayOfWeek - 1;
+        if (1 <= dayOfWeek && dayOfWeek < firstDayNum) {
+            result.addDay(firstDayNum - 7 - dayOfWeek);
+        }
+        else {
+            result.addDay(firstDayNum - dayOfWeek);
+        }
+        return result;
+    }
+
+    public static DateTime getWeekOfEnd(DateTime dateTime, int firstDayNum) {
+        Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
+        DateTime result = DateUtils.getWeekOfStart(dateTime, firstDayNum);
+        result.addDay(7).addMillisecond(-1);
+        return result;
+    }
+
     public static Date addYear(Date date, int addYear) {
 
         return DateUtils.create(date).addYear(addYear).getDate();
@@ -263,11 +329,6 @@ public class DateUtils {
         return DateUtils.format(new Date());
     }
 
-    public static String format(Long timestamp) {
-
-        return DateUtils.format(timestamp, DEFAULT_DATE_PATTERN);
-    }
-
     public static String format(String pattern) {
 
         return DateUtils.format(new Date(), pattern);
@@ -278,14 +339,29 @@ public class DateUtils {
         return DateUtils.format(date, DEFAULT_DATE_PATTERN);
     }
 
-    public static String format(Long timestamp, String pattern) {
-        Date date = DateUtils.parse(timestamp);
-        return DateUtils.format(date, pattern);
+    public static String format(Long timestamp) {
+
+        return DateUtils.format(timestamp, DEFAULT_DATE_PATTERN);
+    }
+
+    public static String format(DateTime dateTime) {
+
+        return DateUtils.format(dateTime, DEFAULT_DATE_PATTERN);
     }
 
     public static String format(Date date, String pattern) {
 
         return getDateFormater().format(date, pattern);
+    }
+
+    public static String format(Long timestamp, String pattern) {
+        Date date = DateUtils.parse(timestamp);
+        return DateUtils.format(date, pattern);
+    }
+
+    public static String format(DateTime dateTime, String pattern) {
+        Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
+        return DateUtils.format(dateTime.getDate(), pattern);
     }
 
 }

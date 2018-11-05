@@ -8,7 +8,6 @@ import java.io.Writer;
  * @author Kahle
  */
 public class StringBuilderWriter extends Writer implements Serializable {
-
     private final StringBuilder builder;
 
     public StringBuilderWriter() {

@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @param <T> Data type
  * @author Kahle
  */
-public class Param<T extends Serializable> implements Serializable {
+public class Param<T> implements Serializable {
     private Object currentUser;
     private Object targetUser;
     private Paging paging;
@@ -21,29 +21,27 @@ public class Param<T extends Serializable> implements Serializable {
         this.data = data;
     }
 
-    public Param(T data, Paging paging) {
+    public Param(Paging paging, T data) {
         this.paging = paging;
         this.data = data;
     }
 
-    @SuppressWarnings("unchecked")
-    public <R extends Serializable> R getCurrentUser() {
+    public Object getCurrentUser() {
 
-        return (R) currentUser;
+        return this.currentUser;
     }
 
-    public <P extends Serializable> void setCurrentUser(P currentUser) {
+    public void setCurrentUser(Object currentUser) {
 
         this.currentUser = currentUser;
     }
 
-    @SuppressWarnings("unchecked")
-    public <R extends Serializable> R getTargetUser() {
+    public Object getTargetUser() {
 
-        return (R) targetUser;
+        return this.targetUser;
     }
 
-    public <P extends Serializable> void setTargetUser(P targetUser) {
+    public void setTargetUser(Object targetUser) {
 
         this.targetUser = targetUser;
     }

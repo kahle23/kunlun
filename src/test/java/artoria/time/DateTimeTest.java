@@ -9,7 +9,7 @@ import java.util.Date;
 public class DateTimeTest {
 
     @Test
-    public void ifUnixTimestampUsingInteger() {
+    public void testIfUnixTimestampUsingInteger() {
         System.out.println();
         System.out.println("If unix timestamp using Integer. ");
         DateTime dateTime = DateUtils.create(2038, 1, 23);
@@ -17,6 +17,21 @@ public class DateTimeTest {
         System.out.println("The unix timestamp is " + dateTime.getTimeInSeconds());
         System.out.println("The Integer max is " + Integer.MAX_VALUE);
         System.out.println();
+    }
+
+    @Test
+    public void testDayOfAndWeekOf() {
+        DateTime dateTime = DateUtils.create();
+//        dateTime.addMonth(-1).addDay(-1);
+//        dateTime.addDayOfWeek(1);
+//        dateTime.setDayOfYear(365);
+        System.out.println(DateUtils.format(dateTime));
+        System.out.println(DateUtils.format(dateTime, "EEEE"));
+        System.out.println("Day Of Week: " + dateTime.getDayOfWeek());
+        System.out.println("Day Of Week In Month: " + dateTime.getDayOfWeekInMonth());
+        System.out.println("Week Of Month: " + dateTime.getWeekOfMonth());
+        System.out.println("Week Of Year: " + dateTime.getWeekOfYear());
+        System.out.println("Day Of Year: " + dateTime.getDayOfYear());
     }
 
     @Test

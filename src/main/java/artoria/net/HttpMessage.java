@@ -2,6 +2,7 @@ package artoria.net;
 
 import artoria.exception.ExceptionUtils;
 import artoria.util.Assert;
+import artoria.util.StringUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -9,7 +10,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
+import static artoria.common.Constants.*;
 
 /**
  * Abstract http message body.
@@ -116,6 +117,24 @@ public abstract class HttpMessage {
     public void addCookies(Map<String, String> cookies) {
         Assert.notNull(cookies, "Parameter \"cookies\" must not null. ");
         this.cookies.putAll(cookies);
+    }
+
+    public void addCookies(String cookieString) {
+        Assert.notBlank(cookieString, "Parameter \"cookieString\" must not blank. ");
+        Map<String, String> cookiesMap = new LinkedHashMap<String, String>();
+        String[] cookieEntryArray = cookieString.split(SEMICOLON);
+        for (String cookieEntry : cookieEntryArray) {
+            if (StringUtils.isBlank(cookieEntry)) {
+                continue;
+            }
+            cookieEntry = cookieEntry.trim();
+            int index = cookieEntry.indexOf(EQUAL);
+            if (index == -1 || index == 0) { continue; }
+            String key = cookieEntry.substring(0, index);
+            String val = cookieEntry.substring(index + 1);
+            cookiesMap.put(key.trim(), val.trim());
+        }
+        this.cookies.putAll(cookiesMap);
     }
 
     public boolean containsCookie(String cookieName) {
