@@ -81,43 +81,73 @@ public class SimpleDateTime implements DateTime {
 
     @Override
     public DateTime addYear(int addYear) {
-        this.calendar.set(Calendar.YEAR, getYear() + addYear);
+        this.calendar.add(Calendar.YEAR, addYear);
         return this;
     }
 
     @Override
     public DateTime addMonth(int addMonth) {
-        this.calendar.set(Calendar.MONTH, getMonth() - 1 + addMonth);
+        this.calendar.add(Calendar.MONTH, addMonth);
         return this;
     }
 
     @Override
     public DateTime addDay(int addDay) {
-        this.calendar.set(Calendar.DATE, getDay() + addDay);
+        this.calendar.add(Calendar.DATE, addDay);
         return this;
     }
 
     @Override
     public DateTime addHour(int addHour) {
-        this.calendar.set(Calendar.HOUR_OF_DAY, getHour() + addHour);
+        this.calendar.add(Calendar.HOUR_OF_DAY, addHour);
         return this;
     }
 
     @Override
     public DateTime addMinute(int addMinute) {
-        this.calendar.set(Calendar.MINUTE, getMinute() + addMinute);
+        this.calendar.add(Calendar.MINUTE, addMinute);
         return this;
     }
 
     @Override
     public DateTime addSecond(int addSecond) {
-        this.calendar.set(Calendar.SECOND, getSecond() + addSecond);
+        this.calendar.add(Calendar.SECOND, addSecond);
         return this;
     }
 
     @Override
     public DateTime addMillisecond(int addMillisecond) {
-        this.calendar.set(Calendar.MILLISECOND, getMillisecond() + addMillisecond);
+        this.calendar.add(Calendar.MILLISECOND, addMillisecond);
+        return this;
+    }
+
+    @Override
+    public DateTime addDayOfWeek(int addDayOfWeek) {
+        this.calendar.add(Calendar.DAY_OF_WEEK, addDayOfWeek);
+        return this;
+    }
+
+    @Override
+    public DateTime addDayOfWeekInMonth(int addDayOfWeekInMonth) {
+        this.calendar.add(Calendar.DAY_OF_WEEK_IN_MONTH, addDayOfWeekInMonth);
+        return this;
+    }
+
+    @Override
+    public DateTime addDayOfYear(int addDayOfYear) {
+        this.calendar.add(Calendar.DAY_OF_YEAR, addDayOfYear);
+        return this;
+    }
+
+    @Override
+    public DateTime addWeekOfMonth(int addWeekOfMonth) {
+        this.calendar.add(Calendar.WEEK_OF_MONTH, addWeekOfMonth);
+        return this;
+    }
+
+    @Override
+    public DateTime addWeekOfYear(int addWeekOfYear) {
+        this.calendar.add(Calendar.WEEK_OF_YEAR, addWeekOfYear);
         return this;
     }
 
@@ -158,6 +188,7 @@ public class SimpleDateTime implements DateTime {
         boolean by = this.getYear() == 0 || this.getYear() == 1;
         boolean bm = this.getMonth() == 0 || this.getMonth() == 1;
         day = by && bm && day == 0 ? 1 : day;
+        // This is a synonym for DAY_OF_MONTH.
         this.calendar.set(Calendar.DATE, day);
         return this;
     }
@@ -207,6 +238,66 @@ public class SimpleDateTime implements DateTime {
     @Override
     public DateTime setMillisecond(int millisecond) {
         this.calendar.set(Calendar.MILLISECOND, millisecond);
+        return this;
+    }
+
+    @Override
+    public int getDayOfWeek() {
+
+        return this.calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
+    @Override
+    public DateTime setDayOfWeek(int dayOfWeek) {
+        this.calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+        return this;
+    }
+
+    @Override
+    public int getDayOfWeekInMonth() {
+
+        return this.calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+    }
+
+    @Override
+    public DateTime setDayOfWeekInMonth(int dayOfWeekInMonth) {
+        this.calendar.set(Calendar.DAY_OF_WEEK_IN_MONTH, dayOfWeekInMonth);
+        return this;
+    }
+
+    @Override
+    public int getDayOfYear() {
+
+        return this.calendar.get(Calendar.DAY_OF_YEAR);
+    }
+
+    @Override
+    public DateTime setDayOfYear(int dayOfYear) {
+        this.calendar.set(Calendar.DAY_OF_YEAR, dayOfYear);
+        return this;
+    }
+
+    @Override
+    public int getWeekOfMonth() {
+
+        return this.calendar.get(Calendar.WEEK_OF_MONTH);
+    }
+
+    @Override
+    public DateTime setWeekOfMonth(int weekOfMonth) {
+        this.calendar.set(Calendar.WEEK_OF_MONTH, weekOfMonth);
+        return this;
+    }
+
+    @Override
+    public int getWeekOfYear() {
+
+        return this.calendar.get(Calendar.WEEK_OF_YEAR);
+    }
+
+    @Override
+    public DateTime setWeekOfYear(int weekOfYear) {
+        this.calendar.set(Calendar.WEEK_OF_YEAR, weekOfYear);
         return this;
     }
 

@@ -2,6 +2,8 @@ package artoria.identity;
 
 import org.junit.Test;
 
+import static artoria.common.Constants.EMPTY_STRING;
+
 public class IdUtilsTest {
 
     @Test
@@ -16,8 +18,14 @@ public class IdUtilsTest {
 
     @Test
     public void test2() {
-        System.out.println(IdUtils.nextString());
-        System.out.println(IdUtils.nextNumber());
+        SimpleIdGenerator idGenerator = new SimpleIdGenerator(EMPTY_STRING);
+        IdUtils.setStringIdGenerator(idGenerator);
+        for (int i = 0; i < 100; i++) {
+            String string = IdUtils.nextString();
+            System.out.print(string);
+            System.out.print("  " + string.length());
+            System.out.println();
+        }
     }
 
 }

@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @param <T> Data type
  * @author Kahle
  */
-public class Result<T extends Serializable> implements Serializable {
+public class Result<T> implements Serializable {
     private Boolean success;
     private String code;
     private String message;

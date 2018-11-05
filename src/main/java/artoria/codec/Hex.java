@@ -9,9 +9,9 @@ import artoria.util.Assert;
 public class Hex implements Encoder<byte[]>, Decoder<byte[]> {
     private static final byte[] LOWER_CASE_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
     private static final byte[] UPPER_CASE_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-    private static final int HEX_01 = 0x01;
     private static final Hex LOWER_CASE_INSTANCE = new Hex(LOWER_CASE_DIGITS);
     private static final Hex UPPER_CASE_INSTANCE = new Hex(UPPER_CASE_DIGITS);
+    private static final int HEX_01 = 0x01;
 
     public static Hex getInstance() {
 
@@ -21,17 +21,6 @@ public class Hex implements Encoder<byte[]>, Decoder<byte[]> {
     public static Hex getInstance(boolean toUpperCase) {
 
         return toUpperCase ? UPPER_CASE_INSTANCE : LOWER_CASE_INSTANCE;
-    }
-
-    public String encodeToString(byte[] source) {
-        byte[] encode = this.encode(source);
-        return new String(encode);
-    }
-
-    public byte[] decodeFromString(String source) {
-        Assert.notNull(source, "Parameter \"source\" must not null. ");
-        byte[] sourceBytes = source.getBytes();
-        return this.decode(sourceBytes);
     }
 
     private byte[] digits;
@@ -80,6 +69,17 @@ public class Hex implements Encoder<byte[]>, Decoder<byte[]> {
             out[i] = (byte) (f & 0xFF);
         }
         return out;
+    }
+
+    public String encodeToString(byte[] source) {
+        byte[] encode = this.encode(source);
+        return new String(encode);
+    }
+
+    public byte[] decodeFromString(String source) {
+        Assert.notNull(source, "Parameter \"source\" must not null. ");
+        byte[] sourceBytes = source.getBytes();
+        return this.decode(sourceBytes);
     }
 
 }

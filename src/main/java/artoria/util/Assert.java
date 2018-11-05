@@ -131,7 +131,7 @@ public class Assert {
     }
 
     public static void isInstanceOf(Class<?> type, Object obj, String message) {
-        if (obj == null || !type.isInstance(obj)) {
+        if (!type.isInstance(obj)) {
             throw new IllegalArgumentException(message);
         }
     }

@@ -111,6 +111,41 @@ public interface DateTime extends java.io.Serializable {
     DateTime addMillisecond(int addMillisecond);
 
     /**
+     * Add day of week for DateTime object.
+     * @param addDayOfWeek Day of week you want add (the num can minus)
+     * @return Current DateTime object
+     */
+    DateTime addDayOfWeek(int addDayOfWeek);
+
+    /**
+     * Add day of week in month for DateTime object.
+     * @param addDayOfWeekInMonth Day of week in month you want add (the num can minus)
+     * @return Current DateTime object
+     */
+    DateTime addDayOfWeekInMonth(int addDayOfWeekInMonth);
+
+    /**
+     * Add day of year for DateTime object.
+     * @param addDayOfYear Day of year you want add (the num can minus)
+     * @return Current DateTime object
+     */
+    DateTime addDayOfYear(int addDayOfYear);
+
+    /**
+     * Add week of month for DateTime object.
+     * @param addWeekOfMonth Week of month you want add (the num can minus)
+     * @return Current DateTime object
+     */
+    DateTime addWeekOfMonth(int addWeekOfMonth);
+
+    /**
+     * Add week of year for DateTime object.
+     * @param addWeekOfYear Week of year you want add (the num can minus)
+     * @return Current DateTime object
+     */
+    DateTime addWeekOfYear(int addWeekOfYear);
+
+    /**
      * Get year from DateTime object.
      * @return The year from DateTime
      */
@@ -200,6 +235,71 @@ public interface DateTime extends java.io.Serializable {
      * @return Current DateTime object
      */
     DateTime setMillisecond(int millisecond);
+
+    /**
+     * Get day of week from DateTime object.
+     * @return The day of week from DateTime
+     */
+    int getDayOfWeek();
+
+    /**
+     * Set day of week to DateTime object.
+     * @param dayOfWeek The day of week you want
+     * @return Current DateTime object
+     */
+    DateTime setDayOfWeek(int dayOfWeek);
+
+    /**
+     * Get day of week in month from DateTime object.
+     * @return The day of week in month from DateTime
+     */
+    int getDayOfWeekInMonth();
+
+    /**
+     * Set day of week in month to DateTime object.
+     * @param dayOfWeekInMonth The day of week in month you want
+     * @return Current DateTime object
+     */
+    DateTime setDayOfWeekInMonth(int dayOfWeekInMonth);
+
+    /**
+     * Get day of year from DateTime object.
+     * @return The day of year from DateTime
+     */
+    int getDayOfYear();
+
+    /**
+     * Set day of year to DateTime object.
+     * @param dayOfYear The day of year you want
+     * @return Current DateTime object
+     */
+    DateTime setDayOfYear(int dayOfYear);
+
+    /**
+     * Get week of month from DateTime object.
+     * @return The week of month from DateTime
+     */
+    int getWeekOfMonth();
+
+    /**
+     * Set week of month to DateTime object.
+     * @param weekOfMonth The week of month you want
+     * @return Current DateTime object
+     */
+    DateTime setWeekOfMonth(int weekOfMonth);
+
+    /**
+     * Get week of year from DateTime object.
+     * @return The week of year from DateTime
+     */
+    int getWeekOfYear();
+
+    /**
+     * Set week of year to DateTime object.
+     * @param weekOfYear The week of year you want
+     * @return Current DateTime object
+     */
+    DateTime setWeekOfYear(int weekOfYear);
 
     /**
      * Judge this DateTime is before the input.

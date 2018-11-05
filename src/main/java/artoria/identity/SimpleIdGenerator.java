@@ -29,9 +29,9 @@ public class SimpleIdGenerator implements IdGenerator<String> {
     }
 
     public void setSeparator(String separator) {
-        Assert.notBlank(separator, "Parameter \"separator\" must not blank. ");
+        Assert.notNull(separator, "Parameter \"separator\" must not null. ");
         this.separator = separator;
-        this.needReplace = separator != null && !MINUS.equals(separator);
+        this.needReplace = !MINUS.equals(separator);
     }
 
     @Override

@@ -16,7 +16,7 @@ public class ParamTest {
         param.setCurrentUser(RandomUtils.nextObject(Student.class));
         param.setPaging(new Paging(1, 15));
         param.setData(new Date());
-        Student currentUser = param.getCurrentUser();
+        Student currentUser = (Student) param.getCurrentUser();
         Paging paging = param.getPaging();
         Date data = param.getData();
         System.out.println(JSON.toJSONString(currentUser));
