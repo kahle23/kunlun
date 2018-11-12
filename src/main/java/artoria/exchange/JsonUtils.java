@@ -2,7 +2,7 @@ package artoria.exchange;
 
 import artoria.util.Assert;
 
-import java.util.List;
+import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 /**
@@ -10,39 +10,29 @@ import java.util.logging.Logger;
  * @author Kahle
  */
 public class JsonUtils {
-    private static final JsonHandler DEFAULT_JSON_HANDLER = new SimpleJsonHandler();
+    private static final JsonProvider DEFAULT_JSON_HANDLER = new SimpleJsonProvider();
     private static Logger log = Logger.getLogger(JsonUtils.class.getName());
-    private static JsonHandler jsonHandler;
+    private static JsonProvider jsonProvider;
 
-    public static JsonHandler getJsonHandler() {
-        return jsonHandler != null
-                ? jsonHandler : DEFAULT_JSON_HANDLER;
+    public static JsonProvider getJsonProvider() {
+        return jsonProvider != null
+                ? jsonProvider : DEFAULT_JSON_HANDLER;
     }
 
-    public static void setJsonHandler(JsonHandler jsonHandler) {
-        Assert.notNull(jsonHandler, "Parameter \"jsonHandler\" must not null. ");
-        log.info("Set json handler: " + jsonHandler.getClass().getName());
-        JsonUtils.jsonHandler = jsonHandler;
-    }
-
-    public static <T> T parseObject(String text, Class<T> clazz) {
-
-        return getJsonHandler().parseObject(text, clazz);
-    }
-
-    public static <T> List<T> parseArray(String text, Class<T> clazz) {
-
-        return getJsonHandler().parseArray(text, clazz);
+    public static void setJsonProvider(JsonProvider jsonProvider) {
+        Assert.notNull(jsonProvider, "Parameter \"jsonProvider\" must not null. ");
+        log.info("Set json provider: " + jsonProvider.getClass().getName());
+        JsonUtils.jsonProvider = jsonProvider;
     }
 
     public static String toJsonString(Object object) {
 
-        return getJsonHandler().toJsonString(object);
+        return getJsonProvider().toJsonString(object);
     }
 
-    public static String toJsonString(Object object, boolean prettyFormat) {
+    public static <T> T parseObject(String text, Type type) {
 
-        return getJsonHandler().toJsonString(object, prettyFormat);
+        return getJsonProvider().parseObject(text, type);
     }
 
 }

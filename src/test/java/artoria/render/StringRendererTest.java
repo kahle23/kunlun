@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RendererTest {
+public class StringRendererTest {
     private Map<String, Object> data = new HashMap<String, Object>();
 
     @Before
@@ -21,7 +21,7 @@ public class RendererTest {
                 "hello, ${hello1}! \n" +
                 "hello, ${hello2}! \n" +
                 "${hello}${hello}.";
-        String result = RenderUtils.renderToString(data, "test1", tmp);
+        String result = StringRenderUtils.renderToString(data, "test1", tmp);
         System.out.println(result);
     }
 

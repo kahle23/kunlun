@@ -16,14 +16,8 @@ import static artoria.io.IOUtils.DEFAULT_BUFFER_SIZE;
 import static artoria.io.IOUtils.EOF;
 
 /**
- * Hash tools.
- * In JDK, support list:
- *  MD5
- *  SHA-1
- *  SHA-256
- *  SHA-384
- *  SHA-512
- *
+ * Hash tools, in JDK, support list:
+ * MD5, SHA-1, SHA-256, SHA-384, SHA-512.
  * @author Kahle
  */
 public class Hash {
@@ -35,9 +29,13 @@ public class Hash {
     private String charset = DEFAULT_CHARSET_NAME;
     private String algorithm;
 
-    public Hash(String algorithm) {
+    public static Hash getInstance(String algorithm) {
+        Hash hash = new Hash();
+        hash.setAlgorithm(algorithm);
+        return hash;
+    }
 
-        this.setAlgorithm(algorithm);
+    private Hash() {
     }
 
     public String getCharset() {
@@ -60,33 +58,33 @@ public class Hash {
         this.algorithm = algorithm;
     }
 
-    public byte[] calc(String data) throws NoSuchAlgorithmException {
+    public byte[] digest(String data) throws NoSuchAlgorithmException {
         Assert.notBlank(data, "Parameter \"data\" must not blank. ");
         Charset charset = Charset.forName(this.charset);
         byte[] bytes = data.getBytes(charset);
-        return this.calc(bytes);
+        return this.digest(bytes);
     }
 
-    public byte[] calc(byte[] data) throws NoSuchAlgorithmException {
+    public byte[] digest(byte[] data) throws NoSuchAlgorithmException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
-        MessageDigest md = MessageDigest.getInstance(this.algorithm);
+        MessageDigest md = MessageDigest.getInstance(algorithm);
         return md.digest(data);
     }
 
-    public byte[] calc(File file) throws NoSuchAlgorithmException, IOException {
+    public byte[] digest(File file) throws NoSuchAlgorithmException, IOException {
         Assert.notNull(file, "Parameter \"file\" must not null. ");
         FileInputStream in = new FileInputStream(file);
         try {
-            return this.calc(in);
+            return this.digest(in);
         }
         finally {
             IOUtils.closeQuietly(in);
         }
     }
 
-    public byte[] calc(InputStream in) throws NoSuchAlgorithmException, IOException {
+    public byte[] digest(InputStream in) throws NoSuchAlgorithmException, IOException {
         Assert.notNull(in, "Parameter \"in\" must not null. ");
-        MessageDigest md = MessageDigest.getInstance(this.algorithm);
+        MessageDigest md = MessageDigest.getInstance(algorithm);
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         for (int len; (len = in.read(buffer)) != EOF;) {
             md.update(buffer, 0, len);
