@@ -13,10 +13,10 @@ import static artoria.common.Constants.*;
 import static artoria.io.IOUtils.EOF;
 
 /**
- * Template renderer simple implement by jdk.
+ * String template renderer simple implement by jdk.
  * @author Kahle
  */
-public class SimpleRenderer implements Renderer {
+public class SimpleStringRenderer implements StringRenderer {
 
     @Override
     public void render(String name, Object data, Writer writer) throws Exception {

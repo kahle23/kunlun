@@ -11,14 +11,8 @@ import java.security.GeneralSecurityException;
 import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
 
 /**
- * Hmac tools.
- * In JDK, support list:
- *  HMAC MD5
- *  HMAC SHA1
- *  HMAC SHA256
- *  HMAC SHA384
- *  HMAC SHA512
- *
+ * Hmac tools, in JDK, support list: HMAC_MD5
+ * , HMAC_SHA1, HMAC_SHA256, HMAC_SHA384, HMAC_SHA512.
  * @author Kahle
  */
 public class Hmac {
@@ -31,9 +25,13 @@ public class Hmac {
     private String algorithm;
     private byte[] key;
 
-    public Hmac(String algorithm) {
+    public static Hmac getInstance(String algorithm) {
+        Hmac hmac = new Hmac();
+        hmac.setAlgorithm(algorithm);
+        return hmac;
+    }
 
-        this.setAlgorithm(algorithm);
+    private Hmac() {
     }
 
     public String getCharset() {
@@ -72,14 +70,14 @@ public class Hmac {
         this.key = key.getBytes(charset);
     }
 
-    public byte[] calc(String data) throws GeneralSecurityException {
+    public byte[] digest(String data) throws GeneralSecurityException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         Charset charset = Charset.forName(this.charset);
         byte[] bytes = data.getBytes(charset);
-        return this.calc(bytes);
+        return this.digest(bytes);
     }
 
-    public byte[] calc(byte[] data) throws GeneralSecurityException {
+    public byte[] digest(byte[] data) throws GeneralSecurityException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         Assert.notNull(this.key, "Parameter \"key\" must not null. ");
         SecretKey secretKey = new SecretKeySpec(this.key, this.algorithm);

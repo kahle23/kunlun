@@ -4,10 +4,10 @@ import java.io.Reader;
 import java.io.Writer;
 
 /**
- * Template renderer.
+ * String template renderer.
  * @author Kahle
  */
-public interface Renderer {
+public interface StringRenderer {
 
     /**
      * Rendering template by name.
