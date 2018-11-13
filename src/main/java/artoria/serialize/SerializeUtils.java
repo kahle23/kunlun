@@ -1,9 +1,10 @@
 package artoria.serialize;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 import java.io.*;
-import java.util.logging.Logger;
 
 /**
  * Serialize tools.
@@ -13,7 +14,7 @@ public class SerializeUtils {
     private static final Serializer<Object> DEFAULT_SERIALIZER = new SimpleSerializer();
     private static final Deserializer<Object> DEFAULT_DESERIALIZER = new SimpleDeserializer();
     private static final int INITIAL_SIZE = 128;
-    private static Logger log = Logger.getLogger(SerializeUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(SerializeUtils.class);
     private static Serializer<Object> serializer;
     private static Deserializer<Object> deserializer;
 

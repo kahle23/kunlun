@@ -1,9 +1,10 @@
 package artoria.lock;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 /**
  * Lock tools.
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
  */
 public class LockUtils {
     private static final Locker DEFAULT_LOCKER = new ReentrantLocker();
-    private static Logger log = Logger.getLogger(LockUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(LockUtils.class);
     private static Locker locker;
 
     public static Locker getLocker() {

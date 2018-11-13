@@ -1,13 +1,14 @@
 package artoria.time;
 
 import artoria.exception.ExceptionUtils;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 import artoria.util.ObjectUtils;
 
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Logger;
 
 /**
  * Date tools.
@@ -18,7 +19,7 @@ public class DateUtils {
     private static final Class<? extends DateTime> DEFAULT_DATE_TIME_CLASS = SimpleDateTime.class;
     private static final DateFormater DEFAULT_DATE_FORMATER = new SimpleDateHandler();
     private static final DateParser DEFAULT_DATE_PARSER = (DateParser) DEFAULT_DATE_FORMATER;
-    private static Logger log = Logger.getLogger(DateUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(DateUtils.class);
     private static Class<? extends DateTime> dateTimeClass;
     private static DateFormater dateFormater;
     private static DateParser dateParser;

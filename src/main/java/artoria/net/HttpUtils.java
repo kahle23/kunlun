@@ -1,11 +1,12 @@
 package artoria.net;
 
 import artoria.exception.ExceptionUtils;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Simple http tools.
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class HttpUtils {
     private static final HttpClient DEFAULT_HTTP_CLIENT = new SimpleHttpClient();
-    private static Logger log = Logger.getLogger(HttpUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(HttpUtils.class);
     private static HttpClient httpClient;
 
     public static HttpClient getHttpClient() {

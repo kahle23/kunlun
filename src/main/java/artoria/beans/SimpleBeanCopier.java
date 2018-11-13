@@ -2,6 +2,8 @@ package artoria.beans;
 
 import artoria.converter.TypeConverter;
 import artoria.exception.ExceptionUtils;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.reflect.ReflectUtils;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
@@ -10,7 +12,6 @@ import artoria.util.StringUtils;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import static artoria.common.Constants.GET_OR_SET_LENGTH;
 import static artoria.common.Constants.SET;
@@ -20,7 +21,7 @@ import static artoria.common.Constants.SET;
  * @author Kahle
  */
 public class SimpleBeanCopier implements BeanCopier {
-    private static Logger log = Logger.getLogger(SimpleBeanCopier.class.getName());
+    private static Logger log = LoggerFactory.getLogger(SimpleBeanCopier.class);
     private Boolean ignoreException = true;
 
     public Boolean getIgnoreException() {
@@ -64,7 +65,7 @@ public class SimpleBeanCopier implements BeanCopier {
             }
             catch (Exception e) {
                 if (this.ignoreException) {
-                    log.fine(ExceptionUtils.toString(e));
+                    log.debug(e.getMessage(), e);
                 }
                 else {
                     throw ExceptionUtils.wrap(e);

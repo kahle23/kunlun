@@ -1,8 +1,8 @@
 package artoria.aop;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
-
-import java.util.logging.Logger;
 
 /**
  * Object enhancer.
@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  */
 public class Enhancer {
     private static final ProxyFactory DEFAULT_PROXY_FACTORY = new SimpleProxyFactory();
-    private static Logger log = Logger.getLogger(Enhancer.class.getName());
+    private static Logger log = LoggerFactory.getLogger(Enhancer.class);
     private static ProxyFactory proxyFactory;
 
     public static ProxyFactory getProxyFactory() {

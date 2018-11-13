@@ -1,5 +1,7 @@
 package artoria.io;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.PathUtils;
@@ -7,7 +9,6 @@ import artoria.util.PathUtils;
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.LinkedList;
-import java.util.logging.Logger;
 
 /**
  * File tools.
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class FileUtils {
     private static final long FILE_COPY_BUFFER_SIZE = 1024 * 1024 * 10;
-    private static Logger log = Logger.getLogger(FileUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(FileUtils.class);
 
     public static boolean rename(File path, String newName) {
         File dest = new File(path.getParent(), newName);

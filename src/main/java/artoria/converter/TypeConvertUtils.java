@@ -1,12 +1,13 @@
 package artoria.converter;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 /**
  * Convert tools.
@@ -14,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class TypeConvertUtils {
     private static final Map<Class<?>, TypeConverter> CONVERTERS;
-    private static Logger log = Logger.getLogger(TypeConvertUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(TypeConvertUtils.class);
 
     static {
         CONVERTERS = new ConcurrentHashMap<Class<?>, TypeConverter>();

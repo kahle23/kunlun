@@ -1,8 +1,8 @@
 package artoria.identity;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
-
-import java.util.logging.Logger;
 
 /**
  * Id generator tools.
@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class IdUtils {
     private static final IdGenerator<String> DEFAULT_STRING_ID_GENERATOR = new SimpleIdGenerator();
     private static final IdGenerator<Long> DEFAULT_NUMBER_ID_GENERATOR = new SnowFlakeIdGenerator();
-    private static Logger log = Logger.getLogger(IdUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(IdUtils.class);
     private static IdGenerator<String> stringIdGenerator;
     private static IdGenerator<Long> numberIdGenerator;
 
