@@ -1,10 +1,11 @@
 package artoria.render;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 import java.io.Reader;
 import java.io.Writer;
-import java.util.logging.Logger;
 
 /**
  * String template render tools.
@@ -12,7 +13,7 @@ import java.util.logging.Logger;
  */
 public class StringRenderUtils {
     private static final StringRenderer DEFAULT_STRING_RENDERER = new SimpleStringRenderer();
-    private static Logger log = Logger.getLogger(StringRenderUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(StringRenderUtils.class);
     private static StringRenderer stringRenderer;
 
     public static StringRenderer getStringRenderer() {

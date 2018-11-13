@@ -1,12 +1,13 @@
 package artoria.exception;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 public class ExceptionUtilsTest {
-    private static Logger log = Logger.getLogger(ExceptionUtilsTest.class.getName());
+    private static Logger log = LoggerFactory.getLogger(ExceptionUtilsTest.class);
 
     private void throwException1() throws Exception {
         try {

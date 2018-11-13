@@ -1,9 +1,9 @@
 package artoria.identity;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.time.DateUtils;
 import artoria.util.Assert;
-
-import java.util.logging.Logger;
 
 import static artoria.common.Constants.MINUS;
 
@@ -20,7 +20,7 @@ public class SnowFlakeIdGenerator implements IdGenerator<Long> {
     private static final long WORKER_ID_LEFT_SHIFT_BITS = SEQUENCE_BITS;
     private static final long TIMESTAMP_LEFT_SHIFT_BITS = WORKER_ID_LEFT_SHIFT_BITS + WORKER_ID_BITS;
     private static final long WORKER_ID_MAX_VALUE = 1L << WORKER_ID_BITS;
-    private static Logger log = Logger.getLogger(SnowFlakeIdGenerator.class.getName());
+    private static Logger log = LoggerFactory.getLogger(SnowFlakeIdGenerator.class);
     private long workerId = 1L;
     private long sequence;
     private long lastTime;
@@ -73,7 +73,7 @@ public class SnowFlakeIdGenerator implements IdGenerator<Long> {
             sequence = 0;
         }
         lastTime = currentTime;
-        log.fine(DateUtils.format(lastTime) + MINUS + workerId + MINUS + sequence);
+        log.debug(DateUtils.format(lastTime) + MINUS + workerId + MINUS + sequence);
         long timeInterval = currentTime - TIME_OFFSET;
         return (timeInterval << TIMESTAMP_LEFT_SHIFT_BITS) | (workerId << WORKER_ID_LEFT_SHIFT_BITS) | sequence;
     }

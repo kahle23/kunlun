@@ -3,6 +3,8 @@ package artoria.beans;
 import artoria.converter.TypeConvertUtils;
 import artoria.converter.TypeConverter;
 import artoria.exception.ExceptionUtils;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.reflect.ReflectUtils;
 import artoria.util.Assert;
 
@@ -11,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Bean convert tools.
@@ -28,7 +29,7 @@ public class BeanUtils {
         }
     };
     private static final Integer MAP_INIT_CAPACITY = 32;
-    private static Logger log = Logger.getLogger(BeanUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
     private static Class<? extends BeanMap> beanMapClass;
     private static BeanCopier beanCopier;
 

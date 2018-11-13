@@ -1,10 +1,11 @@
 package artoria.reflect;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 import java.lang.reflect.*;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Reflect tools.
@@ -12,7 +13,7 @@ import java.util.logging.Logger;
  */
 public class ReflectUtils {
     private static final Reflecter DEFAULT_REFLECTER = new SimpleReflecter();
-    private static Logger log = Logger.getLogger(ReflectUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(ReflectUtils.class);
     private static Reflecter reflecter;
 
     public static Reflecter getReflecter() {

@@ -3,6 +3,8 @@ package artoria.jdbc;
 import artoria.beans.BeanUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.io.IOUtils;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
 import artoria.util.StringUtils;
@@ -13,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import static artoria.common.Constants.COMMA;
 
@@ -23,7 +24,7 @@ import static artoria.common.Constants.COMMA;
  */
 public class DatabaseClient {
     private static final int DEFAULT_TRANSACTION_LEVEL = Connection.TRANSACTION_REPEATABLE_READ;
-    private static Logger log = Logger.getLogger(DatabaseClient.class.getName());
+    private static Logger log = LoggerFactory.getLogger(DatabaseClient.class);
     private final ThreadLocal<Connection> threadConnection = new ThreadLocal<Connection>();
     private DataSource dataSource;
 
@@ -178,7 +179,7 @@ public class DatabaseClient {
             conn.rollback();
         }
         catch (Exception ex) {
-            log.severe(ExceptionUtils.toString(ex));
+            log.error(ex.getMessage(), ex);
         }
     }
 
@@ -193,7 +194,7 @@ public class DatabaseClient {
             conn.close();
         }
         catch (Exception e) {
-            log.severe(ExceptionUtils.toString(e));
+            log.error(e.getMessage(), e);
         }
         finally {
             this.threadConnection.remove();

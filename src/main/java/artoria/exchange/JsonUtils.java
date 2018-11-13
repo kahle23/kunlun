@@ -1,9 +1,10 @@
 package artoria.exchange;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 import java.lang.reflect.Type;
-import java.util.logging.Logger;
 
 /**
  * Json tools.
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
  */
 public class JsonUtils {
     private static final JsonProvider DEFAULT_JSON_HANDLER = new SimpleJsonProvider();
-    private static Logger log = Logger.getLogger(JsonUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(JsonUtils.class);
     private static JsonProvider jsonProvider;
 
     public static JsonProvider getJsonProvider() {

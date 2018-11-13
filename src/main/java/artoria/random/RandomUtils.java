@@ -1,9 +1,10 @@
 package artoria.random;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Random tools.
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
  */
 public class RandomUtils {
     private static final Randomizer DEFAULT_RANDOMIZER = new SimpleRandomizer();
-    private static Logger log = Logger.getLogger(RandomUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(RandomUtils.class);
     private static Randomizer randomizer;
 
     public static Randomizer getRandomizer() {

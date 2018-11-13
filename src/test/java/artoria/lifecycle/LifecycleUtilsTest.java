@@ -1,12 +1,12 @@
 package artoria.lifecycle;
 
 import artoria.exception.ExceptionUtils;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
-import java.util.logging.Logger;
-
 public class LifecycleUtilsTest {
-    private static Logger log = Logger.getLogger(LifecycleUtilsTest.class.getName());
+    private static Logger log = LoggerFactory.getLogger(LifecycleUtilsTest.class);
     private LifecycleTestBean bean = new LifecycleTestBean();
 
     @Test

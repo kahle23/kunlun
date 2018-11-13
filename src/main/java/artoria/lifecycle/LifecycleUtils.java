@@ -1,16 +1,17 @@
 package artoria.lifecycle;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.CollectionUtils;
 
 import java.util.Collection;
-import java.util.logging.Logger;
 
 /**
  * Help call {@link Initializable#initialize()} or {@link Destroyable#destroy()}.
  * @author Kahle
  */
 public class LifecycleUtils {
-    private static Logger log = Logger.getLogger(LifecycleUtils.class.getName());
+    private static Logger log = LoggerFactory.getLogger(LifecycleUtils.class);
 
     public static void initialize(Object obj) throws LifecycleException {
         if (obj instanceof Initializable) {
