@@ -1,20 +1,23 @@
 package artoria.common;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 import static artoria.common.Constants.*;
 
 public class ConstantsTest {
+    private static Logger log = LoggerFactory.getLogger(ConstantsTest.class);
 
     @Test
     public void test1() {
-        System.out.println(CLASSPATH);
-        System.out.println(ROOT_PATH);
-        System.out.println(FILE_SEPARATOR);
-        System.out.println(PATH_SEPARATOR);
-        System.out.println(DEFAULT_CHARSET_NAME);
-        System.out.println(NEWLINE);
-        System.out.println(GET);
+        log.info(CLASSPATH);
+        log.info(ROOT_PATH);
+        log.info(FILE_SEPARATOR);
+        log.info(PATH_SEPARATOR);
+        log.info(DEFAULT_CHARSET_NAME);
+        log.info(NEWLINE);
+        log.info(GET);
     }
 
 }

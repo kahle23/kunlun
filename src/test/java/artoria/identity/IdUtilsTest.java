@@ -1,18 +1,20 @@
 package artoria.identity;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 import static artoria.common.Constants.EMPTY_STRING;
 
 public class IdUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(IdUtilsTest.class);
 
     @Test
     public void test1() {
         for (int i = 0; i < 100; i++) {
             Long number = IdUtils.nextNumber();
-            System.out.print(number);
-            System.out.print("  " + number.toString().length());
-            System.out.println();
+            log.info(number + "  " + number.toString().length());
+            log.info("");
         }
     }
 
@@ -22,9 +24,8 @@ public class IdUtilsTest {
         IdUtils.setStringIdGenerator(idGenerator);
         for (int i = 0; i < 100; i++) {
             String string = IdUtils.nextString();
-            System.out.print(string);
-            System.out.print("  " + string.length());
-            System.out.println();
+            log.info(string + "  " + string.length());
+            log.info("");
         }
     }
 

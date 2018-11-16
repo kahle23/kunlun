@@ -1,6 +1,8 @@
 package artoria.crypto;
 
 import artoria.codec.Base64Utils;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -27,6 +29,7 @@ import javax.crypto.spec.IvParameterSpec;
 // "AES/CBC/PKCS5Padding"
 
 public class AESTest {
+    private static Logger log = LoggerFactory.getLogger(AESTest.class);
     private String algorithmName = "AES";
     private byte[] data = "Hello，Java！".getBytes();
 
@@ -39,11 +42,11 @@ public class AESTest {
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        System.out.println(Base64Utils.encodeToString(bytes));
+        log.info(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
-        System.out.println(new String(bytes1));
+        log.info(new String(bytes1));
     }
 
     @Ignore
@@ -56,11 +59,11 @@ public class AESTest {
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        System.out.println(Base64Utils.encodeToString(bytes));
+        log.info(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
-        System.out.println(new String(bytes1));
+        log.info(new String(bytes1));
     }
 
     @Ignore
@@ -73,11 +76,11 @@ public class AESTest {
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        System.out.println(Base64Utils.encodeToString(bytes));
+        log.info(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
-        System.out.println(new String(bytes1));
+        log.info(new String(bytes1));
     }
 
     @Test
@@ -89,11 +92,11 @@ public class AESTest {
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        System.out.println(Base64Utils.encodeToString(bytes));
+        log.info(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
-        System.out.println(new String(bytes1));
+        log.info(new String(bytes1));
     }
 
     @Test
@@ -107,11 +110,11 @@ public class AESTest {
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        System.out.println(Base64Utils.encodeToString(bytes));
+        log.info(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
-        System.out.println(new String(bytes1));
+        log.info(new String(bytes1));
     }
 
     @Test
@@ -125,11 +128,11 @@ public class AESTest {
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         // IllegalBlockSizeException: Input length not multiple of 16 bytes
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        System.out.println(Base64Utils.encodeToString(bytes));
+        log.info(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
-        System.out.println(new String(bytes1));
+        log.info(new String(bytes1));
     }
 
 }

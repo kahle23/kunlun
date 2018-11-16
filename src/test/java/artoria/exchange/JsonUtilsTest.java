@@ -1,6 +1,8 @@
 package artoria.exchange;
 
 import artoria.entity.Student;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.random.RandomUtils;
 import artoria.util.TypeUtils;
 import com.alibaba.fastjson.JSON;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public class JsonUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(JsonUtilsTest.class);
     private Student data = new Student();
     private List<Student> data1 = new ArrayList<Student>();
     private Map<Long, Student> data2 = new HashMap<Long, Student>();
@@ -46,29 +49,29 @@ public class JsonUtilsTest {
 
     @Test
     public void test0() {
-        System.out.println(JsonUtils.toJsonString(data));
-        System.out.println(JsonUtils.toJsonString(data1));
-        System.out.println(JsonUtils.toJsonString(data2));
+        log.info(JsonUtils.toJsonString(data));
+        log.info(JsonUtils.toJsonString(data1));
+        log.info(JsonUtils.toJsonString(data2));
     }
 
     @Test
     public void test1() {
         Student student = JsonUtils.parseObject(jsonString, Student.class);
-        System.out.println(JsonUtils.toJsonString(student));
+        log.info(JsonUtils.toJsonString(student));
     }
 
     @Test
     public void test2() {
         List<Student> list = JsonUtils.parseObject(jsonString1
                 , TypeUtils.parameterizedOf(List.class, Student.class));
-        System.out.println(JsonUtils.toJsonString(list));
+        log.info(JsonUtils.toJsonString(list));
     }
 
     @Test
     public void test3() {
         Map<Long, Student> map = JsonUtils.parseObject(jsonString2
                 , TypeUtils.parameterizedOf(Map.class, Long.class, Student.class));
-        System.out.println(JsonUtils.toJsonString(map));
+        log.info(JsonUtils.toJsonString(map));
     }
 
 }

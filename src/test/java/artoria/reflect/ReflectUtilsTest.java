@@ -1,6 +1,8 @@
 package artoria.reflect;
 
 import artoria.entity.Student;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.random.RandomUtils;
 import org.junit.Test;
 
@@ -11,12 +13,13 @@ import java.util.Arrays;
 import java.util.Map;
 
 public class ReflectUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(ReflectUtilsTest.class);
 
     @Test
     public void findConstructors() throws Exception {
         Constructor<?>[] constructors = ReflectUtils.findConstructors(Student.class);
         for (Constructor<?> constructor : constructors) {
-            System.out.println(Arrays.toString(constructor.getParameterTypes()));
+            log.info(Arrays.toString(constructor.getParameterTypes()));
         }
     }
 
@@ -26,7 +29,7 @@ public class ReflectUtilsTest {
         Field[] fields = ReflectUtils.findAccessFields(Student.class);
         for (Field field : fields) {
             ReflectUtils.makeAccessible(field);
-            System.out.println(field.getName() + " | " + field.get(student));
+            log.info(field.getName() + " | " + field.get(student));
         }
     }
 
@@ -34,7 +37,7 @@ public class ReflectUtilsTest {
     public void findMethods() throws Exception {
         Method[] methods = ReflectUtils.findAccessMethods(Student.class);
         for (Method method : methods) {
-            System.out.println(method.getName());
+            log.info(method.getName());
         }
     }
 
@@ -42,14 +45,14 @@ public class ReflectUtilsTest {
     public void findReadMethodsAndWriteMethods() throws Exception {
         Map<String, Method> readMethods = ReflectUtils.findReadMethods(Student.class);
         for (Map.Entry<String, Method> entry : readMethods.entrySet()) {
-            System.out.println(entry.getKey() + " | " + entry.getValue().getName());
+            log.info(entry.getKey() + " | " + entry.getValue().getName());
         }
 
-        System.out.println("------------------------");
+        log.info("------------------------");
 
         Map<String, Method> writeMethods = ReflectUtils.findWriteMethods(Student.class);
         for (Map.Entry<String, Method> entry : writeMethods.entrySet()) {
-            System.out.println(entry.getKey() + " | " + entry.getValue().getName());
+            log.info(entry.getKey() + " | " + entry.getValue().getName());
         }
     }
 

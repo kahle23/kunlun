@@ -1,22 +1,25 @@
 package artoria.serialize;
 
 import artoria.codec.Hex;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 import java.io.Serializable;
 
 public class SerializeUtilsTest implements Serializable {
+    private static Logger log = LoggerFactory.getLogger(SerializeUtilsTest.class);
 
     @Test
     public void serializeAndDeserialize() {
         SerializeUtilsTest obj = new SerializeUtilsTest();
-        System.out.println(obj);
+        log.info("" + obj);
         byte[] bytes = SerializeUtils.serialize(obj);
         String encode = Hex.getInstance(true).encodeToString(bytes);
-        System.out.println(encode);
+        log.info(encode);
 
         SerializeUtilsTest obj1 = (SerializeUtilsTest) SerializeUtils.deserialize(bytes);
-        System.out.println(obj1);
+        log.info("" + obj1);
     }
 
 }

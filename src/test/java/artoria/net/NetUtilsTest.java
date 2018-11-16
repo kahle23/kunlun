@@ -1,5 +1,7 @@
 package artoria.net;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -8,6 +10,7 @@ import java.net.NetworkInterface;
 import java.util.List;
 
 public class NetUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(NetUtilsTest.class);
     private static String testIp0 = "www.bing.com";
     private static String testIp1 = "www.github.com";
     private static String testIp2 = "192.168.1.1";
@@ -15,17 +18,17 @@ public class NetUtilsTest {
     @Test
     @Ignore
     public void testTryTelnet() throws Exception {
-        System.out.println(NetUtils.tryTelnet(testIp0, 80));
-        System.out.println(NetUtils.tryTelnet(testIp1, 80));
-        System.out.println(NetUtils.tryTelnet(testIp2, 80));
-        System.out.println(NetUtils.tryTelnet(testIp0, 999));
+        log.info("" + NetUtils.tryTelnet(testIp0, 80));
+        log.info("" + NetUtils.tryTelnet(testIp1, 80));
+        log.info("" + NetUtils.tryTelnet(testIp2, 80));
+        log.info("" + NetUtils.tryTelnet(testIp0, 999));
     }
 
     @Test
     @Ignore
     public void testTryTelnet1() throws Exception {
         for (int i = 70; i < 90; i++) {
-            System.out.println(i + " " + NetUtils.tryTelnet(testIp0, i, 500));
+            log.info(i + " " + NetUtils.tryTelnet(testIp0, i, 500));
         }
     }
 
@@ -33,27 +36,27 @@ public class NetUtilsTest {
     @Ignore
     public void testPing() throws Exception {
         // In windows, java maybe is not use ICMP, just echo(port 7).
-        System.out.println(NetUtils.ping(testIp0));
-        System.out.println(NetUtils.ping(testIp1));
-        System.out.println(NetUtils.ping(testIp2));
+        log.info("" + NetUtils.ping(testIp0));
+        log.info("" + NetUtils.ping(testIp1));
+        log.info("" + NetUtils.ping(testIp2));
     }
 
     @Test
     public void testGetLocalHost() throws Exception {
         InetAddress localHost = NetUtils.getLocalHost();
-        System.out.println(localHost.toString());
-        System.out.println(NetUtils.getHostAddress(localHost));
+        log.info(localHost.toString());
+        log.info(NetUtils.getHostAddress(localHost));
         NetworkInterface networkInterface = NetworkInterface.getByInetAddress(localHost);
-        System.out.println(NetUtils.getHardwareAddress(networkInterface));
+        log.info(NetUtils.getHardwareAddress(networkInterface));
     }
 
     @Test
     public void testGetNetworkInterfaces() throws Exception {
         List<NetworkInterface> interfaces = NetUtils.getNetworkInterfaces();
         for (NetworkInterface anInterface : interfaces) {
-            System.out.println(anInterface);
-            System.out.println(NetUtils.getHardwareAddress(anInterface));
-            System.out.println();
+            log.info("" + anInterface);
+            log.info(NetUtils.getHardwareAddress(anInterface));
+            log.info("");
         }
     }
 
@@ -61,7 +64,7 @@ public class NetUtilsTest {
     public void testGetInetAddresses() throws Exception {
         List<NetworkInterface> interfaces = NetUtils.getNetworkInterfaces();
         for (NetworkInterface networkInterface : interfaces) {
-            System.out.println(NetUtils.getInetAddresses(networkInterface));
+            log.info("" + NetUtils.getInetAddresses(networkInterface));
         }
     }
 

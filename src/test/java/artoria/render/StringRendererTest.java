@@ -1,5 +1,7 @@
 package artoria.render;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StringRendererTest {
+    private static Logger log = LoggerFactory.getLogger(StringRendererTest.class);
     private Map<String, Object> data = new HashMap<String, Object>();
 
     @Before
@@ -22,7 +25,7 @@ public class StringRendererTest {
                 "hello, ${hello2}! \n" +
                 "${hello}${hello}.";
         String result = StringRenderUtils.renderToString(data, "test1", tmp);
-        System.out.println(result);
+        log.info(result);
     }
 
 }

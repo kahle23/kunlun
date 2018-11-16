@@ -19,15 +19,15 @@ Finally, you can using this package provide function now.
 ```
 // When bean copy
 Student student = BeanUtils.beanToBean(person, Student.class);
-System.out.println(JSON.toJSONString(student));
+log.info(JSON.toJSONString(student));
 
 // When bean list copy
 List<Student> students = BeanUtils.beanToBeanInList(persons, Student.class);
-System.out.println(JSON.toJSONString(students));
+log.info(JSON.toJSONString(students));
 
 // When bean to map
 Map<String, Object> map = BeanUtils.beanToMap(person);
-System.out.println(JSON.toJSONString(map));
+log.info(JSON.toJSONString(map));
 ```
 
 # Lock demo
@@ -38,13 +38,13 @@ private Integer num = 100;
 // Consume shared variable
 String threadName = Thread.currentThread().getName();
 try {
-    System.out.println(threadName);
+    log.info(threadName);
     LockUtils.lock(lockName);
     if (num < 0) { continue; }
-    System.out.println(threadName + " | " + (num--));
+    log.info(threadName + " | " + (num--));
 }
 finally {
-    System.out.println(threadName + " unlock");
+    log.info(threadName + " unlock");
     LockUtils.unlock(lockName);
 }
 ```

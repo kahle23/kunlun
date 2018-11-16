@@ -1,16 +1,20 @@
 package artoria.lifecycle;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
+
 public class LifecycleTestBean implements Initializable, Destroyable {
+    private static Logger log = LoggerFactory.getLogger(LifecycleTestBean.class);
 
     @Override
     public void initialize() throws LifecycleException {
-        System.out.println(">>>> This is initialize. ");
+        log.info(">>>> This is initialize. ");
         throw new LifecycleException("Test throw LifecycleException ... ... ");
     }
 
     @Override
     public void destroy() throws Exception {
-        System.out.println(">>>> This is destroy. ");
+        log.info(">>>> This is destroy. ");
     }
 
 }

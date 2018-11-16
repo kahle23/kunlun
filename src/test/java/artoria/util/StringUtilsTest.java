@@ -1,56 +1,59 @@
 package artoria.util;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 
 public class StringUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(StringUtilsTest.class);
 
     @Test
     public void test1() {
         String str = "SAFASGF+ASIHFAS+OUAFHGA=";
-        System.out.println(StringUtils.replace(str, "+", "-"));
+        log.info(StringUtils.replace(str, "+", "-"));
     }
 
     @Test
     public void test2() {
         BigDecimal decimal = new BigDecimal("-3456");
-        System.out.println(decimal);
+        log.info("" + decimal);
         BigDecimal decimal1 = new BigDecimal("+3456");
-        System.out.println(decimal1);
-        System.out.println(StringUtils.isNumeric("3452347"));
-        System.out.println(StringUtils.isNumeric("4373.4"));
-        System.out.println(StringUtils.isNumeric("345f347"));
-        System.out.println(StringUtils.isNumeric("-345347"));
-        System.out.println(StringUtils.isNumeric("-345."));
-        System.out.println(StringUtils.isNumeric("+0345.00.7"));
-        System.out.println(StringUtils.isNumeric("+3486.40"));
-        System.out.println(StringUtils.isNumeric("+3486..40"));
+        log.info("" + decimal1);
+        log.info("" + StringUtils.isNumeric("3452347"));
+        log.info("" + StringUtils.isNumeric("4373.4"));
+        log.info("" + StringUtils.isNumeric("345f347"));
+        log.info("" + StringUtils.isNumeric("-345347"));
+        log.info("" + StringUtils.isNumeric("-345."));
+        log.info("" + StringUtils.isNumeric("+0345.00.7"));
+        log.info("" + StringUtils.isNumeric("+3486.40"));
+        log.info("" + StringUtils.isNumeric("+3486..40"));
     }
 
     @Test
     public void test3() {
-        System.out.println(StringUtils.camelToUnderline("helloWorld"));
-        System.out.println(StringUtils.camelToUnderline("LocalHost"));
-        System.out.println(StringUtils.camelToUnderline("localhost"));
-        System.out.println(StringUtils.camelToUnderline("localhostVO"));
-        System.out.println(StringUtils.camelToUnderline("local_host"));
-        System.out.println(StringUtils.camelToUnderline("local_Host"));
-        System.out.println(StringUtils.camelToUnderline("locaL_Host"));
-        System.out.println(StringUtils.camelToUnderline("LOCALHOST"));
-        System.out.println(StringUtils.camelToUnderline("HELLO_WORLD"));
-        System.out.println(StringUtils.camelToUnderline("_LOCAL_HOST"));
-        System.out.println(StringUtils.camelToUnderline(""));
-        System.out.println(StringUtils.camelToUnderline(null));
-        System.out.println("----");
-        System.out.println(StringUtils.underlineToCamel("HELLO_WORLD"));
-        System.out.println(StringUtils.underlineToCamel("_LOCAL_HOST"));
-        System.out.println(StringUtils.underlineToCamel("LOCALHOST"));
-        System.out.println(StringUtils.underlineToCamel("localhost"));
-        System.out.println(StringUtils.underlineToCamel("local_host"));
-        System.out.println(StringUtils.underlineToCamel("helloWorld"));
-        System.out.println(StringUtils.underlineToCamel(""));
-        System.out.println(StringUtils.underlineToCamel(null));
+        log.info(StringUtils.camelToUnderline("helloWorld"));
+        log.info(StringUtils.camelToUnderline("LocalHost"));
+        log.info(StringUtils.camelToUnderline("localhost"));
+        log.info(StringUtils.camelToUnderline("localhostVO"));
+        log.info(StringUtils.camelToUnderline("local_host"));
+        log.info(StringUtils.camelToUnderline("local_Host"));
+        log.info(StringUtils.camelToUnderline("locaL_Host"));
+        log.info(StringUtils.camelToUnderline("LOCALHOST"));
+        log.info(StringUtils.camelToUnderline("HELLO_WORLD"));
+        log.info(StringUtils.camelToUnderline("_LOCAL_HOST"));
+        log.info(StringUtils.camelToUnderline(""));
+        log.info(StringUtils.camelToUnderline(null));
+        log.info("----");
+        log.info(StringUtils.underlineToCamel("HELLO_WORLD"));
+        log.info(StringUtils.underlineToCamel("_LOCAL_HOST"));
+        log.info(StringUtils.underlineToCamel("LOCALHOST"));
+        log.info(StringUtils.underlineToCamel("localhost"));
+        log.info(StringUtils.underlineToCamel("local_host"));
+        log.info(StringUtils.underlineToCamel("helloWorld"));
+        log.info(StringUtils.underlineToCamel(""));
+        log.info(StringUtils.underlineToCamel(null));
     }
 
 }

@@ -1,6 +1,8 @@
 package artoria.crypto;
 
 import artoria.codec.Base64Utils;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -17,6 +19,7 @@ import java.security.PublicKey;
 // "RSA/ECB/PKCS1Padding"
 
 public class RSATest {
+    private static Logger log = LoggerFactory.getLogger(RSATest.class);
     private String algorithmName = "RSA";
     private byte[] data = "Hello，Java！".getBytes();
 
@@ -30,9 +33,9 @@ public class RSATest {
         PrivateKey privateKey = keyPair.getPrivate();
 
         byte[] publicKeyByteArray = publicKey.getEncoded();
-        System.out.println(Base64Utils.encodeToString(publicKeyByteArray));
+        log.info(Base64Utils.encodeToString(publicKeyByteArray));
         byte[] privateKeyByteArray = privateKey.getEncoded();
-        System.out.println(Base64Utils.encodeToString(privateKeyByteArray));
+        log.info(Base64Utils.encodeToString(privateKeyByteArray));
 
         publicKey = CipherUtils.parsePublicKey(algorithmName, publicKeyByteArray);
         privateKey = CipherUtils.parsePrivateKey(algorithmName, privateKeyByteArray);
@@ -43,19 +46,19 @@ public class RSATest {
         Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
 
         byte[] bytes = encrypterPublic.doFinal(data);
-        System.out.println("Encrypter Public: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Public: " + Base64Utils.encodeToString(bytes));
         byte[] bytes1 = decrypterPublic.doFinal(bytes);
-        System.out.println("Decrypter Public: " + new String(bytes1));
+        log.info("Decrypter Public: " + new String(bytes1));
         bytes1 = decrypterPrivate.doFinal(bytes);
-        System.out.println("Decrypter Private: " + new String(bytes1));
+        log.info("Decrypter Private: " + new String(bytes1));
 
-        System.out.println();
+        log.info("");
         bytes = encrypterPrivate.doFinal(data);
-        System.out.println("Encrypter Private: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Private: " + Base64Utils.encodeToString(bytes));
         bytes1 = decrypterPrivate.doFinal(bytes);
-        System.out.println("Decrypter Private: " + new String(bytes1));
+        log.info("Decrypter Private: " + new String(bytes1));
         bytes1 = decrypterPublic.doFinal(bytes);
-        System.out.println("Decrypter Public: " + new String(bytes1));
+        log.info("Decrypter Public: " + new String(bytes1));
     }
 
     @Test
@@ -68,9 +71,9 @@ public class RSATest {
         PrivateKey privateKey = keyPair.getPrivate();
 
         byte[] publicKeyByteArray = publicKey.getEncoded();
-        System.out.println(Base64Utils.encodeToString(publicKeyByteArray));
+        log.info(Base64Utils.encodeToString(publicKeyByteArray));
         byte[] privateKeyByteArray = privateKey.getEncoded();
-        System.out.println(Base64Utils.encodeToString(privateKeyByteArray));
+        log.info(Base64Utils.encodeToString(privateKeyByteArray));
 
         publicKey = CipherUtils.parsePublicKey(algorithmName, publicKeyByteArray);
         privateKey = CipherUtils.parsePrivateKey(algorithmName, privateKeyByteArray);
@@ -81,15 +84,15 @@ public class RSATest {
         Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
 
         byte[] bytes = encrypterPublic.doFinal(data);
-        System.out.println("Encrypter Public: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Public: " + Base64Utils.encodeToString(bytes));
         byte[] bytes1 = decrypterPrivate.doFinal(bytes);
-        System.out.println("Decrypter Private: " + new String(bytes1));
+        log.info("Decrypter Private: " + new String(bytes1));
 
-        System.out.println();
+        log.info("");
         bytes = encrypterPrivate.doFinal(data);
-        System.out.println("Encrypter Private: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Private: " + Base64Utils.encodeToString(bytes));
         bytes1 = decrypterPublic.doFinal(bytes);
-        System.out.println("Decrypter Public: " + new String(bytes1));
+        log.info("Decrypter Public: " + new String(bytes1));
     }
 
     @Test
@@ -101,9 +104,9 @@ public class RSATest {
         PrivateKey privateKey = keyPair.getPrivate();
 
         byte[] publicKeyByteArray = publicKey.getEncoded();
-        System.out.println(Base64Utils.encodeToString(publicKeyByteArray));
+        log.info(Base64Utils.encodeToString(publicKeyByteArray));
         byte[] privateKeyByteArray = privateKey.getEncoded();
-        System.out.println(Base64Utils.encodeToString(privateKeyByteArray));
+        log.info(Base64Utils.encodeToString(privateKeyByteArray));
 
         publicKey = CipherUtils.parsePublicKey(algorithmName, publicKeyByteArray);
         privateKey = CipherUtils.parsePrivateKey(algorithmName, privateKeyByteArray);
@@ -114,15 +117,15 @@ public class RSATest {
         Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
 
         byte[] bytes = encrypterPublic.doFinal(data);
-        System.out.println("Encrypter Public: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Public: " + Base64Utils.encodeToString(bytes));
         byte[] bytes1 = decrypterPrivate.doFinal(bytes);
-        System.out.println("Decrypter Private: " + new String(bytes1));
+        log.info("Decrypter Private: " + new String(bytes1));
 
-        System.out.println();
+        log.info("");
         bytes = encrypterPrivate.doFinal(data);
-        System.out.println("Encrypter Private: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Private: " + Base64Utils.encodeToString(bytes));
         bytes1 = decrypterPublic.doFinal(bytes);
-        System.out.println("Decrypter Public: " + new String(bytes1));
+        log.info("Decrypter Public: " + new String(bytes1));
     }
 
     @Test
@@ -134,9 +137,9 @@ public class RSATest {
         PrivateKey privateKey = keyPair.getPrivate();
 
         byte[] publicKeyByteArray = publicKey.getEncoded();
-        System.out.println(Base64Utils.encodeToString(publicKeyByteArray));
+        log.info(Base64Utils.encodeToString(publicKeyByteArray));
         byte[] privateKeyByteArray = privateKey.getEncoded();
-        System.out.println(Base64Utils.encodeToString(privateKeyByteArray));
+        log.info(Base64Utils.encodeToString(privateKeyByteArray));
 
         publicKey = CipherUtils.parsePublicKey(algorithmName, publicKeyByteArray);
         privateKey = CipherUtils.parsePrivateKey(algorithmName, privateKeyByteArray);
@@ -147,15 +150,15 @@ public class RSATest {
         Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
 
         byte[] bytes = encrypterPublic.doFinal(data);
-        System.out.println("Encrypter Public: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Public: " + Base64Utils.encodeToString(bytes));
         byte[] bytes1 = decrypterPrivate.doFinal(bytes);
-        System.out.println("Decrypter Private: " + new String(bytes1));
+        log.info("Decrypter Private: " + new String(bytes1));
 
-        System.out.println();
+        log.info("");
         bytes = encrypterPrivate.doFinal(data);
-        System.out.println("Encrypter Private: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Private: " + Base64Utils.encodeToString(bytes));
         bytes1 = decrypterPublic.doFinal(bytes);
-        System.out.println("Decrypter Public: " + new String(bytes1));
+        log.info("Decrypter Public: " + new String(bytes1));
     }
 
 }

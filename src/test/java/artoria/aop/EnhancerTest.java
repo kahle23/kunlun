@@ -30,7 +30,7 @@ public class EnhancerTest {
         @Override
         public Object intercept(Object proxyObject, Method method, Object[] args) throws Throwable {
             log.info("Proxy object's class is " + proxyObject.getClass().getName());
-            System.out.println("Hello, this is intercept. ");
+            log.info("Hello, this is intercept. ");
             return method.invoke(this.proxiedObject, args);
         }
 
@@ -45,8 +45,8 @@ public class EnhancerTest {
         TestInterceptor intertr = new TestInterceptor(subject);
         // Subject subjectProxy = (Subject) Enhancer.enhance(subject, intertr);
         Subject subjectProxy = (Subject) Enhancer.enhance(Subject.class, intertr);
-        System.out.println(subjectProxy.sayHello(name));
-        System.out.println(subjectProxy.sayGoodbye(name));
+        log.info(subjectProxy.sayHello(name));
+        log.info(subjectProxy.sayGoodbye(name));
     }
 
 }

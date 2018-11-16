@@ -1,5 +1,7 @@
 package artoria.io;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -10,24 +12,25 @@ import java.io.InputStream;
 
 @Ignore
 public class FileUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(FileUtilsTest.class);
 
     @Test
     public void testRenameTo() {
         File file = new File("E:\\hello.txt");
         boolean rnSc = file.renameTo(new File("D:\\123.txt"));
-        System.out.println(rnSc);
+        log.info(rnSc + "");
 
         file = new File("D:\\123.txt");
         rnSc = file.renameTo(new File("E:\\hello.txt"));
-        System.out.println(rnSc);
+        log.info(rnSc + "");
     }
 
     @Test
     public void testRename() {
         File file = new File("E:\\hello.txt");
-        System.out.println(FileUtils.rename(file, "123.txt"));
+        log.info(FileUtils.rename(file, "123.txt") + "");
         file = new File("E:\\123.txt");
-        System.out.println(FileUtils.rename(file, "hello.txt"));
+        log.info(FileUtils.rename(file, "hello.txt") + "");
     }
 
     @Test

@@ -1,6 +1,8 @@
 package artoria.crypto;
 
 import artoria.codec.Base64Utils;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 import javax.crypto.Cipher;
@@ -20,6 +22,7 @@ import javax.crypto.spec.IvParameterSpec;
 // "DES/CBC/PKCS5Padding"
 
 public class DESTest {
+    private static Logger log = LoggerFactory.getLogger(DESTest.class);
     private String algorithmName = "DES";
     private byte[] data = "Hello，Java！".getBytes();
 
@@ -32,11 +35,11 @@ public class DESTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        System.out.println(Base64Utils.encodeToString(bytes));
+        log.info(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
-        System.out.println(new String(bytes1));
+        log.info(new String(bytes1));
     }
 
     @Test
@@ -49,11 +52,11 @@ public class DESTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        System.out.println(Base64Utils.encodeToString(bytes));
+        log.info(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
-        System.out.println(new String(bytes1));
+        log.info(new String(bytes1));
     }
 
     @Test
@@ -64,11 +67,11 @@ public class DESTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
         byte[] bytes = encrypter.doFinal(data);
-        System.out.println(Base64Utils.encodeToString(bytes));
+        log.info(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
         byte[] bytes1 = decrypter.doFinal(bytes);
-        System.out.println(new String(bytes1));
+        log.info(new String(bytes1));
     }
 
     @Test
@@ -81,11 +84,11 @@ public class DESTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        System.out.println(Base64Utils.encodeToString(bytes));
+        log.info(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
-        System.out.println(new String(bytes1));
+        log.info(new String(bytes1));
     }
 
     @Test
@@ -98,11 +101,11 @@ public class DESTest {
 
         Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
         byte[] bytes = encrypter.doFinal(data);
-        System.out.println(Base64Utils.encodeToString(bytes));
+        log.info(Base64Utils.encodeToString(bytes));
 
         Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
         byte[] bytes1 = decrypter.doFinal(bytes);
-        System.out.println(new String(bytes1));
+        log.info(new String(bytes1));
     }
 
 }
