@@ -6,7 +6,6 @@ import artoria.util.StringUtils;
 import artoria.util.ThreadUtils;
 
 import java.lang.management.ThreadInfo;
-import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -18,23 +17,42 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class SimpleFormatter extends Formatter {
+    private static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
+    private static final Integer MAX_SOURCE_LENGTH = 40;
+    private static final Integer MAX_THREAD_LENGTH = 15;
+    private static final String REGEX_DOT = "\\.";
+    private static final boolean CAN_COLORING;
 
-    @Override
-    public String format(LogRecord record) {
-        String throwable = this.printfThrowable(record);
-        return this.printfTime(record) + BLANK_SPACE
-                + this.printfLevel(record) + BLANK_SPACE
-                + LEFT_SQUARE_BRACKET + this.printfThread(record)
-                + RIGHT_SQUARE_BRACKET + BLANK_SPACE
-                + this.printfSource(record) + BLANK_SPACE
-                + COLON + BLANK_SPACE + this.printfMessage(record)
-                + (throwable != null ? BLANK_SPACE
-                + throwable : EMPTY_STRING) + NEWLINE;
+    static {
+        String stdoutEncoding = System.getProperty("sun.stdout.encoding");
+        String stderrEncoding = System.getProperty("sun.stderr.encoding");
+        String encoding = "ms936";
+        CAN_COLORING =
+                !encoding.equalsIgnoreCase(stdoutEncoding) &&
+                !encoding.equalsIgnoreCase(stderrEncoding);
+    }
+
+    private String coloring(String content, Integer beginColor, Integer endColor) {
+        if (StringUtils.isBlank(content) || !CAN_COLORING) { return content; }
+        return "\033[" + beginColor + "m" + content + "\033[" + endColor + "m";
+    }
+
+    private String fillBlank(String content, int wantLength) {
+        int length;
+        if ((length = content.length()) < wantLength) {
+            StringBuilder builder = new StringBuilder(content);
+            length = wantLength - length;
+            for (int i = 0; i < length; i++) {
+                builder.append(BLANK_SPACE);
+            }
+            content = builder.toString();
+        }
+        return content;
     }
 
     private String printfTime(LogRecord record) {
         long millis = record.getMillis();
-        return DateUtils.format(new Date(millis));
+        return DateUtils.format(millis, DEFAULT_DATE_PATTERN);
     }
 
     private String printfLevel(LogRecord record) {
@@ -51,23 +69,44 @@ public class SimpleFormatter extends Formatter {
     private String printfThread(LogRecord record) {
         int threadId = record.getThreadID();
         ThreadInfo threadInfo = ThreadUtils.getThreadInfo(threadId);
-        if (threadInfo == null) { return EMPTY_STRING; }
-        String threadName = threadInfo.getThreadName();
-        return StringUtils.isNotBlank(threadName) ? threadName : EMPTY_STRING;
+        String threadName = threadInfo != null ? threadInfo.getThreadName() : EMPTY_STRING;
+        threadName = StringUtils.isNotBlank(threadName) ? threadName : EMPTY_STRING;
+        int length;
+        if ((length = threadName.length()) > MAX_THREAD_LENGTH) {
+            threadName = threadName.substring(length - MAX_THREAD_LENGTH, length);
+        }
+        threadName = this.fillBlank(threadName, MAX_THREAD_LENGTH);
+        threadName = LEFT_SQUARE_BRACKET + threadName + RIGHT_SQUARE_BRACKET;
+        return threadName;
     }
 
     private String printfSource(LogRecord record) {
         String source = record.getSourceClassName();
-        if (StringUtils.isNotBlank(source)) {
-            String methodName = record.getSourceMethodName();
-            source += StringUtils.isNotBlank(methodName)
-                    ? DOT + methodName + LEFT_PARENTHESIS
-                    + RIGHT_PARENTHESIS : EMPTY_STRING;
+        source = StringUtils.isBlank(source) ? record.getLoggerName() : source;
+        source = StringUtils.isBlank(source) ? EMPTY_STRING : source;
+        int length;
+        if (source.length() > MAX_SOURCE_LENGTH) {
+            StringBuilder builder = new StringBuilder();
+            String[] split = source.split(REGEX_DOT);
+            if ((length = split.length) > 1) {
+                for (int i = 0; i < length; i++) {
+                    String tmp = split[i];
+                    if (i == length - 1) {
+                        builder.append(tmp);
+                        break;
+                    }
+                    if (tmp.length() > 0) {
+                        builder.append(tmp.charAt(0));
+                    }
+                    builder.append(DOT);
+                }
+                source = builder.toString();
+            }
         }
-        else {
-            source = record.getLoggerName();
-            source = StringUtils.isNotBlank(source) ? source : EMPTY_STRING;
+        if ((length = source.length()) > MAX_SOURCE_LENGTH) {
+            source = source.substring(length - MAX_SOURCE_LENGTH, length);
         }
+        source = this.fillBlank(source, MAX_SOURCE_LENGTH);
         return source;
     }
 
@@ -81,6 +120,28 @@ public class SimpleFormatter extends Formatter {
         if (thrown == null) { return null; }
         String result = ExceptionUtils.toString(thrown);
         return StringUtils.isNotBlank(result) ? NEWLINE + result : null;
+    }
+
+    @Override
+    public String format(LogRecord record) {
+        String throwable = this.printfThrowable(record);
+        return this.coloring(this.printfTime(record), 39, 39)
+                + BLANK_SPACE
+                + this.coloring(this.printfLevel(record), 32, 39)
+                + BLANK_SPACE
+                + this.coloring(this.printfThread(record), 39, 39)
+                + BLANK_SPACE
+                + this.coloring(this.printfSource(record), 36, 39)
+                + BLANK_SPACE
+                + COLON
+                + BLANK_SPACE
+                + this.coloring(this.printfMessage(record), 39, 39)
+                + (
+                    throwable != null
+                        ? BLANK_SPACE + this.coloring(throwable, 39, 39)
+                        : EMPTY_STRING
+                )
+                + NEWLINE;
     }
 
 }

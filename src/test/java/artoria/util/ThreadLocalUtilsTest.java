@@ -1,13 +1,16 @@
 package artoria.util;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 public class ThreadLocalUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(ThreadLocalUtilsTest.class);
     private String testKey = "Test_Key";
 
     private void doGetFromThreadLocal() {
         Object value = ThreadLocalUtils.getValue(testKey);
-        System.out.println(value);
+        log.info("" + value);
     }
 
     @Test

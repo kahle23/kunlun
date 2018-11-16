@@ -1,39 +1,42 @@
 package artoria.util;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 public class PathUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(PathUtilsTest.class);
 
     @Test
     public void testRootPathAndClasspath() {
-        System.out.println(PathUtils.getRootPath());
-        System.out.println(PathUtils.getClasspath());
+        log.info(PathUtils.getRootPath());
+        log.info(PathUtils.getClasspath());
     }
 
     @Test
     public void testFindClasspath() {
-        System.out.println(PathUtils.findClasspath("logging.properties"));
-        System.out.println(PathUtils.findClasspath("logging111.properties"));
+        log.info(PathUtils.findClasspath("logging.properties"));
+        log.info(PathUtils.findClasspath("logging111.properties"));
     }
 
     @Test
     public void testGetExtension() {
-        System.out.println(PathUtils.getExtension("C:\\windows\\system\\123.txt"));
-        System.out.println(PathUtils.getExtension("C:\\win.dows\\system"));
-        System.out.println(PathUtils.getExtension("C:\\windows\\system\\"));
+        log.info(PathUtils.getExtension("C:\\windows\\system\\123.txt"));
+        log.info(PathUtils.getExtension("C:\\win.dows\\system"));
+        log.info(PathUtils.getExtension("C:\\windows\\system\\"));
     }
 
     @Test
     public void testStripExtension() {
-        System.out.println(PathUtils.stripExtension("C:\\windows\\system\\123.txt"));
-        System.out.println(PathUtils.stripExtension("C:\\windows\\system"));
-        System.out.println(PathUtils.stripExtension("C:\\windows\\system\\"));
+        log.info(PathUtils.stripExtension("C:\\windows\\system\\123.txt"));
+        log.info(PathUtils.stripExtension("C:\\windows\\system"));
+        log.info(PathUtils.stripExtension("C:\\windows\\system\\"));
     }
 
     @Test
     public void testPath() {
-        System.out.println(PathUtils.getPackagePath(PathUtilsTest.class));
-        System.out.println(PathUtils.getClassFilePath(PathUtilsTest.class));
+        log.info(PathUtils.getPackagePath(PathUtilsTest.class));
+        log.info(PathUtils.getClassFilePath(PathUtilsTest.class));
     }
 
 }

@@ -1,6 +1,8 @@
 package artoria.jdbc;
 
 import artoria.entity.User;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -15,6 +17,7 @@ import java.util.Map;
 
 @Ignore
 public class DatabaseClientTest {
+    private static Logger log = LoggerFactory.getLogger(DatabaseClientTest.class);
     private DataSource dataSource = new SimpleDataSource();
     private DatabaseClient dbClient = new DatabaseClient(dataSource);
 
@@ -22,14 +25,14 @@ public class DatabaseClientTest {
     public void getTableMeta() throws Exception {
         List<TableMeta> tableMetaList = dbClient.getTableMetaList();
         for (TableMeta tableMeta : tableMetaList) {
-            System.out.println("--------");
-            System.out.println(tableMeta.getName() + " | " + tableMeta.getRemarks());
-            System.out.println(tableMeta.getPrimaryKey());
+            log.info("--------");
+            log.info(tableMeta.getName() + " | " + tableMeta.getRemarks());
+            log.info(tableMeta.getPrimaryKey());
             for (ColumnMeta columnMeta : tableMeta.getColumnMetaList()) {
-                System.out.println(JSON.toJSONString(columnMeta, true));
+                log.info(JSON.toJSONString(columnMeta, true));
             }
-            System.out.println("--------");
-            System.out.println();
+            log.info("--------");
+            log.info("");
         }
     }
 
@@ -43,7 +46,7 @@ public class DatabaseClientTest {
                 return query.next() ? query.getInt(1) : null;
             }
         });
-        System.out.println(execute);
+        log.info(execute + "");
     }
 
     @Test
@@ -60,17 +63,17 @@ public class DatabaseClientTest {
                         return true;
                     }
                 });
-                System.out.println("nestedTransaction: " + transaction);
+                log.info("nestedTransaction: " + transaction);
                 return true;
             }
         });
-        System.out.println("transaction: " + transaction);
+        log.info("transaction: " + transaction);
     }
 
     @Test
     public void update() throws Exception {
         int i = dbClient.update("insert into t_user values(?, ?, ?, ?, ?, ?)", 1, "zhangsan", 19, "zhangsan@email.com", "", "");
-        System.out.println(i);
+        log.info(i + "");
     }
 
     @Test
@@ -78,7 +81,7 @@ public class DatabaseClientTest {
         List<Map<String, Object>> list = dbClient.query("select * from t_user");
         // List<Map<String, Object>> list = dbClient.query("select * from t_user where name = ?", "zhangsan");
         for (Map<String, Object> map : list) {
-            System.out.println(map);
+            log.info(map.toString());
         }
     }
 
@@ -87,7 +90,7 @@ public class DatabaseClientTest {
         List<User> users = dbClient.query(User.class, "select * from t_user");
         // List<User> users = dbClient.query(User.class, "select * from t_user where name = ?", "zhangsan");
         for (User user : users) {
-            System.out.println(JSON.toJSONString(user));
+            log.info(JSON.toJSONString(user));
         }
     }
 
@@ -95,14 +98,14 @@ public class DatabaseClientTest {
     public void queryFirst() throws Exception {
         Map<String, Object> map = dbClient.queryFirst("select * from t_user");
         // Map<String, Object> map = dbClient.queryFirst("select * from t_user where name = ?", "zhangsan");
-        System.out.println(map);
+        log.info(map + "");
     }
 
     @Test
     public void queryFirst1() throws Exception {
         User user = dbClient.queryFirst(User.class, "select * from t_user");
         // User user = dbClient.queryFirst(User.class, "select * from t_user where name = ?", "zhangsan");
-        System.out.println(JSON.toJSONString(user));
+        log.info(JSON.toJSONString(user));
     }
 
 }

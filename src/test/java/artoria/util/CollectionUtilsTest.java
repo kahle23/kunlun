@@ -1,8 +1,10 @@
 package artoria.util;
 
+import artoria.entity.Person;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.random.RandomUtils;
 import com.alibaba.fastjson.JSON;
-import artoria.entity.Person;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CollectionUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(CollectionUtilsTest.class);
     private List<Person> list = new ArrayList<Person>();
 
     @Before
@@ -24,13 +27,13 @@ public class CollectionUtilsTest {
     @Test
     public void testTakeFirstNotNullElement() {
         Person person = CollectionUtils.takeFirstNotNullElement(list);
-        System.out.println(JSON.toJSONString(person, true));
+        log.info(JSON.toJSONString(person, true));
     }
 
     @Test
     public void sortTest() {
         CollectionUtils.sort(list, true, "age", "height", "weight");
-        System.out.println(JSON.toJSONString(list, true));
+        log.info(JSON.toJSONString(list, true));
     }
 
 }

@@ -1,8 +1,11 @@
 package artoria.codec;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 public class Base64UtilsTest {
+    private static Logger log = LoggerFactory.getLogger(Base64UtilsTest.class);
 
     @Test
     public void test1() {
@@ -12,22 +15,22 @@ public class Base64UtilsTest {
         String s4 = "bVITZQ-c4Ao2bvTFxtG_lEFTIw=";
         String s5 = "bVITZQ+c4Ao2bvTFxtG/lEFTIw";
         String s6 = "bVITZQ-c4Ao2bvTFxtG_lEFTIw";
-        System.out.println(Base64Utils.isUrlUnsafeString(s1));
-        System.out.println(Base64Utils.isUrlSafeString(s2));
-        System.out.println(Base64Utils.isUrlUnsafeString(s3));
-        System.out.println(Base64Utils.isUrlSafeString(s4));
-        System.out.println(Base64Utils.isUrlUnsafeString(s5));
-        System.out.println(Base64Utils.isUrlSafeString(s6));
+        log.info("" + Base64Utils.isUrlUnsafeString(s1));
+        log.info("" + Base64Utils.isUrlSafeString(s2));
+        log.info("" + Base64Utils.isUrlUnsafeString(s3));
+        log.info("" + Base64Utils.isUrlSafeString(s4));
+        log.info("" + Base64Utils.isUrlUnsafeString(s5));
+        log.info("" + Base64Utils.isUrlSafeString(s6));
     }
 
     @Test
     public void test2() {
         byte[] data = "Hello, World! �6n���ѿ�AS#".getBytes();
-        System.out.println(Base64Utils.encodeToString(data));
+        log.info(Base64Utils.encodeToString(data));
         String urlSafeString = Base64Utils.encodeToUrlSafeString(data);
-        System.out.println(urlSafeString);
+        log.info(urlSafeString);
         byte[] decode = Base64Utils.decodeFromUrlSafeString(urlSafeString);
-        System.out.println(new String(decode));
+        log.info(new String(decode));
     }
 
 }

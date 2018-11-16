@@ -1,5 +1,7 @@
 package artoria.cache;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -7,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SimpleCacheManagerTest {
+    private static Logger log = LoggerFactory.getLogger(SimpleCacheManagerTest.class);
     private static CacheManager cacheManager = new SimpleCacheManager();
     private static final String CACHE_NAME = "TEST";
 
@@ -33,7 +36,7 @@ public class SimpleCacheManagerTest {
     public void test1() {
         Cache<String, Object> cache = cacheManager.getCache(CACHE_NAME);
         for (int i = 0; i < 100; i++) {
-            System.out.println(cache.get("" + i));
+            log.info("" + cache.get("" + i));
         }
     }
 
@@ -44,7 +47,7 @@ public class SimpleCacheManagerTest {
             cache.put("" + i, "test2 - data - " + i);
         }
         for (int i = 0; i < 100; i++) {
-            System.out.println(cache.get("" + i));
+            log.info("" + cache.get("" + i));
         }
     }
 
@@ -58,7 +61,7 @@ public class SimpleCacheManagerTest {
         Cache<String, Object> cache = cacheManager.getCache(CACHE_NAME);
         for (int i = 0; i <= 9999999; i++) {
             cache.put("key" + i, builder.toString());
-            System.out.println(cache.size());
+            log.info("" + cache.size());
         }
     }
 

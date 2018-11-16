@@ -1,5 +1,7 @@
 package artoria.lock;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.util.ThreadUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -10,6 +12,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class LockUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(LockUtilsTest.class);
     private ExecutorService pool;
     private Integer num = 100;
 
@@ -37,17 +40,17 @@ public class LockUtilsTest {
                 for (int j = 0; j < 1000000; j++) {
                     if (num < 0) { continue; }
                     try {
-                        System.out.println(threadName);
+                        log.info(threadName);
                         LockUtils.lock(lockName);
                         if (num < 0) { continue; }
-                        System.out.println(threadName + " | " + (num--));
+                        log.info(threadName + " | " + (num--));
                     }
                     finally {
-                        System.out.println(threadName + " unlock");
+                        log.info(threadName + " unlock");
                         LockUtils.unlock(lockName);
                     }
                 }
-                System.out.println(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+                log.info(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
             }
         };
         for (int i = 0; i < 20; i++) {
@@ -74,18 +77,18 @@ public class LockUtilsTest {
                     catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    System.out.println(threadName + " tryLock: " + tryLock);
+                    log.info(threadName + " tryLock: " + tryLock);
                     if (!tryLock) { continue; }
                     try {
                         if (num < 0) { continue; }
-                        System.out.println(threadName + " | " + (num--));
+                        log.info(threadName + " | " + (num--));
                     }
                     finally {
-                        System.out.println(threadName + " unlock");
+                        log.info(threadName + " unlock");
                         LockUtils.unlock(lockName);
                     }
                 }
-                System.out.println(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+                log.info(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
             }
         };
         for (int i = 0; i < 20; i++) {
@@ -106,17 +109,17 @@ public class LockUtilsTest {
                 for (int j = 0; j < 1000000; j++) {
                     if (num < 0) { continue; }
                     try {
-                        System.out.println(threadName);
+                        log.info(threadName);
                         lock.lock();
                         if (num < 0) { continue; }
-                        System.out.println(threadName + " | " + (num--));
+                        log.info(threadName + " | " + (num--));
                     }
                     finally {
-                        System.out.println(threadName + " unlock");
+                        log.info(threadName + " unlock");
                         lock.unlock();
                     }
                 }
-                System.out.println(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+                log.info(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
             }
         };
         for (int i = 0; i < 20; i++) {
@@ -144,18 +147,18 @@ public class LockUtilsTest {
                     catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    System.out.println(threadName + " tryLock: " + tryLock);
+                    log.info(threadName + " tryLock: " + tryLock);
                     if (!tryLock) { continue; }
                     try {
                         if (num < 0) { continue; }
-                        System.out.println(threadName + " | " + (num--));
+                        log.info(threadName + " | " + (num--));
                     }
                     finally {
-                        System.out.println(threadName + " unlock");
+                        log.info(threadName + " unlock");
                         lock.unlock();
                     }
                 }
-                System.out.println(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+                log.info(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
             }
         };
         for (int i = 0; i < 20; i++) {
@@ -175,15 +178,15 @@ public class LockUtilsTest {
                 long millis = System.currentTimeMillis();
                 for (int j = 0; j < 1000000; j++) {
                     if (num < 0) { continue; }
-                    System.out.println(threadName);
+                    log.info(threadName);
                     synchronized (lock) {
                         if (num >= 0) {
-                            System.out.println(threadName + " | " + (num--));
+                            log.info(threadName + " | " + (num--));
                         }
-                        System.out.println(threadName + " unlock");
+                        log.info(threadName + " unlock");
                     }
                 }
-                System.out.println(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+                log.info(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
             }
         };
         for (int i = 0; i < 20; i++) {

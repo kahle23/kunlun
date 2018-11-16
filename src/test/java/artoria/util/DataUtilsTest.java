@@ -1,5 +1,7 @@
 package artoria.util;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
 import artoria.random.RandomUtils;
 import com.alibaba.fastjson.JSON;
 import artoria.entity.Person;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DataUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(DataUtilsTest.class);
     private List<Person> list = new ArrayList<Person>();
 
     @Before
@@ -28,32 +31,32 @@ public class DataUtilsTest {
     public void testListToListList() {
         List<List<Person>> lists = DataUtils.listToListList(list, 2);
         for (List<Person> people : lists) {
-            System.out.println(JSON.toJSONString(people));
+            log.info(JSON.toJSONString(people));
         }
     }
 
     @Test
     public void testListToListProperty() {
         List<String> list = DataUtils.listToListProperty(this.list, "name", String.class);
-        System.out.println(JSON.toJSONString(list, true));
+        log.info(JSON.toJSONString(list, true));
     }
 
     @Test
     public void testListToMapBean() {
         Map<String, Person> map = DataUtils.listToMapBean(list, "name");
-        System.out.println(JSON.toJSONString(map, true));
+        log.info(JSON.toJSONString(map, true));
     }
 
     @Test
     public void testListToMapList() {
         Map<String, List<Person>> map = DataUtils.listToMapList(list, "name");
-        System.out.println(JSON.toJSONString(map, true));
+        log.info(JSON.toJSONString(map, true));
     }
 
     @Test
     public void testListToMapProperty() {
         Map<String, Object> map = DataUtils.listToMapProperty(list, "age", "name");
-        System.out.println(JSON.toJSONString(map, true));
+        log.info(JSON.toJSONString(map, true));
     }
 
 }
