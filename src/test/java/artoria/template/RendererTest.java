@@ -1,4 +1,4 @@
-package artoria.render;
+package artoria.template;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -8,8 +8,8 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StringRendererTest {
-    private static Logger log = LoggerFactory.getLogger(StringRendererTest.class);
+public class RendererTest {
+    private static Logger log = LoggerFactory.getLogger(RendererTest.class);
     private Map<String, Object> data = new HashMap<String, Object>();
 
     @Before
@@ -24,7 +24,7 @@ public class StringRendererTest {
                 "hello, ${hello1}! \n" +
                 "hello, ${hello2}! \n" +
                 "${hello}${hello}.";
-        String result = StringRenderUtils.renderToString(data, "test1", tmp);
+        String result = RenderUtils.renderToString(data, "test1", tmp);
         log.info(result);
     }
 
