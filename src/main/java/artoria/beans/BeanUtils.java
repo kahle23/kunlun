@@ -92,7 +92,8 @@ public class BeanUtils {
     public static void copy(Object from, Map to) {
         Assert.notNull(from, "Parameter \"from\" must not null. ");
         Assert.notNull(to, "Parameter \"to\" must not null. ");
-        BeanMap map = BeanUtils.createBeanMap(from);
+        Map map = from instanceof Map
+                ? (Map) from : BeanUtils.createBeanMap(from);
         to.putAll(map);
     }
 

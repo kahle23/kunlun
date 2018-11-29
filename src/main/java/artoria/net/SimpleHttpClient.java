@@ -1,6 +1,6 @@
 package artoria.net;
 
-import artoria.io.FileUtils;
+import artoria.file.FileUtils;
 import artoria.io.IOUtils;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
