@@ -253,6 +253,16 @@ public class Csv extends TextFile implements Table {
     }
 
     @Override
+    public Table getTemplate() {
+
+        return null;
+    }
+
+    @Override
+    public void setTemplate(Table template) {
+    }
+
+    @Override
     public void addHeader(String headerName, String propertyName) {
         Assert.notBlank(propertyName
                 , "Parameter \"propertyName\" must not blank. ");
@@ -303,13 +313,13 @@ public class Csv extends TextFile implements Table {
     }
 
     @Override
-    public <T> void readFromBeanList(List<T> beanList) {
-
-        this.readFromBeanList(beanList, null);
+    public <T> List<T> toBeanList(Class<T> clazz) {
+        List<Map<String, Object>> mapList = this.toMapList();
+        return BeanUtils.mapToBeanInList(mapList, clazz);
     }
 
     @Override
-    public <T> void readFromBeanList(List<T> beanList, Table template) {
+    public <T> void fromBeanList(List<T> beanList) {
         Assert.notEmpty(beanList, "Parameter \"beanList\" must not empty. ");
         content.clear();
         List<Map<String, Object>> beanMapList = BeanUtils.beanToMapInList(beanList);
@@ -357,7 +367,7 @@ public class Csv extends TextFile implements Table {
     }
 
     @Override
-    public List<Map<String, Object>> writeToMapList() {
+    public List<Map<String, Object>> toMapList() {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         if (CollectionUtils.isEmpty(content)) { return result; }
         boolean haveHeaders = MapUtils.isNotEmpty(headersMapping);
@@ -390,9 +400,9 @@ public class Csv extends TextFile implements Table {
     }
 
     @Override
-    public <T> List<T> writeToBeanList(Class<T> clazz) {
-        List<Map<String, Object>> mapList = this.writeToMapList();
-        return BeanUtils.mapToBeanInList(mapList, clazz);
+    public void fromMapList(List<Map<String, Object>> mapList) {
+
+        this.fromBeanList(mapList);
     }
 
 }

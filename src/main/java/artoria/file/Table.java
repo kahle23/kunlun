@@ -1,5 +1,8 @@
 package artoria.file;
 
+import artoria.common.Beanable;
+import artoria.common.Mapable;
+
 import java.util.List;
 import java.util.Map;
 
@@ -7,7 +10,7 @@ import java.util.Map;
  * Abstract table.
  * @author Kahle
  */
-public interface Table {
+public interface Table extends Beanable, Mapable {
 
     /**
      * Get last row number.
@@ -77,6 +80,18 @@ public interface Table {
     void setColumnStartNumber(int columnStartNumber);
 
     /**
+     * Get template.
+     * @return Table template
+     */
+    Table getTemplate();
+
+    /**
+     * Set template and the style of the template will be inherited.
+     * @param template Table template
+     */
+    void setTemplate(Table template);
+
+    /**
      * Add header mapping.
      * @param headerName Header name will be add
      * @param propertyName Property name will be add
@@ -105,34 +120,5 @@ public interface Table {
      * Clear headers.
      */
     void clearHeaders();
-
-    /**
-     * Read from bean list.
-     * @param beanList Bean list will be read
-     * @param <T> Bean type
-     */
-    <T> void readFromBeanList(List<T> beanList);
-
-    /**
-     * Read from bean list.
-     * @param beanList Bean list will be read
-     * @param template The style of the template will be inherited
-     * @param <T> Bean type
-     */
-    <T> void readFromBeanList(List<T> beanList, Table template);
-
-    /**
-     * Write to map list.
-     * @return Map list will be write out
-     */
-    List<Map<String, Object>> writeToMapList();
-
-    /**
-     * Write to bean list.
-     * @param clazz Bean class object
-     * @param <T> Bean type
-     * @return Bean list will be write out
-     */
-    <T> List<T> writeToBeanList(Class<T> clazz);
 
 }

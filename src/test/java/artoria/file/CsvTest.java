@@ -63,9 +63,9 @@ public class CsvTest {
         csv.setRowStartNumber(4);
         csv.setColumnStartNumber(4);
         csv.addHeaders(headerMappings);
-        csv.readFromBeanList(beanList);
+        csv.fromBeanList(beanList);
         log.info(NEWLINE + csv.writeToString());
-        csv.readFromBeanList(mapList);
+        csv.fromMapList(mapList);
         log.info(NEWLINE + csv.writeToString());
         csv.writeToFile(testGenerated);
     }
@@ -77,13 +77,13 @@ public class CsvTest {
         csv.setColumnStartNumber(4);
         csv.addHeaders(headerMappings);
         csv.readFromFile(testGenerated);
-        List<Map<String, Object>> mapList = csv.writeToMapList();
+        List<Map<String, Object>> mapList = csv.toMapList();
         StringBuilder builder = new StringBuilder(NEWLINE);
         for (Map<String, Object> map : mapList) {
             builder.append(map).append(NEWLINE);
         }
         log.info(builder.toString());
-        List<Student> studentList = csv.writeToBeanList(Student.class);
+        List<Student> studentList = csv.toBeanList(Student.class);
         builder.setLength(0);
         builder.append(NEWLINE);
         for (Student student : studentList) {
