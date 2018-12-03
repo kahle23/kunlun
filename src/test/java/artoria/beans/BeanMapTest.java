@@ -7,8 +7,8 @@ import artoria.random.RandomUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 
-public class SimpleBeanMapTest {
-    private static Logger log = LoggerFactory.getLogger(SimpleBeanMapTest.class);
+public class BeanMapTest {
+    private static Logger log = LoggerFactory.getLogger(BeanMapTest.class);
     private Student student = RandomUtils.nextObject(Student.class);
 
     @Test

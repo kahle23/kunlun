@@ -8,12 +8,12 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.Set;
 
-public class ReferenceHashMapTest {
-    private static Logger log = LoggerFactory.getLogger(ReferenceHashMapTest.class);
+public class ReferenceMapTest {
+    private static Logger log = LoggerFactory.getLogger(ReferenceMapTest.class);
 
     @Test
     public void test0() throws Exception {
-        Map<String, Object> map = new ReferenceHashMap<String, Object>(ReferenceHashMap.Type.SOFT);
+        Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceMap.Type.SOFT);
         map.put("1", "val[1");
         map.put("2", "val[2");
         map.put("3", "val[3");
@@ -32,7 +32,7 @@ public class ReferenceHashMapTest {
 
     @Test
     public void test1() throws Exception {
-        Map<String, Object> map = new ReferenceHashMap<String, Object>(ReferenceHashMap.Type.WEAK, 0);
+        Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceMap.Type.WEAK);
         map.put("test1", new Object());
         log.info("" + map.get("test1"));
         System.gc();
@@ -47,7 +47,7 @@ public class ReferenceHashMapTest {
             builder.append(i);
         }
         String content = builder.toString();
-        Map<String, Object> map = new ReferenceHashMap<String, Object>(ReferenceHashMap.Type.SOFT, 0);
+        Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceMap.Type.SOFT);
 //        Map<String, Object> map = new HashMap<String, Object>();
         for (long i = 0; i < 999999; i++) {
             map.put(i + "", content + i);
@@ -57,7 +57,7 @@ public class ReferenceHashMapTest {
 
     @Test
     public void test3() throws Exception {
-        Map<String, Object> map = new ReferenceHashMap<String, Object>(ReferenceHashMap.Type.WEAK, 1);
+        Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceMap.Type.WEAK);
         for (int i = 0; i < 100; i++) {
             map.put("data" + i, "data - - " + i);
         }

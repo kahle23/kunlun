@@ -11,7 +11,7 @@ import java.util.List;
  * @author Kahle
  */
 public class RandomUtils {
-    private static final Randomizer DEFAULT_RANDOMIZER = new SimpleRandomizer();
+    private static final Randomizer DEFAULT_RANDOMIZER = new DefaultRandomizer();
     private static Logger log = LoggerFactory.getLogger(RandomUtils.class);
     private static Randomizer randomizer;
 

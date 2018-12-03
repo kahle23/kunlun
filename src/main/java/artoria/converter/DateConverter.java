@@ -28,6 +28,7 @@ public class DateConverter implements TypeConverter {
         Assert.notNull(target, "Parameter \"target\" must not null. ");
         Class<?> clazz = source.getClass();
         target = ClassUtils.getWrapper(target);
+        clazz = ClassUtils.getWrapper(clazz);
         if (target.isAssignableFrom(clazz)) {
             return source;
         }

@@ -11,7 +11,7 @@ import java.io.ObjectInputStream;
  * Deserializer simple implement by jdk.
  * @author Kahle
  */
-public class SimpleDeserializer implements Deserializer<Object> {
+public class DefaultDeserializer implements Deserializer<Object> {
 
     @Override
     public Object deserialize(InputStream inputStream) throws IOException {

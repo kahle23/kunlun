@@ -1,6 +1,6 @@
 package artoria.cache;
 
-import artoria.collection.ReferenceHashMap;
+import artoria.collection.ReferenceMap;
 import artoria.util.CollectionUtils;
 import artoria.util.MapUtils;
 import artoria.util.ObjectUtils;
@@ -21,8 +21,8 @@ public class SimpleCache<K, V> implements Cache<K, V> {
     private CacheLoader<K, V> cacheLoader;
 
     <C extends Configuration<K, V>> SimpleCache(String name, C configuration) {
-        ReferenceHashMap.Type type = ReferenceHashMap.Type.SOFT;
-        this.cache = new ReferenceHashMap<K, V>(type);
+        ReferenceMap.Type type = ReferenceMap.Type.SOFT;
+        this.cache = new ReferenceMap<K, V>(type, true);
         this.name = name;
         if (configuration != null) {
             this.cacheLoader = configuration.getCacheLoader();

@@ -14,11 +14,11 @@ import static artoria.common.Constants.COLON;
 import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
 
 @Ignore
-public class SimpleHttpClientTest {
-    private static Logger log = LoggerFactory.getLogger(SimpleHttpClientTest.class);
+public class HttpClientTest {
+    private static Logger log = LoggerFactory.getLogger(HttpClientTest.class);
     private static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
     private static final String BASIC = "Basic ";
-    private HttpClient httpClient = new SimpleHttpClient();
+    private HttpClient httpClient = new DefaultHttpClient();
     private String testUrl0 = "https://www.github.com";
     private String testUrl1 = "https://www.bing.com";
 

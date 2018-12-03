@@ -20,7 +20,7 @@ import java.util.Random;
  * Random generator simple implement by jdk.
  * @author Kahle
  */
-public class SimpleRandomizer implements Randomizer {
+public class DefaultRandomizer implements Randomizer {
     private static final char[] DEFAULT_CHAR_ARRAY = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private static final Long TIME_INTERVAL = 6 * 60 * 60 * 1000L;
     private static final Integer DEFAULT_BOUND = 8192;

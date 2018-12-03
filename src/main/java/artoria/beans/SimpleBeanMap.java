@@ -2,16 +2,17 @@ package artoria.beans;
 
 import artoria.converter.TypeConverter;
 import artoria.exception.ExceptionUtils;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
+import artoria.reflect.ReflectUtils;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.StringUtils;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import static artoria.common.Constants.*;
@@ -21,8 +22,11 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class SimpleBeanMap extends BeanMap {
-    private HashMap<Object, Method> readMethods = new HashMap<Object, Method>();
-    private HashMap<Object, Method> writeMethods = new HashMap<Object, Method>();
+    private static final Integer GET_OR_SET_LENGTH = 3;
+    private static Logger log = LoggerFactory.getLogger(SimpleBeanMap.class);
+    private Map<String, Method> readMethods = new HashMap<String, Method>();
+    private Map<String, Method> writeMethods = new HashMap<String, Method>();
+    private Boolean ignoreException = true;
     private Class<?> beanClass;
 
     public SimpleBeanMap() {
@@ -33,37 +37,25 @@ public class SimpleBeanMap extends BeanMap {
         this.setBean(bean);
     }
 
+    public Boolean getIgnoreException() {
+
+        return ignoreException;
+    }
+
+    public void setIgnoreException(Boolean ignoreException) {
+        Assert.notNull(ignoreException, "Parameter \"ignoreException\" must not null. ");
+        this.ignoreException = ignoreException;
+    }
+
     @Override
     public void setBean(Object bean) {
         super.setBean(bean);
-        if (this.beanClass != null && this.beanClass.equals(bean.getClass())) {
+        if (beanClass != null && beanClass.equals(bean.getClass())) {
             return;
         }
-        this.beanClass = bean.getClass();
-        try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(this.beanClass);
-            PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
-            if (descriptors == null) { return; }
-            for (PropertyDescriptor descriptor : descriptors) {
-                Method readMethod = descriptor.getReadMethod();
-                if (readMethod != null) {
-                    String name = readMethod.getName();
-                    name = name.substring(GET_OR_SET_LENGTH);
-                    name = StringUtils.uncapitalize(name);
-                    this.readMethods.put(name, readMethod);
-                }
-                Method writeMethod = descriptor.getWriteMethod();
-                if (writeMethod != null) {
-                    String name = writeMethod.getName();
-                    name = name.substring(GET_OR_SET_LENGTH);
-                    name = StringUtils.uncapitalize(name);
-                    this.writeMethods.put(name, writeMethod);
-                }
-            }
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
+        beanClass = bean.getClass();
+        readMethods.putAll(ReflectUtils.findReadMethods(beanClass));
+        writeMethods.putAll(ReflectUtils.findWriteMethods(beanClass));
     }
 
     @Override
@@ -80,7 +72,13 @@ public class SimpleBeanMap extends BeanMap {
             return method.invoke(bean);
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            if (this.ignoreException) {
+                log.debug("Execution \"get\" error. ", e);
+                return null;
+            }
+            else {
+                throw ExceptionUtils.wrap(e);
+            }
         }
     }
 
@@ -94,24 +92,35 @@ public class SimpleBeanMap extends BeanMap {
         }
         Method method = this.writeMethods.get(keyString);
         if (method == null) { return null; }
-        TypeConverter cvt = this.getTypeConverter();
         Class<?>[] types = method.getParameterTypes();
-        if (cvt != null && ArrayUtils.isNotEmpty(types)) {
-            value = cvt.convert(value, types[0]);
-        }
+        TypeConverter cvt = this.getTypeConverter();
         try {
+            boolean haveType = ArrayUtils.isNotEmpty(types);
+            if (value == null && haveType
+                    && types[0].isPrimitive()) {
+                throw new NullPointerException();
+            }
+            if (cvt != null && haveType) {
+                value = cvt.convert(value, types[0]);
+            }
             // The return always null.
             // If want not null, must invoke getter first.
             return method.invoke(bean, value);
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            if (this.ignoreException) {
+                log.debug("Execution \"put\" error. ", e);
+                return null;
+            }
+            else {
+                throw ExceptionUtils.wrap(e);
+            }
         }
     }
 
     @Override
     public Set keySet() {
-        Set<Object> keys = this.readMethods.keySet();
+        Set<String> keys = this.readMethods.keySet();
         return Collections.unmodifiableSet(keys);
     }
 

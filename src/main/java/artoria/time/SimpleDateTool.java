@@ -1,6 +1,6 @@
 package artoria.time;
 
-import artoria.collection.ReferenceHashMap;
+import artoria.collection.ReferenceMap;
 import artoria.util.Assert;
 
 import java.text.ParseException;
@@ -12,13 +12,13 @@ import java.util.Map;
  * Date formater and parser simple implement by jdk.
  * @author Kahle
  */
-public class SimpleDateHandler implements DateFormater, DateParser {
+public class SimpleDateTool implements DateFormater, DateParser {
     private ThreadLocal<Map<String, SimpleDateFormat>> dateFormatCache = new ThreadLocal<Map<String, SimpleDateFormat>>();
 
     private SimpleDateFormat takeSimpleDateFormat(String pattern) {
         Map<String, SimpleDateFormat> cache = dateFormatCache.get();
         if (cache == null) {
-            cache = new ReferenceHashMap<String, SimpleDateFormat>(ReferenceHashMap.Type.SOFT);
+            cache = new ReferenceMap<String, SimpleDateFormat>(ReferenceMap.Type.SOFT);
             dateFormatCache.set(cache);
         }
         SimpleDateFormat format = cache.get(pattern);

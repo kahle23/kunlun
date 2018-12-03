@@ -9,7 +9,7 @@ import artoria.util.Assert;
  * @author Kahle
  */
 public class Enhancer {
-    private static final ProxyFactory DEFAULT_PROXY_FACTORY = new SimpleProxyFactory();
+    private static final ProxyFactory DEFAULT_PROXY_FACTORY = new DefaultProxyFactory();
     private static Logger log = LoggerFactory.getLogger(Enhancer.class);
     private static ProxyFactory proxyFactory;
 

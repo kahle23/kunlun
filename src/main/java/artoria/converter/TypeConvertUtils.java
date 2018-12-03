@@ -4,6 +4,7 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
+import artoria.util.ClassUtils;
 
 import java.util.Date;
 import java.util.Map;
@@ -29,7 +30,8 @@ public class TypeConvertUtils {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         TypeConverter remove = CONVERTERS.remove(clazz);
         if (remove != null) {
-            log.info("Unregister: " + clazz.getName() + " >> " + remove.getClass().getName());
+            log.info("Unregister: \"" + clazz.getName()
+                    + "\" to \"" + remove.getClass().getName() + "\". ");
         }
         return remove;
     }
@@ -37,13 +39,16 @@ public class TypeConvertUtils {
     public static void register(Class<?> clazz, TypeConverter converter) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
-        log.info("Register: " + clazz.getName() + " >> " + converter.getClass().getName());
+        log.info("Register: \"" + clazz.getName()
+                + "\" to \"" + converter.getClass().getName() + "\". ");
         CONVERTERS.put(clazz, converter);
     }
 
     public static Object convert(Object source, Class<?> target) {
         if (source == null) { return null; }
         Class<?> clazz = source.getClass();
+        target = ClassUtils.getWrapper(target);
+        clazz = ClassUtils.getWrapper(clazz);
         if (target.isAssignableFrom(clazz)) { return source; }
         do {
             TypeConverter converter = CONVERTERS.get(clazz);

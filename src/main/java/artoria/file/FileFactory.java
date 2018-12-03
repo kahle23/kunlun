@@ -32,7 +32,7 @@ public class FileFactory {
         Assert.notBlank(extension, "Parameter \"extension\" must not blank. ");
         Class<? extends BinaryFile> remove = BUCKET.remove(extension);
         if (remove != null) {
-            log.info("Unregister: " + extension + " >> " + remove.getName());
+            log.info("Unregister: \"" + extension + "\" to \"" + remove.getName() + "\". ");
         }
         return remove;
     }
@@ -41,7 +41,7 @@ public class FileFactory {
         Assert.notBlank(extension, "Parameter \"extension\" must not blank. ");
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         extension = extension.trim().toLowerCase();
-        log.info("Register: " + extension + " >> " + clazz.getName());
+        log.info("Register: \"" + extension + "\" to \"" + clazz.getName() + "\". ");
         BUCKET.put(extension, clazz);
     }
 

@@ -6,8 +6,6 @@ import artoria.reflect.ReflectUtils;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static artoria.common.Constants.GET;
-
 /**
  * Array tools.
  * @author Kahle
@@ -110,7 +108,6 @@ public class ArrayUtils {
         final List<Method> methods = new ArrayList<Method>();
         Map<String, Method> readMethods = ReflectUtils.findReadMethods(clazz);
         for (String property : properties) {
-            property = GET + StringUtils.capitalize(property);
             Method method = readMethods.get(property);
             if (method != null) { methods.add(method); }
         }
