@@ -27,7 +27,7 @@ import static artoria.net.HttpMethod.HEAD;
  * Http client simple implement by jdk.
  * @author Kahle
  */
-public class SimpleHttpClient implements HttpClient {
+public class DefaultHttpClient implements HttpClient {
     private static final char[] MIME_BOUNDARY_CHARS = "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private static final char SLASH_CHAR = '/';
     private static final String FORM_URL_ENCODED = "application/x-www-form-urlencoded";
@@ -65,7 +65,7 @@ public class SimpleHttpClient implements HttpClient {
     private String encodeMimeName(String name) {
         // Encodes \" to %22
         if (name == null) { return null; }
-        return StringUtils.replace(name, QUOTE_MARK, "%22");
+        return StringUtils.replace(name, DOUBLE_QUOTE, "%22");
     }
 
     private String generateMimeBoundary() {
@@ -550,7 +550,7 @@ public class SimpleHttpClient implements HttpClient {
             // writer.write("\r\n");
             writer.write("Content-Disposition: form-data; name=\"");
             writer.write(this.encodeMimeName(key));
-            writer.write(QUOTE_MARK);
+            writer.write(DOUBLE_QUOTE);
             boolean needsClose = false;
             String fileName = null;
             Reader reader = null;
@@ -574,7 +574,7 @@ public class SimpleHttpClient implements HttpClient {
                 if (reader != null && StringUtils.isNotBlank(fileName)) {
                     writer.write("; filename=\"");
                     writer.write(this.encodeMimeName(fileName));
-                    writer.write(QUOTE_MARK);
+                    writer.write(DOUBLE_QUOTE);
                     writer.newLine();
                     // writer.write("\r\n");
                     writer.write("Content-Type: application/octet-stream");

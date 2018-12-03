@@ -11,8 +11,8 @@ import java.io.*;
  * @author Kahle
  */
 public class SerializeUtils {
-    private static final Serializer<Object> DEFAULT_SERIALIZER = new SimpleSerializer();
-    private static final Deserializer<Object> DEFAULT_DESERIALIZER = new SimpleDeserializer();
+    private static final Serializer<Object> DEFAULT_SERIALIZER = new DefaultSerializer();
+    private static final Deserializer<Object> DEFAULT_DESERIALIZER = new DefaultDeserializer();
     private static final int INITIAL_SIZE = 128;
     private static Logger log = LoggerFactory.getLogger(SerializeUtils.class);
     private static Serializer<Object> serializer;

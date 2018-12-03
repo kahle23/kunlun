@@ -3,6 +3,7 @@ package artoria.reflect;
 import artoria.exception.ExceptionUtils;
 import artoria.util.Assert;
 import artoria.util.ClassUtils;
+import artoria.util.StringUtils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -14,8 +15,9 @@ import java.util.*;
  * Reflect simple implement by jdk.
  * @author Kahle
  */
-public class SimpleReflecter implements Reflecter {
+public class DefaultReflecter implements Reflecter {
     private static final Integer MAP_INITIAL_CAPACITY = 8;
+    private static final Integer GET_OR_SET_LENGTH = 3;
 
     protected boolean notAccess(Class<?> thisClazz, Class<?> superClazz, Member member) {
         // In this class all, and super class not private.
@@ -237,7 +239,10 @@ public class SimpleReflecter implements Reflecter {
             for (PropertyDescriptor descriptor : descriptors) {
                 Method readMethod = descriptor.getReadMethod();
                 if (readMethod == null) { continue; }
-                result.put(readMethod.getName(), readMethod);
+                String name = readMethod.getName();
+                name = name.substring(GET_OR_SET_LENGTH);
+                name = StringUtils.uncapitalize(name);
+                result.put(name, readMethod);
             }
         }
         catch (Exception e) {
@@ -257,7 +262,10 @@ public class SimpleReflecter implements Reflecter {
             for (PropertyDescriptor descriptor : descriptors) {
                 Method writeMethod = descriptor.getWriteMethod();
                 if (writeMethod == null) { continue; }
-                result.put(writeMethod.getName(), writeMethod);
+                String name = writeMethod.getName();
+                name = name.substring(GET_OR_SET_LENGTH);
+                name = StringUtils.uncapitalize(name);
+                result.put(name, writeMethod);
             }
         }
         catch (Exception e) {
@@ -323,9 +331,9 @@ public class SimpleReflecter implements Reflecter {
         }
         while (clazz != null);
         // build message
-        String msg = "No similar method " + methodName + " with params ";
-        msg += Arrays.toString(parameterTypes) + " could be found on type ";
-        msg += inputClazz + ".";
+        String msg = "No similar method \"" + methodName + "\" with params \"";
+        msg += Arrays.toString(parameterTypes) + "\" could be found on type \"";
+        msg += inputClazz + "\". ";
         throw new NoSuchMethodException(msg);
     }
 

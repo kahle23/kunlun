@@ -1,9 +1,8 @@
 package artoria.lock;
 
-import artoria.collection.ReferenceHashMap;
+import artoria.collection.ReferenceMap;
 import artoria.util.Assert;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
@@ -20,9 +19,8 @@ public class ReentrantLocker implements Locker {
     private Map<String, Lock> storage;
 
     public ReentrantLocker() {
-        ReferenceHashMap.Type type = ReferenceHashMap.Type.SOFT;
-        Map<String, Lock> map = new ReferenceHashMap<String, Lock>(type);
-        this.storage = Collections.synchronizedMap(map);
+        ReferenceMap.Type type = ReferenceMap.Type.SOFT;
+        this.storage = new ReferenceMap<String, Lock>(type, true);
     }
 
     public ReentrantLocker(Map<String, Lock> storage) {

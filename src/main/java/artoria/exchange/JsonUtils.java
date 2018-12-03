@@ -11,13 +11,13 @@ import java.lang.reflect.Type;
  * @author Kahle
  */
 public class JsonUtils {
-    private static final JsonProvider DEFAULT_JSON_HANDLER = new SimpleJsonProvider();
+    private static final JsonProvider DEFAULT_JSON_PROVIDER = new DefaultJsonProvider();
     private static Logger log = LoggerFactory.getLogger(JsonUtils.class);
     private static JsonProvider jsonProvider;
 
     public static JsonProvider getJsonProvider() {
         return jsonProvider != null
-                ? jsonProvider : DEFAULT_JSON_HANDLER;
+                ? jsonProvider : DEFAULT_JSON_PROVIDER;
     }
 
     public static void setJsonProvider(JsonProvider jsonProvider) {

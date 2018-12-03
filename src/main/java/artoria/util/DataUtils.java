@@ -1,16 +1,13 @@
 package artoria.util;
 
+import artoria.beans.BeanUtils;
 import artoria.converter.TypeConvertUtils;
 import artoria.exception.ExceptionUtils;
-import artoria.reflect.ReflectUtils;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static artoria.common.Constants.GET;
 
 /**
  * Data handle tools.
@@ -37,8 +34,7 @@ public class DataUtils {
             int fromIndex = i * groupSize;
             int toIndex = (i + 1) * groupSize;
             toIndex = toIndex > listSize ? listSize : toIndex;
-            tmp = new ArrayList<T>();
-            tmp.addAll(list.subList(fromIndex, toIndex));
+            tmp = new ArrayList<T>(list.subList(fromIndex, toIndex));
             result.add(tmp);
         }
         return result;
@@ -56,18 +52,15 @@ public class DataUtils {
     @SuppressWarnings("unchecked")
     public static <R, P> List<R> listToListProperty(List<P> list, String propertyName, Class<R> propertyClass) {
         try {
+            Assert.notBlank(propertyName, "Parameter \"propertyName\" must not blank. ");
+            Assert.notNull(propertyClass, "Parameter \"propertyClass\" must not null. ");
             // Handle parameters
             List<R> result = new ArrayList<R>();
             if (CollectionUtils.isEmpty(list)) { return result; }
-            Assert.notBlank(propertyName, "Parameter \"propertyName\" must not blank. ");
-            Assert.notNull(propertyClass, "Parameter \"propertyClass\" must not null. ");
-            P tmp = CollectionUtils.takeFirstNotNullElement(list);
-            Assert.notNull(tmp, "Elements in list parameter \"list\" all is null. ");
-            Method method = DataUtils.findMethodByName(tmp.getClass(), propertyName);
-            // Handle result
-            for (P bean : list) {
-                if (bean == null) { continue; }
-                Object val = method.invoke(bean);
+            List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
+            for (Map<String, Object> map : mapList) {
+                if (map == null) { continue; }
+                Object val = map.get(propertyName);
                 val = TypeConvertUtils.convert(val, propertyClass);
                 result.add((R) val);
             }
@@ -88,23 +81,22 @@ public class DataUtils {
      */
     public static <T> Map<String, T> listToMapBean(List<T> list, String... propertyNames) {
         try {
+            Assert.notEmpty(propertyNames, "Parameter \"propertyNames\" must not empty. ");
             // Handle parameters
             Map<String, T> result = new HashMap<String, T>(list.size());
             if (CollectionUtils.isEmpty(list)) { return result; }
-            Assert.notEmpty(propertyNames, "Parameter \"propertyNames\" must not empty. ");
-            T tmp = CollectionUtils.takeFirstNotNullElement(list);
-            Assert.notNull(tmp, "Elements in list parameter \"list\" all is null. ");
-            List<Method> methods = DataUtils.findMethodsByNames(tmp.getClass(), propertyNames);
-            // Convert to map
-            StringBuilder key = new StringBuilder();
-            for (T bean : list) {
-                if (bean == null) { continue; }
-                key.setLength(0);
-                for (Method method : methods) {
-                    Object val = method.invoke(bean);
-                    key.append(val);
+            List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
+            StringBuilder keyBuilder = new StringBuilder();
+            for (int i = 0, len = list.size(); i < len; i++) {
+                Map<String, Object> map = mapList.get(i);
+                T bean = list.get(i);
+                if (map == null || bean == null) { continue; }
+                keyBuilder.setLength(0);
+                for (String propertyName : propertyNames) {
+                    Object val = map.get(propertyName);
+                    keyBuilder.append(val);
                 }
-                result.put(key.toString(), bean);
+                result.put(keyBuilder.toString(), bean);
             }
             return result;
         }
@@ -123,23 +115,22 @@ public class DataUtils {
      */
     public static <T> Map<String, List<T>> listToMapList(List<T> list, String... propertyNames) {
         try {
+            Assert.notEmpty(propertyNames, "Parameter \"propertyNames\" must not empty. ");
             // Handle parameters
             Map<String, List<T>> result = new HashMap<String, List<T>>(list.size());
             if (CollectionUtils.isEmpty(list)) { return result; }
-            Assert.notEmpty(propertyNames, "Parameter \"propertyNames\" must not empty. ");
-            T tmp = CollectionUtils.takeFirstNotNullElement(list);
-            Assert.notNull(tmp, "Elements in list parameter \"list\" all is null. ");
-            List<Method> methods = DataUtils.findMethodsByNames(tmp.getClass(), propertyNames);
-            // Convert to map
-            StringBuilder builder = new StringBuilder();
-            for (T bean : list) {
-                if (bean == null) { continue; }
-                builder.setLength(0);
-                for (Method method : methods) {
-                    Object val = method.invoke(bean);
-                    builder.append(val);
+            List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
+            StringBuilder keyBuilder = new StringBuilder();
+            for (int i = 0, len = list.size(); i < len; i++) {
+                Map<String, Object> map = mapList.get(i);
+                T bean = list.get(i);
+                if (map == null || bean == null) { continue; }
+                keyBuilder.setLength(0);
+                for (String propertyName : propertyNames) {
+                    Object val = map.get(propertyName);
+                    keyBuilder.append(val);
                 }
-                String key = builder.toString();
+                String key = keyBuilder.toString();
                 List<T> val = result.get(key);
                 if (val == null) {
                     val = new ArrayList<T>();
@@ -166,26 +157,23 @@ public class DataUtils {
     @SuppressWarnings("unchecked")
     public static <R, P> Map<String, R> listToMapProperty(List<P> list, String valueProperty, String... keyProperties) {
         try {
+            Assert.notBlank(valueProperty, "Parameter \"valueProperty\" must not blank. ");
+            Assert.notEmpty(keyProperties, "Parameter \"keyProperties\" must not empty. ");
             // Handle parameters
             Map<String, R> result = new HashMap<String, R>(list.size());
             if (CollectionUtils.isEmpty(list)) { return result; }
-            Assert.notBlank(valueProperty, "Parameter \"valueProperty\" must not blank. ");
-            Assert.notEmpty(keyProperties, "Parameter \"keyProperties\" must not empty. ");
-            P tmp = CollectionUtils.takeFirstNotNullElement(list);
-            Assert.notNull(tmp, "Elements in list parameter \"list\" all is null. ");
-            Class<?> tmpClass = tmp.getClass();
-            Method valMethod = DataUtils.findMethodByName(tmpClass, valueProperty);
-            List<Method> keyMethods = DataUtils.findMethodsByNames(tmp.getClass(), keyProperties);
-            // Convert to map
+            List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
             StringBuilder keyBuilder = new StringBuilder();
-            for (P bean : list) {
-                if (bean == null) { continue; }
+            for (int i = 0, len = list.size(); i < len; i++) {
+                Map<String, Object> map = mapList.get(i);
+                P bean = list.get(i);
+                if (map == null || bean == null) { continue; }
                 keyBuilder.setLength(0);
-                for (Method method : keyMethods) {
-                    Object key = method.invoke(bean);
-                    keyBuilder.append(key);
+                for (String keyProperty : keyProperties) {
+                    Object val = map.get(keyProperty);
+                    keyBuilder.append(val);
                 }
-                R val = (R) valMethod.invoke(bean);
+                R val = (R) map.get(valueProperty);
                 result.put(keyBuilder.toString(), val);
             }
             return result;
@@ -193,33 +181,6 @@ public class DataUtils {
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
         }
-    }
-
-    /**
-     * Find Method object by method name.
-     * @param clazz Method come from class
-     * @param propertyName Method property name
-     * @return Method object
-     * @throws NoSuchMethodException No such method
-     */
-    private static Method findMethodByName(Class<?> clazz, String propertyName) throws NoSuchMethodException {
-        String methodName = GET + StringUtils.capitalize(propertyName);
-        return ReflectUtils.findMethod(clazz, methodName);
-    }
-
-    /**
-     * Find Method objects by method names.
-     * @param clazz Method come from class
-     * @param propertyNames Method property names
-     * @return Method list
-     * @throws NoSuchMethodException No such method
-     */
-    private static List<Method> findMethodsByNames(Class<?> clazz, String... propertyNames) throws NoSuchMethodException {
-        List<Method> methods = new ArrayList<Method>();
-        for (String name : propertyNames) {
-            methods.add(DataUtils.findMethodByName(clazz, name));
-        }
-        return methods;
     }
 
 }

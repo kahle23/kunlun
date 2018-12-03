@@ -17,7 +17,7 @@ import java.util.Date;
 public class DateUtils {
     public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
     private static final Class<? extends DateTime> DEFAULT_DATE_TIME_CLASS = SimpleDateTime.class;
-    private static final DateFormater DEFAULT_DATE_FORMATER = new SimpleDateHandler();
+    private static final DateFormater DEFAULT_DATE_FORMATER = new SimpleDateTool();
     private static final DateParser DEFAULT_DATE_PARSER = (DateParser) DEFAULT_DATE_FORMATER;
     private static Logger log = LoggerFactory.getLogger(DateUtils.class);
     private static Class<? extends DateTime> dateTimeClass;

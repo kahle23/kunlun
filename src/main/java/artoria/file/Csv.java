@@ -62,7 +62,7 @@ public class Csv extends TextFile implements Table {
         Assert.notBlank(cellSeparator, "Parameter \"cellSeparator\" must not blank. ");
         Assert.state(cellSeparator.length() == 1
                 , "Parameter \"cellSeparator\" must be a single character. ");
-        Assert.state(QUOTE_MARK.equals(cellSeparator)
+        Assert.state(DOUBLE_QUOTE.equals(cellSeparator)
                 , "Parameter \"cellSeparator\" must not equal double quotes. ");
         Assert.state(lineSeparator.equals(cellSeparator)
                 , "Parameter \"cellSeparator\" must not equal line separator. ");
@@ -80,7 +80,7 @@ public class Csv extends TextFile implements Table {
         List<String> row = new ArrayList<String>();
         for (; ; ) {
             boolean haveQuote = false;
-            quoteIndex = text.indexOf(QUOTE_MARK, fromIndex);
+            quoteIndex = text.indexOf(DOUBLE_QUOTE, fromIndex);
             if (quoteIndex != -1
                     && StringUtils.isBlank(text.substring(fromIndex, quoteIndex))) {
                 haveQuote = true;
@@ -88,11 +88,11 @@ public class Csv extends TextFile implements Table {
                 index = fromIndex;
                 boolean loop = true;
                 while (loop) {
-                    quoteIndex = text.indexOf(QUOTE_MARK, index);
+                    quoteIndex = text.indexOf(DOUBLE_QUOTE, index);
                     if (quoteIndex == -1) { index = -1; break; }
                     index = quoteIndex + 1;
                     char nextChar = text.charAt(index);
-                    if (QUOTE_MARK.equals(nextChar + EMPTY_STRING)) {
+                    if (DOUBLE_QUOTE.equals(nextChar + EMPTY_STRING)) {
                         index++; loop = true;
                     }
                     else {
@@ -117,7 +117,7 @@ public class Csv extends TextFile implements Table {
             if (haveQuote) {
                 int tmpIndex = quoteIndex - fromIndex;
                 String tmpBegin = tmpStr.substring(0, tmpIndex);
-                tmpBegin = StringUtils.replace(tmpBegin, "\"\"", QUOTE_MARK);
+                tmpBegin = StringUtils.replace(tmpBegin, "\"\"", DOUBLE_QUOTE);
                 tmpStr = tmpBegin + tmpStr.substring(tmpIndex + 1, tmpStr.length());
             }
             row.add(tmpStr);
@@ -140,12 +140,12 @@ public class Csv extends TextFile implements Table {
                 }
                 boolean needQuote = cell.contains(cellSeparator);
                 needQuote = needQuote || cell.contains(lineSeparator);
-                boolean containQuote = cell.contains(QUOTE_MARK);
+                boolean containQuote = cell.contains(DOUBLE_QUOTE);
                 cell = needQuote && containQuote
-                        ? StringUtils.replace(cell, QUOTE_MARK, "\"\"")
+                        ? StringUtils.replace(cell, DOUBLE_QUOTE, "\"\"")
                         : cell;
                 cell = needQuote
-                        ? QUOTE_MARK + cell + QUOTE_MARK
+                        ? DOUBLE_QUOTE + cell + DOUBLE_QUOTE
                         : cell;
                 builder.append(cell).append(cellSeparator);
             }

@@ -11,7 +11,7 @@ import java.lang.reflect.Proxy;
  * Proxy factory simple implement by jdk.
  * @author Kahle
  */
-public class SimpleProxyFactory implements ProxyFactory {
+public class DefaultProxyFactory implements ProxyFactory {
     private static final ClassLoader LOADER = ClassUtils.getDefaultClassLoader();
 
     private static class InvocationHandlerAdapter implements InvocationHandler {

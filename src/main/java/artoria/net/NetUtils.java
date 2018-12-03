@@ -13,8 +13,7 @@ import java.util.Enumeration;
 import java.util.Formatter;
 import java.util.List;
 
-import static artoria.common.Constants.EMPTY_STRING;
-import static artoria.common.Constants.MINUS;
+import static artoria.common.Constants.*;
 import static artoria.io.IOUtils.EOF;
 
 /**
@@ -105,7 +104,7 @@ public class NetUtils {
     public static String getHostAddress(InetAddress inetAddress) {
         Assert.notNull(inetAddress, "Parameter \"inetAddress\" must not null. ");
         String address = inetAddress.getHostAddress();
-        int index = address.indexOf("%");
+        int index = address.indexOf(PERCENT_SIGN);
         return index != EOF ? address.substring(0, index) : address;
     }
 

@@ -194,7 +194,7 @@ public class DatabaseClient {
             conn.close();
         }
         catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error("Execution \"closing\" error. ", e);
         }
         finally {
             this.threadConnection.remove();

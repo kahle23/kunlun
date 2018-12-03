@@ -8,46 +8,44 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Reference hash map, has weak and soft reference.
+ * Reference map, has weak and soft reference.
  * @author Kahle
  * @param <K> The key type
  * @param <V> The value type
  */
-public class ReferenceHashMap<K, V> implements Map<K, V> {
-    private static final int DEFAULT_RETENTION_SIZE = 100;
-    private final ReentrantLock strongReferencesLock;
-    private final Queue<V> strongReferences;
-    private final int retentionSize;
+public class ReferenceMap<K, V> implements Map<K, V> {
     private final Map<K, ValueCell<K, V>> internalMap;
     private final ReferenceQueue<? super V> queue;
     private final Type type;
 
-    public ReferenceHashMap(Type type) {
+    public ReferenceMap(Type type) {
 
-        this(type, DEFAULT_RETENTION_SIZE);
+        this(new HashMap<K, ValueCell<K, V>>(), type);
     }
 
-    public ReferenceHashMap(Type type, int retentionSize) {
+    public ReferenceMap(Type type, boolean isConcurrent) {
         this(
-                new ConcurrentHashMap<K, ValueCell<K, V>>(Math.max(32, retentionSize)),
-                new ConcurrentLinkedQueue<V>(),
-                type,
-                retentionSize
+                isConcurrent
+                        ? new ConcurrentHashMap<K, ValueCell<K, V>>()
+                        : new HashMap<K, ValueCell<K, V>>(),
+                type
         );
     }
 
-    public ReferenceHashMap(Map<K, ValueCell<K, V>> internalMap
-            , Queue<V> strongReferences, Type type, int retentionSize) {
-        this.strongReferencesLock = new ReentrantLock();
-        this.strongReferences = strongReferences;
-        this.retentionSize = Math.max(0, retentionSize);
-        this.internalMap = internalMap;
+    public ReferenceMap(Map<K, ValueCell<K, V>> internalMap, Type type) {
         this.queue = new ReferenceQueue<V>();
+        this.internalMap = internalMap;
         this.type = type;
+    }
+
+    private ValueCell<K, V> newValueCell(K key, V value, ReferenceQueue<? super V> queue) {
+        switch (this.type) {
+            case WEAK: return new WeakValueCell<K, V>(key, value, queue);
+            case SOFT: return new SoftValueCell<K, V>(key, value, queue);
+            default: return new WeakValueCell<K, V>(key, value, queue);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -55,32 +53,6 @@ public class ReferenceHashMap<K, V> implements Map<K, V> {
         ValueCell<K, V> valueCell;
         while ((valueCell = (ValueCell) queue.poll()) != null) {
             internalMap.remove(valueCell.getKey());
-        }
-    }
-
-    private void trimStrongReferences() {
-        while (strongReferences.size() > retentionSize) {
-            strongReferences.poll();
-        }
-    }
-
-    private void addToStrongReferences(V result) {
-        strongReferencesLock.lock();
-        try {
-            strongReferences.add(result);
-            this.trimStrongReferences();
-        }
-        finally {
-            strongReferencesLock.unlock();
-        }
-    }
-
-    private ValueCell<K, V> newValueCell(K key, V value
-            , ReferenceQueue<? super V> queue) {
-        switch (this.type) {
-            case WEAK: return new WeakValueCell<K, V>(key, value, queue);
-            case SOFT: return new SoftValueCell<K, V>(key, value, queue);
-            default: return new WeakValueCell<K, V>(key, value, queue);
         }
     }
 
@@ -96,10 +68,6 @@ public class ReferenceHashMap<K, V> implements Map<K, V> {
             // The wrapped value was garbage collected,
             // So remove this entry from the backing internalMap.
             internalMap.remove((K) key);
-        }
-        else {
-            // Add this value to the beginning of the strong reference queue (FIFO).
-            this.addToStrongReferences(result);
         }
         return result;
     }
@@ -167,7 +135,6 @@ public class ReferenceHashMap<K, V> implements Map<K, V> {
         this.processQueue();
         ValueCell<K, V> newValue = this.newValueCell(key, value, queue);
         ValueCell<K, V> oldValue = internalMap.put(key, newValue);
-        this.addToStrongReferences(value);
         return oldValue != null ? oldValue.get() : null;
     }
 
@@ -181,13 +148,6 @@ public class ReferenceHashMap<K, V> implements Map<K, V> {
 
     @Override
     public void clear() {
-        strongReferencesLock.lock();
-        try {
-            strongReferences.clear();
-        }
-        finally {
-            strongReferencesLock.unlock();
-        }
         // Throw out garbage collected values.
         this.processQueue();
         internalMap.clear();

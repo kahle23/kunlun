@@ -5,16 +5,13 @@ import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.reflect.ReflectUtils;
+import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
-import artoria.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
-
-import static artoria.common.Constants.GET_OR_SET_LENGTH;
-import static artoria.common.Constants.SET;
 
 /**
  * Bean copier simple implement by jdk.
@@ -30,7 +27,7 @@ public class SimpleBeanCopier implements BeanCopier {
     }
 
     public void setIgnoreException(Boolean ignoreException) {
-
+        Assert.notNull(ignoreException, "Parameter \"ignoreException\" must not null. ");
         this.ignoreException = ignoreException;
     }
 
@@ -46,26 +43,29 @@ public class SimpleBeanCopier implements BeanCopier {
         Map<String, Method> toMths = ReflectUtils.findWriteMethods(toClass);
         for (Map.Entry<String, Method> entry : fromMths.entrySet()) {
             String name = entry.getKey();
-            name = name.substring(GET_OR_SET_LENGTH);
             // do ignore
-            if (hasIgnore && ignoreProperties
-                    .contains(StringUtils.uncapitalize(name))) {
+            if (hasIgnore && ignoreProperties.contains(name)) {
                 continue;
             }
-            name = SET + name;
             Method destMth = toMths.get(name);
             if (destMth == null) { continue; }
             Method srcMth = entry.getValue();
+            Class<?>[] types = destMth.getParameterTypes();
             try {
+                boolean haveType = ArrayUtils.isNotEmpty(types);
                 Object input = srcMth.invoke(from);
-                Class<?> dType = destMth.getParameterTypes()[0];
-                // do convert
-                input = hasCvt ? converter.convert(input, dType) : input;
+                if (input == null && haveType
+                        && types[0].isPrimitive()) {
+                    throw new NullPointerException();
+                }
+                if (hasCvt && haveType) {
+                    input = converter.convert(input, types[0]);
+                }
                 destMth.invoke(to, input);
             }
             catch (Exception e) {
                 if (this.ignoreException) {
-                    log.debug(e.getMessage(), e);
+                    log.debug("Execution \"copy\" error. ", e);
                 }
                 else {
                     throw ExceptionUtils.wrap(e);

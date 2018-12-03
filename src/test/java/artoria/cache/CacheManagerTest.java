@@ -8,8 +8,8 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleCacheManagerTest {
-    private static Logger log = LoggerFactory.getLogger(SimpleCacheManagerTest.class);
+public class CacheManagerTest {
+    private static Logger log = LoggerFactory.getLogger(CacheManagerTest.class);
     private static CacheManager cacheManager = new SimpleCacheManager();
     private static final String CACHE_NAME = "TEST";
 

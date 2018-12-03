@@ -16,7 +16,7 @@ import static artoria.io.IOUtils.EOF;
  * Template renderer simple implement by jdk.
  * @author Kahle
  */
-public class SimpleRenderer implements Renderer {
+public class DefaultRenderer implements Renderer {
 
     @Override
     public void render(Object data, Object output, String name, Object input, String charsetName) throws Exception {
@@ -48,7 +48,7 @@ public class SimpleRenderer implements Renderer {
         Map dataMap = data instanceof Map
                 ? (Map) data : BeanUtils.beanToMap(data);
         for (int finish = template.length(), begin = 0, end = 0; end != finish; ) {
-            end = template.indexOf(DOLLAR_MARK + LEFT_CURLY_BRACKET, begin);
+            end = template.indexOf(DOLLAR_SIGN + LEFT_CURLY_BRACKET, begin);
             end = end == EOF ? finish : end;
             writer.write(template.substring(begin, end));
             if (end == finish) { continue; }

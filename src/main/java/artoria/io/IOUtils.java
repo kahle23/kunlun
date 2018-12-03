@@ -1,12 +1,14 @@
 package artoria.io;
 
+import artoria.reflect.ReflectUtils;
+
 import java.io.*;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLConnection;
 import java.nio.channels.Selector;
-import java.nio.charset.Charset;
 
 import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
 import static artoria.common.Constants.SLASH;
@@ -16,7 +18,6 @@ import static artoria.common.Constants.SLASH;
  * @author Kahle
  */
 public class IOUtils {
-    private static final Class<?> THIS_CLASS = IOUtils.class;
     public static final int DEFAULT_BUFFER_SIZE = 8192;
     public static final int EOF = -1;
 
@@ -24,13 +25,28 @@ public class IOUtils {
         if (!fileName.startsWith(SLASH)) {
             fileName = SLASH + fileName;
         }
-        return THIS_CLASS.getResourceAsStream(fileName);
+        return IOUtils.class.getResourceAsStream(fileName);
     }
 
-    public static void closeQuietly(AutoCloseable closeable) {
+//    TODO: 1.7
+//    public static void closeQuietly(AutoCloseable closeable) {
+//        if (closeable != null) {
+//            try {
+//                closeable.close();
+//            }
+//            catch (Exception e) {
+//                // ignore
+//            }
+//        }
+//    }
+//    TODO: 1.7 Remove when jdk 1.7
+    public static void closeQuietly(Object closeable) {
         if (closeable != null) {
             try {
-                closeable.close();
+                String close = "close";
+                Class<?> clazz = closeable.getClass();
+                Method method = ReflectUtils.findMethod(clazz, close);
+                method.invoke(closeable);
             }
             catch (Exception e) {
                 // ignore
@@ -86,37 +102,6 @@ public class IOUtils {
                 // ignored
             }
         }
-    }
-
-    public static Reader toReader(byte[] data) {
-
-        return IOUtils.toReader(data, DEFAULT_CHARSET_NAME);
-    }
-
-    public static Reader toReader(byte[] data, String charset) {
-        Charset encoding = Charset.forName(charset);
-        return new StringReader(new String(data, encoding));
-    }
-
-    public static Reader toReader(String data) {
-
-        return new StringReader(data);
-    }
-
-    public static InputStream toInputStream(String data) {
-
-        return IOUtils.toInputStream(data, DEFAULT_CHARSET_NAME);
-    }
-
-    public static InputStream toInputStream(String data, String charset) {
-        Charset encoding = Charset.forName(charset);
-        byte[] bytes = data.getBytes(encoding);
-        return new ByteArrayInputStream(bytes);
-    }
-
-    public static InputStream toInputStream(byte[] data) {
-
-        return new ByteArrayInputStream(data);
     }
 
     public static byte[] toByteArray(Reader input) throws IOException {

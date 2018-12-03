@@ -8,7 +8,6 @@ import artoria.logging.LoggerFactory;
 import artoria.reflect.ReflectUtils;
 import artoria.util.Assert;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,8 +61,7 @@ public class BeanUtils {
     public static BeanMap createBeanMap() {
         try {
             Class<? extends BeanMap> beanMapClass = BeanUtils.getBeanMapClass();
-            Constructor<?> cst = ReflectUtils.findConstructor(beanMapClass);
-            return (BeanMap) cst.newInstance();
+            return (BeanMap) ReflectUtils.newInstance(beanMapClass);
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
