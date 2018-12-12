@@ -13,11 +13,6 @@ import java.io.InputStream;
  */
 public abstract class BinaryFile extends AbstractFileEntity {
 
-    public BinaryFile(String extension) {
-
-        super(extension);
-    }
-
     public byte[] writeToByteArray() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         this.write(outputStream);

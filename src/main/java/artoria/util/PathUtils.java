@@ -14,15 +14,15 @@ public class PathUtils {
 
     /**
      *
-     * @param name
+     * @param subpath
      * @return
      */
-    public static String findClasspath(String name) {
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        if (!name.startsWith(SLASH)) {
-            name = SLASH + name;
+    public static String findClasspath(String subpath) {
+        Assert.notBlank(subpath, "Parameter \"subpath\" must not blank. ");
+        if (!subpath.startsWith(SLASH)) {
+            subpath = SLASH + subpath;
         }
-        URL res = THIS_CLASS.getResource(name);
+        URL res = THIS_CLASS.getResource(subpath);
         File file = res != null ? new File(res.getFile()) : null;
         return file != null ? file.toString() : null;
     }

@@ -19,7 +19,6 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class Csv extends TextFile implements Table {
-    private static final String DEFAULT_EXTENSION = "csv";
     private final Map<String, String> propertiesMapping = new LinkedHashMap<String, String>();
     private final Map<String, String> headersMapping = new LinkedHashMap<String, String>();
     private final List<List<String>> content = new ArrayList<List<String>>();
@@ -27,17 +26,6 @@ public class Csv extends TextFile implements Table {
     private String cellSeparator = COMMA;
     private int columnStartNumber = 0;
     private int rowStartNumber = 0;
-
-    public Csv() {
-
-        this(DEFAULT_EXTENSION);
-    }
-
-    public Csv(String extension) {
-        super(extension);
-        Assert.state(DEFAULT_EXTENSION.equalsIgnoreCase(extension)
-                , "The extension of this file only be \"csv\". ");
-    }
 
     public String getLineSeparator() {
 

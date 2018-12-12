@@ -13,11 +13,6 @@ import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
 public abstract class TextFile extends BinaryFile {
     private String charset = DEFAULT_CHARSET_NAME;
 
-    public TextFile(String extension) {
-
-        super(extension);
-    }
-
     public String getCharset() {
 
         return charset;

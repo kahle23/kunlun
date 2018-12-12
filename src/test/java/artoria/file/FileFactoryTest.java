@@ -18,8 +18,14 @@ public class FileFactoryTest {
     public void test1() throws IOException {
         Txt txt = FileFactory.getInstance(testRead);
         log.info(NEWLINE + txt.writeToString());
-        txt = FileFactory.getInstance("TXT", testRead, "GB2312");
+        txt = FileFactory.getInstance(Txt.class, testRead, "GB2312");
         log.info(NEWLINE + txt.writeToString());
+    }
+
+    @Test
+    public void test2() throws IOException {
+        PropertiesFile file = FileFactory.getInstance("jdbc.properties");
+        file.getProperties().list(System.out);
     }
 
 }

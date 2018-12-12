@@ -12,20 +12,7 @@ import java.io.Writer;
  * @author Kahle
  */
 public class Txt extends TextFile implements Appendable {
-    private static final String DEFAULT_EXTENSION = "txt";
-    private final StringBuilder textBuilder;
-
-    public Txt() {
-
-        this(DEFAULT_EXTENSION);
-    }
-
-    public Txt(String extension) {
-        super(extension);
-        Assert.state(DEFAULT_EXTENSION.equalsIgnoreCase(extension)
-                , "The extension of this file only be \"txt\". ");
-        this.textBuilder = new StringBuilder();
-    }
+    private final StringBuilder textBuilder = new StringBuilder();
 
     @Override
     public long read(Reader reader) throws IOException {

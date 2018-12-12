@@ -5,23 +5,13 @@ import artoria.util.Assert;
 
 import java.io.*;
 
+import static artoria.common.Constants.CLASSPATH;
+
 /**
  * Abstract file entity.
  * @author Kahle
  */
 public abstract class AbstractFileEntity implements FileEntity {
-    private String extension;
-
-    public AbstractFileEntity(String extension) {
-        Assert.notBlank(extension, "Parameter \"extension\" must not blank. ");
-        this.extension = extension.toLowerCase().trim();
-    }
-
-    @Override
-    public String getExtension() {
-
-        return extension;
-    }
 
     public void writeToFile(File file) throws IOException {
         Assert.notNull(file, "Parameter \"file\" must not null. ");
@@ -45,6 +35,25 @@ public abstract class AbstractFileEntity implements FileEntity {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
+            return this.read(inputStream);
+        }
+        finally {
+            IOUtils.closeQuietly(inputStream);
+        }
+    }
+
+    public void writeToClasspath(String subpath) throws IOException {
+        Assert.notBlank(subpath, "Parameter \"subpath\" must not blank. ");
+        Assert.notBlank(CLASSPATH, "Cannot get the classpath. ");
+        this.writeToFile(new File(CLASSPATH, subpath));
+    }
+
+    public long readFromClasspath(String subpath) throws IOException {
+        InputStream inputStream = null;
+        try {
+            inputStream = IOUtils.findClasspath(subpath);
+            Assert.notNull(inputStream
+                    , "Parameter \"subpath\" not found in classpath. ");
             return this.read(inputStream);
         }
         finally {
