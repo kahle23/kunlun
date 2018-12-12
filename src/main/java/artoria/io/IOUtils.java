@@ -21,11 +21,11 @@ public class IOUtils {
     public static final int DEFAULT_BUFFER_SIZE = 8192;
     public static final int EOF = -1;
 
-    public static InputStream findClasspath(String fileName) {
-        if (!fileName.startsWith(SLASH)) {
-            fileName = SLASH + fileName;
+    public static InputStream findClasspath(String subpath) {
+        if (!subpath.startsWith(SLASH)) {
+            subpath = SLASH + subpath;
         }
-        return IOUtils.class.getResourceAsStream(fileName);
+        return IOUtils.class.getResourceAsStream(subpath);
     }
 
 //    TODO: 1.7

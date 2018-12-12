@@ -1,6 +1,7 @@
 package artoria.file;
 
 import artoria.exception.ExceptionUtils;
+import artoria.io.IOUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.reflect.ReflectUtils;
@@ -9,6 +10,7 @@ import artoria.util.PathUtils;
 import artoria.util.StringUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.Map;
@@ -26,6 +28,17 @@ public class FileFactory {
         BUCKET = new ConcurrentHashMap<String, Class<? extends BinaryFile>>();
         FileFactory.register("csv", Csv.class);
         FileFactory.register("txt", Txt.class);
+        FileFactory.register("properties", PropertiesFile.class);
+    }
+
+    private static Class<? extends BinaryFile> getClassByExtension(String extensionString) {
+        Assert.notBlank(extensionString, "Parameter \"extensionString\" must not blank. ");
+        String extensionName = PathUtils.getExtension(extensionString);
+        Assert.notBlank(extensionName, "Parameter \"extensionString\" have no extension. ");
+        Class<? extends BinaryFile> fileClass = BUCKET.get(extensionName);
+        Assert.notNull(fileClass
+                , "The implementation type cannot be found based on the file extension. ");
+        return fileClass;
     }
 
     public static Class<? extends BinaryFile> unregister(String extension) {
@@ -46,23 +59,19 @@ public class FileFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends BinaryFile> T getInstance(String extension) {
-        Assert.notBlank(extension, "Parameter \"extension\" must not blank. ");
-        extension = extension.trim().toLowerCase();
+    public static <T extends BinaryFile> T getInstance(Class<T> clazz) {
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         try {
-            Class<? extends BinaryFile> fileClass = BUCKET.get(extension);
-            Assert.notNull(fileClass
-                    , "The implementation type cannot be found based on the file extension. ");
-            return (T) ReflectUtils.newInstance(fileClass, extension);
+            return (T) ReflectUtils.newInstance(clazz);
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
         }
     }
 
-    public static <T extends TextFile> T getInstance(String extension, Reader reader) {
+    public static <T extends TextFile> T getInstance(Class<T> clazz, Reader reader) {
         Assert.notNull(reader, "Parameter \"reader\" must not null. ");
-        T fileEntity = FileFactory.getInstance(extension);
+        T fileEntity = FileFactory.getInstance(clazz);
         try {
             fileEntity.read(reader);
         }
@@ -72,25 +81,25 @@ public class FileFactory {
         return fileEntity;
     }
 
-    public static <T extends BinaryFile> T getInstance(String extension, InputStream inputStream) {
+    public static <T extends BinaryFile> T getInstance(Class<T> clazz, InputStream inputStream) {
 
-        return FileFactory.getInstance(extension, inputStream, null);
+        return FileFactory.getInstance(clazz, inputStream, null);
     }
 
-    public static <T extends BinaryFile> T getInstance(String extension, InputStream inputStream, String charset) {
+    public static <T extends BinaryFile> T getInstance(Class<T> clazz, InputStream inputStream, String charset) {
         Assert.notNull(inputStream, "Parameter \"inputStream\" must not null. ");
-        T fileEntity = FileFactory.getInstance(extension);
+        T instance = FileFactory.getInstance(clazz);
         if (StringUtils.isNotBlank(charset)
-                && fileEntity instanceof TextFile) {
-            ((TextFile) fileEntity).setCharset(charset);
+                && instance instanceof TextFile) {
+            ((TextFile) instance).setCharset(charset);
         }
         try {
-            fileEntity.read(inputStream);
+            instance.read(inputStream);
+            return instance;
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
         }
-        return fileEntity;
     }
 
     public static <T extends BinaryFile> T getInstance(File file) {
@@ -103,29 +112,61 @@ public class FileFactory {
         return FileFactory.getInstance(null, file, charset);
     }
 
-    public static <T extends BinaryFile> T getInstance(String extension, File file) {
+    public static <T extends BinaryFile> T getInstance(Class<T> clazz, File file) {
 
-        return FileFactory.getInstance(extension, file, null);
+        return FileFactory.getInstance(clazz, file, null);
     }
 
-    public static <T extends BinaryFile> T getInstance(String extension, File file, String charset) {
+    @SuppressWarnings("unchecked")
+    public static <T extends BinaryFile> T getInstance(Class<T> clazz, File file, String charset) {
         Assert.notNull(file, "Parameter \"file\" must not null. ");
-        String fileExt = PathUtils.getExtension(file.toString());
-        extension = StringUtils.isNotBlank(fileExt) ? fileExt : extension;
-        Assert.notBlank(extension, "Parameter \"file\" " +
-                "has no extension and parameter \"extension\" also is blank. ");
-        T fileEntity = FileFactory.getInstance(extension);
-        if (StringUtils.isNotBlank(charset)
-                && fileEntity instanceof TextFile) {
-            ((TextFile) fileEntity).setCharset(charset);
-        }
+        Class<? extends BinaryFile> fileClass = clazz != null
+                ? clazz : FileFactory.getClassByExtension(file.toString());
+        InputStream inputStream = null;
         try {
-            fileEntity.readFromFile(file);
+            inputStream = new FileInputStream(file);
+            return (T) FileFactory.getInstance(fileClass, inputStream, charset);
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
         }
-        return fileEntity;
+        finally {
+            IOUtils.closeQuietly(inputStream);
+        }
+    }
+
+    public static <T extends BinaryFile> T getInstance(String subpathInClasspath) {
+
+        return FileFactory.getInstance(null, subpathInClasspath, null);
+    }
+
+    public static <T extends BinaryFile> T getInstance(String subpathInClasspath, String charset) {
+
+        return FileFactory.getInstance(null, subpathInClasspath, charset);
+    }
+
+    public static <T extends BinaryFile> T getInstance(Class<T> clazz, String subpathInClasspath) {
+
+        return FileFactory.getInstance(clazz, subpathInClasspath, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends BinaryFile> T getInstance(Class<T> clazz, String subpathInClasspath, String charset) {
+        Assert.notBlank(subpathInClasspath, "Parameter \"subpathInClasspath\" must not blank. ");
+        Class<? extends BinaryFile> fileClass = clazz != null
+                ? clazz : FileFactory.getClassByExtension(subpathInClasspath);
+        InputStream inputStream = null;
+        try {
+            inputStream = IOUtils.findClasspath(subpathInClasspath);
+            Assert.notNull(inputStream, "Parameter \"subpathInClasspath\" not found in classpath. ");
+            return (T) FileFactory.getInstance(fileClass, inputStream, charset);
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
+        }
+        finally {
+            IOUtils.closeQuietly(inputStream);
+        }
     }
 
 }

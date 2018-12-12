@@ -1,5 +1,7 @@
 package artoria.jdbc;
 
+import artoria.common.AbstractAttributable;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,7 +9,7 @@ import java.util.List;
  * Database table necessary information.
  * @author Kahle
  */
-public class TableMeta implements Serializable {
+public class TableMeta extends AbstractAttributable implements Serializable {
 
     /**
      * "TABLE_NAME"
@@ -36,8 +38,8 @@ public class TableMeta implements Serializable {
     }
 
     public void setName(String name) {
-
         this.name = name;
+        this.addAttribute("name", name);
     }
 
     public String getRemarks() {
@@ -46,8 +48,8 @@ public class TableMeta implements Serializable {
     }
 
     public void setRemarks(String remarks) {
-
         this.remarks = remarks;
+        this.addAttribute("remarks", remarks);
     }
 
     public String getPrimaryKey() {
@@ -56,8 +58,8 @@ public class TableMeta implements Serializable {
     }
 
     public void setPrimaryKey(String primaryKey) {
-
         this.primaryKey = primaryKey;
+        this.addAttribute("primaryKey", primaryKey);
     }
 
     public List<ColumnMeta> getColumnMetaList() {
@@ -66,8 +68,8 @@ public class TableMeta implements Serializable {
     }
 
     public void setColumnMetaList(List<ColumnMeta> columnMetaList) {
-
         this.columnMetaList = columnMetaList;
+        this.addAttribute("columnMetaList", columnMetaList);
     }
 
 }

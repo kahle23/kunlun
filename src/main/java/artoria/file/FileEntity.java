@@ -11,12 +11,6 @@ import java.io.OutputStream;
 public interface FileEntity {
 
     /**
-     * Get filename extension.
-     * @return Filename extension
-     */
-    String getExtension();
-
-    /**
      * Read from input stream.
      * @param inputStream The input stream that will be read
      * @return Read length

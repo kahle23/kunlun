@@ -34,4 +34,21 @@ public class TxtTest {
         txt.writeToFile(testGenerated);
     }
 
+    @Test
+    public void test3() throws IOException {
+        Txt txt = new Txt();
+//        log.info("Read length: " + txt.readFromClasspath("jdbc.properties"));
+        log.info("Read length: " + txt.readFromClasspath("LICENSE"));
+        log.info(txt.writeToString());
+    }
+
+    @Test
+    public void test4() throws IOException {
+        Txt txt = new Txt();
+        txt.readFromClasspath("test_read.txt");
+        log.info(txt.writeToString());
+        txt.append("This is the test4. ").append(NEWLINE);
+        txt.writeToClasspath("test_read_generated.txt");
+    }
+
 }

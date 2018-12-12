@@ -3,8 +3,9 @@ package artoria.jdbc;
 import artoria.aop.Enhancer;
 import artoria.aop.Interceptor;
 import artoria.exception.ExceptionUtils;
+import artoria.file.FileFactory;
+import artoria.file.PropertiesFile;
 import artoria.util.Assert;
-import artoria.util.PropertiesUtils;
 import artoria.util.StringUtils;
 
 import javax.sql.DataSource;
@@ -36,16 +37,19 @@ public class SimpleDataSource implements DataSource {
     private int minPoolSize = 2;
 
     public SimpleDataSource() {
-
-        this(PropertiesUtils.create(DEFAULT_CONFIG_NAME));
+        this(
+                ((PropertiesFile)
+                        FileFactory.getInstance(DEFAULT_CONFIG_NAME)
+                ).getProperties()
+        );
     }
 
-    public SimpleDataSource(Properties prop) {
+    public SimpleDataSource(Properties properties) {
         this(
-                prop.getProperty("driverClass"),
-                prop.getProperty("jdbcUrl"),
-                prop.getProperty("user"),
-                prop.getProperty("password")
+                properties.getProperty("driverClass"),
+                properties.getProperty("jdbcUrl"),
+                properties.getProperty("user"),
+                properties.getProperty("password")
         );
     }
 
