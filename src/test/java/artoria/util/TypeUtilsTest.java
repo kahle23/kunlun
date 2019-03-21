@@ -14,7 +14,7 @@ public class TypeUtilsTest {
     public void test1() {
         Student[] students = new Student[0];
         GenericArrayType arrayType = TypeUtils.arrayOf(students.getClass());
-        log.info("" + arrayType);
+        log.info("{}", arrayType);
     }
 
 }

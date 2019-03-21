@@ -3,7 +3,7 @@ package artoria.jdbc;
 import java.sql.SQLException;
 
 /**
- * Db atom.
+ * Database atom.
  * @author Kahle
  */
 public interface DatabaseAtom {

@@ -1,6 +1,7 @@
 package artoria.reflect;
 
 import artoria.exception.ExceptionUtils;
+import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.ClassUtils;
 import artoria.util.StringUtils;
@@ -16,25 +17,12 @@ import java.util.*;
  * @author Kahle
  */
 public class DefaultReflecter implements Reflecter {
-    private static final Integer MAP_INITIAL_CAPACITY = 8;
+    private static final Integer MAP_INITIAL_CAPACITY = 16;
     private static final Integer GET_OR_SET_LENGTH = 3;
 
     protected boolean notAccess(Class<?> thisClazz, Class<?> superClazz, Member member) {
         // In this class all, and super class not private.
         return thisClazz != superClazz && Modifier.isPrivate(member.getModifiers());
-    }
-
-    @Override
-    public Class<?> forName(String className) throws ClassNotFoundException {
-        ClassLoader loader = ClassUtils.getDefaultClassLoader();
-        return this.forName(className, true, loader);
-    }
-
-    @Override
-    public Class<?> forName(String className, boolean initialize, ClassLoader loader) throws ClassNotFoundException {
-        Assert.notBlank(className, "Parameter \"className\" must not blank. ");
-        Assert.notNull(loader, "Parameter \"loader\" must not null. ");
-        return Class.forName(className, initialize, loader);
     }
 
     @Override
@@ -93,13 +81,26 @@ public class DefaultReflecter implements Reflecter {
     }
 
     @Override
-    public Constructor<?>[] findConstructors(Class<?> clazz) {
+    public <T> T newInstance(Class<T> clazz, Object... args) throws NoSuchMethodException
+            , IllegalAccessException, InvocationTargetException, InstantiationException {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        return clazz.getDeclaredConstructors();
+        if (ArrayUtils.isEmpty(args)) { return clazz.newInstance(); }
+        Class<?>[] types = this.findParameterTypes(args);
+        Constructor<T> constructor = this.findConstructor(clazz, types);
+        this.makeAccessible(constructor);
+        return constructor.newInstance(args);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Constructor<?> findConstructor(Class<?> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
+    public <T> Constructor<T>[] findConstructors(Class<T> clazz) {
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        return (Constructor<T>[]) clazz.getDeclaredConstructors();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         // Try invoking the "canonical" constructor,
         // i.e. the one with exact matching argument types
@@ -113,7 +114,7 @@ public class DefaultReflecter implements Reflecter {
             for (Constructor<?> ct : cts) {
                 Class<?>[] pTypes = ct.getParameterTypes();
                 boolean b = this.matchParameterTypes(pTypes, parameterTypes);
-                if (b) { return ct; }
+                if (b) { return (Constructor<T>) ct; }
             }
             throw e;
         }

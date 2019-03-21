@@ -1,26 +1,24 @@
 package artoria.common;
 
-import java.util.List;
-
 /**
- * Can convert to or convert back from bean list.
+ * Can convert to or convert back from bean.
  * @author Kahle
  */
 public interface Beanable {
 
     /**
-     * Convert to bean list.
+     * Convert to bean.
      * @param clazz Bean class
      * @param <T> Bean type
-     * @return Converted bean list
+     * @return Converted bean
      */
-    <T> List<T> toBeanList(Class<T> clazz);
+    <T> T toBean(Class<T> clazz);
 
     /**
-     * Convert back from bean list.
-     * @param beanList Input bean list
+     * Convert back from bean.
+     * @param bean Input bean
      * @param <T> Bean type
      */
-    <T> void fromBeanList(List<T> beanList);
+    <T> void fromBean(T bean);
 
 }

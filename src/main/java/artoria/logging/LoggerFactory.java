@@ -11,11 +11,11 @@ import java.util.concurrent.ConcurrentMap;
  * @author Kahle
  */
 public class LoggerFactory {
-    private static final ConcurrentMap<String, FailSafeLogger> LOGGERS = new ConcurrentHashMap<String, FailSafeLogger>();
+    private static final ConcurrentMap<String, FailSafeLogger> LOGGERS;
     private static volatile LoggerProvider loggerProvider;
 
     static {
-
+        LOGGERS = new ConcurrentHashMap<String, FailSafeLogger>();
         LoggerFactory.setLoggerProvider(new JdkLoggerProvider());
     }
 
@@ -40,7 +40,7 @@ public class LoggerFactory {
             entry.getValue().setLogger(logger);
         }
         Logger logger = LoggerFactory.getLogger(LoggerFactory.class);
-        logger.info("Set logger provider: " + loggerProvider.getClass().getName());
+        logger.info("Set logger provider: {}", loggerProvider.getClass().getName());
     }
 
     /**

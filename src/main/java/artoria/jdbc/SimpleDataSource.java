@@ -3,8 +3,6 @@ package artoria.jdbc;
 import artoria.aop.Enhancer;
 import artoria.aop.Interceptor;
 import artoria.exception.ExceptionUtils;
-import artoria.file.FileFactory;
-import artoria.file.PropertiesFile;
 import artoria.util.Assert;
 import artoria.util.StringUtils;
 
@@ -27,7 +25,6 @@ import java.util.logging.Logger;
 public class SimpleDataSource implements DataSource {
     private static final String CLASS_NAME = SimpleDataSource.class.getName();
     private static final String UNSUPPORTED_OPERATION = "In " + CLASS_NAME + " this operation is unsupported. ";
-    private static final String DEFAULT_CONFIG_NAME = "jdbc.properties";
     private BlockingQueue<Connection> queue;
     private String driverClass = "com.mysql.jdbc.Driver";
     private String jdbcUrl;
@@ -35,14 +32,6 @@ public class SimpleDataSource implements DataSource {
     private String password;
     private int maxPoolSize = 8;
     private int minPoolSize = 2;
-
-    public SimpleDataSource() {
-        this(
-                ((PropertiesFile)
-                        FileFactory.getInstance(DEFAULT_CONFIG_NAME)
-                ).getProperties()
-        );
-    }
 
     public SimpleDataSource(Properties properties) {
         this(
@@ -146,12 +135,12 @@ public class SimpleDataSource implements DataSource {
         throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
-    private static class ConnectionInterceptor implements Interceptor {
+    private class ConnectionInterceptor implements Interceptor {
         private static final String PROXY_METHOD = "close";
         private BlockingQueue<Connection> queue;
         private Connection connection;
 
-        public ConnectionInterceptor(BlockingQueue<Connection> queue, Connection connection) {
+        ConnectionInterceptor(BlockingQueue<Connection> queue, Connection connection) {
             this.queue = queue;
             this.connection = connection;
         }

@@ -1,6 +1,6 @@
 package artoria.serialize;
 
-import artoria.codec.Hex;
+import artoria.codec.HexUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
@@ -13,13 +13,13 @@ public class SerializeUtilsTest implements Serializable {
     @Test
     public void serializeAndDeserialize() {
         SerializeUtilsTest obj = new SerializeUtilsTest();
-        log.info("" + obj);
+        log.info("{}", obj);
         byte[] bytes = SerializeUtils.serialize(obj);
-        String encode = Hex.getInstance(true).encodeToString(bytes);
+        String encode = HexUtils.encodeToString(bytes);
         log.info(encode);
 
         SerializeUtilsTest obj1 = (SerializeUtilsTest) SerializeUtils.deserialize(bytes);
-        log.info("" + obj1);
+        log.info("{}", obj1);
     }
 
 }

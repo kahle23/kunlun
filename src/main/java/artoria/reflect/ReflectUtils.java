@@ -17,30 +17,14 @@ public class ReflectUtils {
     private static Reflecter reflecter;
 
     public static Reflecter getReflecter() {
-        return reflecter != null
-                ? reflecter : DEFAULT_REFLECTER;
+
+        return reflecter != null ? reflecter : DEFAULT_REFLECTER;
     }
 
     public static void setReflecter(Reflecter reflecter) {
         Assert.notNull(reflecter, "Parameter \"reflecter\" must not null. ");
-        log.info("Set reflecter: " + reflecter.getClass().getName());
+        log.info("Set reflecter: {}", reflecter.getClass().getName());
         ReflectUtils.reflecter = reflecter;
-    }
-
-    public static Object newInstance(String className, Object... args) throws ClassNotFoundException
-            , InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Class<?> clazz = getReflecter().forName(className);
-        return args.length == 0 ? clazz.newInstance() : newInstance(clazz, args);
-    }
-
-    public static Object newInstance(Class<?> clazz, Object... args) throws InvocationTargetException
-            , NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        Reflecter reflecter = ReflectUtils.getReflecter();
-        Class<?>[] types = reflecter.findParameterTypes(args);
-        Constructor<?> constructor = reflecter.findConstructor(clazz, types);
-        reflecter.makeAccessible(constructor);
-        return constructor.newInstance(args);
     }
 
     public static Class<?>[] findParameterTypes(Object... values) {
@@ -63,12 +47,18 @@ public class ReflectUtils {
         getReflecter().makeAccessible(accessible);
     }
 
-    public static Constructor<?>[] findConstructors(Class<?> clazz) {
+    public static <T> T newInstance(Class<T> clazz, Object... args) throws NoSuchMethodException
+            , IllegalAccessException, InvocationTargetException, InstantiationException {
+
+        return getReflecter().newInstance(clazz, args);
+    }
+
+    public static <T> Constructor<T>[] findConstructors(Class<T> clazz) {
 
         return getReflecter().findConstructors(clazz);
     }
 
-    public static Constructor<?> findConstructor(Class<?> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
+    public static <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
 
         return getReflecter().findConstructor(clazz, parameterTypes);
     }

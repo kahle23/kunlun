@@ -1,5 +1,9 @@
 package artoria.logging;
 
+import artoria.io.StringBuilderWriter;
+import artoria.template.LoggerRenderer;
+import artoria.template.Renderer;
+
 import java.util.logging.Level;
 
 /**
@@ -7,109 +11,94 @@ import java.util.logging.Level;
  * @author Kahle
  */
 public class JdkLogger implements Logger {
+    private static Renderer loggerRenderer = new LoggerRenderer();
+
+    public static Renderer getLoggerRenderer() {
+
+        return loggerRenderer;
+    }
+
+    public static void setLoggerRenderer(Renderer loggerRenderer) {
+
+        JdkLogger.loggerRenderer = loggerRenderer;
+    }
+
     private final java.util.logging.Logger logger;
+
+    private void logp(Level level, String format, Object[] arguments, Throwable throwable) {
+        if (!logger.isLoggable(level)) { return; }
+        StackTraceElement element = new Throwable().getStackTrace()[3];
+        String clazzName = element.getClassName();
+        String methodName = element.getMethodName();
+        StringBuilderWriter writer = new StringBuilderWriter();
+        loggerRenderer.render(arguments, writer, null, format, null);
+        String message = writer.toString();
+        logger.logp(level, clazzName, methodName, message, throwable);
+    }
 
     public JdkLogger(java.util.logging.Logger logger) {
 
         this.logger = logger;
     }
 
-    private void logp(Level level, String message, Throwable t) {
-        if (!logger.isLoggable(level)) { return; }
-        StackTraceElement element = new Throwable().getStackTrace()[3];
-        String clazzName = element.getClassName();
-        String methodName = element.getMethodName();
-        logger.logp(level, clazzName, methodName, message, t);
+    @Override
+    public void trace(String format, Object... arguments) {
+
+        this.logp(Level.FINER, format, arguments, null);
     }
 
     @Override
-    public void trace(String message) {
+    public void trace(String message, Throwable throwable) {
 
-        this.logp(Level.FINER, message, null);
+        this.logp(Level.FINER, message, null, throwable);
     }
 
     @Override
-    public void trace(Throwable t) {
+    public void debug(String format, Object... arguments) {
 
-        this.logp(Level.FINER, t.getMessage(), t);
+        this.logp(Level.FINE, format, arguments, null);
     }
 
     @Override
-    public void trace(String message, Throwable t) {
+    public void debug(String message, Throwable throwable) {
 
-        this.logp(Level.FINER, message, t);
+        this.logp(Level.FINE, message, null, throwable);
     }
 
     @Override
-    public void debug(String message) {
+    public void info(String format, Object... arguments) {
 
-        this.logp(Level.FINE, message, null);
+        this.logp(Level.INFO, format, arguments, null);
     }
 
     @Override
-    public void debug(Throwable t) {
+    public void info(String message, Throwable throwable) {
 
-        this.logp(Level.FINE, t.getMessage(), t);
+        this.logp(Level.INFO, message, null, throwable);
     }
 
     @Override
-    public void debug(String message, Throwable t) {
+    public void warn(String format, Object... arguments) {
 
-        this.logp(Level.FINE, message, t);
+        this.logp(Level.WARNING, format, arguments, null);
     }
 
     @Override
-    public void info(String message) {
+    public void warn(String message, Throwable throwable) {
 
-        this.logp(Level.INFO, message, null);
+        this.logp(Level.WARNING, message, null, throwable);
     }
 
     @Override
-    public void info(Throwable t) {
+    public void error(String format, Object... arguments) {
 
-        this.logp(Level.INFO, t.getMessage(), t);
+        this.logp(Level.SEVERE, format, arguments, null);
     }
 
     @Override
-    public void info(String message, Throwable t) {
+    public void error(String message, Throwable throwable) {
 
-        this.logp(Level.INFO, message, t);
-    }
-
-    @Override
-    public void warn(String message) {
-
-        this.logp(Level.WARNING, message, null);
-    }
-
-    @Override
-    public void warn(Throwable t) {
-
-        this.logp(Level.WARNING, t.getMessage(), t);
-    }
-
-    @Override
-    public void warn(String message, Throwable t) {
-
-        this.logp(Level.WARNING, message, t);
-    }
-
-    @Override
-    public void error(String message) {
-
-        this.logp(Level.SEVERE, message, null);
-    }
-
-    @Override
-    public void error(Throwable t) {
-
-        this.logp(Level.SEVERE, t.getMessage(), t);
-    }
-
-    @Override
-    public void error(String message, Throwable t) {
-
-        this.logp(Level.SEVERE, message, t);
+        this.logp(Level.SEVERE, message, null, throwable);
     }
 
     @Override

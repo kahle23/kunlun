@@ -12,10 +12,10 @@ public class ClassUtilsTest {
     @Test
     public void test1() {
         byte[] bytes = new byte[10];
-        log.info("" + bytes.getClass());
+        log.info("{}", bytes.getClass());
         String[] strings = new String[10];
-        log.info("" + strings.getClass());
-        log.info("" + Array.newInstance(String.class, 0).getClass());
+        log.info("{}", strings.getClass());
+        log.info("{}", Array.newInstance(String.class, 0).getClass());
     }
 
 }

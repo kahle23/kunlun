@@ -1,4 +1,7 @@
-package artoria.util;
+package artoria.file;
+
+import artoria.util.Assert;
+import artoria.util.StringUtils;
 
 import java.io.File;
 import java.net.URL;
@@ -6,26 +9,11 @@ import java.net.URL;
 import static artoria.common.Constants.*;
 
 /**
- * Path tools.
+ * Filename and filepath tools.
  * @author Kahle
  */
-public class PathUtils {
-    private static final Class<?> THIS_CLASS = PathUtils.class;
-
-    /**
-     *
-     * @param subpath
-     * @return
-     */
-    public static String findClasspath(String subpath) {
-        Assert.notBlank(subpath, "Parameter \"subpath\" must not blank. ");
-        if (!subpath.startsWith(SLASH)) {
-            subpath = SLASH + subpath;
-        }
-        URL res = THIS_CLASS.getResource(subpath);
-        File file = res != null ? new File(res.getFile()) : null;
-        return file != null ? file.toString() : null;
-    }
+public class FilenameUtils {
+    private static final Class<?> THIS_CLASS = FilenameUtils.class;
 
     /**
      *
@@ -59,7 +47,7 @@ public class PathUtils {
         Assert.notNull(parent, "Parameter \"parent\" must not null. ");
         String sourceStr = source.toString();
         String parentStr = parent.toString();
-        return PathUtils.subPath(sourceStr, parentStr);
+        return FilenameUtils.subPath(sourceStr, parentStr);
     }
 
     /**
@@ -95,7 +83,7 @@ public class PathUtils {
      * @param path
      * @return
      */
-    public static String stripExtension(String path) {
+    public static String removeExtension(String path) {
         if (path == null) { return null; }
         int extIndex = path.lastIndexOf(DOT);
         if (extIndex == -1) { return path; }

@@ -16,13 +16,13 @@ public class LockUtils {
     private static Locker locker;
 
     public static Locker getLocker() {
-        return locker != null
-                ? locker : DEFAULT_LOCKER;
+
+        return locker != null ? locker : DEFAULT_LOCKER;
     }
 
     public static void setLocker(Locker locker) {
         Assert.notNull(locker, "Parameter \"locker\" must not null. ");
-        log.info("Set locker: " + locker.getClass().getName());
+        log.info("Set locker: {}", locker.getClass().getName());
         LockUtils.locker = locker;
     }
 

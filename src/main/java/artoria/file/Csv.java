@@ -241,13 +241,13 @@ public class Csv extends TextFile implements Table {
     }
 
     @Override
-    public Table getTemplate() {
+    public byte[] getTemplate() {
 
         return null;
     }
 
     @Override
-    public void setTemplate(Table template) {
+    public void setTemplate(byte[] template) {
     }
 
     @Override
@@ -302,6 +302,7 @@ public class Csv extends TextFile implements Table {
 
     @Override
     public <T> List<T> toBeanList(Class<T> clazz) {
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         List<Map<String, Object>> mapList = this.toMapList();
         return BeanUtils.mapToBeanInList(mapList, clazz);
     }
@@ -309,49 +310,8 @@ public class Csv extends TextFile implements Table {
     @Override
     public <T> void fromBeanList(List<T> beanList) {
         Assert.notEmpty(beanList, "Parameter \"beanList\" must not empty. ");
-        content.clear();
-        List<Map<String, Object>> beanMapList = BeanUtils.beanToMapInList(beanList);
-        List<String> headerList = new ArrayList<String>();
-        if (rowStartNumber != 0) {
-            for (int i = 0; i < rowStartNumber; i++) {
-                headerList.add(EMPTY_STRING);
-            }
-        }
-        boolean haveHeaders = MapUtils.isNotEmpty(propertiesMapping);
-        if (haveHeaders) {
-            headerList.addAll(propertiesMapping.values());
-        }
-        else {
-            Map<String, Object> first = CollectionUtils.takeFirstNotNullElement(beanMapList);
-            headerList.addAll(first.keySet());
-        }
-        if (columnStartNumber != 0) {
-            for (int i = 0; i < columnStartNumber; i++) {
-                content.add(new ArrayList<String>());
-            }
-        }
-        content.add(headerList);
-        for (Map<String, Object> beanMap : beanMapList) {
-            if (beanMap == null) { continue; }
-            List<String> row = new ArrayList<String>();
-            if (rowStartNumber != 0) {
-                for (int i = 0; i < rowStartNumber; i++) {
-                    row.add(EMPTY_STRING);
-                }
-            }
-            if (haveHeaders) {
-                for (String property : propertiesMapping.keySet()) {
-                    Object val = beanMap.get(property);
-                    row.add(val != null ? val.toString() : EMPTY_STRING);
-                }
-            }
-            else {
-                for (Object val : beanMap.values()) {
-                    row.add(val != null ? val.toString() : EMPTY_STRING);
-                }
-            }
-            content.add(row);
-        }
+        List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(beanList);
+        this.fromMapList(mapList);
     }
 
     @Override
@@ -374,8 +334,8 @@ public class Csv extends TextFile implements Table {
                 isFirst = false;
                 continue;
             }
-            Map<String, Object> map = new HashMap<String, Object>();
             int pLen = propertyList.size(), rowSize = row.size();
+            Map<String, Object> map = new HashMap<String, Object>(pLen);
             for (int j = rowStartNumber; j < pLen; j++) {
                 String cell = j < rowSize ? row.get(j) : null;
                 if (StringUtils.isBlank(cell)) { cell = null; }
@@ -389,8 +349,49 @@ public class Csv extends TextFile implements Table {
 
     @Override
     public void fromMapList(List<Map<String, Object>> mapList) {
-
-        this.fromBeanList(mapList);
+        Assert.notEmpty(mapList, "Parameter \"mapList\" must not empty. ");
+        content.clear();
+        List<String> headerList = new ArrayList<String>();
+        if (rowStartNumber != 0) {
+            for (int i = 0; i < rowStartNumber; i++) {
+                headerList.add(EMPTY_STRING);
+            }
+        }
+        boolean haveHeaders = MapUtils.isNotEmpty(propertiesMapping);
+        if (haveHeaders) {
+            headerList.addAll(propertiesMapping.values());
+        }
+        else {
+            Map<String, Object> first = CollectionUtils.getFirstNotNullElement(mapList);
+            headerList.addAll(first.keySet());
+        }
+        if (columnStartNumber != 0) {
+            for (int i = 0; i < columnStartNumber; i++) {
+                content.add(new ArrayList<String>());
+            }
+        }
+        content.add(headerList);
+        for (Map<String, Object> beanMap : mapList) {
+            if (beanMap == null) { continue; }
+            List<String> row = new ArrayList<String>();
+            if (rowStartNumber != 0) {
+                for (int i = 0; i < rowStartNumber; i++) {
+                    row.add(EMPTY_STRING);
+                }
+            }
+            if (haveHeaders) {
+                for (String property : propertiesMapping.keySet()) {
+                    Object val = beanMap.get(property);
+                    row.add(val != null ? val.toString() : EMPTY_STRING);
+                }
+            }
+            else {
+                for (Object val : beanMap.values()) {
+                    row.add(val != null ? val.toString() : EMPTY_STRING);
+                }
+            }
+            content.add(row);
+        }
     }
 
 }

@@ -32,10 +32,10 @@ public class SimpleBeanCopier implements BeanCopier {
     }
 
     @Override
-    public void copy(Object from, Object to, List<String> ignoreProperties, TypeConverter converter) {
+    public void copy(Object from, Object to, List<String> ignoreAttributes, TypeConverter converter) {
         Assert.notNull(from, "Parameter \"from\" must is not null. ");
         Assert.notNull(to, "Parameter \"to\" must is not null. ");
-        boolean hasIgnore = CollectionUtils.isNotEmpty(ignoreProperties);
+        boolean hasIgnore = CollectionUtils.isNotEmpty(ignoreAttributes);
         boolean hasCvt = converter != null;
         Class<?> fromClass = from.getClass();
         Class<?> toClass = to.getClass();
@@ -44,7 +44,7 @@ public class SimpleBeanCopier implements BeanCopier {
         for (Map.Entry<String, Method> entry : fromMths.entrySet()) {
             String name = entry.getKey();
             // do ignore
-            if (hasIgnore && ignoreProperties.contains(name)) {
+            if (hasIgnore && ignoreAttributes.contains(name)) {
                 continue;
             }
             Method destMth = toMths.get(name);

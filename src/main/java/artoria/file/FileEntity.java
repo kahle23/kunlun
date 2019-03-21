@@ -11,6 +11,30 @@ import java.io.OutputStream;
 public interface FileEntity {
 
     /**
+     * Get file name.
+     * @return The name of the file to get
+     */
+    String getName();
+
+    /**
+     * Set file name.
+     * @param fileName The name of the file to set
+     */
+    void setName(String fileName);
+
+    /**
+     * Get filename extension.
+     * @return Filename extension
+     */
+    String getExtension();
+
+    /**
+     * Set filename extension.
+     * @param extension Filename extension
+     */
+    void setExtension(String extension);
+
+    /**
      * Read from input stream.
      * @param inputStream The input stream that will be read
      * @return Read length

@@ -23,93 +23,63 @@ public class FailSafeLogger implements Logger {
     }
 
     @Override
-    public void trace(String message) {
+    public void trace(String format, Object... arguments) {
 
-        logger.trace(message);
+        logger.trace(format, arguments);
     }
 
     @Override
-    public void trace(Throwable t) {
+    public void trace(String message, Throwable throwable) {
 
-        logger.trace(t);
+        logger.trace(message, throwable);
     }
 
     @Override
-    public void trace(String message, Throwable t) {
+    public void debug(String format, Object... arguments) {
 
-        logger.trace(message, t);
+        logger.debug(format, arguments);
     }
 
     @Override
-    public void debug(String message) {
+    public void debug(String message, Throwable throwable) {
 
-        logger.debug(message);
+        logger.debug(message, throwable);
     }
 
     @Override
-    public void debug(Throwable t) {
+    public void info(String format, Object... arguments) {
 
-        logger.debug(t);
+        logger.info(format, arguments);
     }
 
     @Override
-    public void debug(String message, Throwable t) {
+    public void info(String message, Throwable throwable) {
 
-        logger.debug(message, t);
+        logger.info(message, throwable);
     }
 
     @Override
-    public void info(String message) {
+    public void warn(String format, Object... arguments) {
 
-        logger.info(message);
+        logger.warn(format, arguments);
     }
 
     @Override
-    public void info(Throwable t) {
+    public void warn(String message, Throwable throwable) {
 
-        logger.info(t);
+        logger.warn(message, throwable);
     }
 
     @Override
-    public void info(String message, Throwable t) {
+    public void error(String format, Object... arguments) {
 
-        logger.info(message, t);
+        logger.error(format, arguments);
     }
 
     @Override
-    public void warn(String message) {
+    public void error(String message, Throwable throwable) {
 
-        logger.warn(message);
-    }
-
-    @Override
-    public void warn(Throwable t) {
-
-        logger.warn(t);
-    }
-
-    @Override
-    public void warn(String message, Throwable t) {
-
-        logger.warn(message, t);
-    }
-
-    @Override
-    public void error(String message) {
-
-        logger.error(message);
-    }
-
-    @Override
-    public void error(Throwable t) {
-
-        logger.error(t);
-    }
-
-    @Override
-    public void error(String message, Throwable t) {
-
-        logger.error(message, t);
+        logger.error(message, throwable);
     }
 
     @Override

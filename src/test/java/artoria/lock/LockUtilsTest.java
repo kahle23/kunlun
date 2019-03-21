@@ -43,14 +43,14 @@ public class LockUtilsTest {
                         log.info(threadName);
                         LockUtils.lock(lockName);
                         if (num < 0) { continue; }
-                        log.info(threadName + " | " + (num--));
+                        log.info("{} | {}", threadName, num--);
                     }
                     finally {
-                        log.info(threadName + " unlock");
+                        log.info("{} unlock", threadName);
                         LockUtils.unlock(lockName);
                     }
                 }
-                log.info(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+                log.info("{}: {}ms", threadName, System.currentTimeMillis() - millis);
             }
         };
         for (int i = 0; i < 20; i++) {
@@ -77,18 +77,18 @@ public class LockUtilsTest {
                     catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    log.info(threadName + " tryLock: " + tryLock);
+                    log.info("{} tryLock: {}", threadName, tryLock);
                     if (!tryLock) { continue; }
                     try {
                         if (num < 0) { continue; }
-                        log.info(threadName + " | " + (num--));
+                        log.info("{} | {}", threadName, num--);
                     }
                     finally {
-                        log.info(threadName + " unlock");
+                        log.info("{} unlock", threadName);
                         LockUtils.unlock(lockName);
                     }
                 }
-                log.info(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+                log.info("{}: {}ms", threadName, System.currentTimeMillis() - millis);
             }
         };
         for (int i = 0; i < 20; i++) {
@@ -112,14 +112,14 @@ public class LockUtilsTest {
                         log.info(threadName);
                         lock.lock();
                         if (num < 0) { continue; }
-                        log.info(threadName + " | " + (num--));
+                        log.info("{} | {}", threadName, num--);
                     }
                     finally {
-                        log.info(threadName + " unlock");
+                        log.info("{} unlock", threadName);
                         lock.unlock();
                     }
                 }
-                log.info(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+                log.info("{}: {}ms", threadName, System.currentTimeMillis() - millis);
             }
         };
         for (int i = 0; i < 20; i++) {
@@ -147,18 +147,18 @@ public class LockUtilsTest {
                     catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    log.info(threadName + " tryLock: " + tryLock);
+                    log.info("{} tryLock: {}", threadName, tryLock);
                     if (!tryLock) { continue; }
                     try {
                         if (num < 0) { continue; }
-                        log.info(threadName + " | " + (num--));
+                        log.info("{} | {}", threadName, num--);
                     }
                     finally {
-                        log.info(threadName + " unlock");
+                        log.info("{} unlock", threadName);
                         lock.unlock();
                     }
                 }
-                log.info(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+                log.info("{}: {}ms", threadName, System.currentTimeMillis() - millis);
             }
         };
         for (int i = 0; i < 20; i++) {
@@ -181,12 +181,12 @@ public class LockUtilsTest {
                     log.info(threadName);
                     synchronized (lock) {
                         if (num >= 0) {
-                            log.info(threadName + " | " + (num--));
+                            log.info("{} | {}", threadName, num--);
                         }
-                        log.info(threadName + " unlock");
+                        log.info("{} unlock", threadName);
                     }
                 }
-                log.info(threadName + ": " + (System.currentTimeMillis() - millis) + "ms");
+                log.info("{}: {}ms", threadName, System.currentTimeMillis() - millis);
             }
         };
         for (int i = 0; i < 20; i++) {

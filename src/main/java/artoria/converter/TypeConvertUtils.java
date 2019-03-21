@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Convert tools.
+ * Type convert tools.
  * @author Kahle
  */
 public class TypeConvertUtils {

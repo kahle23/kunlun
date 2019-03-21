@@ -5,7 +5,6 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
-import artoria.util.PathUtils;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
@@ -102,7 +101,7 @@ public class FileUtils {
             // Don't have subfile or subdirectory, try delete.
             if (ArrayUtils.isEmpty(files)) {
                 if (!current.delete()) {
-                    log.info("Directory \"" + current + "\" delete fail. ");
+                    log.info("Directory \"{}\" delete fail. ", current);
                 }
                 continue;
             }
@@ -119,11 +118,11 @@ public class FileUtils {
                     fileList.addFirst(file);
                 }
                 else if (!file.delete()) {
-                    log.info("File \"" + file + "\" delete fail. ");
+                    log.info("File \"{}\" delete fail. ", file);
                 }
             }
             if (!addCurrent && !current.delete()) {
-                log.info("Directory \"" + current + "\" delete fail. ");
+                log.info("Directory \"{}\" delete fail. ", current);
             }
         }
     }
@@ -208,7 +207,7 @@ public class FileUtils {
             File[] files = fileList.removeFirst().listFiles();
             if (ArrayUtils.isEmpty(files)) { continue; }
             for (File file : files) {
-                String subPath = PathUtils.subPath(file, source);
+                String subPath = FilenameUtils.subPath(file, source);
                 File destPath = new File(destination, subPath);
                 if (file.isDirectory()) {
                     if (!destPath.exists() && !destPath.mkdirs()) {

@@ -10,12 +10,14 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Date;
 
+import static artoria.common.Constants.DEFAULT_DATE_PATTERN;
+
 /**
  * String converter.
  * @author Kahle
  */
 public class StringConverter implements TypeConverter {
-    private String pattern = DateUtils.DEFAULT_DATE_PATTERN;
+    private String pattern = DEFAULT_DATE_PATTERN;
 
     public StringConverter() {
     }
@@ -40,7 +42,7 @@ public class StringConverter implements TypeConverter {
         if (StringUtils.isNumeric(srcStr)) {
             BigInteger bInt = new BigInteger(srcStr);
             // Maybe is unix timestamp
-            // so hand on NumberConverter
+            // So hand on NumberConverter
             return TypeConvertUtils.convert(bInt, target);
         }
         try {

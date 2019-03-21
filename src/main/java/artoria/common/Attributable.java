@@ -42,4 +42,9 @@ public interface Attributable {
      */
     void addAttributes(Map<String, Object> attributes);
 
+    /**
+     * Clear attributes.
+     */
+    void clearAttributes();
+
 }

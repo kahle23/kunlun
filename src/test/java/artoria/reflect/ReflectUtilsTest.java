@@ -29,7 +29,7 @@ public class ReflectUtilsTest {
         Field[] fields = ReflectUtils.findAccessFields(Student.class);
         for (Field field : fields) {
             ReflectUtils.makeAccessible(field);
-            log.info(field.getName() + " | " + field.get(student));
+            log.info("{} | {}", field.getName(), field.get(student));
         }
     }
 
@@ -45,14 +45,14 @@ public class ReflectUtilsTest {
     public void findReadMethodsAndWriteMethods() throws Exception {
         Map<String, Method> readMethods = ReflectUtils.findReadMethods(Student.class);
         for (Map.Entry<String, Method> entry : readMethods.entrySet()) {
-            log.info(entry.getKey() + " | " + entry.getValue().getName());
+            log.info("{} | {}", entry.getKey(), entry.getValue().getName());
         }
 
         log.info("------------------------");
 
         Map<String, Method> writeMethods = ReflectUtils.findWriteMethods(Student.class);
         for (Map.Entry<String, Method> entry : writeMethods.entrySet()) {
-            log.info(entry.getKey() + " | " + entry.getValue().getName());
+            log.info("{} | {}", entry.getKey(), entry.getValue().getName());
         }
     }
 

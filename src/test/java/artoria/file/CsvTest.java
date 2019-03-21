@@ -46,8 +46,8 @@ public class CsvTest {
         csv.setRowContent(csv.getLastRowNumber() + 1
                 , Arrays.asList("TEST1", "TEST2", "TEST3", "TEST4"));
         log.info(NEWLINE + csv.writeToString());
-        log.info("RowContent: " + csv.getRowContent(1));
-        log.info("CellContent: " + csv.getCellContent(2, 1));
+        log.info("RowContent: {}", csv.getRowContent(1));
+        log.info("CellContent: {}", csv.getCellContent(2, 1));
     }
 
     @Test

@@ -24,7 +24,7 @@ public class HttpUtils {
 
     public static void setHttpClient(HttpClient httpClient) {
         Assert.notNull(httpClient, "Parameter \"httpClient\" must not null. ");
-        log.info("Set http client: " + httpClient.getClass().getName());
+        log.info("Set http client: {}", httpClient.getClass().getName());
         HttpUtils.httpClient = httpClient;
     }
 

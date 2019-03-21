@@ -16,21 +16,21 @@ public class BeanMapTest {
         BeanMap map = new SimpleBeanMap();
         map.setBean(student);
         log.info(JSON.toJSONString(student));
-        log.info("" + map);
-        log.info("" + map.put("name", "lisi"));
-        log.info("" + map);
+        log.info("{}", map);
+        log.info("{}", map.put("name", "lisi"));
+        log.info("{}", map);
         log.info(JSON.toJSONString(student));
     }
 
     @Test
     public void testClone() throws CloneNotSupportedException {
         BeanMap map = new SimpleBeanMap(student);
-        log.info("" + map);
+        log.info("{}", map);
 
         BeanMap newMap = (SimpleBeanMap) map.clone();
-        log.info("" + (student == newMap.getBean()));
+        log.info("{}", student == newMap.getBean());
         newMap.put("name", "lisi");
-        log.info("" + newMap);
+        log.info("{}", newMap);
     }
 
 }

@@ -1,24 +1,23 @@
 package artoria.common;
 
-import java.util.List;
 import java.util.Map;
 
 /**
- * Can convert to or convert back from map list.
+ * Can convert to or convert back from map.
  * @author Kahle
  */
 public interface Mapable {
 
     /**
-     * Convert to map list.
-     * @return Converted map list
+     * Convert to map.
+     * @return Converted map
      */
-    List<Map<String, Object>> toMapList();
+    Map<String, Object> toMap();
 
     /**
-     * Convert back from map list.
-     * @param mapList Input map list
+     * Convert back from map.
+     * @param map Input map
      */
-    void fromMapList(List<Map<String, Object>> mapList);
+    void fromMap(Map<String, Object> map);
 
 }

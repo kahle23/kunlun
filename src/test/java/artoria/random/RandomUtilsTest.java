@@ -14,36 +14,36 @@ public class RandomUtilsTest {
     public void testNextInt() {
         int bound = 100;
         for (int i = 0; i < 100; i++) {
-            log.info("" + RandomUtils.nextInt());
-            log.info("" + RandomUtils.nextInt(bound));
+            log.info("{}", RandomUtils.nextInt());
+            log.info("{}", RandomUtils.nextInt(bound));
         }
     }
 
     @Test
     public void testNextLong() {
         for (int i = 0; i < 20; i++) {
-            log.info("" + RandomUtils.nextLong());
+            log.info("{}", RandomUtils.nextLong());
         }
     }
 
     @Test
     public void testNextFloat() {
         for (int i = 0; i < 20; i++) {
-            log.info("" + RandomUtils.nextFloat());
+            log.info("{}", RandomUtils.nextFloat());
         }
     }
 
     @Test
     public void testNextDouble() {
         for (int i = 0; i < 20; i++) {
-            log.info("" + RandomUtils.nextDouble());
+            log.info("{}", RandomUtils.nextDouble());
         }
     }
 
     @Test
     public void testNextBoolean() {
         for (int i = 0; i < 20; i++) {
-            log.info("" + RandomUtils.nextBoolean());
+            log.info("{}", RandomUtils.nextBoolean());
         }
     }
 

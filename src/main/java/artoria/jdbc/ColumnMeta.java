@@ -10,53 +10,43 @@ import java.sql.ResultSetMetaData;
  * @author Kahle
  */
 public class ColumnMeta extends AbstractAttributable implements Serializable {
-
     /**
      * "COLUMN_NAME"
      */
     private String name;
-
     /**
      * "TYPE_NAME"
      */
     private String type;
-
     /**
      * The fully-qualified name of the Java class.
      * @see ResultSetMetaData#getColumnClassName(int)
      */
     private String className;
-
     /**
      * "COLUMN_SIZE" maybe is "null"
      */
     private Integer size;
-
     /**
      * "DECIMAL_DIGITS"
      */
     private Integer decimalDigits;
-
     /**
      * "IS_NULLABLE" is "NO" or "YES"
      */
     private String nullable;
-
     /**
      * "COLUMN_DEF"
      */
     private String defaultValue;
-
     /**
      * "IS_AUTOINCREMENT" is "NO" or "YES"
      */
     private String autoincrement;
-
     /**
      * Is primary key.
      */
     private Boolean primaryKey;
-
     /**
      * "REMARKS"
      */

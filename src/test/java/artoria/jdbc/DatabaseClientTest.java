@@ -1,6 +1,8 @@
 package artoria.jdbc;
 
 import artoria.entity.User;
+import artoria.exception.ExceptionUtils;
+import artoria.file.Prop;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import com.alibaba.fastjson.JSON;
@@ -18,15 +20,27 @@ import java.util.Map;
 @Ignore
 public class DatabaseClientTest {
     private static Logger log = LoggerFactory.getLogger(DatabaseClientTest.class);
-    private DataSource dataSource = new SimpleDataSource();
-    private DatabaseClient dbClient = new DatabaseClient(dataSource);
+    private DatabaseClient dbClient;
+    private DataSource dataSource;
+
+    {
+        try {
+            Prop prop = new Prop();
+            prop.readFromClasspath("jdbc.properties");
+            dataSource = new SimpleDataSource(prop.getProperties());
+            dbClient = new DatabaseClient(dataSource);
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
+        }
+    }
 
     @Test
     public void getTableMeta() throws Exception {
         List<TableMeta> tableMetaList = dbClient.getTableMetaList();
         for (TableMeta tableMeta : tableMetaList) {
             log.info("--------");
-            log.info(tableMeta.getName() + " | " + tableMeta.getRemarks());
+            log.info("{} | {}", tableMeta.getName(), tableMeta.getRemarks());
             log.info(tableMeta.getPrimaryKey());
             for (ColumnMeta columnMeta : tableMeta.getColumnMetaList()) {
                 log.info(JSON.toJSONString(columnMeta, true));
@@ -46,7 +60,7 @@ public class DatabaseClientTest {
                 return query.next() ? query.getInt(1) : null;
             }
         });
-        log.info(execute + "");
+        log.info("{}", execute);
     }
 
     @Test
@@ -63,17 +77,17 @@ public class DatabaseClientTest {
                         return true;
                     }
                 });
-                log.info("nestedTransaction: " + transaction);
+                log.info("nestedTransaction: {}", transaction);
                 return true;
             }
         });
-        log.info("transaction: " + transaction);
+        log.info("transaction: {}", transaction);
     }
 
     @Test
     public void update() throws Exception {
         int i = dbClient.update("insert into t_user values(?, ?, ?, ?, ?, ?)", 1, "zhangsan", 19, "zhangsan@email.com", "", "");
-        log.info(i + "");
+        log.info("{}", i);
     }
 
     @Test
@@ -98,7 +112,7 @@ public class DatabaseClientTest {
     public void queryFirst() throws Exception {
         Map<String, Object> map = dbClient.queryFirst("select * from t_user");
         // Map<String, Object> map = dbClient.queryFirst("select * from t_user where name = ?", "zhangsan");
-        log.info(map + "");
+        log.info("{}", map);
     }
 
     @Test

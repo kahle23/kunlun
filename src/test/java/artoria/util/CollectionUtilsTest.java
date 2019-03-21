@@ -26,14 +26,8 @@ public class CollectionUtilsTest {
 
     @Test
     public void testTakeFirstNotNullElement() {
-        Person person = CollectionUtils.takeFirstNotNullElement(list);
+        Person person = CollectionUtils.getFirstNotNullElement(list);
         log.info(JSON.toJSONString(person, true));
-    }
-
-    @Test
-    public void sortTest() {
-        CollectionUtils.sort(list, true, "age", "height", "weight");
-        log.info(JSON.toJSONString(list, true));
     }
 
 }

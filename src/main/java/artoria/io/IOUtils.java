@@ -11,7 +11,6 @@ import java.net.URLConnection;
 import java.nio.channels.Selector;
 
 import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
-import static artoria.common.Constants.SLASH;
 
 /**
  * IO tools.
@@ -20,13 +19,6 @@ import static artoria.common.Constants.SLASH;
 public class IOUtils {
     public static final int DEFAULT_BUFFER_SIZE = 8192;
     public static final int EOF = -1;
-
-    public static InputStream findClasspath(String subpath) {
-        if (!subpath.startsWith(SLASH)) {
-            subpath = SLASH + subpath;
-        }
-        return IOUtils.class.getResourceAsStream(subpath);
-    }
 
 //    TODO: 1.7
 //    public static void closeQuietly(AutoCloseable closeable) {
@@ -39,8 +31,9 @@ public class IOUtils {
 //            }
 //        }
 //    }
-//    TODO: 1.7 Remove when jdk 1.7
+
     public static void closeQuietly(Object closeable) {
+        // TODO: 1.7 Remove when jdk 1.7
         if (closeable != null) {
             try {
                 String close = "close";

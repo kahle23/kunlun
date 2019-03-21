@@ -28,12 +28,12 @@ public class HttpClientTest {
         request.setMethod(HttpMethod.GET);
         request.setUrl(testUrl0);
         HttpResponse response = httpClient.execute(request);
-        log.info(response.getStatusCode() + " | " + response.getStatusMessage());
+        log.info("{} | {}", response.getStatusCode(), response.getStatusMessage());
         log.info(response.getBodyAsString());
 
         request.setUrl(testUrl1);
         response = httpClient.execute(request);
-        log.info(response.getStatusCode() + " | " + response.getStatusMessage());
+        log.info("{} | {}", response.getStatusCode(), response.getStatusMessage());
         log.info(response.getBodyAsString());
     }
 
@@ -44,7 +44,7 @@ public class HttpClientTest {
         request.setUrl("http://ip.chinaz.com/getip.aspx");
         request.setProxy("127.0.0.1", 1080);
         request.addHeader(PROXY_AUTHORIZATION, BASIC +
-                        Base64Utils.encodeToString(("admin" + COLON + "12345").getBytes(DEFAULT_CHARSET_NAME)));
+                Base64Utils.encodeToString(("admin" + COLON + "12345").getBytes(DEFAULT_CHARSET_NAME)));
         log.info(httpClient.execute(request).getBodyAsString());
     }
 
@@ -58,7 +58,7 @@ public class HttpClientTest {
         request.setResponseBodyToStream(System.out);
         request.setResponseBodyToWriter(new OutputStreamWriter(System.out));
         HttpResponse response = httpClient.execute(request);
-        log.info(response.getStatusCode() + " | " + response.getStatusMessage());
+        log.info("{} | {}", response.getStatusCode(), response.getStatusMessage());
         log.info(response.getBodyAsString());
     }
 
@@ -69,7 +69,7 @@ public class HttpClientTest {
         request.setUrl("https://");
         request.addParameter("file", new File("e:\\Temp\\2c6e0001b9bb631930b9.jpg"));
         HttpResponse response = httpClient.execute(request);
-        log.info(response.getStatusCode() + " | " + response.getStatusMessage());
+        log.info("{} | {}", response.getStatusCode(), response.getStatusMessage());
         log.info(response.getBodyAsString());
     }
 

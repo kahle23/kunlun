@@ -1,7 +1,7 @@
 package artoria.file;
 
-import artoria.common.Beanable;
-import artoria.common.Mapable;
+import artoria.common.Beansable;
+import artoria.common.Mapsable;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
  * Abstract table.
  * @author Kahle
  */
-public interface Table extends Beanable, Mapable {
+public interface Table extends Beansable, Mapsable {
 
     /**
      * Get last row number.
@@ -81,15 +81,15 @@ public interface Table extends Beanable, Mapable {
 
     /**
      * Get template.
-     * @return Table template
+     * @return Template data
      */
-    Table getTemplate();
+    byte[] getTemplate();
 
     /**
      * Set template and the style of the template will be inherited.
-     * @param template Table template
+     * @param template Template data
      */
-    void setTemplate(Table template);
+    void setTemplate(byte[] template);
 
     /**
      * Add header mapping.

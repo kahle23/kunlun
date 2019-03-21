@@ -96,7 +96,7 @@ public class DefaultHttpClient implements HttpClient {
         return needsMulti;
     }
 
-    private HostnameVerifier takeUnSecureHostnameVerifier() throws IOException {
+    private HostnameVerifier createUnSecureHostnameVerifier() throws IOException {
         return new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
@@ -105,7 +105,7 @@ public class DefaultHttpClient implements HttpClient {
         };
     }
 
-    private SSLSocketFactory takeUnSecureSSLSocketFactory() throws IOException {
+    private SSLSocketFactory createUnSecureSSLSocketFactory() throws IOException {
         if (sslSocketFactory != null) { return sslSocketFactory; }
         synchronized (this) {
             if (sslSocketFactory != null) { return sslSocketFactory; }
@@ -146,7 +146,7 @@ public class DefaultHttpClient implements HttpClient {
         }
     }
 
-    private Map<String, List<String>> takeHeaders(HttpURLConnection conn) {
+    private Map<String, List<String>> getHeaders(HttpURLConnection conn) {
         // The default sun impl of conn.getHeaderFields() returns header values out of order
         final LinkedHashMap<String, List<String>> headers = new LinkedHashMap<String, List<String>>();
         int i = 0;
@@ -236,7 +236,7 @@ public class DefaultHttpClient implements HttpClient {
         response.setStatusCode(conn.getResponseCode());
         response.setStatusMessage(conn.getResponseMessage());
 
-        Map<String, List<String>> headers = this.takeHeaders(conn);
+        Map<String, List<String>> headers = this.getHeaders(conn);
         this.handleResponseHeaders(response, headers);
         this.handleResponseCharset(response);
 
@@ -454,8 +454,8 @@ public class DefaultHttpClient implements HttpClient {
         if (conn instanceof HttpsURLConnection
                 && !request.getValidateTLSCertificate()) {
             HttpsURLConnection hsConn = (HttpsURLConnection) conn;
-            SSLSocketFactory sf = this.takeUnSecureSSLSocketFactory();
-            HostnameVerifier hv = this.takeUnSecureHostnameVerifier();
+            SSLSocketFactory sf = this.createUnSecureSSLSocketFactory();
+            HostnameVerifier hv = this.createUnSecureHostnameVerifier();
             hsConn.setSSLSocketFactory(sf);
             hsConn.setHostnameVerifier(hv);
         }

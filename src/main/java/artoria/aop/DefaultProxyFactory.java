@@ -1,7 +1,7 @@
 package artoria.aop;
 
 import artoria.util.Assert;
-import artoria.util.ClassUtils;
+import artoria.util.ClassLoaderUtils;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -12,7 +12,7 @@ import java.lang.reflect.Proxy;
  * @author Kahle
  */
 public class DefaultProxyFactory implements ProxyFactory {
-    private static final ClassLoader LOADER = ClassUtils.getDefaultClassLoader();
+    private static final ClassLoader LOADER = ClassLoaderUtils.getDefaultClassLoader();
 
     private static class InvocationHandlerAdapter implements InvocationHandler {
         private Interceptor interceptor;

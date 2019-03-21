@@ -2,24 +2,29 @@ package artoria.codec;
 
 import artoria.util.Assert;
 
+import java.io.Serializable;
+
 import static artoria.io.IOUtils.EOF;
 
 /**
  * Unicode encode and decode tools.
  * @author Kahle
  */
-public class Unicode implements Encoder<String>, Decoder<String> {
+public class Unicode implements StringEncoder, StringDecoder, Serializable {
     private static final String BACKLASH_U = "\\u";
     private static final int UNICODE_LENGTH = 6;
     private static final int RADIX = 16;
-    private static final Unicode INSTANCE = new Unicode();
 
-    public static Unicode getInstance() {
+    @Override
+    public Object encode(Object source) throws EncodeException {
 
-        return INSTANCE;
+        return this.encode((String) source);
     }
 
-    private Unicode() {
+    @Override
+    public Object decode(Object source) throws DecodeException {
+
+        return this.decode((String) source);
     }
 
     @Override
