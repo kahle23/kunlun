@@ -11,15 +11,15 @@ public class NumberUtilsTest {
 
     @Test
     public void test1() {
-        log.info("" + NumberUtils.round(578.4000345f));
-        log.info("" + NumberUtils.round(578.44325f).doubleValue() + 666);
-        log.info("" + NumberUtils.round(1578.478545f));
-        log.info("" + NumberUtils.round(12578.4455f));
+        log.info("{}", NumberUtils.round(578.4000345f));
+        log.info("{}", NumberUtils.round(578.44325f).doubleValue() + 666);
+        log.info("{}", NumberUtils.round(1578.478545f));
+        log.info("{}", NumberUtils.round(12578.4455f));
         double round = NumberUtils.round(123578.4455f).doubleValue();
         BigDecimal decimal = new BigDecimal(round);
-        log.info("" + decimal);
+        log.info("{}", decimal);
         decimal = BigDecimal.valueOf(round);
-        log.info("" + decimal);
+        log.info("{}", decimal);
     }
 
     @Test

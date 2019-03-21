@@ -3,10 +3,10 @@ package artoria.time;
 import java.util.Date;
 
 /**
- * Date formater.
+ * Date formatter.
  * @author Kahle
  */
-public interface DateFormater {
+public interface DateFormatter {
 
     /**
      * Format date object to date string.

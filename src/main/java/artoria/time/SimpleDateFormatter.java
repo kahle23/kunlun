@@ -9,13 +9,13 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * Date formater and parser simple implement by jdk.
+ * Date formatter and parser simple implement by jdk.
  * @author Kahle
  */
-public class SimpleDateTool implements DateFormater, DateParser {
+public class SimpleDateFormatter implements DateFormatter, DateParser {
     private ThreadLocal<Map<String, SimpleDateFormat>> dateFormatCache = new ThreadLocal<Map<String, SimpleDateFormat>>();
 
-    private SimpleDateFormat takeSimpleDateFormat(String pattern) {
+    private SimpleDateFormat getDateFormat(String pattern) {
         Map<String, SimpleDateFormat> cache = dateFormatCache.get();
         if (cache == null) {
             cache = new ReferenceMap<String, SimpleDateFormat>(ReferenceMap.Type.SOFT);
@@ -33,14 +33,14 @@ public class SimpleDateTool implements DateFormater, DateParser {
     public String format(Date date, String pattern) {
         Assert.notNull(date, "Parameter \"date\" must not null. ");
         Assert.notBlank(pattern, "Parameter \"pattern\" must not blank. ");
-        return this.takeSimpleDateFormat(pattern).format(date);
+        return this.getDateFormat(pattern).format(date);
     }
 
     @Override
     public Date parse(String dateString, String pattern) throws ParseException {
         Assert.notBlank(dateString, "Parameter \"dateString\" must not blank. ");
         Assert.notBlank(pattern, "Parameter \"pattern\" must not blank. ");
-        return this.takeSimpleDateFormat(pattern).parse(dateString);
+        return this.getDateFormat(pattern).parse(dateString);
     }
 
     @Override

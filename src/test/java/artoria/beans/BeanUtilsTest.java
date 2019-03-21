@@ -27,7 +27,7 @@ public class BeanUtilsTest {
     public void testCopyBeanToMap() {
         Map<String, Object> map = new HashMap<String, Object>();
         BeanUtils.copy(person, map);
-        log.info("" + map);
+        log.info("{}", map);
     }
 
     @Test
@@ -88,7 +88,7 @@ public class BeanUtilsTest {
 
     @Test
     public void mapToBeanInList() throws Exception {
-        log.info("" + personsMap);
+        log.info("{}", personsMap);
         List<Student> students = BeanUtils.mapToBeanInList(personsMap, Student.class);
         log.info(JSON.toJSONString(students));
     }

@@ -10,7 +10,7 @@ public class ThreadLocalUtilsTest {
 
     private void doGetFromThreadLocal() {
         Object value = ThreadLocalUtils.getValue(testKey);
-        log.info("" + value);
+        log.info("{}", value);
     }
 
     @Test

@@ -25,14 +25,6 @@ public interface Randomizer {
     <T> List<T> confuse(List<T> list);
 
     /**
-     * Random generation object who type is specified.
-     * @param clazz The object class
-     * @param <T> The object type
-     * @return A random object
-     */
-    <T> T nextObject(Class<T> clazz);
-
-    /**
      * Random generation int.
      * @return A random int
      */
@@ -96,5 +88,13 @@ public interface Randomizer {
      * @return A random string
      */
     String nextString(char[] charArray, int length);
+
+    /**
+     * Randomly generates objects of the specified type.
+     * @param clazz The object class
+     * @param <T> The object type
+     * @return A random object
+     */
+    <T> T nextObject(Class<T> clazz);
 
 }

@@ -2,6 +2,7 @@ package artoria.file;
 
 import artoria.io.IOUtils;
 import artoria.util.Assert;
+import artoria.util.ClassLoaderUtils;
 
 import java.io.*;
 
@@ -12,6 +13,34 @@ import static artoria.common.Constants.CLASSPATH;
  * @author Kahle
  */
 public abstract class AbstractFileEntity implements FileEntity {
+    private String fileName;
+    private String extension;
+
+    @Override
+    public String getName() {
+
+        return fileName;
+    }
+
+    @Override
+    public void setName(String fileName) {
+        Assert.notBlank(fileName
+                , "Parameter \"fileName\" must not blank. ");
+        this.fileName = fileName;
+    }
+
+    @Override
+    public String getExtension() {
+
+        return extension;
+    }
+
+    @Override
+    public void setExtension(String extension) {
+        extension = extension == null
+                ? null : extension.trim().toLowerCase();
+        this.extension = extension;
+    }
 
     public void writeToFile(File file) throws IOException {
         Assert.notNull(file, "Parameter \"file\" must not null. ");
@@ -32,6 +61,11 @@ public abstract class AbstractFileEntity implements FileEntity {
         Assert.notNull(file, "Parameter \"file\" must not null. ");
         Assert.state(file.exists() && file.isFile()
                 , "Parameter \"file\" must exist and is file. ");
+        String fileName = file.getName();
+        String fileString = file.toString();
+        String extension = FilenameUtils.getExtension(fileString);
+        this.setName(fileName);
+        this.setExtension(extension);
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
@@ -42,18 +76,21 @@ public abstract class AbstractFileEntity implements FileEntity {
         }
     }
 
-    public void writeToClasspath(String subpath) throws IOException {
-        Assert.notBlank(subpath, "Parameter \"subpath\" must not blank. ");
+    public void writeToClasspath(String subPath) throws IOException {
+        Assert.notBlank(subPath, "Parameter \"subPath\" must not blank. ");
         Assert.notBlank(CLASSPATH, "Cannot get the classpath. ");
-        this.writeToFile(new File(CLASSPATH, subpath));
+        this.writeToFile(new File(CLASSPATH, subPath));
     }
 
-    public long readFromClasspath(String subpath) throws IOException {
+    public long readFromClasspath(String subPath) throws IOException {
         InputStream inputStream = null;
         try {
-            inputStream = IOUtils.findClasspath(subpath);
+            inputStream = ClassLoaderUtils
+                    .getResourceAsStream(subPath, this.getClass());
             Assert.notNull(inputStream
-                    , "Parameter \"subpath\" not found in classpath. ");
+                    , "Parameter \"subPath\" not found in classpath. ");
+            this.setName(new File(subPath).getName());
+            this.setExtension(FilenameUtils.getExtension(subPath));
             return this.read(inputStream);
         }
         finally {

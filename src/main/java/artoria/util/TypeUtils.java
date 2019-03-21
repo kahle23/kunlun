@@ -116,11 +116,13 @@ public class TypeUtils {
             }
         }
 
+        @Override
         public Type[] getUpperBounds() {
 
             return new Type[] { upperBound };
         }
 
+        @Override
         public Type[] getLowerBounds() {
 
             return lowerBound != null ? new Type[] { lowerBound } : EMPTY_TYPE_ARRAY;

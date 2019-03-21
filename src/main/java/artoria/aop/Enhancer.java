@@ -14,13 +14,13 @@ public class Enhancer {
     private static ProxyFactory proxyFactory;
 
     public static ProxyFactory getProxyFactory() {
-        return proxyFactory != null
-                ? proxyFactory : DEFAULT_PROXY_FACTORY;
+
+        return proxyFactory != null ? proxyFactory : DEFAULT_PROXY_FACTORY;
     }
 
     public static void setProxyFactory(ProxyFactory proxyFactory) {
         Assert.notNull(proxyFactory, "Parameter \"proxyFactory\" must not null. ");
-        log.info("Set proxy factory: " + proxyFactory.getClass().getName());
+        log.info("Set proxy factory: {}", proxyFactory.getClass().getName());
         Enhancer.proxyFactory = proxyFactory;
     }
 

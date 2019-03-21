@@ -1,6 +1,6 @@
 package artoria.common;
 
-import artoria.util.PathUtils;
+import artoria.file.FilenameUtils;
 
 import java.nio.charset.Charset;
 
@@ -11,8 +11,8 @@ import java.nio.charset.Charset;
 public class Constants {
 
     public static final String NEWLINE = System.getProperty("line.separator");
-    public static final String CLASSPATH = PathUtils.getClasspath();
-    public static final String ROOT_PATH = PathUtils.getRootPath();
+    public static final String CLASSPATH = FilenameUtils.getClasspath();
+    public static final String ROOT_PATH = FilenameUtils.getRootPath();
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
     public static final String PATH_SEPARATOR = System.getProperty("path.separator");
     public static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
@@ -53,12 +53,25 @@ public class Constants {
     public static final String LEFT_SQUARE_BRACKET = "[";
     public static final String RIGHT_SQUARE_BRACKET = "]";
 
+    public static final String ON = "on";
+    public static final String NO = "no";
+    public static final String YES = "yes";
+    public static final String OFF = "off";
     public static final String GET = "get";
     public static final String SET = "set";
     public static final String ROOT = "root";
     public static final String NULL = "null";
     public static final String TRUE = "true";
     public static final String FALSE = "false";
+
+    public static final String GBK = "GBK";
+    public static final String UTF_8 = "UTF-8";
+    public static final String GB2312 = "GB2312";
+    public static final String ISO_8859_1 = "ISO-8859-1";
+    public static final String DEFAULT_ENCODING = UTF_8;
+
+    public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
+    public static final String FILLED_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     private Constants() {
 

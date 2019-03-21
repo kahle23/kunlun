@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class UnicodeTest {
     private static Logger log = LoggerFactory.getLogger(UnicodeTest.class);
-    private static Unicode unicode = Unicode.getInstance();
+    private static Unicode unicode = new Unicode();
 
     @Test
     public void test1() {

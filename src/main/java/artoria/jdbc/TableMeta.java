@@ -10,23 +10,19 @@ import java.util.List;
  * @author Kahle
  */
 public class TableMeta extends AbstractAttributable implements Serializable {
-
     /**
      * "TABLE_NAME"
      */
     private String name;
-
     /**
      * "REMARKS"
      */
     private String remarks;
-
     /**
      * Table primary keys.
      * If is Composite Primary Key, use "," separate.
      */
     private String primaryKey;
-
     /**
      * Table's column meta list.
      */

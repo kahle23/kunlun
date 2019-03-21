@@ -1,9 +1,6 @@
 package artoria.reflect;
 
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.Map;
 
 /**
@@ -11,24 +8,6 @@ import java.util.Map;
  * @author Kahle
  */
 public interface Reflecter {
-
-    /**
-     * Find class by name.
-     * @param className Class name
-     * @return Class
-     * @throws ClassNotFoundException Class not found
-     */
-    Class<?> forName(String className) throws ClassNotFoundException;
-
-    /**
-     * Find class by name.
-     * @param className Class name
-     * @param initialize Is initialize
-     * @param loader Class loader
-     * @return Class
-     * @throws ClassNotFoundException Class not found
-     */
-    Class<?> forName(String className, boolean initialize, ClassLoader loader) throws ClassNotFoundException;
 
     /**
      * Find parameters types.
@@ -61,20 +40,33 @@ public interface Reflecter {
     <T extends AccessibleObject> void makeAccessible(T accessible);
 
     /**
+     * Create object by reflection.
+     * @param clazz The type of object to create
+     * @param args Parameters to the constructor
+     * @param <T> The type of object to construct
+     * @return Objects created
+     */
+    <T> T newInstance(Class<T> clazz, Object... args) throws NoSuchMethodException
+            , IllegalAccessException, InvocationTargetException, InstantiationException;
+    // TODO: When JDK 1.7
+
+    /**
      * Find all constructors.
      * @param clazz The class will be find
+     * @param <T> The type of object to construct
      * @return Constructors array
      */
-    Constructor<?>[] findConstructors(Class<?> clazz);
+    <T> Constructor<T>[] findConstructors(Class<T> clazz);
 
     /**
      * Find constructor and type similar.
      * @param clazz The class will be find
-     * @param parameterTypes parameter types
+     * @param parameterTypes Parameter types
+     * @param <T> The type of object to construct
      * @return The constructor
      * @throws NoSuchMethodException No such method
      */
-    Constructor<?> findConstructor(Class<?> clazz, Class<?>... parameterTypes) throws NoSuchMethodException;
+    <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException;
 
     /**
      * Find all public fields.

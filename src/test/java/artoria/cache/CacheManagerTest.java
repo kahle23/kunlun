@@ -36,7 +36,7 @@ public class CacheManagerTest {
     public void test1() {
         Cache<String, Object> cache = cacheManager.getCache(CACHE_NAME);
         for (int i = 0; i < 100; i++) {
-            log.info("" + cache.get("" + i));
+            log.info("{}", cache.get("" + i));
         }
     }
 
@@ -47,7 +47,7 @@ public class CacheManagerTest {
             cache.put("" + i, "test2 - data - " + i);
         }
         for (int i = 0; i < 100; i++) {
-            log.info("" + cache.get("" + i));
+            log.info("{}", cache.get("" + i));
         }
     }
 
@@ -61,7 +61,7 @@ public class CacheManagerTest {
         Cache<String, Object> cache = cacheManager.getCache(CACHE_NAME);
         for (int i = 0; i <= 9999999; i++) {
             cache.put("key" + i, builder.toString());
-            log.info("" + cache.size());
+            log.info("{}", cache.size());
         }
     }
 

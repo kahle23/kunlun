@@ -29,7 +29,7 @@ public class EnhancerTest {
 
         @Override
         public Object intercept(Object proxyObject, Method method, Object[] args) throws Throwable {
-            log.info("Proxy object's class is " + proxyObject.getClass().getName());
+            log.info("Proxy object's class is {}", proxyObject.getClass().getName());
             log.info("Hello, this is intercept. ");
             return method.invoke(this.proxiedObject, args);
         }

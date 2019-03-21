@@ -7,11 +7,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
+import static artoria.common.Constants.EMPTY_STRING;
+
 /**
- * Txt file.
+ * Text file.
  * @author Kahle
  */
-public class Txt extends TextFile implements Appendable {
+public class Text extends TextFile {
     private final StringBuilder textBuilder = new StringBuilder();
 
     @Override
@@ -30,25 +32,18 @@ public class Txt extends TextFile implements Appendable {
         writer.flush();
     }
 
-    @Override
-    public Appendable append(char c) {
-        textBuilder.append(c);
+    public Text append(Object obj) {
+        textBuilder.append(obj != null ? obj : EMPTY_STRING);
         return this;
     }
 
-    @Override
-    public Appendable append(CharSequence csq) {
-        textBuilder.append(csq);
+    public Text append(Object obj, int start, int end) {
+        String input = obj != null ? obj.toString() : EMPTY_STRING;
+        textBuilder.append(input, start, end);
         return this;
     }
 
-    @Override
-    public Appendable append(CharSequence csq, int start, int end) {
-        textBuilder.append(csq, start, end);
-        return this;
-    }
-
-    public Txt clear() {
+    public Text clear() {
         textBuilder.setLength(0);
         return this;
     }

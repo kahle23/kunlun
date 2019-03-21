@@ -13,8 +13,8 @@ public interface Renderer {
      * @param name Template name
      * @param input Template input stream
      * @param charsetName Template content charset name
-     * @throws Exception Have more different exception
+     * @throws RenderException An exception occurred while rendering
      */
-    void render(Object data, Object output, String name, Object input, String charsetName) throws Exception;
+    void render(Object data, Object output, String name, Object input, String charsetName) throws RenderException;
 
 }

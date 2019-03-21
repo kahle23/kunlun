@@ -1,6 +1,6 @@
 package artoria.crypto;
 
-import artoria.codec.Hex;
+import artoria.codec.HexUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Before;
@@ -13,7 +13,6 @@ public class HmacTest {
     private static Hmac hsha256 = Hmac.getInstance(Hmac.HMAC_SHA256);
     private static Hmac hsha384 = Hmac.getInstance(Hmac.HMAC_SHA384);
     private static Hmac hsha512 = Hmac.getInstance(Hmac.HMAC_SHA512);
-    private static Hex hex = Hex.getInstance(true);
 
     @Before
     public void init() {
@@ -28,11 +27,11 @@ public class HmacTest {
     @Test
     public void hmacString() throws Exception {
         String data = "12345";
-        log.info(hex.encodeToString(hmd5.digest(data)));
-        log.info(hex.encodeToString(hsha1.digest(data)));
-        log.info(hex.encodeToString(hsha256.digest(data)));
-        log.info(hex.encodeToString(hsha384.digest(data)));
-        log.info(hex.encodeToString(hsha512.digest(data)));
+        log.info(HexUtils.encodeToString(hmd5.digest(data)));
+        log.info(HexUtils.encodeToString(hsha1.digest(data)));
+        log.info(HexUtils.encodeToString(hsha256.digest(data)));
+        log.info(HexUtils.encodeToString(hsha384.digest(data)));
+        log.info(HexUtils.encodeToString(hsha512.digest(data)));
     }
 
 }

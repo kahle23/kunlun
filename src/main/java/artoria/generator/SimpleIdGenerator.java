@@ -1,4 +1,4 @@
-package artoria.identity;
+package artoria.generator;
 
 import artoria.util.Assert;
 import artoria.util.StringUtils;
@@ -35,7 +35,7 @@ public class SimpleIdGenerator implements IdGenerator<String> {
     }
 
     @Override
-    public String next() {
+    public String generate() {
         String uuid = UUID.randomUUID().toString();
         return needReplace ? StringUtils.replace(uuid, MINUS, separator) : uuid;
     }

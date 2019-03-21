@@ -28,7 +28,7 @@ public class ReentrantLocker implements Locker {
         this.storage = storage;
     }
 
-    private Lock takeLock(String lockName) {
+    private Lock getLock(String lockName) {
         Assert.notBlank(lockName, "Parameter \"lockName\" must not blank. ");
         Lock lock = storage.get(lockName);
         if (lock != null) { return lock; }
@@ -48,31 +48,31 @@ public class ReentrantLocker implements Locker {
     @Override
     public void lock(String lockName) {
 
-        this.takeLock(lockName).lock();
+        this.getLock(lockName).lock();
     }
 
     @Override
     public void unlock(String lockName) {
 
-        this.takeLock(lockName).unlock();
+        this.getLock(lockName).unlock();
     }
 
     @Override
     public void lockInterruptibly(String lockName) throws InterruptedException {
 
-        this.takeLock(lockName).lockInterruptibly();
+        this.getLock(lockName).lockInterruptibly();
     }
 
     @Override
     public boolean tryLock(String lockName) {
 
-        return this.takeLock(lockName).tryLock();
+        return this.getLock(lockName).tryLock();
     }
 
     @Override
     public boolean tryLock(String lockName, long time, TimeUnit unit) throws InterruptedException {
 
-        return this.takeLock(lockName).tryLock(time, unit);
+        return this.getLock(lockName).tryLock(time, unit);
     }
 
 }

@@ -15,21 +15,21 @@ public class NumberConverterTest {
     public void test1() {
         int src = 100;
         Object o = converter.convert(src, Integer.class);
-        log.info("" + o);
+        log.info("{}", o);
     }
 
     @Test
     public void test2() {
         int src = 100;
         Object o = converter.convert(src, BigDecimal.class);
-        log.info("" + o);
+        log.info("{}", o);
     }
 
     @Test
     public void test3() {
         int src = 100;
         Object o = converter.convert(src, BigInteger.class);
-        log.info("" + o);
+        log.info("{}", o);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class NumberConverterTest {
         int src = 100;
         Object o = converter.convert(src, double.class);
         Double d = (Double) o;
-        log.info("" + d);
+        log.info("{}", d);
     }
 
 }

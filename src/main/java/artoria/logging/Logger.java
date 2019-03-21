@@ -8,98 +8,73 @@ public interface Logger {
 
     /**
      * Logger trace.
-     * @param message The log message
+     * @param format The format string
+     * @param arguments The arguments
      */
-    void trace(String message);
-
-    /**
-     * Logger trace.
-     * @param t Exception object
-     */
-    void trace(Throwable t);
+    void trace(String format, Object... arguments);
 
     /**
      * Logger trace.
      * @param message The log message
-     * @param t Exception object
+     * @param throwable Exception object
      */
-    void trace(String message, Throwable t);
+    void trace(String message, Throwable throwable);
+
+    /**
+     * Logger debug.
+     * @param format The format string
+     * @param arguments The arguments
+     */
+    void debug(String format, Object... arguments);
 
     /**
      * Logger debug.
      * @param message The log message
+     * @param throwable Exception object
      */
-    void debug(String message);
+    void debug(String message, Throwable throwable);
 
     /**
-     * Logger debug.
-     * @param t Exception object
+     * Logger information.
+     * @param format The format string
+     * @param arguments The arguments
      */
-    void debug(Throwable t);
-
-    /**
-     * Logger debug.
-     * @param message The log message
-     * @param t Exception object
-     */
-    void debug(String message, Throwable t);
+    void info(String format, Object... arguments);
 
     /**
      * Logger information.
      * @param message The log message
+     * @param throwable Exception object
      */
-    void info(String message);
+    void info(String message, Throwable throwable);
 
     /**
-     * Logger information.
-     * @param t Exception object
+     * Logger warning.
+     * @param format The format string
+     * @param arguments The arguments
      */
-    void info(Throwable t);
-
-    /**
-     * Logger information.
-     * @param message The log message
-     * @param t Exception object
-     */
-    void info(String message, Throwable t);
+    void warn(String format, Object... arguments);
 
     /**
      * Logger warning.
      * @param message The log message
+     * @param throwable Exception object
      */
-    void warn(String message);
+    void warn(String message, Throwable throwable);
 
     /**
-     * Logger warning.
-     * @param t Exception object
+     * Logger error.
+     * @param format The format string
+     * @param arguments The arguments
      */
-    void warn(Throwable t);
-
-    /**
-     * Logger warning.
-     * @param message The log message
-     * @param t Exception object
-     */
-    void warn(String message, Throwable t);
+    void error(String format, Object... arguments);
 
     /**
      * Logger error.
      * @param message The log message
+     * @param throwable Exception object
      */
-    void error(String message);
-
-    /**
-     * Logger error.
-     * @param t Exception object
-     */
-    void error(Throwable t);
-
-    /**
-     * Logger error.
-     * @param message The log message
-     * @param t Exception object
-     */
-    void error(String message, Throwable t);
+    void error(String message, Throwable throwable);
 
     /**
      * Is trace enabled.

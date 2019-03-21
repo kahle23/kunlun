@@ -64,8 +64,8 @@ public class LifecycleUtils {
             destroyable.destroy();
         }
         catch (Throwable t) {
-            log.info("Unable to cleanly destroy instance ["
-                    + destroyable + "] of type [" + destroyable.getClass().getName() + "]. ");
+            log.info("Unable to cleanly destroy instance [{}] of type [{}]. "
+                    , destroyable, destroyable.getClass().getName());
         }
     }
 

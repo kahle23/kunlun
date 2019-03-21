@@ -16,13 +16,13 @@ public class JsonUtils {
     private static JsonProvider jsonProvider;
 
     public static JsonProvider getJsonProvider() {
-        return jsonProvider != null
-                ? jsonProvider : DEFAULT_JSON_PROVIDER;
+
+        return jsonProvider != null ? jsonProvider : DEFAULT_JSON_PROVIDER;
     }
 
     public static void setJsonProvider(JsonProvider jsonProvider) {
         Assert.notNull(jsonProvider, "Parameter \"jsonProvider\" must not null. ");
-        log.info("Set json provider: " + jsonProvider.getClass().getName());
+        log.info("Set json provider: {}", jsonProvider.getClass().getName());
         JsonUtils.jsonProvider = jsonProvider;
     }
 

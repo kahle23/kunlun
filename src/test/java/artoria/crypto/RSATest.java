@@ -46,19 +46,19 @@ public class RSATest {
         Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
 
         byte[] bytes = encrypterPublic.doFinal(data);
-        log.info("Encrypter Public: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Public: {}", Base64Utils.encodeToString(bytes));
         byte[] bytes1 = decrypterPublic.doFinal(bytes);
-        log.info("Decrypter Public: " + new String(bytes1));
+        log.info("Decrypter Public: {}", new String(bytes1));
         bytes1 = decrypterPrivate.doFinal(bytes);
-        log.info("Decrypter Private: " + new String(bytes1));
+        log.info("Decrypter Private: {}", new String(bytes1));
 
         log.info("");
         bytes = encrypterPrivate.doFinal(data);
-        log.info("Encrypter Private: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Private: {}", Base64Utils.encodeToString(bytes));
         bytes1 = decrypterPrivate.doFinal(bytes);
-        log.info("Decrypter Private: " + new String(bytes1));
+        log.info("Decrypter Private: {}", new String(bytes1));
         bytes1 = decrypterPublic.doFinal(bytes);
-        log.info("Decrypter Public: " + new String(bytes1));
+        log.info("Decrypter Public: {}", new String(bytes1));
     }
 
     @Test
@@ -84,15 +84,15 @@ public class RSATest {
         Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
 
         byte[] bytes = encrypterPublic.doFinal(data);
-        log.info("Encrypter Public: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Public: {}", Base64Utils.encodeToString(bytes));
         byte[] bytes1 = decrypterPrivate.doFinal(bytes);
-        log.info("Decrypter Private: " + new String(bytes1));
+        log.info("Decrypter Private: {}", new String(bytes1));
 
         log.info("");
         bytes = encrypterPrivate.doFinal(data);
-        log.info("Encrypter Private: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Private: {}", Base64Utils.encodeToString(bytes));
         bytes1 = decrypterPublic.doFinal(bytes);
-        log.info("Decrypter Public: " + new String(bytes1));
+        log.info("Decrypter Public: {}", new String(bytes1));
     }
 
     @Test
@@ -117,15 +117,15 @@ public class RSATest {
         Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
 
         byte[] bytes = encrypterPublic.doFinal(data);
-        log.info("Encrypter Public: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Public: {}", Base64Utils.encodeToString(bytes));
         byte[] bytes1 = decrypterPrivate.doFinal(bytes);
-        log.info("Decrypter Private: " + new String(bytes1));
+        log.info("Decrypter Private: {}", new String(bytes1));
 
         log.info("");
         bytes = encrypterPrivate.doFinal(data);
-        log.info("Encrypter Private: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Private: {}", Base64Utils.encodeToString(bytes));
         bytes1 = decrypterPublic.doFinal(bytes);
-        log.info("Decrypter Public: " + new String(bytes1));
+        log.info("Decrypter Public: {}", new String(bytes1));
     }
 
     @Test
@@ -150,15 +150,15 @@ public class RSATest {
         Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
 
         byte[] bytes = encrypterPublic.doFinal(data);
-        log.info("Encrypter Public: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Public: {}", Base64Utils.encodeToString(bytes));
         byte[] bytes1 = decrypterPrivate.doFinal(bytes);
-        log.info("Decrypter Private: " + new String(bytes1));
+        log.info("Decrypter Private: {}", new String(bytes1));
 
         log.info("");
         bytes = encrypterPrivate.doFinal(data);
-        log.info("Encrypter Private: " + Base64Utils.encodeToString(bytes));
+        log.info("Encrypter Private: {}", Base64Utils.encodeToString(bytes));
         bytes1 = decrypterPublic.doFinal(bytes);
-        log.info("Decrypter Public: " + new String(bytes1));
+        log.info("Decrypter Public: {}", new String(bytes1));
     }
 
 }

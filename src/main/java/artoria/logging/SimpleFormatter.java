@@ -20,6 +20,7 @@ public class SimpleFormatter extends Formatter {
     private static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
     private static final Integer MAX_SOURCE_LENGTH = 40;
     private static final Integer MAX_THREAD_LENGTH = 15;
+    private static final Integer LEVEL_LENGTH = 7;
     private static final String REGEX_DOT = "\\.";
     private static final boolean CAN_COLORING;
 
@@ -27,9 +28,8 @@ public class SimpleFormatter extends Formatter {
         String stdoutEncoding = System.getProperty("sun.stdout.encoding");
         String stderrEncoding = System.getProperty("sun.stderr.encoding");
         String encoding = "ms936";
-        CAN_COLORING =
-                !encoding.equalsIgnoreCase(stdoutEncoding) &&
-                !encoding.equalsIgnoreCase(stderrEncoding);
+        CAN_COLORING = !encoding.equalsIgnoreCase(stdoutEncoding)
+                && !encoding.equalsIgnoreCase(stderrEncoding);
     }
 
     private String coloring(String content, Integer beginColor, Integer endColor) {
@@ -60,7 +60,7 @@ public class SimpleFormatter extends Formatter {
         if (level == null) { return EMPTY_STRING; }
         StringBuilder levelStr = new StringBuilder();
         levelStr.append(level.toString());
-        while (levelStr.length() < 7) {
+        while (levelStr.length() < LEVEL_LENGTH) {
             levelStr.append(BLANK_SPACE);
         }
         return levelStr.toString();

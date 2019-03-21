@@ -10,56 +10,64 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+import static artoria.common.Constants.DEFAULT_DATE_PATTERN;
+
 /**
  * Date tools.
  * @author Kahle
  */
 public class DateUtils {
-    public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
-    private static final Class<? extends DateTime> DEFAULT_DATE_TIME_CLASS = SimpleDateTime.class;
-    private static final DateFormater DEFAULT_DATE_FORMATER = new SimpleDateTool();
-    private static final DateParser DEFAULT_DATE_PARSER = (DateParser) DEFAULT_DATE_FORMATER;
+    private static final Class<? extends DateTime> DEFAULT_TIME_TYPE;
+    private static final DateFormatter DEFAULT_DATE_FORMATTER;
+    private static final DateParser DEFAULT_DATE_PARSER;
     private static Logger log = LoggerFactory.getLogger(DateUtils.class);
-    private static Class<? extends DateTime> dateTimeClass;
-    private static DateFormater dateFormater;
+    private static Class<? extends DateTime> timeType;
+    private static DateFormatter dateFormatter;
     private static DateParser dateParser;
 
-    public static Class<? extends DateTime> getDateTimeClass() {
-        return dateTimeClass != null
-                ? dateTimeClass : DEFAULT_DATE_TIME_CLASS;
+    static {
+        SimpleDateFormatter formatter = new SimpleDateFormatter();
+        DEFAULT_DATE_FORMATTER = formatter;
+        DEFAULT_DATE_PARSER = formatter;
+        DEFAULT_TIME_TYPE = SimpleDateTime.class;
     }
 
-    public static void setDateTimeClass(Class<? extends DateTime> dateTimeClass) {
-        Assert.notNull(dateTimeClass, "Parameter \"dateTimeClass\" must not null. ");
-        log.info("Set dateTime class: " + dateTimeClass.getName());
-        DateUtils.dateTimeClass = dateTimeClass;
+    public static Class<? extends DateTime> getTimeType() {
+
+        return timeType != null ? timeType : DEFAULT_TIME_TYPE;
     }
 
-    public static DateFormater getDateFormater() {
-        return dateFormater != null
-                ? dateFormater : DEFAULT_DATE_FORMATER;
+    public static void setTimeType(Class<? extends DateTime> timeType) {
+        Assert.notNull(timeType, "Parameter \"timeType\" must not null. ");
+        log.info("Set time type: {}", timeType.getName());
+        DateUtils.timeType = timeType;
     }
 
-    public static void setDateFormater(DateFormater formater) {
-        Assert.notNull(formater, "Parameter \"formater\" must not null. ");
-        log.info("Set date formater: " + formater.getClass().getName());
-        DateUtils.dateFormater = formater;
+    public static DateFormatter getDateFormatter() {
+
+        return dateFormatter != null ? dateFormatter : DEFAULT_DATE_FORMATTER;
+    }
+
+    public static void setDateFormatter(DateFormatter formatter) {
+        Assert.notNull(formatter, "Parameter \"formatter\" must not null. ");
+        log.info("Set date formatter: {}", formatter.getClass().getName());
+        DateUtils.dateFormatter = formatter;
     }
 
     public static DateParser getDateParser() {
-        return dateParser != null
-                ? dateParser : DEFAULT_DATE_PARSER;
+
+        return dateParser != null ? dateParser : DEFAULT_DATE_PARSER;
     }
 
     public static void setDateParser(DateParser parser) {
         Assert.notNull(parser, "Parameter \"parser\" must not null. ");
-        log.info("Set date parser: " + parser.getClass().getName());
+        log.info("Set date parser: {}", parser.getClass().getName());
         DateUtils.dateParser = parser;
     }
 
     public static DateTime create() {
         try {
-            return getDateTimeClass().newInstance();
+            return getTimeType().newInstance();
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
@@ -352,7 +360,7 @@ public class DateUtils {
 
     public static String format(Date date, String pattern) {
 
-        return getDateFormater().format(date, pattern);
+        return getDateFormatter().format(date, pattern);
     }
 
     public static String format(Long timestamp, String pattern) {

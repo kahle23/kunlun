@@ -43,89 +43,8 @@ public class DatabaseClient {
         this.dataSource = dataSource;
     }
 
-    public Connection getConnection() throws SQLException {
-        Connection connection = this.threadConnection.get();
-        if (connection == null) {
-            connection = this.dataSource.getConnection();
-        }
-        return connection;
-    }
-
-    private ColumnMeta createColumnMeta(ResultSet columnResultSet
-            , StringBuilder primaryKey) throws SQLException {
-        ColumnMeta columnMeta = new ColumnMeta();
-        String columnName = columnResultSet.getString("COLUMN_NAME");
-        columnMeta.setName(columnName);
-        columnMeta.setType(columnResultSet.getString("TYPE_NAME"));
-        columnMeta.setSize(columnResultSet.getInt("COLUMN_SIZE"));
-        columnMeta.setDecimalDigits(columnResultSet.getInt("DECIMAL_DIGITS"));
-        columnMeta.setRemarks(columnResultSet.getString("REMARKS"));
-        columnMeta.setNullable(columnResultSet.getString("IS_NULLABLE"));
-        columnMeta.setAutoincrement(columnResultSet.getString("IS_AUTOINCREMENT"));
-        columnMeta.setPrimaryKey(primaryKey.indexOf(columnName) >= 0);
-        return columnMeta;
-    }
-
-    private void handleClassName(Map<String, ColumnMeta> columnMap
-            , Connection conn, String tableName) throws SQLException {
-        String sql = "select * from " + tableName + " where 1 = 2";
-        Statement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery(sql);
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                String columnName = metaData.getColumnName(i);
-                String columnClassName = metaData.getColumnClassName(i);
-                ColumnMeta columnMeta = columnMap.get(columnName);
-                if (columnMeta == null) { continue; }
-                columnMeta.setClassName(columnClassName);
-            }
-        }
-        finally {
-            IOUtils.closeQuietly(resultSet);
-            IOUtils.closeQuietly(statement);
-        }
-    }
-
-    private void fillPrimaryKey(StringBuilder primaryKey
-            , DatabaseMetaData databaseMetaData, String tableName) throws SQLException {
-        ResultSet primaryKeysResultSet = null;
-        try {
-            primaryKeysResultSet = databaseMetaData.getPrimaryKeys(null, null, tableName);
-            while (primaryKeysResultSet.next()) {
-                primaryKey.append(primaryKeysResultSet.getString("COLUMN_NAME")).append(COMMA);
-            }
-            if (primaryKey.length() > 0) {
-                primaryKey.deleteCharAt(primaryKey.length() - 1);
-            }
-        }
-        finally {
-            IOUtils.closeQuietly(primaryKeysResultSet);
-        }
-    }
-
-    private void handleColumnMeta(TableMeta tableMeta, Map<String, ColumnMeta> columnMap
-            , DatabaseMetaData dbMetaData, String tableName, StringBuilder primaryKey) throws SQLException {
-        ResultSet columnResultSet = null;
-        try {
-            columnResultSet = dbMetaData.getColumns(null, null, tableName, null);
-            tableMeta.setColumnMetaList(new ArrayList<ColumnMeta>());
-            while (columnResultSet.next()) {
-                ColumnMeta columnMeta = this.createColumnMeta(columnResultSet, primaryKey);
-                tableMeta.getColumnMetaList().add(columnMeta);
-                columnMap.put(columnResultSet.getString("COLUMN_NAME"), columnMeta);
-            }
-        }
-        finally {
-            IOUtils.closeQuietly(columnResultSet);
-        }
-    }
-
     public List<TableMeta> getTableMetaList() throws SQLException {
         List<TableMeta> tableMetaList = new ArrayList<TableMeta>();
-        StringBuilder primaryKey = new StringBuilder();
         String[] types = new String[]{"TABLE"};
         ResultSet tableResultSet = null;
         Connection conn = null;
@@ -141,17 +60,14 @@ public class DatabaseClient {
                 tableMetaList.add(tableMeta);
                 tableMeta.setName(tableName);
                 tableMeta.setRemarks(remarks);
-                primaryKey.setLength(0);
-                this.fillPrimaryKey(primaryKey, databaseMetaData, tableName);
-                tableMeta.setPrimaryKey(primaryKey.toString());
-                this.handleColumnMeta(tableMeta, columnMap, databaseMetaData, tableName, primaryKey);
-                this.handleClassName(columnMap, conn, tableName);
+                this.handleColumnMeta(databaseMetaData, tableMeta, columnMap);
+                this.handleClassName(conn, columnMap, tableName);
             }
             return tableMetaList;
         }
         finally {
             IOUtils.closeQuietly(tableResultSet);
-            IOUtils.closeQuietly(conn);
+            this.closeConnection(conn);
         }
     }
 
@@ -162,7 +78,7 @@ public class DatabaseClient {
             return callback.call(conn);
         }
         finally {
-            IOUtils.closeQuietly(conn);
+            this.closeConnection(conn);
         }
     }
 
@@ -171,38 +87,8 @@ public class DatabaseClient {
         return this.transaction(atom, DEFAULT_TRANSACTION_LEVEL);
     }
 
-    private void rollback(Connection conn) {
-        if (conn == null) {
-            return;
-        }
-        try {
-            conn.rollback();
-        }
-        catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-        }
-    }
-
-    private void closing(Connection conn, Boolean autoCommit) {
-        try {
-            if (conn == null) {
-                return;
-            }
-            if (autoCommit != null) {
-                conn.setAutoCommit(autoCommit);
-            }
-            conn.close();
-        }
-        catch (Exception e) {
-            log.error("Execution \"closing\" error. ", e);
-        }
-        finally {
-            this.threadConnection.remove();
-        }
-    }
-
     public boolean transaction(DatabaseAtom atom, int transactionLevel) throws SQLException {
-        Connection conn = this.threadConnection.get();
+        Connection conn = threadConnection.get();
         // Nested transaction support.
         if (conn != null) {
             if (conn.getTransactionIsolation() < transactionLevel) {
@@ -220,7 +106,7 @@ public class DatabaseClient {
         try {
             conn = this.getConnection();
             autoCommit = conn.getAutoCommit();
-            this.threadConnection.set(conn);
+            threadConnection.set(conn);
             conn.setTransactionIsolation(transactionLevel);
             conn.setAutoCommit(false);
             boolean result = atom.run();
@@ -233,11 +119,11 @@ public class DatabaseClient {
             return result;
         }
         catch (Exception e) {
-            this.rollback(conn);
+            this.rollbackTransaction(conn);
             throw ExceptionUtils.wrap(e, DatabaseException.class);
         }
         finally {
-            this.closing(conn, autoCommit);
+            this.closeTransaction(conn, autoCommit);
         }
     }
 
@@ -254,7 +140,7 @@ public class DatabaseClient {
         }
         finally {
             IOUtils.closeQuietly(prepStat);
-            IOUtils.closeQuietly(conn);
+            this.closeConnection(conn);
         }
     }
 
@@ -291,7 +177,7 @@ public class DatabaseClient {
         finally {
             IOUtils.closeQuietly(resSet);
             IOUtils.closeQuietly(prepStat);
-            IOUtils.closeQuietly(conn);
+            this.closeConnection(conn);
         }
     }
 
@@ -308,6 +194,121 @@ public class DatabaseClient {
     public <T> T queryFirst(Class<T> clazz, String sql, Object... params) throws SQLException {
         List<Map<String, Object>> list = this.query(sql, params);
         return BeanUtils.mapToBean(CollectionUtils.isNotEmpty(list) ? list.get(0) : null, clazz);
+    }
+
+    private Connection getConnection() throws SQLException {
+        Connection connection = threadConnection.get();
+        if (connection == null) {
+            connection = this.dataSource.getConnection();
+        }
+        return connection;
+    }
+
+    private void closeConnection(Connection connection) {
+        if (threadConnection.get() == null) {
+            // Indicates that no transaction was executed.
+            IOUtils.closeQuietly(connection);
+        }
+        // Ignore close if there is a transaction going on.
+    }
+
+    private void rollbackTransaction(Connection connection) {
+        if (connection == null) { return; }
+        try {
+            connection.rollback();
+        }
+        catch (Exception e) {
+            log.error("Execution \"rollbackTransaction\" error. ", e);
+        }
+    }
+
+    private void closeTransaction(Connection connection, Boolean autoCommit) {
+        if (connection == null) { return; }
+        try {
+            if (autoCommit != null) {
+                connection.setAutoCommit(autoCommit);
+            }
+            connection.close();
+        }
+        catch (Exception e) {
+            log.error("Execution \"closeTransaction\" error. ", e);
+        }
+        finally {
+            threadConnection.remove();
+        }
+    }
+
+    private ColumnMeta createColumnMeta(ResultSet columnResultSet, String primaryKey) throws SQLException {
+        ColumnMeta columnMeta = new ColumnMeta();
+        String columnName = columnResultSet.getString("COLUMN_NAME");
+        columnMeta.setName(columnName);
+        columnMeta.setType(columnResultSet.getString("TYPE_NAME"));
+        columnMeta.setSize(columnResultSet.getInt("COLUMN_SIZE"));
+        columnMeta.setDecimalDigits(columnResultSet.getInt("DECIMAL_DIGITS"));
+        columnMeta.setRemarks(columnResultSet.getString("REMARKS"));
+        columnMeta.setNullable(columnResultSet.getString("IS_NULLABLE"));
+        columnMeta.setAutoincrement(columnResultSet.getString("IS_AUTOINCREMENT"));
+        columnMeta.setPrimaryKey(primaryKey.contains(columnName));
+        return columnMeta;
+    }
+
+    private String readPrimaryKey(DatabaseMetaData databaseMetaData, String tableName) throws SQLException {
+        StringBuilder primaryKey = new StringBuilder();
+        ResultSet primaryKeysResultSet = null;
+        try {
+            primaryKeysResultSet = databaseMetaData.getPrimaryKeys(null, null, tableName);
+            while (primaryKeysResultSet.next()) {
+                primaryKey.append(primaryKeysResultSet.getString("COLUMN_NAME")).append(COMMA);
+            }
+            if (primaryKey.length() > 0) {
+                primaryKey.deleteCharAt(primaryKey.length() - 1);
+            }
+            return primaryKey.toString();
+        }
+        finally {
+            IOUtils.closeQuietly(primaryKeysResultSet);
+        }
+    }
+
+    private void handleClassName(Connection connection, Map<String, ColumnMeta> columnMap, String tableName) throws SQLException {
+        String sql = "select * from " + tableName + " where 1 = 2";
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                String columnName = metaData.getColumnName(i);
+                String columnClassName = metaData.getColumnClassName(i);
+                ColumnMeta columnMeta = columnMap.get(columnName);
+                if (columnMeta == null) { continue; }
+                columnMeta.setClassName(columnClassName);
+            }
+        }
+        finally {
+            IOUtils.closeQuietly(resultSet);
+            IOUtils.closeQuietly(statement);
+        }
+    }
+
+    private void handleColumnMeta(DatabaseMetaData dbMetaData, TableMeta tableMeta, Map<String, ColumnMeta> columnMap) throws SQLException {
+        String tableName = tableMeta.getName();
+        ResultSet columnResultSet = null;
+        try {
+            String primaryKey = this.readPrimaryKey(dbMetaData, tableName);
+            tableMeta.setPrimaryKey(primaryKey);
+            columnResultSet = dbMetaData.getColumns(null, null, tableName, null);
+            tableMeta.setColumnMetaList(new ArrayList<ColumnMeta>());
+            while (columnResultSet.next()) {
+                ColumnMeta columnMeta = this.createColumnMeta(columnResultSet, primaryKey);
+                tableMeta.getColumnMetaList().add(columnMeta);
+                columnMap.put(columnMeta.getName(), columnMeta);
+            }
+        }
+        finally {
+            IOUtils.closeQuietly(columnResultSet);
+        }
     }
 
 }

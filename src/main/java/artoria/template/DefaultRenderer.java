@@ -1,8 +1,10 @@
 package artoria.template;
 
 import artoria.beans.BeanUtils;
+import artoria.exception.ExceptionUtils;
 import artoria.io.IOUtils;
 import artoria.util.Assert;
+import artoria.util.ClassLoaderUtils;
 import artoria.util.StringUtils;
 
 import java.io.*;
@@ -18,30 +20,7 @@ import static artoria.io.IOUtils.EOF;
  */
 public class DefaultRenderer implements Renderer {
 
-    @Override
-    public void render(Object data, Object output, String name, Object input, String charsetName) throws Exception {
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        Assert.state((output instanceof Writer)
-                , "Parameter \"output\" must instance of \"Writer\". ");
-        String template;
-        if ((input instanceof Reader) || (input instanceof String)) {
-            template = input instanceof Reader
-                    ? IOUtils.toString((Reader) input) : (String) input;
-        }
-        else {
-            InputStream in = IOUtils.findClasspath(name);
-            if (in == null) {
-                throw new IOException("Can not find template by \"" + name + "\" in classpath. ");
-            }
-            charsetName = StringUtils.isNotBlank(charsetName)
-                    ? charsetName : DEFAULT_CHARSET_NAME;
-            Reader reader = new InputStreamReader(in, charsetName);
-            template = IOUtils.toString(reader);
-        }
-        this.render(data, (Writer) output, template);
-    }
-
-    private void render(Object data, Writer writer, String template) throws Exception {
+    protected void render(Object data, Writer writer, String template) throws IOException, ParseException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         Assert.notNull(writer, "Parameter \"writer\" must not null. ");
         if (StringUtils.isBlank(template)) { return; }
@@ -59,6 +38,31 @@ public class DefaultRenderer implements Renderer {
             Object obj = dataMap.get(template.substring(begin, end));
             writer.write(obj != null ? obj.toString() : EMPTY_STRING);
             begin = ++end;
+        }
+    }
+
+    @Override
+    public void render(Object data, Object output, String name, Object input, String charsetName) throws RenderException {
+        try {
+            Assert.state(output instanceof Writer, "Parameter \"output\" must instance of \"Writer\". ");
+            Assert.notBlank(name, "Parameter \"name\" must not blank. ");
+            String template;
+            if (input instanceof Reader || input instanceof String) {
+                template = input instanceof Reader ? IOUtils.toString((Reader) input) : (String) input;
+            }
+            else {
+                InputStream in = ClassLoaderUtils.getResourceAsStream(name, this.getClass());
+                if (in == null) {
+                    throw new IOException("Can not find template by \"" + name + "\" in classpath. ");
+                }
+                charsetName = StringUtils.isNotBlank(charsetName) ? charsetName : DEFAULT_CHARSET_NAME;
+                Reader reader = new InputStreamReader(in, charsetName);
+                template = IOUtils.toString(reader);
+            }
+            this.render(data, (Writer) output, template);
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e, RenderException.class);
         }
     }
 

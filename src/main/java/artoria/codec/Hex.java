@@ -2,41 +2,61 @@ package artoria.codec;
 
 import artoria.util.Assert;
 
+import java.io.Serializable;
+
 /**
  * Hex encode and decode tools.
  * @author Kahle
  */
-public class Hex implements Encoder<byte[]>, Decoder<byte[]> {
-    private static final byte[] LOWER_CASE_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-    private static final byte[] UPPER_CASE_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-    private static final Hex LOWER_CASE_INSTANCE = new Hex(LOWER_CASE_DIGITS);
-    private static final Hex UPPER_CASE_INSTANCE = new Hex(UPPER_CASE_DIGITS);
+public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
+    private static final byte[] LOWER_CASE_DIGITS =
+            {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    private static final byte[] UPPER_CASE_DIGITS =
+            {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     private static final int HEX_01 = 0x01;
-
-    public static Hex getInstance() {
-
-        return Hex.getInstance(false);
-    }
-
-    public static Hex getInstance(boolean toUpperCase) {
-
-        return toUpperCase ? UPPER_CASE_INSTANCE : LOWER_CASE_INSTANCE;
-    }
-
+    private static final int RADIX = 16;
     private byte[] digits;
 
-    private Hex(byte[] digits) {
-        Assert.notEmpty(digits, "Parameter \"digits\" must not empty. ");
-        Assert.state(digits.length == 16, "Parameter \"digits\" length must equal 16. ");
+    public Hex() {
+
+        this(false);
+    }
+
+    public Hex(boolean toUpperCase) {
+        this(toUpperCase
+                ? UPPER_CASE_DIGITS
+                : LOWER_CASE_DIGITS
+        );
+    }
+
+    protected Hex(byte[] digits) {
+        Assert.notEmpty(digits
+                , "Parameter \"digits\" must not empty. ");
+        Assert.state(digits.length == RADIX
+                , "Parameter \"digits\" length must equal 16. ");
         this.digits = digits;
     }
 
-    private int toDigit(int ch, int index) {
-        int digit = Character.digit(ch, 16);
+    protected int toDigit(int ch, int index) {
+        int digit = Character.digit(ch, RADIX);
         if (digit == -1) {
-            throw new IllegalArgumentException("Illegal hexadecimal character " + ch + " at index " + index);
+            throw new IllegalArgumentException(
+                    "Illegal hexadecimal character " + ch + " at index " + index
+            );
         }
         return digit;
+    }
+
+    @Override
+    public Object encode(Object source) throws EncodeException {
+
+        return this.encode((byte[]) source);
+    }
+
+    @Override
+    public Object decode(Object source) throws DecodeException {
+
+        return this.decode((byte[]) source);
     }
 
     @Override

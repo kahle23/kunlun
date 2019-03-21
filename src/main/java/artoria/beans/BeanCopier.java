@@ -11,15 +11,15 @@ import java.util.List;
 public interface BeanCopier {
 
     /**
-     * Copy bean properties to another bean.
+     * Copy bean attributes to another bean.
      * @param from The bean will be copied
      * @param to The bean will be given
-     * @param ignoreProperties The ignore properties
+     * @param ignoreAttributes The ignore attributes
      *                         from the bean who will be given
      *                         and this value can be null
-     * @param converter The property converter
+     * @param converter The attribute converter
      *                  and this value can be null
      */
-    void copy(Object from, Object to, List<String> ignoreProperties, TypeConverter converter);
+    void copy(Object from, Object to, List<String> ignoreAttributes, TypeConverter converter);
 
 }

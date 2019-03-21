@@ -18,17 +18,17 @@ public class StringUtilsTest {
     @Test
     public void test2() {
         BigDecimal decimal = new BigDecimal("-3456");
-        log.info("" + decimal);
+        log.info("{}", decimal);
         BigDecimal decimal1 = new BigDecimal("+3456");
-        log.info("" + decimal1);
-        log.info("" + StringUtils.isNumeric("3452347"));
-        log.info("" + StringUtils.isNumeric("4373.4"));
-        log.info("" + StringUtils.isNumeric("345f347"));
-        log.info("" + StringUtils.isNumeric("-345347"));
-        log.info("" + StringUtils.isNumeric("-345."));
-        log.info("" + StringUtils.isNumeric("+0345.00.7"));
-        log.info("" + StringUtils.isNumeric("+3486.40"));
-        log.info("" + StringUtils.isNumeric("+3486..40"));
+        log.info("{}", decimal1);
+        log.info("{}", StringUtils.isNumeric("3452347"));
+        log.info("{}", StringUtils.isNumeric("4373.4"));
+        log.info("{}", StringUtils.isNumeric("345f347"));
+        log.info("{}", StringUtils.isNumeric("-345347"));
+        log.info("{}", StringUtils.isNumeric("-345."));
+        log.info("{}", StringUtils.isNumeric("+0345.00.7"));
+        log.info("{}", StringUtils.isNumeric("+3486.40"));
+        log.info("{}", StringUtils.isNumeric("+3486..40"));
     }
 
     @Test

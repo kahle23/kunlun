@@ -3,25 +3,25 @@ package artoria.common;
 import java.io.Serializable;
 
 /**
- * Uniform parameter input object.
+ * Uniform data input object.
  * @param <T> Data type
  * @author Kahle
  */
-public class Param<T> implements Serializable {
+public class Input<T> implements Serializable {
     private Object currentUser;
     private Object targetUser;
     private Paging paging;
     private T data;
 
-    public Param() {
+    public Input() {
     }
 
-    public Param(T data) {
+    public Input(T data) {
 
         this.data = data;
     }
 
-    public Param(Paging paging, T data) {
+    public Input(Paging paging, T data) {
         this.paging = paging;
         this.data = data;
     }

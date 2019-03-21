@@ -17,16 +17,16 @@ public class ReferenceMapTest {
         map.put("1", "val[1");
         map.put("2", "val[2");
         map.put("3", "val[3");
-        log.info("" + map.size());
-        log.info("" + map.containsKey("1"));
-        log.info("" + map.isEmpty());
-        log.info("" + map.get("2"));
-        log.info("" + map);
-        log.info("" + map.remove("1"));
-        log.info("" + map.get("1"));
+        log.info("{}", map.size());
+        log.info("{}", map.containsKey("1"));
+        log.info("{}", map.isEmpty());
+        log.info("{}", map.get("2"));
+        log.info("{}", map);
+        log.info("{}", map.remove("1"));
+        log.info("{}", map.get("1"));
         Set<Map.Entry<String, Object>> entries = map.entrySet();
         for (Map.Entry<String, Object> entry : entries) {
-            log.info(entry.getKey() + " | " + entry.getValue());
+            log.info("{} | {}", entry.getKey(), entry.getValue());
         }
     }
 
@@ -34,9 +34,9 @@ public class ReferenceMapTest {
     public void test1() throws Exception {
         Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceMap.Type.WEAK);
         map.put("test1", new Object());
-        log.info("" + map.get("test1"));
+        log.info("{}", map.get("test1"));
         System.gc();
-        log.info("" + map.get("test1"));
+        log.info("{}", map.get("test1"));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class ReferenceMapTest {
         for (long i = 0; i < 999999; i++) {
             map.put(i + "", content + i);
         }
-        log.info("" + map.get("1"));
+        log.info("{}", map.get("1"));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class ReferenceMapTest {
             map.put("data" + i, "data - - " + i);
         }
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            log.info(entry.getKey() + " | " + entry.getValue());
+            log.info("{} | {}", entry.getKey(), entry.getValue());
         }
     }
 

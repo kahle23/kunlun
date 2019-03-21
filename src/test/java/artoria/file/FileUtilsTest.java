@@ -18,19 +18,19 @@ public class FileUtilsTest {
     public void testRenameTo() {
         File file = new File("E:\\hello.txt");
         boolean rnSc = file.renameTo(new File("D:\\123.txt"));
-        log.info(rnSc + "");
+        log.info("{}", rnSc);
 
         file = new File("D:\\123.txt");
         rnSc = file.renameTo(new File("E:\\hello.txt"));
-        log.info(rnSc + "");
+        log.info("{}", rnSc);
     }
 
     @Test
     public void testRename() {
         File file = new File("E:\\hello.txt");
-        log.info(FileUtils.rename(file, "123.txt") + "");
+        log.info("{}", FileUtils.rename(file, "123.txt"));
         file = new File("E:\\123.txt");
-        log.info(FileUtils.rename(file, "hello.txt") + "");
+        log.info("{}", FileUtils.rename(file, "hello.txt"));
     }
 
     @Test

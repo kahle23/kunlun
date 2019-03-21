@@ -3,7 +3,7 @@ package artoria.logging;
 import artoria.io.IOUtils;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
-import artoria.util.ClassUtils;
+import artoria.util.ClassLoaderUtils;
 
 import java.io.InputStream;
 import java.util.logging.Formatter;
@@ -15,21 +15,20 @@ import java.util.logging.LogManager;
  * @author Kahle
  */
 public class JdkLoggerProvider implements LoggerProvider {
-    /** Default logger config filename. */
+    /**
+     * Default logger config filename.
+     */
     private static final String LOGGER_CONFIG_FILENAME = "logging.properties";
-    /** This is JDK root logger name. */
+    /**
+     * This is JDK root logger name.
+     */
     private static final String ROOT_LOGGER_NAME = "";
     private java.util.logging.Logger logger;
 
     public JdkLoggerProvider() {
         logger = java.util.logging.Logger.getLogger(ROOT_LOGGER_NAME);
-        ClassLoader loader = ClassUtils.getDefaultClassLoader();
-        InputStream in = loader != null
-                ? loader.getResourceAsStream(LOGGER_CONFIG_FILENAME)
-                : ClassLoader.getSystemResourceAsStream(LOGGER_CONFIG_FILENAME);
-        if (in == null) {
-            in = IOUtils.findClasspath(LOGGER_CONFIG_FILENAME);
-        }
+        InputStream in = ClassLoaderUtils
+                .getResourceAsStream(LOGGER_CONFIG_FILENAME, this.getClass());
         if (in != null) {
             try {
                 LogManager.getLogManager().readConfiguration(in);
@@ -101,6 +100,7 @@ public class JdkLoggerProvider implements LoggerProvider {
             case INFO:  logger.setLevel(java.util.logging.Level.INFO);    break;
             case WARN:  logger.setLevel(java.util.logging.Level.WARNING); break;
             case ERROR: logger.setLevel(java.util.logging.Level.SEVERE);  break;
+            default: throw new IllegalStateException("Parameter \"level\" is illegal. ");
         }
     }
 

@@ -16,13 +16,13 @@ public class RandomUtils {
     private static Randomizer randomizer;
 
     public static Randomizer getRandomizer() {
-        return randomizer != null
-                ? randomizer : DEFAULT_RANDOMIZER;
+
+        return randomizer != null ? randomizer : DEFAULT_RANDOMIZER;
     }
 
     public static void setRandomizer(Randomizer randomizer) {
         Assert.notNull(randomizer, "Parameter \"randomizer\" must not null. ");
-        log.info("Set randomizer: " + randomizer.getClass().getName());
+        log.info("Set randomizer: {}", randomizer.getClass().getName());
         RandomUtils.randomizer = randomizer;
     }
 
@@ -34,11 +34,6 @@ public class RandomUtils {
     public static <T> List<T> confuse(List<T> list) {
 
         return getRandomizer().confuse(list);
-    }
-
-    public static <T> T nextObject(Class<T> clazz) {
-
-        return getRandomizer().nextObject(clazz);
     }
 
     public static int nextInt() {
@@ -89,6 +84,11 @@ public class RandomUtils {
     public static String nextString(char[] charArray, int length) {
 
         return getRandomizer().nextString(charArray, length);
+    }
+
+    public static <T> T nextObject(Class<T> clazz) {
+
+        return getRandomizer().nextObject(clazz);
     }
 
 }

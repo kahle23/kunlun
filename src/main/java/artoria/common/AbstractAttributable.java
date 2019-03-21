@@ -43,4 +43,10 @@ public abstract class AbstractAttributable implements Attributable {
         this.attributes.putAll(attributes);
     }
 
+    @Override
+    public void clearAttributes() {
+
+        this.attributes.clear();
+    }
+
 }

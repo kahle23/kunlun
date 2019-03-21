@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Db callback.
+ * Database callback.
  * @param <T> Call return type
  * @author Kahle
  */
