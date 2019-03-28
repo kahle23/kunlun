@@ -44,6 +44,12 @@ public abstract class AbstractAttributable implements Attributable {
     }
 
     @Override
+    public boolean containsKey(Object key) {
+
+        return this.attributes.containsKey((String) key);
+    }
+
+    @Override
     public void clearAttributes() {
 
         this.attributes.clear();

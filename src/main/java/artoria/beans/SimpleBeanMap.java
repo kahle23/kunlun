@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static artoria.common.Constants.*;
+import static artoria.common.Constants.GET;
+import static artoria.common.Constants.SET;
 
 /**
  * Bean map simple implement by jdk.
@@ -61,7 +62,7 @@ public class SimpleBeanMap extends BeanMap {
     @Override
     protected Object get(Object bean, Object key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        String keyString = key + EMPTY_STRING;
+        String keyString = String.valueOf(key);
         if (keyString.startsWith(GET)) {
             keyString = keyString.substring(GET_OR_SET_LENGTH);
             keyString = StringUtils.uncapitalize(keyString);
@@ -85,7 +86,7 @@ public class SimpleBeanMap extends BeanMap {
     @Override
     protected Object put(Object bean, Object key, Object value) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        String keyString = key + EMPTY_STRING;
+        String keyString = String.valueOf(key);
         if (keyString.startsWith(SET)) {
             keyString = keyString.substring(GET_OR_SET_LENGTH);
             keyString = StringUtils.uncapitalize(keyString);

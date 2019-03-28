@@ -12,32 +12,31 @@ public class NumberConverterTest {
     private TypeConverter converter = new NumberConverter();
 
     @Test
-    public void test1() {
+    public void testIntToInteger() {
         int src = 100;
-        Object o = converter.convert(src, Integer.class);
-        log.info("{}", o);
+        Object obj = converter.convert(src, Integer.class);
+        log.info("{} {}", obj.getClass(), obj);
     }
 
     @Test
-    public void test2() {
+    public void testIntToBigDecimal() {
         int src = 100;
-        Object o = converter.convert(src, BigDecimal.class);
-        log.info("{}", o);
+        Object obj = converter.convert(src, BigDecimal.class);
+        log.info("{} {}", obj.getClass(), obj);
     }
 
     @Test
-    public void test3() {
+    public void testIntToBigInteger() {
         int src = 100;
-        Object o = converter.convert(src, BigInteger.class);
-        log.info("{}", o);
+        Object obj = converter.convert(src, BigInteger.class);
+        log.info("{} {}", obj.getClass(), obj);
     }
 
     @Test
-    public void test4() {
+    public void testIntToPrimitiveDouble() {
         int src = 100;
-        Object o = converter.convert(src, double.class);
-        Double d = (Double) o;
-        log.info("{}", d);
+        Object obj = converter.convert(src, double.class);
+        log.info("{} {}", obj.getClass(), obj);
     }
 
 }

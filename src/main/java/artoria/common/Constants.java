@@ -16,6 +16,13 @@ public class Constants {
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
     public static final String PATH_SEPARATOR = System.getProperty("path.separator");
     public static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
+    public static final String GBK = "GBK";
+    public static final String UTF_8 = "UTF-8";
+    public static final String GB2312 = "GB2312";
+    public static final String ISO_8859_1 = "ISO-8859-1";
+    public static final String DEFAULT_ENCODING = UTF_8;
+    public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
+    public static final String FILLED_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     public static final String DOT = ".";
     public static final String PLUS = "+";
@@ -64,14 +71,17 @@ public class Constants {
     public static final String TRUE = "true";
     public static final String FALSE = "false";
 
-    public static final String GBK = "GBK";
-    public static final String UTF_8 = "UTF-8";
-    public static final String GB2312 = "GB2312";
-    public static final String ISO_8859_1 = "ISO-8859-1";
-    public static final String DEFAULT_ENCODING = UTF_8;
-
-    public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
-    public static final String FILLED_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public static final String MD2 = "MD2";
+    public static final String MD5 = "MD5";
+    public static final String SHA1 = "SHA-1";
+    public static final String SHA256 = "SHA-256";
+    public static final String SHA384 = "SHA-384";
+    public static final String SHA512 = "SHA-512";
+    public static final String HMAC_MD5 = "HmacMD5";
+    public static final String HMAC_SHA1 = "HmacSHA1";
+    public static final String HMAC_SHA256 = "HmacSHA256";
+    public static final String HMAC_SHA384 = "HmacSHA384";
+    public static final String HMAC_SHA512 = "HmacSHA512";
 
     private Constants() {
 

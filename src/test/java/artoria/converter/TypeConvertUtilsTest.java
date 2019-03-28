@@ -12,56 +12,67 @@ public class TypeConvertUtilsTest {
     private static Logger log = LoggerFactory.getLogger(TypeConvertUtilsTest.class);
 
     @Test
-    public void test1() {
-        int n = 102;
-        Object o = TypeConvertUtils.convert(n, double.class);
-        Double d = (Double) o;
-        log.info("{}", d);
+    public void testIntToPrimitiveDouble() {
+        int src = 102;
+        Object obj = TypeConvertUtils.convert(src, double.class);
+        log.info("{} {}", obj.getClass(), obj);
     }
 
     @Test
-    public void test2() {
-        String n = "102";
-        Object o = TypeConvertUtils.convert(n, double.class);
-        Double d = (Double) o;
-        log.info("{}", d);
+    public void testStringToPrimitiveDouble() {
+        String src = "102";
+        Object obj = TypeConvertUtils.convert(src, double.class);
+        log.info("{} {}", obj.getClass(), obj);
     }
 
     @Test
-    public void test3() {
-        String n = "true";
-        Object o = TypeConvertUtils.convert(n, Boolean.class);
-        log.info("{}", o);
+    public void testStringToBoolean() {
+        String src = "true";
+        Object obj = TypeConvertUtils.convert(src, Boolean.class);
+        log.info("{} {}", obj.getClass(), obj);
     }
 
     @Test
-    public void test4() {
-        Object o = TypeConvertUtils.convert(true, String.class);
-        log.info("{}", o);
+    public void testPrimitiveBooleanToString() {
+        Object obj = TypeConvertUtils.convert(true, String.class);
+        log.info("{} {}", obj.getClass(), obj);
     }
 
     @Test
-    public void test5() {
-        Object o = TypeConvertUtils.convert(new Date(), Timestamp.class);
-        log.info("{}", o.getClass());
-        log.info("{}", o);
+    public void testDateToTimestamp() {
+        Object obj = TypeConvertUtils.convert(new Date(), Timestamp.class);
+        log.info("{} {}", obj.getClass(), obj);
     }
 
     @Test
-    public void test6() {
-        Object o = TypeConvertUtils.convert(DateUtils.format(), java.sql.Date.class);
-        log.info("{}", o.getClass());
-        log.info("{}", o);
+    public void testStringToDate() {
+        Object obj;
+        obj = TypeConvertUtils.convert("2019-03-25 10:10:10 300", java.sql.Date.class);
+        log.info("{} {}", obj.getClass(), DateUtils.format((Date) obj));
+        obj = TypeConvertUtils.convert("2019-03-25T10:10:10.300+0800", Date.class);
+        log.info("{} {}", obj.getClass(), DateUtils.format((Date) obj));
+        obj = TypeConvertUtils.convert("2019-03-25 10:10:10", Date.class);
+        log.info("{} {}", obj.getClass(), DateUtils.format((Date) obj));
+        obj = TypeConvertUtils.convert("2019-03-25 10:10", Date.class);
+        log.info("{} {}", obj.getClass(), DateUtils.format((Date) obj));
+        obj = TypeConvertUtils.convert("2019-03-25", Date.class);
+        log.info("{} {}", obj.getClass(), DateUtils.format((Date) obj));
+        obj = TypeConvertUtils.convert("2019/03/25 10:10:10", Date.class);
+        log.info("{} {}", obj.getClass(), DateUtils.format((Date) obj));
+        obj = TypeConvertUtils.convert("2019/03/25 10:10", Date.class);
+        log.info("{} {}", obj.getClass(), DateUtils.format((Date) obj));
+        obj = TypeConvertUtils.convert("2019/03/25", Date.class);
+        log.info("{} {}", obj.getClass(), DateUtils.format((Date) obj));
+        obj = TypeConvertUtils.convert("test2019/03/25error", Date.class);
+        log.info("{} {}", obj.getClass(), obj);
     }
 
     @Test
-    public void test7() {
-        Object o = TypeConvertUtils.convert(DateUtils.getTimestamp() + "", java.sql.Date.class);
-        log.info("{}", o.getClass());
-        log.info("{}", o);
-        Object o1 = TypeConvertUtils.convert("-45674576567", java.sql.Date.class);
-        log.info("{}", o1.getClass());
-        log.info("{}", o1);
+    public void testLongStringToDate() {
+        Object obj = TypeConvertUtils.convert(String.valueOf(DateUtils.getTimestamp()), java.sql.Date.class);
+        log.info("{} {}", obj.getClass(), obj);
+        Object obj1 = TypeConvertUtils.convert("-45674576567", java.sql.Date.class);
+        log.info("{} {}", obj1.getClass(), obj1);
     }
 
 }

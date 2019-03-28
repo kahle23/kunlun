@@ -80,7 +80,7 @@ public class Csv extends TextFile implements Table {
                     if (quoteIndex == -1) { index = -1; break; }
                     index = quoteIndex + 1;
                     char nextChar = text.charAt(index);
-                    if (DOUBLE_QUOTE.equals(nextChar + EMPTY_STRING)) {
+                    if (DOUBLE_QUOTE.equals(String.valueOf(nextChar))) {
                         index++; loop = true;
                     }
                     else {
