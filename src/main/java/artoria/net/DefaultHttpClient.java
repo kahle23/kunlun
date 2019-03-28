@@ -397,7 +397,7 @@ public class DefaultHttpClient implements HttpClient {
                 urlBuilder.append(AMPERSAND);
             }
             String key = URLEncoder.encode(entry.getKey(), charset);
-            String val = URLEncoder.encode(value + EMPTY_STRING, charset);
+            String val = URLEncoder.encode(String.valueOf(value), charset);
             urlBuilder.append(key).append(EQUAL).append(val);
         }
         URL url = new URL(urlBuilder.toString());
@@ -494,7 +494,7 @@ public class DefaultHttpClient implements HttpClient {
                 writer.write(AMPERSAND);
             }
             String key = entry.getKey();
-            String val = entry.getValue() + EMPTY_STRING;
+            String val = String.valueOf(entry.getValue());
             key = URLEncoder.encode(key, charset);
             val = URLEncoder.encode(val, charset);
             writer.write(key);
@@ -528,7 +528,7 @@ public class DefaultHttpClient implements HttpClient {
                 writer.flush();
             }
             else {
-                writer.write(body + EMPTY_STRING);
+                writer.write(String.valueOf(body));
             }
         }
         finally {
@@ -589,7 +589,7 @@ public class DefaultHttpClient implements HttpClient {
                     writer.newLine();
                     writer.newLine();
                     // writer.write("\r\n\r\n");
-                    writer.write(val + EMPTY_STRING);
+                    writer.write(String.valueOf(val));
                 }
                 writer.newLine();
                 // writer.write("\r\n");
