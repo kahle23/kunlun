@@ -4,10 +4,8 @@ import artoria.util.Assert;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 
 import static artoria.io.IOUtils.DEFAULT_BUFFER_SIZE;
@@ -20,38 +18,32 @@ import static artoria.io.IOUtils.EOF;
  * @author Kahle
  */
 public class Hmac extends AbstractDigester {
-    private byte[] key;
+    private SecretKey secretKey;
 
     public Hmac(String algorithm) {
 
         this.setAlgorithm(algorithm);
     }
 
-    public Hmac(String algorithm, byte[] key) {
+    public Hmac(String algorithm, SecretKey secretKey) {
         this.setAlgorithm(algorithm);
-        this.setKey(key);
+        this.setSecretKey(secretKey);
     }
 
-    public byte[] getKey() {
-        Assert.notNull(this.key, "Please set the parameter \"key\" first. ");
-        return this.key;
+    public SecretKey getSecretKey() {
+        Assert.notNull(this.secretKey, "Please set the parameter \"secretKey\" first. ");
+        return this.secretKey;
     }
 
-    public void setKey(byte[] key) {
-        Assert.notNull(key, "Parameter \"key\" must not null. ");
-        this.key = key;
-    }
-
-    public void setKey(String key) {
-        Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Charset charset = Charset.forName(this.getCharset());
-        this.key = key.getBytes(charset);
+    public void setSecretKey(SecretKey secretKey) {
+        Assert.notNull(secretKey, "Parameter \"secretKey\" must not null. ");
+        this.secretKey = secretKey;
     }
 
     @Override
     public byte[] digest(byte[] data) throws GeneralSecurityException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
-        SecretKey secretKey = new SecretKeySpec(this.getKey(), this.getAlgorithm());
+        SecretKey secretKey = this.getSecretKey();
         Mac mac = Mac.getInstance(this.getAlgorithm());
         mac.init(secretKey);
         return mac.doFinal(data);
@@ -60,7 +52,7 @@ public class Hmac extends AbstractDigester {
     @Override
     public byte[] digest(InputStream inputStream) throws GeneralSecurityException, IOException {
         Assert.notNull(inputStream, "Parameter \"inputStream\" must not null. ");
-        SecretKey secretKey = new SecretKeySpec(this.getKey(), this.getAlgorithm());
+        SecretKey secretKey = this.getSecretKey();
         Mac mac = Mac.getInstance(this.getAlgorithm());
         mac.init(secretKey);
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];

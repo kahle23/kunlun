@@ -1,97 +1,83 @@
 package artoria.crypto;
 
 import artoria.codec.Base64Utils;
+import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import java.security.GeneralSecurityException;
 
-// Blowfish data Multiple 8
-// Blowfish Key length <= 56
-// Blowfish Iv length 8
-// SecretKeySpec key = new SecretKeySpec(inputKey, "Blowfish");
-// new IvParameterSpec(iv);
-// JDK
-// "Blowfish/ECB/NoPadding"
-// "Blowfish/ECB/PKCS5Padding"
-// "Blowfish/CBC/NoPadding"
-// "Blowfish/CBC/PKCS5Padding"
+import static artoria.common.Constants.BLOWFISH;
 
-public class BlowfishTest {
+/**
+ * Blowfish/ECB/NoPadding
+ * Blowfish/ECB/PKCS5Padding
+ * Blowfish/CBC/NoPadding
+ * Blowfish/CBC/PKCS5Padding
+ */
+public class BlowfishTest extends BouncyCastleSupport {
     private static Logger log = LoggerFactory.getLogger(BlowfishTest.class);
-    private String algorithmName = "Blowfish";
-    private byte[] data = "Hello，Java！".getBytes();
+    private static SymmetricCrypto symmetricCrypto = new DefaultSymmetricCrypto();
+    private static IvParameterSpec ivParameterSpec;
+    private byte[] data = "Hello, Java!".getBytes();
 
-    @Ignore
-    @Test
-    public void ecbNoPadding() throws Exception {
-        byte[] key = "YMHADK1XE12U1F925LZNJP3X21U5PIL5ZTOHU1B9CXOQ6449UTI3QQLA".getBytes();
-        String trsft = "Blowfish/ECB/NoPadding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+    static {
+        try {
+            // KeySize must be multiple of 8, and can only range from 32 to 448 (inclusive)
+            String algorithm = BLOWFISH; int keySize = 128;
+            SecretKey secretKey = KeyUtils.generateKey(algorithm, keySize);
+            log.info("Algorithm = {}, KeySize = {}", algorithm, keySize);
+            log.info("Secret key: {}", KeyUtils.toBase64String(secretKey));
+            // Wrong IV length: must be 8 bytes long
+            ivParameterSpec = new IvParameterSpec("TeTestIv".getBytes());
+            symmetricCrypto.setSecretKey(secretKey);
+            symmetricCrypto.setAlgorithm(algorithm);
+            symmetricCrypto.setMode(Mode.ECB);
+            symmetricCrypto.setPadding(Padding.NO_PADDING);
+        }
+        catch (GeneralSecurityException e) {
+            throw ExceptionUtils.wrap(e);
+        }
     }
 
-    @Ignore
-    @Test
-    public void ecbPKCS5Padding() throws Exception {
-        byte[] key = "YMHADK1XE12U1F925LZNJP3X21U5PIL5ZTOHU1B9CXOQ6449UTI3QQLA".getBytes();
-        String trsft = "Blowfish/ECB/PKCS5Padding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
-        byte[] bytes = encrypter.doFinal(data);
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+    private void testEncryptAndDecrypt(Mode mode, Padding padding) throws Exception {
+        log.info("Start test Blowfish/{}/{}", mode, padding);
+        symmetricCrypto.setMode(mode);
+        symmetricCrypto.setPadding(padding);
+        byte[] bytes = symmetricCrypto.encrypt(data);
+        log.info("Encrypt: {}", Base64Utils.encodeToString(bytes));
+        byte[] bytes1 = symmetricCrypto.decrypt(bytes);
+        log.info("Decrypt: {}", new String(bytes1));
+        log.info("End test Blowfish/{}/{}", mode, padding);
     }
 
-    @Ignore
     @Test
-    public void cbcNoPadding() throws Exception {
-        byte[] key = "YMHADK1XE12U1F925LZNJP3X21U5PIL5ZTOHU1B9CXOQ6449UTI3QQLA".getBytes();
-        byte[] iv = "J3CPV1FL".getBytes();
-        String trsft = "Blowfish/CBC/NoPadding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-        IvParameterSpec ivps = new IvParameterSpec(iv);
+    public void testEcbNoPadding() throws Exception {
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.NO_PADDING);
     }
 
-    @Ignore
     @Test
-    public void cbcPKCS5Padding() throws Exception {
-        byte[] key = "YMHADK1XE12U1F925LZNJP3X21U5PIL5ZTOHU1B9CXOQ6449UTI3QQLA".getBytes();
-        byte[] iv = "J3CPV1FL".getBytes();
-        String trsft = "Blowfish/CBC/PKCS5Padding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-        IvParameterSpec ivps = new IvParameterSpec(iv);
+    public void testEcbPKCS5Padding() throws Exception {
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
-        byte[] bytes = encrypter.doFinal(data);
-        log.info(Base64Utils.encodeToString(bytes));
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.PKCS5_PADDING);
+    }
 
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+    @Test
+    public void testCbcNoPadding() throws Exception {
+        symmetricCrypto.setAlgorithmParameterSpec(ivParameterSpec);
+        this.testEncryptAndDecrypt(Mode.CBC, Padding.NO_PADDING);
+        symmetricCrypto.setAlgorithmParameterSpec(null);
+    }
+
+    @Test
+    public void testCbcPKCS5Padding() throws Exception {
+        symmetricCrypto.setAlgorithmParameterSpec(ivParameterSpec);
+        this.testEncryptAndDecrypt(Mode.CBC, Padding.PKCS5_PADDING);
+        symmetricCrypto.setAlgorithmParameterSpec(null);
     }
 
 }

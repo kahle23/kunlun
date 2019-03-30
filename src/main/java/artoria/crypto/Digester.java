@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.security.GeneralSecurityException;
 
 /**
- * Provide a high level abstract digest tool.
+ * Provide a high level abstract digest tools.
  * @author Kahle
  */
 public interface Digester {

@@ -1,164 +1,92 @@
 package artoria.crypto;
 
 import artoria.codec.Base64Utils;
+import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.crypto.Cipher;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-// RSA
-// generatorKeySize 2048
-// "RSA/None/NoPadding"
-// "RSA/None/PKCS1Padding"
-// "RSA/ECB/NoPadding"
-// "RSA/ECB/PKCS1Padding"
+import static artoria.common.Constants.RSA;
+import static artoria.crypto.KeyType.PRIVATE_KEY;
+import static artoria.crypto.KeyType.PUBLIC_KEY;
 
-public class RSATest {
+/**
+ * RSA/None/NoPadding
+ * RSA/None/PKCS1Padding
+ * RSA/ECB/NoPadding
+ * RSA/ECB/PKCS1Padding
+ */
+public class RSATest extends BouncyCastleSupport {
     private static Logger log = LoggerFactory.getLogger(RSATest.class);
-    private String algorithmName = "RSA";
-    private byte[] data = "Hello，Java！".getBytes();
+    private static AsymmetricCrypto asymmetricCrypto = new DefaultAsymmetricCrypto();
+    private byte[] data = "Hello, Java!".getBytes();
 
-    @Test
-    @Ignore
-    public void noneNoPaddingAndDecrypterBySelf() throws Exception {
-        String trsft = "RSA/None/NoPadding";
-        KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
+    static {
+        try {
+            // RSA keys must be at least 512 bits long
+            String algorithm = RSA; int keySize = 2048;
+            KeyPair keyPair = KeyUtils.generateKeyPair(algorithm, keySize);
+            PrivateKey privateKey = keyPair.getPrivate();
+            PublicKey publicKey = keyPair.getPublic();
+            log.info("Algorithm = {}, KeySize = {}", algorithm, keySize);
+            log.info("Public key: {}", KeyUtils.toBase64String(publicKey));
+            log.info("Private key: {}", KeyUtils.toBase64String(privateKey));
+            asymmetricCrypto.setAlgorithm(RSA);
+            asymmetricCrypto.setMode(Mode.NONE);
+            asymmetricCrypto.setPadding(Padding.NO_PADDING);
+            asymmetricCrypto.setPublicKey(publicKey);
+            asymmetricCrypto.setPrivateKey(privateKey);
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
+        }
+    }
 
-        PublicKey publicKey = keyPair.getPublic();
-        PrivateKey privateKey = keyPair.getPrivate();
-
-        byte[] publicKeyByteArray = publicKey.getEncoded();
-        log.info(Base64Utils.encodeToString(publicKeyByteArray));
-        byte[] privateKeyByteArray = privateKey.getEncoded();
-        log.info(Base64Utils.encodeToString(privateKeyByteArray));
-
-        publicKey = CipherUtils.parsePublicKey(algorithmName, publicKeyByteArray);
-        privateKey = CipherUtils.parsePrivateKey(algorithmName, privateKeyByteArray);
-
-        Cipher encrypterPublic = CipherUtils.getEncrypter(trsft, publicKey);
-        Cipher decrypterPublic = CipherUtils.getDecrypter(trsft, publicKey);
-        Cipher encrypterPrivate = CipherUtils.getEncrypter(trsft, privateKey);
-        Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
-
-        byte[] bytes = encrypterPublic.doFinal(data);
-        log.info("Encrypter Public: {}", Base64Utils.encodeToString(bytes));
-        byte[] bytes1 = decrypterPublic.doFinal(bytes);
-        log.info("Decrypter Public: {}", new String(bytes1));
-        bytes1 = decrypterPrivate.doFinal(bytes);
-        log.info("Decrypter Private: {}", new String(bytes1));
-
-        log.info("");
-        bytes = encrypterPrivate.doFinal(data);
-        log.info("Encrypter Private: {}", Base64Utils.encodeToString(bytes));
-        bytes1 = decrypterPrivate.doFinal(bytes);
-        log.info("Decrypter Private: {}", new String(bytes1));
-        bytes1 = decrypterPublic.doFinal(bytes);
-        log.info("Decrypter Public: {}", new String(bytes1));
+    private void testEncryptAndDecrypt(Mode mode, Padding padding) throws Exception {
+        log.info("Start test RSA/{}/{}", mode, padding);
+        asymmetricCrypto.setMode(mode);
+        asymmetricCrypto.setPadding(padding);
+        byte[] bytes = asymmetricCrypto.encrypt(data, PUBLIC_KEY);
+        log.info("Encrypt public key: {}", Base64Utils.encodeToString(bytes));
+        byte[] bytes1 = asymmetricCrypto.decrypt(bytes, PRIVATE_KEY);
+        log.info("Decrypt private key: {}", new String(bytes1));
+//        bytes1 = asymmetricCrypto.decrypt(bytes, PUBLIC_KEY);
+//        log.info("Decrypt public key: {}", new String(bytes1));
+        bytes = asymmetricCrypto.encrypt(data, PRIVATE_KEY);
+        log.info("Encrypt private key: {}", Base64Utils.encodeToString(bytes));
+        bytes1 = asymmetricCrypto.decrypt(bytes, PUBLIC_KEY);
+        log.info("Decrypt public key: {}", new String(bytes1));
+//        bytes1 = asymmetricCrypto.decrypt(bytes, PRIVATE_KEY);
+//        log.info("Decrypt private key: {}", new String(bytes1));
+        log.info("End test RSA/{}/{}", mode, padding);
     }
 
     @Test
-    @Ignore
-    public void nonePKCS1Padding() throws Exception {
-        String trsft = "RSA/None/PKCS1Padding";
-        KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
+    public void testNoneNoPadding() throws Exception {
 
-        PublicKey publicKey = keyPair.getPublic();
-        PrivateKey privateKey = keyPair.getPrivate();
-
-        byte[] publicKeyByteArray = publicKey.getEncoded();
-        log.info(Base64Utils.encodeToString(publicKeyByteArray));
-        byte[] privateKeyByteArray = privateKey.getEncoded();
-        log.info(Base64Utils.encodeToString(privateKeyByteArray));
-
-        publicKey = CipherUtils.parsePublicKey(algorithmName, publicKeyByteArray);
-        privateKey = CipherUtils.parsePrivateKey(algorithmName, privateKeyByteArray);
-
-        Cipher encrypterPublic = CipherUtils.getEncrypter(trsft, publicKey);
-        Cipher decrypterPublic = CipherUtils.getDecrypter(trsft, publicKey);
-        Cipher encrypterPrivate = CipherUtils.getEncrypter(trsft, privateKey);
-        Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
-
-        byte[] bytes = encrypterPublic.doFinal(data);
-        log.info("Encrypter Public: {}", Base64Utils.encodeToString(bytes));
-        byte[] bytes1 = decrypterPrivate.doFinal(bytes);
-        log.info("Decrypter Private: {}", new String(bytes1));
-
-        log.info("");
-        bytes = encrypterPrivate.doFinal(data);
-        log.info("Encrypter Private: {}", Base64Utils.encodeToString(bytes));
-        bytes1 = decrypterPublic.doFinal(bytes);
-        log.info("Decrypter Public: {}", new String(bytes1));
+        this.testEncryptAndDecrypt(Mode.NONE, Padding.NO_PADDING);
     }
 
     @Test
-    public void ecbNoPadding() throws Exception {
-        String trsft = "RSA/ECB/NoPadding";
-        KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
+    public void testNonePKCS1Padding() throws Exception {
 
-        PublicKey publicKey = keyPair.getPublic();
-        PrivateKey privateKey = keyPair.getPrivate();
-
-        byte[] publicKeyByteArray = publicKey.getEncoded();
-        log.info(Base64Utils.encodeToString(publicKeyByteArray));
-        byte[] privateKeyByteArray = privateKey.getEncoded();
-        log.info(Base64Utils.encodeToString(privateKeyByteArray));
-
-        publicKey = CipherUtils.parsePublicKey(algorithmName, publicKeyByteArray);
-        privateKey = CipherUtils.parsePrivateKey(algorithmName, privateKeyByteArray);
-
-        Cipher encrypterPublic = CipherUtils.getEncrypter(trsft, publicKey);
-        Cipher decrypterPublic = CipherUtils.getDecrypter(trsft, publicKey);
-        Cipher encrypterPrivate = CipherUtils.getEncrypter(trsft, privateKey);
-        Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
-
-        byte[] bytes = encrypterPublic.doFinal(data);
-        log.info("Encrypter Public: {}", Base64Utils.encodeToString(bytes));
-        byte[] bytes1 = decrypterPrivate.doFinal(bytes);
-        log.info("Decrypter Private: {}", new String(bytes1));
-
-        log.info("");
-        bytes = encrypterPrivate.doFinal(data);
-        log.info("Encrypter Private: {}", Base64Utils.encodeToString(bytes));
-        bytes1 = decrypterPublic.doFinal(bytes);
-        log.info("Decrypter Public: {}", new String(bytes1));
+        this.testEncryptAndDecrypt(Mode.NONE, Padding.PKCS1_PADDING);
     }
 
     @Test
-    public void ecbPKCS1Padding() throws Exception {
-        String trsft = "RSA/ECB/PKCS1Padding";
-        KeyPair keyPair = CipherUtils.generateKeyPair(algorithmName, 2048);
+    public void testEcbNoPadding() throws Exception {
 
-        PublicKey publicKey = keyPair.getPublic();
-        PrivateKey privateKey = keyPair.getPrivate();
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.NO_PADDING);
+    }
 
-        byte[] publicKeyByteArray = publicKey.getEncoded();
-        log.info(Base64Utils.encodeToString(publicKeyByteArray));
-        byte[] privateKeyByteArray = privateKey.getEncoded();
-        log.info(Base64Utils.encodeToString(privateKeyByteArray));
+    @Test
+    public void testEcbPKCS1Padding() throws Exception {
 
-        publicKey = CipherUtils.parsePublicKey(algorithmName, publicKeyByteArray);
-        privateKey = CipherUtils.parsePrivateKey(algorithmName, privateKeyByteArray);
-
-        Cipher encrypterPublic = CipherUtils.getEncrypter(trsft, publicKey);
-        Cipher decrypterPublic = CipherUtils.getDecrypter(trsft, publicKey);
-        Cipher encrypterPrivate = CipherUtils.getEncrypter(trsft, privateKey);
-        Cipher decrypterPrivate = CipherUtils.getDecrypter(trsft, privateKey);
-
-        byte[] bytes = encrypterPublic.doFinal(data);
-        log.info("Encrypter Public: {}", Base64Utils.encodeToString(bytes));
-        byte[] bytes1 = decrypterPrivate.doFinal(bytes);
-        log.info("Decrypter Private: {}", new String(bytes1));
-
-        log.info("");
-        bytes = encrypterPrivate.doFinal(data);
-        log.info("Encrypter Private: {}", Base64Utils.encodeToString(bytes));
-        bytes1 = decrypterPublic.doFinal(bytes);
-        log.info("Decrypter Public: {}", new String(bytes1));
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.PKCS1_PADDING);
     }
 
 }
