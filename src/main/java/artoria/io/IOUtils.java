@@ -1,14 +1,15 @@
 package artoria.io;
 
-import artoria.reflect.ReflectUtils;
-
 import java.io.*;
-import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLConnection;
 import java.nio.channels.Selector;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
 
@@ -19,6 +20,50 @@ import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
 public class IOUtils {
     public static final int DEFAULT_BUFFER_SIZE = 8192;
     public static final int EOF = -1;
+
+    public static void closeQuietly(Closeable closeable) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            }
+            catch (IOException ioe) {
+                // ignore
+            }
+        }
+    }
+
+    public static void closeQuietly(Connection connection) {
+        if (connection != null) {
+            try {
+                connection.close();
+            }
+            catch (SQLException se) {
+                // ignore
+            }
+        }
+    }
+
+    public static void closeQuietly(Statement statement) {
+        if (statement != null) {
+            try {
+                statement.close();
+            }
+            catch (SQLException se) {
+                // ignore
+            }
+        }
+    }
+
+    public static void closeQuietly(ResultSet resultSet) {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            }
+            catch (SQLException se) {
+                // ignore
+            }
+        }
+    }
 
 //    TODO: 1.7
 //    public static void closeQuietly(AutoCloseable closeable) {
@@ -31,32 +76,6 @@ public class IOUtils {
 //            }
 //        }
 //    }
-
-    public static void closeQuietly(Object closeable) {
-        // TODO: 1.7 Remove when jdk 1.7
-        if (closeable != null) {
-            try {
-                String close = "close";
-                Class<?> clazz = closeable.getClass();
-                Method method = ReflectUtils.findMethod(clazz, close);
-                method.invoke(closeable);
-            }
-            catch (Exception e) {
-                // ignore
-            }
-        }
-    }
-
-    public static void closeQuietly(Closeable closeable) {
-        if (closeable != null) {
-            try {
-                closeable.close();
-            }
-            catch (IOException ioe) {
-                // ignore
-            }
-        }
-    }
 
     public static void closeQuietly(URLConnection conn) {
         if (conn instanceof HttpURLConnection) {

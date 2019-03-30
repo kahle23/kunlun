@@ -21,13 +21,13 @@ public class HmacTest {
     private static Hmac hsha512 = new Hmac(HMAC_SHA512);
 
     @Before
-    public void init() {
-        String key = "123456";
-        hmd5.setKey(key);
-        hsha1.setKey(key);
-        hsha256.setKey(key);
-        hsha384.setKey(key);
-        hsha512.setKey(key);
+    public void init() throws Exception {
+        hmd5.setSecretKey(KeyUtils.generateKey(HMAC_MD5, 10));
+        hsha1.setSecretKey(KeyUtils.generateKey(HMAC_SHA1, 10));
+        // Key length must be at least 40 bits
+        hsha256.setSecretKey(KeyUtils.generateKey(HMAC_SHA256, 40));
+        hsha384.setSecretKey(KeyUtils.generateKey(HMAC_SHA384, 40));
+        hsha512.setSecretKey(KeyUtils.generateKey(HMAC_SHA512, 40));
     }
 
     @Test

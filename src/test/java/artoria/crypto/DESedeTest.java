@@ -1,92 +1,83 @@
 package artoria.crypto;
 
 import artoria.codec.Base64Utils;
+import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
-import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import java.security.GeneralSecurityException;
 
-// DESede data Multiple 8
-// DESede Key length 24
-// DESede Iv length 8
-// SecretKeySpec key = new SecretKeySpec(inputKey, "DESede");
-// new IvParameterSpec(iv);
-// JDK
-// "DESede/ECB/NoPadding"
-// "DESede/ECB/PKCS5Padding"
-// "DESede/CBC/NoPadding"
-// "DESede/CBC/PKCS5Padding"
+import static artoria.common.Constants.DESEDE;
 
-public class DESedeTest {
+/**
+ * DESede/ECB/NoPadding
+ * DESede/ECB/PKCS5Padding
+ * DESede/CBC/NoPadding
+ * DESede/CBC/PKCS5Padding
+ */
+public class DESedeTest extends BouncyCastleSupport {
     private static Logger log = LoggerFactory.getLogger(DESedeTest.class);
-    private String algorithmName = "DESede";
-    private byte[] data = "Hello，Java！".getBytes();
+    private static SymmetricCrypto symmetricCrypto = new DefaultSymmetricCrypto();
+    private static IvParameterSpec ivParameterSpec;
+    private byte[] data = "Hello, Java!".getBytes();
 
-    @Test
-    public void ecbNoPadding() throws Exception {
-        byte[] key = "XASA4BKBHXLTUAC3G8L76EQ0".getBytes();
-        String trsft = "DESede/ECB/NoPadding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
+    static {
+        try {
+            // Wrong keySize: must be equal to 112 or 168
+            String algorithm = DESEDE; int keySize = 168;
+            SecretKey secretKey = KeyUtils.generateKey(algorithm, keySize);
+            log.info("Algorithm = {}, KeySize = {}", algorithm, keySize);
+            log.info("Secret key: {}", KeyUtils.toBase64String(secretKey));
+            // Wrong IV length: must be 8 bytes long
+            ivParameterSpec = new IvParameterSpec("TeTestIv".getBytes());
+            symmetricCrypto.setSecretKey(secretKey);
+            symmetricCrypto.setAlgorithm(algorithm);
+            symmetricCrypto.setMode(Mode.ECB);
+            symmetricCrypto.setPadding(Padding.NO_PADDING);
+        }
+        catch (GeneralSecurityException e) {
+            throw ExceptionUtils.wrap(e);
+        }
+    }
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+    private void testEncryptAndDecrypt(Mode mode, Padding padding) throws Exception {
+        log.info("Start test DESede/{}/{}", mode, padding);
+        symmetricCrypto.setMode(mode);
+        symmetricCrypto.setPadding(padding);
+        byte[] bytes = symmetricCrypto.encrypt(data);
+        log.info("Encrypt: {}", Base64Utils.encodeToString(bytes));
+        byte[] bytes1 = symmetricCrypto.decrypt(bytes);
+        log.info("Decrypt: {}", new String(bytes1));
+        log.info("End test DESede/{}/{}", mode, padding);
     }
 
     @Test
-    public void ecbPKCS5Padding() throws Exception {
-        byte[] key = "XASA4BKBHXLTUAC3G8L76EQ0".getBytes();
-        String trsft = "DESede/ECB/PKCS5Padding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
+    public void testEcbNoPadding() throws Exception {
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
-        byte[] bytes = encrypter.doFinal(data);
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.NO_PADDING);
     }
 
     @Test
-    public void cbcNoPadding() throws Exception {
-        byte[] key = "XASA4BKBHXLTUAC3G8L76EQ0".getBytes();
-        byte[] iv = "HESN0G1Q".getBytes();
-        String trsft = "DESede/CBC/NoPadding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-        IvParameterSpec ivps = new IvParameterSpec(iv);
+    public void testEcbPKCS5Padding() throws Exception {
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.PKCS5_PADDING);
     }
 
     @Test
-    public void cbcPKCS5Padding() throws Exception {
-        byte[] key = "XASA4BKBHXLTUAC3G8L76EQ0".getBytes();
-        byte[] iv = "HESN0G1Q".getBytes();
-        String trsft = "DESede/CBC/PKCS5Padding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-        IvParameterSpec ivps = new IvParameterSpec(iv);
+    public void testCbcNoPadding() throws Exception {
+        symmetricCrypto.setAlgorithmParameterSpec(ivParameterSpec);
+        this.testEncryptAndDecrypt(Mode.CBC, Padding.NO_PADDING);
+        symmetricCrypto.setAlgorithmParameterSpec(null);
+    }
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
-        byte[] bytes = encrypter.doFinal(data);
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+    @Test
+    public void testCbcPKCS5Padding() throws Exception {
+        symmetricCrypto.setAlgorithmParameterSpec(ivParameterSpec);
+        this.testEncryptAndDecrypt(Mode.CBC, Padding.PKCS5_PADDING);
+        symmetricCrypto.setAlgorithmParameterSpec(null);
     }
 
 }

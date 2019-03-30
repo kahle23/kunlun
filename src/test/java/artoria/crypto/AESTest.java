@@ -1,138 +1,83 @@
 package artoria.crypto;
 
 import artoria.codec.Base64Utils;
+import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import java.security.GeneralSecurityException;
 
-// ECB (Electronic Code Book)   not need iv
-// CBC (Cipher Block Chaining)  need iv
-// CFB (Cipher FeedBack)        need iv
-// OFB (Output FeedBack)        need iv
-// CTR (Counter)                need iv
+import static artoria.common.Constants.AES;
 
-// NoPadding     when encrypt need fill
-
-// AES data Multiple 16
-// AES Key length only is 16 or 24 or 32 (JDK not 32)
-// AES Iv length 16
-// SecretKeySpec key = new SecretKeySpec(inputKey, "AES");
-// new IvParameterSpec(iv);
-// "AES/ECB/NoPadding"
-// "AES/ECB/PKCS5Padding"
-// "AES/CBC/NoPadding"
-// "AES/CBC/PKCS5Padding"
-
-public class AESTest {
+/**
+ * AES/ECB/NoPadding
+ * AES/ECB/PKCS5Padding
+ * AES/CBC/NoPadding
+ * AES/CBC/PKCS5Padding
+ */
+public class AESTest extends BouncyCastleSupport {
     private static Logger log = LoggerFactory.getLogger(AESTest.class);
-    private String algorithmName = "AES";
-    private byte[] data = "Hello，Java！".getBytes();
+    private static SymmetricCrypto symmetricCrypto = new DefaultSymmetricCrypto();
+    private static IvParameterSpec ivParameterSpec;
+    private byte[] data = "Hello, Java!".getBytes();
 
-    @Test
-    public void ecbNoPaddingKey16() throws Exception {
-        byte[] key = "IXUSMRSSFJQLHVK9".getBytes();
-        String trsft = "AES/ECB/NoPadding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
-        // IllegalBlockSizeException: Input length not multiple of 16 bytes
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+    static {
+        try {
+            // Wrong keySize: must be equal to 128, 192 or 256
+            String algorithm = AES; int keySize = 128;
+            SecretKey secretKey = KeyUtils.generateKey(algorithm, keySize);
+            log.info("Algorithm = {}, KeySize = {}", algorithm, keySize);
+            log.info("Secret key: {}", KeyUtils.toBase64String(secretKey));
+            // Wrong IV length: must be 16 bytes long
+            ivParameterSpec = new IvParameterSpec("TeTestIvTeTestIv".getBytes());
+            symmetricCrypto.setSecretKey(secretKey);
+            symmetricCrypto.setAlgorithm(algorithm);
+            symmetricCrypto.setMode(Mode.ECB);
+            symmetricCrypto.setPadding(Padding.NO_PADDING);
+        }
+        catch (GeneralSecurityException e) {
+            throw ExceptionUtils.wrap(e);
+        }
     }
 
-    @Ignore
-    @Test
-    public void ecbNoPaddingKey24() throws Exception {
-        byte[] key = "IXUSMRSSFJQLHVK9U3NXA2N3".getBytes();
-        String trsft = "AES/ECB/NoPadding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
-        // IllegalBlockSizeException: Input length not multiple of 16 bytes
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
-    }
-
-    @Ignore
-    @Test
-    public void ecbNoPaddingKey32() throws Exception {
-        byte[] key = "IXUSMRSSFJQLHVK93L3HKK7Q5LLD42ZC".getBytes();
-        String trsft = "AES/ECB/NoPadding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
-        // IllegalBlockSizeException: Input length not multiple of 16 bytes
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+    private void testEncryptAndDecrypt(Mode mode, Padding padding) throws Exception {
+        log.info("Start test AES/{}/{}", mode, padding);
+        symmetricCrypto.setMode(mode);
+        symmetricCrypto.setPadding(padding);
+        byte[] bytes = symmetricCrypto.encrypt(data);
+        log.info("Encrypt: {}", Base64Utils.encodeToString(bytes));
+        byte[] bytes1 = symmetricCrypto.decrypt(bytes);
+        log.info("Decrypt: {}", new String(bytes1));
+        log.info("End test AES/{}/{}", mode, padding);
     }
 
     @Test
-    public void ecbPKCS5Padding() throws Exception {
-        byte[] key = "IXUSMRSSFJQLHVK9".getBytes();
-        String trsft = "AES/ECB/PKCS5Padding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
+    public void testEcbNoPadding() throws Exception {
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
-        // IllegalBlockSizeException: Input length not multiple of 16 bytes
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.NO_PADDING);
     }
 
     @Test
-    public void cbcNoPadding() throws Exception {
-        byte[] key = "IXUSMRSSFJQLHVK9".getBytes();
-        byte[] iv = "XWQ6WCMAQAGFY0BR".getBytes();
-        String trsft = "AES/CBC/NoPadding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-        IvParameterSpec ivps = new IvParameterSpec(iv);
+    public void testEcbPKCS5Padding() throws Exception {
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
-        // IllegalBlockSizeException: Input length not multiple of 16 bytes
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.PKCS5_PADDING);
     }
 
     @Test
-    public void cbcPKCS5Padding() throws Exception {
-        byte[] key = "IXUSMRSSFJQLHVK9".getBytes();
-        byte[] iv = "XWQ6WCMAQAGFY0BR".getBytes();
-        String trsft = "AES/CBC/PKCS5Padding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-        IvParameterSpec ivps = new IvParameterSpec(iv);
+    public void testCbcNoPadding() throws Exception {
+        symmetricCrypto.setAlgorithmParameterSpec(ivParameterSpec);
+        this.testEncryptAndDecrypt(Mode.CBC, Padding.NO_PADDING);
+        symmetricCrypto.setAlgorithmParameterSpec(null);
+    }
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
-        // IllegalBlockSizeException: Input length not multiple of 16 bytes
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 16));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+    @Test
+    public void testCbcPKCS5Padding() throws Exception {
+        symmetricCrypto.setAlgorithmParameterSpec(ivParameterSpec);
+        this.testEncryptAndDecrypt(Mode.CBC, Padding.PKCS5_PADDING);
+        symmetricCrypto.setAlgorithmParameterSpec(null);
     }
 
 }

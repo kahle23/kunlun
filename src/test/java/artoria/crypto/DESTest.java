@@ -1,111 +1,106 @@
 package artoria.crypto;
 
 import artoria.codec.Base64Utils;
+import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
-import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.GeneralSecurityException;
+import java.security.spec.KeySpec;
 
-// DES data Multiple 8
-// DES Key length = 8 (using DESKeySpec can >= 8, but result is equal)
-// DES Iv length 8
-// SecretKey key = SecretKeyFactory.getInstance("DES").generateSecret(new DESKeySpec(inputKey));
-// new IvParameterSpec(iv);
-// JDK
-// "DES/ECB/NoPadding"
-// "DES/ECB/PKCS5Padding"
-// "DES/CBC/NoPadding"
-// "DES/CBC/PKCS5Padding"
+import static artoria.common.Constants.DES;
 
-public class DESTest {
+/**
+ * DES/ECB/NoPadding
+ * DES/ECB/PKCS5Padding
+ * DES/CBC/NoPadding
+ * DES/CBC/PKCS5Padding
+ */
+public class DESTest extends BouncyCastleSupport {
     private static Logger log = LoggerFactory.getLogger(DESTest.class);
-    private String algorithmName = "DES";
-    private byte[] data = "Hello，Java！".getBytes();
+    private static SymmetricCrypto symmetricCrypto = new DefaultSymmetricCrypto();
+    private static IvParameterSpec ivParameterSpec;
+    private byte[] data = "Hello, Java!".getBytes();
 
-    @Test
-    public void ecbNoPaddingKey8() throws Exception {
-        // Key must is 8, if using SecretKeySpec.
-        byte[] key = "TAB2QNW4".getBytes();
-        String trsft = "DES/ECB/NoPadding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
+    static {
+        try {
+            // Wrong keySize: must be equal to 56
+            String algorithm = DES; int keySize = 56;
+            SecretKey secretKey = KeyUtils.generateKey(algorithm, keySize);
+            log.info("Algorithm = {}, KeySize = {}", algorithm, keySize);
+            log.info("Secret key: {}", KeyUtils.toBase64String(secretKey));
+            // Wrong IV length: must be 8 bytes long
+            ivParameterSpec = new IvParameterSpec("TeTestIv".getBytes());
+            symmetricCrypto.setSecretKey(secretKey);
+            symmetricCrypto.setAlgorithm(algorithm);
+            symmetricCrypto.setMode(Mode.ECB);
+            symmetricCrypto.setPadding(Padding.NO_PADDING);
+        }
+        catch (GeneralSecurityException e) {
+            throw ExceptionUtils.wrap(e);
+        }
+    }
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+    private void testEncryptAndDecrypt(Mode mode, Padding padding) throws Exception {
+        log.info("Start test DES/{}/{}", mode, padding);
+        symmetricCrypto.setMode(mode);
+        symmetricCrypto.setPadding(padding);
+        byte[] bytes = symmetricCrypto.encrypt(data);
+        log.info("Encrypt: {}", Base64Utils.encodeToString(bytes));
+        byte[] bytes1 = symmetricCrypto.decrypt(bytes);
+        log.info("Decrypt: {}", new String(bytes1));
+        log.info("End test DES/{}/{}", mode, padding);
     }
 
     @Test
-    public void ecbNoPaddingKeyGt8() throws Exception {
-        // The result equal ecbNoPaddingKey8()
-        // So DESKeySpec just get before 8 length
-        byte[] key = "TAB2QNW4UKPHY".getBytes();
-        String trsft = "DES/ECB/NoPadding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, new DESKeySpec(key));
+    public void testEcbNoPadding() throws Exception {
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.NO_PADDING);
     }
 
     @Test
-    public void ecbPKCS5Padding() throws Exception {
-        byte[] key = "TAB2QNW4".getBytes();
-        String trsft = "DES/ECB/PKCS5Padding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
+    public void testEcbPKCS5Padding() throws Exception {
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey);
-        byte[] bytes = encrypter.doFinal(data);
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.PKCS5_PADDING);
     }
 
     @Test
-    public void cbcNoPadding() throws Exception {
-        byte[] key = "TAB2QNW4".getBytes();
-        byte[] iv = "WLBSQ8CG".getBytes();
-        String trsft = "DES/CBC/NoPadding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-        IvParameterSpec ivps = new IvParameterSpec(iv);
-
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
-        byte[] bytes = encrypter.doFinal(CipherUtils.fill(data, 8));
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+    public void testCbcNoPadding() throws Exception {
+        symmetricCrypto.setAlgorithmParameterSpec(ivParameterSpec);
+        this.testEncryptAndDecrypt(Mode.CBC, Padding.NO_PADDING);
+        symmetricCrypto.setAlgorithmParameterSpec(null);
     }
 
     @Test
-    public void cbcPKCS5Padding() throws Exception {
-        byte[] key = "TAB2QNW4".getBytes();
-        byte[] iv = "WLBSQ8CG".getBytes();
-        String trsft = "DES/CBC/PKCS5Padding";
-        SecretKey secretKey = CipherUtils.parseSecretKey(algorithmName, key);
-        IvParameterSpec ivps = new IvParameterSpec(iv);
+    public void testCbcPKCS5Padding() throws Exception {
+        symmetricCrypto.setAlgorithmParameterSpec(ivParameterSpec);
+        this.testEncryptAndDecrypt(Mode.CBC, Padding.PKCS5_PADDING);
+        symmetricCrypto.setAlgorithmParameterSpec(null);
+    }
 
-        Cipher encrypter = CipherUtils.getEncrypter(trsft, secretKey, ivps);
-        byte[] bytes = encrypter.doFinal(data);
-        log.info(Base64Utils.encodeToString(bytes));
-
-        Cipher decrypter = CipherUtils.getDecrypter(trsft, secretKey, ivps);
-        byte[] bytes1 = decrypter.doFinal(bytes);
-        log.info(new String(bytes1));
+    /**
+     * The length of the DES key only supports 8.
+     * The DES key length of the arguments when using the KeyGenerator is only 56.
+     * Error info:"Wrong keySize: must be equal to 56".
+     * So if the key length is correct, the encryption process is fine.
+     * So the following code is only a backup.
+     * @see KeyUtils#parseSecretKey(String, byte[])
+     */
+    public static SecretKey parseSecretKey(String algorithm, byte[] key) throws GeneralSecurityException {
+        if (DES.equalsIgnoreCase(algorithm)) {
+            KeySpec keySpec = new DESKeySpec(key);
+            SecretKeyFactory factory = SecretKeyFactory.getInstance(algorithm);
+            return factory.generateSecret(keySpec);
+        }
+        else {
+            return new SecretKeySpec(key, algorithm);
+        }
     }
 
 }
