@@ -85,6 +85,9 @@ public class StringConverter implements TypeConverter {
         if (!String.class.isAssignableFrom(clazz)) {
             return source;
         }
+        if (StringUtils.isBlank((String) source)) {
+            return null;
+        }
         if (Number.class.isAssignableFrom(target)) {
             BigDecimal d = new BigDecimal((String) source);
             return TypeConvertUtils.convert(d, target);

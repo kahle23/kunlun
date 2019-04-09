@@ -118,6 +118,12 @@ public abstract class AbstractCrypto implements Crypto {
     }
 
     /**
+     *
+     * @param cipherMode
+     * @param key
+     * @param certificate
+     * @return
+     * @throws GeneralSecurityException
      * @see Cipher#ENCRYPT_MODE
      * @see Cipher#DECRYPT_MODE
      */

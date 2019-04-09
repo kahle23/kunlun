@@ -43,11 +43,11 @@ public interface Attributable {
     void addAttributes(Map<String, Object> attributes);
 
     /**
-     * Determine whether the key is included.
-     * @param key The key to judge
-     * @return If true, the key is included, else false
+     * Determine whether the attribute name is included.
+     * @param attributeName The attribute name to judge
+     * @return If true, the attribute name is included, else false
      */
-    boolean containsKey(Object key);
+    boolean containsName(String attributeName);
 
     /**
      * Clear attributes.

@@ -54,6 +54,7 @@ public class TypeConvertUtils {
             TypeConverter converter = CONVERTERS.get(clazz);
             if (converter != null) {
                 source = converter.convert(source, target);
+                if (source == null) { return null; }
                 if (target.isAssignableFrom(source.getClass())) {
                     return source;
                 }
