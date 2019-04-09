@@ -6,6 +6,8 @@ import artoria.time.Clock;
 import artoria.time.SystemClock;
 import artoria.util.Assert;
 
+import static artoria.common.Constants.EMPTY_STRING;
+
 /**
  * Id generator tools.
  * @author Kahle
@@ -21,7 +23,7 @@ public class IdUtils {
         Clock clock = SystemClock.getInstance();
         long defaultId = 1L;
         DEFAULT_NUMBER_ID_GENERATOR = new SnowFlakeIdGenerator(defaultId, defaultId, clock);
-        DEFAULT_STRING_ID_GENERATOR = new SimpleIdGenerator();
+        DEFAULT_STRING_ID_GENERATOR = new SimpleIdGenerator(EMPTY_STRING);
     }
 
     public static IdGenerator<String> getStringIdGenerator() {

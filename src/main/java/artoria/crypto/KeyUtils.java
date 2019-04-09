@@ -72,9 +72,13 @@ public class KeyUtils {
     }
 
     /**
-     * Generate SecretKey.
-     * List of supported algorithms: AES, ARCFOUR, Blowfish, DES
-     * , DESede, RC2, HmacMD5, HmacSHA1, HmacSHA256, HmacSHA384, HmacSHA512
+     * Generate SecretKey. List of supported algorithms: AES, ARCFOUR, Blowfish, DES
+     *      , DESede, RC2, HmacMD5, HmacSHA1, HmacSHA256, HmacSHA384, HmacSHA512
+     * @param algorithm
+     * @param params
+     * @param random
+     * @return
+     * @throws GeneralSecurityException
      * @see <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#KeyGenerator">KeyGenerator Algorithms</a>
      */
     public static SecretKey generateKey(String algorithm, AlgorithmParameterSpec params, SecureRandom random) throws GeneralSecurityException {
@@ -102,6 +106,11 @@ public class KeyUtils {
     /**
      * Generate PublicKey and PrivateKey.
      * List of supported algorithms: DiffieHellman, DSA, RSA, EC
+     * @param algorithm
+     * @param params
+     * @param random
+     * @return
+     * @throws GeneralSecurityException
      * @see <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">KeyPairGenerator Algorithms</a>
      */
     public static KeyPair generateKeyPair(String algorithm, AlgorithmParameterSpec params, SecureRandom random) throws GeneralSecurityException {

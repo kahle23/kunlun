@@ -28,8 +28,8 @@ public enum Padding {
 
     /**
      * Optimal Asymmetric Encryption Padding scheme defined in PKCS1,
-     *      where <digest> should be replaced by the message digest
-     *      and <mgf> by the mask generation function.
+     *      where &lt;digest&gt; should be replaced by the message digest
+     *      and &lt;mgf&gt; by the mask generation function.
      */
     OAEP_PADDING("OAEPPadding"),
 

@@ -34,7 +34,7 @@ public abstract class AbstractAttributable implements Attributable {
     @Override
     public Map<String, Object> getAttributes() {
 
-        return Collections.unmodifiableMap(attributes);
+        return Collections.unmodifiableMap(this.attributes);
     }
 
     @Override
@@ -44,9 +44,9 @@ public abstract class AbstractAttributable implements Attributable {
     }
 
     @Override
-    public boolean containsKey(Object key) {
+    public boolean containsName(String attributeName) {
 
-        return this.attributes.containsKey((String) key);
+        return this.attributes.containsKey(attributeName);
     }
 
     @Override
