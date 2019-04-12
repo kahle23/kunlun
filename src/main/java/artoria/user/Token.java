@@ -27,6 +27,10 @@ public class Token implements Serializable {
      * Last accessed time.
      */
     private Long lastAccessedTime;
+    /**
+     * Last accessed address.
+     */
+    private Long lastAccessedAddress;
 
     public String getId() {
 
@@ -76,6 +80,16 @@ public class Token implements Serializable {
     public void setLastAccessedTime(Long lastAccessedTime) {
 
         this.lastAccessedTime = lastAccessedTime;
+    }
+
+    public Long getLastAccessedAddress() {
+
+        return this.lastAccessedAddress;
+    }
+
+    public void setLastAccessedAddress(Long lastAccessedAddress) {
+
+        this.lastAccessedAddress = lastAccessedAddress;
     }
 
 }

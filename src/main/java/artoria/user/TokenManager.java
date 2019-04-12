@@ -17,9 +17,20 @@ public interface TokenManager {
     /**
      * Save token object.
      * @param token Token object
-     * @return Token id
      */
-    String save(Token token);
+    void save(Token token);
+
+    /**
+     * Remove token object.
+     * @param tokenId Token id
+     */
+    void remove(String tokenId);
+
+    /**
+     * Refresh token object.
+     * @param tokenId Token id
+     */
+    void refresh(String tokenId);
 
     /**
      * Find token object.
@@ -27,18 +38,6 @@ public interface TokenManager {
      * @return Token object
      */
     Token find(String tokenId);
-
-    /**
-     * Kick out token object.
-     * @param tokenId Token id
-     */
-    void kickout(String tokenId);
-
-    /**
-     * Refresh token object.
-     * @param tokenId Token id
-     */
-    void refresh(String tokenId);
 
     /**
      * Query token object list.

@@ -22,21 +22,21 @@ import java.util.Random;
 public class DefaultRandomizer implements Randomizer {
     private static final char[] DEFAULT_CHAR_ARRAY = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private static final Long TIME_INTERVAL = 6 * 60 * 60 * 1000L;
+    private static volatile Long lastUpdatedTime = 0L;
     private static final Integer DEFAULT_BOUND = 8192;
     private static final Integer DEFAULT_SIZE = 8;
-    private static volatile Long lastTime = 0L;
     private static Random random;
 
     private Random getRandom() {
-        if ((System.currentTimeMillis() - lastTime) <= TIME_INTERVAL) {
+        if ((System.currentTimeMillis() - lastUpdatedTime) <= TIME_INTERVAL) {
             return random;
         }
         synchronized (this) {
-            if ((System.currentTimeMillis() - lastTime) <= TIME_INTERVAL) {
+            if ((System.currentTimeMillis() - lastUpdatedTime) <= TIME_INTERVAL) {
                 return random;
             }
             random = new SecureRandom();
-            lastTime = System.currentTimeMillis();
+            lastUpdatedTime = System.currentTimeMillis();
             return random;
         }
     }

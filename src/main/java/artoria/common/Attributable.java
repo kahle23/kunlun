@@ -9,49 +9,49 @@ import java.util.Map;
 public interface Attributable {
 
     /**
+     * Add attributes.
+     * @param attributes Map that contain attributes
+     */
+    void putAll(Map<String, Object> attributes);
+
+    /**
      * Add attribute.
-     * @param attributeName Attribute name
-     * @param attributeValue Attribute value
+     * @param name Attribute name
+     * @param value Attribute value
      * @return Old attribute value if exist
      */
-    Object addAttribute(String attributeName, Object attributeValue);
+    Object put(String name, Object value);
 
     /**
      * Remove attribute by name.
-     * @param attributeName Attribute name
+     * @param name Attribute name
      * @return Old attribute value if exist
      */
-    Object removeAttribute(String attributeName);
+    Object remove(String name);
 
     /**
      * Get attribute by name.
-     * @param attributeName Attribute name
+     * @param name Attribute name
      * @return Attribute value
      */
-    Object getAttribute(String attributeName);
+    Object get(String name);
 
     /**
      * Get attributes to unmodifiable map.
      * @return Unmodifiable map that contain attributes
      */
-    Map<String, Object> getAttributes();
-
-    /**
-     * Add attributes.
-     * @param attributes Map that contain attributes
-     */
-    void addAttributes(Map<String, Object> attributes);
+    Map<String, Object> entries();
 
     /**
      * Determine whether the attribute name is included.
-     * @param attributeName The attribute name to judge
+     * @param name The attribute name to judge
      * @return If true, the attribute name is included, else false
      */
-    boolean containsName(String attributeName);
+    boolean containsName(String name);
 
     /**
      * Clear attributes.
      */
-    void clearAttributes();
+    void clear();
 
 }

@@ -3,7 +3,6 @@ package artoria.template;
 import artoria.exception.ExceptionUtils;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
-import artoria.util.StringUtils;
 
 import java.io.Writer;
 
@@ -27,7 +26,7 @@ public class LoggerRenderer implements Renderer {
             Writer writer = (Writer) output;
             String format = (String) input;
             Object[] args = (Object[]) data;
-            if (StringUtils.isBlank(format) || ArrayUtils.isEmpty(args)) {
+            if (format == null || ArrayUtils.isEmpty(args)) {
                 writer.write(String.valueOf(format));
                 return;
             }

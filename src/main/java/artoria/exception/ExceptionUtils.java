@@ -24,7 +24,7 @@ public class ExceptionUtils {
             if (cause instanceof RuntimeException) {
                 return (RuntimeException) cause;
             }
-            return ReflectUtils.newInstance(clazz, Throwable.class);
+            return ReflectUtils.newInstance(clazz, cause);
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
