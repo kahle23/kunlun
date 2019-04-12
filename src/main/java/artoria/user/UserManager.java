@@ -13,10 +13,16 @@ public interface UserManager {
     String generateId();
 
     /**
-     * Kick out user information object.
+     * Save user information object.
+     * @param userInfo User information object
+     */
+    void save(UserInfo userInfo);
+
+    /**
+     * Remove user information object.
      * @param userId User id
      */
-    void kickout(String userId);
+    void remove(String userId);
 
     /**
      * Refresh user information object.
@@ -30,12 +36,5 @@ public interface UserManager {
      * @return User information object
      */
     UserInfo find(String userId);
-
-    /**
-     * Save user information object.
-     * @param userInfo User information object
-     * @return User id
-     */
-    String save(UserInfo userInfo);
 
 }
