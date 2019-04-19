@@ -46,7 +46,9 @@ public class SimpleDateFormatter implements DateFormatter, DateParser {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        dateFormatCache.remove();
+        if (dateFormatCache != null) {
+            dateFormatCache.remove();
+        }
     }
 
 }

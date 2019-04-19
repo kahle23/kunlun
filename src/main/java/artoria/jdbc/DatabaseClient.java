@@ -299,10 +299,10 @@ public class DatabaseClient {
             String primaryKey = this.readPrimaryKey(dbMetaData, tableName);
             tableMeta.setPrimaryKey(primaryKey);
             columnResultSet = dbMetaData.getColumns(null, null, tableName, null);
-            tableMeta.setColumnMetaList(new ArrayList<ColumnMeta>());
+            tableMeta.setColumnList(new ArrayList<ColumnMeta>());
             while (columnResultSet.next()) {
                 ColumnMeta columnMeta = this.createColumnMeta(columnResultSet, primaryKey);
-                tableMeta.getColumnMetaList().add(columnMeta);
+                tableMeta.getColumnList().add(columnMeta);
                 columnMap.put(columnMeta.getName(), columnMeta);
             }
         }

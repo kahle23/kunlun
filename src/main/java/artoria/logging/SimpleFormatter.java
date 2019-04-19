@@ -6,7 +6,6 @@ import artoria.util.StringUtils;
 import artoria.util.ThreadUtils;
 
 import java.lang.management.ThreadInfo;
-import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -16,7 +15,7 @@ import static artoria.common.Constants.*;
  * Simple jdk logger formatter.
  * @author Kahle
  */
-public class SimpleFormatter extends Formatter {
+public class SimpleFormatter extends java.util.logging.SimpleFormatter {
     private static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
     private static final Integer MAX_SOURCE_LENGTH = 40;
     private static final Integer MAX_THREAD_LENGTH = 15;
@@ -126,6 +125,7 @@ public class SimpleFormatter extends Formatter {
     public String format(LogRecord record) {
         String throwable = this.printfThrowable(record);
         return this.coloring(this.printfTime(record), 39, 39)
+                + BLANK_SPACE
                 + BLANK_SPACE
                 + this.coloring(this.printfLevel(record), 32, 39)
                 + BLANK_SPACE

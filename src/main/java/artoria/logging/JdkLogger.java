@@ -1,7 +1,6 @@
 package artoria.logging;
 
 import artoria.io.StringBuilderWriter;
-import artoria.template.LoggerRenderer;
 import artoria.template.Renderer;
 
 import java.util.logging.Level;
@@ -11,19 +10,8 @@ import java.util.logging.Level;
  * @author Kahle
  */
 public class JdkLogger implements Logger {
-    private static Renderer loggerRenderer = new LoggerRenderer();
-
-    public static Renderer getLoggerRenderer() {
-
-        return loggerRenderer;
-    }
-
-    public static void setLoggerRenderer(Renderer loggerRenderer) {
-
-        JdkLogger.loggerRenderer = loggerRenderer;
-    }
-
     private final java.util.logging.Logger logger;
+    private final Renderer loggerRenderer;
 
     private void logp(Level level, String format, Object[] arguments, Throwable throwable) {
         if (!logger.isLoggable(level)) { return; }
@@ -36,8 +24,8 @@ public class JdkLogger implements Logger {
         logger.logp(level, clazzName, methodName, message, throwable);
     }
 
-    public JdkLogger(java.util.logging.Logger logger) {
-
+    public JdkLogger(java.util.logging.Logger logger, Renderer loggerRenderer) {
+        this.loggerRenderer = loggerRenderer;
         this.logger = logger;
     }
 

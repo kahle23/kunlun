@@ -30,7 +30,7 @@ public class Token implements Serializable {
     /**
      * Last accessed address.
      */
-    private Long lastAccessedAddress;
+    private String lastAccessedAddress;
 
     public String getId() {
 
@@ -82,12 +82,12 @@ public class Token implements Serializable {
         this.lastAccessedTime = lastAccessedTime;
     }
 
-    public Long getLastAccessedAddress() {
+    public String getLastAccessedAddress() {
 
         return this.lastAccessedAddress;
     }
 
-    public void setLastAccessedAddress(Long lastAccessedAddress) {
+    public void setLastAccessedAddress(String lastAccessedAddress) {
 
         this.lastAccessedAddress = lastAccessedAddress;
     }
