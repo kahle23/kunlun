@@ -42,7 +42,7 @@ public class DatabaseClientTest {
             log.info("--------");
             log.info("{} | {}", tableMeta.getName(), tableMeta.getRemarks());
             log.info(tableMeta.getPrimaryKey());
-            for (ColumnMeta columnMeta : tableMeta.getColumnMetaList()) {
+            for (ColumnMeta columnMeta : tableMeta.getColumnList()) {
                 log.info(JSON.toJSONString(columnMeta, true));
             }
             log.info("--------");

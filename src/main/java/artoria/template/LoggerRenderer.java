@@ -18,14 +18,15 @@ public class LoggerRenderer implements Renderer {
     @Override
     public void render(Object data, Object output, String name, Object input, String charsetName) throws RenderException {
         try {
-            Assert.state(output instanceof Writer, "Parameter \"output\" must instance of \"Writer\". ");
             Assert.state(input == null || input instanceof String
                     , "Parameter \"input\" must instance of \"String\". ");
             Assert.state(data == null || data instanceof Object[]
                     , "Parameter \"data\" must instance of \"Object[]\". ");
-            Writer writer = (Writer) output;
+            Assert.state(output instanceof Writer
+                    , "Parameter \"output\" must instance of \"Writer\". ");
             String format = (String) input;
             Object[] args = (Object[]) data;
+            Writer writer = (Writer) output;
             if (format == null || ArrayUtils.isEmpty(args)) {
                 writer.write(String.valueOf(format));
                 return;

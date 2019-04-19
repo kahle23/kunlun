@@ -1,44 +1,31 @@
 package artoria.user;
 
-import artoria.common.AbstractAttributable;
+import java.util.HashMap;
 
 /**
  * User information.
  * @author Kahle
  */
-public class UserInfo extends AbstractAttributable {
-    private static final String PASSWORD = "password";
-    private static final String USERNAME = "username";
-    private static final String ID = "id";
+public class UserInfo extends HashMap<String, Object> {
 
     public String getId() {
 
-        return (String) this.get(ID);
+        return (String) this.get("id");
     }
 
     public void setId(String id) {
 
-        this.put(ID, id);
+        this.put("id", id);
     }
 
     public String getUsername() {
 
-        return (String) this.get(USERNAME);
+        return (String) this.get("username");
     }
 
     public void setUsername(String username) {
 
-        this.put(USERNAME, username);
-    }
-
-    public String getPassword() {
-
-        return (String) this.get(PASSWORD);
-    }
-
-    public void setPassword(String password) {
-
-        this.put(PASSWORD, password);
+        this.put("username", username);
     }
 
 }

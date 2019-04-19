@@ -20,10 +20,10 @@ public class IdUtils {
     private static IdGenerator<Long> numberIdGenerator;
 
     static {
+        long defaultId = 0L;
         Clock clock = SystemClock.getInstance();
-        long defaultId = 1L;
-        DEFAULT_NUMBER_ID_GENERATOR = new SnowFlakeIdGenerator(defaultId, defaultId, clock);
         DEFAULT_STRING_ID_GENERATOR = new SimpleIdGenerator(EMPTY_STRING);
+        DEFAULT_NUMBER_ID_GENERATOR = new SnowFlakeIdGenerator(defaultId, defaultId, clock);
     }
 
     public static IdGenerator<String> getStringIdGenerator() {

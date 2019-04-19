@@ -49,9 +49,19 @@ public class NumberUtils {
         return NumberUtils.round(input, defaultScale, defaultRoundMode);
     }
 
+    public static String format(Object input) {
+
+        return NumberUtils.format(input, defaultPattern);
+    }
+
     public static BigDecimal round(Object input, int newScale) {
 
         return NumberUtils.round(input, newScale, defaultRoundMode);
+    }
+
+    public static String format(Object input, String pattern) {
+        Format format = new DecimalFormat(pattern);
+        return format.format(input);
     }
 
     public static BigDecimal round(Object input, int newScale, RoundingMode roundingMode) {
@@ -70,16 +80,6 @@ public class NumberUtils {
             throw new IllegalArgumentException("Parameter \"input\" must String or Number. ");
         }
         return decimal.setScale(newScale, roundingMode);
-    }
-
-    public static String format(Object input) {
-
-        return NumberUtils.format(input, defaultPattern);
-    }
-
-    public static String format(Object input, String pattern) {
-        Format format = new DecimalFormat(pattern);
-        return format.format(input);
     }
 
 }

@@ -1,6 +1,8 @@
 package artoria.logging;
 
 import artoria.io.IOUtils;
+import artoria.template.LoggerRenderer;
+import artoria.template.Renderer;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.ClassLoaderUtils;
@@ -23,6 +25,13 @@ public class JdkLoggerProvider implements LoggerProvider {
      * This is JDK root logger name.
      */
     private static final String ROOT_LOGGER_NAME = "";
+    /**
+     * Logger renderer.
+     */
+    private static final Renderer LOGGER_RENDERER = new LoggerRenderer();
+    /**
+     * Root logger object.
+     */
     private java.util.logging.Logger logger;
 
     public JdkLoggerProvider() {
@@ -40,8 +49,7 @@ public class JdkLoggerProvider implements LoggerProvider {
                 IOUtils.closeQuietly(in);
             }
         }
-        // Because LogManager's class will other.
-        // So maybe readConfiguration is not useful.
+        // Replace the Formatter that comes with the JDK.
         Handler[] handlers = logger.getHandlers();
         if (ArrayUtils.isEmpty(handlers)) { return; }
         SimpleFormatter formatter = new SimpleFormatter();
@@ -65,7 +73,8 @@ public class JdkLoggerProvider implements LoggerProvider {
     @Override
     public Logger getLogger(String name) {
         Assert.notNull(name, "Parameter \"name\" must not null. ");
-        return new JdkLogger(java.util.logging.Logger.getLogger(name));
+        java.util.logging.Logger logger = java.util.logging.Logger.getLogger(name);
+        return new JdkLogger(logger, LOGGER_RENDERER);
     }
 
     @Override

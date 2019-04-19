@@ -12,8 +12,8 @@ import static artoria.common.Constants.MINUS;
  * @author Kahle
  */
 public class SimpleIdGenerator implements IdGenerator<String> {
+    private boolean needReplace = false;
     private String separator;
-    private boolean needReplace;
 
     public SimpleIdGenerator() {
     }
