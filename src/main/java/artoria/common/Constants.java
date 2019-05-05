@@ -70,6 +70,9 @@ public class Constants {
     public static final String NULL = "null";
     public static final String TRUE = "true";
     public static final String FALSE = "false";
+    public static final String SYSTEM = "system";
+    public static final String DEFAULT = "default";
+    public static final String UNKNOWN = "unknown";
 
     public static final String MD2 = "MD2";
     public static final String MD5 = "MD5";
