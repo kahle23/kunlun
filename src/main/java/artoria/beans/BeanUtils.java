@@ -53,7 +53,9 @@ public class BeanUtils {
     public static BeanMap createBeanMap() {
         try {
             Class<? extends BeanMap> mapType = BeanUtils.getMapType();
-            return ReflectUtils.newInstance(mapType);
+            BeanMap beanMap = ReflectUtils.newInstance(mapType);
+            beanMap.setTypeConverter(CONVERTER_AGENT);
+            return beanMap;
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
@@ -61,9 +63,9 @@ public class BeanUtils {
     }
 
     public static BeanMap createBeanMap(Object bean) {
-        BeanMap map = BeanUtils.createBeanMap();
-        map.setBean(bean);
-        return map;
+        BeanMap beanMap = BeanUtils.createBeanMap();
+        beanMap.setBean(bean);
+        return beanMap;
     }
 
     public static Object clone(Object obj) {

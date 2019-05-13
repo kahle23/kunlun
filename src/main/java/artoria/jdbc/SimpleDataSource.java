@@ -4,9 +4,12 @@ import artoria.aop.Enhancer;
 import artoria.aop.Interceptor;
 import artoria.exception.ExceptionUtils;
 import artoria.util.Assert;
+import artoria.util.ClassLoaderUtils;
 import artoria.util.StringUtils;
 
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -25,6 +28,7 @@ import java.util.logging.Logger;
 public class SimpleDataSource implements DataSource {
     private static final String CLASS_NAME = SimpleDataSource.class.getName();
     private static final String UNSUPPORTED_OPERATION = "In " + CLASS_NAME + " this operation is unsupported. ";
+    private static final String DEFAULT_CONFIG_NAME = "jdbc.properties";
     private BlockingQueue<Connection> queue;
     private String driverClass = "com.mysql.jdbc.Driver";
     private String jdbcUrl;
@@ -32,6 +36,27 @@ public class SimpleDataSource implements DataSource {
     private String password;
     private int maxPoolSize = 8;
     private int minPoolSize = 2;
+
+    private static Properties readProperties() {
+        try {
+            InputStream inputStream =
+                    ClassLoaderUtils.getResourceAsStream(DEFAULT_CONFIG_NAME, SimpleDataSource.class);
+            Assert.notNull(inputStream,
+                    "The file \"" + DEFAULT_CONFIG_NAME + "\" cannot be found in the classpath. "
+            );
+            Properties properties = new Properties();
+            properties.load(inputStream);
+            return properties;
+        }
+        catch (IOException e) {
+            throw ExceptionUtils.wrap(e);
+        }
+    }
+
+    public SimpleDataSource() {
+
+        this(readProperties());
+    }
 
     public SimpleDataSource(Properties properties) {
         this(

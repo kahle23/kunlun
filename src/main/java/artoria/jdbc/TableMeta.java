@@ -1,66 +1,69 @@
 package artoria.jdbc;
 
-import java.util.HashMap;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Database table necessary information.
  * @author Kahle
  */
-public class TableMeta extends HashMap<String, Object> {
-
+public class TableMeta implements Serializable {
     /**
      * "TABLE_NAME"
      */
-    public String getName() {
-
-        return (String) this.get("name");
-    }
-
-    public void setName(String name) {
-
-        this.put("name", name);
-    }
-
+    private String name;
     /**
      * "REMARKS"
      */
-    public String getRemarks() {
-
-        return (String) this.get("remarks");
-    }
-
-    public void setRemarks(String remarks) {
-
-        this.put("remarks", remarks);
-    }
-
+    private String remarks;
     /**
      * Table primary keys.
      * If is Composite Primary Key, use "," separate.
      */
+    private String primaryKey;
+    /**
+     * Table's column meta list.
+     */
+    private List<ColumnMeta> columnList;
+
+    public String getName() {
+
+        return name;
+    }
+
+    public void setName(String name) {
+
+        this.name = name;
+    }
+
+    public String getRemarks() {
+
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+
+        this.remarks = remarks;
+    }
+
     public String getPrimaryKey() {
 
-        return (String) this.get("primaryKey");
+        return primaryKey;
     }
 
     public void setPrimaryKey(String primaryKey) {
 
-        this.put("primaryKey", primaryKey);
+        this.primaryKey = primaryKey;
     }
 
-    /**
-     * Table's column meta list.
-     */
-    @SuppressWarnings("unchecked")
     public List<ColumnMeta> getColumnList() {
 
-        return (List<ColumnMeta>) this.get("columnList");
+        return columnList;
     }
 
     public void setColumnList(List<ColumnMeta> columnList) {
 
-        this.put("columnList", columnList);
+        this.columnList = columnList;
     }
 
 }

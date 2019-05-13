@@ -2,6 +2,7 @@ package artoria.generator;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static artoria.common.Constants.NEWLINE;
@@ -11,6 +12,7 @@ public class IdUtilsTest {
     private Integer groupLength = 5;
     private Integer count = 100;
 
+    @Ignore
     @Test
     public void test1() {
         StringBuilder builder = new StringBuilder();
