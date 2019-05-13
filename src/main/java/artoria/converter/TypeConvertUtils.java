@@ -30,8 +30,9 @@ public class TypeConvertUtils {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         TypeConverter remove = CONVERTERS.remove(clazz);
         if (remove != null) {
-            log.info("Unregister: \"" + clazz.getName()
-                    + "\" to \"" + remove.getClass().getName() + "\". ");
+            String removeClassName = remove.getClass().getName();
+            String clazzName = clazz.getName();
+            log.info("Unregister \"{}\" to \"{}\". ", removeClassName, clazzName);
         }
         return remove;
     }
@@ -39,8 +40,9 @@ public class TypeConvertUtils {
     public static void register(Class<?> clazz, TypeConverter converter) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
-        log.info("Register: \"" + clazz.getName()
-                + "\" to \"" + converter.getClass().getName() + "\". ");
+        String converterClassName = converter.getClass().getName();
+        String clazzName = clazz.getName();
+        log.info("Register \"{}\" to \"{}\". ", converterClassName, clazzName);
         CONVERTERS.put(clazz, converter);
     }
 

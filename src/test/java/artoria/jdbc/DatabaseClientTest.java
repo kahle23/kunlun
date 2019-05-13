@@ -1,15 +1,12 @@
 package artoria.jdbc;
 
 import artoria.entity.User;
-import artoria.exception.ExceptionUtils;
-import artoria.file.Prop;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,20 +17,7 @@ import java.util.Map;
 @Ignore
 public class DatabaseClientTest {
     private static Logger log = LoggerFactory.getLogger(DatabaseClientTest.class);
-    private DatabaseClient dbClient;
-    private DataSource dataSource;
-
-    {
-        try {
-            Prop prop = new Prop();
-            prop.readFromClasspath("jdbc.properties");
-            dataSource = new SimpleDataSource(prop.getProperties());
-            dbClient = new DatabaseClient(dataSource);
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
-    }
+    private DatabaseClient dbClient = new DatabaseClient(new SimpleDataSource());
 
     @Test
     public void getTableMeta() throws Exception {

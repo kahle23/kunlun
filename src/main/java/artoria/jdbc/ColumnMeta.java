@@ -1,5 +1,6 @@
 package artoria.jdbc;
 
+import java.io.Serializable;
 import java.sql.ResultSetMetaData;
 import java.util.HashMap;
 
@@ -7,137 +8,147 @@ import java.util.HashMap;
  * Database table's column necessary information.
  * @author Kahle
  */
-public class ColumnMeta extends HashMap<String, Object> {
-
+public class ColumnMeta implements Serializable {
     /**
      * "COLUMN_NAME"
      */
-    public String getName() {
-
-        return (String) this.get("name");
-    }
-
-    public void setName(String name) {
-
-        this.put("name", name);
-    }
-
+    private String name;
     /**
      * "TYPE_NAME"
      */
-    public String getType() {
-
-        return (String) this.get("type");
-    }
-
-    public void setType(String type) {
-
-        this.put("type", type);
-    }
-
+    private String type;
     /**
      * The fully-qualified name of the Java class.
      * @see ResultSetMetaData#getColumnClassName(int)
      */
+    private String className;
+    /**
+     * "COLUMN_SIZE" maybe is "null"
+     */
+    private Integer size;
+    /**
+     * "DECIMAL_DIGITS"
+     */
+    private Integer decimalDigits;
+    /**
+     * "IS_NULLABLE" is "NO" or "YES"
+     */
+    private String nullable;
+    /**
+     * "COLUMN_DEF"
+     */
+    private String defaultValue;
+    /**
+     * "IS_AUTOINCREMENT" is "NO" or "YES"
+     */
+    private String autoincrement;
+    /**
+     * Is primary key.
+     */
+    private Boolean primaryKey;
+    /**
+     * "REMARKS"
+     */
+    private String remarks;
+
+    public String getName() {
+
+        return name;
+    }
+
+    public void setName(String name) {
+
+        this.name = name;
+    }
+
+    public String getType() {
+
+        return type;
+    }
+
+    public void setType(String type) {
+
+        this.type = type;
+    }
+
     public String getClassName() {
 
-        return (String) this.get("className");
+        return className;
     }
 
     public void setClassName(String className) {
 
-        this.put("className", className);
+        this.className = className;
     }
 
-    /**
-     * "COLUMN_SIZE" maybe is "null"
-     */
     public Integer getSize() {
 
-        return (Integer) this.get("size");
+        return size;
     }
 
     public void setSize(Integer size) {
 
-        this.put("size", size);
+        this.size = size;
     }
 
-    /**
-     * "DECIMAL_DIGITS"
-     */
     public Integer getDecimalDigits() {
 
-        return (Integer) this.get("decimalDigits");
+        return decimalDigits;
     }
 
     public void setDecimalDigits(Integer decimalDigits) {
 
-        this.put("decimalDigits", decimalDigits);
+        this.decimalDigits = decimalDigits;
     }
 
-    /**
-     * "IS_NULLABLE" is "NO" or "YES"
-     */
     public String getNullable() {
 
-        return (String) this.get("nullable");
+        return nullable;
     }
 
     public void setNullable(String nullable) {
 
-        this.put("nullable", nullable);
+        this.nullable = nullable;
     }
 
-    /**
-     * "COLUMN_DEF"
-     */
     public String getDefaultValue() {
 
-        return (String) this.get("defaultValue");
+        return defaultValue;
     }
 
     public void setDefaultValue(String defaultValue) {
 
-        this.put("defaultValue", defaultValue);
+        this.defaultValue = defaultValue;
     }
 
-    /**
-     * "IS_AUTOINCREMENT" is "NO" or "YES"
-     */
     public String getAutoincrement() {
 
-        return (String) this.get("autoincrement");
+        return autoincrement;
     }
 
     public void setAutoincrement(String autoincrement) {
 
-        this.put("autoincrement", autoincrement);
+        this.autoincrement = autoincrement;
     }
 
-    /**
-     * Is primary key.
-     */
     public Boolean getPrimaryKey() {
 
-        return (Boolean) this.get("primaryKey");
+        return primaryKey;
     }
 
     public void setPrimaryKey(Boolean primaryKey) {
 
-        this.put("primaryKey", primaryKey);
+        this.primaryKey = primaryKey;
     }
 
-    /**
-     * "REMARKS"
-     */
     public String getRemarks() {
 
-        return (String) this.get("remarks");
+        return remarks;
     }
 
     public void setRemarks(String remarks) {
 
-        this.put("remarks", remarks);
+        this.remarks = remarks;
     }
 
 }

@@ -1,11 +1,13 @@
 package artoria.logging;
 
 import artoria.exception.ExceptionUtils;
-import artoria.time.DateUtils;
 import artoria.util.StringUtils;
 import artoria.util.ThreadUtils;
 
 import java.lang.management.ThreadInfo;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -50,8 +52,9 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
     }
 
     private String printfTime(LogRecord record) {
+        DateFormat dateFormat = new SimpleDateFormat(DEFAULT_DATE_PATTERN);
         long millis = record.getMillis();
-        return DateUtils.format(millis, DEFAULT_DATE_PATTERN);
+        return dateFormat.format(new Date(millis));
     }
 
     private String printfLevel(LogRecord record) {
