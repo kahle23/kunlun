@@ -9,11 +9,15 @@ import java.util.List;
  */
 public class TableMeta implements Serializable {
     /**
-     * "TABLE_NAME"
+     * "TABLE_NAME".
      */
     private String name;
     /**
-     * "REMARKS"
+     * Table alias.
+     */
+    private String alias;
+    /**
+     * "REMARKS".
      */
     private String remarks;
     /**
@@ -34,6 +38,16 @@ public class TableMeta implements Serializable {
     public void setName(String name) {
 
         this.name = name;
+    }
+
+    public String getAlias() {
+
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+
+        this.alias = alias;
     }
 
     public String getRemarks() {
