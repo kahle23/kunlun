@@ -26,15 +26,20 @@ public class JdkLoggerProvider implements LoggerProvider {
      */
     private static final String ROOT_LOGGER_NAME = "";
     /**
-     * Logger renderer.
-     */
-    private static final Renderer LOGGER_RENDERER = new LoggerRenderer();
-    /**
      * Root logger object.
      */
     private java.util.logging.Logger logger;
+    /**
+     * Logger renderer.
+     */
+    private Renderer loggerRenderer;
 
     public JdkLoggerProvider() {
+
+        this(new LoggerRenderer());
+    }
+
+    public JdkLoggerProvider(Renderer loggerRenderer) {
         logger = java.util.logging.Logger.getLogger(ROOT_LOGGER_NAME);
         InputStream in = ClassLoaderUtils
                 .getResourceAsStream(LOGGER_CONFIG_FILENAME, this.getClass());
@@ -62,6 +67,17 @@ public class JdkLoggerProvider implements LoggerProvider {
                 handler.setFormatter(formatter);
             }
         }
+        this.setLoggerRenderer(loggerRenderer);
+    }
+
+    public Renderer getLoggerRenderer() {
+
+        return loggerRenderer;
+    }
+
+    public void setLoggerRenderer(Renderer loggerRenderer) {
+        Assert.notNull(loggerRenderer, "Parameter \"loggerRenderer\" must not null. ");
+        this.loggerRenderer = loggerRenderer;
     }
 
     @Override
@@ -74,7 +90,7 @@ public class JdkLoggerProvider implements LoggerProvider {
     public Logger getLogger(String name) {
         Assert.notNull(name, "Parameter \"name\" must not null. ");
         java.util.logging.Logger logger = java.util.logging.Logger.getLogger(name);
-        return new JdkLogger(logger, LOGGER_RENDERER);
+        return new JdkLogger(logger, this.getLoggerRenderer());
     }
 
     @Override

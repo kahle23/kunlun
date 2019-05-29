@@ -31,7 +31,7 @@ public class Hmac extends AbstractDigester {
     }
 
     public SecretKey getSecretKey() {
-        Assert.notNull(this.secretKey, "Please set the parameter \"secretKey\" first. ");
+
         return this.secretKey;
     }
 
@@ -44,7 +44,10 @@ public class Hmac extends AbstractDigester {
     public byte[] digest(byte[] data) throws GeneralSecurityException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         SecretKey secretKey = this.getSecretKey();
-        Mac mac = Mac.getInstance(this.getAlgorithm());
+        Assert.notNull(secretKey, "Parameter \"secretKey\" must not null. ");
+        String algorithm = this.getAlgorithm();
+        Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
+        Mac mac = Mac.getInstance(algorithm);
         mac.init(secretKey);
         return mac.doFinal(data);
     }
@@ -53,7 +56,10 @@ public class Hmac extends AbstractDigester {
     public byte[] digest(InputStream inputStream) throws GeneralSecurityException, IOException {
         Assert.notNull(inputStream, "Parameter \"inputStream\" must not null. ");
         SecretKey secretKey = this.getSecretKey();
-        Mac mac = Mac.getInstance(this.getAlgorithm());
+        Assert.notNull(secretKey, "Parameter \"secretKey\" must not null. ");
+        String algorithm = this.getAlgorithm();
+        Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
+        Mac mac = Mac.getInstance(algorithm);
         mac.init(secretKey);
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         for (int len; (len = inputStream.read(buffer)) != EOF;) {

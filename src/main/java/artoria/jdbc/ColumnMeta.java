@@ -2,7 +2,6 @@ package artoria.jdbc;
 
 import java.io.Serializable;
 import java.sql.ResultSetMetaData;
-import java.util.HashMap;
 
 /**
  * Database table's column necessary information.
@@ -10,11 +9,11 @@ import java.util.HashMap;
  */
 public class ColumnMeta implements Serializable {
     /**
-     * "COLUMN_NAME"
+     * "COLUMN_NAME".
      */
     private String name;
     /**
-     * "TYPE_NAME"
+     * "TYPE_NAME".
      */
     private String type;
     /**
@@ -23,23 +22,23 @@ public class ColumnMeta implements Serializable {
      */
     private String className;
     /**
-     * "COLUMN_SIZE" maybe is "null"
+     * "COLUMN_SIZE" maybe is "null".
      */
     private Integer size;
     /**
-     * "DECIMAL_DIGITS"
+     * "DECIMAL_DIGITS".
      */
     private Integer decimalDigits;
     /**
-     * "IS_NULLABLE" is "NO" or "YES"
+     * "IS_NULLABLE" is "NO" or "YES".
      */
     private String nullable;
     /**
-     * "COLUMN_DEF"
+     * "COLUMN_DEF".
      */
     private String defaultValue;
     /**
-     * "IS_AUTOINCREMENT" is "NO" or "YES"
+     * "IS_AUTOINCREMENT" is "NO" or "YES".
      */
     private String autoincrement;
     /**
@@ -47,7 +46,7 @@ public class ColumnMeta implements Serializable {
      */
     private Boolean primaryKey;
     /**
-     * "REMARKS"
+     * "REMARKS".
      */
     private String remarks;
 

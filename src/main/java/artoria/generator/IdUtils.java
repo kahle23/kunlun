@@ -28,8 +28,7 @@ public class IdUtils {
     }
 
     public static IdGenerator<Long> getNumberIdGenerator() {
-        Assert.notNull(numberIdGenerator
-                , "The number id generator is null, please set value first. ");
+
         return numberIdGenerator;
     }
 

@@ -17,17 +17,20 @@ public class DefaultSymmetricCrypto extends AbstractCrypto implements SymmetricC
     private SecretKey secretKey;
 
     protected byte[] fillNoPadding(byte[] data) {
-        boolean isEquals = NO_PADDING.getName()
-                .equalsIgnoreCase(this.getPadding());
+        String algorithm = this.getAlgorithm();
+        Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
+        String padding = this.getPadding();
+        Assert.notBlank(padding, "Parameter \"padding\" must not blank. ");
+        boolean isEquals = NO_PADDING.getName().equalsIgnoreCase(padding);
         if (!isEquals) { return data; }
         Assert.notEmpty(data, "Parameter \"data\" must not empty. ");
         int multiple;
-        if (AES.equalsIgnoreCase(this.getAlgorithm())) {
+        if (AES.equalsIgnoreCase(algorithm)) {
             multiple = 16;
         }
-        else if (DES.equalsIgnoreCase(this.getAlgorithm())
-                || DESEDE.equalsIgnoreCase(this.getAlgorithm())
-                || BLOWFISH.equalsIgnoreCase(this.getAlgorithm())) {
+        else if (DES.equalsIgnoreCase(algorithm)
+                || DESEDE.equalsIgnoreCase(algorithm)
+                || BLOWFISH.equalsIgnoreCase(algorithm)) {
             multiple = 8;
         }
         else {
@@ -42,7 +45,7 @@ public class DefaultSymmetricCrypto extends AbstractCrypto implements SymmetricC
 
     @Override
     public SecretKey getSecretKey() {
-        Assert.notNull(this.secretKey, "Please set the parameter \"secretKey\" first. ");
+
         return this.secretKey;
     }
 
@@ -54,8 +57,9 @@ public class DefaultSymmetricCrypto extends AbstractCrypto implements SymmetricC
 
     @Override
     public byte[] encrypt(byte[] data) throws GeneralSecurityException {
-        data = this.fillNoPadding(data);
         SecretKey secretKey = this.getSecretKey();
+        Assert.notNull(secretKey, "Parameter \"secretKey\" must not null. ");
+        data = this.fillNoPadding(data);
         Cipher cipher = this.createCipher(Cipher.ENCRYPT_MODE, secretKey, null);
         return cipher.doFinal(data);
     }
@@ -63,6 +67,7 @@ public class DefaultSymmetricCrypto extends AbstractCrypto implements SymmetricC
     @Override
     public byte[] decrypt(byte[] data) throws GeneralSecurityException {
         SecretKey secretKey = this.getSecretKey();
+        Assert.notNull(secretKey, "Parameter \"secretKey\" must not null. ");
         Cipher cipher = this.createCipher(Cipher.DECRYPT_MODE, secretKey, null);
         return cipher.doFinal(data);
     }

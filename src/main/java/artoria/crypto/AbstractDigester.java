@@ -23,7 +23,7 @@ public abstract class AbstractDigester implements Digester {
 
     @Override
     public String getAlgorithm() {
-        Assert.notBlank(this.algorithm, "Please set the parameter \"algorithm\" first. ");
+
         return this.algorithm;
     }
 

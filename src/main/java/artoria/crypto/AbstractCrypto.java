@@ -28,7 +28,7 @@ public abstract class AbstractCrypto implements Crypto {
 
     @Override
     public String getAlgorithm() {
-        Assert.notBlank(this.algorithm, "Please set the parameter \"algorithm\" first. ");
+
         return this.algorithm;
     }
 
@@ -40,7 +40,7 @@ public abstract class AbstractCrypto implements Crypto {
 
     @Override
     public String getMode() {
-        Assert.notBlank(this.mode, "Please set the parameter \"mode\" first. ");
+
         return this.mode;
     }
 
@@ -58,7 +58,7 @@ public abstract class AbstractCrypto implements Crypto {
 
     @Override
     public String getPadding() {
-        Assert.notBlank(this.padding, "Please set the parameter \"padding\" first. ");
+
         return this.padding;
     }
 
@@ -112,8 +112,11 @@ public abstract class AbstractCrypto implements Crypto {
 
     protected String getTransformation() {
         String algorithm = this.getAlgorithm();
+        Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
         String mode = this.getMode();
+        Assert.notBlank(mode, "Parameter \"mode\" must not blank. ");
         String padding = this.getPadding();
+        Assert.notBlank(padding, "Parameter \"padding\" must not blank. ");
         return algorithm + SLASH + mode + SLASH + padding;
     }
 

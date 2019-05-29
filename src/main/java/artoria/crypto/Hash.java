@@ -26,14 +26,18 @@ public class Hash extends AbstractDigester {
     @Override
     public byte[] digest(byte[] data) throws GeneralSecurityException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
-        MessageDigest md = MessageDigest.getInstance(this.getAlgorithm());
+        String algorithm = this.getAlgorithm();
+        Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
+        MessageDigest md = MessageDigest.getInstance(algorithm);
         return md.digest(data);
     }
 
     @Override
     public byte[] digest(InputStream inputStream) throws GeneralSecurityException, IOException {
         Assert.notNull(inputStream, "Parameter \"inputStream\" must not null. ");
-        MessageDigest md = MessageDigest.getInstance(this.getAlgorithm());
+        String algorithm = this.getAlgorithm();
+        Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
+        MessageDigest md = MessageDigest.getInstance(algorithm);
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         for (int len; (len = inputStream.read(buffer)) != EOF;) {
             md.update(buffer, 0, len);
