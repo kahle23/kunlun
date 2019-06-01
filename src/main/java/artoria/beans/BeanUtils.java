@@ -105,22 +105,12 @@ public class BeanUtils {
 
     public static void copy(Object from, Object to) {
 
-        getBeanCopier().copy(from, to, null, CONVERTER_AGENT);
+        getBeanCopier().copy(from, to, CONVERTER_AGENT);
     }
 
     public static void copy(Object from, Object to, TypeConverter cvt) {
 
-        getBeanCopier().copy(from, to, null, cvt);
-    }
-
-    public static void copy(Object from, Object to, List<String> ignore) {
-
-        getBeanCopier().copy(from, to, ignore, CONVERTER_AGENT);
-    }
-
-    public static void copy(Object from, Object to, List<String> ignore, TypeConverter cvt) {
-
-        getBeanCopier().copy(from, to, ignore, cvt);
+        getBeanCopier().copy(from, to, cvt);
     }
 
     public static <R, K, V> R mapToBean(Map<K, V> from, R to) {
