@@ -8,7 +8,10 @@ import artoria.random.RandomUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BeanUtilsTest {
     private static Logger log = LoggerFactory.getLogger(BeanUtilsTest.class);
@@ -41,16 +44,6 @@ public class BeanUtilsTest {
     public void testCopyBeanToBean() {
         Student student = new Student();
         BeanUtils.copy(person, student);
-        log.info(JSON.toJSONString(student));
-    }
-
-    @Test
-    public void testIgnoreJdkCopy() {
-        BeanUtils.setBeanCopier(new SimpleBeanCopier());
-        List<String> ignore = new ArrayList<String>();
-        Collections.addAll(ignore, "name", "age", "123test");
-        Student student = new Student();
-        BeanUtils.copy(person, student, ignore);
         log.info(JSON.toJSONString(student));
     }
 
