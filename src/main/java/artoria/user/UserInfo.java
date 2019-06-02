@@ -1,16 +1,14 @@
 package artoria.user;
 
+import artoria.common.AbstractRawData;
+
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * User information.
  * @author Kahle
  */
-public class UserInfo implements Serializable {
-    private Map<String, Object> rawData = new HashMap<String, Object>();
+public class UserInfo extends AbstractRawData implements Serializable {
     private String username;
     private String id;
 
@@ -32,36 +30,6 @@ public class UserInfo implements Serializable {
     public void setUsername(String username) {
 
         this.username = username;
-    }
-
-    public Object get(String key) {
-
-        return rawData.get(key);
-    }
-
-    public Object put(String key, Object value) {
-
-        return rawData.put(key, value);
-    }
-
-    public Object remove(String key) {
-
-        return rawData.remove(key);
-    }
-
-    public Map<String, Object> rawData() {
-
-        return Collections.unmodifiableMap(rawData);
-    }
-
-    public void putAll(Map<String, Object> data) {
-
-        rawData.putAll(data);
-    }
-
-    public void clear() {
-
-        rawData.clear();
     }
 
 }

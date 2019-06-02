@@ -28,7 +28,7 @@ public class PageResult<T> extends Result<T> {
 
     public Integer getPageNum() {
 
-        return this.pageNum;
+        return pageNum;
     }
 
     public void setPageNum(Integer pageNum) {
@@ -38,7 +38,7 @@ public class PageResult<T> extends Result<T> {
 
     public Integer getPageSize() {
 
-        return this.pageSize;
+        return pageSize;
     }
 
     public void setPageSize(Integer pageSize) {
@@ -48,7 +48,7 @@ public class PageResult<T> extends Result<T> {
 
     public Integer getPageCount() {
 
-        return this.pageCount;
+        return pageCount;
     }
 
     public void setPageCount(Integer pageCount) {
@@ -58,7 +58,7 @@ public class PageResult<T> extends Result<T> {
 
     public Long getTotal() {
 
-        return this.total;
+        return total;
     }
 
     public void setTotal(Long total) {
