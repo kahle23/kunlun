@@ -170,16 +170,22 @@ public class DefaultHttpClient implements HttpClient {
     }
 
     private void handleResponseCharset(HttpResponse response) {
-        String contentType = response.getHeader(CONTENT_TYPE);
-        if (StringUtils.isNotBlank(contentType)) {
-            contentType = contentType.toLowerCase();
-            int begin = contentType.indexOf(CHARSET_EQUAL);
-            if (begin == EOF) { return; }
-            int end = contentType.indexOf(SEMICOLON, begin);
-            end = end != EOF ? end : contentType.length();
-            begin = begin + CHARSET_EQUAL_LENGTH;
-            String charsetName = contentType.substring(begin, end).trim();
-            response.setCharset(Charset.forName(charsetName).name());
+        String contentTypeArray = response.getHeader(CONTENT_TYPE);
+        if (StringUtils.isNotBlank(contentTypeArray)) {
+            String[] split = contentTypeArray.split(COMMA);
+            for (String contentType : split) {
+                if (StringUtils.isBlank(contentType)) { continue; }
+                contentType = contentType.trim().toLowerCase();
+                int begin = contentType.indexOf(CHARSET_EQUAL);
+                if (begin == EOF) { continue; }
+                int end = contentType.indexOf(SEMICOLON, begin);
+                end = end != EOF ? end : contentType.length();
+                begin = begin + CHARSET_EQUAL_LENGTH;
+                String charsetName = contentType.substring(begin, end).trim();
+                if (StringUtils.isBlank(charsetName)) { continue; }
+                response.setCharset(Charset.forName(charsetName).name());
+                return;
+            }
         }
     }
 

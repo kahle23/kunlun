@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @param <T> Data type
  * @author Kahle
  */
-public class Result<T> implements Serializable {
+public class Result<T> implements GenericResult, Serializable {
     private Boolean success;
     private String code;
     private String message;
@@ -28,31 +28,37 @@ public class Result<T> implements Serializable {
         this.message = message;
     }
 
+    @Override
     public Boolean getSuccess() {
 
-        return this.success;
+        return success;
     }
 
+    @Override
     public void setSuccess(Boolean success) {
 
         this.success = success;
     }
 
+    @Override
     public String getCode() {
 
-        return this.code;
+        return code;
     }
 
+    @Override
     public void setCode(String code) {
 
         this.code = code;
     }
 
+    @Override
     public String getMessage() {
 
-        return this.message;
+        return message;
     }
 
+    @Override
     public void setMessage(String message) {
 
         this.message = message;
@@ -60,7 +66,7 @@ public class Result<T> implements Serializable {
 
     public T getData() {
 
-        return this.data;
+        return data;
     }
 
     public void setData(T data) {

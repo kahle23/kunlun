@@ -22,7 +22,7 @@ public class Paging implements Serializable {
 
     public Integer getPageNum() {
 
-        return this.pageNum;
+        return pageNum;
     }
 
     public void setPageNum(Integer pageNum) {
@@ -32,7 +32,7 @@ public class Paging implements Serializable {
 
     public Integer getPageSize() {
 
-        return this.pageSize;
+        return pageSize;
     }
 
     public void setPageSize(Integer pageSize) {

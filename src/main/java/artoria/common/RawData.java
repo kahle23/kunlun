@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * Provide access to raw data.
+ * Provide access to raw data. Resolve the problem of passing attributes that do not exist.
  * @author Kahle
  */
 public interface RawData extends Serializable {

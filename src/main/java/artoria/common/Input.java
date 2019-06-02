@@ -28,7 +28,7 @@ public class Input<T> implements Serializable {
 
     public Object getCurrentUser() {
 
-        return this.currentUser;
+        return currentUser;
     }
 
     public void setCurrentUser(Object currentUser) {
@@ -38,7 +38,7 @@ public class Input<T> implements Serializable {
 
     public Object getTargetUser() {
 
-        return this.targetUser;
+        return targetUser;
     }
 
     public void setTargetUser(Object targetUser) {
@@ -48,7 +48,7 @@ public class Input<T> implements Serializable {
 
     public Paging getPaging() {
 
-        return this.paging;
+        return paging;
     }
 
     public void setPaging(Paging paging) {
@@ -58,7 +58,7 @@ public class Input<T> implements Serializable {
 
     public T getData() {
 
-        return this.data;
+        return data;
     }
 
     public void setData(T data) {
