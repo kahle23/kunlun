@@ -13,9 +13,9 @@ import java.security.GeneralSecurityException;
 import static artoria.common.Constants.AES;
 
 /**
- * AES/ECB/NoPadding
+ * AES/ECB/ZeroPadding(NoPadding)
  * AES/ECB/PKCS5Padding
- * AES/CBC/NoPadding
+ * AES/CBC/ZeroPadding(NoPadding)
  * AES/CBC/PKCS5Padding
  */
 public class AESTest extends BouncyCastleSupport {
@@ -55,9 +55,9 @@ public class AESTest extends BouncyCastleSupport {
     }
 
     @Test
-    public void testEcbNoPadding() throws Exception {
+    public void testEcbZeroPadding() throws Exception {
 
-        this.testEncryptAndDecrypt(Mode.ECB, Padding.NO_PADDING);
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.ZERO_PADDING);
     }
 
     @Test
@@ -67,9 +67,9 @@ public class AESTest extends BouncyCastleSupport {
     }
 
     @Test
-    public void testCbcNoPadding() throws Exception {
+    public void testCbcZeroPadding() throws Exception {
         symmetricCrypto.setAlgorithmParameterSpec(ivParameterSpec);
-        this.testEncryptAndDecrypt(Mode.CBC, Padding.NO_PADDING);
+        this.testEncryptAndDecrypt(Mode.CBC, Padding.ZERO_PADDING);
         symmetricCrypto.setAlgorithmParameterSpec(null);
     }
 

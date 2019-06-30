@@ -3,6 +3,7 @@ package artoria.net;
 import artoria.file.FileUtils;
 import artoria.io.IOUtils;
 import artoria.util.Assert;
+import artoria.util.CloseUtils;
 import artoria.util.MapUtils;
 import artoria.util.StringUtils;
 
@@ -539,7 +540,7 @@ public class DefaultHttpClient implements HttpClient {
         }
         finally {
             if (needsClose) {
-                IOUtils.closeQuietly(reader);
+                CloseUtils.closeQuietly(reader);
             }
         }
     }
@@ -602,7 +603,7 @@ public class DefaultHttpClient implements HttpClient {
             }
             finally {
                 if (needsClose) {
-                    IOUtils.closeQuietly(reader);
+                    CloseUtils.closeQuietly(reader);
                 }
             }
         }
@@ -628,7 +629,7 @@ public class DefaultHttpClient implements HttpClient {
             }
         }
         finally {
-            IOUtils.closeQuietly(outputStream);
+            CloseUtils.closeQuietly(outputStream);
         }
     }
 
@@ -685,7 +686,7 @@ public class DefaultHttpClient implements HttpClient {
             this.handleResponseBody(response, request, conn);
         }
         finally {
-            IOUtils.closeQuietly(conn);
+            CloseUtils.closeQuietly(conn);
         }
         return response;
     }

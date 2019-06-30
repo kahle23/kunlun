@@ -16,7 +16,7 @@ public class CollectionUtils {
      * @param <T> Java bean type
      * @return A not null java bean
      */
-    public static <T> T getFirstNotNullElement(List<T> list) {
+    public static <T> T firstNotNullElement(List<T> list) {
         if (list == null) { return null; }
         for (T bean : list) {
             if (bean != null) { return bean; }
@@ -24,14 +24,14 @@ public class CollectionUtils {
         return null;
     }
 
-    public static <E> boolean isEmpty(Collection<E> collect) {
+    public static <E> boolean isEmpty(Collection<E> collection) {
 
-        return collect == null || collect.isEmpty();
+        return collection == null || collection.isEmpty();
     }
 
-    public static <E> boolean isNotEmpty(Collection<E> collect) {
+    public static <E> boolean isNotEmpty(Collection<E> collection) {
 
-        return collect != null && !collect.isEmpty();
+        return collection != null && !collection.isEmpty();
     }
 
     public static <E> void reverse(List<E> list) {
@@ -43,20 +43,20 @@ public class CollectionUtils {
         }
     }
 
-    public static <E> boolean isEmpty(Enumeration<E> enumerate) {
+    public static <E> boolean isEmpty(Enumeration<E> enumeration) {
 
-        return enumerate == null || !enumerate.hasMoreElements();
+        return enumeration == null || !enumeration.hasMoreElements();
     }
 
-    public static <E> boolean isNotEmpty(Enumeration<E> enumerate) {
+    public static <E> boolean isNotEmpty(Enumeration<E> enumeration) {
 
-        return enumerate != null && enumerate.hasMoreElements();
+        return enumeration != null && enumeration.hasMoreElements();
     }
 
-    public static <E> void addAll(Collection<E> collect, Enumeration<E> enumerate) {
-        if (collect == null || enumerate == null) { return; }
-        while (enumerate.hasMoreElements()) {
-            collect.add(enumerate.nextElement());
+    public static <E> void addAll(Collection<E> collection, Enumeration<E> enumeration) {
+        if (collection == null || enumeration == null) { return; }
+        while (enumeration.hasMoreElements()) {
+            collection.add(enumeration.nextElement());
         }
     }
 

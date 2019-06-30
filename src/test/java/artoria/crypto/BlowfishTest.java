@@ -13,9 +13,9 @@ import java.security.GeneralSecurityException;
 import static artoria.common.Constants.BLOWFISH;
 
 /**
- * Blowfish/ECB/NoPadding
+ * Blowfish/ECB/ZeroPadding(NoPadding)
  * Blowfish/ECB/PKCS5Padding
- * Blowfish/CBC/NoPadding
+ * Blowfish/CBC/ZeroPadding(NoPadding)
  * Blowfish/CBC/PKCS5Padding
  */
 public class BlowfishTest extends BouncyCastleSupport {
@@ -55,9 +55,9 @@ public class BlowfishTest extends BouncyCastleSupport {
     }
 
     @Test
-    public void testEcbNoPadding() throws Exception {
+    public void testEcbZeroPadding() throws Exception {
 
-        this.testEncryptAndDecrypt(Mode.ECB, Padding.NO_PADDING);
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.ZERO_PADDING);
     }
 
     @Test
@@ -67,9 +67,9 @@ public class BlowfishTest extends BouncyCastleSupport {
     }
 
     @Test
-    public void testCbcNoPadding() throws Exception {
+    public void testCbcZeroPadding() throws Exception {
         symmetricCrypto.setAlgorithmParameterSpec(ivParameterSpec);
-        this.testEncryptAndDecrypt(Mode.CBC, Padding.NO_PADDING);
+        this.testEncryptAndDecrypt(Mode.CBC, Padding.ZERO_PADDING);
         symmetricCrypto.setAlgorithmParameterSpec(null);
     }
 

@@ -12,7 +12,7 @@ public class ArrayUtils {
      * @param <T> Java bean type
      * @return A not null java bean
      */
-    public static <T> T getFirstNotNullElement(T[] arr) {
+    public static <T> T firstNotNullElement(T[] arr) {
         if (arr == null) { return null; }
         for (T bean : arr) {
             if (bean != null) { return bean; }

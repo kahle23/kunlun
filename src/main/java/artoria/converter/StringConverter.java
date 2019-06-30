@@ -89,8 +89,10 @@ public class StringConverter implements TypeConverter {
             return null;
         }
         if (Number.class.isAssignableFrom(target)) {
-            BigDecimal d = new BigDecimal((String) source);
-            return TypeConvertUtils.convert(d, target);
+            String numString = (String) source;
+            numString = numString.trim();
+            BigDecimal decimal = new BigDecimal(numString);
+            return TypeConvertUtils.convert(decimal, target);
         }
         if (Boolean.class.isAssignableFrom(target)) {
             return this.stringToBoolean(source, target);

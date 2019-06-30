@@ -6,7 +6,7 @@ import java.util.Map;
  * Can convert to or convert back from map.
  * @author Kahle
  */
-public interface Mapable {
+public interface Mappable {
 
     /**
      * Convert to map.

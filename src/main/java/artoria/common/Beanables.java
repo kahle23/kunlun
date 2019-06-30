@@ -6,7 +6,7 @@ import java.util.List;
  * Can convert to or convert back from bean list.
  * @author Kahle
  */
-public interface Beansable {
+public interface Beanables {
 
     /**
      * Convert to bean list.

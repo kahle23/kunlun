@@ -17,13 +17,17 @@ import static artoria.common.Constants.*;
  */
 public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
     /**
+     * Default MIME line length.
+     */
+    public static final int DEFAULT_LINE_LENGTH = 76;
+    /**
      * The line separator when encoded to MIME.
      */
     private byte[] lineSeparator;
     /**
      * The line length when encoded to MIME.
      */
-    private Integer lineLength;
+    private int lineLength = -1;
     /**
      * Encoded as URL safe.
      */
@@ -32,23 +36,24 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
      * Encoded to support MIME.
      */
     private boolean mime = false;
-
+    /**
+     * Base64 delegate.
+     */
     private Base64Delegate delegate;
 
     private Base64Delegate getDelegate() {
-        if (delegate != null) { return delegate; }
+        if (delegate != null) {
+            return delegate;
+        }
         synchronized (this) {
-            if (delegate != null) { return delegate; }
-            ClassLoader classLoader =
-                    Base64.class.getClassLoader();
+            if (delegate != null) {
+                return delegate;
+            }
             // If have JDK 8's java.util.Base64, to use it.
             String java8Base64Class = "java.util.Base64";
-            boolean isPresent = ClassUtils.isPresent(
-                    java8Base64Class, classLoader
-            );
-            delegate = isPresent
-                    ? new Java8Base64Delegate()
-                    : new Java7Base64Delegate();
+            ClassLoader classLoader = Base64.class.getClassLoader();
+            boolean isPresent = ClassUtils.isPresent(java8Base64Class, classLoader);
+            delegate = isPresent ? new Java8Base64Delegate() : new Java7Base64Delegate();
             return delegate;
         }
     }
@@ -177,31 +182,32 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
      */
     private class Java7Base64Delegate implements Base64Delegate {
         private static final String DEFAULT_LINE_SEPARATOR = "\r\n";
-        private static final int DEFAULT_LINE_LENGTH = 76;
         private String lineSeparator;
-        private Integer lineLength;
+        private int lineLength;
 
         Java7Base64Delegate() {
             byte[] separatorBytes = Base64.this.getLineSeparator();
-            this.lineSeparator =
-                    ArrayUtils.isNotEmpty(separatorBytes)
-                            ? new String(separatorBytes)
-                            : DEFAULT_LINE_SEPARATOR;
+            this.lineSeparator = ArrayUtils.isNotEmpty(separatorBytes)
+                    ? new String(separatorBytes) : DEFAULT_LINE_SEPARATOR;
             this.lineLength = Base64.this.getLineLength();
-            this.lineLength = lineLength != null
-                    ? lineLength : DEFAULT_LINE_LENGTH;
+            this.lineLength = lineLength > 0 ? lineLength : DEFAULT_LINE_LENGTH;
         }
 
         private String convertToMime(String rawData) {
-            if (StringUtils.isBlank(rawData)) { return rawData; }
+            if (StringUtils.isBlank(rawData)) {
+                return rawData;
+            }
             StringBuilder builder = new StringBuilder();
             int beginIndex = 0, endIndex = lineLength;
             int dataLength = rawData.length();
             while (beginIndex < dataLength) {
-                if (endIndex > dataLength) { endIndex = dataLength; }
+                if (endIndex > dataLength) {
+                    endIndex = dataLength;
+                }
                 String subData = rawData.substring(beginIndex, endIndex);
                 builder.append(subData).append(lineSeparator);
-                beginIndex = endIndex; endIndex += lineLength;
+                beginIndex = endIndex;
+                endIndex += lineLength;
             }
             int builderEnd = builder.length();
             builderEnd -= lineSeparator.length();
@@ -252,8 +258,8 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
      * @see java.util.Base64
      */
     private class Java8Base64Delegate implements Base64Delegate {
-        private java.util.Base64.Encoder encoder = java.util.Base64.getEncoder();
-        private java.util.Base64.Decoder decoder = java.util.Base64.getDecoder();
+        private java.util.Base64.Encoder encoder;
+        private java.util.Base64.Decoder decoder;
 
         Java8Base64Delegate() {
             if (urlSafe) {
@@ -261,13 +267,14 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
                 decoder = java.util.Base64.getUrlDecoder();
             }
             else if (mime) {
-                encoder = lineLength != null
-                        && ArrayUtils.isNotEmpty(lineSeparator)
-                        ? java.util.Base64.getMimeEncoder(
-                                lineLength, lineSeparator
-                            )
+                encoder = lineLength > 0 && ArrayUtils.isNotEmpty(lineSeparator)
+                        ? java.util.Base64.getMimeEncoder(lineLength, lineSeparator)
                         : java.util.Base64.getMimeEncoder();
                 decoder = java.util.Base64.getMimeDecoder();
+            }
+            else {
+                encoder = java.util.Base64.getEncoder();
+                decoder = java.util.Base64.getDecoder();
             }
         }
 

@@ -1,11 +1,11 @@
 package artoria.logging;
 
-import artoria.io.IOUtils;
 import artoria.template.LoggerRenderer;
 import artoria.template.Renderer;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.ClassLoaderUtils;
+import artoria.util.CloseUtils;
 
 import java.io.InputStream;
 import java.util.logging.Formatter;
@@ -51,7 +51,7 @@ public class JdkLoggerProvider implements LoggerProvider {
                 e.printStackTrace();
             }
             finally {
-                IOUtils.closeQuietly(in);
+                CloseUtils.closeQuietly(in);
             }
         }
         // Replace the Formatter that comes with the JDK.

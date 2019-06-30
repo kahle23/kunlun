@@ -15,14 +15,14 @@ public class Constants {
     public static final String ROOT_PATH = FilenameUtils.getRootPath();
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
     public static final String PATH_SEPARATOR = System.getProperty("path.separator");
-    public static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
+    public static final String FILLED_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
     public static final String GBK = "GBK";
     public static final String UTF_8 = "UTF-8";
     public static final String GB2312 = "GB2312";
     public static final String ISO_8859_1 = "ISO-8859-1";
-    public static final String DEFAULT_ENCODING = UTF_8;
-    public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
-    public static final String FILLED_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
+    public static final String DEFAULT_ENCODING_NAME = UTF_8;
 
     public static final String DOT = ".";
     public static final String PLUS = "+";

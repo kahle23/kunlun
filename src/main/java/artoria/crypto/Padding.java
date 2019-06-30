@@ -13,9 +13,8 @@ public enum Padding {
     NO_PADDING("NoPadding"),
 
     /**
-     * Zero padding mean when the bits in the block is insufficient, the block will be supplemented by zero.
-     * In this case, "ZeroPadding" is not supported
-     *      , while "NoPadding" requires manual complement, so "NoPadding" is equivalent to "ZeroPadding".
+     * Zero padding mean when the bits in the block is insufficient,
+     *      the block will be supplemented by zero.
      */
     ZERO_PADDING("ZeroPadding"),
 
@@ -43,6 +42,11 @@ public enum Padding {
      *      "PKCS #5: Password-Based Encryption Standard," version 1.5, November 1993.
      */
     PKCS5_PADDING("PKCS5Padding"),
+
+    /**
+     * The padding scheme described in PKCS #7 .
+     */
+    PKCS7_PADDING("PKCS7Padding"),
 
     /**
      * This makes the padding scheme similar (but not quite) to PKCS5Padding,

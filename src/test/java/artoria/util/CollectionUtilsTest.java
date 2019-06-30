@@ -26,7 +26,7 @@ public class CollectionUtilsTest {
 
     @Test
     public void testTakeFirstNotNullElement() {
-        Person person = CollectionUtils.getFirstNotNullElement(list);
+        Person person = CollectionUtils.firstNotNullElement(list);
         log.info(JSON.toJSONString(person, true));
     }
 

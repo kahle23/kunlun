@@ -27,20 +27,20 @@ public class StringBuilderWriter extends Writer implements Serializable {
 
     public StringBuilder getBuilder() {
 
-        return this.builder;
+        return builder;
     }
 
     @Override
     public void write(String value) {
         if (value != null) {
-            this.builder.append(value);
+            builder.append(value);
         }
     }
 
     @Override
     public void write(char[] value, int offset, int length) {
         if (value != null) {
-            this.builder.append(value, offset, length);
+            builder.append(value, offset, length);
         }
     }
 
@@ -55,7 +55,7 @@ public class StringBuilderWriter extends Writer implements Serializable {
     @Override
     public String toString() {
 
-        return this.builder.toString();
+        return builder.toString();
     }
 
 }

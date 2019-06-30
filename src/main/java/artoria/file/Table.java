@@ -1,7 +1,7 @@
 package artoria.file;
 
-import artoria.common.Beansable;
-import artoria.common.Mapsable;
+import artoria.common.Beanables;
+import artoria.common.Mappables;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
  * Abstract table.
  * @author Kahle
  */
-public interface Table extends Beansable, Mapsable {
+public interface Table extends Beanables, Mappables {
 
     /**
      * Get last row number.

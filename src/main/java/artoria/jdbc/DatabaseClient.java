@@ -2,10 +2,10 @@ package artoria.jdbc;
 
 import artoria.beans.BeanUtils;
 import artoria.exception.ExceptionUtils;
-import artoria.io.IOUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
+import artoria.util.CloseUtils;
 import artoria.util.CollectionUtils;
 import artoria.util.StringUtils;
 
@@ -66,7 +66,7 @@ public class DatabaseClient {
             return tableMetaList;
         }
         finally {
-            IOUtils.closeQuietly(tableResultSet);
+            CloseUtils.closeQuietly(tableResultSet);
             this.closeConnection(conn);
         }
     }
@@ -139,7 +139,7 @@ public class DatabaseClient {
             return prepStat.executeUpdate();
         }
         finally {
-            IOUtils.closeQuietly(prepStat);
+            CloseUtils.closeQuietly(prepStat);
             this.closeConnection(conn);
         }
     }
@@ -175,8 +175,8 @@ public class DatabaseClient {
             return result;
         }
         finally {
-            IOUtils.closeQuietly(resSet);
-            IOUtils.closeQuietly(prepStat);
+            CloseUtils.closeQuietly(resSet);
+            CloseUtils.closeQuietly(prepStat);
             this.closeConnection(conn);
         }
     }
@@ -207,7 +207,7 @@ public class DatabaseClient {
     private void closeConnection(Connection connection) {
         if (threadConnection.get() == null) {
             // Indicates that no transaction was executed.
-            IOUtils.closeQuietly(connection);
+            CloseUtils.closeQuietly(connection);
         }
         // Ignore close if there is a transaction going on.
     }
@@ -266,7 +266,7 @@ public class DatabaseClient {
             return primaryKey.toString();
         }
         finally {
-            IOUtils.closeQuietly(primaryKeysResultSet);
+            CloseUtils.closeQuietly(primaryKeysResultSet);
         }
     }
 
@@ -287,8 +287,8 @@ public class DatabaseClient {
             }
         }
         finally {
-            IOUtils.closeQuietly(resultSet);
-            IOUtils.closeQuietly(statement);
+            CloseUtils.closeQuietly(resultSet);
+            CloseUtils.closeQuietly(statement);
         }
     }
 
@@ -307,7 +307,7 @@ public class DatabaseClient {
             }
         }
         finally {
-            IOUtils.closeQuietly(columnResultSet);
+            CloseUtils.closeQuietly(columnResultSet);
         }
     }
 

@@ -1,15 +1,6 @@
 package artoria.io;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.URLConnection;
-import java.nio.channels.Selector;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
 
@@ -20,101 +11,6 @@ import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
 public class IOUtils {
     public static final int DEFAULT_BUFFER_SIZE = 8192;
     public static final int EOF = -1;
-
-    public static void closeQuietly(Closeable closeable) {
-        if (closeable != null) {
-            try {
-                closeable.close();
-            }
-            catch (IOException ioe) {
-                // ignore
-            }
-        }
-    }
-
-    public static void closeQuietly(Connection connection) {
-        if (connection != null) {
-            try {
-                connection.close();
-            }
-            catch (SQLException se) {
-                // ignore
-            }
-        }
-    }
-
-    public static void closeQuietly(Statement statement) {
-        if (statement != null) {
-            try {
-                statement.close();
-            }
-            catch (SQLException se) {
-                // ignore
-            }
-        }
-    }
-
-    public static void closeQuietly(ResultSet resultSet) {
-        if (resultSet != null) {
-            try {
-                resultSet.close();
-            }
-            catch (SQLException se) {
-                // ignore
-            }
-        }
-    }
-
-//    TODO: 1.7
-//    public static void closeQuietly(AutoCloseable closeable) {
-//        if (closeable != null) {
-//            try {
-//                closeable.close();
-//            }
-//            catch (Exception e) {
-//                // ignore
-//            }
-//        }
-//    }
-
-    public static void closeQuietly(URLConnection conn) {
-        if (conn instanceof HttpURLConnection) {
-            ((HttpURLConnection) conn).disconnect();
-        }
-    }
-
-    public static void closeQuietly(Socket sock) {
-        if (sock != null) {
-            try {
-                sock.close();
-            }
-            catch (IOException ioe) {
-                // ignored
-            }
-        }
-    }
-
-    public static void closeQuietly(Selector selector) {
-        if (selector != null) {
-            try {
-                selector.close();
-            }
-            catch (IOException ioe) {
-                // ignored
-            }
-        }
-    }
-
-    public static void closeQuietly(ServerSocket sock) {
-        if (sock != null) {
-            try {
-                sock.close();
-            }
-            catch (IOException ioe) {
-                // ignored
-            }
-        }
-    }
 
     public static byte[] toByteArray(Reader input) throws IOException {
 
