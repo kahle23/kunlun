@@ -62,6 +62,9 @@ public class Csv extends TextFile implements Table {
         Assert.notNull(reader, "Parameter \"reader\" must not null. ");
         content.clear();
         String text = IOUtils.toString(reader);
+        if (!text.endsWith(lineSeparator)) {
+            text = text + lineSeparator;
+        }
         int textLength = text.length();
         if (textLength == 0) { return 0; }
         int fromIndex = 0, quoteIndex, lineIndex, index;
@@ -362,7 +365,7 @@ public class Csv extends TextFile implements Table {
             headerList.addAll(propertiesMapping.values());
         }
         else {
-            Map<String, Object> first = CollectionUtils.getFirstNotNullElement(mapList);
+            Map<String, Object> first = CollectionUtils.firstNotNullElement(mapList);
             headerList.addAll(first.keySet());
         }
         if (columnStartNumber != 0) {

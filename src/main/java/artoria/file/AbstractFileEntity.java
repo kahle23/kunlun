@@ -1,8 +1,8 @@
 package artoria.file;
 
-import artoria.io.IOUtils;
 import artoria.util.Assert;
 import artoria.util.ClassLoaderUtils;
+import artoria.util.CloseUtils;
 
 import java.io.*;
 
@@ -53,7 +53,7 @@ public abstract class AbstractFileEntity implements FileEntity {
             this.write(outputStream);
         }
         finally {
-            IOUtils.closeQuietly(outputStream);
+            CloseUtils.closeQuietly(outputStream);
         }
     }
 
@@ -72,7 +72,7 @@ public abstract class AbstractFileEntity implements FileEntity {
             return this.read(inputStream);
         }
         finally {
-            IOUtils.closeQuietly(inputStream);
+            CloseUtils.closeQuietly(inputStream);
         }
     }
 
@@ -94,7 +94,7 @@ public abstract class AbstractFileEntity implements FileEntity {
             return this.read(inputStream);
         }
         finally {
-            IOUtils.closeQuietly(inputStream);
+            CloseUtils.closeQuietly(inputStream);
         }
     }
 

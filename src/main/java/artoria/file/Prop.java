@@ -2,7 +2,7 @@ package artoria.file;
 
 import artoria.beans.BeanUtils;
 import artoria.common.Beanable;
-import artoria.common.Mapable;
+import artoria.common.Mappable;
 import artoria.io.IOUtils;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
@@ -20,7 +20,7 @@ import java.util.Properties;
  * Properties file.
  * @author Kahle
  */
-public class Prop extends TextFile implements Beanable, Mapable {
+public class Prop extends TextFile implements Beanable, Mappable {
     private Properties properties;
 
     public Prop() {

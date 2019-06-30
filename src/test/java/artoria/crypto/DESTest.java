@@ -17,9 +17,9 @@ import java.security.spec.KeySpec;
 import static artoria.common.Constants.DES;
 
 /**
- * DES/ECB/NoPadding
+ * DES/ECB/ZeroPadding(NoPadding)
  * DES/ECB/PKCS5Padding
- * DES/CBC/NoPadding
+ * DES/CBC/ZeroPadding(NoPadding)
  * DES/CBC/PKCS5Padding
  */
 public class DESTest extends BouncyCastleSupport {
@@ -59,9 +59,9 @@ public class DESTest extends BouncyCastleSupport {
     }
 
     @Test
-    public void testEcbNoPadding() throws Exception {
+    public void testEcbZeroPadding() throws Exception {
 
-        this.testEncryptAndDecrypt(Mode.ECB, Padding.NO_PADDING);
+        this.testEncryptAndDecrypt(Mode.ECB, Padding.ZERO_PADDING);
     }
 
     @Test
@@ -71,9 +71,9 @@ public class DESTest extends BouncyCastleSupport {
     }
 
     @Test
-    public void testCbcNoPadding() throws Exception {
+    public void testCbcZeroPadding() throws Exception {
         symmetricCrypto.setAlgorithmParameterSpec(ivParameterSpec);
-        this.testEncryptAndDecrypt(Mode.CBC, Padding.NO_PADDING);
+        this.testEncryptAndDecrypt(Mode.CBC, Padding.ZERO_PADDING);
         symmetricCrypto.setAlgorithmParameterSpec(null);
     }
 

@@ -4,6 +4,7 @@ import artoria.exception.ExceptionUtils;
 import artoria.io.IOUtils;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
+import artoria.util.CloseUtils;
 import artoria.util.CollectionUtils;
 
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class NetUtils {
             return false;
         }
         finally {
-            IOUtils.closeQuietly(socket);
+            CloseUtils.closeQuietly(socket);
         }
     }
 

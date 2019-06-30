@@ -5,6 +5,7 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
+import artoria.util.CloseUtils;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
@@ -33,7 +34,7 @@ public class FileUtils {
             return IOUtils.toByteArray(in);
         }
         finally {
-            IOUtils.closeQuietly(in);
+            CloseUtils.closeQuietly(in);
         }
     }
 
@@ -80,7 +81,7 @@ public class FileUtils {
             return count;
         }
         finally {
-            IOUtils.closeQuietly(out);
+            CloseUtils.closeQuietly(out);
         }
     }
 
@@ -174,10 +175,10 @@ public class FileUtils {
             }
         }
         finally {
-            IOUtils.closeQuietly(output);
-            IOUtils.closeQuietly(fos);
-            IOUtils.closeQuietly(input);
-            IOUtils.closeQuietly(fis);
+            CloseUtils.closeQuietly(output);
+            CloseUtils.closeQuietly(fos);
+            CloseUtils.closeQuietly(input);
+            CloseUtils.closeQuietly(fis);
         }
         if (source.length() != destination.length()) {
             throw new IOException("Failed to copy full contents from \"" + source + "\" to \"" + destination + "\". ");

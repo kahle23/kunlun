@@ -1,7 +1,7 @@
 package artoria.crypto;
 
-import artoria.io.IOUtils;
 import artoria.util.Assert;
+import artoria.util.CloseUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,7 +57,7 @@ public abstract class AbstractDigester implements Digester {
             return this.digest(in);
         }
         finally {
-            IOUtils.closeQuietly(in);
+            CloseUtils.closeQuietly(in);
         }
     }
 
