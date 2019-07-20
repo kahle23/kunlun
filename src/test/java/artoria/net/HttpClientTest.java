@@ -66,8 +66,9 @@ public class HttpClientTest {
     public void test4() throws IOException {
         HttpRequest request = new HttpRequest();
         request.setMethod(HttpMethod.POST);
-        request.setUrl("https://");
-        request.addParameter("file", new File("e:\\Temp\\2c6e0001b9bb631930b9.jpg"));
+        request.setUrl("http://127.0.0.1:9999/test/input");
+        request.addParameter("file", new File("e:\\README.txt"));
+        request.addParameter("name", "Hello");
         HttpResponse response = httpClient.execute(request);
         log.info("{} | {}", response.getStatusCode(), response.getStatusMessage());
         log.info(response.getBodyAsString());
