@@ -53,7 +53,7 @@ public enum HttpMethod {
      * Check if this HTTP method has/needs a request body.
      * @return If body needed
      */
-    public final boolean getHasBody() {
+    public final boolean hasBody() {
 
         return this.hasBody;
     }

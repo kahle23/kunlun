@@ -1,5 +1,6 @@
 package artoria.net;
 
+import artoria.exception.ExceptionUtils;
 import artoria.file.FileUtils;
 import artoria.io.IOUtils;
 import artoria.util.Assert;
@@ -50,54 +51,11 @@ public class DefaultHttpClient implements HttpClient {
     private static final int CHARSET_EQUAL_LENGTH = CHARSET_EQUAL.length();
     private static final int BOUNDARY_LENGTH = 32;
     private static final int HTTP_TEMP_REDIR = 307;
-    private static SSLSocketFactory sslSocketFactory;
+    private static final SSLSocketFactory UN_SECURE_SSL_SOCKET_FACTORY = createUnSecureSSLSocketFactory();
+    private static final HostnameVerifier UN_SECURE_HOSTNAME_VERIFIER = createUnSecureHostnameVerifier();
 
-    private URL encodeUrl(URL url) {
-        try {
-            // Odd way to encode urls, but it works!
-            final URI uri = new URI(url.toExternalForm());
-            return new URL(uri.toASCIIString());
-        }
-        catch (Exception e) {
-            return url;
-        }
-    }
+    private static HostnameVerifier createUnSecureHostnameVerifier() {
 
-    private String encodeMimeName(String name) {
-        // Encodes \" to %22
-        if (name == null) { return null; }
-        return StringUtils.replace(name, DOUBLE_QUOTE, "%22");
-    }
-
-    private String generateMimeBoundary() {
-        StringBuilder mimeBoundary = new StringBuilder(BOUNDARY_LENGTH);
-        Random random = new Random();
-        for (int i = 0; i < BOUNDARY_LENGTH; i++) {
-            int nextInt = random.nextInt(MIME_BOUNDARY_CHARS.length);
-            mimeBoundary.append(MIME_BOUNDARY_CHARS[nextInt]);
-        }
-        return mimeBoundary.toString();
-    }
-
-    private boolean needsMultipart(Object value) {
-        return value instanceof File
-//                || value instanceof InputStream
-//                || value instanceof Reader
-                ;
-    }
-
-    private boolean needsMultipart(HttpRequest request) {
-        Map<String, Object> parameters = request.getParameters();
-        boolean needsMulti = false;
-        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-            Object value = entry.getValue();
-            needsMulti = this.needsMultipart(value);
-            if (needsMulti) { break; }
-        }
-        return needsMulti;
-    }
-
-    private HostnameVerifier createUnSecureHostnameVerifier() throws IOException {
         return new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
@@ -106,12 +64,10 @@ public class DefaultHttpClient implements HttpClient {
         };
     }
 
-    private SSLSocketFactory createUnSecureSSLSocketFactory() throws IOException {
-        if (sslSocketFactory != null) { return sslSocketFactory; }
-        synchronized (this) {
-            if (sslSocketFactory != null) { return sslSocketFactory; }
+    private static SSLSocketFactory createUnSecureSSLSocketFactory() {
+        try {
             // Create a trust manager that does not validate certificate chains.
-            final TrustManager[] trustAllCerts = new TrustManager[]{ new X509TrustManager() {
+            final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
 
                 @Override
                 public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
@@ -123,6 +79,7 @@ public class DefaultHttpClient implements HttpClient {
 
                 @Override
                 public X509Certificate[] getAcceptedIssuers() {
+
                     return null;
                 }
 
@@ -142,307 +99,70 @@ public class DefaultHttpClient implements HttpClient {
                 throw new IOException("Can't create unsecure trust manager. ", e);
             }
             // Create an ssl socket factory with our all-trusting manager.
-            sslSocketFactory = sslContext.getSocketFactory();
-            return sslSocketFactory;
+            return sslContext.getSocketFactory();
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
         }
     }
 
-    private Map<String, List<String>> getHeaders(HttpURLConnection conn) {
-        // The default sun impl of conn.getHeaderFields() returns header values out of order
-        final LinkedHashMap<String, List<String>> headers = new LinkedHashMap<String, List<String>>();
-        int i = 0;
-        while (true) {
-            String key = conn.getHeaderFieldKey(i);
-            String val = conn.getHeaderField(i);
-            if (key == null && val == null) { break; }
-            i++;
-            // Skip http1.1 line
-            if (key == null || val == null) { continue; }
-            if (headers.containsKey(key)) {
-                headers.get(key).add(val);
-            }
-            else {
-                List<String> vals = new ArrayList<String>();
-                headers.put(key, vals);
-                vals.add(val);
-            }
+    private static String generateMimeBoundary() {
+        StringBuilder mimeBoundary = new StringBuilder(BOUNDARY_LENGTH);
+        Random random = new Random();
+        for (int i = 0; i < BOUNDARY_LENGTH; i++) {
+            int nextInt = random.nextInt(MIME_BOUNDARY_CHARS.length);
+            mimeBoundary.append(MIME_BOUNDARY_CHARS[nextInt]);
         }
-        return headers;
+        return mimeBoundary.toString();
     }
 
-    private void handleResponseCharset(HttpResponse response) {
-        String contentTypeArray = response.getHeader(CONTENT_TYPE);
-        if (StringUtils.isNotBlank(contentTypeArray)) {
-            String[] split = contentTypeArray.split(COMMA);
-            for (String contentType : split) {
-                if (StringUtils.isBlank(contentType)) { continue; }
-                contentType = contentType.trim().toLowerCase();
-                int begin = contentType.indexOf(CHARSET_EQUAL);
-                if (begin == EOF) { continue; }
-                int end = contentType.indexOf(SEMICOLON, begin);
-                end = end != EOF ? end : contentType.length();
-                begin = begin + CHARSET_EQUAL_LENGTH;
-                String charsetName = contentType.substring(begin, end).trim();
-                if (StringUtils.isBlank(charsetName)) { continue; }
-                response.setCharset(Charset.forName(charsetName).name());
-                return;
-            }
-        }
+    private static boolean needsMultipart(Object value) {
+        return value instanceof File
+//                || value instanceof InputStream
+//                || value instanceof Reader
+                ;
     }
 
-    private void handleResponseCookies(HttpResponse response, List<String> cookies) {
-        for (String cookie : cookies) {
-            if (cookie == null) { continue; }
-            int beginIndex = cookie.indexOf(EQUAL);
-            if (beginIndex == EOF) { continue; }
-            String cookieName =
-                    cookie.substring(0, beginIndex).trim();
-            int endIndex = cookie.indexOf(SEMICOLON);
-            if (endIndex == EOF) { continue; }
-            String cookieValue =
-                    cookie.substring(beginIndex + 1, endIndex).trim();
-            // Ignores path, date, domain, validateTLSCertificates et al. req'd?
-            // Name not blank, value not null.
-            if (StringUtils.isNotBlank(cookieName)) {
-                response.addCookie(cookieName, cookieValue);
-            }
-        }
-    }
-
-    private void handleResponseHeaders(HttpResponse response, Map<String, List<String>> headers) {
-        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-            String name = entry.getKey();
-            // Http/1.1 line
-            if (name == null) { continue; }
-            List<String> values = entry.getValue();
-            if (SET_COOKIE.equalsIgnoreCase(name)) {
-                this.handleResponseCookies(response, values);
-                continue;
-            }
-            // Combine same header names with comma: http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
-            if (values.size() == 1) {
-                response.addHeader(name, values.get(0));
-            }
-            else if (values.size() > 1) {
-                StringBuilder valueBuilder = new StringBuilder();
-                for (int i = 0; i < values.size(); i++) {
-                    final String val = values.get(i);
-                    if (i != 0) {
-                        valueBuilder.append(COMMA).append(BLANK_SPACE);
-                    }
-                    valueBuilder.append(val);
-                }
-                response.addHeader(name, valueBuilder.toString());
-            }
-        }
-    }
-
-    private void handleResponseHeaders(HttpResponse response, HttpResponse previous, HttpURLConnection conn) throws IOException {
-        response.setUrl(conn.getURL());
-        response.setMethod(HttpMethod.valueOf(conn.getRequestMethod()));
-        response.setStatusCode(conn.getResponseCode());
-        response.setStatusMessage(conn.getResponseMessage());
-
-        Map<String, List<String>> headers = this.getHeaders(conn);
-        this.handleResponseHeaders(response, headers);
-        this.handleResponseCharset(response);
-
-        // If from a redirect, map previous response cookies into this response
-        if (previous == null) { return; }
-        Map<String, String> previousCookies = previous.getCookies();
-        for (Map.Entry<String, String> prevCookie : previousCookies.entrySet()) {
-            if (response.containsCookie(prevCookie.getKey())) { continue; }
-            response.addCookie(prevCookie.getKey(), prevCookie.getValue());
-        }
-    }
-
-    private void handleResponseBody(HttpResponse response, HttpRequest request, HttpURLConnection conn) throws IOException {
-        // -1 means unknown, chunked.
-        if (conn.getContentLength() != 0 && request.getMethod() != HEAD) {
-            // Sun throws an IO exception on 500 response with no content when trying to read body.
-            InputStream errorStream = conn.getErrorStream();
-            InputStream bodyStream =
-                    errorStream != null ? errorStream : conn.getInputStream();
-            if (response.containsHeader(CONTENT_ENCODING)
-                    && GZIP.equalsIgnoreCase(response.getHeader(CONTENT_ENCODING))) {
-                bodyStream = new GZIPInputStream(bodyStream);
-            }
-            OutputStream bodyToStream;
-            Writer bodyToWriter;
-            File bodyToFile;
-            if ((bodyToFile = request.getResponseBodyToFile()) != null) {
-                FileUtils.write(bodyStream, bodyToFile);
-            }
-            else if ((bodyToStream = request.getResponseBodyToStream()) != null) {
-                IOUtils.copyLarge(bodyStream, bodyToStream);
-            }
-            else if ((bodyToWriter = request.getResponseBodyToWriter()) != null) {
-                String charset = request.getCharset();
-                Reader reader = new InputStreamReader(bodyStream, charset);
-                reader = new BufferedReader(reader);
-                boolean isBw = bodyToWriter instanceof BufferedWriter;
-                Writer writer = isBw ? bodyToWriter : new BufferedWriter(bodyToWriter);
-                IOUtils.copyLarge(reader, writer);
-            }
-            else {
-                byte[] body = IOUtils.toByteArray(bodyStream);
-                response.setBody(body);
-            }
-        }
-    }
-
-    private URL handleRedirectUrl(URL oldUrl, String redirectUrl) throws MalformedURLException {
-        if (StringUtils.isBlank(redirectUrl)) {
-            throw new MalformedURLException("Redirect url must not blank. ");
-        }
-        String lowerRedirUrl = redirectUrl.toLowerCase();
-        // Fix broken Location: http:/temp/AAG_New/en/index.php
-        if (lowerRedirUrl.startsWith(MALFORMED_HTTP) && redirectUrl.charAt(MALFORMED_HTTP_LENGTH) != SLASH_CHAR) {
-            redirectUrl = redirectUrl.substring(MALFORMED_HTTP_LENGTH);
-        }
-        // Fix broken Location: https:/temp/AAG_New/en/index.php
-        if (lowerRedirUrl.startsWith(MALFORMED_HTTPS) && redirectUrl.charAt(MALFORMED_HTTPS_LENGTH) != SLASH_CHAR) {
-            redirectUrl = redirectUrl.substring(MALFORMED_HTTPS_LENGTH);
-        }
-        // Workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
-        if (redirectUrl.startsWith(QUESTION_MARK)) {
-            redirectUrl = oldUrl.getPath() + redirectUrl;
-        }
-        // Workaround: //example.com + ./foo = //example.com/./foo, not //example.com/foo
-        String oldUrlFile = oldUrl.getFile();
-        if (redirectUrl.startsWith(DOT) && !oldUrlFile.startsWith(SLASH)) {
-            oldUrl = new URL(oldUrl.getProtocol(), oldUrl.getHost(), oldUrl.getPort(), SLASH + oldUrlFile);
-        }
-        return new URL(oldUrl, redirectUrl);
-    }
-
-    private HttpResponse handleResponseRedirect(HttpResponse response, HttpRequest request, int status) throws IOException {
-        // Http/1.1 temporary redirect, not in Java's set.
-        if (status != HTTP_TEMP_REDIR) {
-            // Always redirect with a get.
-            // Any data param from original req are dropped.
-            request.setMethod(HttpMethod.GET);
-            request.clearParameters();
-            request.setBody(null);
-            request.removeHeader(CONTENT_TYPE);
-        }
-        String location = response.getHeader(LOCATION);
-        URL redirectUrl = this.handleRedirectUrl(request.getUrl(), location);
-        request.setUrl(this.encodeUrl(redirectUrl));
-        // Add response cookies to request (for e.g. login posts).
-        request.addCookies(response.getCookies());
-        return this.execute(request, response);
-    }
-
-    private String handleContentType(HttpRequest request) {
-        String boundary = null;
-        if (request.containsHeader(CONTENT_TYPE)) {
-            // If content type already set, try add charset or boundary if those aren't included.
-            String contentType = request.getHeader(CONTENT_TYPE);
-            if (StringUtils.isBlank(contentType)) {
-                request.removeHeader(CONTENT_TYPE);
-                return this.handleContentType(request);
-            }
-            String lowerContentType = contentType.toLowerCase();
-            boolean isMultipart = lowerContentType.startsWith(MULTIPART_FORM_DATA);
-            if (!isMultipart && !contentType.contains(CHARSET_EQUAL)) {
-                if (!contentType.trim().endsWith(SEMICOLON)) {
-                    contentType += SEMICOLON;
-                }
-                contentType += BLANK_SPACE;
-                contentType += CHARSET_EQUAL;
-                contentType += request.getCharset().toLowerCase();
-                request.addHeader(CONTENT_TYPE, contentType);
-            }
-            if (isMultipart && !lowerContentType.contains(BOUNDARY_EQUAL)) {
-                boundary = this.generateMimeBoundary();
-                if (!contentType.trim().endsWith(SEMICOLON)) {
-                    contentType += SEMICOLON;
-                    contentType += BLANK_SPACE;
-                    contentType += CHARSET_EQUAL;
-                    contentType += boundary;
-                    request.addHeader(CONTENT_TYPE, contentType);
-                }
-            }
-        }
-        else if (needsMultipart(request)) {
-            boundary = this.generateMimeBoundary();
-            request.addHeader(CONTENT_TYPE, MULTIPART_FORM_DATA + "; boundary=" + boundary);
-        }
-        else {
-            request.addHeader(CONTENT_TYPE, FORM_URL_ENCODED + "; charset=" + request.getCharset());
-        }
-        return boundary;
-    }
-
-    private void buildUrlQueryString(HttpRequest request) throws IOException {
+    private static boolean needsMultipart(HttpRequest request) {
         Map<String, Object> parameters = request.getParameters();
-        String charset = request.getCharset();
-        URL oldUrl = request.getUrl();
-        StringBuilder urlBuilder = new StringBuilder();
-        boolean first = true;
-        // Reconstitute the query, ready for appends.
-        urlBuilder.append(oldUrl.getProtocol())
-                .append("://")
-                // Includes host, port.
-                .append(oldUrl.getAuthority())
-                .append(oldUrl.getPath())
-                .append(QUESTION_MARK);
-        if (oldUrl.getQuery() != null) {
-            urlBuilder.append(oldUrl.getQuery());
-            first = false;
-        }
+        boolean needsMultipart = false;
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             Object value = entry.getValue();
-            if (this.needsMultipart(value)) {
-                throw new IOException("File not supported in URL query string. ");
-            }
-            if (first) {
-                first = false;
-            }
-            else {
-                urlBuilder.append(AMPERSAND);
-            }
-            String key = URLEncoder.encode(entry.getKey(), charset);
-            String val = URLEncoder.encode(String.valueOf(value), charset);
-            urlBuilder.append(key).append(EQUAL).append(val);
+            needsMultipart = needsMultipart(value);
+            if (needsMultipart) { break; }
         }
-        URL url = new URL(urlBuilder.toString());
-        request.setUrl(url);
-        // Moved into url as get params.
-        request.clearParameters();
+        return needsMultipart;
     }
 
-    private String buildCookiesString(HttpRequest request) throws IOException {
+    private static String createCookiesString(HttpRequest request) {
         Map<String, String> cookies = request.getCookies();
         StringBuilder cookiesBuilder = new StringBuilder();
         boolean first = true;
         for (Map.Entry<String, String> cookie : cookies.entrySet()) {
             if (!first) {
-                cookiesBuilder
-                        .append(SEMICOLON)
-                        .append(BLANK_SPACE);
+                cookiesBuilder.append(SEMICOLON);
+                cookiesBuilder.append(BLANK_SPACE);
             }
             else {
                 first = false;
             }
-            cookiesBuilder
-                    .append(cookie.getKey())
-                    .append(EQUAL)
-                    .append(cookie.getValue());
+            cookiesBuilder.append(cookie.getKey());
+            cookiesBuilder.append(EQUAL);
+            cookiesBuilder.append(cookie.getValue());
         }
-        String cookiesStr = cookiesBuilder.toString();
+        String cookiesString = cookiesBuilder.toString();
         String charset = request.getCharset();
-        byte[] cookiesStrBytes = cookiesStr.getBytes(charset);
-        if (cookiesStrBytes.length != cookiesStr.length()) {
+        Charset forName = Charset.forName(charset);
+        byte[] cookiesStrBytes = cookiesString.getBytes(forName);
+        if (cookiesStrBytes.length != cookiesString.length()) {
             // Spec says only ascii, no escaping / encoding defined.
             // Validate on set? or escape somehow here?
-            throw new IOException("Cookies must only ascii! ");
+            throw new IllegalArgumentException("Cookies must only ascii! ");
         }
-        return cookiesStr;
+        return cookiesString;
     }
 
-    private HttpURLConnection buildConnection(HttpRequest request) throws IOException {
+    private static HttpURLConnection createConnection(HttpRequest request) throws IOException {
         // No need validate, because validate before invoke.
         URL url = request.getUrl();
         Proxy proxy = request.getProxy();
@@ -461,22 +181,20 @@ public class DefaultHttpClient implements HttpClient {
         if (conn instanceof HttpsURLConnection
                 && !request.getValidateTLSCertificate()) {
             HttpsURLConnection hsConn = (HttpsURLConnection) conn;
-            SSLSocketFactory sf = this.createUnSecureSSLSocketFactory();
-            HostnameVerifier hv = this.createUnSecureHostnameVerifier();
-            hsConn.setSSLSocketFactory(sf);
-            hsConn.setHostnameVerifier(hv);
+            hsConn.setSSLSocketFactory(UN_SECURE_SSL_SOCKET_FACTORY);
+            hsConn.setHostnameVerifier(UN_SECURE_HOSTNAME_VERIFIER);
         }
         // Set needs input or output.
         HttpMethod method = request.getMethod();
-        if (method.getHasBody()) {
+        if (method.hasBody()) {
             conn.setDoOutput(true);
         }
         conn.setDoInput(true);
         // Handle cookies.
         Map<String, String> cookies = request.getCookies();
         if (MapUtils.isNotEmpty(cookies)) {
-            String cookiesStr = this.buildCookiesString(request);
-            conn.addRequestProperty(COOKIE, cookiesStr);
+            String cookiesString = createCookiesString(request);
+            conn.addRequestProperty(COOKIE, cookiesString);
         }
         // Handle headers.
         Map<String, String> headers = request.getHeaders();
@@ -487,6 +205,163 @@ public class DefaultHttpClient implements HttpClient {
         }
         // Return.
         return conn;
+    }
+
+    private static String encodeMimeName(String name) {
+        // Encodes \" to %22
+        if (name == null) { return null; }
+        return StringUtils.replace(name, DOUBLE_QUOTE, "%22");
+    }
+
+    private static Map<String, List<String>> createHeaderMap(HttpURLConnection connection) {
+        // The default sun impl of connection.getHeaderFields() returns header values out of order
+        final LinkedHashMap<String, List<String>> headers = new LinkedHashMap<String, List<String>>();
+        int i = 0;
+        while (true) {
+            String val = connection.getHeaderField(i);
+            String key = connection.getHeaderFieldKey(i);
+            if (key == null && val == null) { break; }
+            i++;
+            // Skip http1.1 line
+            if (key == null || val == null) { continue; }
+            if (headers.containsKey(key)) {
+                headers.get(key).add(val);
+            }
+            else {
+                List<String> list = new ArrayList<String>();
+                headers.put(key, list);
+                list.add(val);
+            }
+        }
+        return headers;
+    }
+
+    private static URL encodeUrl(URL url) {
+        try {
+            // Odd way to encode urls, but it works!
+            final URI uri = new URI(url.toExternalForm());
+            return new URL(uri.toASCIIString());
+        }
+        catch (Exception e) {
+            return url;
+        }
+    }
+
+    private static URL createRedirectUrl(URL oldUrl, String redirectUrl) throws MalformedURLException {
+        if (StringUtils.isBlank(redirectUrl)) {
+            throw new MalformedURLException("Redirect url must not blank. ");
+        }
+        String lowerRedirectUrl = redirectUrl.toLowerCase();
+        // Fix broken Location: http:/temp/AAG_New/en/index.php
+        if (lowerRedirectUrl.startsWith(MALFORMED_HTTP) && redirectUrl.charAt(MALFORMED_HTTP_LENGTH) != SLASH_CHAR) {
+            redirectUrl = redirectUrl.substring(MALFORMED_HTTP_LENGTH);
+        }
+        // Fix broken Location: https:/temp/AAG_New/en/index.php
+        if (lowerRedirectUrl.startsWith(MALFORMED_HTTPS) && redirectUrl.charAt(MALFORMED_HTTPS_LENGTH) != SLASH_CHAR) {
+            redirectUrl = redirectUrl.substring(MALFORMED_HTTPS_LENGTH);
+        }
+        // Workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
+        if (redirectUrl.startsWith(QUESTION_MARK)) {
+            redirectUrl = oldUrl.getPath() + redirectUrl;
+        }
+        // Workaround: //example.com + ./foo = //example.com/./foo, not //example.com/foo
+        String oldUrlFile = oldUrl.getFile();
+        if (redirectUrl.startsWith(DOT) && !oldUrlFile.startsWith(SLASH)) {
+            oldUrl = new URL(oldUrl.getProtocol(), oldUrl.getHost(), oldUrl.getPort(), SLASH + oldUrlFile);
+        }
+        return new URL(oldUrl, redirectUrl);
+    }
+
+    private void validate(HttpRequest request) throws IOException {
+        Assert.notNull(request, "Parameter \"request\" must not null. ");
+        HttpMethod method = request.getMethod();
+        URL url = request.getUrl();
+        Object body = request.getBody();
+        Assert.notNull(method, "Request method must not null. ");
+        Assert.notNull(url, "Request url must not null. ");
+        String protocol = url.getProtocol();
+        if (!HTTP.equals(protocol) && !HTTPS.equals(protocol)) {
+            throw new MalformedURLException("Only http & https protocols supported. ");
+        }
+        boolean hasBody = method.hasBody();
+        if (!hasBody && body != null) {
+            throw new IllegalStateException("Cannot set a request body for HTTP method " + method.name() + ". ");
+        }
+    }
+
+    private void updateRequestUrl(HttpRequest request) throws IOException {
+        Map<String, Object> parameters = request.getParameters();
+        String charset = request.getCharset();
+        URL oldUrl = request.getUrl();
+        StringBuilder urlBuilder = new StringBuilder();
+        boolean first = true;
+        // Reconstitute the query, ready for appends.
+        urlBuilder.append(oldUrl.getProtocol())
+                .append("://")
+                // Includes host, port.
+                .append(oldUrl.getAuthority())
+                .append(oldUrl.getPath())
+                .append(QUESTION_MARK);
+        String oldUrlQuery = oldUrl.getQuery();
+        if (oldUrlQuery != null) {
+            urlBuilder.append(oldUrlQuery);
+            first = false;
+        }
+        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+            Object value = entry.getValue();
+            if (needsMultipart(value)) {
+                throw new IOException("File not supported in URL query string. ");
+            }
+            if (first) {
+                first = false;
+            }
+            else {
+                urlBuilder.append(AMPERSAND);
+            }
+            String key = URLEncoder.encode(entry.getKey(), charset);
+            String val = URLEncoder.encode(String.valueOf(value), charset);
+            urlBuilder.append(key).append(EQUAL).append(val);
+        }
+        URL url = new URL(urlBuilder.toString());
+        request.setUrl(url);
+        // Moved into url as get params.
+        request.clearParameters();
+    }
+
+    private String updateContentType(HttpRequest request) {
+        String mimeBoundary = null, contentType;
+        if (StringUtils.isNotBlank(contentType = request.getHeader(CONTENT_TYPE))) {
+            // If content type already set, try add charset or boundary if those aren't included.
+            String lowerContentType = contentType.toLowerCase();
+            boolean isMultipart = lowerContentType.startsWith(MULTIPART_FORM_DATA);
+            if (!isMultipart && !contentType.contains(CHARSET_EQUAL)) {
+                if (!contentType.trim().endsWith(SEMICOLON)) {
+                    contentType += SEMICOLON;
+                }
+                contentType += BLANK_SPACE;
+                contentType += CHARSET_EQUAL;
+                contentType += request.getCharset().toLowerCase();
+                request.addHeader(CONTENT_TYPE, contentType);
+            }
+            if (isMultipart && !lowerContentType.contains(BOUNDARY_EQUAL)) {
+                mimeBoundary = generateMimeBoundary();
+                if (!contentType.trim().endsWith(SEMICOLON)) {
+                    contentType += SEMICOLON;
+                    contentType += BLANK_SPACE;
+                    contentType += CHARSET_EQUAL;
+                    contentType += mimeBoundary;
+                    request.addHeader(CONTENT_TYPE, contentType);
+                }
+            }
+        }
+        else if (needsMultipart(request)) {
+            mimeBoundary = generateMimeBoundary();
+            request.addHeader(CONTENT_TYPE, MULTIPART_FORM_DATA + "; boundary=" + mimeBoundary);
+        }
+        else {
+            request.addHeader(CONTENT_TYPE, FORM_URL_ENCODED + "; charset=" + request.getCharset());
+        }
+        return mimeBoundary;
     }
 
     private void writeFormData(HttpRequest request, BufferedWriter writer) throws IOException {
@@ -510,7 +385,7 @@ public class DefaultHttpClient implements HttpClient {
         }
     }
 
-    private void writeRequestBody(HttpRequest request, BufferedWriter writer) throws IOException {
+    private void writeBodyData(HttpRequest request, BufferedWriter writer) throws IOException {
         String charset = request.getCharset();
         Object body = request.getBody();
         boolean needsClose = false;
@@ -545,18 +420,17 @@ public class DefaultHttpClient implements HttpClient {
         }
     }
 
-    private void writeMultipartData(HttpRequest request, String boundary, BufferedWriter writer) throws IOException {
+    private void writeMultipartData(HttpRequest request, String mimeBoundary, BufferedWriter writer) throws IOException {
         Map<String, Object> parameters = request.getParameters();
         String charset = request.getCharset();
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             String key = entry.getKey();
             Object val = entry.getValue();
             writer.write(MINUS_MINUS);
-            writer.write(boundary);
+            writer.write(mimeBoundary);
             writer.newLine();
-            // writer.write("\r\n");
             writer.write("Content-Disposition: form-data; name=\"");
-            writer.write(this.encodeMimeName(key));
+            writer.write(encodeMimeName(key));
             writer.write(DOUBLE_QUOTE);
             boolean needsClose = false;
             String fileName = null;
@@ -570,24 +444,18 @@ public class DefaultHttpClient implements HttpClient {
                     reader = new BufferedReader(reader);
                     needsClose = true;
                 }
-                else if (val instanceof InputStream) {
-                    // Todo:
-                    throw new UnsupportedOperationException("Because no fileName! ");
-                }
-                else if (val instanceof Reader) {
-                    // Todo:
-                    throw new UnsupportedOperationException("Because no fileName! ");
-                }
+//                else if () {
+//                }
+//                else if () {
+//                }
                 if (reader != null && StringUtils.isNotBlank(fileName)) {
                     writer.write("; filename=\"");
-                    writer.write(this.encodeMimeName(fileName));
+                    writer.write(encodeMimeName(fileName));
                     writer.write(DOUBLE_QUOTE);
                     writer.newLine();
-                    // writer.write("\r\n");
                     writer.write("Content-Type: application/octet-stream");
                     writer.newLine();
                     writer.newLine();
-                    // writer.write("\r\n\r\n");
                     writer.flush();
                     IOUtils.copyLarge(reader, writer);
                     writer.flush();
@@ -595,11 +463,9 @@ public class DefaultHttpClient implements HttpClient {
                 else {
                     writer.newLine();
                     writer.newLine();
-                    // writer.write("\r\n\r\n");
                     writer.write(String.valueOf(val));
                 }
                 writer.newLine();
-                // writer.write("\r\n");
             }
             finally {
                 if (needsClose) {
@@ -608,24 +474,24 @@ public class DefaultHttpClient implements HttpClient {
             }
         }
         writer.write(MINUS_MINUS);
-        writer.write(boundary);
+        writer.write(mimeBoundary);
         writer.write(MINUS_MINUS);
     }
 
-    private void writeRequestContent(HttpRequest request, String boundary, OutputStream outputStream) throws IOException {
+    private void writeRequestObject(HttpRequest request, String mimeBoundary, OutputStream outputStream) throws IOException {
         try {
             Writer osw = new OutputStreamWriter(outputStream, request.getCharset());
             BufferedWriter writer = new BufferedWriter(osw);
-            if (boundary != null) {
+            if (mimeBoundary != null) {
                 // Boundary will be set if we're in multipart mode.
-                this.writeMultipartData(request, boundary, writer);
+                writeMultipartData(request, mimeBoundary, writer);
             }
             else if (request.getBody() != null) {
-                this.writeRequestBody(request, writer);
+                writeBodyData(request, writer);
             }
             else {
                 // Regular form data (application/x-www-form-urlencoded).
-                this.writeFormData(request, writer);
+                writeFormData(request, writer);
             }
         }
         finally {
@@ -633,60 +499,182 @@ public class DefaultHttpClient implements HttpClient {
         }
     }
 
-    private void validateRequest(HttpRequest request) throws IOException {
-        Assert.notNull(request, "Parameter \"request\" must not null. ");
-        Assert.notNull(request.getMethod(), "Request method must not null. ");
-        Assert.notNull(request.getUrl(), "Request url must not null. ");
-        HttpMethod method = request.getMethod();
-        Object body = request.getBody();
-        URL url = request.getUrl();
-        String protocol = url.getProtocol();
-        if (!HTTP.equals(protocol) && !HTTPS.equals(protocol)) {
-            throw new MalformedURLException("Only http & https protocols supported. ");
-        }
-        boolean methodHasBody = method.getHasBody();
-        boolean hasRequestBody = body != null;
-        if (!methodHasBody) {
-            Assert.isFalse(hasRequestBody, "Cannot set a request body for HTTP method " + method.name() + ". ");
+    private void fillResponseCharset(HttpResponse response) {
+        String contentTypeArray = response.getHeader(CONTENT_TYPE);
+        if (StringUtils.isNotBlank(contentTypeArray)) {
+            String[] split = contentTypeArray.split(COMMA);
+            for (String contentType : split) {
+                if (StringUtils.isBlank(contentType)) { continue; }
+                contentType = contentType.trim().toLowerCase();
+                int begin = contentType.indexOf(CHARSET_EQUAL);
+                if (begin == EOF) { continue; }
+                int end = contentType.indexOf(SEMICOLON, begin);
+                end = end != EOF ? end : contentType.length();
+                begin = begin + CHARSET_EQUAL_LENGTH;
+                String charsetName = contentType.substring(begin, end).trim();
+                if (StringUtils.isBlank(charsetName)) { continue; }
+                response.setCharset(Charset.forName(charsetName).name());
+                return;
+            }
         }
     }
 
-    private HttpResponse execute(HttpRequest request, HttpResponse previous) throws IOException {
-        this.validateRequest(request);
+    private void fillResponseCookies(HttpResponse response, List<String> cookies) {
+        for (String cookie : cookies) {
+            if (cookie == null) { continue; }
+            int beginIndex = cookie.indexOf(EQUAL);
+            if (beginIndex == EOF) { continue; }
+            String cookieName =
+                    cookie.substring(0, beginIndex).trim();
+            int endIndex = cookie.indexOf(SEMICOLON);
+            if (endIndex == EOF) { continue; }
+            String cookieValue =
+                    cookie.substring(beginIndex + 1, endIndex).trim();
+            // Ignores path, date, domain, validateTLSCertificates et al. req'd?
+            // Name not blank, value not null.
+            if (StringUtils.isNotBlank(cookieName)) {
+                response.addCookie(cookieName, cookieValue);
+            }
+        }
+    }
+
+    private void fillResponseHeaders(HttpResponse response, Map<String, List<String>> headers) {
+        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+            String name = entry.getKey();
+            // Http/1.1 line
+            if (name == null) { continue; }
+            List<String> values = entry.getValue();
+            if (SET_COOKIE.equalsIgnoreCase(name)) {
+                this.fillResponseCookies(response, values);
+                continue;
+            }
+            // Combine same header names with comma: http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
+            if (values.size() == 1) {
+                response.addHeader(name, values.get(0));
+            }
+            else if (values.size() > 1) {
+                StringBuilder valueBuilder = new StringBuilder();
+                for (int i = 0; i < values.size(); i++) {
+                    final String val = values.get(i);
+                    if (i != 0) {
+                        valueBuilder.append(COMMA).append(BLANK_SPACE);
+                    }
+                    valueBuilder.append(val);
+                }
+                response.addHeader(name, valueBuilder.toString());
+            }
+        }
+    }
+
+    private void setupFromConnection(HttpResponse response, HttpResponse previousResponse, HttpURLConnection connection) throws IOException {
+        response.setUrl(connection.getURL());
+        response.setMethod(HttpMethod.valueOf(connection.getRequestMethod()));
+        response.setStatusCode(connection.getResponseCode());
+        response.setStatusMessage(connection.getResponseMessage());
+
+        Map<String, List<String>> headers = createHeaderMap(connection);
+        this.fillResponseHeaders(response, headers);
+        this.fillResponseCharset(response);
+
+        // If from a redirect, map previous response cookies into this response
+        if (previousResponse == null) { return; }
+        Map<String, String> previousCookies = previousResponse.getCookies();
+        for (Map.Entry<String, String> prevCookie : previousCookies.entrySet()) {
+            if (response.containsCookie(prevCookie.getKey())) { continue; }
+            response.addCookie(prevCookie.getKey(), prevCookie.getValue());
+        }
+    }
+
+    private HttpResponse responseRedirect(HttpResponse response, HttpRequest request) throws IOException {
+        int status = response.getStatusCode();
+        // Http/1.1 temporary redirect, not in Java's set.
+        if (status != HTTP_TEMP_REDIR) {
+            // Always redirect with a get.
+            // Any data param from original req are dropped.
+            request.setMethod(HttpMethod.GET);
+            request.clearParameters();
+            request.setBody(null);
+            request.removeHeader(CONTENT_TYPE);
+        }
+        String location = response.getHeader(LOCATION);
+        URL redirectUrl = createRedirectUrl(request.getUrl(), location);
+        request.setUrl(encodeUrl(redirectUrl));
+        // Add response cookies to request (for e.g. login posts).
+        request.addCookies(response.getCookies());
+        return execute(request, response);
+    }
+
+    private void fillResponseBody(HttpResponse response, HttpRequest request, HttpURLConnection connection) throws IOException {
+        // -1 means unknown, chunked.
+        if (connection.getContentLength() != 0 && request.getMethod() != HEAD) {
+            // Sun throws an IO exception on 500 response with no content when trying to read body.
+            InputStream errorStream = connection.getErrorStream();
+            InputStream bodyStream =
+                    errorStream != null ? errorStream : connection.getInputStream();
+            if (response.containsHeader(CONTENT_ENCODING)
+                    && GZIP.equalsIgnoreCase(response.getHeader(CONTENT_ENCODING))) {
+                bodyStream = new GZIPInputStream(bodyStream);
+            }
+            OutputStream bodyToStream;
+            Writer bodyToWriter;
+            File bodyToFile;
+            if ((bodyToFile = request.getResponseBodyToFile()) != null) {
+                FileUtils.write(bodyStream, bodyToFile);
+            }
+            else if ((bodyToStream = request.getResponseBodyToStream()) != null) {
+                IOUtils.copyLarge(bodyStream, bodyToStream);
+            }
+            else if ((bodyToWriter = request.getResponseBodyToWriter()) != null) {
+                String charset = request.getCharset();
+                Reader reader = new InputStreamReader(bodyStream, charset);
+                reader = new BufferedReader(reader);
+                boolean isBw = bodyToWriter instanceof BufferedWriter;
+                Writer writer = isBw ? bodyToWriter : new BufferedWriter(bodyToWriter);
+                IOUtils.copyLarge(reader, writer);
+            }
+            else {
+                byte[] body = IOUtils.toByteArray(bodyStream);
+                response.setBody(body);
+            }
+        }
+    }
+
+    private HttpResponse execute(HttpRequest request, HttpResponse previousResponse) throws IOException {
+        validate(request);
         HttpMethod method = request.getMethod();
-        boolean methodHasBody = method.getHasBody();
+        boolean hasBody = method.hasBody();
         String mimeBoundary = null;
-        if (!methodHasBody && MapUtils.isNotEmpty(request.getParameters())) {
-            this.buildUrlQueryString(request);
+        if (!hasBody && MapUtils.isNotEmpty(request.getParameters())) {
+            updateRequestUrl(request);
         }
-        else if (methodHasBody) {
-            mimeBoundary = this.handleContentType(request);
+        else if (hasBody) {
+            mimeBoundary = updateContentType(request);
         }
-        HttpURLConnection conn = this.buildConnection(request);
+        HttpURLConnection connection = createConnection(request);
         HttpResponse response;
         try {
-            conn.connect();
-            if (conn.getDoOutput()) {
-                OutputStream out = conn.getOutputStream();
-                this.writeRequestContent(request, mimeBoundary, out);
+            connection.connect();
+            if (connection.getDoOutput()) {
+                OutputStream outputStream = connection.getOutputStream();
+                writeRequestObject(request, mimeBoundary, outputStream);
             }
-            response = new HttpResponse(previous);
+            response = new HttpResponse(previousResponse);
             response.setRequest(request);
-            this.handleResponseHeaders(response, previous, conn);
-            int status = conn.getResponseCode();
+            setupFromConnection(response, previousResponse, connection);
             // Redirect if there's a location header (from 3xx, or 201 etc).
             if (response.containsHeader(LOCATION) && request.getFollowRedirect()) {
-                return this.handleResponseRedirect(response, request, status);
+                return responseRedirect(response, request);
             }
+            int status = response.getStatusCode();
             boolean isErrorStatus = status < 200 || status >= 400;
             if (isErrorStatus && !request.getIgnoreHttpError()) {
                 URL url = request.getUrl();
                 throw new IOException("HTTP error " + status + " fetching URL \"" + url.toString() + "\". ");
             }
-            this.handleResponseBody(response, request, conn);
+            fillResponseBody(response, request, connection);
         }
         finally {
-            CloseUtils.closeQuietly(conn);
+            CloseUtils.closeQuietly(connection);
         }
         return response;
     }
@@ -694,7 +682,7 @@ public class DefaultHttpClient implements HttpClient {
     @Override
     public HttpResponse execute(HttpRequest request) throws IOException {
 
-        return this.execute(request, null);
+        return execute(request, null);
     }
 
 }
