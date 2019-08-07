@@ -20,24 +20,24 @@ public class NumberConverter implements TypeConverter {
     private static final String INTEGER = "Integer";
     private static final String VALUE = "Value";
     private static final String INT = "int";
-    private Boolean isUnixTimestamp = false;
+    private Boolean unixTimestamp = false;
 
     public NumberConverter() {
     }
 
-    public NumberConverter(Boolean isUxTp) {
+    public NumberConverter(Boolean unixTimestamp) {
 
-        this.setIsUnixTimestamp(isUxTp);
+        setUnixTimestamp(unixTimestamp);
     }
 
-    public Boolean getIsUnixTimestamp() {
+    public Boolean getUnixTimestamp() {
 
-        return this.isUnixTimestamp;
+        return unixTimestamp;
     }
 
-    public void setIsUnixTimestamp(Boolean isUnixTimestamp) {
-        Assert.notNull(isUnixTimestamp, "Parameter \"isUnixTimestamp\" must not null. ");
-        this.isUnixTimestamp = isUnixTimestamp;
+    public void setUnixTimestamp(Boolean unixTimestamp) {
+        Assert.notNull(unixTimestamp, "Parameter \"unixTimestamp\" must not null. ");
+        this.unixTimestamp = unixTimestamp;
     }
 
     protected Object numberToNumber(Object source, Class<?> target) {
@@ -65,7 +65,7 @@ public class NumberConverter implements TypeConverter {
     protected Object numberToDate(Object source, Class<?> target) {
         Number number = (Number) source;
         long lg = number.longValue();
-        lg = this.isUnixTimestamp ? lg * 1000L : lg;
+        lg = unixTimestamp ? lg * 1000L : lg;
         Date date = DateUtils.parse(lg);
         // Maybe target is sql date or timestamp
         return TypeConvertUtils.convert(date, target);

@@ -121,14 +121,14 @@ public abstract class AbstractCrypto implements Crypto {
     }
 
     /**
-     *
-     * @param cipherMode
-     * @param key
-     * @param certificate
-     * @return
-     * @throws GeneralSecurityException
-     * @see Cipher#ENCRYPT_MODE
-     * @see Cipher#DECRYPT_MODE
+     * Create "Cipher" object based on existing conditions.
+     * @param cipherMode Cipher mode (encrypt or decrypt)
+     * @param key The key for encryption or decryption
+     * @param certificate Certificate object if any
+     * @return The "Cipher" object that was successfully created
+     * @throws GeneralSecurityException Some Java encryption and decryption exceptions
+     * @see Cipher#ENCRYPT_MODE Encryption mode
+     * @see Cipher#DECRYPT_MODE Decryption mode
      */
     protected Cipher createCipher(int cipherMode, Key key, Certificate certificate) throws GeneralSecurityException {
         AlgorithmParameterSpec parameterSpec = this.getAlgorithmParameterSpec();
