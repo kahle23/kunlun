@@ -1,23 +1,21 @@
-package artoria.generator;
+package artoria.identifier;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static artoria.common.Constants.NEWLINE;
 
-public class IdUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(IdUtilsTest.class);
+public class IdentifierUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(IdentifierUtilsTest.class);
     private Integer groupLength = 5;
     private Integer count = 100;
 
-    @Ignore
     @Test
     public void test1() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < count; i++) {
-            Long number = IdUtils.nextNumber();
+            Long number = IdentifierUtils.nextLongIdentifier();
             builder.append(number)
                     .append("(")
                     .append(number.toString().length())
@@ -34,7 +32,7 @@ public class IdUtilsTest {
     public void test2() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < count; i++) {
-            String string = IdUtils.nextString();
+            String string = IdentifierUtils.nextStringIdentifier();
             builder.append(string)
                     .append("(")
                     .append(string.length())
