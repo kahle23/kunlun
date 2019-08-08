@@ -3,6 +3,7 @@ package artoria.file;
 import artoria.codec.HexUtils;
 import artoria.io.IOUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,6 +14,12 @@ import java.io.OutputStream;
  */
 public class Binary extends BinaryFile {
     private byte[] data;
+
+    @Override
+    public InputStream getInputStream() throws IOException {
+
+        return new ByteArrayInputStream(data);
+    }
 
     @Override
     public long read(InputStream inputStream) throws IOException {

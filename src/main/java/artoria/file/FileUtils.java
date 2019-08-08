@@ -52,14 +52,7 @@ public class FileUtils {
             }
         }
         else {
-            File parentFile = destination.getParentFile();
-            boolean noParent = parentFile != null && !parentFile.exists();
-            if (noParent && !parentFile.mkdirs()) {
-                throw new IOException("Create destination parent directory \"" + parentFile + "\" fail. ");
-            }
-            if (!destination.createNewFile()) {
-                throw new IOException("Create destination file \"" + destination + "\" fail. ");
-            }
+            FileUtils.createNewFile(destination);
         }
         FileOutputStream out = null;
         long count;
@@ -85,6 +78,18 @@ public class FileUtils {
         }
     }
 
+    public static void createNewFile(File file) throws IOException {
+        Assert.notNull(file, "Parameter \"file\" must not null. ");
+        File parentFile = file.getParentFile();
+        boolean notExist = parentFile != null && !parentFile.exists();
+        if (notExist && !parentFile.mkdirs()) {
+            throw new IOException("Create file parent directory \"" + parentFile + "\" fail. ");
+        }
+        if (!file.createNewFile()) {
+            throw new IOException("Create file \"" + file + "\" fail. ");
+        }
+    }
+
     public static boolean deleteFile(File destination) {
 
         return destination == null || !destination.exists() || destination.delete();
@@ -99,7 +104,7 @@ public class FileUtils {
         while (!fileList.isEmpty()) {
             File current = fileList.removeFirst();
             File[] files = current.listFiles();
-            // Don't have subfile or subdirectory, try delete.
+            // Don't have sub file or subdirectory, try delete.
             if (ArrayUtils.isEmpty(files)) {
                 if (!current.delete()) {
                     log.info("Directory \"{}\" delete fail. ", current);

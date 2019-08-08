@@ -16,8 +16,8 @@ public class FilenameUtils {
     private static final Class<?> THIS_CLASS = FilenameUtils.class;
 
     /**
-     *
-     * @return
+     * Get the root path of the current project.
+     * @return The root path of the current project
      */
     public static String getRootPath() {
         URL res = THIS_CLASS.getResource(SLASH);
@@ -27,8 +27,8 @@ public class FilenameUtils {
     }
 
     /**
-     *
-     * @return
+     * Get the classpath of the current project.
+     * @return Classpath of the current project
      */
     public static String getClasspath() {
         URL res = THIS_CLASS.getResource(SLASH);
@@ -37,10 +37,10 @@ public class FilenameUtils {
     }
 
     /**
-     *
-     * @param source
-     * @param parent
-     * @return
+     * Get the sub path from the source path and the corresponding parent path.
+     * @param source The source path
+     * @param parent The parent path
+     * @return The sub path
      */
     public static String subPath(File source, File parent) {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
@@ -51,10 +51,10 @@ public class FilenameUtils {
     }
 
     /**
-     *
-     * @param source
-     * @param parent
-     * @return
+     * Get the sub path from the source path and the corresponding parent path.
+     * @param source The source path
+     * @param parent The parent path
+     * @return The sub path
      */
     public static String subPath(String source, String parent) {
         Assert.notBlank(source, "Parameter \"source\" must not blank. ");
@@ -65,9 +65,9 @@ public class FilenameUtils {
     }
 
     /**
-     *
-     * @param path
-     * @return
+     * Get the extension from the path.
+     * @param path Input path
+     * @return The extension name
      */
     public static String getExtension(String path) {
         if (path == null) { return null; }
@@ -79,9 +79,9 @@ public class FilenameUtils {
     }
 
     /**
-     *
-     * @param path
-     * @return
+     * Get the path without extensions.
+     * @param path Input path
+     * @return Path without extension
      */
     public static String removeExtension(String path) {
         if (path == null) { return null; }
@@ -93,9 +93,9 @@ public class FilenameUtils {
     }
 
     /**
-     *
-     * @param clazz
-     * @return
+     * Get the package path of the class.
+     * @param clazz Input class
+     * @return The package path
      */
     public static String getPackagePath(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
@@ -105,9 +105,9 @@ public class FilenameUtils {
     }
 
     /**
-     *
-     * @param clazz
-     * @return
+     * Get the path of the class file.
+     * @param clazz Input class
+     * @return The class file path
      */
     public static String getClassFilePath(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");

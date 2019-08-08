@@ -14,7 +14,7 @@ public class PropTest {
     public void testReadFromClasspath() throws IOException {
         Prop prop = new Prop();
         prop.readFromClasspath("logging.properties");
-        log.info("{} >> {}", prop.getName(), prop.getExtension());
+        log.info("{}", prop.getName());
         log.info("{}", prop.writeToString());
     }
 

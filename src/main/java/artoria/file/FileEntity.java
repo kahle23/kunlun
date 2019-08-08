@@ -23,29 +23,24 @@ public interface FileEntity {
     void setName(String fileName);
 
     /**
-     * Get filename extension.
-     * @return Filename extension
+     * Returns an input stream that reads from this file entity.
+     * @return An input stream that reads from this file entity
+     * @throws IOException If an I/O error occurs while creating the input stream
      */
-    String getExtension();
-
-    /**
-     * Set filename extension.
-     * @param extension Filename extension
-     */
-    void setExtension(String extension);
+    InputStream getInputStream() throws IOException;
 
     /**
      * Read from input stream.
      * @param inputStream The input stream that will be read
      * @return Read length
-     * @throws IOException Maybe it will come up
+     * @throws IOException If an I/O error occurs while reading the input stream
      */
     long read(InputStream inputStream) throws IOException;
 
     /**
      * Write to output stream.
      * @param outputStream The output stream that will be write
-     * @throws IOException Maybe it will come up
+     * @throws IOException If an I/O error occurs while writing the output stream
      */
     void write(OutputStream outputStream) throws IOException;
 
