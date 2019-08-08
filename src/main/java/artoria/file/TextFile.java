@@ -37,15 +37,18 @@ public abstract class TextFile extends BinaryFile {
     @Override
     public long read(InputStream inputStream) throws IOException {
         Assert.notNull(inputStream, "Parameter \"inputStream\" must not null. ");
-        Reader reader = new InputStreamReader(inputStream, this.getCharset());
+        Reader isr = new InputStreamReader(inputStream, this.getCharset());
+        Reader reader = new BufferedReader(isr);
         return this.read(reader);
     }
 
     @Override
     public void write(OutputStream outputStream) throws IOException {
         Assert.notNull(outputStream, "Parameter \"outputStream\" must not null. ");
-        Writer writer = new OutputStreamWriter(outputStream, this.getCharset());
+        Writer osw = new OutputStreamWriter(outputStream, this.getCharset());
+        Writer writer = new BufferedWriter(osw);
         this.write(writer);
+        writer.flush();
     }
 
     /**

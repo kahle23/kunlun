@@ -55,6 +55,7 @@ public class CsvTest {
         Csv csv = new Csv();
         csv.readFromFile(testRead);
         csv.writeToFile(testGenerated);
+        log.info("Csv toString: {}{}", NEWLINE, csv);
     }
 
     @Test

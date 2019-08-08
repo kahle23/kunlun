@@ -3,15 +3,14 @@ package artoria.file;
 import artoria.beans.BeanUtils;
 import artoria.common.Beanable;
 import artoria.common.Mappable;
+import artoria.exception.ExceptionUtils;
 import artoria.io.IOUtils;
+import artoria.io.StringBuilderWriter;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
 import artoria.util.StringUtils;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.Writer;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -65,6 +64,14 @@ public class Prop extends TextFile implements Beanable, Mappable {
     }
 
     @Override
+    public InputStream getInputStream() throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        properties.store(byteArrayOutputStream, null);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return new ByteArrayInputStream(byteArray);
+    }
+
+    @Override
     public long read(Reader reader) throws IOException {
         Assert.notNull(reader, "Parameter \"reader\" must not null. ");
         String data = IOUtils.toString(reader);
@@ -107,6 +114,18 @@ public class Prop extends TextFile implements Beanable, Mappable {
         properties.clear();
         if (MapUtils.isEmpty(map)) { return; }
         properties.putAll(map);
+    }
+
+    @Override
+    public String toString() {
+        try {
+            StringBuilderWriter writer = new StringBuilderWriter();
+            properties.store(writer, null);
+            return writer.toString();
+        }
+        catch (IOException e) {
+            throw ExceptionUtils.wrap(e);
+        }
     }
 
 }

@@ -121,29 +121,7 @@ public class Csv extends TextFile implements Table {
     public void write(Writer writer) throws IOException {
         Assert.notNull(writer, "Parameter \"writer\" must not null. ");
         if (CollectionUtils.isEmpty(content)) { return; }
-        StringBuilder builder = new StringBuilder();
-        for (List<String> row : content) {
-            if (row == null) { continue; }
-            for (String cell : row) {
-                if (StringUtils.isBlank(cell)) {
-                    builder.append(cell).append(cellSeparator);
-                    continue;
-                }
-                boolean needQuote = cell.contains(cellSeparator);
-                needQuote = needQuote || cell.contains(lineSeparator);
-                boolean containQuote = cell.contains(DOUBLE_QUOTE);
-                cell = needQuote && containQuote
-                        ? StringUtils.replace(cell, DOUBLE_QUOTE, "\"\"")
-                        : cell;
-                cell = needQuote
-                        ? DOUBLE_QUOTE + cell + DOUBLE_QUOTE
-                        : cell;
-                builder.append(cell).append(cellSeparator);
-            }
-            builder.append(lineSeparator);
-        }
-        writer.write(builder.toString());
-        writer.flush();
+        writer.write(this.toString());
     }
 
     @Override
@@ -251,6 +229,7 @@ public class Csv extends TextFile implements Table {
 
     @Override
     public void setTemplate(byte[] template) {
+
     }
 
     @Override
@@ -395,6 +374,35 @@ public class Csv extends TextFile implements Table {
             }
             content.add(row);
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        if (CollectionUtils.isEmpty(content)) {
+            return builder.toString();
+        }
+        for (List<String> row : content) {
+            if (row == null) { continue; }
+            for (String cell : row) {
+                if (StringUtils.isBlank(cell)) {
+                    builder.append(cell).append(cellSeparator);
+                    continue;
+                }
+                boolean needQuote = cell.contains(cellSeparator);
+                needQuote = needQuote || cell.contains(lineSeparator);
+                boolean containQuote = cell.contains(DOUBLE_QUOTE);
+                cell = needQuote && containQuote
+                        ? StringUtils.replace(cell, DOUBLE_QUOTE, "\"\"")
+                        : cell;
+                cell = needQuote
+                        ? DOUBLE_QUOTE + cell + DOUBLE_QUOTE
+                        : cell;
+                builder.append(cell).append(cellSeparator);
+            }
+            builder.append(lineSeparator);
+        }
+        return builder.toString();
     }
 
 }

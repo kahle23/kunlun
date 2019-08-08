@@ -3,9 +3,7 @@ package artoria.file;
 import artoria.io.IOUtils;
 import artoria.util.Assert;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 
 import static artoria.common.Constants.EMPTY_STRING;
 
@@ -15,6 +13,14 @@ import static artoria.common.Constants.EMPTY_STRING;
  */
 public class Text extends TextFile {
     private final StringBuilder textBuilder = new StringBuilder();
+
+    @Override
+    public InputStream getInputStream() throws IOException {
+        String toString = textBuilder.toString();
+        String charset = this.getCharset();
+        byte[] stringBytes = toString.getBytes(charset);
+        return new ByteArrayInputStream(stringBytes);
+    }
 
     @Override
     public long read(Reader reader) throws IOException {
@@ -29,7 +35,6 @@ public class Text extends TextFile {
     public void write(Writer writer) throws IOException {
         Assert.notNull(writer, "Parameter \"writer\" must not null. ");
         writer.write(textBuilder.toString());
-        writer.flush();
     }
 
     public Text append(Object obj) {
@@ -46,6 +51,12 @@ public class Text extends TextFile {
     public Text clear() {
         textBuilder.setLength(0);
         return this;
+    }
+
+    @Override
+    public String toString() {
+
+        return textBuilder.toString();
     }
 
 }

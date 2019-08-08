@@ -14,7 +14,6 @@ import static artoria.common.Constants.CLASSPATH;
  */
 public abstract class AbstractFileEntity implements FileEntity {
     private String fileName;
-    private String extension;
 
     @Override
     public String getName() {
@@ -24,29 +23,26 @@ public abstract class AbstractFileEntity implements FileEntity {
 
     @Override
     public void setName(String fileName) {
-        Assert.notBlank(fileName
-                , "Parameter \"fileName\" must not blank. ");
+        Assert.notBlank(fileName, "Parameter \"fileName\" must not blank. ");
         this.fileName = fileName;
     }
 
     @Override
-    public String getExtension() {
-
-        return extension;
-    }
-
-    @Override
-    public void setExtension(String extension) {
-        extension = extension == null
-                ? null : extension.trim().toLowerCase();
-        this.extension = extension;
+    public InputStream getInputStream() throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        this.write(byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return new ByteArrayInputStream(byteArray);
     }
 
     public void writeToFile(File file) throws IOException {
         Assert.notNull(file, "Parameter \"file\" must not null. ");
         File parentFile = file.getParentFile();
-        Assert.state(parentFile.exists() || parentFile.mkdirs()
-                , "The parent directory for the parameter \"file\" does not exist and creation failed. ");
+        if (!parentFile.exists() && !parentFile.mkdirs()) {
+            throw new IllegalStateException(
+                    "The parent directory for the parameter \"file\" does not exist and creation failed. "
+            );
+        }
         OutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(file);
@@ -59,13 +55,10 @@ public abstract class AbstractFileEntity implements FileEntity {
 
     public long readFromFile(File file) throws IOException {
         Assert.notNull(file, "Parameter \"file\" must not null. ");
-        Assert.state(file.exists() && file.isFile()
-                , "Parameter \"file\" must exist and is file. ");
-        String fileName = file.getName();
-        String fileString = file.toString();
-        String extension = FilenameUtils.getExtension(fileString);
-        this.setName(fileName);
-        this.setExtension(extension);
+        if (!file.exists() || file.isDirectory()) {
+            throw new IllegalStateException("Parameter \"file\" must exist and is file. ");
+        }
+        this.setName(file.getName());
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
@@ -79,18 +72,18 @@ public abstract class AbstractFileEntity implements FileEntity {
     public void writeToClasspath(String subPath) throws IOException {
         Assert.notBlank(subPath, "Parameter \"subPath\" must not blank. ");
         Assert.notBlank(CLASSPATH, "Cannot get the classpath. ");
-        this.writeToFile(new File(CLASSPATH, subPath));
+        File file = new File(CLASSPATH, subPath);
+        this.writeToFile(file);
     }
 
     public long readFromClasspath(String subPath) throws IOException {
+        File subPathFile = new File(subPath);
+        this.setName(subPathFile.getName());
         InputStream inputStream = null;
         try {
-            inputStream = ClassLoaderUtils
-                    .getResourceAsStream(subPath, this.getClass());
+            inputStream = ClassLoaderUtils.getResourceAsStream(subPath, getClass());
             Assert.notNull(inputStream
                     , "Parameter \"subPath\" not found in classpath. ");
-            this.setName(new File(subPath).getName());
-            this.setExtension(FilenameUtils.getExtension(subPath));
             return this.read(inputStream);
         }
         finally {
