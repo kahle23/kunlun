@@ -15,15 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static artoria.common.Constants.GET;
-import static artoria.common.Constants.SET;
+import static artoria.common.Constants.*;
 
 /**
  * Bean map simple implement by jdk.
  * @author Kahle
  */
 public class SimpleBeanMap extends BeanMap {
-    private static final Integer GET_OR_SET_LENGTH = 3;
     private static Logger log = LoggerFactory.getLogger(SimpleBeanMap.class);
     private Map<String, Method> readMethods = new HashMap<String, Method>();
     private Map<String, Method> writeMethods = new HashMap<String, Method>();
@@ -35,7 +33,7 @@ public class SimpleBeanMap extends BeanMap {
 
     public SimpleBeanMap(Object bean) {
 
-        this.setBean(bean);
+        setBean(bean);
     }
 
     public Boolean getIgnoreException() {
@@ -64,16 +62,16 @@ public class SimpleBeanMap extends BeanMap {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         String keyString = String.valueOf(key);
         if (keyString.startsWith(GET)) {
-            keyString = keyString.substring(GET_OR_SET_LENGTH);
+            keyString = keyString.substring(THREE);
             keyString = StringUtils.uncapitalize(keyString);
         }
-        Method method = this.readMethods.get(keyString);
+        Method method = readMethods.get(keyString);
         if (method == null) { return null; }
         try {
             return method.invoke(bean);
         }
         catch (Exception e) {
-            if (this.ignoreException) {
+            if (ignoreException) {
                 log.debug("Execution \"get\" error. ", e);
                 return null;
             }
@@ -88,13 +86,13 @@ public class SimpleBeanMap extends BeanMap {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         String keyString = String.valueOf(key);
         if (keyString.startsWith(SET)) {
-            keyString = keyString.substring(GET_OR_SET_LENGTH);
+            keyString = keyString.substring(THREE);
             keyString = StringUtils.uncapitalize(keyString);
         }
-        Method method = this.writeMethods.get(keyString);
+        Method method = writeMethods.get(keyString);
         if (method == null) { return null; }
         Class<?>[] types = method.getParameterTypes();
-        TypeConverter cvt = this.getTypeConverter();
+        TypeConverter cvt = getTypeConverter();
         try {
             boolean haveType = ArrayUtils.isNotEmpty(types);
             if (value == null && haveType
@@ -109,7 +107,7 @@ public class SimpleBeanMap extends BeanMap {
             return method.invoke(bean, value);
         }
         catch (Exception e) {
-            if (this.ignoreException) {
+            if (ignoreException) {
                 log.debug("Execution \"put\" error. ", e);
                 return null;
             }
@@ -121,7 +119,7 @@ public class SimpleBeanMap extends BeanMap {
 
     @Override
     public Set keySet() {
-        Set<String> keys = this.readMethods.keySet();
+        Set<String> keys = readMethods.keySet();
         return Collections.unmodifiableSet(keys);
     }
 

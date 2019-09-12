@@ -22,8 +22,7 @@ public class IdentifierUtils {
 
     public static void setStringIdentifierGenerator(StringIdentifierGenerator stringIdentifierGenerator) {
         Assert.notNull(stringIdentifierGenerator, "Parameter \"stringIdentifierGenerator\" must not null. ");
-        String generatorClassName = stringIdentifierGenerator.getClass().getName();
-        log.info("Set string identifier generator: {}", generatorClassName);
+        log.info("Set string identifier generator: {}", stringIdentifierGenerator.getClass().getName());
         IdentifierUtils.stringIdentifierGenerator = stringIdentifierGenerator;
     }
 
@@ -34,8 +33,7 @@ public class IdentifierUtils {
 
     public static void setLongIdentifierGenerator(LongIdentifierGenerator longIdentifierGenerator) {
         Assert.notNull(longIdentifierGenerator, "Parameter \"longIdentifierGenerator\" must not null. ");
-        String generatorClassName = longIdentifierGenerator.getClass().getName();
-        log.info("Set long identifier generator: {}", generatorClassName);
+        log.info("Set long identifier generator: {}", longIdentifierGenerator.getClass().getName());
         IdentifierUtils.longIdentifierGenerator = longIdentifierGenerator;
     }
 

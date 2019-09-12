@@ -26,7 +26,7 @@ public class JsonUtilsTest {
 
     @Before
     public void init() {
-        JsonUtils.setJsonProvider(new DefaultJsonProvider(true) {
+        JsonUtils.setJsonProvider(new SimpleJsonProvider(true) {
             @Override
             public <T> T parseObject(String text,Type clazz) {
                 return JSON.parseObject(text, clazz);

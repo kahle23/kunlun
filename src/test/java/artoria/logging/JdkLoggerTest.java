@@ -42,6 +42,7 @@ public class JdkLoggerTest {
         log.info("Hello, {}, {}, {}! ", "aaa", "bbb");
         log.info("Hello, \\{}, \\\\{}, {}! ", "aaa", "bbb", "ccc");
         log.info("\\{}! ", "aaa");
+        log.info("{\\}! ", "aaa");
         log.info("\\\\{}! ", "aaa");
         log.trace("Hello, {}, {}, {}! ", "111", "222", "333");
         log.debug("Hello, {}, {}, {}! ", "111", "222", "333");

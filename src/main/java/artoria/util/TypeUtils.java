@@ -8,7 +8,7 @@ import java.lang.reflect.*;
  * @author Kahle
  */
 public class TypeUtils {
-    private static final Type[] EMPTY_TYPE_ARRAY = new Type[] {};
+    private static final Type[] EMPTY_TYPE_ARRAY = new Type[]{};
 
     public static Type canonicalize(Type type) {
         if (type instanceof Class) {
@@ -92,25 +92,39 @@ public class TypeUtils {
         private final Type lowerBound;
 
         public WildcardTypeImpl(Type[] upperBounds, Type[] lowerBounds) {
-            Assert.state(upperBounds.length == 1
-                    , "Parameter \"upperBounds\" length must == 1. ");
-            Assert.state(lowerBounds.length <= 1
-                    , "Parameter \"lowerBounds\" length must <= 1. ");
+            Assert.isTrue(
+                    upperBounds.length == 1
+                    , "Parameter \"upperBounds\" length must == 1. "
+            );
+            Assert.isTrue(
+                    lowerBounds.length <= 1
+                    , "Parameter \"lowerBounds\" length must <= 1. "
+            );
             if (lowerBounds.length == 1) {
-                Assert.notNull(lowerBounds[0]
-                        , "LowerBounds first element must not null. ");
-                TypeUtils.notPrimitive(lowerBounds[0]
-                        , "LowerBounds first element must not primitive. ");
-                Assert.state(upperBounds[0] == Object.class
-                        , "UpperBounds first element must be \"Object.class\". ");
+                Assert.notNull(
+                        lowerBounds[0]
+                        , "LowerBounds first element must not null. "
+                );
+                TypeUtils.notPrimitive(
+                        lowerBounds[0]
+                        , "LowerBounds first element must not primitive. "
+                );
+                Assert.isTrue(
+                        upperBounds[0] == Object.class
+                        , "UpperBounds first element must be \"Object.class\". "
+                );
                 this.lowerBound = TypeUtils.canonicalize(lowerBounds[0]);
                 this.upperBound = Object.class;
             }
             else {
-                Assert.notNull(upperBounds[0]
-                        , "UpperBounds first element must not null. ");
-                TypeUtils.notPrimitive(upperBounds[0]
-                        , "UpperBounds first element must not primitive. ");
+                Assert.notNull(
+                        upperBounds[0]
+                        , "UpperBounds first element must not null. "
+                );
+                TypeUtils.notPrimitive(
+                        upperBounds[0]
+                        , "UpperBounds first element must not primitive. "
+                );
                 this.lowerBound = null;
                 this.upperBound = TypeUtils.canonicalize(upperBounds[0]);
             }
@@ -134,7 +148,10 @@ public class TypeUtils {
         private final Type componentType;
 
         public GenericArrayTypeImpl(Type componentType) {
-            Assert.notNull(componentType, "Parameter \"componentType\" must not null. ");
+            Assert.notNull(
+                    componentType
+                    , "Parameter \"componentType\" must not null. "
+            );
             this.componentType = TypeUtils.canonicalize(componentType);
         }
 
@@ -157,13 +174,15 @@ public class TypeUtils {
                 Class<?> rawTypeAsClass = (Class<?>) rawType;
                 boolean isStaticOrTopLevelClass =
                         Modifier.isStatic(rawTypeAsClass.getModifiers())
-                        || rawTypeAsClass.getEnclosingClass() == null;
-                Assert.state(ownerType != null || isStaticOrTopLevelClass
-                        , "Parameter \"ownerType\" must not null " +
-                                "or parameter \"rawType\" must be static or top level class " +
-                                "when parameter \"rawType\" is instance of \"Class\". ");
+                                || rawTypeAsClass.getEnclosingClass() == null;
+                Assert.isTrue(
+                        ownerType != null || isStaticOrTopLevelClass
+                        , "Parameter \"ownerType\" must not null or " +
+                                "parameter \"rawType\" must be static or top level class " +
+                                "when parameter \"rawType\" is instance of \"Class\". "
+                );
             }
-            this.ownerType = ownerType == null ? null : TypeUtils.canonicalize(ownerType);
+            this.ownerType = ownerType != null ? TypeUtils.canonicalize(ownerType) : null;
             this.rawType = TypeUtils.canonicalize(rawType);
             this.typeArguments = typeArguments.clone();
             for (int i = 0; i < this.typeArguments.length; i++) {

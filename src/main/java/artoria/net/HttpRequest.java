@@ -31,7 +31,7 @@ public class HttpRequest extends HttpMessage {
     private Writer responseBodyToWriter;
 
     {
-        this.addHeader(USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36");
+        addHeader(USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36");
     }
 
     public HttpRequest() {
@@ -39,7 +39,7 @@ public class HttpRequest extends HttpMessage {
 
     public boolean getValidateTLSCertificate() {
 
-        return this.validateTLSCertificate;
+        return validateTLSCertificate;
     }
 
     public void setValidateTLSCertificate(boolean validateTLSCertificate) {
@@ -49,7 +49,7 @@ public class HttpRequest extends HttpMessage {
 
     public boolean getIgnoreHttpError() {
 
-        return this.ignoreHttpError;
+        return ignoreHttpError;
     }
 
     public void setIgnoreHttpError(boolean ignoreHttpError) {
@@ -59,7 +59,7 @@ public class HttpRequest extends HttpMessage {
 
     public boolean getFollowRedirect() {
 
-        return this.followRedirect;
+        return followRedirect;
     }
 
     public void setFollowRedirect(boolean followRedirect) {
@@ -69,7 +69,7 @@ public class HttpRequest extends HttpMessage {
 
     public int getConnectTimeout() {
 
-        return this.connectTimeout;
+        return connectTimeout;
     }
 
     public void setConnectTimeout(int connectTimeout) {
@@ -79,7 +79,7 @@ public class HttpRequest extends HttpMessage {
 
     public int getReadTimeout() {
 
-        return this.readTimeout;
+        return readTimeout;
     }
 
     public void setReadTimeout(int readTimeout) {
@@ -89,7 +89,7 @@ public class HttpRequest extends HttpMessage {
 
     public Proxy getProxy() {
 
-        return this.proxy;
+        return proxy;
     }
 
     public void setProxy(Proxy proxy) {
@@ -106,7 +106,7 @@ public class HttpRequest extends HttpMessage {
 
     public Object getParameter(String paramName) {
         Assert.notBlank(paramName, "Parameter \"paramName\" must not blank. ");
-        return this.parameters.get(paramName);
+        return parameters.get(paramName);
     }
 
     public void addParameter(String paramName, Object paraValue) {
@@ -122,27 +122,27 @@ public class HttpRequest extends HttpMessage {
 
     public boolean containsParameter(String paramName) {
         Assert.notBlank(paramName, "Parameter \"paramName\" must not blank. ");
-        return this.parameters.containsKey(paramName);
+        return parameters.containsKey(paramName);
     }
 
     public void removeParameter(String paramName) {
         Assert.notBlank(paramName, "Parameter \"paramName\" must not blank. ");
-        this.parameters.remove(paramName);
+        parameters.remove(paramName);
     }
 
     public Map<String, Object> getParameters() {
 
-        return Collections.unmodifiableMap(this.parameters);
+        return Collections.unmodifiableMap(parameters);
     }
 
     public void clearParameters() {
 
-        this.parameters.clear();
+        parameters.clear();
     }
 
     public Object getBody() {
 
-        return this.body;
+        return body;
     }
 
     public void setBody(Object body) {
@@ -152,7 +152,7 @@ public class HttpRequest extends HttpMessage {
 
     public File getResponseBodyToFile() {
 
-        return this.responseBodyToFile;
+        return responseBodyToFile;
     }
 
     public void setResponseBodyToFile(File file) {
@@ -162,7 +162,7 @@ public class HttpRequest extends HttpMessage {
 
     public OutputStream getResponseBodyToStream() {
 
-        return this.responseBodyToStream;
+        return responseBodyToStream;
     }
 
     public void setResponseBodyToStream(OutputStream outputStream) {
@@ -172,7 +172,7 @@ public class HttpRequest extends HttpMessage {
 
     public Writer getResponseBodyToWriter() {
 
-        return this.responseBodyToWriter;
+        return responseBodyToWriter;
     }
 
     public void setResponseBodyToWriter(Writer writer) {

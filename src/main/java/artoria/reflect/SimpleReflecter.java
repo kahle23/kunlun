@@ -13,10 +13,10 @@ import java.lang.reflect.*;
 import java.util.*;
 
 /**
- * Reflect simple implement by jdk.
+ * Reflect provider simple implement by jdk.
  * @author Kahle
  */
-public class DefaultReflecter implements Reflecter {
+public class SimpleReflecter implements Reflecter {
     private static final Integer MAP_INITIAL_CAPACITY = 16;
     private static final Integer GET_OR_SET_LENGTH = 3;
 
@@ -75,7 +75,7 @@ public class DefaultReflecter implements Reflecter {
 
     @Override
     public <T extends AccessibleObject> void makeAccessible(T accessible) {
-        if (!this.checkAccessible(accessible)) {
+        if (!checkAccessible(accessible)) {
             accessible.setAccessible(true);
         }
     }
@@ -85,9 +85,9 @@ public class DefaultReflecter implements Reflecter {
             , IllegalAccessException, InvocationTargetException, InstantiationException {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         if (ArrayUtils.isEmpty(args)) { return clazz.newInstance(); }
-        Class<?>[] types = this.findParameterTypes(args);
-        Constructor<T> constructor = this.findConstructor(clazz, types);
-        this.makeAccessible(constructor);
+        Class<?>[] types = findParameterTypes(args);
+        Constructor<T> constructor = findConstructor(clazz, types);
+        makeAccessible(constructor);
         return constructor.newInstance(args);
     }
 
@@ -110,10 +110,10 @@ public class DefaultReflecter implements Reflecter {
         // If there is no exact match, try to find one that has a "similar"
         // signature if primitive argument types are converted to their wrappers
         catch (NoSuchMethodException e) {
-            Constructor<?>[] cts = this.findConstructors(clazz);
+            Constructor<?>[] cts = findConstructors(clazz);
             for (Constructor<?> ct : cts) {
                 Class<?>[] pTypes = ct.getParameterTypes();
-                boolean b = this.matchParameterTypes(pTypes, parameterTypes);
+                boolean b = matchParameterTypes(pTypes, parameterTypes);
                 if (b) { return (Constructor<T>) ct; }
             }
             throw e;
@@ -139,10 +139,10 @@ public class DefaultReflecter implements Reflecter {
         List<Field> list = new ArrayList<Field>();
         List<String> names = new ArrayList<String>();
         while (clazz != null) {
-            Field[] fields = this.findDeclaredFields(clazz);
+            Field[] fields = findDeclaredFields(clazz);
             for (Field field : fields) {
                 // find this class all, and super class not private.
-                if (this.notAccess(inputClazz, clazz, field)) {
+                if (notAccess(inputClazz, clazz, field)) {
                     continue;
                 }
                 String fieldName = field.getName();
@@ -175,7 +175,7 @@ public class DefaultReflecter implements Reflecter {
             do {
                 try {
                     Field field = clazz.getDeclaredField(fieldName);
-                    if (this.notAccess(inputClazz, clazz, field)) {
+                    if (notAccess(inputClazz, clazz, field)) {
                         continue;
                     }
                     return field;
@@ -209,9 +209,9 @@ public class DefaultReflecter implements Reflecter {
         List<Method> list = new ArrayList<Method>();
         List<String> names = new ArrayList<String>();
         while (clazz != null) {
-            Method[] methods = this.findDeclaredMethods(clazz);
+            Method[] methods = findDeclaredMethods(clazz);
             for (Method method : methods) {
-                if (this.notAccess(inputClazz, clazz, method)) {
+                if (notAccess(inputClazz, clazz, method)) {
                     continue;
                 }
                 String methodName = method.getName()
@@ -289,7 +289,7 @@ public class DefaultReflecter implements Reflecter {
             do {
                 try {
                     Method method = clazz.getDeclaredMethod(methodName, parameterTypes);
-                    if (this.notAccess(inputClazz, clazz, method)) {
+                    if (notAccess(inputClazz, clazz, method)) {
                         continue;
                     }
                     return method;
@@ -310,21 +310,21 @@ public class DefaultReflecter implements Reflecter {
         Assert.notBlank(methodName, "Parameter \"methodName\" must not blank. ");
         // first priority : find a public method with a "similar" signature in class hierarchy
         // similar interpreted in when primitive argument types are converted to their wrappers
-        for (Method method : this.findMethods(clazz)) {
+        for (Method method : findMethods(clazz)) {
             if (methodName.equals(method.getName()) &&
-                    this.matchParameterTypes(method.getParameterTypes(), parameterTypes)) {
+                    matchParameterTypes(method.getParameterTypes(), parameterTypes)) {
                 return method;
             }
         }
         // second priority : find a non-public method with a "similar" signature on declaring class
         Class<?> inputClazz = clazz;
         do {
-            for (Method method : this.findDeclaredMethods(clazz)) {
-                if (this.notAccess(inputClazz, clazz, method)) {
+            for (Method method : findDeclaredMethods(clazz)) {
+                if (notAccess(inputClazz, clazz, method)) {
                     continue;
                 }
                 if (methodName.equals(method.getName()) &&
-                        this.matchParameterTypes(method.getParameterTypes(), parameterTypes)) {
+                        matchParameterTypes(method.getParameterTypes(), parameterTypes)) {
                     return method;
                 }
             }

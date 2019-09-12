@@ -50,13 +50,13 @@ public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
     @Override
     public Object encode(Object source) throws EncodeException {
 
-        return this.encode((byte[]) source);
+        return encode((byte[]) source);
     }
 
     @Override
     public Object decode(Object source) throws DecodeException {
 
-        return this.decode((byte[]) source);
+        return decode((byte[]) source);
     }
 
     @Override
@@ -66,8 +66,8 @@ public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
         byte[] out = new byte[len << 1];
         // Two characters form the hex value.
         for (int i = 0, j = 0; i < len; i++) {
-            out[j++] = this.digits[(0xF0 & source[i]) >>> 4];
-            out[j++] = this.digits[0x0F & source[i]];
+            out[j++] = digits[(0xF0 & source[i]) >>> 4];
+            out[j++] = digits[0x0F & source[i]];
         }
         return out;
     }
@@ -82,9 +82,9 @@ public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
         byte[] out = new byte[len >> 1];
         // Two characters form the hex value.
         for (int i = 0, j = 0; j < len; i++) {
-            int f = this.toDigit(source[j], j) << 4;
+            int f = toDigit(source[j], j) << 4;
             j++;
-            f = f | this.toDigit(source[j], j);
+            f = f | toDigit(source[j], j);
             j++;
             out[i] = (byte) (f & 0xFF);
         }
@@ -92,14 +92,14 @@ public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
     }
 
     public String encodeToString(byte[] source) {
-        byte[] encode = this.encode(source);
+        byte[] encode = encode(source);
         return new String(encode);
     }
 
     public byte[] decodeFromString(String source) {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         byte[] sourceBytes = source.getBytes();
-        return this.decode(sourceBytes);
+        return decode(sourceBytes);
     }
 
 }

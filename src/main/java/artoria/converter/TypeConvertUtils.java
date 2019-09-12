@@ -40,9 +40,9 @@ public class TypeConvertUtils {
     public static void register(Class<?> clazz, TypeConverter converter) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
-        String converterString = converter.toString();
+        String converterClassName = converter.getClass().getName();
         String clazzName = clazz.getName();
-        log.info("Register \"{}\" to \"{}\". ", converterString, clazzName);
+        log.info("Register \"{}\" to \"{}\". ", converterClassName, clazzName);
         CONVERTERS.put(clazz, converter);
     }
 

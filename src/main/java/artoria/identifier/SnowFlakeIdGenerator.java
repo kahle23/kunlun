@@ -75,7 +75,7 @@ public class SnowFlakeIdGenerator implements LongIdentifierGenerator {
      */
     public SnowFlakeIdGenerator() {
 
-        this(0, 0, SystemClock.getInstance());
+        this(0, 0, new SystemClock());
     }
 
     /**
@@ -142,12 +142,11 @@ public class SnowFlakeIdGenerator implements LongIdentifierGenerator {
             // Sequence overflow in milliseconds.
             if (sequence == 0) {
                 // Block to the next millisecond and get the new timestamp.
-                currentTimestamp = this.waitUntilNextMillis(lastTimestamp);
+                currentTimestamp = waitUntilNextMillis(lastTimestamp);
             }
         }
         else {
-            // The timestamp changes and
-            //      the sequence is reset in milliseconds.
+            // The timestamp changes and the sequence is reset in milliseconds.
             sequence = 0L;
         }
         lastTimestamp = currentTimestamp;

@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static artoria.common.Constants.THIRTY;
+
 /**
  * Bean convert tools.
  * @author Kahle
@@ -21,7 +23,6 @@ public class BeanUtils {
     private static final Class<? extends BeanMap> DEFAULT_MAP_TYPE = SimpleBeanMap.class;
     private static final TypeConverter CONVERTER_AGENT = new TypeConverterAgent();
     private static final BeanCopier DEFAULT_BEAN_COPIER = new SimpleBeanCopier();
-    private static final Integer MAP_INIT_CAPACITY = 32;
     private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
     private static Class<? extends BeanMap> mapType;
     private static BeanCopier beanCopier;
@@ -33,8 +34,9 @@ public class BeanUtils {
 
     public static void setMapType(Class<? extends BeanMap> mapType) {
         Assert.notNull(mapType, "Parameter \"mapType\" must not null. ");
-        Assert.state(mapType != BeanMap.class
-                , "Parameter \"mapType\" must not \"BeanMap.class\". ");
+        if (mapType == BeanMap.class) {
+            throw new IllegalArgumentException("Parameter \"mapType\" must not \"BeanMap.class\". ");
+        }
         log.info("Set bean map type: {}", mapType.getName());
         BeanUtils.mapType = mapType;
     }
@@ -52,8 +54,7 @@ public class BeanUtils {
 
     public static BeanMap createBeanMap() {
         try {
-            Class<? extends BeanMap> mapType = BeanUtils.getMapType();
-            BeanMap beanMap = ReflectUtils.newInstance(mapType);
+            BeanMap beanMap = ReflectUtils.newInstance(getMapType());
             beanMap.setTypeConverter(CONVERTER_AGENT);
             return beanMap;
         }
@@ -63,7 +64,7 @@ public class BeanUtils {
     }
 
     public static BeanMap createBeanMap(Object bean) {
-        BeanMap beanMap = BeanUtils.createBeanMap();
+        BeanMap beanMap = createBeanMap();
         beanMap.setBean(bean);
         return beanMap;
     }
@@ -85,8 +86,7 @@ public class BeanUtils {
     public static void copy(Object from, Map to) {
         Assert.notNull(from, "Parameter \"from\" must not null. ");
         Assert.notNull(to, "Parameter \"to\" must not null. ");
-        Map map = from instanceof Map
-                ? (Map) from : BeanUtils.createBeanMap(from);
+        Map map = from instanceof Map ? (Map) from : createBeanMap(from);
         to.putAll(map);
     }
 
@@ -98,7 +98,7 @@ public class BeanUtils {
     public static void copy(Map from, Object to, TypeConverter cvt) {
         Assert.notNull(from, "Parameter \"from\" must not null. ");
         Assert.notNull(to, "Parameter \"to\" must not null. ");
-        BeanMap map = BeanUtils.createBeanMap(to);
+        BeanMap map = createBeanMap(to);
         map.setTypeConverter(cvt);
         map.putAll(from);
     }
@@ -125,7 +125,7 @@ public class BeanUtils {
 
     public static <F> Map<String, Object> beanToMap(F from) {
         if (from == null) { return null; }
-        Map<String, Object> result = new HashMap<String, Object>(MAP_INIT_CAPACITY);
+        Map<String, Object> result = new HashMap<String, Object>(THIRTY);
         BeanUtils.copy(from, result);
         return result;
     }

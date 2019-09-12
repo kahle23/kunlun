@@ -20,13 +20,13 @@ public class Hash extends AbstractDigester {
 
     public Hash(String algorithm) {
 
-        this.setAlgorithm(algorithm);
+        setAlgorithm(algorithm);
     }
 
     @Override
     public byte[] digest(byte[] data) throws GeneralSecurityException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
-        String algorithm = this.getAlgorithm();
+        String algorithm = getAlgorithm();
         Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
         MessageDigest md = MessageDigest.getInstance(algorithm);
         return md.digest(data);
@@ -35,7 +35,7 @@ public class Hash extends AbstractDigester {
     @Override
     public byte[] digest(InputStream inputStream) throws GeneralSecurityException, IOException {
         Assert.notNull(inputStream, "Parameter \"inputStream\" must not null. ");
-        String algorithm = this.getAlgorithm();
+        String algorithm = getAlgorithm();
         Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
         MessageDigest md = MessageDigest.getInstance(algorithm);
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];

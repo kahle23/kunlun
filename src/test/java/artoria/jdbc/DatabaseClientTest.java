@@ -35,28 +35,15 @@ public class DatabaseClientTest {
     }
 
     @Test
-    public void execute() throws Exception {
-        Integer execute = dbClient.execute(new DatabaseCallback<Integer>() {
-            @Override
-            public Integer call(Connection connection) throws SQLException {
-                PreparedStatement statement = connection.prepareStatement("select count(0) from t_user");
-                ResultSet query = statement.executeQuery();
-                return query.next() ? query.getInt(1) : null;
-            }
-        });
-        log.info("{}", execute);
-    }
-
-    @Test
     public void transaction() throws Exception {
         boolean transaction = dbClient.transaction(new DatabaseAtom() {
             @Override
             public boolean run() throws SQLException {
-                dbClient.update("insert into t_user values(?, ?, ?, ?, ?, ?)", 997, "transaction", 19, "transaction@email.com", "", "");
+                dbClient.executeUpdate("insert into t_user values(?, ?, ?, ?, ?, ?)", 997, "transaction", 19, "transaction@email.com", "", "");
                 boolean transaction = dbClient.transaction(new DatabaseAtom() {
                     @Override
                     public boolean run() throws SQLException {
-                        dbClient.update("insert into t_user values(?, ?, ?, ?, ?, ?)", 998, "nestedTransaction", 19, "nestedTransaction@email.com", "", "");
+                        dbClient.executeUpdate("insert into t_user values(?, ?, ?, ?, ?, ?)", 998, "nestedTransaction", 19, "nestedTransaction@email.com", "", "");
                         // if (true) { throw new RuntimeException("Test throw a exception. "); }
                         return true;
                     }
@@ -69,41 +56,40 @@ public class DatabaseClientTest {
     }
 
     @Test
-    public void update() throws Exception {
-        int i = dbClient.update("insert into t_user values(?, ?, ?, ?, ?, ?)", 1, "zhangsan", 19, "zhangsan@email.com", "", "");
-        log.info("{}", i);
-    }
-
-    @Test
-    public void query() throws Exception {
-        List<Map<String, Object>> list = dbClient.query("select * from t_user");
-        // List<Map<String, Object>> list = dbClient.query("select * from t_user where name = ?", "zhangsan");
+    public void executeQuery() throws Exception {
+        List<Map<String, Object>> list = dbClient.executeQuery("select * from t_user");
+        // List<Map<String, Object>> list = dbClient.executeQuery("select * from t_user where name = ?", "zhangsan");
         for (Map<String, Object> map : list) {
-            log.info(map.toString());
+            log.info(JSON.toJSONString(map));
         }
     }
 
     @Test
-    public void query1() throws Exception {
-        List<User> users = dbClient.query(User.class, "select * from t_user");
-        // List<User> users = dbClient.query(User.class, "select * from t_user where name = ?", "zhangsan");
+    public void executeQuery1() throws Exception {
+        List<User> users = dbClient.executeQuery(User.class, "select * from t_user");
+        // List<User> users = dbClient.executeQuery(User.class, "select * from t_user where name = ?", "zhangsan");
         for (User user : users) {
             log.info(JSON.toJSONString(user));
         }
     }
 
     @Test
-    public void queryFirst() throws Exception {
-        Map<String, Object> map = dbClient.queryFirst("select * from t_user");
-        // Map<String, Object> map = dbClient.queryFirst("select * from t_user where name = ?", "zhangsan");
-        log.info("{}", map);
+    public void executeUpdate() throws Exception {
+        int i = dbClient.executeUpdate("insert into t_user values(?, ?, ?, ?, ?, ?)", 1, "zhangsan", 19, "zhangsan@email.com", "", "");
+        log.info("{}", i);
     }
 
     @Test
-    public void queryFirst1() throws Exception {
-        User user = dbClient.queryFirst(User.class, "select * from t_user");
-        // User user = dbClient.queryFirst(User.class, "select * from t_user where name = ?", "zhangsan");
-        log.info(JSON.toJSONString(user));
+    public void execute() throws Exception {
+        Integer execute = dbClient.execute(new DatabaseCallback<Integer>() {
+            @Override
+            public Integer call(Connection connection) throws SQLException {
+                PreparedStatement statement = connection.prepareStatement("select count(0) from t_user");
+                ResultSet query = statement.executeQuery();
+                return query.next() ? query.getInt(1) : null;
+            }
+        });
+        log.info("{}", execute);
     }
 
 }

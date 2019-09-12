@@ -6,7 +6,6 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 import artoria.util.CloseUtils;
-import artoria.util.CollectionUtils;
 import artoria.util.StringUtils;
 
 import javax.sql.DataSource;
@@ -30,12 +29,12 @@ public class DatabaseClient {
 
     public DatabaseClient(DataSource dataSource) {
 
-        this.setDataSource(dataSource);
+        setDataSource(dataSource);
     }
 
     public DataSource getDataSource() {
 
-        return this.dataSource;
+        return dataSource;
     }
 
     public void setDataSource(DataSource dataSource) {
@@ -47,10 +46,10 @@ public class DatabaseClient {
         List<TableMeta> tableMetaList = new ArrayList<TableMeta>();
         String[] types = new String[]{"TABLE"};
         ResultSet tableResultSet = null;
-        Connection conn = null;
+        Connection connection = null;
         try {
-            conn = this.getConnection();
-            DatabaseMetaData databaseMetaData = conn.getMetaData();
+            connection = getConnection();
+            DatabaseMetaData databaseMetaData = connection.getMetaData();
             tableResultSet = databaseMetaData.getTables((String) null, (String) null, (String) null, types);
             while (tableResultSet.next()) {
                 Map<String, ColumnMeta> columnMap = new HashMap<String, ColumnMeta>((int) 16);
@@ -60,39 +59,28 @@ public class DatabaseClient {
                 tableMetaList.add(tableMeta);
                 tableMeta.setName(tableName);
                 tableMeta.setRemarks(remarks);
-                this.handleColumnMeta(databaseMetaData, tableMeta, columnMap);
-                this.handleClassName(conn, columnMap, tableName);
+                fillColumnMeta(databaseMetaData, tableMeta, columnMap);
+                fillClassName(connection, tableName, columnMap);
             }
             return tableMetaList;
         }
         finally {
             CloseUtils.closeQuietly(tableResultSet);
-            this.closeConnection(conn);
-        }
-    }
-
-    public <T> T execute(DatabaseCallback<T> callback) throws SQLException {
-        Connection conn = null;
-        try {
-            conn = this.getConnection();
-            return callback.call(conn);
-        }
-        finally {
-            this.closeConnection(conn);
+            closeConnection(connection);
         }
     }
 
     public boolean transaction(DatabaseAtom atom) throws SQLException {
 
-        return this.transaction(atom, DEFAULT_TRANSACTION_LEVEL);
+        return transaction(atom, DEFAULT_TRANSACTION_LEVEL);
     }
 
     public boolean transaction(DatabaseAtom atom, int transactionLevel) throws SQLException {
-        Connection conn = threadConnection.get();
+        Connection connection = threadConnection.get();
         // Nested transaction support.
-        if (conn != null) {
-            if (conn.getTransactionIsolation() < transactionLevel) {
-                conn.setTransactionIsolation(transactionLevel);
+        if (connection != null) {
+            if (connection.getTransactionIsolation() < transactionLevel) {
+                connection.setTransactionIsolation(transactionLevel);
             }
             boolean result = atom.run();
             if (result) {
@@ -104,52 +92,40 @@ public class DatabaseClient {
         // Normal transaction support.
         Boolean autoCommit = null;
         try {
-            conn = this.getConnection();
-            autoCommit = conn.getAutoCommit();
-            threadConnection.set(conn);
-            conn.setTransactionIsolation(transactionLevel);
-            conn.setAutoCommit(false);
+            connection = getConnection();
+            autoCommit = connection.getAutoCommit();
+            threadConnection.set(connection);
+            connection.setTransactionIsolation(transactionLevel);
+            connection.setAutoCommit(false);
             boolean result = atom.run();
             if (result) {
-                conn.commit();
+                connection.commit();
             }
             else {
-                conn.rollback();
+                connection.rollback();
             }
             return result;
         }
         catch (Exception e) {
-            this.rollbackTransaction(conn);
+            rollbackTransaction(connection);
             throw ExceptionUtils.wrap(e, DatabaseException.class);
         }
         finally {
-            this.closeTransaction(conn, autoCommit);
+            closeTransaction(connection, autoCommit);
         }
     }
 
-    public int update(String sql, Object... params) throws SQLException {
-        PreparedStatement prepStat = null;
-        Connection conn = null;
-        try {
-            conn = this.getConnection();
-            prepStat = conn.prepareStatement(sql);
-            for (int i = 0; i < params.length; i++) {
-                prepStat.setObject(i + 1, params[i]);
-            }
-            return prepStat.executeUpdate();
-        }
-        finally {
-            CloseUtils.closeQuietly(prepStat);
-            this.closeConnection(conn);
-        }
+    public <T> List<T> executeQuery(Class<T> clazz, String sql, Object... params) throws SQLException {
+        List<Map<String, Object>> list = executeQuery(sql, params);
+        return BeanUtils.mapToBeanInList(list, clazz);
     }
 
-    public List<Map<String, Object>> query(String sql, Object... params) throws SQLException {
+    public List<Map<String, Object>> executeQuery(String sql, Object... params) throws SQLException {
         PreparedStatement prepStat = null;
         ResultSet resSet = null;
         Connection conn = null;
         try {
-            conn = this.getConnection();
+            conn = getConnection();
             prepStat = conn.prepareStatement(sql);
             for (int i = 0; i < params.length; i++) {
                 prepStat.setObject(i + 1, params[i]);
@@ -177,29 +153,42 @@ public class DatabaseClient {
         finally {
             CloseUtils.closeQuietly(resSet);
             CloseUtils.closeQuietly(prepStat);
-            this.closeConnection(conn);
+            closeConnection(conn);
         }
     }
 
-    public <T> List<T> query(Class<T> clazz, String sql, Object... params) throws SQLException {
-        List<Map<String, Object>> list = this.query(sql, params);
-        return BeanUtils.mapToBeanInList(list, clazz);
+    public int executeUpdate(String sql, Object... params) throws SQLException {
+        PreparedStatement prepStat = null;
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            prepStat = connection.prepareStatement(sql);
+            for (int i = 0; i < params.length; i++) {
+                prepStat.setObject(i + 1, params[i]);
+            }
+            return prepStat.executeUpdate();
+        }
+        finally {
+            CloseUtils.closeQuietly(prepStat);
+            closeConnection(connection);
+        }
     }
 
-    public Map<String, Object> queryFirst(String sql, Object... params) throws SQLException {
-        List<Map<String, Object>> list = this.query(sql, params);
-        return CollectionUtils.isNotEmpty(list) ? list.get(0) : null;
-    }
-
-    public <T> T queryFirst(Class<T> clazz, String sql, Object... params) throws SQLException {
-        List<Map<String, Object>> list = this.query(sql, params);
-        return BeanUtils.mapToBean(CollectionUtils.isNotEmpty(list) ? list.get(0) : null, clazz);
+    public <T> T execute(DatabaseCallback<T> callback) throws SQLException {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            return callback.call(connection);
+        }
+        finally {
+            closeConnection(connection);
+        }
     }
 
     private Connection getConnection() throws SQLException {
         Connection connection = threadConnection.get();
         if (connection == null) {
-            connection = this.dataSource.getConnection();
+            connection = dataSource.getConnection();
         }
         return connection;
     }
@@ -238,25 +227,11 @@ public class DatabaseClient {
         }
     }
 
-    private ColumnMeta createColumnMeta(ResultSet columnResultSet, String primaryKey) throws SQLException {
-        ColumnMeta columnMeta = new ColumnMeta();
-        String columnName = columnResultSet.getString("COLUMN_NAME");
-        columnMeta.setName(columnName);
-        columnMeta.setType(columnResultSet.getString("TYPE_NAME"));
-        columnMeta.setSize(columnResultSet.getInt("COLUMN_SIZE"));
-        columnMeta.setDecimalDigits(columnResultSet.getInt("DECIMAL_DIGITS"));
-        columnMeta.setRemarks(columnResultSet.getString("REMARKS"));
-        columnMeta.setNullable(columnResultSet.getString("IS_NULLABLE"));
-        columnMeta.setAutoincrement(columnResultSet.getString("IS_AUTOINCREMENT"));
-        columnMeta.setPrimaryKey(primaryKey.contains(columnName));
-        return columnMeta;
-    }
-
-    private String readPrimaryKey(DatabaseMetaData databaseMetaData, String tableName) throws SQLException {
+    private String findPrimaryKey(String tableName, DatabaseMetaData dbMetaData) throws SQLException {
         StringBuilder primaryKey = new StringBuilder();
         ResultSet primaryKeysResultSet = null;
         try {
-            primaryKeysResultSet = databaseMetaData.getPrimaryKeys(null, null, tableName);
+            primaryKeysResultSet = dbMetaData.getPrimaryKeys(null, null, tableName);
             while (primaryKeysResultSet.next()) {
                 primaryKey.append(primaryKeysResultSet.getString("COLUMN_NAME")).append(COMMA);
             }
@@ -270,7 +245,21 @@ public class DatabaseClient {
         }
     }
 
-    private void handleClassName(Connection connection, Map<String, ColumnMeta> columnMap, String tableName) throws SQLException {
+    private ColumnMeta createColumnMeta(String primaryKey, ResultSet columnResultSet) throws SQLException {
+        ColumnMeta columnMeta = new ColumnMeta();
+        String columnName = columnResultSet.getString("COLUMN_NAME");
+        columnMeta.setName(columnName);
+        columnMeta.setType(columnResultSet.getString("TYPE_NAME"));
+        columnMeta.setSize(columnResultSet.getInt("COLUMN_SIZE"));
+        columnMeta.setDecimalDigits(columnResultSet.getInt("DECIMAL_DIGITS"));
+        columnMeta.setRemarks(columnResultSet.getString("REMARKS"));
+        columnMeta.setNullable(columnResultSet.getString("IS_NULLABLE"));
+        columnMeta.setAutoincrement(columnResultSet.getString("IS_AUTOINCREMENT"));
+        columnMeta.setPrimaryKey(primaryKey.contains(columnName));
+        return columnMeta;
+    }
+
+    private void fillClassName(Connection connection, String tableName, Map<String, ColumnMeta> columnMap) throws SQLException {
         String sql = "select * from " + tableName + " where 1 = 2";
         Statement statement = null;
         ResultSet resultSet = null;
@@ -292,16 +281,16 @@ public class DatabaseClient {
         }
     }
 
-    private void handleColumnMeta(DatabaseMetaData dbMetaData, TableMeta tableMeta, Map<String, ColumnMeta> columnMap) throws SQLException {
+    private void fillColumnMeta(DatabaseMetaData dbMetaData, TableMeta tableMeta, Map<String, ColumnMeta> columnMap) throws SQLException {
         String tableName = tableMeta.getName();
         ResultSet columnResultSet = null;
         try {
-            String primaryKey = this.readPrimaryKey(dbMetaData, tableName);
+            String primaryKey = findPrimaryKey(tableName, dbMetaData);
             tableMeta.setPrimaryKey(primaryKey);
             columnResultSet = dbMetaData.getColumns(null, null, tableName, null);
             tableMeta.setColumnList(new ArrayList<ColumnMeta>());
             while (columnResultSet.next()) {
-                ColumnMeta columnMeta = this.createColumnMeta(columnResultSet, primaryKey);
+                ColumnMeta columnMeta = createColumnMeta(primaryKey, columnResultSet);
                 tableMeta.getColumnList().add(columnMeta);
                 columnMap.put(columnMeta.getName(), columnMeta);
             }

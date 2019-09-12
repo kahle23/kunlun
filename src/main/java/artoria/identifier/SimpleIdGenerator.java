@@ -23,12 +23,12 @@ public class SimpleIdGenerator implements StringIdentifierGenerator {
 
     public SimpleIdGenerator(String separator) {
 
-        this.setSeparator(separator);
+        setSeparator(separator);
     }
 
     public String getSeparator() {
 
-        return this.separator;
+        return separator;
     }
 
     public void setSeparator(String separator) {

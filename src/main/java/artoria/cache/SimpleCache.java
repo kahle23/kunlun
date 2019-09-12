@@ -8,6 +8,7 @@ import artoria.util.ObjectUtils;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Cache simple implement by jdk.
@@ -22,7 +23,10 @@ public class SimpleCache<K, V> implements Cache<K, V> {
 
     <C extends Configuration<K, V>> SimpleCache(String name, C configuration) {
         ReferenceMap.Type type = ReferenceMap.Type.SOFT;
-        this.cache = new ReferenceMap<K, V>(type, true);
+        this.cache = new ReferenceMap<K, V>(
+                new ConcurrentHashMap<K, ReferenceMap.ValueCell<K, V>>(),
+                type
+        );
         this.name = name;
         if (configuration != null) {
             this.cacheLoader = configuration.getCacheLoader();

@@ -9,17 +9,17 @@ import java.security.PublicKey;
 import static artoria.crypto.KeyType.PUBLIC_KEY;
 
 /**
- * Default implementation of asymmetric encryption and decryption tools.
+ * Simple implementation of asymmetric encryption and decryption tools.
  * @author Kahle
  */
-public class DefaultAsymmetricCrypto extends AbstractCrypto implements AsymmetricCrypto {
+public class SimpleAsymmetricCrypto extends AbstractCrypto implements AsymmetricCrypto {
     private PrivateKey privateKey;
     private PublicKey publicKey;
 
     @Override
     public PublicKey getPublicKey() {
 
-        return this.publicKey;
+        return publicKey;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class DefaultAsymmetricCrypto extends AbstractCrypto implements Asymmetri
     @Override
     public PrivateKey getPrivateKey() {
 
-        return this.privateKey;
+        return privateKey;
     }
 
     @Override
@@ -42,15 +42,15 @@ public class DefaultAsymmetricCrypto extends AbstractCrypto implements Asymmetri
 
     @Override
     public byte[] encrypt(byte[] data, KeyType keyType) throws GeneralSecurityException {
-        Key key = keyType == PUBLIC_KEY ? this.getPublicKey() : this.getPrivateKey();
-        Cipher cipher = this.createCipher(Cipher.ENCRYPT_MODE, key, null);
+        Key key = keyType == PUBLIC_KEY ? getPublicKey() : getPrivateKey();
+        Cipher cipher = createCipher(Cipher.ENCRYPT_MODE, key, null);
         return cipher.doFinal(data);
     }
 
     @Override
     public byte[] decrypt(byte[] data, KeyType keyType) throws GeneralSecurityException {
-        Key key = keyType == PUBLIC_KEY ? this.getPublicKey() : this.getPrivateKey();
-        Cipher cipher = this.createCipher(Cipher.DECRYPT_MODE, key, null);
+        Key key = keyType == PUBLIC_KEY ? getPublicKey() : getPrivateKey();
+        Cipher cipher = createCipher(Cipher.DECRYPT_MODE, key, null);
         return cipher.doFinal(data);
     }
 

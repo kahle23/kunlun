@@ -57,7 +57,7 @@ public class SimpleBeanCopier implements BeanCopier {
                 destMth.invoke(to, input);
             }
             catch (Exception e) {
-                if (this.ignoreException) {
+                if (ignoreException) {
                     log.debug("Execution \"copy\" error. ", e);
                 }
                 else {

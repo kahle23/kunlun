@@ -24,30 +24,30 @@ public abstract class TextFile extends BinaryFile {
     }
 
     public String writeToString() throws IOException {
-        byte[] byteArray = this.writeToByteArray();
-        return new String(byteArray, this.getCharset());
+        byte[] byteArray = writeToByteArray();
+        return new String(byteArray, getCharset());
     }
 
     public long readFromString(String text) throws IOException {
         Assert.notBlank(text, "Parameter \"text\" must not blank. ");
-        byte[] byteArray = text.getBytes(this.getCharset());
-        return this.readFromByteArray(byteArray);
+        byte[] byteArray = text.getBytes(getCharset());
+        return readFromByteArray(byteArray);
     }
 
     @Override
     public long read(InputStream inputStream) throws IOException {
         Assert.notNull(inputStream, "Parameter \"inputStream\" must not null. ");
-        Reader isr = new InputStreamReader(inputStream, this.getCharset());
+        Reader isr = new InputStreamReader(inputStream, getCharset());
         Reader reader = new BufferedReader(isr);
-        return this.read(reader);
+        return read(reader);
     }
 
     @Override
     public void write(OutputStream outputStream) throws IOException {
         Assert.notNull(outputStream, "Parameter \"outputStream\" must not null. ");
-        Writer osw = new OutputStreamWriter(outputStream, this.getCharset());
+        Writer osw = new OutputStreamWriter(outputStream, getCharset());
         Writer writer = new BufferedWriter(osw);
-        this.write(writer);
+        write(writer);
         writer.flush();
     }
 

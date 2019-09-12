@@ -75,7 +75,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
 
     public boolean isUrlSafe() {
 
-        return this.urlSafe;
+        return urlSafe;
     }
 
     public void setUrlSafe(boolean urlSafe) {
@@ -85,7 +85,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
 
     public boolean isMime() {
 
-        return this.mime;
+        return mime;
     }
 
     public void setMime(boolean mime) {
@@ -95,7 +95,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
 
     public byte[] getLineSeparator() {
 
-        return this.lineSeparator;
+        return lineSeparator;
     }
 
     public void setLineSeparator(byte[] lineSeparator) {
@@ -105,7 +105,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
 
     public Integer getLineLength() {
 
-        return this.lineLength;
+        return lineLength;
     }
 
     public void setLineLength(Integer lineLength) {
@@ -116,29 +116,29 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
     @Override
     public Object encode(Object source) throws EncodeException {
 
-        return this.encode((byte[]) source);
+        return encode((byte[]) source);
     }
 
     @Override
     public Object decode(Object source) throws DecodeException {
 
-        return this.decode((byte[]) source);
+        return decode((byte[]) source);
     }
 
     @Override
     public byte[] encode(byte[] source) throws EncodeException {
 
-        return this.getDelegate().encode(source);
+        return getDelegate().encode(source);
     }
 
     @Override
     public byte[] decode(byte[] source) throws DecodeException {
 
-        return this.getDelegate().decode(source);
+        return getDelegate().decode(source);
     }
 
     public String encodeToString(byte[] source) {
-        byte[] encode = this.encode(source);
+        byte[] encode = encode(source);
         Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
         return new String(encode, charset);
     }
@@ -147,7 +147,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
         Assert.notBlank(charset
                 , "Parameter \"charset\" must not blank. ");
         Charset encoding = Charset.forName(charset);
-        byte[] encode = this.encode(source);
+        byte[] encode = encode(source);
         return new String(encode, encoding);
     }
 
@@ -156,7 +156,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
                 , "Parameter \"source\" must not null. ");
         Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
         byte[] sourceBytes = source.getBytes(charset);
-        return this.decode(sourceBytes);
+        return decode(sourceBytes);
     }
 
     public byte[] decodeFromString(String source, String charset) {
@@ -166,7 +166,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
                 , "Parameter \"charset\" must not blank. ");
         Charset encoding = Charset.forName(charset);
         byte[] sourceBytes = source.getBytes(encoding);
-        return this.decode(sourceBytes);
+        return decode(sourceBytes);
     }
 
     /**
@@ -217,13 +217,13 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
         @Override
         public Object encode(Object source) throws EncodeException {
 
-            return this.encode((byte[]) source);
+            return encode((byte[]) source);
         }
 
         @Override
         public Object decode(Object source) throws DecodeException {
 
-            return this.decode((byte[]) source);
+            return decode((byte[]) source);
         }
 
         @Override
@@ -235,7 +235,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
                 encode = StringUtils.replace(encode, SLASH, UNDERLINE);
             }
             else if (mime) {
-                encode = this.convertToMime(encode);
+                encode = convertToMime(encode);
             }
             return encode.getBytes();
         }
@@ -281,13 +281,13 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
         @Override
         public Object encode(Object source) throws EncodeException {
 
-            return this.encode((byte[]) source);
+            return encode((byte[]) source);
         }
 
         @Override
         public Object decode(Object source) throws DecodeException {
 
-            return this.decode((byte[]) source);
+            return decode((byte[]) source);
         }
 
         @Override

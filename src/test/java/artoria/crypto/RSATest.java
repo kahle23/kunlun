@@ -22,7 +22,7 @@ import static artoria.crypto.KeyType.PUBLIC_KEY;
  */
 public class RSATest extends BouncyCastleSupport {
     private static Logger log = LoggerFactory.getLogger(RSATest.class);
-    private static AsymmetricCrypto asymmetricCrypto = new DefaultAsymmetricCrypto();
+    private static AsymmetricCrypto asymmetricCrypto = new SimpleAsymmetricCrypto();
     private byte[] data = "Hello, Java!".getBytes();
 
     static {

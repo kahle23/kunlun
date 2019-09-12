@@ -1,8 +1,12 @@
 package artoria.net;
 
 import artoria.exception.ExceptionUtils;
+import artoria.file.FileEntity;
 import artoria.file.FileUtils;
 import artoria.io.IOUtils;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
+import artoria.random.RandomUtils;
 import artoria.util.Assert;
 import artoria.util.CloseUtils;
 import artoria.util.MapUtils;
@@ -12,12 +16,14 @@ import javax.net.ssl.*;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.Charset;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
+import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import static artoria.common.Constants.*;
@@ -29,8 +35,8 @@ import static artoria.net.HttpMethod.HEAD;
  * Http client simple implement by jdk.
  * @author Kahle
  */
-public class DefaultHttpClient implements HttpClient {
-    private static final char[] MIME_BOUNDARY_CHARS = "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+public class SimpleHttpClient implements HttpClient {
+    private static final char[] MIME_BOUNDARY_CHARS = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private static final char SLASH_CHAR = '/';
     private static final String FORM_URL_ENCODED = "application/x-www-form-urlencoded";
     private static final String MULTIPART_FORM_DATA = "multipart/form-data";
@@ -49,12 +55,13 @@ public class DefaultHttpClient implements HttpClient {
     private static final int MALFORMED_HTTP_LENGTH = MALFORMED_HTTP.length();
     private static final int MALFORMED_HTTPS_LENGTH = MALFORMED_HTTPS.length();
     private static final int CHARSET_EQUAL_LENGTH = CHARSET_EQUAL.length();
-    private static final int BOUNDARY_LENGTH = 32;
-    private static final int HTTP_TEMP_REDIR = 307;
-    private static final SSLSocketFactory UN_SECURE_SSL_SOCKET_FACTORY = createUnSecureSSLSocketFactory();
-    private static final HostnameVerifier UN_SECURE_HOSTNAME_VERIFIER = createUnSecureHostnameVerifier();
+    private static final int BOUNDARY_LENGTH = 16;
+    private static final int HTTP_TEMP_REDIRECT = 307;
+    private static final SSLSocketFactory UNSAFE_SSL_SOCKET_FACTORY = createUnsafeSSLSocketFactory();
+    private static final HostnameVerifier UNSAFE_HOSTNAME_VERIFIER = createUnsafeHostnameVerifier();
+    private static Logger log = LoggerFactory.getLogger(SimpleHttpClient.class);
 
-    private static HostnameVerifier createUnSecureHostnameVerifier() {
+    private static HostnameVerifier createUnsafeHostnameVerifier() {
 
         return new HostnameVerifier() {
             @Override
@@ -64,62 +71,50 @@ public class DefaultHttpClient implements HttpClient {
         };
     }
 
-    private static SSLSocketFactory createUnSecureSSLSocketFactory() {
+    private static SSLSocketFactory createUnsafeSSLSocketFactory() {
+        // Create a trust manager that does not validate certificate chains.
+        final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+
+            @Override
+            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            }
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            }
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+
+                return null;
+            }
+
+        }};
+        // Install the all-trusting trust manager.
+        final SSLContext sslContext;
         try {
-            // Create a trust manager that does not validate certificate chains.
-            final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
-
-                @Override
-                public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-                }
-
-                @Override
-                public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-                }
-
-                @Override
-                public X509Certificate[] getAcceptedIssuers() {
-
-                    return null;
-                }
-
-            }};
-            // Install the all-trusting trust manager.
-            final SSLContext sslContext;
-            try {
-                sslContext = SSLContext.getInstance("SSL");
-                // sslContext = SSLContext.getInstance("TLS");
-                // sslContext = SSLContext.getInstance("TLS", "SunJSSE");
-                sslContext.init(null, trustAllCerts, new SecureRandom());
-            }
-            catch (NoSuchAlgorithmException e) {
-                throw new IOException("Can't create unsecure trust manager. ", e);
-            }
-            catch (KeyManagementException e) {
-                throw new IOException("Can't create unsecure trust manager. ", e);
-            }
-            // Create an ssl socket factory with our all-trusting manager.
-            return sslContext.getSocketFactory();
+            sslContext = SSLContext.getInstance("SSL");
+            // sslContext = SSLContext.getInstance("TLS");
+            // sslContext = SSLContext.getInstance("TLS", "SunJSSE");
+            sslContext.init(null, trustAllCerts, new SecureRandom());
         }
-        catch (Exception e) {
+        catch (GeneralSecurityException e) {
             throw ExceptionUtils.wrap(e);
         }
+        // Create an ssl socket factory with our all-trusting manager.
+        return sslContext.getSocketFactory();
     }
 
     private static String generateMimeBoundary() {
-        StringBuilder mimeBoundary = new StringBuilder(BOUNDARY_LENGTH);
-        Random random = new Random();
-        for (int i = 0; i < BOUNDARY_LENGTH; i++) {
-            int nextInt = random.nextInt(MIME_BOUNDARY_CHARS.length);
-            mimeBoundary.append(MIME_BOUNDARY_CHARS[nextInt]);
-        }
-        return mimeBoundary.toString();
+        String mimeBoundary = "----WebKitFormBoundary";
+        mimeBoundary +=
+                RandomUtils.nextString(MIME_BOUNDARY_CHARS, BOUNDARY_LENGTH);
+        return mimeBoundary;
     }
 
     private static boolean needsMultipart(Object value) {
         return value instanceof File
-//                || value instanceof InputStream
-//                || value instanceof Reader
+                || value instanceof FileEntity
                 ;
     }
 
@@ -181,8 +176,8 @@ public class DefaultHttpClient implements HttpClient {
         if (conn instanceof HttpsURLConnection
                 && !request.getValidateTLSCertificate()) {
             HttpsURLConnection hsConn = (HttpsURLConnection) conn;
-            hsConn.setSSLSocketFactory(UN_SECURE_SSL_SOCKET_FACTORY);
-            hsConn.setHostnameVerifier(UN_SECURE_HOSTNAME_VERIFIER);
+            hsConn.setSSLSocketFactory(UNSAFE_SSL_SOCKET_FACTORY);
+            hsConn.setHostnameVerifier(UNSAFE_HOSTNAME_VERIFIER);
         }
         // Set needs input or output.
         HttpMethod method = request.getMethod();
@@ -383,19 +378,18 @@ public class DefaultHttpClient implements HttpClient {
             writer.write(EQUAL);
             writer.write(val);
         }
+        writer.flush();
     }
 
     private void writeBodyData(HttpRequest request, BufferedWriter writer) throws IOException {
         String charset = request.getCharset();
         Object body = request.getBody();
-        boolean needsClose = false;
         Reader reader = null;
         try {
             if (body instanceof File) {
                 InputStream in = new FileInputStream((File) body);
                 reader = new InputStreamReader(in, charset);
                 reader = new BufferedReader(reader);
-                needsClose = true;
             }
             else if (body instanceof InputStream) {
                 reader = new InputStreamReader((InputStream) body, charset);
@@ -405,82 +399,86 @@ public class DefaultHttpClient implements HttpClient {
                 boolean isBr = body instanceof BufferedReader;
                 reader = isBr ? (Reader) body : new BufferedReader((Reader) body);
             }
+            //else {
+            //}
             if (reader != null) {
                 IOUtils.copyLarge(reader, writer);
-                writer.flush();
             }
             else {
                 writer.write(String.valueOf(body));
             }
+            writer.flush();
         }
         finally {
-            if (needsClose) {
-                CloseUtils.closeQuietly(reader);
-            }
+            CloseUtils.closeQuietly(reader);
         }
     }
 
     private void writeMultipartData(HttpRequest request, String mimeBoundary, BufferedWriter writer) throws IOException {
         Map<String, Object> parameters = request.getParameters();
         String charset = request.getCharset();
+        boolean first = true;
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             String key = entry.getKey();
             Object val = entry.getValue();
-            writer.write(MINUS_MINUS);
-            writer.write(mimeBoundary);
-            writer.newLine();
-            writer.write("Content-Disposition: form-data; name=\"");
-            writer.write(encodeMimeName(key));
-            writer.write(DOUBLE_QUOTE);
-            boolean needsClose = false;
-            String fileName = null;
+            if (first) { first = false; }
+            else { writer.append(NEWLINE); }
+            writer.append(MINUS_MINUS).append(mimeBoundary).append(NEWLINE);
+            writer.append("Content-Disposition: form-data; name=\"");
+            writer.append(encodeMimeName(key)).append(DOUBLE_QUOTE);
             Reader reader = null;
             try {
-                if (val instanceof File) {
+                String fileName;
+                if (val instanceof FileEntity) {
+                    FileEntity fileEntity = (FileEntity) val;
+                    fileName = fileEntity.getName();
+                    InputStream in = fileEntity.getInputStream();
+                    reader = new InputStreamReader(in, charset);
+                    reader = new BufferedReader(reader);
+                }
+                else if (val instanceof File) {
                     File file = (File) val;
                     fileName = file.getName();
                     InputStream in = new FileInputStream(file);
                     reader = new InputStreamReader(in, charset);
                     reader = new BufferedReader(reader);
-                    needsClose = true;
-                }
-//                else if () {
-//                }
-//                else if () {
-//                }
-                if (reader != null && StringUtils.isNotBlank(fileName)) {
-                    writer.write("; filename=\"");
-                    writer.write(encodeMimeName(fileName));
-                    writer.write(DOUBLE_QUOTE);
-                    writer.newLine();
-                    writer.write("Content-Type: application/octet-stream");
-                    writer.newLine();
-                    writer.newLine();
-                    writer.flush();
-                    IOUtils.copyLarge(reader, writer);
-                    writer.flush();
                 }
                 else {
-                    writer.newLine();
-                    writer.newLine();
-                    writer.write(String.valueOf(val));
+                    fileName = null;
                 }
-                writer.newLine();
+                if (StringUtils.isNotBlank(fileName)) {
+                    writer.append("; filename=\"");
+                    writer.append(encodeMimeName(fileName));
+                    writer.append(DOUBLE_QUOTE).append(NEWLINE);
+                    writer.append("Content-Type: ");
+                    writer.append("application/octet-stream");
+                }
+                writer.append(NEWLINE).append(NEWLINE);
+                if (reader != null) {
+                    IOUtils.copyLarge(reader, writer);
+                }
+                //else if (val instanceof) {
+                //}
+                else {
+                    writer.append(String.valueOf(val));
+                }
+                writer.flush();
             }
             finally {
-                if (needsClose) {
-                    CloseUtils.closeQuietly(reader);
-                }
+                CloseUtils.closeQuietly(reader);
             }
         }
-        writer.write(MINUS_MINUS);
-        writer.write(mimeBoundary);
-        writer.write(MINUS_MINUS);
+        writer.append(NEWLINE).append(MINUS_MINUS);
+        writer.append(mimeBoundary).append(MINUS_MINUS);
+        writer.append(NEWLINE).flush();
     }
 
-    private void writeRequestObject(HttpRequest request, String mimeBoundary, OutputStream outputStream) throws IOException {
+    private void writeRequestObject(HttpRequest request, String mimeBoundary, HttpURLConnection connection) throws IOException {
+        OutputStream outputStream = null;
         try {
-            Writer osw = new OutputStreamWriter(outputStream, request.getCharset());
+            String charset = request.getCharset();
+            outputStream = connection.getOutputStream();
+            Writer osw = new OutputStreamWriter(outputStream, charset);
             BufferedWriter writer = new BufferedWriter(osw);
             if (mimeBoundary != null) {
                 // Boundary will be set if we're in multipart mode.
@@ -588,7 +586,7 @@ public class DefaultHttpClient implements HttpClient {
     private HttpResponse responseRedirect(HttpResponse response, HttpRequest request) throws IOException {
         int status = response.getStatusCode();
         // Http/1.1 temporary redirect, not in Java's set.
-        if (status != HTTP_TEMP_REDIR) {
+        if (status != HTTP_TEMP_REDIRECT) {
             // Always redirect with a get.
             // Any data param from original req are dropped.
             request.setMethod(HttpMethod.GET);
@@ -655,8 +653,7 @@ public class DefaultHttpClient implements HttpClient {
         try {
             connection.connect();
             if (connection.getDoOutput()) {
-                OutputStream outputStream = connection.getOutputStream();
-                writeRequestObject(request, mimeBoundary, outputStream);
+                writeRequestObject(request, mimeBoundary, connection);
             }
             response = new HttpResponse(previousResponse);
             response.setRequest(request);

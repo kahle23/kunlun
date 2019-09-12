@@ -10,7 +10,7 @@ import artoria.util.Assert;
  * @author Kahle
  */
 public class RenderUtils {
-    private static final Renderer DEFAULT_RENDERER = new DefaultRenderer();
+    private static final Renderer DEFAULT_RENDERER = new SimpleRenderer();
     private static Logger log = LoggerFactory.getLogger(RenderUtils.class);
     private static Renderer renderer;
 

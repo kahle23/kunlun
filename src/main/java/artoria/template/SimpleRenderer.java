@@ -18,20 +18,32 @@ import static artoria.io.IOUtils.EOF;
  * Template renderer simple implement by jdk.
  * @author Kahle
  */
-public class DefaultRenderer implements Renderer {
+public class SimpleRenderer implements Renderer {
+    private static final String LEFT_PLACEHOLDER = DOLLAR_SIGN + LEFT_CURLY_BRACKET;
+    private static final String RIGHT_PLACEHOLDER = RIGHT_CURLY_BRACKET;
+    private static final char ESCAPE_SYMBOL = '\\';
 
     protected void render(Object data, Writer writer, String template) throws IOException, ParseException {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         Assert.notNull(writer, "Parameter \"writer\" must not null. ");
         if (StringUtils.isBlank(template)) { return; }
-        Map dataMap = data instanceof Map
-                ? (Map) data : BeanUtils.beanToMap(data);
-        for (int finish = template.length(), begin = 0, end = 0; end != finish; ) {
-            end = template.indexOf(DOLLAR_SIGN + LEFT_CURLY_BRACKET, begin);
+        Map dataMap = data instanceof Map ? (Map) data : BeanUtils.beanToMap(data);
+        for (int finish = template.length(), begin = 0, end = 0, escapeIndex; end != finish; ) {
+            end = template.indexOf(LEFT_PLACEHOLDER, begin);
+            if (end != EOF) {
+                boolean hasEscape = (escapeIndex = end - 2) < 0 || ESCAPE_SYMBOL != template.charAt(escapeIndex);
+                hasEscape = hasEscape && (escapeIndex = end - 1) >= 0;
+                if (hasEscape && ESCAPE_SYMBOL == template.charAt(escapeIndex)) {
+                    writer.write(template.substring(begin, escapeIndex));
+                    writer.write(LEFT_PLACEHOLDER);
+                    begin = end + LEFT_PLACEHOLDER.length();
+                    continue;
+                }
+            }
             end = end == EOF ? finish : end;
             writer.write(template.substring(begin, end));
             if (end == finish) { continue; }
-            end = template.indexOf(RIGHT_CURLY_BRACKET, (begin = end + 2));
+            end = template.indexOf(RIGHT_PLACEHOLDER, (begin = end + 2));
             if (end == EOF) {
                 throw new ParseException("After \"${\" must be \"}\" in index \"" + begin + "\". ", begin);
             }
@@ -51,7 +63,7 @@ public class DefaultRenderer implements Renderer {
                 template = input instanceof Reader ? IOUtils.toString((Reader) input) : (String) input;
             }
             else {
-                InputStream in = ClassLoaderUtils.getResourceAsStream(name, this.getClass());
+                InputStream in = ClassLoaderUtils.getResourceAsStream(name, getClass());
                 if (in == null) {
                     throw new IOException("Can not find template by \"" + name + "\" in classpath. ");
                 }
@@ -59,7 +71,7 @@ public class DefaultRenderer implements Renderer {
                 Reader reader = new InputStreamReader(in, charsetName);
                 template = IOUtils.toString(reader);
             }
-            this.render(data, (Writer) output, template);
+            render(data, (Writer) output, template);
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e, RenderException.class);

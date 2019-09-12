@@ -6,14 +6,17 @@ import artoria.util.Assert;
 
 import java.io.Writer;
 
+import static artoria.common.Constants.LEFT_CURLY_BRACKET;
+import static artoria.common.Constants.RIGHT_CURLY_BRACKET;
+
 /**
  * Log parameters renderer.
  * @author Kahle
  */
 public class LoggerRenderer implements Renderer {
-    private static final char ESCAPE_SYMBOL = '\\';
-    private static final String PLACEHOLDER = "{}";
+    private static final String PLACEHOLDER = LEFT_CURLY_BRACKET + RIGHT_CURLY_BRACKET;
     private static final Integer PLACEHOLDER_LENGTH = PLACEHOLDER.length();
+    private static final char ESCAPE_SYMBOL = '\\';
 
     @Override
     public void render(Object data, Object output, String name, Object input, String charsetName) throws RenderException {
@@ -31,13 +34,13 @@ public class LoggerRenderer implements Renderer {
                 writer.write(String.valueOf(format));
                 return;
             }
-            int index, start = 0, count = 0, argsLen = args.length, iTmp;
+            int index, start = 0, count = 0, argsLen = args.length, escapeIndex;
             while ((index = format.indexOf(PLACEHOLDER, start)) != -1) {
-                boolean bTmp = (iTmp = index - 2) < 0
-                        || ESCAPE_SYMBOL != format.charAt(iTmp);
-                bTmp = bTmp && (iTmp = index - 1) > 0;
-                if (bTmp && ESCAPE_SYMBOL == format.charAt(iTmp)) {
-                    writer.write(format.substring(start, iTmp));
+                boolean hasEscape = (escapeIndex = index - 2) < 0
+                        || ESCAPE_SYMBOL != format.charAt(escapeIndex);
+                hasEscape = hasEscape && (escapeIndex = index - 1) >= 0;
+                if (hasEscape && ESCAPE_SYMBOL == format.charAt(escapeIndex)) {
+                    writer.write(format.substring(start, escapeIndex));
                     writer.write(PLACEHOLDER);
                     start = index + PLACEHOLDER_LENGTH;
                     continue;

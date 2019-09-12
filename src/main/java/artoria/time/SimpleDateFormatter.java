@@ -33,14 +33,14 @@ public class SimpleDateFormatter implements DateFormatter, DateParser {
     public String format(Date date, String pattern) {
         Assert.notNull(date, "Parameter \"date\" must not null. ");
         Assert.notBlank(pattern, "Parameter \"pattern\" must not blank. ");
-        return this.getDateFormat(pattern).format(date);
+        return getDateFormat(pattern).format(date);
     }
 
     @Override
     public Date parse(String dateString, String pattern) throws ParseException {
         Assert.notBlank(dateString, "Parameter \"dateString\" must not blank. ");
         Assert.notBlank(pattern, "Parameter \"pattern\" must not blank. ");
-        return this.getDateFormat(pattern).parse(dateString);
+        return getDateFormat(pattern).parse(dateString);
     }
 
     @Override

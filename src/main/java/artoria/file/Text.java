@@ -17,7 +17,7 @@ public class Text extends TextFile {
     @Override
     public InputStream getInputStream() throws IOException {
         String toString = textBuilder.toString();
-        String charset = this.getCharset();
+        String charset = getCharset();
         byte[] stringBytes = toString.getBytes(charset);
         return new ByteArrayInputStream(stringBytes);
     }

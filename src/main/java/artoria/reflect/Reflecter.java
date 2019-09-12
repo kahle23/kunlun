@@ -4,7 +4,7 @@ import java.lang.reflect.*;
 import java.util.Map;
 
 /**
- * Reflect tools.
+ * Reflect provider.
  * @author Kahle
  */
 public interface Reflecter {

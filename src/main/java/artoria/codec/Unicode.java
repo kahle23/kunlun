@@ -18,13 +18,13 @@ public class Unicode implements StringEncoder, StringDecoder, Serializable {
     @Override
     public Object encode(Object source) throws EncodeException {
 
-        return this.encode((String) source);
+        return encode((String) source);
     }
 
     @Override
     public Object decode(Object source) throws DecodeException {
 
-        return this.decode((String) source);
+        return decode((String) source);
     }
 
     @Override

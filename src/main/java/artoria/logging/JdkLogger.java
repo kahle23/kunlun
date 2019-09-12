@@ -32,61 +32,61 @@ public class JdkLogger implements Logger {
     @Override
     public void trace(String format, Object... arguments) {
 
-        this.logp(Level.FINER, format, arguments, null);
+        logp(Level.FINER, format, arguments, null);
     }
 
     @Override
     public void trace(String message, Throwable throwable) {
 
-        this.logp(Level.FINER, message, null, throwable);
+        logp(Level.FINER, message, null, throwable);
     }
 
     @Override
     public void debug(String format, Object... arguments) {
 
-        this.logp(Level.FINE, format, arguments, null);
+        logp(Level.FINE, format, arguments, null);
     }
 
     @Override
     public void debug(String message, Throwable throwable) {
 
-        this.logp(Level.FINE, message, null, throwable);
+        logp(Level.FINE, message, null, throwable);
     }
 
     @Override
     public void info(String format, Object... arguments) {
 
-        this.logp(Level.INFO, format, arguments, null);
+        logp(Level.INFO, format, arguments, null);
     }
 
     @Override
     public void info(String message, Throwable throwable) {
 
-        this.logp(Level.INFO, message, null, throwable);
+        logp(Level.INFO, message, null, throwable);
     }
 
     @Override
     public void warn(String format, Object... arguments) {
 
-        this.logp(Level.WARNING, format, arguments, null);
+        logp(Level.WARNING, format, arguments, null);
     }
 
     @Override
     public void warn(String message, Throwable throwable) {
 
-        this.logp(Level.WARNING, message, null, throwable);
+        logp(Level.WARNING, message, null, throwable);
     }
 
     @Override
     public void error(String format, Object... arguments) {
 
-        this.logp(Level.SEVERE, format, arguments, null);
+        logp(Level.SEVERE, format, arguments, null);
     }
 
     @Override
     public void error(String message, Throwable throwable) {
 
-        this.logp(Level.SEVERE, message, null, throwable);
+        logp(Level.SEVERE, message, null, throwable);
     }
 
     @Override

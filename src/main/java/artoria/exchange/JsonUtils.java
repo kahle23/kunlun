@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
  * @author Kahle
  */
 public class JsonUtils {
-    private static final JsonProvider DEFAULT_JSON_PROVIDER = new DefaultJsonProvider();
+    private static final JsonProvider DEFAULT_JSON_PROVIDER = new SimpleJsonProvider();
     private static Logger log = LoggerFactory.getLogger(JsonUtils.class);
     private static JsonProvider jsonProvider;
 

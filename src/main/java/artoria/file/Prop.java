@@ -29,12 +29,12 @@ public class Prop extends TextFile implements Beanable, Mappable {
 
     public Prop(Properties properties) {
 
-        this.setProperties(properties);
+        setProperties(properties);
     }
 
     public Properties getProperties() {
 
-        return this.properties;
+        return properties;
     }
 
     public void setProperties(Properties properties) {
@@ -87,14 +87,14 @@ public class Prop extends TextFile implements Beanable, Mappable {
 
     @Override
     public <T> T toBean(Class<T> clazz) {
-        Map<String, Object> beanMap = this.toMap();
+        Map<String, Object> beanMap = toMap();
         return BeanUtils.mapToBean(beanMap, clazz);
     }
 
     @Override
     public <T> void fromBean(T bean) {
         Map<String, Object> beanMap = BeanUtils.beanToMap(bean);
-        this.fromMap(beanMap);
+        fromMap(beanMap);
     }
 
     @Override

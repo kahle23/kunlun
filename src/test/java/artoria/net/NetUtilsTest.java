@@ -17,28 +17,28 @@ public class NetUtilsTest {
 
     @Test
     @Ignore
-    public void testTryTelnet() throws Exception {
-        log.info("{}", NetUtils.tryTelnet(testIp0, 80));
-        log.info("{}", NetUtils.tryTelnet(testIp1, 80));
-        log.info("{}", NetUtils.tryTelnet(testIp2, 80));
-        log.info("{}", NetUtils.tryTelnet(testIp0, 999));
+    public void testConnected() throws Exception {
+        log.info("{}", NetUtils.connected(testIp0, 80));
+        log.info("{}", NetUtils.connected(testIp1, 80));
+        log.info("{}", NetUtils.connected(testIp2, 80));
+        log.info("{}", NetUtils.connected(testIp0, 999));
     }
 
     @Test
     @Ignore
-    public void testTryTelnet1() throws Exception {
+    public void testConnected1() throws Exception {
         for (int i = 70; i < 90; i++) {
-            log.info("{} {}", i, NetUtils.tryTelnet(testIp0, i, 500));
+            log.info("{} {}", i, NetUtils.connected(testIp0, i, 500));
         }
     }
 
     @Test
     @Ignore
-    public void testPing() throws Exception {
+    public void testReachable() throws Exception {
         // In windows, java maybe is not use ICMP, just echo(port 7).
-        log.info("{}", NetUtils.ping(testIp0));
-        log.info("{}", NetUtils.ping(testIp1));
-        log.info("{}", NetUtils.ping(testIp2));
+        log.info("{}", NetUtils.reachable(testIp0));
+        log.info("{}", NetUtils.reachable(testIp1));
+        log.info("{}", NetUtils.reachable(testIp2));
     }
 
     @Test

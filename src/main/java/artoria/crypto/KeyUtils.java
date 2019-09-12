@@ -36,7 +36,7 @@ public class KeyUtils {
         KeyUtils.hexEncoder = hexEncoder;
     }
 
-    public static SecretKey parseSecretKey(String algorithm, byte[] keyBytes) throws GeneralSecurityException {
+    public static SecretKey parseSecretKey(String algorithm, byte[] keyBytes) {
         Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
         return new SecretKeySpec(keyBytes, algorithm);
     }

@@ -13,13 +13,13 @@ import java.util.Map;
  * @author Kahle
  */
 public class HttpUtils {
-    private static final HttpClient DEFAULT_HTTP_CLIENT = new DefaultHttpClient();
+    private static final HttpClient DEFAULT_HTTP_CLIENT = new SimpleHttpClient();
     private static Logger log = LoggerFactory.getLogger(HttpUtils.class);
     private static HttpClient httpClient;
 
     public static HttpClient getHttpClient() {
-        return httpClient != null
-                ? httpClient : DEFAULT_HTTP_CLIENT;
+
+        return httpClient != null ? httpClient : DEFAULT_HTTP_CLIENT;
     }
 
     public static void setHttpClient(HttpClient httpClient) {
