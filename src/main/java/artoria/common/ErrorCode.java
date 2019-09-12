@@ -7,15 +7,21 @@ package artoria.common;
 public interface ErrorCode {
 
     /**
-     * The string code for error code object.
+     * The string code of the error.
      * @return The string code
      */
     String getCode();
 
     /**
-     * The description for error code.
+     * The description of the error.
      * @return The description
      */
     String getDescription();
+
+    /**
+     * The message to display when this error occur.
+     * @return The message
+     */
+    String getMessage();
 
 }

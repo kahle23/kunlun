@@ -11,9 +11,8 @@ import java.io.*;
  * @author Kahle
  */
 public class SerializeUtils {
-    private static final Deserializer<Object> DEFAULT_DESERIALIZER = new DefaultDeserializer();
-    private static final Serializer<Object> DEFAULT_SERIALIZER = new DefaultSerializer();
-    private static final int INITIAL_SIZE = 128;
+    private static final Deserializer<Object> DEFAULT_DESERIALIZER = new SimpleDeserializer();
+    private static final Serializer<Object> DEFAULT_SERIALIZER = new SimpleSerializer();
     private static Logger log = LoggerFactory.getLogger(SerializeUtils.class);
     private static Deserializer<Object> deserializer;
     private static Serializer<Object> serializer;
@@ -47,7 +46,7 @@ public class SerializeUtils {
 
     public static byte[] serialize(Object object) {
         Assert.notNull(object, "Parameter \"object\" must not null. ");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(INITIAL_SIZE);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             SerializeUtils.serialize(object, baos);
         }

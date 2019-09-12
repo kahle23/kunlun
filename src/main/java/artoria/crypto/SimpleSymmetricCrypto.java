@@ -11,15 +11,26 @@ import static artoria.crypto.Padding.NO_PADDING;
 import static artoria.crypto.Padding.ZERO_PADDING;
 
 /**
- * Default implementation of symmetric encryption and decryption tools.
+ * Simple implementation of symmetric encryption and decryption tools.
  * @author Kahle
  */
-public class DefaultSymmetricCrypto extends AbstractCrypto implements SymmetricCrypto {
+public class SimpleSymmetricCrypto extends AbstractCrypto implements SymmetricCrypto {
+    private final boolean handleZeroPadding;
     private SecretKey secretKey;
+
+    public SimpleSymmetricCrypto() {
+
+        this(true);
+    }
+
+    public SimpleSymmetricCrypto(boolean handleZeroPadding) {
+
+        this.handleZeroPadding = handleZeroPadding;
+    }
 
     protected byte[] fillZeroToNoPadding(byte[] data) {
         Assert.notEmpty(data, "Parameter \"data\" must not empty. ");
-        String algorithm = this.getAlgorithm();
+        String algorithm = getAlgorithm();
         int multiple;
         if (AES.equalsIgnoreCase(algorithm)) {
             multiple = 16;
@@ -41,13 +52,13 @@ public class DefaultSymmetricCrypto extends AbstractCrypto implements SymmetricC
 
     @Override
     protected String getTransformation() {
-        String algorithm = this.getAlgorithm();
+        String algorithm = getAlgorithm();
         Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
-        String mode = this.getMode();
+        String mode = getMode();
         Assert.notBlank(mode, "Parameter \"mode\" must not blank. ");
-        String padding = this.getPadding();
+        String padding = getPadding();
         Assert.notBlank(padding, "Parameter \"padding\" must not blank. ");
-        if (ZERO_PADDING.getName().equalsIgnoreCase(padding)) {
+        if (handleZeroPadding && ZERO_PADDING.getName().equalsIgnoreCase(padding)) {
             padding = NO_PADDING.getName();
         }
         return algorithm + SLASH + mode + SLASH + padding;
@@ -56,7 +67,7 @@ public class DefaultSymmetricCrypto extends AbstractCrypto implements SymmetricC
     @Override
     public SecretKey getSecretKey() {
 
-        return this.secretKey;
+        return secretKey;
     }
 
     @Override
@@ -67,21 +78,21 @@ public class DefaultSymmetricCrypto extends AbstractCrypto implements SymmetricC
 
     @Override
     public byte[] encrypt(byte[] data) throws GeneralSecurityException {
-        SecretKey secretKey = this.getSecretKey();
+        SecretKey secretKey = getSecretKey();
         Assert.notNull(secretKey, "Parameter \"secretKey\" must not null. ");
-        String padding = this.getPadding();
-        if (ZERO_PADDING.getName().equalsIgnoreCase(padding)) {
-            data = this.fillZeroToNoPadding(data);
+        String padding = getPadding();
+        if (handleZeroPadding && ZERO_PADDING.getName().equalsIgnoreCase(padding)) {
+            data = fillZeroToNoPadding(data);
         }
-        Cipher cipher = this.createCipher(Cipher.ENCRYPT_MODE, secretKey, null);
+        Cipher cipher = createCipher(Cipher.ENCRYPT_MODE, secretKey, null);
         return cipher.doFinal(data);
     }
 
     @Override
     public byte[] decrypt(byte[] data) throws GeneralSecurityException {
-        SecretKey secretKey = this.getSecretKey();
+        SecretKey secretKey = getSecretKey();
         Assert.notNull(secretKey, "Parameter \"secretKey\" must not null. ");
-        Cipher cipher = this.createCipher(Cipher.DECRYPT_MODE, secretKey, null);
+        Cipher cipher = createCipher(Cipher.DECRYPT_MODE, secretKey, null);
         return cipher.doFinal(data);
     }
 

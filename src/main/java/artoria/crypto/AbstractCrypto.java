@@ -29,7 +29,7 @@ public abstract class AbstractCrypto implements Crypto {
     @Override
     public String getAlgorithm() {
 
-        return this.algorithm;
+        return algorithm;
     }
 
     @Override
@@ -41,7 +41,7 @@ public abstract class AbstractCrypto implements Crypto {
     @Override
     public String getMode() {
 
-        return this.mode;
+        return mode;
     }
 
     @Override
@@ -59,7 +59,7 @@ public abstract class AbstractCrypto implements Crypto {
     @Override
     public String getPadding() {
 
-        return this.padding;
+        return padding;
     }
 
     @Override
@@ -77,7 +77,7 @@ public abstract class AbstractCrypto implements Crypto {
     @Override
     public SecureRandom getSecureRandom() {
 
-        return this.secureRandom;
+        return secureRandom;
     }
 
     @Override
@@ -89,7 +89,7 @@ public abstract class AbstractCrypto implements Crypto {
     @Override
     public AlgorithmParameters getAlgorithmParameters() {
 
-        return this.algorithmParameters;
+        return algorithmParameters;
     }
 
     @Override
@@ -101,7 +101,7 @@ public abstract class AbstractCrypto implements Crypto {
     @Override
     public AlgorithmParameterSpec getAlgorithmParameterSpec() {
 
-        return this.algorithmParameterSpec;
+        return algorithmParameterSpec;
     }
 
     @Override
@@ -111,11 +111,11 @@ public abstract class AbstractCrypto implements Crypto {
     }
 
     protected String getTransformation() {
-        String algorithm = this.getAlgorithm();
+        String algorithm = getAlgorithm();
         Assert.notBlank(algorithm, "Parameter \"algorithm\" must not blank. ");
-        String mode = this.getMode();
+        String mode = getMode();
         Assert.notBlank(mode, "Parameter \"mode\" must not blank. ");
-        String padding = this.getPadding();
+        String padding = getPadding();
         Assert.notBlank(padding, "Parameter \"padding\" must not blank. ");
         return algorithm + SLASH + mode + SLASH + padding;
     }
@@ -131,10 +131,10 @@ public abstract class AbstractCrypto implements Crypto {
      * @see Cipher#DECRYPT_MODE Decryption mode
      */
     protected Cipher createCipher(int cipherMode, Key key, Certificate certificate) throws GeneralSecurityException {
-        AlgorithmParameterSpec parameterSpec = this.getAlgorithmParameterSpec();
-        AlgorithmParameters parameters = this.getAlgorithmParameters();
-        SecureRandom random = this.getSecureRandom();
-        String transformation = this.getTransformation();
+        AlgorithmParameterSpec parameterSpec = getAlgorithmParameterSpec();
+        AlgorithmParameters parameters = getAlgorithmParameters();
+        SecureRandom random = getSecureRandom();
+        String transformation = getTransformation();
         Cipher cipher = Cipher.getInstance(transformation);
         if (key != null) {
             if (parameterSpec != null) {

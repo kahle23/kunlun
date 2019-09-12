@@ -6,15 +6,15 @@ import java.lang.reflect.Type;
  * Json provider simple implement by jdk.
  * @author Kahle
  */
-public class DefaultJsonProvider implements JsonProvider {
+public class SimpleJsonProvider implements JsonProvider {
     private boolean prettyFormat;
 
-    public DefaultJsonProvider() {
+    public SimpleJsonProvider() {
 
         this(false);
     }
 
-    public DefaultJsonProvider(boolean prettyFormat) {
+    public SimpleJsonProvider(boolean prettyFormat) {
 
         this.prettyFormat = prettyFormat;
     }
@@ -22,7 +22,7 @@ public class DefaultJsonProvider implements JsonProvider {
     @Override
     public boolean getPrettyFormat() {
 
-        return this.prettyFormat;
+        return prettyFormat;
     }
 
     @Override

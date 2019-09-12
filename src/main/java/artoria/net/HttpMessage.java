@@ -29,7 +29,7 @@ public abstract class HttpMessage {
 
     public URL getUrl() {
 
-        return this.url;
+        return url;
     }
 
     public void setUrl(URL url) {
@@ -49,7 +49,7 @@ public abstract class HttpMessage {
 
     public HttpMethod getMethod() {
 
-        return this.method;
+        return method;
     }
 
     public void setMethod(HttpMethod method) {
@@ -59,7 +59,7 @@ public abstract class HttpMessage {
 
     public String getCharset() {
 
-        return this.charset;
+        return charset;
     }
 
     public void setCharset(String charset) {
@@ -69,7 +69,7 @@ public abstract class HttpMessage {
 
     public String getHeader(String headerName) {
         Assert.notBlank(headerName, "Parameter \"headerName\" must not blank. ");
-        return this.headers.get(headerName);
+        return headers.get(headerName);
     }
 
     public void addHeader(String headerName, String headerValue) {
@@ -85,27 +85,27 @@ public abstract class HttpMessage {
 
     public boolean containsHeader(String headerName) {
         Assert.notBlank(headerName, "Parameter \"headerName\" must not blank. ");
-        return this.headers.containsKey(headerName);
+        return headers.containsKey(headerName);
     }
 
     public void removeHeader(String headerName) {
         Assert.notBlank(headerName, "Parameter \"headerName\" must not blank. ");
-        this.headers.remove(headerName);
+        headers.remove(headerName);
     }
 
     public Map<String, String> getHeaders() {
 
-        return Collections.unmodifiableMap(this.headers);
+        return Collections.unmodifiableMap(headers);
     }
 
     public void clearHeaders() {
 
-        this.headers.clear();
+        headers.clear();
     }
 
     public String getCookie(String cookieName) {
         Assert.notBlank(cookieName, "Parameter \"cookieName\" must not blank. ");
-        return this.cookies.get(cookieName);
+        return cookies.get(cookieName);
     }
 
     public void addCookie(String cookieName, String cookieValue) {
@@ -139,22 +139,22 @@ public abstract class HttpMessage {
 
     public boolean containsCookie(String cookieName) {
         Assert.notBlank(cookieName, "Parameter \"cookieName\" must not blank. ");
-        return this.cookies.containsKey(cookieName);
+        return cookies.containsKey(cookieName);
     }
 
     public void removeCookie(String cookieName) {
         Assert.notBlank(cookieName, "Parameter \"cookieName\" must not blank. ");
-        this.cookies.remove(cookieName);
+        cookies.remove(cookieName);
     }
 
     public Map<String, String> getCookies() {
 
-        return Collections.unmodifiableMap(this.cookies);
+        return Collections.unmodifiableMap(cookies);
     }
 
     public void clearCookies() {
 
-        this.cookies.clear();
+        cookies.clear();
     }
 
 }

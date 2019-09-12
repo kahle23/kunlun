@@ -16,12 +16,9 @@ public abstract class BeanMap implements Map, Cloneable {
     private TypeConverter typeConverter;
     private Object bean;
 
-    protected BeanMap() {
-    }
-
     public TypeConverter getTypeConverter() {
 
-        return this.typeConverter;
+        return typeConverter;
     }
 
     public void setTypeConverter(TypeConverter typeConverter) {
@@ -31,7 +28,7 @@ public abstract class BeanMap implements Map, Cloneable {
 
     public Object getBean() {
 
-        return this.bean;
+        return bean;
     }
 
     public void setBean(Object bean) {
@@ -59,29 +56,32 @@ public abstract class BeanMap implements Map, Cloneable {
     @Override
     public int size() {
 
-        return this.keySet().size();
+        return keySet().size();
     }
 
     @Override
     public boolean isEmpty() {
 
-        return this.size() == 0;
+        return size() == ZERO;
     }
 
     @Override
     public boolean containsKey(Object key) {
 
-        return this.keySet().contains(key);
+        return keySet().contains(key);
     }
 
     @Override
     public boolean containsValue(Object value) {
-        Set keys = this.keySet();
+        Set keys = keySet();
         for (Object key : keys) {
-            Object thisVal = this.get(key);
-            boolean b = value == null && thisVal == null;
-            b = b || (value != null && value.equals(thisVal));
-            if (b) { return true; }
+            Object thisVal = get(key);
+            boolean isEqual = (
+                    value == null && thisVal == null
+            ) || (
+                    value != null && value.equals(thisVal)
+            );
+            if (isEqual) { return true; }
         }
         return false;
     }
@@ -89,13 +89,13 @@ public abstract class BeanMap implements Map, Cloneable {
     @Override
     public Object get(Object key) {
 
-        return this.get(this.bean, key);
+        return get(bean, key);
     }
 
     @Override
     public Object put(Object key, Object value) {
 
-        return this.put(this.bean, key, value);
+        return put(bean, key, value);
     }
 
     @Override
@@ -105,10 +105,10 @@ public abstract class BeanMap implements Map, Cloneable {
     }
 
     @Override
-    public void putAll(Map m) {
-        Set keys = this.keySet();
+    public void putAll(Map map) {
+        Set keys = keySet();
         for (Object key : keys) {
-            this.put(key, m.get(key));
+            put(key, map.get(key));
         }
     }
 
@@ -121,10 +121,10 @@ public abstract class BeanMap implements Map, Cloneable {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public Collection values() {
-        Set keys = this.keySet();
+        Set keys = keySet();
         List values = new ArrayList(keys.size());
         for (Object key : keys) {
-            values.add(this.get(key));
+            values.add(get(key));
         }
         return Collections.unmodifiableCollection(values);
     }
@@ -132,31 +132,30 @@ public abstract class BeanMap implements Map, Cloneable {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public Set<Entry> entrySet() {
-        Set keys = this.keySet();
+        Set keys = keySet();
         int size = keys.size();
-        HashMap copy =
-                new HashMap(size);
+        HashMap copy = new HashMap(size);
         for (Object key : keys) {
-            copy.put(key, this.get(key));
+            copy.put(key, get(key));
         }
         return Collections.unmodifiableMap(copy).entrySet();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Map)) {
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Map)) {
             return false;
         }
-        Map other = (Map) o;
-        if (this.size() != other.size()) {
+        Map other = (Map) obj;
+        if (size() != other.size()) {
             return false;
         }
-        Set keys = this.keySet();
+        Set keys = keySet();
         for (Object key : keys) {
             if (!other.containsKey(key)) {
                 return false;
             }
-            Object thisVal = this.get(key);
+            Object thisVal = get(key);
             Object otherVal = other.get(key);
             if (!ObjectUtils.equals(thisVal, otherVal)) {
                 return false;
@@ -167,12 +166,12 @@ public abstract class BeanMap implements Map, Cloneable {
 
     @Override
     public int hashCode() {
-        int code = 0;
-        Set keys = this.keySet();
+        int code = ZERO;
+        Set keys = keySet();
         for (Object key : keys) {
-            Object val = this.get(key);
-            int keyCode = key == null ? 0 : key.hashCode();
-            int valCode = val == null ? 0 : val.hashCode();
+            Object val = get(key);
+            int keyCode = key == null ? ZERO : key.hashCode();
+            int valCode = val == null ? ZERO : val.hashCode();
             code += keyCode ^ valCode;
         }
         return code;
@@ -182,17 +181,17 @@ public abstract class BeanMap implements Map, Cloneable {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(LEFT_CURLY_BRACKET);
-        Set keys = this.keySet();
+        Set keys = keySet();
         for (Object key : keys) {
             builder.append(key);
             builder.append(EQUAL);
-            builder.append(this.get(key));
+            builder.append(get(key));
             builder.append(COMMA);
             builder.append(BLANK_SPACE);
         }
         if (!keys.isEmpty()) {
-            builder.deleteCharAt(builder.length() - 1);
-            builder.deleteCharAt(builder.length() - 1);
+            builder.deleteCharAt(builder.length() - ONE);
+            builder.deleteCharAt(builder.length() - ONE);
         }
         builder.append(RIGHT_CURLY_BRACKET);
         return builder.toString();
@@ -204,7 +203,7 @@ public abstract class BeanMap implements Map, Cloneable {
         if (newMap.getBean() == null) {
             return newMap;
         }
-        Object bean = this.getBean();
+        Object bean = getBean();
         Object clone = BeanUtils.clone(bean);
         newMap.setBean(clone);
         return newMap;

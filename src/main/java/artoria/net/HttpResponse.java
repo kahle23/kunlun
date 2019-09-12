@@ -20,22 +20,24 @@ public class HttpResponse extends HttpMessage {
     public HttpResponse() {
     }
 
-    public HttpResponse(HttpResponse previous) throws IOException {
-        if (previous == null) { return; }
-        this.numRedirects = previous.getNumRedirects() + 1;
-        if (this.numRedirects >= MAX_REDIRECTS) {
-            throw new IOException("Too many redirects occurred trying to load URL \"" + previous.getUrl() + "\". ");
+    public HttpResponse(HttpResponse previousResponse) throws IOException {
+        if (previousResponse == null) { return; }
+        numRedirects = previousResponse.getNumRedirects() + 1;
+        if (numRedirects >= MAX_REDIRECTS) {
+            throw new IOException(
+                    "Too many redirects occurred trying to load URL \"" + previousResponse.getUrl() + "\". "
+            );
         }
     }
 
     public int getNumRedirects() {
 
-        return this.numRedirects;
+        return numRedirects;
     }
 
     public HttpRequest getRequest() {
 
-        return this.request;
+        return request;
     }
 
     public void setRequest(HttpRequest request) {
@@ -45,7 +47,7 @@ public class HttpResponse extends HttpMessage {
 
     public int getStatusCode() {
 
-        return this.statusCode;
+        return statusCode;
     }
 
     public void setStatusCode(int statusCode) {
@@ -55,7 +57,7 @@ public class HttpResponse extends HttpMessage {
 
     public String getStatusMessage() {
 
-        return this.statusMessage;
+        return statusMessage;
     }
 
     public void setStatusMessage(String statusMessage) {
@@ -65,7 +67,7 @@ public class HttpResponse extends HttpMessage {
 
     public byte[] getBody() {
 
-        return this.body;
+        return body;
     }
 
     public void setBody(byte[] body) {
@@ -74,15 +76,15 @@ public class HttpResponse extends HttpMessage {
     }
 
     public String getBodyAsString() {
-        String encoding = this.getCharset();
+        String encoding = getCharset();
         encoding = encoding != null ? encoding : DEFAULT_CHARSET_NAME;
-        return this.getBodyAsString(encoding);
+        return getBodyAsString(encoding);
     }
 
     public String getBodyAsString(String encoding) {
-        if (this.body == null) { return null; }
+        if (body == null) { return null; }
         Charset charset = Charset.forName(encoding);
-        return new String(this.body, charset);
+        return new String(body, charset);
     }
 
 }

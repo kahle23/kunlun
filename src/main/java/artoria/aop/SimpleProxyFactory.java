@@ -11,11 +11,16 @@ import java.lang.reflect.Proxy;
  * Proxy factory simple implement by jdk.
  * @author Kahle
  */
-public class DefaultProxyFactory implements ProxyFactory {
+public class SimpleProxyFactory implements ProxyFactory {
     private static final ClassLoader LOADER = ClassLoaderUtils.getDefaultClassLoader();
 
     private static class InvocationHandlerAdapter implements InvocationHandler {
         private Interceptor interceptor;
+
+        public InvocationHandlerAdapter(Interceptor interceptor) {
+
+            this.interceptor = interceptor;
+        }
 
         public Interceptor getInterceptor() {
 
@@ -23,11 +28,6 @@ public class DefaultProxyFactory implements ProxyFactory {
         }
 
         public void setInterceptor(Interceptor interceptor) {
-
-            this.interceptor = interceptor;
-        }
-
-        public InvocationHandlerAdapter(Interceptor interceptor) {
 
             this.interceptor = interceptor;
         }

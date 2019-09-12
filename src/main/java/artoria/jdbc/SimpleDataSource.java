@@ -30,12 +30,12 @@ public class SimpleDataSource implements DataSource {
     private static final String UNSUPPORTED_OPERATION = "In " + CLASS_NAME + " this operation is unsupported. ";
     private static final String DEFAULT_CONFIG_NAME = "jdbc.properties";
     private BlockingQueue<Connection> queue;
-    private String driverClass = "com.mysql.jdbc.Driver";
+    private String driverClass;
     private String jdbcUrl;
     private String user;
     private String password;
-    private int maxPoolSize = 8;
-    private int minPoolSize = 2;
+    private int maxPoolSize;
+    private int minPoolSize;
 
     private static Properties readProperties() {
         try {
@@ -73,22 +73,25 @@ public class SimpleDataSource implements DataSource {
     }
 
     public SimpleDataSource(String driverClass, String jdbcUrl, String user, String password, int maxPoolSize, int minPoolSize) {
-        if (StringUtils.isNotBlank(driverClass)) { this.driverClass = driverClass; }
         Assert.notBlank(jdbcUrl, "Parameter \"jdbcUrl\" must not blank. ");
-        this.jdbcUrl = jdbcUrl;
         Assert.notNull(user, "Parameter \"user\" must not null. ");
-        this.user = user;
         Assert.notNull(password, "Parameter \"password\" must not null. ");
+        if (minPoolSize > maxPoolSize) {
+            throw new IllegalArgumentException(
+                    "Parameter \"minPoolSize\" must less than or equal to \"maxPoolSize\". "
+            );
+        }
+        this.driverClass = StringUtils.isNotBlank(driverClass) ? driverClass : "com.mysql.jdbc.Driver";
+        this.jdbcUrl = jdbcUrl;
+        this.user = user;
         this.password = password;
-        if (maxPoolSize > 0) { this.maxPoolSize = maxPoolSize; }
-        Assert.state(minPoolSize <= this.maxPoolSize
-                , "Parameter \"minPoolSize\" must less than or equal to \"maxPoolSize\" " + this.maxPoolSize + ". ");
-        if (minPoolSize > 0) { this.minPoolSize = minPoolSize; }
+        this.maxPoolSize = maxPoolSize > 0 ? maxPoolSize : 8;
+        this.minPoolSize = minPoolSize > 0 ? minPoolSize : 2;
         this.queue = new ArrayBlockingQueue<Connection>(this.maxPoolSize);
         try {
             Class.forName(this.driverClass);
             for (int i = 0; i < this.minPoolSize; i++) {
-                this.queue.offer(this.createConnection());
+                this.queue.offer(createConnection());
             }
         }
         catch (Exception e) {
@@ -97,16 +100,16 @@ public class SimpleDataSource implements DataSource {
     }
 
     public Connection createConnection() throws SQLException {
-        Connection conn = DriverManager.getConnection(this.jdbcUrl, this.user, this.password);
-        ConnectionInterceptor intp = new ConnectionInterceptor(this.queue, conn);
-        return (Connection) Enhancer.enhance(Connection.class, intp);
+        Connection conn = DriverManager.getConnection(jdbcUrl, user, password);
+        ConnectionInterceptor interceptor = new ConnectionInterceptor(queue, conn);
+        return (Connection) Enhancer.enhance(Connection.class, interceptor);
     }
 
     @Override
     public Connection getConnection() throws SQLException {
-        Connection conn = this.queue.poll();
+        Connection conn = queue.poll();
         if (conn == null) {
-            conn = this.createConnection();
+            conn = createConnection();
         }
         return conn;
     }
@@ -174,7 +177,7 @@ public class SimpleDataSource implements DataSource {
         public Object intercept(Object proxyObject, Method method, Object[] args) throws Throwable {
             boolean offer = false;
             if (PROXY_METHOD.equals(method.getName())) {
-                offer = this.queue.offer(connection);
+                offer = queue.offer(connection);
             }
             if (!offer) {
                 return method.invoke(connection, args);

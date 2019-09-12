@@ -15,6 +15,7 @@ public class Constants {
     public static final String ROOT_PATH = FilenameUtils.getRootPath();
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
     public static final String PATH_SEPARATOR = System.getProperty("path.separator");
+    public static final String COMPUTER_NAME = System.getenv("COMPUTERNAME");
     public static final String FILLED_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
     public static final String GBK = "GBK";
@@ -60,12 +61,34 @@ public class Constants {
     public static final String LEFT_SQUARE_BRACKET = "[";
     public static final String RIGHT_SQUARE_BRACKET = "]";
 
+    public static final int ZERO = 0;
+    public static final int ONE = 1;
+    public static final int TWO = 2;
+    public static final int THREE = 3;
+    public static final int FOUR = 4;
+    public static final int FIVE = 5;
+    public static final int SIX = 6;
+    public static final int SEVEN = 7;
+    public static final int EIGHT = 8;
+    public static final int NINE = 9;
+    public static final int TEN = 10;
+    public static final int TWENTY = 20;
+    public static final int THIRTY = 30;
+    public static final int FORTY = 40;
+    public static final int FIFTY = 50;
+    public static final int SIXTY = 60;
+    public static final int SEVENTY = 70;
+    public static final int EIGHTY = 80;
+    public static final int NINETY = 90;
+
     public static final String ON = "on";
     public static final String NO = "no";
     public static final String YES = "yes";
     public static final String OFF = "off";
     public static final String GET = "get";
     public static final String SET = "set";
+    public static final String API = "api";
+    public static final String PAGE = "page";
     public static final String ROOT = "root";
     public static final String NULL = "null";
     public static final String TRUE = "true";

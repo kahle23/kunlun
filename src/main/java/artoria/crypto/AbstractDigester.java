@@ -24,7 +24,7 @@ public abstract class AbstractDigester implements Digester {
     @Override
     public String getAlgorithm() {
 
-        return this.algorithm;
+        return algorithm;
     }
 
     @Override
@@ -35,7 +35,7 @@ public abstract class AbstractDigester implements Digester {
 
     public String getCharset() {
 
-        return this.charset;
+        return charset;
     }
 
     public void setCharset(String charset) {
@@ -45,16 +45,16 @@ public abstract class AbstractDigester implements Digester {
 
     public byte[] digest(String data) throws GeneralSecurityException {
         Assert.notBlank(data, "Parameter \"data\" must not blank. ");
-        Charset charset = Charset.forName(this.getCharset());
+        Charset charset = Charset.forName(getCharset());
         byte[] bytes = data.getBytes(charset);
-        return this.digest(bytes);
+        return digest(bytes);
     }
 
     public byte[] digest(File file) throws GeneralSecurityException, IOException {
         Assert.notNull(file, "Parameter \"file\" must not null. ");
         InputStream in = new FileInputStream(file);
         try {
-            return this.digest(in);
+            return digest(in);
         }
         finally {
             CloseUtils.closeQuietly(in);

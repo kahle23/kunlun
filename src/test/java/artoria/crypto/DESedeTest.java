@@ -20,7 +20,7 @@ import static artoria.common.Constants.DESEDE;
  */
 public class DESedeTest extends BouncyCastleSupport {
     private static Logger log = LoggerFactory.getLogger(DESedeTest.class);
-    private static SymmetricCrypto symmetricCrypto = new DefaultSymmetricCrypto();
+    private static SymmetricCrypto symmetricCrypto = new SimpleSymmetricCrypto();
     private static IvParameterSpec ivParameterSpec;
     private byte[] data = "Hello, Java!".getBytes();
 

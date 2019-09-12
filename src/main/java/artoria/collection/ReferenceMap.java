@@ -7,13 +7,10 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Reference map, has weak and soft reference.
+ * Reference map can be wrapped as weak and soft references.
  * @author Kahle
- * @param <K> The key type
- * @param <V> The value type
  */
 public class ReferenceMap<K, V> implements Map<K, V> {
     private final Map<K, ValueCell<K, V>> internalMap;
@@ -25,15 +22,6 @@ public class ReferenceMap<K, V> implements Map<K, V> {
         this(new HashMap<K, ValueCell<K, V>>(), type);
     }
 
-    public ReferenceMap(Type type, boolean isConcurrent) {
-        this(
-                isConcurrent
-                        ? new ConcurrentHashMap<K, ValueCell<K, V>>()
-                        : new HashMap<K, ValueCell<K, V>>(),
-                type
-        );
-    }
-
     public ReferenceMap(Map<K, ValueCell<K, V>> internalMap, Type type) {
         this.queue = new ReferenceQueue<V>();
         this.internalMap = internalMap;
@@ -41,7 +29,7 @@ public class ReferenceMap<K, V> implements Map<K, V> {
     }
 
     private ValueCell<K, V> newValueCell(K key, V value, ReferenceQueue<? super V> queue) {
-        switch (this.type) {
+        switch (type) {
             case WEAK: return new WeakValueCell<K, V>(key, value, queue);
             case SOFT: return new SoftValueCell<K, V>(key, value, queue);
             default: return new WeakValueCell<K, V>(key, value, queue);
@@ -74,21 +62,21 @@ public class ReferenceMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean isEmpty() {
-        this.processQueue();
+        processQueue();
         return internalMap.isEmpty();
     }
 
     @Override
     public boolean containsKey(Object key) {
-        this.processQueue();
+        processQueue();
         return internalMap.containsKey(key);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean containsValue(Object value) {
-        this.processQueue();
-        Collection<V> values = this.values();
+        processQueue();
+        Collection<V> values = values();
         boolean notEmpty = CollectionUtils.isNotEmpty(values);
         return notEmpty && values.contains((V) value);
     }
@@ -96,25 +84,25 @@ public class ReferenceMap<K, V> implements Map<K, V> {
     @Override
     public void putAll(Map<? extends K, ? extends V> map) {
         if (MapUtils.isEmpty(map)) {
-            this.processQueue();
+            processQueue();
             return;
         }
         for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
-            this.put(entry.getKey(), entry.getValue());
+            put(entry.getKey(), entry.getValue());
         }
     }
 
     @Override
     public Set<K> keySet() {
         // Throw out garbage collected values first.
-        this.processQueue();
+        processQueue();
         return internalMap.keySet();
     }
 
     @Override
     public Collection<V> values() {
         // Throw out garbage collected values first.
-        this.processQueue();
+        processQueue();
         Collection<K> keys = internalMap.keySet();
         if (CollectionUtils.isEmpty(keys)) {
             return Collections.emptyList();
@@ -132,8 +120,8 @@ public class ReferenceMap<K, V> implements Map<K, V> {
     @Override
     public V put(K key, V value) {
         // Throw out garbage collected values first.
-        this.processQueue();
-        ValueCell<K, V> newValue = this.newValueCell(key, value, queue);
+        processQueue();
+        ValueCell<K, V> newValue = newValueCell(key, value, queue);
         ValueCell<K, V> oldValue = internalMap.put(key, newValue);
         return oldValue != null ? oldValue.get() : null;
     }
@@ -141,7 +129,7 @@ public class ReferenceMap<K, V> implements Map<K, V> {
     @Override
     public V remove(Object key) {
         // Throw out garbage collected values first.
-        this.processQueue();
+        processQueue();
         ValueCell<K, V> raw = internalMap.remove(key);
         return raw != null ? raw.get() : null;
     }
@@ -149,28 +137,28 @@ public class ReferenceMap<K, V> implements Map<K, V> {
     @Override
     public void clear() {
         // Throw out garbage collected values.
-        this.processQueue();
+        processQueue();
         internalMap.clear();
     }
 
     @Override
     public int size() {
         // Throw out garbage collected values first.
-        this.processQueue();
+        processQueue();
         return internalMap.size();
     }
 
     @Override
     public Set<Map.Entry<K, V>> entrySet() {
         // Throw out garbage collected values first.
-        this.processQueue();
+        processQueue();
         Collection<K> keys = internalMap.keySet();
         if (CollectionUtils.isEmpty(keys)) {
             return Collections.emptySet();
         }
         Map<K, V> kvPairs = new HashMap<K, V>(keys.size());
         for (K key : keys) {
-            V val = this.get(key);
+            V val = get(key);
             if (val != null) {
                 kvPairs.put(key, val);
             }
@@ -192,7 +180,7 @@ public class ReferenceMap<K, V> implements Map<K, V> {
 
     }
 
-    private interface ValueCell<K, V> {
+    public interface ValueCell<K, V> {
 
         /**
          * Get value from cell.

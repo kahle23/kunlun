@@ -13,7 +13,7 @@ import java.lang.management.ThreadMXBean;
 public class ThreadUtils {
 
     public static void sleepQuietly(long millis) {
-        Assert.state(millis > 0, "Parameter \"millis\" must greater than 0. ");
+        Assert.isTrue(millis > 0, "Parameter \"millis\" must greater than 0. ");
         try {
             Thread.sleep(millis);
         }

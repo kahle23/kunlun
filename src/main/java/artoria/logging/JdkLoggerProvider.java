@@ -83,14 +83,14 @@ public class JdkLoggerProvider implements LoggerProvider {
     @Override
     public Logger getLogger(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        return this.getLogger(clazz.getName());
+        return getLogger(clazz.getName());
     }
 
     @Override
     public Logger getLogger(String name) {
         Assert.notNull(name, "Parameter \"name\" must not null. ");
         java.util.logging.Logger logger = java.util.logging.Logger.getLogger(name);
-        return new JdkLogger(logger, this.getLoggerRenderer());
+        return new JdkLogger(logger, getLoggerRenderer());
     }
 
     @Override

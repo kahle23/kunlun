@@ -14,7 +14,7 @@ public class FailSafeLogger implements Logger {
 
     public Logger getLogger() {
 
-        return this.logger;
+        return logger;
     }
 
     public void setLogger(Logger logger) {
