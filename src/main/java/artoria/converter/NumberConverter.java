@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
+import static artoria.common.Constants.ONE_THOUSAND;
+
 /**
  * Number converter.
  * @author Kahle
@@ -65,7 +67,7 @@ public class NumberConverter implements TypeConverter {
     protected Object numberToDate(Object source, Class<?> target) {
         Number number = (Number) source;
         long lg = number.longValue();
-        lg = unixTimestamp ? lg * 1000L : lg;
+        lg = unixTimestamp ? lg * ONE_THOUSAND : lg;
         Date date = DateUtils.parse(lg);
         // Maybe target is sql date or timestamp
         return TypeConvertUtils.convert(date, target);

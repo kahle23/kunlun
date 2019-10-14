@@ -6,6 +6,8 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 
+import static artoria.common.Constants.ZERO;
+
 /**
  * Thread tools.
  * @author Kahle
@@ -13,7 +15,7 @@ import java.lang.management.ThreadMXBean;
 public class ThreadUtils {
 
     public static void sleepQuietly(long millis) {
-        Assert.isTrue(millis > 0, "Parameter \"millis\" must greater than 0. ");
+        Assert.isTrue(millis > ZERO, "Parameter \"millis\" must greater than 0. ");
         try {
             Thread.sleep(millis);
         }

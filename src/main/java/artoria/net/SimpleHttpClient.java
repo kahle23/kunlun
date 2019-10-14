@@ -28,7 +28,6 @@ import java.util.zip.GZIPInputStream;
 
 import static artoria.common.Constants.*;
 import static artoria.io.IOUtils.EOF;
-import static artoria.net.HttpMessage.CONTENT_TYPE;
 import static artoria.net.HttpMethod.HEAD;
 
 /**
@@ -41,13 +40,13 @@ public class SimpleHttpClient implements HttpClient {
     private static final String FORM_URL_ENCODED = "application/x-www-form-urlencoded";
     private static final String MULTIPART_FORM_DATA = "multipart/form-data";
     private static final String CONTENT_ENCODING = "Content-Encoding";
+    private static final String CONTENT_TYPE = "Content-Type";
     private static final String BOUNDARY_EQUAL = "boundary=";
     private static final String MALFORMED_HTTPS = "https:/";
     private static final String MALFORMED_HTTP = "http:/";
     private static final String CHARSET_EQUAL = "charset=";
     private static final String SET_COOKIE = "Set-Cookie";
     private static final String LOCATION = "Location";
-    private static final String MINUS_MINUS = "--";
     private static final String COOKIE = "Cookie";
     private static final String HTTPS = "https";
     private static final String HTTP = "http";
@@ -211,7 +210,7 @@ public class SimpleHttpClient implements HttpClient {
     private static Map<String, List<String>> createHeaderMap(HttpURLConnection connection) {
         // The default sun impl of connection.getHeaderFields() returns header values out of order
         final LinkedHashMap<String, List<String>> headers = new LinkedHashMap<String, List<String>>();
-        int i = 0;
+        int i = ZERO;
         while (true) {
             String val = connection.getHeaderField(i);
             String key = connection.getHeaderFieldKey(i);
@@ -423,7 +422,7 @@ public class SimpleHttpClient implements HttpClient {
             Object val = entry.getValue();
             if (first) { first = false; }
             else { writer.append(NEWLINE); }
-            writer.append(MINUS_MINUS).append(mimeBoundary).append(NEWLINE);
+            writer.append(DOUBLE_MINUS).append(mimeBoundary).append(NEWLINE);
             writer.append("Content-Disposition: form-data; name=\"");
             writer.append(encodeMimeName(key)).append(DOUBLE_QUOTE);
             Reader reader = null;
@@ -468,8 +467,8 @@ public class SimpleHttpClient implements HttpClient {
                 CloseUtils.closeQuietly(reader);
             }
         }
-        writer.append(NEWLINE).append(MINUS_MINUS);
-        writer.append(mimeBoundary).append(MINUS_MINUS);
+        writer.append(NEWLINE).append(DOUBLE_MINUS);
+        writer.append(mimeBoundary).append(DOUBLE_MINUS);
         writer.append(NEWLINE).flush();
     }
 
@@ -523,11 +522,11 @@ public class SimpleHttpClient implements HttpClient {
             int beginIndex = cookie.indexOf(EQUAL);
             if (beginIndex == EOF) { continue; }
             String cookieName =
-                    cookie.substring(0, beginIndex).trim();
+                    cookie.substring(ZERO, beginIndex).trim();
             int endIndex = cookie.indexOf(SEMICOLON);
             if (endIndex == EOF) { continue; }
             String cookieValue =
-                    cookie.substring(beginIndex + 1, endIndex).trim();
+                    cookie.substring(beginIndex + ONE, endIndex).trim();
             // Ignores path, date, domain, validateTLSCertificates et al. req'd?
             // Name not blank, value not null.
             if (StringUtils.isNotBlank(cookieName)) {
@@ -547,14 +546,14 @@ public class SimpleHttpClient implements HttpClient {
                 continue;
             }
             // Combine same header names with comma: http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
-            if (values.size() == 1) {
-                response.addHeader(name, values.get(0));
+            if (values.size() == ONE) {
+                response.addHeader(name, values.get(ZERO));
             }
-            else if (values.size() > 1) {
+            else if (values.size() > ONE) {
                 StringBuilder valueBuilder = new StringBuilder();
-                for (int i = 0; i < values.size(); i++) {
+                for (int i = ZERO; i < values.size(); i++) {
                     final String val = values.get(i);
-                    if (i != 0) {
+                    if (i != ZERO) {
                         valueBuilder.append(COMMA).append(BLANK_SPACE);
                     }
                     valueBuilder.append(val);
@@ -604,7 +603,7 @@ public class SimpleHttpClient implements HttpClient {
 
     private void fillResponseBody(HttpResponse response, HttpRequest request, HttpURLConnection connection) throws IOException {
         // -1 means unknown, chunked.
-        if (connection.getContentLength() != 0 && request.getMethod() != HEAD) {
+        if (connection.getContentLength() != ZERO && request.getMethod() != HEAD) {
             // Sun throws an IO exception on 500 response with no content when trying to read body.
             InputStream errorStream = connection.getErrorStream();
             InputStream bodyStream =

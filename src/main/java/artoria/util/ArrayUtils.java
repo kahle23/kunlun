@@ -1,5 +1,8 @@
 package artoria.util;
 
+import static artoria.common.Constants.ONE;
+import static artoria.common.Constants.ZERO;
+
 /**
  * Array tools.
  * @author Kahle
@@ -27,7 +30,7 @@ public class ArrayUtils {
         if (bytes1.length != bytes2.length) {
             return false;
         }
-        for (int i = 0; i < bytes1.length; i++) {
+        for (int i = ZERO; i < bytes1.length; i++) {
             if (bytes1[i] != bytes2[i]) { return false; }
         }
         return true;
@@ -35,17 +38,17 @@ public class ArrayUtils {
 
     public static boolean isEmpty(byte[] arr) {
 
-        return arr == null || arr.length == 0;
+        return arr == null || arr.length == ZERO;
     }
 
     public static boolean isNotEmpty(byte[] arr) {
 
-        return arr != null && arr.length > 0;
+        return arr != null && arr.length > ZERO;
     }
 
     public static byte[] reverse(byte[] arr) {
         Assert.notNull(arr, "Parameter \"arr\" must not null. ");
-        for (int start = 0, end = arr.length - 1; start < end; start++, end--) {
+        for (int start = ZERO, end = arr.length - 1; start < end; start++, end--) {
             byte temp = arr[end];
             arr[end] = arr[start];
             arr[start] = temp;
@@ -60,7 +63,7 @@ public class ArrayUtils {
         if (ts1.length != ts2.length) {
             return false;
         }
-        for (int i = 0; i < ts1.length; i++) {
+        for (int i = ZERO; i < ts1.length; i++) {
             if (!ts1[i].equals(ts2[i])) { return false; }
         }
         return true;
@@ -68,17 +71,17 @@ public class ArrayUtils {
 
     public static <T> boolean isEmpty(T[] arr) {
 
-        return arr == null || arr.length == 0;
+        return arr == null || arr.length == ZERO;
     }
 
     public static <T> boolean isNotEmpty(T[] arr) {
 
-        return arr != null && arr.length > 0;
+        return arr != null && arr.length > ZERO;
     }
 
     public static <T> T[] reverse(T[] arr) {
         Assert.notNull(arr, "Parameter \"arr\" must not null. ");
-        for (int start = 0, end = arr.length - 1; start < end; start++, end--) {
+        for (int start = ZERO, end = arr.length - ONE; start < end; start++, end--) {
             T temp = arr[end];
             arr[end] = arr[start];
             arr[start] = temp;

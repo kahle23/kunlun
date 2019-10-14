@@ -33,20 +33,20 @@ public class SimpleSymmetricCrypto extends AbstractCrypto implements SymmetricCr
         String algorithm = getAlgorithm();
         int multiple;
         if (AES.equalsIgnoreCase(algorithm)) {
-            multiple = 16;
+            multiple = SIXTEEN;
         }
         else if (DES.equalsIgnoreCase(algorithm)
                 || DESEDE.equalsIgnoreCase(algorithm)
                 || BLOWFISH.equalsIgnoreCase(algorithm)) {
-            multiple = 8;
+            multiple = EIGHT;
         }
         else {
             return data;
         }
         int len = data.length, fill = len % multiple;
-        fill = fill != 0 ? multiple - fill : 0;
+        fill = fill != ZERO ? multiple - fill : ZERO;
         byte[] result = new byte[len + fill];
-        System.arraycopy(data, 0, result, 0, len);
+        System.arraycopy(data, ZERO, result, ZERO, len);
         return result;
     }
 

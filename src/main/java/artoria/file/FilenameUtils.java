@@ -72,10 +72,10 @@ public class FilenameUtils {
     public static String getExtension(String path) {
         if (path == null) { return null; }
         int dotIndex = path.lastIndexOf(DOT);
-        if (dotIndex == -1) { return EMPTY_STRING; }
+        if (dotIndex == MINUS_ONE) { return EMPTY_STRING; }
         int folderIndex = path.lastIndexOf(FILE_SEPARATOR);
         if (folderIndex > dotIndex) { return EMPTY_STRING; }
-        return path.substring(dotIndex + 1);
+        return path.substring(dotIndex + ONE);
     }
 
     /**
@@ -86,10 +86,10 @@ public class FilenameUtils {
     public static String removeExtension(String path) {
         if (path == null) { return null; }
         int extIndex = path.lastIndexOf(DOT);
-        if (extIndex == -1) { return path; }
+        if (extIndex == MINUS_ONE) { return path; }
         int folderIndex = path.lastIndexOf(FILE_SEPARATOR);
         if (folderIndex > extIndex) { return path; }
-        return path.substring(0, extIndex);
+        return path.substring(ZERO, extIndex);
     }
 
     /**

@@ -12,12 +12,14 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static artoria.common.Constants.ZERO;
+
 /**
  * Http request message.
  * @author Kahle
  */
 public class HttpRequest extends HttpMessage {
-    public static final String USER_AGENT = "User-Agent";
+    private static final String USER_AGENT = "User-Agent";
     private boolean validateTLSCertificate = false;
     private boolean ignoreHttpError = true;
     private boolean followRedirect = true;
@@ -73,7 +75,7 @@ public class HttpRequest extends HttpMessage {
     }
 
     public void setConnectTimeout(int connectTimeout) {
-        Assert.state(connectTimeout > 0, "Parameter \"connectTimeout\" must greater than 0. ");
+        Assert.state(connectTimeout > ZERO, "Parameter \"connectTimeout\" must greater than 0. ");
         this.connectTimeout = connectTimeout;
     }
 
@@ -83,7 +85,7 @@ public class HttpRequest extends HttpMessage {
     }
 
     public void setReadTimeout(int readTimeout) {
-        Assert.state(readTimeout > 0, "Parameter \"readTimeout\" must greater than 0. ");
+        Assert.state(readTimeout > ZERO, "Parameter \"readTimeout\" must greater than 0. ");
         this.readTimeout = readTimeout;
     }
 
@@ -99,7 +101,7 @@ public class HttpRequest extends HttpMessage {
 
     public void setProxy(String hostname, int port) {
         Assert.notBlank(hostname, "Parameter \"hostname\" must not blank. ");
-        Assert.state(port > 0, "Parameter \"port\" must greater than 0. ");
+        Assert.state(port > ZERO, "Parameter \"port\" must greater than 0. ");
         SocketAddress address = new InetSocketAddress(hostname, port);
         this.proxy = new Proxy(Proxy.Type.HTTP, address);
     }

@@ -28,11 +28,11 @@ public class SimpleRenderer implements Renderer {
         Assert.notNull(writer, "Parameter \"writer\" must not null. ");
         if (StringUtils.isBlank(template)) { return; }
         Map dataMap = data instanceof Map ? (Map) data : BeanUtils.beanToMap(data);
-        for (int finish = template.length(), begin = 0, end = 0, escapeIndex; end != finish; ) {
+        for (int finish = template.length(), begin = ZERO, end = ZERO, escapeIndex; end != finish; ) {
             end = template.indexOf(LEFT_PLACEHOLDER, begin);
             if (end != EOF) {
-                boolean hasEscape = (escapeIndex = end - 2) < 0 || ESCAPE_SYMBOL != template.charAt(escapeIndex);
-                hasEscape = hasEscape && (escapeIndex = end - 1) >= 0;
+                boolean hasEscape = (escapeIndex = end - TWO) < ZERO || ESCAPE_SYMBOL != template.charAt(escapeIndex);
+                hasEscape = hasEscape && (escapeIndex = end - ONE) >= ZERO;
                 if (hasEscape && ESCAPE_SYMBOL == template.charAt(escapeIndex)) {
                     writer.write(template.substring(begin, escapeIndex));
                     writer.write(LEFT_PLACEHOLDER);
@@ -43,7 +43,7 @@ public class SimpleRenderer implements Renderer {
             end = end == EOF ? finish : end;
             writer.write(template.substring(begin, end));
             if (end == finish) { continue; }
-            end = template.indexOf(RIGHT_PLACEHOLDER, (begin = end + 2));
+            end = template.indexOf(RIGHT_PLACEHOLDER, (begin = end + TWO));
             if (end == EOF) {
                 throw new ParseException("After \"${\" must be \"}\" in index \"" + begin + "\". ", begin);
             }

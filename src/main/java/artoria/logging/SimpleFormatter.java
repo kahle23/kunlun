@@ -43,7 +43,7 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
         if ((length = content.length()) < wantLength) {
             StringBuilder builder = new StringBuilder(content);
             length = wantLength - length;
-            for (int i = 0; i < length; i++) {
+            for (int i = ZERO; i < length; i++) {
                 builder.append(BLANK_SPACE);
             }
             content = builder.toString();
@@ -90,15 +90,15 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
         if (source.length() > MAX_SOURCE_LENGTH) {
             StringBuilder builder = new StringBuilder();
             String[] split = source.split(REGEX_DOT);
-            if ((length = split.length) > 1) {
-                for (int i = 0; i < length; i++) {
+            if ((length = split.length) > ONE) {
+                for (int i = ZERO; i < length; i++) {
                     String tmp = split[i];
-                    if (i == length - 1) {
+                    if (i == length - ONE) {
                         builder.append(tmp);
                         break;
                     }
-                    if (tmp.length() > 0) {
-                        builder.append(tmp.charAt(0));
+                    if (tmp.length() > ZERO) {
+                        builder.append(tmp.charAt(ZERO));
                     }
                     builder.append(DOT);
                 }
@@ -126,22 +126,22 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
 
     @Override
     public String format(LogRecord record) {
-        String throwable = this.printfThrowable(record);
-        return this.coloring(this.printfTime(record), 39, 39)
+        String throwable = printfThrowable(record);
+        return coloring(printfTime(record), THIRTY_NINE, THIRTY_NINE)
                 + BLANK_SPACE
                 + BLANK_SPACE
-                + this.coloring(this.printfLevel(record), 32, 39)
+                + coloring(printfLevel(record), THIRTY_TWO, THIRTY_NINE)
                 + BLANK_SPACE
-                + this.coloring(this.printfThread(record), 39, 39)
+                + coloring(printfThread(record), THIRTY_NINE, THIRTY_NINE)
                 + BLANK_SPACE
-                + this.coloring(this.printfSource(record), 36, 39)
+                + coloring(printfSource(record), THIRTY_SIX, THIRTY_NINE)
                 + BLANK_SPACE
                 + COLON
                 + BLANK_SPACE
-                + this.coloring(this.printfMessage(record), 39, 39)
+                + coloring(printfMessage(record), THIRTY_NINE, THIRTY_NINE)
                 + (
                     throwable != null
-                        ? BLANK_SPACE + this.coloring(throwable, 39, 39)
+                        ? BLANK_SPACE + coloring(throwable, THIRTY_NINE, THIRTY_NINE)
                         : EMPTY_STRING
                 )
                 + NEWLINE;

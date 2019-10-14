@@ -4,6 +4,8 @@ import artoria.util.Assert;
 
 import java.io.Serializable;
 
+import static artoria.common.Constants.*;
+
 /**
  * Hex encode and decode tools.
  * @author Kahle
@@ -63,10 +65,10 @@ public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
     public byte[] encode(byte[] source) throws EncodeException {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         int len = source.length;
-        byte[] out = new byte[len << 1];
+        byte[] out = new byte[len << ONE];
         // Two characters form the hex value.
-        for (int i = 0, j = 0; i < len; i++) {
-            out[j++] = digits[(0xF0 & source[i]) >>> 4];
+        for (int i = ZERO, j = ZERO; i < len; i++) {
+            out[j++] = digits[(0xF0 & source[i]) >>> FOUR];
             out[j++] = digits[0x0F & source[i]];
         }
         return out;
@@ -76,13 +78,13 @@ public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
     public byte[] decode(byte[] source) throws DecodeException {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         int len = source.length;
-        if ((len & HEX_01) != 0) {
+        if ((len & HEX_01) != ZERO) {
             throw new IllegalArgumentException("Odd number of characters.");
         }
-        byte[] out = new byte[len >> 1];
+        byte[] out = new byte[len >> ONE];
         // Two characters form the hex value.
-        for (int i = 0, j = 0; j < len; i++) {
-            int f = toDigit(source[j], j) << 4;
+        for (int i = ZERO, j = ZERO; j < len; i++) {
+            int f = toDigit(source[j], j) << FOUR;
             j++;
             f = f | toDigit(source[j], j);
             j++;

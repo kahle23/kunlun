@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 
+import static artoria.common.Constants.ZERO;
 import static artoria.io.IOUtils.DEFAULT_BUFFER_SIZE;
 import static artoria.io.IOUtils.EOF;
 
@@ -40,7 +41,7 @@ public class Hash extends AbstractDigester {
         MessageDigest md = MessageDigest.getInstance(algorithm);
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         for (int len; (len = inputStream.read(buffer)) != EOF;) {
-            md.update(buffer, 0, len);
+            md.update(buffer, ZERO, len);
         }
         return md.digest();
     }

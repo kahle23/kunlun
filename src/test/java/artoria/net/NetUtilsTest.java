@@ -9,6 +9,8 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.List;
 
+import static artoria.common.Constants.*;
+
 public class NetUtilsTest {
     private static Logger log = LoggerFactory.getLogger(NetUtilsTest.class);
     private static String testIp0 = "www.bing.com";
@@ -18,17 +20,17 @@ public class NetUtilsTest {
     @Test
     @Ignore
     public void testConnected() throws Exception {
-        log.info("{}", NetUtils.connected(testIp0, 80));
-        log.info("{}", NetUtils.connected(testIp1, 80));
-        log.info("{}", NetUtils.connected(testIp2, 80));
-        log.info("{}", NetUtils.connected(testIp0, 999));
+        log.info("{}", NetUtils.connected(testIp0, EIGHTY));
+        log.info("{}", NetUtils.connected(testIp1, EIGHTY));
+        log.info("{}", NetUtils.connected(testIp2, EIGHTY));
+        log.info("{}", NetUtils.connected(testIp0, NINE_HUNDRED_NINETY_NINE));
     }
 
     @Test
     @Ignore
     public void testConnected1() throws Exception {
-        for (int i = 70; i < 90; i++) {
-            log.info("{} {}", i, NetUtils.connected(testIp0, i, 500));
+        for (int i = SEVENTY; i < NINETY; i++) {
+            log.info("{} {}", i, NetUtils.connected(testIp0, i, FIVE_HUNDRED));
         }
     }
 

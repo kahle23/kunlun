@@ -5,6 +5,8 @@ import artoria.template.Renderer;
 
 import java.util.logging.Level;
 
+import static artoria.common.Constants.THREE;
+
 /**
  * Jdk logger wrapper.
  * @author Kahle
@@ -15,7 +17,7 @@ public class JdkLogger implements Logger {
 
     private void logp(Level level, String format, Object[] arguments, Throwable throwable) {
         if (!logger.isLoggable(level)) { return; }
-        StackTraceElement element = new Throwable().getStackTrace()[3];
+        StackTraceElement element = new Throwable().getStackTrace()[THREE];
         String clazzName = element.getClassName();
         String methodName = element.getMethodName();
         StringBuilderWriter writer = new StringBuilderWriter();

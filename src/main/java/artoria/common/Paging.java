@@ -2,6 +2,9 @@ package artoria.common;
 
 import java.io.Serializable;
 
+import static artoria.common.Constants.ONE;
+import static artoria.common.Constants.TEN;
+
 /**
  * Simple paging info.
  * @author Kahle
@@ -12,7 +15,7 @@ public class Paging implements Serializable {
 
     public Paging() {
 
-        this(1, 10);
+        this(ONE, TEN);
     }
 
     public Paging(Integer pageNum, Integer pageSize) {

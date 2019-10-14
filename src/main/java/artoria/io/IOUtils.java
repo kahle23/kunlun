@@ -3,6 +3,7 @@ package artoria.io;
 import java.io.*;
 
 import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
+import static artoria.common.Constants.ZERO;
 
 /**
  * IO tools.
@@ -54,9 +55,9 @@ public class IOUtils {
     }
 
     public static long copyLarge(Reader input, Writer output, char[] buffer) throws IOException {
-        long count = 0;
+        long count = ZERO;
         for (int n; EOF != (n = input.read(buffer)); count += n) {
-            output.write(buffer, 0, n);
+            output.write(buffer, ZERO, n);
         }
         output.flush();
         return count;
@@ -68,9 +69,9 @@ public class IOUtils {
     }
 
     public static long copyLarge(InputStream input, OutputStream output, byte[] buffer) throws IOException {
-        long count = 0;
+        long count = ZERO;
         for (int n; EOF != (n = input.read(buffer)); count += n) {
-            output.write(buffer, 0, n);
+            output.write(buffer, ZERO, n);
         }
         output.flush();
         return count;

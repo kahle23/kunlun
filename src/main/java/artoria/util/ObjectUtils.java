@@ -4,6 +4,8 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
 
+import static artoria.common.Constants.ZERO;
+
 /**
  * Object tools.
  * @author Kahle
@@ -30,10 +32,10 @@ public class ObjectUtils {
             return true;
         }
         if (obj.getClass().isArray()) {
-            return Array.getLength(obj) == 0;
+            return Array.getLength(obj) == ZERO;
         }
         if (obj instanceof CharSequence) {
-            return ((CharSequence) obj).length() == 0;
+            return ((CharSequence) obj).length() == ZERO;
         }
         if (obj instanceof Collection) {
             return ((Collection) obj).isEmpty();

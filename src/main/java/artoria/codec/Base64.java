@@ -190,7 +190,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
             this.lineSeparator = ArrayUtils.isNotEmpty(separatorBytes)
                     ? new String(separatorBytes) : DEFAULT_LINE_SEPARATOR;
             this.lineLength = Base64.this.getLineLength();
-            this.lineLength = lineLength > 0 ? lineLength : DEFAULT_LINE_LENGTH;
+            this.lineLength = lineLength > ZERO ? lineLength : DEFAULT_LINE_LENGTH;
         }
 
         private String convertToMime(String rawData) {
@@ -198,7 +198,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
                 return rawData;
             }
             StringBuilder builder = new StringBuilder();
-            int beginIndex = 0, endIndex = lineLength;
+            int beginIndex = ZERO, endIndex = lineLength;
             int dataLength = rawData.length();
             while (beginIndex < dataLength) {
                 if (endIndex > dataLength) {
@@ -211,7 +211,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
             }
             int builderEnd = builder.length();
             builderEnd -= lineSeparator.length();
-            return builder.substring(0, builderEnd);
+            return builder.substring(ZERO, builderEnd);
         }
 
         @Override
@@ -267,7 +267,7 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
                 decoder = java.util.Base64.getUrlDecoder();
             }
             else if (mime) {
-                encoder = lineLength > 0 && ArrayUtils.isNotEmpty(lineSeparator)
+                encoder = lineLength > ZERO && ArrayUtils.isNotEmpty(lineSeparator)
                         ? java.util.Base64.getMimeEncoder(lineLength, lineSeparator)
                         : java.util.Base64.getMimeEncoder();
                 decoder = java.util.Base64.getMimeDecoder();

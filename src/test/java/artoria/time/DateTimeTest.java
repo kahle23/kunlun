@@ -8,6 +8,8 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+import static artoria.common.Constants.*;
+
 public class DateTimeTest {
     private static Logger log = LoggerFactory.getLogger(DateTimeTest.class);
 
@@ -15,7 +17,7 @@ public class DateTimeTest {
     public void testIfUnixTimestampUsingInteger() {
         log.info("");
         log.info("If unix timestamp using Integer. ");
-        DateTime dateTime = DateUtils.create(2038, 1, 23);
+        DateTime dateTime = DateUtils.create(2038, ONE, TWENTY_THREE);
         log.info("The time of unix timestamp is {}", dateTime);
         log.info("The unix timestamp is {}", dateTime.getTimeInSeconds());
         log.info("The Integer max is {}", Integer.MAX_VALUE);
@@ -41,8 +43,8 @@ public class DateTimeTest {
     public void testEquals() {
         log.info("");
 
-        DateTime dateTime1 = DateUtils.create(1991, 11, 12);
-        DateTime dateTime2 = DateUtils.create(1991, 11, 12);
+        DateTime dateTime1 = DateUtils.create(1991, ELEVEN, TWELVE);
+        DateTime dateTime2 = DateUtils.create(1991, ELEVEN, TWELVE);
         log.info("dateUtils1 equals dateUtils2 is true ? result: {}", dateTime1.equals(dateTime2));
 
         log.info("");
@@ -68,11 +70,11 @@ public class DateTimeTest {
         log.info("The method create(String), result: {}", DateUtils.create(DateUtils.create().toString()));
         log.info("The method create(String, String), the pattern is \"yyyy-MM-dd HH:mm:ss SSS\", result: {}"
                 , DateUtils.create(DateUtils.create().toString(), "yyyy-MM-dd HH:mm:ss SSS"));
-        log.info("The method create(1990, 12, 12), result: {}", DateUtils.create(1990, 12, 12));
+        log.info("The method create(1990, 12, 12), result: {}", DateUtils.create(1990, TWELVE, TWELVE));
         log.info("The method create(1990, 12, 12, 12, 12, 12), result: {}"
-                , DateUtils.create(1990, 12, 12, 12, 12, 12));
+                , DateUtils.create(1990, TWELVE, TWELVE, TWELVE, TWELVE, TWELVE));
         log.info("The method create(1990, 12, 12, 12, 12, 12, 12), result: {}"
-                , DateUtils.create(1990, 12, 12, 12, 12, 12, 12));
+                , DateUtils.create(1990, TWELVE, TWELVE, TWELVE, TWELVE, TWELVE, TWELVE));
         log.info("");
     }
 

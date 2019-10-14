@@ -8,6 +8,8 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+import static artoria.common.Constants.*;
+
 public class DateUtilsTest {
     private static Logger log = LoggerFactory.getLogger(DateUtilsTest.class);
 
@@ -15,12 +17,12 @@ public class DateUtilsTest {
     public void testEquals() {
         log.info("");
 
-        Date date1 = DateUtils.create(1000, 1, 1).getDate();
-        Date date2 = DateUtils.create(1000, 1, 1).getDate();
+        Date date1 = DateUtils.create(ONE_THOUSAND, ONE, ONE).getDate();
+        Date date2 = DateUtils.create(ONE_THOUSAND, ONE, ONE).getDate();
         log.info("date1 equals date2 is true ? result: {}", DateUtils.equals(date1, date2));
 
-        Calendar calendar1 = DateUtils.create(2000, 1, 1).getCalendar();
-        Calendar calendar2 = DateUtils.create(2000, 1, 1).getCalendar();
+        Calendar calendar1 = DateUtils.create(TWO_HUNDRED, ONE, ONE).getCalendar();
+        Calendar calendar2 = DateUtils.create(TWO_HUNDRED, ONE, ONE).getCalendar();
         log.info("calendar1 equals calendar2 is true ? result: {}", DateUtils.equals(calendar1, calendar2));
 
         log.info("");
@@ -68,13 +70,13 @@ public class DateUtilsTest {
     @Test
     public void testAddAmount() {
         Date date = new Date();
-        log.info(DateUtils.format(DateUtils.addYear(date, 10)));
-        log.info(DateUtils.format(DateUtils.addMonth(date, 10)));
-        log.info(DateUtils.format(DateUtils.addDay(date, 10)));
-        log.info(DateUtils.format(DateUtils.addHour(date, 10)));
-        log.info(DateUtils.format(DateUtils.addMinute(date, 10)));
-        log.info(DateUtils.format(DateUtils.addSecond(date, 10)));
-        log.info(DateUtils.format(DateUtils.addMillisecond(date, 10)));
+        log.info(DateUtils.format(DateUtils.addYear(date, TEN)));
+        log.info(DateUtils.format(DateUtils.addMonth(date, TEN)));
+        log.info(DateUtils.format(DateUtils.addDay(date, TEN)));
+        log.info(DateUtils.format(DateUtils.addHour(date, TEN)));
+        log.info(DateUtils.format(DateUtils.addMinute(date, TEN)));
+        log.info(DateUtils.format(DateUtils.addSecond(date, TEN)));
+        log.info(DateUtils.format(DateUtils.addMillisecond(date, TEN)));
     }
 
     @Test
@@ -92,13 +94,13 @@ public class DateUtilsTest {
     @Test
     public void testSetAmount() {
         Date date = new Date();
-        log.info(DateUtils.format(DateUtils.setYear(date, 10)));
-        log.info(DateUtils.format(DateUtils.setMonth(date, 10)));
-        log.info(DateUtils.format(DateUtils.setDay(date, 10)));
-        log.info(DateUtils.format(DateUtils.setHour(date, 10)));
-        log.info(DateUtils.format(DateUtils.setMinute(date, 10)));
-        log.info(DateUtils.format(DateUtils.setSecond(date, 10)));
-        log.info(DateUtils.format(DateUtils.setMillisecond(date, 10)));
+        log.info(DateUtils.format(DateUtils.setYear(date, TEN)));
+        log.info(DateUtils.format(DateUtils.setMonth(date, TEN)));
+        log.info(DateUtils.format(DateUtils.setDay(date, TEN)));
+        log.info(DateUtils.format(DateUtils.setHour(date, TEN)));
+        log.info(DateUtils.format(DateUtils.setMinute(date, TEN)));
+        log.info(DateUtils.format(DateUtils.setSecond(date, TEN)));
+        log.info(DateUtils.format(DateUtils.setMillisecond(date, TEN)));
     }
 
     @Test
@@ -117,9 +119,9 @@ public class DateUtilsTest {
         log.info("Year Of Start: {}", DateUtils.format(yearOfStart));
         DateTime yearOfEnd = DateUtils.getYearOfEnd(dateTime);
         log.info("Year Of End: {}", DateUtils.format(yearOfEnd));
-        DateTime weekOfStart = DateUtils.getWeekOfStart(dateTime, 1);
+        DateTime weekOfStart = DateUtils.getWeekOfStart(dateTime, ONE);
         log.info("Week Of Start: {}", DateUtils.format(weekOfStart));
-        DateTime weekOfEnd = DateUtils.getWeekOfEnd(dateTime, 1);
+        DateTime weekOfEnd = DateUtils.getWeekOfEnd(dateTime, ONE);
         log.info("Week Of End: {}", DateUtils.format(weekOfEnd));
     }
 

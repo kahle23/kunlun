@@ -11,6 +11,8 @@ import artoria.util.Assert;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import static artoria.common.Constants.ZERO;
+
 /**
  * Bean copier simple implement by jdk.
  * @author Kahle
@@ -48,11 +50,11 @@ public class SimpleBeanCopier implements BeanCopier {
                 boolean haveType = ArrayUtils.isNotEmpty(types);
                 Object input = srcMth.invoke(from);
                 if (input == null && haveType
-                        && types[0].isPrimitive()) {
+                        && types[ZERO].isPrimitive()) {
                     throw new NullPointerException();
                 }
                 if (hasCvt && haveType) {
-                    input = converter.convert(input, types[0]);
+                    input = converter.convert(input, types[ZERO]);
                 }
                 destMth.invoke(to, input);
             }

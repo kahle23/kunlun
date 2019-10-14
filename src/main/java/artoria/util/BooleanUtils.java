@@ -16,7 +16,7 @@ public class BooleanUtils {
     public static Boolean valueOf(final String boolString) {
         if (boolString == null) { return null; }
         switch (boolString.length()) {
-            case 1: {
+            case ONE: {
                 return "y".equalsIgnoreCase(boolString)
                         || "t".equalsIgnoreCase(boolString)
                         || "1".equals(boolString)
@@ -26,18 +26,18 @@ public class BooleanUtils {
                         || "0".equals(boolString)
                         ? Boolean.FALSE : null;
             }
-            case 2: {
+            case TWO: {
                 return ON.equalsIgnoreCase(boolString) ? Boolean.TRUE :
                         NO.equalsIgnoreCase(boolString) ? Boolean.FALSE : null;
             }
-            case 3: {
+            case THREE: {
                 return YES.equalsIgnoreCase(boolString) ? Boolean.TRUE :
                         OFF.equalsIgnoreCase(boolString) ? Boolean.FALSE : null;
             }
-            case 4: {
+            case FOUR: {
                 return TRUE.equalsIgnoreCase(boolString) ? Boolean.TRUE : null;
             }
-            case 5: {
+            case FIVE: {
                 return FALSE.equalsIgnoreCase(boolString) ? Boolean.FALSE : null;
             }
             default: { return null; }

@@ -125,7 +125,7 @@ public class JdkLoggerProvider implements LoggerProvider {
             case INFO:  logger.setLevel(java.util.logging.Level.INFO);    break;
             case WARN:  logger.setLevel(java.util.logging.Level.WARNING); break;
             case ERROR: logger.setLevel(java.util.logging.Level.SEVERE);  break;
-            default: throw new IllegalStateException("Parameter \"level\" is illegal. ");
+            default: throw new IllegalArgumentException("Parameter \"level\" is illegal. ");
         }
     }
 

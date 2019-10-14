@@ -14,10 +14,9 @@ public class CommandLineUtils {
     public static Map<String, String> parseParameters(String[] args) {
         Map<String, String> result = new HashMap<String, String>(args.length);
         if (ArrayUtils.isEmpty(args)) { return result; }
-        String separator = "--"; int sepLen = separator.length();
         for (String arg : args) {
-            if (!arg.startsWith(separator)) { continue; }
-            arg = arg.substring(sepLen);
+            if (!arg.startsWith(DOUBLE_MINUS)) { continue; }
+            arg = arg.substring(TWO);
             if (StringUtils.isBlank(arg)) { continue; }
             if (!arg.contains(EQUAL)) { continue; }
             int indexOf = arg.indexOf(EQUAL);

@@ -11,6 +11,8 @@ import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.LinkedList;
 
+import static artoria.common.Constants.ZERO;
+
 /**
  * File tools.
  * @author Kahle
@@ -45,7 +47,7 @@ public class FileUtils {
 
     public static long write(Object input, File destination, boolean append) throws IOException {
         Assert.notNull(destination, "Parameter \"destination\" must not null. ");
-        if (input == null) { return 0; }
+        if (input == null) { return ZERO; }
         if (destination.exists()) {
             if (destination.isDirectory()) {
                 throw new IOException("Parameter \"destination\" must be a file. ");
@@ -171,7 +173,7 @@ public class FileUtils {
             input  = fis.getChannel();
             output = fos.getChannel();
             long size = input.size();
-            long pos = 0;
+            long pos = ZERO;
             long count;
             while (pos < size) {
                 count = size - pos;

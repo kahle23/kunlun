@@ -96,11 +96,11 @@ public class SimpleBeanMap extends BeanMap {
         try {
             boolean haveType = ArrayUtils.isNotEmpty(types);
             if (value == null && haveType
-                    && types[0].isPrimitive()) {
+                    && types[ZERO].isPrimitive()) {
                 throw new NullPointerException();
             }
             if (cvt != null && haveType) {
-                value = cvt.convert(value, types[0]);
+                value = cvt.convert(value, types[ZERO]);
             }
             // The return always null.
             // If want not null, must invoke getter first.
