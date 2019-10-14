@@ -10,8 +10,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static artoria.common.Constants.BACKSLASH;
-import static artoria.common.Constants.SLASH;
+import static artoria.common.Constants.*;
 
 /**
  * ClassLoader tools.
@@ -75,7 +74,7 @@ public class ClassLoaderUtils {
         URL url = classLoader.getResource(resourceName);
         if (url == null && startsSlash) {
             // Certain ClassLoaders need it without the leading "/".
-            String subStr = resourceName.substring(1);
+            String subStr = resourceName.substring(ONE);
             url = classLoader.getResource(subStr);
         }
         classLoader = ClassLoaderUtils.class.getClassLoader();
@@ -87,7 +86,7 @@ public class ClassLoaderUtils {
         }
         if (url == null && startsSlash) {
             // Certain ClassLoaders need it without the leading "/".
-            String subStr = resourceName.substring(1);
+            String subStr = resourceName.substring(ONE);
             url = classLoader.getResource(subStr);
         }
         if (url == null) {
@@ -125,7 +124,7 @@ public class ClassLoaderUtils {
                 ClassLoaderUtils.getResources(classLoader, resourceName);
         if (CollectionUtils.isEmpty(urls) && startsSlash) {
             // Certain ClassLoaders need it without the leading "/".
-            String subStr = resourceName.substring(1);
+            String subStr = resourceName.substring(ONE);
             urls = ClassLoaderUtils.getResources(classLoader, subStr);
         }
         classLoader = ClassLoaderUtils.class.getClassLoader();
@@ -137,7 +136,7 @@ public class ClassLoaderUtils {
         }
         if (CollectionUtils.isEmpty(urls) && startsSlash) {
             // Certain ClassLoaders need it without the leading "/".
-            String subStr = resourceName.substring(1);
+            String subStr = resourceName.substring(ONE);
             urls = ClassLoaderUtils.getResources(classLoader, subStr);
         }
         if (CollectionUtils.isEmpty(urls)) {

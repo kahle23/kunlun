@@ -10,7 +10,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-import static artoria.common.Constants.DEFAULT_DATE_PATTERN;
+import static artoria.common.Constants.*;
 
 /**
  * Date tools.
@@ -88,7 +88,7 @@ public class DateUtils {
 
     public static DateTime create(Long timestamp) {
         DateTime dateTime = DateUtils.create();
-        timestamp = timestamp != null ? timestamp : 0;
+        timestamp = timestamp != null ? timestamp : ZERO;
         return dateTime.setTimeInMillis(timestamp);
     }
 
@@ -107,13 +107,13 @@ public class DateUtils {
     public static DateTime create(int year, int month, int day) {
         DateTime dateTime = DateUtils.create();
         return dateTime.setYear(year).setMonth(month)
-                .setDay(day).setHour(0).setMinute(0).setSecond(0).setMillisecond(0);
+                .setDay(day).setHour(ZERO).setMinute(ZERO).setSecond(ZERO).setMillisecond(ZERO);
     }
 
     public static DateTime create(int year, int month, int day, int hour, int minute, int second) {
         DateTime dateTime = DateUtils.create();
         return dateTime.setYear(year).setMonth(month).setDay(day)
-                .setHour(hour).setMinute(minute).setSecond(second).setMillisecond(0);
+                .setHour(hour).setMinute(minute).setSecond(second).setMillisecond(ZERO);
     }
 
     public static DateTime create(int year, int month, int day, int hour, int minute, int second, int millisecond) {
@@ -144,61 +144,62 @@ public class DateUtils {
 
     public static long getUnixTimestamp() {
         long millis = System.currentTimeMillis();
-        return millis / 1000;
+        return millis / ONE_THOUSAND;
     }
 
     public static DateTime getDayOfStart(DateTime dateTime) {
         Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
         DateTime result = DateUtils.create(dateTime.getTimeInMillis());
-        result.setHour(0).setMinute(0).setSecond(0).setMillisecond(0);
+        result.setHour(ZERO).setMinute(ZERO).setSecond(ZERO).setMillisecond(ZERO);
         return result;
     }
 
     public static DateTime getDayOfEnd(DateTime dateTime) {
         Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
         DateTime result = DateUtils.create(dateTime.getTimeInMillis());
-        result.setHour(23).setMinute(59).setSecond(59).setMillisecond(999);
+        result.setSecond(FIFTY_NINE).setMillisecond(NINE_HUNDRED_NINETY_NINE);
+        result.setHour(TWENTY_THREE).setMinute(FIFTY_NINE);
         return result;
     }
 
     public static DateTime getMonthOfStart(DateTime dateTime) {
         Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
         DateTime result = DateUtils.getDayOfStart(dateTime);
-        result.setDay(1);
+        result.setDay(ONE);
         return result;
     }
 
     public static DateTime getMonthOfEnd(DateTime dateTime) {
         Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
         DateTime result = DateUtils.getDayOfStart(dateTime);
-        result.setDay(1).addMonth(1).addMillisecond(-1);
+        result.setDay(ONE).addMonth(ONE).addMillisecond(MINUS_ONE);
         return result;
     }
 
     public static DateTime getYearOfStart(DateTime dateTime) {
         Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
         DateTime result = DateUtils.getMonthOfStart(dateTime);
-        result.setMonth(1);
+        result.setMonth(ONE);
         return result;
     }
 
     public static DateTime getYearOfEnd(DateTime dateTime) {
         Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
         DateTime result = DateUtils.getMonthOfStart(dateTime);
-        result.setMonth(1).addYear(1).addMillisecond(-1);
+        result.setMonth(ONE).addYear(ONE).addMillisecond(MINUS_ONE);
         return result;
     }
 
     public static DateTime getWeekOfStart(DateTime dateTime, int firstDayNum) {
         Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
-        Assert.state(firstDayNum >= 1 && firstDayNum <= 7
+        Assert.state(firstDayNum >= ONE && firstDayNum <= SEVEN
                 , "Parameter \"firstDayNum\" must >= 1 and <= 7. ");
         DateTime result = DateUtils.getDayOfStart(dateTime);
         // Default first day of week is sunday and value is "1".
         int dayOfWeek = result.getDayOfWeek();
-        dayOfWeek = dayOfWeek == 1 ? 7 : dayOfWeek - 1;
-        if (1 <= dayOfWeek && dayOfWeek < firstDayNum) {
-            result.addDay(firstDayNum - 7 - dayOfWeek);
+        dayOfWeek = dayOfWeek == ONE ? SEVEN : dayOfWeek - ONE;
+        if (ONE <= dayOfWeek && dayOfWeek < firstDayNum) {
+            result.addDay(firstDayNum - SEVEN - dayOfWeek);
         }
         else {
             result.addDay(firstDayNum - dayOfWeek);
@@ -209,7 +210,7 @@ public class DateUtils {
     public static DateTime getWeekOfEnd(DateTime dateTime, int firstDayNum) {
         Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
         DateTime result = DateUtils.getWeekOfStart(dateTime, firstDayNum);
-        result.addDay(7).addMillisecond(-1);
+        result.addDay(SEVEN).addMillisecond(MINUS_ONE);
         return result;
     }
 
@@ -319,7 +320,7 @@ public class DateUtils {
     }
 
     public static Date parse(Long timestamp) {
-        timestamp = timestamp != null ? timestamp : 0;
+        timestamp = timestamp != null ? timestamp : ZERO;
         return new Date(timestamp);
     }
 

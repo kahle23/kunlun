@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static artoria.common.Constants.FIVE;
+import static artoria.common.Constants.ZERO;
+
 public class JsonUtilsTest {
     private static Logger log = LoggerFactory.getLogger(JsonUtilsTest.class);
     private Student data = new Student();
@@ -37,7 +40,7 @@ public class JsonUtilsTest {
             }
         });
         data = RandomUtils.nextObject(Student.class);
-        for (int i = 0; i < 5; i++) {
+        for (int i = ZERO; i < FIVE; i++) {
             Student student = RandomUtils.nextObject(Student.class);
             data1.add(student);
             data2.put(student.getStudentId(), student);

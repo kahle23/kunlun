@@ -24,8 +24,8 @@ public class Csv extends TextFile implements Table {
     private final List<List<String>> content = new ArrayList<List<String>>();
     private String lineSeparator = NEWLINE;
     private String cellSeparator = COMMA;
-    private int columnStartNumber = 0;
-    private int rowStartNumber = 0;
+    private int columnStartNumber = ZERO;
+    private int rowStartNumber = ZERO;
 
     public String getLineSeparator() {
 
@@ -48,7 +48,7 @@ public class Csv extends TextFile implements Table {
 
     public void setCellSeparator(String cellSeparator) {
         Assert.notBlank(cellSeparator, "Parameter \"cellSeparator\" must not blank. ");
-        Assert.state(cellSeparator.length() == 1
+        Assert.state(cellSeparator.length() == ONE
                 , "Parameter \"cellSeparator\" must be a single character. ");
         Assert.state(DOUBLE_QUOTE.equals(cellSeparator)
                 , "Parameter \"cellSeparator\" must not equal double quotes. ");
@@ -66,22 +66,22 @@ public class Csv extends TextFile implements Table {
             text = text + lineSeparator;
         }
         int textLength = text.length();
-        if (textLength == 0) { return 0; }
-        int fromIndex = 0, quoteIndex, lineIndex, index;
+        if (textLength == ZERO) { return ZERO; }
+        int fromIndex = ZERO, quoteIndex, lineIndex, index;
         List<String> row = new ArrayList<String>();
         for (; ; ) {
             boolean haveQuote = false;
             quoteIndex = text.indexOf(DOUBLE_QUOTE, fromIndex);
-            if (quoteIndex != -1
+            if (quoteIndex != MINUS_ONE
                     && StringUtils.isBlank(text.substring(fromIndex, quoteIndex))) {
                 haveQuote = true;
-                fromIndex = quoteIndex + 1;
+                fromIndex = quoteIndex + ONE;
                 index = fromIndex;
                 boolean loop = true;
                 while (loop) {
                     quoteIndex = text.indexOf(DOUBLE_QUOTE, index);
-                    if (quoteIndex == -1) { index = -1; break; }
-                    index = quoteIndex + 1;
+                    if (quoteIndex == MINUS_ONE) { index = MINUS_ONE; break; }
+                    index = quoteIndex + ONE;
                     char nextChar = text.charAt(index);
                     if (DOUBLE_QUOTE.equals(String.valueOf(nextChar))) {
                         index++; loop = true;
@@ -92,7 +92,7 @@ public class Csv extends TextFile implements Table {
                 }
             }
             else { index = text.indexOf(cellSeparator, fromIndex); }
-            if (index == -1) {
+            if (index == MINUS_ONE) {
                 row.add(text.substring(fromIndex));
                 content.add(row); break;
             }
@@ -107,12 +107,12 @@ public class Csv extends TextFile implements Table {
             String tmpStr = text.substring(fromIndex, index);
             if (haveQuote) {
                 int tmpIndex = quoteIndex - fromIndex;
-                String tmpBegin = tmpStr.substring(0, tmpIndex);
+                String tmpBegin = tmpStr.substring(ZERO, tmpIndex);
                 tmpBegin = StringUtils.replace(tmpBegin, "\"\"", DOUBLE_QUOTE);
-                tmpStr = tmpBegin + tmpStr.substring(tmpIndex + 1, tmpStr.length());
+                tmpStr = tmpBegin + tmpStr.substring(tmpIndex + ONE, tmpStr.length());
             }
             row.add(tmpStr);
-            fromIndex = index + 1;
+            fromIndex = index + ONE;
         }
         return textLength;
     }
@@ -133,15 +133,15 @@ public class Csv extends TextFile implements Table {
     @Override
     public int getLastCellNumber(int rowNumber) {
         List<?> rowContent = this.getRowContent(rowNumber);
-        return rowContent != null ? rowContent.size() : 0;
+        return rowContent != null ? rowContent.size() : ZERO;
     }
 
     @Override
     public List<Object> getRowContent(int rowNumber) {
         int lastRowNumber = this.getLastRowNumber();
-        Assert.state(rowNumber > 0 && rowNumber <= lastRowNumber
+        Assert.state(rowNumber > ZERO && rowNumber <= lastRowNumber
                 , "Parameter \"rowNumber\" must > 0 and <= last row number. ");
-        List<String> row = content.get(rowNumber - 1);
+        List<String> row = content.get(rowNumber - ONE);
         List<Object> result = new ArrayList<Object>();
         if (row == null) { return result; }
         result.addAll(row);
@@ -150,7 +150,7 @@ public class Csv extends TextFile implements Table {
 
     @Override
     public void setRowContent(int rowNumber, List<?> rowContent) {
-        Assert.state(rowNumber > 0, "Parameter \"rowNumber\" must > 0. ");
+        Assert.state(rowNumber > ZERO, "Parameter \"rowNumber\" must > 0. ");
         Assert.notNull(rowContent, "Parameter \"rowContent\" must not null. ");
         int lastRowNumber = this.getLastRowNumber();
         if (rowNumber > lastRowNumber) {
@@ -162,27 +162,27 @@ public class Csv extends TextFile implements Table {
         for (Object cell : rowContent) {
             row.add(cell != null ? cell.toString() : EMPTY_STRING);
         }
-        content.set(rowNumber - 1, row);
+        content.set(rowNumber - ONE, row);
     }
 
     @Override
     public Object getCellContent(int rowNumber, int columnNumber) {
         int lastCellNumber = this.getLastCellNumber(rowNumber);
-        Assert.state(columnNumber > 0 && columnNumber <= lastCellNumber
+        Assert.state(columnNumber > ZERO && columnNumber <= lastCellNumber
                 , "Parameter \"columnNumber\" must > 0 and <= last cell number. ");
         List<Object> rowContent = this.getRowContent(rowNumber);
-        return rowContent != null ? rowContent.get(columnNumber - 1) : null;
+        return rowContent != null ? rowContent.get(columnNumber - ONE) : null;
     }
 
     @Override
     public void setCellContent(int rowNumber, int columnNumber, Object cellContent) {
-        Assert.state(rowNumber > 0, "Parameter \"rowNumber\" must > 0. ");
-        Assert.state(columnNumber > 0, "Parameter \"columnNumber\" must > 0. ");
+        Assert.state(rowNumber > ZERO, "Parameter \"rowNumber\" must > 0. ");
+        Assert.state(columnNumber > ZERO, "Parameter \"columnNumber\" must > 0. ");
         Assert.notNull(cellContent, "Parameter \"cellContent\" must not null. ");
         List<String> row;
         int lastRowNumber = this.getLastRowNumber();
         if (rowNumber > lastRowNumber
-                || (row = content.get(rowNumber - 1)) == null) {
+                || (row = content.get(rowNumber - ONE)) == null) {
             row = new ArrayList<String>();
             this.setRowContent(rowNumber, row);
         }
@@ -192,7 +192,7 @@ public class Csv extends TextFile implements Table {
                 row.add(EMPTY_STRING);
             }
         }
-        row.set(columnNumber - 1, cellContent.toString());
+        row.set(columnNumber - ONE, cellContent.toString());
     }
 
     @Override
@@ -203,7 +203,7 @@ public class Csv extends TextFile implements Table {
 
     @Override
     public void setRowStartNumber(int rowStartNumber) {
-        Assert.state(rowStartNumber >= 0
+        Assert.state(rowStartNumber >= ZERO
                 , "Parameter \"rowStartNumber\" must >= 0. ");
         this.rowStartNumber = rowStartNumber;
     }
@@ -216,7 +216,7 @@ public class Csv extends TextFile implements Table {
 
     @Override
     public void setColumnStartNumber(int columnStartNumber) {
-        Assert.state(columnStartNumber >= 0
+        Assert.state(columnStartNumber >= ZERO
                 , "Parameter \"columnStartNumber\" must >= 0. ");
         this.columnStartNumber = columnStartNumber;
     }
@@ -334,8 +334,8 @@ public class Csv extends TextFile implements Table {
         Assert.notEmpty(mapList, "Parameter \"mapList\" must not empty. ");
         content.clear();
         List<String> headerList = new ArrayList<String>();
-        if (rowStartNumber != 0) {
-            for (int i = 0; i < rowStartNumber; i++) {
+        if (rowStartNumber != ZERO) {
+            for (int i = ZERO; i < rowStartNumber; i++) {
                 headerList.add(EMPTY_STRING);
             }
         }
@@ -347,8 +347,8 @@ public class Csv extends TextFile implements Table {
             Map<String, Object> first = CollectionUtils.firstNotNullElement(mapList);
             headerList.addAll(first.keySet());
         }
-        if (columnStartNumber != 0) {
-            for (int i = 0; i < columnStartNumber; i++) {
+        if (columnStartNumber != ZERO) {
+            for (int i = ZERO; i < columnStartNumber; i++) {
                 content.add(new ArrayList<String>());
             }
         }
@@ -356,8 +356,8 @@ public class Csv extends TextFile implements Table {
         for (Map<String, Object> beanMap : mapList) {
             if (beanMap == null) { continue; }
             List<String> row = new ArrayList<String>();
-            if (rowStartNumber != 0) {
-                for (int i = 0; i < rowStartNumber; i++) {
+            if (rowStartNumber != ZERO) {
+                for (int i = ZERO; i < rowStartNumber; i++) {
                     row.add(EMPTY_STRING);
                 }
             }

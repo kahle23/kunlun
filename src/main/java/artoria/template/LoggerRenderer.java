@@ -6,8 +6,7 @@ import artoria.util.Assert;
 
 import java.io.Writer;
 
-import static artoria.common.Constants.LEFT_CURLY_BRACKET;
-import static artoria.common.Constants.RIGHT_CURLY_BRACKET;
+import static artoria.common.Constants.*;
 
 /**
  * Log parameters renderer.
@@ -34,11 +33,11 @@ public class LoggerRenderer implements Renderer {
                 writer.write(String.valueOf(format));
                 return;
             }
-            int index, start = 0, count = 0, argsLen = args.length, escapeIndex;
-            while ((index = format.indexOf(PLACEHOLDER, start)) != -1) {
-                boolean hasEscape = (escapeIndex = index - 2) < 0
+            int index, start = ZERO, count = ZERO, argsLen = args.length, escapeIndex;
+            while ((index = format.indexOf(PLACEHOLDER, start)) != MINUS_ONE) {
+                boolean hasEscape = (escapeIndex = index - TWO) < ZERO
                         || ESCAPE_SYMBOL != format.charAt(escapeIndex);
-                hasEscape = hasEscape && (escapeIndex = index - 1) >= 0;
+                hasEscape = hasEscape && (escapeIndex = index - ONE) >= ZERO;
                 if (hasEscape && ESCAPE_SYMBOL == format.charAt(escapeIndex)) {
                     writer.write(format.substring(start, escapeIndex));
                     writer.write(PLACEHOLDER);

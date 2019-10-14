@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 
+import static artoria.common.Constants.ONE;
+import static artoria.common.Constants.ZERO;
+
 /**
  * Collection tools.
  * @author Kahle
@@ -36,7 +39,7 @@ public class CollectionUtils {
 
     public static <E> void reverse(List<E> list) {
         Assert.notNull(list, "Parameter \"list\" must not null. ");
-        for (int start = 0, end = list.size() - 1; start < end; start++, end--) {
+        for (int start = ZERO, end = list.size() - ONE; start < end; start++, end--) {
             E temp = list.get(end);
             list.set(end, list.get(start));
             list.set(start, temp);

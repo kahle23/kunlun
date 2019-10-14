@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 
+import static artoria.common.Constants.ZERO;
 import static artoria.io.IOUtils.DEFAULT_BUFFER_SIZE;
 import static artoria.io.IOUtils.EOF;
 
@@ -63,7 +64,7 @@ public class Hmac extends AbstractDigester {
         mac.init(secretKey);
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         for (int len; (len = inputStream.read(buffer)) != EOF;) {
-            mac.update(buffer, 0, len);
+            mac.update(buffer, ZERO, len);
         }
         return mac.doFinal();
     }

@@ -3,6 +3,9 @@ package artoria.identifier;
 import artoria.time.Clock;
 import artoria.time.SystemClock;
 
+import static artoria.common.Constants.ONE;
+import static artoria.common.Constants.ZERO;
+
 /**
  * Id generator implement by snow flake id simple.
  * @author Kahle
@@ -75,7 +78,7 @@ public class SnowFlakeIdGenerator implements LongIdentifierGenerator {
      */
     public SnowFlakeIdGenerator() {
 
-        this(0, 0, new SystemClock());
+        this(ZERO, ZERO, new SystemClock());
     }
 
     /**
@@ -85,12 +88,12 @@ public class SnowFlakeIdGenerator implements LongIdentifierGenerator {
      * @param clock The clock
      */
     public SnowFlakeIdGenerator(long dataCenterId, long workerId, Clock clock) {
-        if (dataCenterId > MAX_DATA_CENTER_ID || dataCenterId < 0) {
+        if (dataCenterId > MAX_DATA_CENTER_ID || dataCenterId < ZERO) {
             throw new IllegalArgumentException(
                     "Data center id can't be greater than " + MAX_DATA_CENTER_ID + " or less than 0"
             );
         }
-        if (workerId > MAX_WORKER_ID || workerId < 0) {
+        if (workerId > MAX_WORKER_ID || workerId < ZERO) {
             throw new IllegalArgumentException(
                     "Worker id can't be greater than " + MAX_WORKER_ID + " or less than 0"
             );
@@ -138,16 +141,16 @@ public class SnowFlakeIdGenerator implements LongIdentifierGenerator {
         // If it is generated at the same time.
         // The millisecond sequence is performed.
         if (lastTimestamp == currentTimestamp) {
-            sequence = (sequence + 1) & SEQUENCE_MASK;
+            sequence = (sequence + ONE) & SEQUENCE_MASK;
             // Sequence overflow in milliseconds.
-            if (sequence == 0) {
+            if (sequence == ZERO) {
                 // Block to the next millisecond and get the new timestamp.
                 currentTimestamp = waitUntilNextMillis(lastTimestamp);
             }
         }
         else {
             // The timestamp changes and the sequence is reset in milliseconds.
-            sequence = 0L;
+            sequence = ZERO;
         }
         lastTimestamp = currentTimestamp;
         // Computes the result by shifting and or operations.

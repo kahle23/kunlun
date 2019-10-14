@@ -5,6 +5,8 @@ import artoria.util.Assert;
 import java.util.Calendar;
 import java.util.Date;
 
+import static artoria.common.Constants.*;
+
 /**
  * Date time simple implement by jdk.
  * @author Kahle
@@ -69,12 +71,12 @@ public class SimpleDateTime implements DateTime {
     @Override
     public long getTimeInSeconds() {
         long millis = calendar.getTimeInMillis();
-        return millis / 1000L;
+        return millis / ONE_THOUSAND;
     }
 
     @Override
     public DateTime setTimeInSeconds(long unixTimestamp) {
-        long millis = unixTimestamp * 1000L;
+        long millis = unixTimestamp * ONE_THOUSAND;
         calendar.setTimeInMillis(millis);
         return this;
     }
@@ -166,13 +168,13 @@ public class SimpleDateTime implements DateTime {
     @Override
     public int getMonth() {
 
-        return calendar.get(Calendar.MONTH) + 1;
+        return calendar.get(Calendar.MONTH) + ONE;
     }
 
     @Override
     public DateTime setMonth(int month) {
-        boolean b = getYear() == 0 || getYear() == 1;
-        month = b && month == 0 ? month : month - 1;
+        boolean b = getYear() == ZERO || getYear() == ONE;
+        month = b && month == ZERO ? month : month - ONE;
         calendar.set(Calendar.MONTH, month);
         return this;
     }
@@ -185,9 +187,9 @@ public class SimpleDateTime implements DateTime {
 
     @Override
     public DateTime setDay(int day) {
-        boolean by = getYear() == 0 || getYear() == 1;
-        boolean bm = getMonth() == 0 || getMonth() == 1;
-        day = by && bm && day == 0 ? 1 : day;
+        boolean by = getYear() == ZERO || getYear() == ONE;
+        boolean bm = getMonth() == ZERO || getMonth() == ONE;
+        day = by && bm && day == ZERO ? ONE : day;
         // This is a synonym for DAY_OF_MONTH.
         calendar.set(Calendar.DATE, day);
         return this;

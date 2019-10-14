@@ -7,14 +7,16 @@ import org.junit.Test;
 
 import java.lang.management.ThreadInfo;
 
+import static artoria.common.Constants.ONE;
+
 public class ThreadUtilsTest {
     private static Logger log = LoggerFactory.getLogger(ThreadUtilsTest.class);
 
     @Test
     public void test() {
-        // ThreadUtils.sleepQuietly(1000);
+        // ThreadUtils.sleepQuietly(ONE_THOUSAND);
         log.info(ThreadUtils.getThreadName());
-        ThreadInfo threadInfo = ThreadUtils.getThreadInfo(1);
+        ThreadInfo threadInfo = ThreadUtils.getThreadInfo(ONE);
         log.info(JSON.toJSONString(threadInfo, true));
     }
 

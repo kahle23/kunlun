@@ -6,6 +6,7 @@ import artoria.util.Assert;
 import java.io.*;
 
 import static artoria.common.Constants.EMPTY_STRING;
+import static artoria.common.Constants.ZERO;
 
 /**
  * Text file.
@@ -26,7 +27,7 @@ public class Text extends TextFile {
     public long read(Reader reader) throws IOException {
         Assert.notNull(reader, "Parameter \"reader\" must not null. ");
         String read = IOUtils.toString(reader);
-        textBuilder.setLength(0);
+        textBuilder.setLength(ZERO);
         textBuilder.append(read);
         return read.length();
     }
@@ -49,7 +50,7 @@ public class Text extends TextFile {
     }
 
     public Text clear() {
-        textBuilder.setLength(0);
+        textBuilder.setLength(ZERO);
         return this;
     }
 

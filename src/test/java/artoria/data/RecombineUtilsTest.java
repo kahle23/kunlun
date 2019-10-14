@@ -1,10 +1,10 @@
-package artoria.util;
+package artoria.data;
 
+import artoria.entity.Person;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.random.RandomUtils;
 import com.alibaba.fastjson.JSON;
-import artoria.entity.Person;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class DataUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(DataUtilsTest.class);
+public class RecombineUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(RecombineUtilsTest.class);
     private List<Person> list = new ArrayList<Person>();
 
     @Before
@@ -29,7 +29,7 @@ public class DataUtilsTest {
 
     @Test
     public void testListToListList() {
-        List<List<Person>> lists = DataUtils.listToListList(list, 2);
+        List<List<Person>> lists = RecombineUtils.listToListList(list, 2);
         for (List<Person> people : lists) {
             log.info(JSON.toJSONString(people));
         }
@@ -37,25 +37,25 @@ public class DataUtilsTest {
 
     @Test
     public void testListToListProperty() {
-        List<String> list = DataUtils.listToListProperty(this.list, "name", String.class);
+        List<String> list = RecombineUtils.listToListProperty(this.list, "name", String.class);
         log.info(JSON.toJSONString(list, true));
     }
 
     @Test
     public void testListToMapBean() {
-        Map<String, Person> map = DataUtils.listToMapBean(list, "name");
+        Map<String, Person> map = RecombineUtils.listToMapBean(list, "name");
         log.info(JSON.toJSONString(map, true));
     }
 
     @Test
     public void testListToMapList() {
-        Map<String, List<Person>> map = DataUtils.listToMapList(list, "name");
+        Map<String, List<Person>> map = RecombineUtils.listToMapList(list, "name");
         log.info(JSON.toJSONString(map, true));
     }
 
     @Test
     public void testListToMapProperty() {
-        Map<String, Object> map = DataUtils.listToMapProperty(list, "age", "name");
+        Map<String, Object> map = RecombineUtils.listToMapProperty(list, "age", "name");
         log.info(JSON.toJSONString(map, true));
     }
 

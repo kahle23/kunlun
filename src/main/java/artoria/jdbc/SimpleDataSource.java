@@ -21,13 +21,14 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
+import static artoria.common.Constants.*;
+
 /**
  * Simple data source.
  * @author Kahle
  */
 public class SimpleDataSource implements DataSource {
-    private static final String CLASS_NAME = SimpleDataSource.class.getName();
-    private static final String UNSUPPORTED_OPERATION = "In " + CLASS_NAME + " this operation is unsupported. ";
+    private static final String UNSUPPORTED_OPERATION = "In \"SimpleDataSource\" this operation is unsupported. ";
     private static final String DEFAULT_CONFIG_NAME = "jdbc.properties";
     private BlockingQueue<Connection> queue;
     private String driverClass;
@@ -69,7 +70,7 @@ public class SimpleDataSource implements DataSource {
 
     public SimpleDataSource(String driverClass, String jdbcUrl, String user, String password) {
 
-        this(driverClass, jdbcUrl, user, password, -1, -1);
+        this(driverClass, jdbcUrl, user, password, MINUS_ONE, MINUS_ONE);
     }
 
     public SimpleDataSource(String driverClass, String jdbcUrl, String user, String password, int maxPoolSize, int minPoolSize) {
@@ -85,13 +86,13 @@ public class SimpleDataSource implements DataSource {
         this.jdbcUrl = jdbcUrl;
         this.user = user;
         this.password = password;
-        this.maxPoolSize = maxPoolSize > 0 ? maxPoolSize : 8;
-        this.minPoolSize = minPoolSize > 0 ? minPoolSize : 2;
+        this.maxPoolSize = maxPoolSize > ZERO ? maxPoolSize : EIGHT;
+        this.minPoolSize = minPoolSize > ZERO ? minPoolSize : TWO;
         this.queue = new ArrayBlockingQueue<Connection>(this.maxPoolSize);
         try {
             Class.forName(this.driverClass);
-            for (int i = 0; i < this.minPoolSize; i++) {
-                this.queue.offer(createConnection());
+            for (int i = ZERO; i < this.minPoolSize; i++) {
+                queue.offer(createConnection());
             }
         }
         catch (Exception e) {

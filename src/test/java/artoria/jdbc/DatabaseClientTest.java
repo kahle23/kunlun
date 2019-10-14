@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import static artoria.common.Constants.*;
+
 @Ignore
 public class DatabaseClientTest {
     private static Logger log = LoggerFactory.getLogger(DatabaseClientTest.class);
@@ -39,11 +41,11 @@ public class DatabaseClientTest {
         boolean transaction = dbClient.transaction(new DatabaseAtom() {
             @Override
             public boolean run() throws SQLException {
-                dbClient.executeUpdate("insert into t_user values(?, ?, ?, ?, ?, ?)", 997, "transaction", 19, "transaction@email.com", "", "");
+                dbClient.executeUpdate("insert into t_user values(?, ?, ?, ?, ?, ?)", NINETY_NINE, "transaction", TWENTY, "transaction@email.com", "", "");
                 boolean transaction = dbClient.transaction(new DatabaseAtom() {
                     @Override
                     public boolean run() throws SQLException {
-                        dbClient.executeUpdate("insert into t_user values(?, ?, ?, ?, ?, ?)", 998, "nestedTransaction", 19, "nestedTransaction@email.com", "", "");
+                        dbClient.executeUpdate("insert into t_user values(?, ?, ?, ?, ?, ?)", ONE_HUNDRED, "nestedTransaction", TWENTY, "nestedTransaction@email.com", "", "");
                         // if (true) { throw new RuntimeException("Test throw a exception. "); }
                         return true;
                     }
@@ -75,7 +77,7 @@ public class DatabaseClientTest {
 
     @Test
     public void executeUpdate() throws Exception {
-        int i = dbClient.executeUpdate("insert into t_user values(?, ?, ?, ?, ?, ?)", 1, "zhangsan", 19, "zhangsan@email.com", "", "");
+        int i = dbClient.executeUpdate("insert into t_user values(?, ?, ?, ?, ?, ?)", ONE, "zhangsan", TWENTY, "zhangsan@email.com", "", "");
         log.info("{}", i);
     }
 
@@ -86,7 +88,7 @@ public class DatabaseClientTest {
             public Integer call(Connection connection) throws SQLException {
                 PreparedStatement statement = connection.prepareStatement("select count(0) from t_user");
                 ResultSet query = statement.executeQuery();
-                return query.next() ? query.getInt(1) : null;
+                return query.next() ? query.getInt(ONE) : null;
             }
         });
         log.info("{}", execute);

@@ -17,12 +17,11 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public abstract class HttpMessage {
-    public static final String CONTENT_TYPE = "Content-Type";
-    private URL url;
-    private HttpMethod method;
-    private String charset = DEFAULT_CHARSET_NAME;
     private Map<String, String> headers = new LinkedHashMap<String, String>();
     private Map<String, String> cookies = new LinkedHashMap<String, String>();
+    private String charset = DEFAULT_CHARSET_NAME;
+    private HttpMethod method;
+    private URL url;
 
     public HttpMessage() {
     }
@@ -75,7 +74,7 @@ public abstract class HttpMessage {
     public void addHeader(String headerName, String headerValue) {
         Assert.notBlank(headerName, "Parameter \"headerName\" must not blank. ");
         Assert.notNull(headerValue, "Parameter \"headerValue\" must not null. ");
-        this.headers.put(headerName, headerValue);
+        headers.put(headerName, headerValue);
     }
 
     public void addHeaders(Map<String, String> headers) {
@@ -111,7 +110,7 @@ public abstract class HttpMessage {
     public void addCookie(String cookieName, String cookieValue) {
         Assert.notBlank(cookieName, "Parameter \"cookieName\" must not blank. ");
         Assert.notNull(cookieValue, "Parameter \"cookieValue\" must not null. ");
-        this.cookies.put(cookieName, cookieValue);
+        cookies.put(cookieName, cookieValue);
     }
 
     public void addCookies(Map<String, String> cookies) {
@@ -129,12 +128,12 @@ public abstract class HttpMessage {
             }
             cookieEntry = cookieEntry.trim();
             int index = cookieEntry.indexOf(EQUAL);
-            if (index == -1 || index == 0) { continue; }
-            String key = cookieEntry.substring(0, index);
-            String val = cookieEntry.substring(index + 1);
+            if (index == MINUS_ONE || index == ZERO) { continue; }
+            String key = cookieEntry.substring(ZERO, index);
+            String val = cookieEntry.substring(index + ONE);
             cookiesMap.put(key.trim(), val.trim());
         }
-        this.cookies.putAll(cookiesMap);
+        cookies.putAll(cookiesMap);
     }
 
     public boolean containsCookie(String cookieName) {

@@ -88,7 +88,7 @@ public class NetUtils {
         Assert.notNull(inetAddress, "Parameter \"inetAddress\" must not null. ");
         String address = inetAddress.getHostAddress();
         int index = address.indexOf(PERCENT_SIGN);
-        return index != EOF ? address.substring(0, index) : address;
+        return index != EOF ? address.substring(ZERO, index) : address;
     }
 
     public static String getHardwareAddress(NetworkInterface networkInterface) {
@@ -104,9 +104,9 @@ public class NetUtils {
             return null;
         }
         int length = hardwareAddress.length;
-        int lastIndex = length - 1;
+        int lastIndex = length - ONE;
         Formatter formatter = new Formatter();
-        for (int i = 0; i < length; i++) {
+        for (int i = ZERO; i < length; i++) {
             String separate = i < lastIndex ? MINUS : EMPTY_STRING;
             formatter.format("%02X%s", hardwareAddress[i], separate);
         }
@@ -128,9 +128,8 @@ public class NetUtils {
 
     public static List<InetAddress> getInetAddresses(NetworkInterface networkInterface) {
         Assert.notNull(networkInterface, "Parameter \"networkInterface\" must not null. ");
+        Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
         List<InetAddress> result = new ArrayList<InetAddress>();
-        Enumeration<InetAddress> addresses =
-                networkInterface.getInetAddresses();
         CollectionUtils.addAll(result, addresses);
         return result;
     }

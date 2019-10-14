@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static artoria.common.Constants.NEWLINE;
+import static artoria.common.Constants.*;
 
 public class CsvTest {
     private static Logger log = LoggerFactory.getLogger(CsvTest.class);
@@ -22,7 +22,7 @@ public class CsvTest {
     private static List<Student> beanList = new ArrayList<Student>();
 
     static {
-        for (int i = 0; i < 10; i++) {
+        for (int i = ZERO; i < TEN; i++) {
             Student student = RandomUtils.nextObject(Student.class);
             beanList.add(student);
         }
@@ -42,12 +42,12 @@ public class CsvTest {
         Csv csv = new Csv();
         csv.readFromFile(testRead);
         log.info(NEWLINE + csv.writeToString());
-        csv.setCellContent(2, 1, "TEST");
-        csv.setRowContent(csv.getLastRowNumber() + 1
+        csv.setCellContent(TWO, ONE, "TEST");
+        csv.setRowContent(csv.getLastRowNumber() + ONE
                 , Arrays.asList("TEST1", "TEST2", "TEST3", "TEST4"));
         log.info(NEWLINE + csv.writeToString());
-        log.info("RowContent: {}", csv.getRowContent(1));
-        log.info("CellContent: {}", csv.getCellContent(2, 1));
+        log.info("RowContent: {}", csv.getRowContent(ONE));
+        log.info("CellContent: {}", csv.getCellContent(TWO, ONE));
     }
 
     @Test
@@ -61,8 +61,8 @@ public class CsvTest {
     @Test
     public void test3() throws IOException {
         Csv csv = new Csv();
-        csv.setRowStartNumber(4);
-        csv.setColumnStartNumber(4);
+        csv.setRowStartNumber(FOUR);
+        csv.setColumnStartNumber(FOUR);
         csv.addHeaders(headerMappings);
         csv.fromBeanList(beanList);
         log.info(NEWLINE + csv.writeToString());
@@ -74,8 +74,8 @@ public class CsvTest {
     @Test
     public void test4() throws IOException {
         Csv csv = new Csv();
-        csv.setRowStartNumber(4);
-        csv.setColumnStartNumber(4);
+        csv.setRowStartNumber(FOUR);
+        csv.setColumnStartNumber(FOUR);
         csv.addHeaders(headerMappings);
         csv.readFromFile(testGenerated);
         List<Map<String, Object>> mapList = csv.toMapList();
@@ -85,7 +85,7 @@ public class CsvTest {
         }
         log.info(builder.toString());
         List<Student> studentList = csv.toBeanList(Student.class);
-        builder.setLength(0);
+        builder.setLength(ZERO);
         builder.append(NEWLINE);
         for (Student student : studentList) {
             builder.append(BeanUtils.beanToMap(student)).append(NEWLINE);

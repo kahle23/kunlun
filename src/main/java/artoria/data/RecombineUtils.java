@@ -1,19 +1,24 @@
-package artoria.util;
+package artoria.data;
 
 import artoria.beans.BeanUtils;
 import artoria.converter.TypeConvertUtils;
 import artoria.exception.ExceptionUtils;
+import artoria.util.Assert;
+import artoria.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static artoria.common.Constants.ONE;
+import static artoria.common.Constants.ZERO;
+
 /**
- * Data handle tools.
+ * Data recombine tools.
  * @author Kahle
  */
-public class DataUtils {
+public class RecombineUtils {
 
     /**
      * A java bean list to divide into groups.
@@ -25,14 +30,14 @@ public class DataUtils {
     public static <T> List<List<T>> listToListList(List<T> list, int groupSize) {
         List<List<T>> result = new ArrayList<List<T>>();
         if (CollectionUtils.isEmpty(list)) { return result; }
-        Assert.state(groupSize != 0, "Parameter \"groupSize\" must not equal 0. ");
+        Assert.state(groupSize != ZERO, "Parameter \"groupSize\" must not equal 0. ");
         int listSize = list.size();
         int count = listSize / groupSize;
-        count = listSize % groupSize == 0 ? count : ++count;
+        count = listSize % groupSize == ZERO ? count : ++count;
         List<T> tmp;
-        for (int i = 0; i < count; i++) {
+        for (int i = ZERO; i < count; i++) {
             int fromIndex = i * groupSize;
-            int toIndex = (i + 1) * groupSize;
+            int toIndex = (i + ONE) * groupSize;
             toIndex = toIndex > listSize ? listSize : toIndex;
             tmp = new ArrayList<T>(list.subList(fromIndex, toIndex));
             result.add(tmp);
@@ -61,6 +66,7 @@ public class DataUtils {
             for (Map<String, Object> map : mapList) {
                 if (map == null) { continue; }
                 Object val = map.get(propertyName);
+                if (val == null) { continue; }
                 val = TypeConvertUtils.convert(val, propertyClass);
                 result.add((R) val);
             }
@@ -87,11 +93,11 @@ public class DataUtils {
             if (CollectionUtils.isEmpty(list)) { return result; }
             List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
             StringBuilder keyBuilder = new StringBuilder();
-            for (int i = 0, len = list.size(); i < len; i++) {
+            for (int i = ZERO, len = list.size(); i < len; i++) {
                 Map<String, Object> map = mapList.get(i);
                 T bean = list.get(i);
                 if (map == null || bean == null) { continue; }
-                keyBuilder.setLength(0);
+                keyBuilder.setLength(ZERO);
                 for (String propertyName : propertyNames) {
                     Object val = map.get(propertyName);
                     keyBuilder.append(val);
@@ -121,11 +127,11 @@ public class DataUtils {
             if (CollectionUtils.isEmpty(list)) { return result; }
             List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
             StringBuilder keyBuilder = new StringBuilder();
-            for (int i = 0, len = list.size(); i < len; i++) {
+            for (int i = ZERO, len = list.size(); i < len; i++) {
                 Map<String, Object> map = mapList.get(i);
                 T bean = list.get(i);
                 if (map == null || bean == null) { continue; }
-                keyBuilder.setLength(0);
+                keyBuilder.setLength(ZERO);
                 for (String propertyName : propertyNames) {
                     Object val = map.get(propertyName);
                     keyBuilder.append(val);
@@ -164,11 +170,11 @@ public class DataUtils {
             if (CollectionUtils.isEmpty(list)) { return result; }
             List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
             StringBuilder keyBuilder = new StringBuilder();
-            for (int i = 0, len = list.size(); i < len; i++) {
+            for (int i = ZERO, len = list.size(); i < len; i++) {
                 Map<String, Object> map = mapList.get(i);
                 P bean = list.get(i);
                 if (map == null || bean == null) { continue; }
-                keyBuilder.setLength(0);
+                keyBuilder.setLength(ZERO);
                 for (String keyProperty : keyProperties) {
                     Object val = map.get(keyProperty);
                     keyBuilder.append(val);

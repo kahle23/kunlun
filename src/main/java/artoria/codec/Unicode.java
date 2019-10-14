@@ -4,6 +4,7 @@ import artoria.util.Assert;
 
 import java.io.Serializable;
 
+import static artoria.common.Constants.*;
 import static artoria.io.IOUtils.EOF;
 
 /**
@@ -35,8 +36,8 @@ public class Unicode implements StringEncoder, StringDecoder, Serializable {
         for (char c : chars) {
             String hexString = Integer.toHexString(c);
             int len = hexString.length();
-            if (len != 4) {
-                hexString = (len == 2 ? "00" : "0") + hexString;
+            if (len != FOUR) {
+                hexString = (len == TWO ? "00" : "0") + hexString;
             }
             unicode.append(BACKLASH_U).append(hexString);
         }
@@ -46,18 +47,18 @@ public class Unicode implements StringEncoder, StringDecoder, Serializable {
     @Override
     public String decode(String source) throws DecodeException {
         Assert.notBlank(source, "Parameter \"source\" must not blank. ");
-        int index, pos = 0;
+        int index, pos = ZERO;
         StringBuilder result = new StringBuilder();
         while ((index = source.indexOf(BACKLASH_U, pos)) != EOF) {
             result.append(source.substring(pos, index));
-            if (index + 5 < source.length()) {
+            if (index + FIVE < source.length()) {
                 pos = index + UNICODE_LENGTH;
-                String hex = source.substring(index + 2, pos);
+                String hex = source.substring(index + TWO, pos);
                 char ch = (char) Integer.parseInt(hex, RADIX);
                 result.append(ch);
             }
         }
-        if (source.length() > pos + 1) {
+        if (source.length() > pos + ONE) {
             String tmp = source.substring(pos, source.length());
             result.append(tmp);
         }

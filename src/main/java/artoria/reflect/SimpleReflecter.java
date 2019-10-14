@@ -12,6 +12,8 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 import java.util.*;
 
+import static artoria.common.Constants.ZERO;
+
 /**
  * Reflect provider simple implement by jdk.
  * @author Kahle
@@ -27,9 +29,9 @@ public class SimpleReflecter implements Reflecter {
 
     @Override
     public Class<?>[] findParameterTypes(Object... parameters) {
-        if (parameters.length == 0) { return new Class[0]; }
+        if (parameters.length == ZERO) { return new Class[ZERO]; }
         Class<?>[] result = new Class[parameters.length];
-        for (int i = 0; i < parameters.length; i++) {
+        for (int i = ZERO; i < parameters.length; i++) {
             Object value = parameters[i];
             // Parameter null, maybe in method can input null.
             // So in match method ignore null type.
@@ -45,7 +47,7 @@ public class SimpleReflecter implements Reflecter {
         if (declaredTypes.length != actualTypes.length) {
             return false;
         }
-        for (int i = 0; i < actualTypes.length; i++) {
+        for (int i = ZERO; i < actualTypes.length; i++) {
             // Method has parameter, but input null, so continue.
             if (actualTypes[i] == null) { continue; }
             Class<?> declared = ClassUtils.getWrapper(declaredTypes[i]);

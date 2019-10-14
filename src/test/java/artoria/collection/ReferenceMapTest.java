@@ -8,6 +8,9 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.Set;
 
+import static artoria.common.Constants.ONE_HUNDRED;
+import static artoria.common.Constants.ZERO;
+
 public class ReferenceMapTest {
     private static Logger log = LoggerFactory.getLogger(ReferenceMapTest.class);
 
@@ -43,13 +46,13 @@ public class ReferenceMapTest {
     @Ignore
     public void test2() throws Exception {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < 999999; i++) {
+        for (int i = ZERO; i < 999999; i++) {
             builder.append(i);
         }
         String content = builder.toString();
         Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceMap.Type.SOFT);
 //        Map<String, Object> map = new HashMap<String, Object>();
-        for (long i = 0; i < 999999; i++) {
+        for (long i = ZERO; i < 999999; i++) {
             map.put(i + "", content + i);
         }
         log.info("{}", map.get("1"));
@@ -58,7 +61,7 @@ public class ReferenceMapTest {
     @Test
     public void test3() throws Exception {
         Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceMap.Type.WEAK);
-        for (int i = 0; i < 100; i++) {
+        for (int i = ZERO; i < ONE_HUNDRED; i++) {
             map.put("data" + i, "data - - " + i);
         }
         for (Map.Entry<String, Object> entry : map.entrySet()) {

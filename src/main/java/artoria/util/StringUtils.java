@@ -32,7 +32,7 @@ public class StringUtils {
     public static boolean isNotBlank(CharSequence cs) {
         if (StringUtils.isEmpty(cs)) { return false; }
         int strLen = cs.length();
-        for (int i = 0; i < strLen; i++) {
+        for (int i = ZERO; i < strLen; i++) {
             int codePoint = (int) cs.charAt(i);
             boolean isWs = Character.isWhitespace(codePoint);
             if (!isWs) { return true; }
@@ -46,9 +46,9 @@ public class StringUtils {
         }
         boolean b = str.startsWith(MINUS)
                 || str.startsWith(PLUS);
-        int start = b ? 1 : 0;
+        int start = b ? ONE : ZERO;
         boolean firstDot = false;
-        for (int i = str.length() - 1; i >= start; i--) {
+        for (int i = str.length() - ONE; i >= start; i--) {
             char c = str.charAt(i);
             boolean isDg = Character.isDigit(c)
                     || (!firstDot && (firstDot = 0x2E == c));
@@ -62,7 +62,7 @@ public class StringUtils {
             return false;
         }
         int strLen = str.length();
-        for (int i = 0; i < strLen; i++) {
+        for (int i = ZERO; i < strLen; i++) {
             int codePoint = (int) str.charAt(i);
             boolean isWs = Character.isWhitespace(codePoint);
             if (isWs) { return true; }
@@ -75,16 +75,16 @@ public class StringUtils {
         StringBuilder sb = new StringBuilder(str);
         boolean isLoop;
         do {
-            int codePoint = (int) sb.charAt(0);
+            int codePoint = (int) sb.charAt(ZERO);
             boolean isWs = Character.isWhitespace(codePoint);
-            isLoop = sb.length() > 0 && isWs;
-            if (isLoop) { sb.deleteCharAt(0); }
+            isLoop = sb.length() > ZERO && isWs;
+            if (isLoop) { sb.deleteCharAt(ZERO); }
         } while (isLoop);
         do {
-            int codePoint = (int) sb.charAt(sb.length() - 1);
+            int codePoint = (int) sb.charAt(sb.length() - ONE);
             boolean isWs = Character.isWhitespace(codePoint);
-            isLoop = sb.length() > 0 && isWs;
-            if (isLoop) { sb.deleteCharAt(sb.length() - 1); }
+            isLoop = sb.length() > ZERO && isWs;
+            if (isLoop) { sb.deleteCharAt(sb.length() - ONE); }
         } while (isLoop);
         return sb.toString();
     }
@@ -93,7 +93,7 @@ public class StringUtils {
         if (StringUtils.isEmpty(str)) { return str; }
         int len = str.length();
         StringBuilder sb = new StringBuilder(str.length());
-        for (int i = 0; i < len; i++) {
+        for (int i = ZERO; i < len; i++) {
             char c = str.charAt(i);
             boolean isWs = Character.isWhitespace((int) c);
             if (!isWs) { sb.append(c); }
@@ -109,11 +109,11 @@ public class StringUtils {
         }
         StringBuilder sb = new StringBuilder();
         // our position in the old string
-        int pos = 0;
+        int pos = ZERO;
         int index = inString.indexOf(oldPattern);
         // the index of an occurrence we've found, or -1
         int patLen = oldPattern.length();
-        while (index >= 0) {
+        while (index >= ZERO) {
             sb.append(inString.substring(pos, index));
             sb.append(newPattern);
             pos = index + patLen;
@@ -140,13 +140,13 @@ public class StringUtils {
     }
 
     private static String changeFirstCharacterCase(String str, boolean capitalize) {
-        if (str == null || str.length() == 0) { return str; }
+        if (str == null || str.length() == ZERO) { return str; }
         StringBuilder sb = new StringBuilder(str.length());
-        char c = str.charAt(0);
+        char c = str.charAt(ZERO);
         sb.append(capitalize ?
                 Character.toUpperCase(c) :
                 Character.toLowerCase(c));
-        sb.append(str.substring(1));
+        sb.append(str.substring(ONE));
         return sb.toString();
     }
 
@@ -155,9 +155,9 @@ public class StringUtils {
         int length = str.length();
         StringBuilder builder = new StringBuilder();
         char ch;
-        int lowerCaseCount = 0;
+        int lowerCaseCount = ZERO;
         boolean lastIsUpper = false, lastIsUnderline = false;
-        for (int i = 0; i < length; i++) {
+        for (int i = ZERO; i < length; i++) {
             ch = str.charAt(i);
             if (UNDERLINE == ch) {
                 lastIsUnderline = true;
@@ -181,7 +181,7 @@ public class StringUtils {
             }
             lastIsUnderline = false;
         }
-        if (lowerCaseCount == 0) {
+        if (lowerCaseCount == ZERO) {
             // No lower case is underline.
             return str;
         }
@@ -193,8 +193,8 @@ public class StringUtils {
         int length = str.length();
         StringBuilder builder = new StringBuilder();
         char ch;
-        int underlineCount = 0, lowerCaseCount = 0;
-        for (int i = 0; i < length; i++) {
+        int underlineCount = ZERO, lowerCaseCount = ZERO;
+        for (int i = ZERO; i < length; i++) {
             if (str.charAt(i) == UNDERLINE) {
                 ch = str.charAt(++i);
                 ch = Character.toUpperCase(ch);
@@ -211,7 +211,7 @@ public class StringUtils {
             }
             builder.append(ch);
         }
-        if (underlineCount == 0 && lowerCaseCount > 0) {
+        if (underlineCount == ZERO && lowerCaseCount > ZERO) {
             // No underline and have lower case is camel.
             return str;
         }

@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static artoria.common.Constants.COMMA;
+import static artoria.common.Constants.*;
 
 /**
  * Database client.
@@ -52,7 +52,7 @@ public class DatabaseClient {
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             tableResultSet = databaseMetaData.getTables((String) null, (String) null, (String) null, types);
             while (tableResultSet.next()) {
-                Map<String, ColumnMeta> columnMap = new HashMap<String, ColumnMeta>((int) 16);
+                Map<String, ColumnMeta> columnMap = new HashMap<String, ColumnMeta>(TWENTY);
                 String tableName = tableResultSet.getString((String) "TABLE_NAME");
                 String remarks = tableResultSet.getString((String) "REMARKS");
                 TableMeta tableMeta = new TableMeta();
@@ -127,24 +127,24 @@ public class DatabaseClient {
         try {
             conn = getConnection();
             prepStat = conn.prepareStatement(sql);
-            for (int i = 0; i < params.length; i++) {
-                prepStat.setObject(i + 1, params[i]);
+            for (int i = ZERO; i < params.length; i++) {
+                prepStat.setObject(i + ONE, params[i]);
             }
             resSet = prepStat.executeQuery();
             ResultSetMetaData metaData = resSet.getMetaData();
             int count = metaData.getColumnCount();
             // Handle keys.
             String[] keys = new String[count];
-            for (int i = 0; i < count; i++) {
-                String key = metaData.getColumnName(i + 1);
+            for (int i = ZERO; i < count; i++) {
+                String key = metaData.getColumnName(i + ONE);
                 keys[i] = StringUtils.underlineToCamel(key);
             }
             // Handle result to map.
             List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
             while (resSet.next()) {
                 Map<String, Object> data = new HashMap<String, Object>(count);
-                for (int i = 0; i < count; i++) {
-                    data.put(keys[i], resSet.getObject(i + 1));
+                for (int i = ZERO; i < count; i++) {
+                    data.put(keys[i], resSet.getObject(i + ONE));
                 }
                 result.add(data);
             }
@@ -163,8 +163,8 @@ public class DatabaseClient {
         try {
             connection = getConnection();
             prepStat = connection.prepareStatement(sql);
-            for (int i = 0; i < params.length; i++) {
-                prepStat.setObject(i + 1, params[i]);
+            for (int i = ZERO; i < params.length; i++) {
+                prepStat.setObject(i + ONE, params[i]);
             }
             return prepStat.executeUpdate();
         }
@@ -235,8 +235,8 @@ public class DatabaseClient {
             while (primaryKeysResultSet.next()) {
                 primaryKey.append(primaryKeysResultSet.getString("COLUMN_NAME")).append(COMMA);
             }
-            if (primaryKey.length() > 0) {
-                primaryKey.deleteCharAt(primaryKey.length() - 1);
+            if (primaryKey.length() > ZERO) {
+                primaryKey.deleteCharAt(primaryKey.length() - ONE);
             }
             return primaryKey.toString();
         }

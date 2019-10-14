@@ -3,15 +3,15 @@ package artoria.net;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
+import static artoria.common.Constants.*;
 
 /**
  * Http response message.
  * @author Kahle
  */
 public class HttpResponse extends HttpMessage {
-    private static final int MAX_REDIRECTS = 20;
-    private int numRedirects = 0;
+    private static final int MAX_REDIRECTS = TWENTY;
+    private int numRedirects = ZERO;
     private HttpRequest request;
     private int statusCode;
     private String statusMessage;
@@ -22,7 +22,7 @@ public class HttpResponse extends HttpMessage {
 
     public HttpResponse(HttpResponse previousResponse) throws IOException {
         if (previousResponse == null) { return; }
-        numRedirects = previousResponse.getNumRedirects() + 1;
+        numRedirects = previousResponse.getNumRedirects() + ONE;
         if (numRedirects >= MAX_REDIRECTS) {
             throw new IOException(
                     "Too many redirects occurred trying to load URL \"" + previousResponse.getUrl() + "\". "

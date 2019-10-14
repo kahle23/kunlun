@@ -3,6 +3,9 @@ package artoria.util;
 import java.io.Serializable;
 import java.lang.reflect.*;
 
+import static artoria.common.Constants.ONE;
+import static artoria.common.Constants.ZERO;
+
 /**
  * Type tools.
  * @author Kahle
@@ -93,40 +96,40 @@ public class TypeUtils {
 
         public WildcardTypeImpl(Type[] upperBounds, Type[] lowerBounds) {
             Assert.isTrue(
-                    upperBounds.length == 1
+                    upperBounds.length == ONE
                     , "Parameter \"upperBounds\" length must == 1. "
             );
             Assert.isTrue(
-                    lowerBounds.length <= 1
+                    lowerBounds.length <= ONE
                     , "Parameter \"lowerBounds\" length must <= 1. "
             );
-            if (lowerBounds.length == 1) {
+            if (lowerBounds.length == ONE) {
                 Assert.notNull(
-                        lowerBounds[0]
+                        lowerBounds[ZERO]
                         , "LowerBounds first element must not null. "
                 );
                 TypeUtils.notPrimitive(
-                        lowerBounds[0]
+                        lowerBounds[ZERO]
                         , "LowerBounds first element must not primitive. "
                 );
                 Assert.isTrue(
-                        upperBounds[0] == Object.class
+                        upperBounds[ZERO] == Object.class
                         , "UpperBounds first element must be \"Object.class\". "
                 );
-                this.lowerBound = TypeUtils.canonicalize(lowerBounds[0]);
+                this.lowerBound = TypeUtils.canonicalize(lowerBounds[ZERO]);
                 this.upperBound = Object.class;
             }
             else {
                 Assert.notNull(
-                        upperBounds[0]
+                        upperBounds[ZERO]
                         , "UpperBounds first element must not null. "
                 );
                 TypeUtils.notPrimitive(
-                        upperBounds[0]
+                        upperBounds[ZERO]
                         , "UpperBounds first element must not primitive. "
                 );
                 this.lowerBound = null;
-                this.upperBound = TypeUtils.canonicalize(upperBounds[0]);
+                this.upperBound = TypeUtils.canonicalize(upperBounds[ZERO]);
             }
         }
 
@@ -185,7 +188,7 @@ public class TypeUtils {
             this.ownerType = ownerType != null ? TypeUtils.canonicalize(ownerType) : null;
             this.rawType = TypeUtils.canonicalize(rawType);
             this.typeArguments = typeArguments.clone();
-            for (int i = 0; i < this.typeArguments.length; i++) {
+            for (int i = ZERO; i < this.typeArguments.length; i++) {
                 Type typeArgument = this.typeArguments[i];
                 Assert.notNull(typeArgument, "TypeArguments each element must not null. ");
                 TypeUtils.notPrimitive(typeArgument, "TypeArguments each element must not primitive. ");
