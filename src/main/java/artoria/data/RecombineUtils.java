@@ -5,6 +5,7 @@ import artoria.converter.TypeConvertUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
+import artoria.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +55,6 @@ public class RecombineUtils {
      * @param <P> Java bean type
      * @return Java bean property list
      */
-    @SuppressWarnings("unchecked")
     public static <R, P> List<R> listToListProperty(List<P> list, String propertyName, Class<R> propertyClass) {
         try {
             Assert.notBlank(propertyName, "Parameter \"propertyName\" must not blank. ");
@@ -68,7 +68,7 @@ public class RecombineUtils {
                 Object val = map.get(propertyName);
                 if (val == null) { continue; }
                 val = TypeConvertUtils.convert(val, propertyClass);
-                result.add((R) val);
+                result.add(ObjectUtils.cast(val, propertyClass));
             }
             return result;
         }
@@ -160,7 +160,6 @@ public class RecombineUtils {
      * @param <P> Java bean type
      * @return A map key is bean properties and value is bean property
      */
-    @SuppressWarnings("unchecked")
     public static <R, P> Map<String, R> listToMapProperty(List<P> list, String valueProperty, String... keyProperties) {
         try {
             Assert.notBlank(valueProperty, "Parameter \"valueProperty\" must not blank. ");
@@ -179,7 +178,7 @@ public class RecombineUtils {
                     Object val = map.get(keyProperty);
                     keyBuilder.append(val);
                 }
-                R val = (R) map.get(valueProperty);
+                R val = ObjectUtils.cast(map.get(valueProperty));
                 result.put(keyBuilder.toString(), val);
             }
             return result;

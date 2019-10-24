@@ -77,7 +77,7 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
         if ((length = threadName.length()) > MAX_THREAD_LENGTH) {
             threadName = threadName.substring(length - MAX_THREAD_LENGTH, length);
         }
-        threadName = this.fillBlank(threadName, MAX_THREAD_LENGTH);
+        threadName = fillBlank(threadName, MAX_THREAD_LENGTH);
         threadName = LEFT_SQUARE_BRACKET + threadName + RIGHT_SQUARE_BRACKET;
         return threadName;
     }
@@ -108,7 +108,7 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
         if ((length = source.length()) > MAX_SOURCE_LENGTH) {
             source = source.substring(length - MAX_SOURCE_LENGTH, length);
         }
-        source = this.fillBlank(source, MAX_SOURCE_LENGTH);
+        source = fillBlank(source, MAX_SOURCE_LENGTH);
         return source;
     }
 

@@ -7,6 +7,7 @@ import artoria.logging.LoggerFactory;
 import artoria.reflect.ReflectUtils;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
+import artoria.util.ObjectUtils;
 import artoria.util.StringUtils;
 
 import java.lang.reflect.Method;
@@ -118,9 +119,9 @@ public class SimpleBeanMap extends BeanMap {
     }
 
     @Override
-    public Set keySet() {
-        Set<String> keys = readMethods.keySet();
-        return Collections.unmodifiableSet(keys);
+    public Set<Object> keySet() {
+        Set keys = readMethods.keySet();
+        return ObjectUtils.cast(Collections.unmodifiableSet(keys));
     }
 
 }

@@ -90,12 +90,12 @@ public class NumberConverter implements TypeConverter {
             return source.toString();
         }
         if (Date.class.isAssignableFrom(target)) {
-            return this.numberToDate(source, target);
+            return numberToDate(source, target);
         }
         if (!Number.class.isAssignableFrom(target)) {
             return source;
         }
-        return this.numberToNumber(source, target);
+        return numberToNumber(source, target);
     }
 
 }

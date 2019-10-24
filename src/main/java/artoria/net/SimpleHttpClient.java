@@ -542,7 +542,7 @@ public class SimpleHttpClient implements HttpClient {
             if (name == null) { continue; }
             List<String> values = entry.getValue();
             if (SET_COOKIE.equalsIgnoreCase(name)) {
-                this.fillResponseCookies(response, values);
+                fillResponseCookies(response, values);
                 continue;
             }
             // Combine same header names with comma: http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
@@ -570,8 +570,8 @@ public class SimpleHttpClient implements HttpClient {
         response.setStatusMessage(connection.getResponseMessage());
 
         Map<String, List<String>> headers = createHeaderMap(connection);
-        this.fillResponseHeaders(response, headers);
-        this.fillResponseCharset(response);
+        fillResponseHeaders(response, headers);
+        fillResponseCharset(response);
 
         // If from a redirect, map previous response cookies into this response
         if (previousResponse == null) { return; }

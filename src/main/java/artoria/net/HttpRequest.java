@@ -114,7 +114,7 @@ public class HttpRequest extends HttpMessage {
     public void addParameter(String paramName, Object paraValue) {
         Assert.notBlank(paramName, "Parameter \"paramName\" must not blank. ");
         Assert.notNull(paraValue, "Parameter \"paraValue\" must not null. ");
-        this.parameters.put(paramName, paraValue);
+        parameters.put(paramName, paraValue);
     }
 
     public void addParameters(Map<String, Object> parameters) {

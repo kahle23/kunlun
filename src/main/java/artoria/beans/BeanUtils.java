@@ -7,6 +7,7 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.reflect.ReflectUtils;
 import artoria.util.Assert;
+import artoria.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +27,14 @@ public class BeanUtils {
     private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
     private static Class<? extends BeanMap> mapType;
     private static BeanCopier beanCopier;
+
+    private static class TypeConverterAgent implements TypeConverter {
+        @Override
+        public Object convert(Object source, Class<?> target) {
+
+            return TypeConvertUtils.convert(source, target);
+        }
+    }
 
     public static Class<? extends BeanMap> getMapType() {
 
@@ -82,27 +91,6 @@ public class BeanUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public static void copy(Object from, Map to) {
-        Assert.notNull(from, "Parameter \"from\" must not null. ");
-        Assert.notNull(to, "Parameter \"to\" must not null. ");
-        Map map = from instanceof Map ? (Map) from : createBeanMap(from);
-        to.putAll(map);
-    }
-
-    public static void copy(Map from, Object to) {
-
-        BeanUtils.copy(from, to, CONVERTER_AGENT);
-    }
-
-    public static void copy(Map from, Object to, TypeConverter cvt) {
-        Assert.notNull(from, "Parameter \"from\" must not null. ");
-        Assert.notNull(to, "Parameter \"to\" must not null. ");
-        BeanMap map = createBeanMap(to);
-        map.setTypeConverter(cvt);
-        map.putAll(from);
-    }
-
     public static void copy(Object from, Object to) {
 
         getBeanCopier().copy(from, to, CONVERTER_AGENT);
@@ -113,21 +101,26 @@ public class BeanUtils {
         getBeanCopier().copy(from, to, cvt);
     }
 
-    public static <R, K, V> R mapToBean(Map<K, V> from, R to) {
-
-        return BeanUtils.beanToBean(from, to);
+    public static <K, V> void copy(Object from, Map<K, V> to) {
+        Assert.notNull(from, "Parameter \"from\" must not null. ");
+        Assert.notNull(to, "Parameter \"to\" must not null. ");
+        Map<K, V> map = ObjectUtils.cast(
+                from instanceof Map ? from : createBeanMap(from)
+        );
+        to.putAll(map);
     }
 
-    public static <R, K, V> R mapToBean(Map<K, V> from, Class<R> toClass) {
+    public static <K, V> void copy(Map<K, V> from, Object to) {
 
-        return BeanUtils.beanToBean(from, toClass);
+        BeanUtils.copy(from, to, CONVERTER_AGENT);
     }
 
-    public static <F> Map<String, Object> beanToMap(F from) {
-        if (from == null) { return null; }
-        Map<String, Object> result = new HashMap<String, Object>(THIRTY);
-        BeanUtils.copy(from, result);
-        return result;
+    public static <K, V> void copy(Map<K, V> from, Object to, TypeConverter cvt) {
+        Assert.notNull(from, "Parameter \"from\" must not null. ");
+        Assert.notNull(to, "Parameter \"to\" must not null. ");
+        BeanMap map = createBeanMap(to);
+        map.setTypeConverter(cvt);
+        map.putAll(from);
     }
 
     public static <F, T> T beanToBean(F from, T to) {
@@ -158,11 +151,28 @@ public class BeanUtils {
         }
     }
 
-    public static <R, K, V> List<R> mapToBeanInList(List<Map<K, V>> from, Class<R> toClass) {
+    public static <F> Map<String, Object> beanToMap(F from) {
         if (from == null) { return null; }
-        List<R> result = new ArrayList<R>();
-        for (Map<K, V> m : from) {
-            R bean = BeanUtils.mapToBean(m, toClass);
+        Map<String, Object> result = new HashMap<String, Object>(THIRTY);
+        BeanUtils.copy(from, result);
+        return result;
+    }
+
+    public static <R, K, V> R mapToBean(Map<K, V> from, R to) {
+
+        return BeanUtils.beanToBean(from, to);
+    }
+
+    public static <R, K, V> R mapToBean(Map<K, V> from, Class<R> toClass) {
+
+        return BeanUtils.beanToBean(from, toClass);
+    }
+
+    public static <F, T> List<T> beanToBeanInList(List<F> from, Class<T> toClass) {
+        if (from == null) { return null; }
+        List<T> result = new ArrayList<T>();
+        for (F f : from) {
+            T bean = BeanUtils.beanToBean(f, toClass);
             result.add(bean);
         }
         return result;
@@ -178,24 +188,14 @@ public class BeanUtils {
         return result;
     }
 
-    public static <F, T> List<T> beanToBeanInList(List<F> from, Class<T> toClass) {
+    public static <R, K, V> List<R> mapToBeanInList(List<Map<K, V>> from, Class<R> toClass) {
         if (from == null) { return null; }
-        List<T> result = new ArrayList<T>();
-        for (F f : from) {
-            T bean = BeanUtils.beanToBean(f, toClass);
+        List<R> result = new ArrayList<R>();
+        for (Map<K, V> m : from) {
+            R bean = BeanUtils.mapToBean(m, toClass);
             result.add(bean);
         }
         return result;
-    }
-
-    private static class TypeConverterAgent implements TypeConverter {
-
-        @Override
-        public Object convert(Object source, Class<?> target) {
-
-            return TypeConvertUtils.convert(source, target);
-        }
-
     }
 
 }

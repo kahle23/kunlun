@@ -30,7 +30,7 @@ public abstract class AbstractFileEntity implements FileEntity {
     @Override
     public InputStream getInputStream() throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        this.write(byteArrayOutputStream);
+        write(byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         return new ByteArrayInputStream(byteArray);
     }
@@ -46,7 +46,7 @@ public abstract class AbstractFileEntity implements FileEntity {
         OutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(file);
-            this.write(outputStream);
+            write(outputStream);
         }
         finally {
             CloseUtils.closeQuietly(outputStream);
@@ -58,11 +58,11 @@ public abstract class AbstractFileEntity implements FileEntity {
         if (!file.exists() || file.isDirectory()) {
             throw new IllegalStateException("Parameter \"file\" must exist and is file. ");
         }
-        this.setName(file.getName());
+        setName(file.getName());
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
-            return this.read(inputStream);
+            return read(inputStream);
         }
         finally {
             CloseUtils.closeQuietly(inputStream);
@@ -73,18 +73,18 @@ public abstract class AbstractFileEntity implements FileEntity {
         Assert.notBlank(subPath, "Parameter \"subPath\" must not blank. ");
         Assert.notBlank(CLASSPATH, "Cannot get the classpath. ");
         File file = new File(CLASSPATH, subPath);
-        this.writeToFile(file);
+        writeToFile(file);
     }
 
     public long readFromClasspath(String subPath) throws IOException {
         File subPathFile = new File(subPath);
-        this.setName(subPathFile.getName());
+        setName(subPathFile.getName());
         InputStream inputStream = null;
         try {
             inputStream = ClassLoaderUtils.getResourceAsStream(subPath, getClass());
             Assert.notNull(inputStream
                     , "Parameter \"subPath\" not found in classpath. ");
-            return this.read(inputStream);
+            return read(inputStream);
         }
         finally {
             CloseUtils.closeQuietly(inputStream);

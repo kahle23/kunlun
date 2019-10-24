@@ -7,14 +7,14 @@ import artoria.util.ClassUtils;
 
 import java.util.Date;
 
-import static artoria.common.Constants.DEFAULT_DATE_PATTERN;
+import static artoria.common.Constants.DEFAULT_DATETIME_PATTERN;
 
 /**
  * Date converter.
  * @author Kahle
  */
 public class DateConverter implements TypeConverter {
-    private String datePattern = DEFAULT_DATE_PATTERN;
+    private String datePattern = DEFAULT_DATETIME_PATTERN;
 
     public String getDatePattern() {
 
@@ -55,10 +55,10 @@ public class DateConverter implements TypeConverter {
             return source;
         }
         if (Date.class.isAssignableFrom(target)) {
-            return this.dateToDate(source, target);
+            return dateToDate(source, target);
         }
         if (String.class.isAssignableFrom(target)) {
-            return this.dateToString(source, target);
+            return dateToString(source, target);
         }
         return source;
     }

@@ -326,7 +326,7 @@ public class DateUtils {
 
     public static Date parse(String dateString) throws ParseException {
 
-        return DateUtils.parse(dateString, DEFAULT_DATE_PATTERN);
+        return DateUtils.parse(dateString, DEFAULT_DATETIME_PATTERN);
     }
 
     public static Date parse(String dateString, String pattern) throws ParseException {
@@ -346,17 +346,17 @@ public class DateUtils {
 
     public static String format(Date date) {
 
-        return DateUtils.format(date, DEFAULT_DATE_PATTERN);
+        return DateUtils.format(date, DEFAULT_DATETIME_PATTERN);
     }
 
     public static String format(Long timestamp) {
 
-        return DateUtils.format(timestamp, DEFAULT_DATE_PATTERN);
+        return DateUtils.format(timestamp, DEFAULT_DATETIME_PATTERN);
     }
 
     public static String format(DateTime dateTime) {
 
-        return DateUtils.format(dateTime, DEFAULT_DATE_PATTERN);
+        return DateUtils.format(dateTime, DEFAULT_DATETIME_PATTERN);
     }
 
     public static String format(Date date, String pattern) {

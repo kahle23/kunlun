@@ -17,7 +17,7 @@ public class ClassLoaderUtilsTest {
 
     @Test
     public void testGetResource() throws IOException {
-        URL resource = ClassLoaderUtils.getResource("LICENSE.txt", this.getClass());
+        URL resource = ClassLoaderUtils.getResource("LICENSE.txt", getClass());
         log.info("url: {}", resource);
         assertNotNull(resource);
     }
@@ -25,7 +25,7 @@ public class ClassLoaderUtilsTest {
     @Test
     public void testGetResources() throws IOException {
         List<URL> urlList = ClassLoaderUtils
-                .getResources("LICENSE.txt", this.getClass());
+                .getResources("LICENSE.txt", getClass());
         for (URL url : urlList) {
             log.info("url: {}", url);
             assertNotNull(url);
@@ -35,7 +35,7 @@ public class ClassLoaderUtilsTest {
     @Test
     public void testGetResourceAsStream() throws IOException {
         InputStream in = ClassLoaderUtils
-                .getResourceAsStream("jdbc.properties", this.getClass());
+                .getResourceAsStream("jdbc.properties", getClass());
         assertNotNull(in);
         log.info(IOUtils.toString(in));
     }
@@ -43,7 +43,7 @@ public class ClassLoaderUtilsTest {
     @Test
     public void testLoadClass() throws ClassNotFoundException {
         Class<?> loadClass = ClassLoaderUtils
-                .loadClass("artoria.util.CollectionUtils", this.getClass());
+                .loadClass("artoria.util.CollectionUtils", getClass());
         log.info("loadClass: {}", loadClass);
         assertNotNull(loadClass);
     }
