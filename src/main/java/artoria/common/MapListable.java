@@ -7,7 +7,7 @@ import java.util.Map;
  * Can convert to or convert back from map list.
  * @author Kahle
  */
-public interface Mappables {
+public interface MapListable extends Listable {
 
     /**
      * Convert to map list.

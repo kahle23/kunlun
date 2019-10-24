@@ -121,7 +121,7 @@ public class Csv extends TextFile implements Table {
     public void write(Writer writer) throws IOException {
         Assert.notNull(writer, "Parameter \"writer\" must not null. ");
         if (CollectionUtils.isEmpty(content)) { return; }
-        writer.write(this.toString());
+        writer.write(toString());
     }
 
     @Override
@@ -132,13 +132,13 @@ public class Csv extends TextFile implements Table {
 
     @Override
     public int getLastCellNumber(int rowNumber) {
-        List<?> rowContent = this.getRowContent(rowNumber);
+        List<?> rowContent = getRowContent(rowNumber);
         return rowContent != null ? rowContent.size() : ZERO;
     }
 
     @Override
     public List<Object> getRowContent(int rowNumber) {
-        int lastRowNumber = this.getLastRowNumber();
+        int lastRowNumber = getLastRowNumber();
         Assert.state(rowNumber > ZERO && rowNumber <= lastRowNumber
                 , "Parameter \"rowNumber\" must > 0 and <= last row number. ");
         List<String> row = content.get(rowNumber - ONE);
@@ -152,7 +152,7 @@ public class Csv extends TextFile implements Table {
     public void setRowContent(int rowNumber, List<?> rowContent) {
         Assert.state(rowNumber > ZERO, "Parameter \"rowNumber\" must > 0. ");
         Assert.notNull(rowContent, "Parameter \"rowContent\" must not null. ");
-        int lastRowNumber = this.getLastRowNumber();
+        int lastRowNumber = getLastRowNumber();
         if (rowNumber > lastRowNumber) {
             for (int i = lastRowNumber; i <= rowNumber; i++) {
                 content.add(new ArrayList<String>());
@@ -167,10 +167,10 @@ public class Csv extends TextFile implements Table {
 
     @Override
     public Object getCellContent(int rowNumber, int columnNumber) {
-        int lastCellNumber = this.getLastCellNumber(rowNumber);
+        int lastCellNumber = getLastCellNumber(rowNumber);
         Assert.state(columnNumber > ZERO && columnNumber <= lastCellNumber
                 , "Parameter \"columnNumber\" must > 0 and <= last cell number. ");
-        List<Object> rowContent = this.getRowContent(rowNumber);
+        List<Object> rowContent = getRowContent(rowNumber);
         return rowContent != null ? rowContent.get(columnNumber - ONE) : null;
     }
 
@@ -180,11 +180,11 @@ public class Csv extends TextFile implements Table {
         Assert.state(columnNumber > ZERO, "Parameter \"columnNumber\" must > 0. ");
         Assert.notNull(cellContent, "Parameter \"cellContent\" must not null. ");
         List<String> row;
-        int lastRowNumber = this.getLastRowNumber();
+        int lastRowNumber = getLastRowNumber();
         if (rowNumber > lastRowNumber
                 || (row = content.get(rowNumber - ONE)) == null) {
             row = new ArrayList<String>();
-            this.setRowContent(rowNumber, row);
+            setRowContent(rowNumber, row);
         }
         int rowSize = row.size();
         if (columnNumber > rowSize) {
@@ -238,8 +238,8 @@ public class Csv extends TextFile implements Table {
                 , "Parameter \"propertyName\" must not blank. ");
         Assert.notBlank(headerName
                 , "Parameter \"headerName\" must not blank. ");
-        this.propertiesMapping.put(propertyName, headerName);
-        this.headersMapping.put(headerName, propertyName);
+        propertiesMapping.put(propertyName, headerName);
+        headersMapping.put(headerName, propertyName);
     }
 
     @Override
@@ -251,8 +251,8 @@ public class Csv extends TextFile implements Table {
                     ? entry.getKey().toString() : EMPTY_STRING;
             String val = entry.getValue() != null
                     ? entry.getValue().toString() : EMPTY_STRING;
-            this.propertiesMapping.put(val, key);
-            this.headersMapping.put(key, val);
+            propertiesMapping.put(val, key);
+            headersMapping.put(key, val);
         }
     }
 
@@ -261,9 +261,9 @@ public class Csv extends TextFile implements Table {
         Assert.notNull(headerName
                 , "Parameter \"headerName\" must not null. ");
         if (!headersMapping.containsKey(headerName)) { return; }
-        String propertyName = this.headersMapping.get(headerName);
-        this.propertiesMapping.remove(propertyName);
-        this.headersMapping.remove(headerName);
+        String propertyName = headersMapping.get(headerName);
+        propertiesMapping.remove(propertyName);
+        headersMapping.remove(headerName);
     }
 
     @Override
@@ -271,21 +271,21 @@ public class Csv extends TextFile implements Table {
         Assert.notNull(propertyName
                 , "Parameter \"propertyName\" must not null. ");
         if (!propertiesMapping.containsKey(propertyName)) { return; }
-        String headerName = this.propertiesMapping.get(propertyName);
-        this.propertiesMapping.remove(propertyName);
-        this.headersMapping.remove(headerName);
+        String headerName = propertiesMapping.get(propertyName);
+        propertiesMapping.remove(propertyName);
+        headersMapping.remove(headerName);
     }
 
     @Override
     public void clearHeaders() {
-        this.headersMapping.clear();
-        this.propertiesMapping.clear();
+        headersMapping.clear();
+        propertiesMapping.clear();
     }
 
     @Override
     public <T> List<T> toBeanList(Class<T> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        List<Map<String, Object>> mapList = this.toMapList();
+        List<Map<String, Object>> mapList = toMapList();
         return BeanUtils.mapToBeanInList(mapList, clazz);
     }
 
@@ -293,7 +293,7 @@ public class Csv extends TextFile implements Table {
     public <T> void fromBeanList(List<T> beanList) {
         Assert.notEmpty(beanList, "Parameter \"beanList\" must not empty. ");
         List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(beanList);
-        this.fromMapList(mapList);
+        fromMapList(mapList);
     }
 
     @Override

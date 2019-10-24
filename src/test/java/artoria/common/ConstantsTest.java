@@ -11,12 +11,13 @@ public class ConstantsTest {
 
     @Test
     public void test1() {
-        log.info(CLASSPATH);
-        log.info(ROOT_PATH);
+        log.info(NEWLINE);
         log.info(FILE_SEPARATOR);
         log.info(PATH_SEPARATOR);
+        log.info(COMPUTER_NAME);
+        log.info(ROOT_PATH);
+        log.info(CLASSPATH);
         log.info(DEFAULT_CHARSET_NAME);
-        log.info(NEWLINE);
         log.info(GET);
     }
 

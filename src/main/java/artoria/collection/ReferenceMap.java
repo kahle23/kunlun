@@ -2,6 +2,7 @@ package artoria.collection;
 
 import artoria.util.CollectionUtils;
 import artoria.util.MapUtils;
+import artoria.util.ObjectUtils;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
@@ -36,18 +37,16 @@ public class ReferenceMap<K, V> implements Map<K, V> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void processQueue() {
         ValueCell<K, V> valueCell;
-        while ((valueCell = (ValueCell) queue.poll()) != null) {
+        while ((valueCell = ObjectUtils.cast(queue.poll())) != null) {
             internalMap.remove(valueCell.getKey());
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public V get(Object key) {
-        this.processQueue();
+        processQueue();
         ValueCell<K, V> value = internalMap.get(key);
         if (value == null) { return null; }
         // Unwrap the 'real' value from the Reference.
@@ -55,7 +54,8 @@ public class ReferenceMap<K, V> implements Map<K, V> {
         if (result == null) {
             // The wrapped value was garbage collected,
             // So remove this entry from the backing internalMap.
-            internalMap.remove((K) key);
+            K keyCast = ObjectUtils.cast(key);
+            internalMap.remove(keyCast);
         }
         return result;
     }
@@ -72,13 +72,13 @@ public class ReferenceMap<K, V> implements Map<K, V> {
         return internalMap.containsKey(key);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean containsValue(Object value) {
         processQueue();
         Collection<V> values = values();
+        V valCast = ObjectUtils.cast(value);
         boolean notEmpty = CollectionUtils.isNotEmpty(values);
-        return notEmpty && values.contains((V) value);
+        return notEmpty && values.contains(valCast);
     }
 
     @Override

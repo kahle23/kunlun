@@ -1,10 +1,7 @@
 package artoria.reflect;
 
 import artoria.exception.ExceptionUtils;
-import artoria.util.ArrayUtils;
-import artoria.util.Assert;
-import artoria.util.ClassUtils;
-import artoria.util.StringUtils;
+import artoria.util.*;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -93,14 +90,12 @@ public class SimpleReflecter implements Reflecter {
         return constructor.newInstance(args);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> Constructor<T>[] findConstructors(Class<T> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        return (Constructor<T>[]) clazz.getDeclaredConstructors();
+        return ObjectUtils.cast(clazz.getDeclaredConstructors());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
@@ -116,7 +111,7 @@ public class SimpleReflecter implements Reflecter {
             for (Constructor<?> ct : cts) {
                 Class<?>[] pTypes = ct.getParameterTypes();
                 boolean b = matchParameterTypes(pTypes, parameterTypes);
-                if (b) { return (Constructor<T>) ct; }
+                if (b) { return ObjectUtils.cast(ct); }
             }
             throw e;
         }

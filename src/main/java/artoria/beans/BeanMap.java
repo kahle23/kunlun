@@ -12,7 +12,7 @@ import static artoria.common.Constants.*;
  * Bean map.
  * @author Kahle
  */
-public abstract class BeanMap implements Map, Cloneable {
+public abstract class BeanMap implements Map<Object, Object>, Cloneable {
     private TypeConverter typeConverter;
     private Object bean;
 
@@ -73,7 +73,7 @@ public abstract class BeanMap implements Map, Cloneable {
 
     @Override
     public boolean containsValue(Object value) {
-        Set keys = keySet();
+        Set<Object> keys = keySet();
         for (Object key : keys) {
             Object thisVal = get(key);
             boolean isEqual = (
@@ -105,8 +105,8 @@ public abstract class BeanMap implements Map, Cloneable {
     }
 
     @Override
-    public void putAll(Map map) {
-        Set keys = keySet();
+    public void putAll(Map<?, ?> map) {
+        Set<Object> keys = keySet();
         for (Object key : keys) {
             put(key, map.get(key));
         }
@@ -118,27 +118,25 @@ public abstract class BeanMap implements Map, Cloneable {
         throw new UnsupportedOperationException();
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public Collection values() {
-        Set keys = keySet();
-        List values = new ArrayList(keys.size());
+    public Collection<Object> values() {
+        Set<Object> keys = keySet();
+        List<Object> values = new ArrayList<Object>(keys.size());
         for (Object key : keys) {
             values.add(get(key));
         }
         return Collections.unmodifiableCollection(values);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public Set<Entry> entrySet() {
-        Set keys = keySet();
+    public Set<Entry<Object, Object>> entrySet() {
+        Set<Object> keys = keySet();
         int size = keys.size();
-        HashMap copy = new HashMap(size);
+        Map<Object, Object> newMap = new HashMap<Object, Object>(size);
         for (Object key : keys) {
-            copy.put(key, get(key));
+            newMap.put(key, get(key));
         }
-        return Collections.unmodifiableMap(copy).entrySet();
+        return Collections.unmodifiableMap(newMap).entrySet();
     }
 
     @Override

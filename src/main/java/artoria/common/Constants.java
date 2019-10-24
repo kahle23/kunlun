@@ -11,19 +11,20 @@ import java.nio.charset.Charset;
 public class Constants {
 
     public static final String NEWLINE = System.getProperty("line.separator");
-    public static final String CLASSPATH = FilenameUtils.getClasspath();
-    public static final String ROOT_PATH = FilenameUtils.getRootPath();
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
     public static final String PATH_SEPARATOR = System.getProperty("path.separator");
-    public static final String COMPUTER_NAME = System.getenv("COMPUTERNAME");
-    public static final String FILLED_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-    public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
+    public static final String COMPUTER_NAME = System.getenv("ComputerName");
+    public static final String ROOT_PATH = FilenameUtils.getRootPath();
+    public static final String CLASSPATH = FilenameUtils.getClasspath();
+    public static final String DEFAULT_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
+    public static final String ISO8601_DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+
     public static final String GBK = "GBK";
     public static final String UTF_8 = "UTF-8";
     public static final String GB2312 = "GB2312";
     public static final String ISO_8859_1 = "ISO-8859-1";
-    public static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
     public static final String DEFAULT_ENCODING_NAME = UTF_8;
+    public static final String DEFAULT_CHARSET_NAME = Charset.defaultCharset().name();
 
     public static final String ON = "on";
     public static final String NO = "no";
@@ -42,6 +43,8 @@ public class Constants {
     public static final String SUCCESS = "success";
     public static final String DEFAULT = "default";
     public static final String UNKNOWN = "unknown";
+    public static final String ONE_STR = "1";
+    public static final String ZERO_STR = "0";
 
     public static final String MD2 = "MD2";
     public static final String MD5 = "MD5";

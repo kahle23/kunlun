@@ -10,8 +10,8 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.*;
 
-import static artoria.common.Constants.DEFAULT_DATE_PATTERN;
-import static artoria.common.Constants.FILLED_DATE_PATTERN;
+import static artoria.common.Constants.DEFAULT_DATETIME_PATTERN;
+import static artoria.common.Constants.ISO8601_DATETIME_PATTERN;
 
 /**
  * String converter.
@@ -22,14 +22,14 @@ public class StringConverter implements TypeConverter {
 
     public StringConverter() {
         datePatterns.addAll(Arrays.asList(
-                DEFAULT_DATE_PATTERN,
+                DEFAULT_DATETIME_PATTERN,
                 "yyyy-MM-dd HH:mm:ss",
                 "yyyy-MM-dd HH:mm",
                 "yyyy-MM-dd",
                 "yyyy/MM/dd HH:mm:ss",
                 "yyyy/MM/dd HH:mm",
                 "yyyy/MM/dd",
-                FILLED_DATE_PATTERN
+                ISO8601_DATETIME_PATTERN
         ));
     }
 
@@ -95,10 +95,10 @@ public class StringConverter implements TypeConverter {
             return TypeConvertUtils.convert(decimal, target);
         }
         if (Boolean.class.isAssignableFrom(target)) {
-            return this.stringToBoolean(source, target);
+            return stringToBoolean(source, target);
         }
         if (Date.class.isAssignableFrom(target)) {
-            return this.stringToDate(source, target);
+            return stringToDate(source, target);
         }
         return source;
     }

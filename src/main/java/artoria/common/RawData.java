@@ -1,51 +1,23 @@
 package artoria.common;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
- * Provide access to raw data. Resolve the problem of passing attributes that do not exist.
+ * Provide access to raw data.
  * @author Kahle
  */
 public interface RawData extends Serializable {
 
     /**
-     * Get data value by name.
-     * @param name Data name
-     * @return Data value
+     * Get raw data object.
+     * @return Raw data object
      */
-    Object get(String name);
+    Object rawData();
 
     /**
-     * Stores the data name and value in the raw data.
-     * @param name Data name
-     * @param value Data value
-     * @return Old data value if have
+     * Set raw data object.
+     * @param rawData Raw data object
      */
-    Object put(String name, Object value);
-
-    /**
-     * Remove the data value by name.
-     * @param name Data name
-     * @return Removed data value if have
-     */
-    Object remove(String name);
-
-    /**
-     * Batch add raw data.
-     * @param data Raw data to be added
-     */
-    void putAll(Map<String, Object> data);
-
-    /**
-     * Clear all raw data.
-     */
-    void clear();
-
-    /**
-     * Get all raw data.
-     * @return All raw data
-     */
-    Map<String, Object> rawData();
+    void rawData(Object rawData);
 
 }
