@@ -5,10 +5,12 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 import artoria.util.ObjectUtils;
+import artoria.util.StringUtils;
 
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static artoria.common.Constants.*;
 
@@ -17,6 +19,7 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class DateUtils {
+    private static final Set<String> DATE_PATTERNS = new HashSet<String>();
     private static final Class<? extends DateTime> DEFAULT_TIME_TYPE;
     private static final DateFormatter DEFAULT_DATE_FORMATTER;
     private static final DateParser DEFAULT_DATE_PARSER;
@@ -30,6 +33,16 @@ public class DateUtils {
         DEFAULT_DATE_FORMATTER = formatter;
         DEFAULT_DATE_PARSER = formatter;
         DEFAULT_TIME_TYPE = SimpleDateTime.class;
+        DateUtils.register("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DateUtils.register("yyyy-MM-dd'T'HH:mm:ssZ");
+        DateUtils.register("yyyy-MM-dd HH:mm:ss");
+        DateUtils.register("yyyy-MM-dd HH:mm");
+        DateUtils.register("yyyy-MM-dd");
+        DateUtils.register("yyyy/MM/dd HH:mm:ss");
+        DateUtils.register("yyyy/MM/dd HH:mm");
+        DateUtils.register("yyyy/MM/dd");
+        DateUtils.register(DEFAULT_DATETIME_PATTERN);
+        DateUtils.register(FULL_DATETIME_PATTERN);
     }
 
     public static Class<? extends DateTime> getTimeType() {
@@ -65,6 +78,18 @@ public class DateUtils {
         DateUtils.dateParser = parser;
     }
 
+    public static void unregister(String datePattern) {
+        Assert.notBlank(datePattern, "Parameter \"datePattern\" must not blank. ");
+        DATE_PATTERNS.remove(datePattern);
+        log.info("Unregister date pattern \"{}\" success. ", datePattern);
+    }
+
+    public static void register(String datePattern) {
+        Assert.notBlank(datePattern, "Parameter \"datePattern\" must not blank. ");
+        DATE_PATTERNS.add(datePattern);
+        log.info("Register date pattern \"{}\" success. ", datePattern);
+    }
+
     public static DateTime create() {
         try {
             return getTimeType().newInstance();
@@ -92,13 +117,13 @@ public class DateUtils {
         return dateTime.setTimeInMillis(timestamp);
     }
 
-    public static DateTime create(String dateString) throws ParseException {
+    public static DateTime create(String dateString) {
         Date date = DateUtils.parse(dateString);
         DateTime dateTime = DateUtils.create();
         return dateTime.setDate(date);
     }
 
-    public static DateTime create(String dateString, String pattern) throws ParseException {
+    public static DateTime create(String dateString, String pattern) {
         DateTime dateTime = DateUtils.create();
         Date date = DateUtils.parse(dateString, pattern);
         return dateTime.setDate(date);
@@ -324,14 +349,28 @@ public class DateUtils {
         return new Date(timestamp);
     }
 
-    public static Date parse(String dateString) throws ParseException {
-
-        return DateUtils.parse(dateString, DEFAULT_DATETIME_PATTERN);
+    public static Date parse(String dateString) {
+        if (StringUtils.isBlank(dateString)) { return null; }
+        for (String datePattern : DATE_PATTERNS) {
+            try {
+                return DateUtils.parse(dateString, datePattern);
+            }
+            catch (Exception e) {
+                log.debug("It's ok. ", e);
+            }
+        }
+        throw new UnsupportedOperationException(
+                "All registered date pattern are not supported. "
+        );
     }
 
-    public static Date parse(String dateString, String pattern) throws ParseException {
-
-        return getDateParser().parse(dateString, pattern);
+    public static Date parse(String dateString, String pattern) {
+        try {
+            return getDateParser().parse(dateString, pattern);
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
+        }
     }
 
     public static String format() {

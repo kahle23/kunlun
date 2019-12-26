@@ -126,7 +126,8 @@ public class BeanUtils {
     public static <F, T> T beanToBean(F from, T to) {
         if (from == null) { return null; }
         if (from instanceof Map) {
-            BeanUtils.copy((Map) from, to);
+            Map<Object, Object> castMap = ObjectUtils.cast(from);
+            BeanUtils.copy(castMap, to);
         }
         else {
             BeanUtils.copy(from, to);
@@ -139,7 +140,8 @@ public class BeanUtils {
         try {
             T to = toClass.newInstance();
             if (from instanceof Map) {
-                BeanUtils.copy((Map) from, to);
+                Map<Object, Object> castMap = ObjectUtils.cast(from);
+                BeanUtils.copy(castMap, to);
             }
             else {
                 BeanUtils.copy(from, to);

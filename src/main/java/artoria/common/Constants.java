@@ -6,6 +6,8 @@ import java.nio.charset.Charset;
 
 /**
  * Common constants.
+ * @see <a href="https://en.wikipedia.org/wiki/Carriage_return">Carriage return</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Newline#Escape_sequences">Line feed</a>
  * @author Kahle
  */
 public class Constants {
@@ -17,7 +19,7 @@ public class Constants {
     public static final String ROOT_PATH = FilenameUtils.getRootPath();
     public static final String CLASSPATH = FilenameUtils.getClasspath();
     public static final String DEFAULT_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
-    public static final String ISO8601_DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public static final String FULL_DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     public static final String GBK = "GBK";
     public static final String UTF_8 = "UTF-8";
@@ -87,6 +89,7 @@ public class Constants {
     public static final String SEMICOLON = ";";
     public static final String UNDERLINE = "_";
     public static final String AMPERSAND = "&";
+    public static final String LINE_FEED = "\n";
     public static final String BACKSLASH = "\\";
     public static final String BACK_QUOTE = "`";
     public static final String CARET_SIGN = "^";
@@ -100,6 +103,7 @@ public class Constants {
     public static final String VERTICAL_BAR = "|";
     public static final String QUESTION_MARK = "?";
     public static final String LESS_THAN_SIGN = "<";
+    public static final String CARRIAGE_RETURN = "\r";
     public static final String EXCLAMATION_MARK = "!";
     public static final String GREATER_THAN_SIGN = ">";
     public static final String DOUBLE_VERTICAL_BAR = "||";
@@ -167,6 +171,7 @@ public class Constants {
     public static final int TWENTY_THREE = 23;
     public static final int TWENTY_FOUR = 24;
     public static final int TWENTY_FIVE = 25;
+    public static final int TWENTY_SIX = 26;
     public static final int THIRTY = 30;
     public static final int THIRTY_ONE = 31;
     public static final int THIRTY_TWO = 32;

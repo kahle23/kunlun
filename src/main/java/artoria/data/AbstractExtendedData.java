@@ -1,4 +1,4 @@
-package artoria.common;
+package artoria.data;
 
 import artoria.beans.BeanUtils;
 import artoria.util.MapUtils;
@@ -14,7 +14,7 @@ import static artoria.common.Constants.TWENTY;
  * Abstract extended data.
  * @author Kahle
  */
-public abstract class AbstractExtendedData implements ExtendedData, Mappable, Serializable {
+public abstract class AbstractExtendedData implements ExtendedData, Mappable, Beanable, Serializable {
     private Map<String, Object> extendedData = new HashMap<String, Object>();
 
     @Override
@@ -67,6 +67,18 @@ public abstract class AbstractExtendedData implements ExtendedData, Mappable, Se
         if (MapUtils.isEmpty(map)) { return; }
         BeanUtils.copy(map, this);
         putAll(map);
+    }
+
+    @Override
+    public <T> T toBean(Class<T> clazz) {
+        Map<String, Object> objectMap = toMap();
+        return BeanUtils.mapToBean(objectMap, clazz);
+    }
+
+    @Override
+    public <T> void fromBean(T bean) {
+        Map<String, Object> objectMap = BeanUtils.beanToMap(bean);
+        fromMap(objectMap);
     }
 
 }

@@ -43,7 +43,7 @@ public class ExceptionUtilsTest {
             throw new IOException("throwException2 >> IOException");
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e, UncheckedException.class);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

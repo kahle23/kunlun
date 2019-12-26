@@ -7,46 +7,13 @@ import artoria.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.ParseException;
-import java.util.*;
-
-import static artoria.common.Constants.DEFAULT_DATETIME_PATTERN;
-import static artoria.common.Constants.ISO8601_DATETIME_PATTERN;
+import java.util.Date;
 
 /**
  * String converter.
  * @author Kahle
  */
 public class StringConverter implements TypeConverter {
-    private Set<String> datePatterns = new HashSet<String>();
-
-    public StringConverter() {
-        datePatterns.addAll(Arrays.asList(
-                DEFAULT_DATETIME_PATTERN,
-                "yyyy-MM-dd HH:mm:ss",
-                "yyyy-MM-dd HH:mm",
-                "yyyy-MM-dd",
-                "yyyy/MM/dd HH:mm:ss",
-                "yyyy/MM/dd HH:mm",
-                "yyyy/MM/dd",
-                ISO8601_DATETIME_PATTERN
-        ));
-    }
-
-    public Set<String> getDatePatterns() {
-
-        return Collections.unmodifiableSet(datePatterns);
-    }
-
-    public void addDatePatterns(String... datePatterns) {
-        Assert.notEmpty(datePatterns, "Parameter \"datePatterns\" must not empty. ");
-        this.datePatterns.addAll(Arrays.asList(datePatterns));
-    }
-
-    public void addDatePatterns(Collection<String> datePatterns) {
-        Assert.notEmpty(datePatterns, "Parameter \"datePatterns\" must not empty. ");
-        this.datePatterns.addAll(datePatterns);
-    }
 
     protected Object stringToDate(Object source, Class<?> target) {
         String srcStr = (String) source;
@@ -56,13 +23,12 @@ public class StringConverter implements TypeConverter {
             // So hand on NumberConverter
             return TypeConvertUtils.convert(bInt, target);
         }
-        for (String datePattern : datePatterns) {
-            try {
-                Date date = DateUtils.parse(srcStr, datePattern);
-                return TypeConvertUtils.convert(date, target);
-            }
-            catch (ParseException e) {
-            }
+        try {
+            Date date = DateUtils.parse(srcStr);
+            return TypeConvertUtils.convert(date, target);
+        }
+        catch (Exception e) {
+            // Do nothing.
         }
         return source;
     }

@@ -74,7 +74,7 @@ public class SimpleRenderer implements Renderer {
             render(data, (Writer) output, template);
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e, RenderException.class);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

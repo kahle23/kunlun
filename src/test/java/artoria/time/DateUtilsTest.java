@@ -4,7 +4,6 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -33,7 +32,8 @@ public class DateUtilsTest {
         log.info("");
 
         String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-//        String pattern = "yyyy-MM-dd'T'HH:mm:ss.Z";
+//        String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+//        String pattern = "yyyy-MM-dd'T'HH:mm:ssZ";
         log.info("Test format, The date will new, The pattern is \"{}\". ", pattern);
         log.info("The method format(), result: {}", DateUtils.format());
         log.info("The method format(Long), result: {}", DateUtils.format(System.currentTimeMillis()));
@@ -46,7 +46,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testParseFormat() throws ParseException {
+    public void testParseFormat() {
         log.info("");
 
         log.info("The method parse(Long), result: {}", DateUtils.parse(DateUtils.create().getTimeInMillis()));
