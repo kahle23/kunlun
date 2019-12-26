@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public class Assert {
     // "Parameter \"parameter\" must not blank. "
+    // "Variable \"variable\" must not null. "
 
     public static void state(boolean expression, String message) {
         if (!expression) {

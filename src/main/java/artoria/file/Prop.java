@@ -1,8 +1,8 @@
 package artoria.file;
 
 import artoria.beans.BeanUtils;
-import artoria.common.Beanable;
-import artoria.common.Mappable;
+import artoria.data.Beanable;
+import artoria.data.Mappable;
 import artoria.exception.ExceptionUtils;
 import artoria.io.IOUtils;
 import artoria.io.StringBuilderWriter;
@@ -19,7 +19,7 @@ import java.util.Properties;
  * Properties file.
  * @author Kahle
  */
-public class Prop extends TextFile implements Beanable, Mappable {
+public class Prop extends TextFile implements Mappable, Beanable {
     private Properties properties;
 
     public Prop() {
@@ -86,18 +86,6 @@ public class Prop extends TextFile implements Beanable, Mappable {
     }
 
     @Override
-    public <T> T toBean(Class<T> clazz) {
-        Map<String, Object> beanMap = toMap();
-        return BeanUtils.mapToBean(beanMap, clazz);
-    }
-
-    @Override
-    public <T> void fromBean(T bean) {
-        Map<String, Object> beanMap = BeanUtils.beanToMap(bean);
-        fromMap(beanMap);
-    }
-
-    @Override
     public Map<String, Object> toMap() {
         Map<String, Object> result =
                 new HashMap<String, Object>(properties.size());
@@ -114,6 +102,18 @@ public class Prop extends TextFile implements Beanable, Mappable {
         properties.clear();
         if (MapUtils.isEmpty(map)) { return; }
         properties.putAll(map);
+    }
+
+    @Override
+    public <T> T toBean(Class<T> clazz) {
+        Map<String, Object> beanMap = toMap();
+        return BeanUtils.mapToBean(beanMap, clazz);
+    }
+
+    @Override
+    public <T> void fromBean(T bean) {
+        Map<String, Object> beanMap = BeanUtils.beanToMap(bean);
+        fromMap(beanMap);
     }
 
     @Override

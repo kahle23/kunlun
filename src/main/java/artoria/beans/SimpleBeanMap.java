@@ -120,7 +120,7 @@ public class SimpleBeanMap extends BeanMap {
 
     @Override
     public Set<Object> keySet() {
-        Set keys = readMethods.keySet();
+        Set<String> keys = readMethods.keySet();
         return ObjectUtils.cast(Collections.unmodifiableSet(keys));
     }
 

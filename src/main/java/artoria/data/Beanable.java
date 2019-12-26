@@ -1,4 +1,4 @@
-package artoria.common;
+package artoria.data;
 
 /**
  * Can convert to or convert back from bean.

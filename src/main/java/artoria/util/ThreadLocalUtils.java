@@ -3,13 +3,14 @@ package artoria.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import static artoria.common.Constants.TWENTY;
+
 /**
  * ThreadLocal tools.
  * @author Kahle
  */
 public class ThreadLocalUtils {
     private static final ThreadLocal<HashMap<Object, Object>> THREAD_BUCKET = new ThreadLocal<HashMap<Object, Object>>();
-    private static final Integer DEFAULT_INITIAL_CAPACITY = 8;
 
     public static Object getValue(Object key) {
         Map<Object, Object> bucket = THREAD_BUCKET.get();
@@ -20,7 +21,7 @@ public class ThreadLocalUtils {
     public static void setValue(Object key, Object value) {
         HashMap<Object, Object> bucket = THREAD_BUCKET.get();
         if (bucket == null) {
-            bucket = new HashMap<Object, Object>(DEFAULT_INITIAL_CAPACITY);
+            bucket = new HashMap<Object, Object>(TWENTY);
             THREAD_BUCKET.set(bucket);
         }
         bucket.put(key, value);

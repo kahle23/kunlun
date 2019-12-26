@@ -42,6 +42,7 @@ public enum InternalErrorCode implements ErrorCode {
     InternalErrorCode(String code, String description) {
         this.code = code;
         this.description = description;
+        this.message = description;
     }
 
     InternalErrorCode(String code, String description, String message) {

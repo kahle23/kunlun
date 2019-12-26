@@ -51,7 +51,7 @@ public class LoggerRenderer implements Renderer {
             if (start < format.length()) { writer.write(format.substring(start)); }
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e, RenderException.class);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

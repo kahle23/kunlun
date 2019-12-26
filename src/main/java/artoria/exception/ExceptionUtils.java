@@ -2,7 +2,6 @@ package artoria.exception;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.reflect.ReflectUtils;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -17,18 +16,6 @@ public class ExceptionUtils {
     public static RuntimeException wrap(Exception cause) {
         boolean isRE = cause instanceof RuntimeException;
         return isRE ? (RuntimeException) cause : new UncheckedException(cause);
-    }
-
-    public static RuntimeException wrap(Exception cause, Class<? extends RuntimeException> clazz) {
-        try {
-            if (cause instanceof RuntimeException) {
-                return (RuntimeException) cause;
-            }
-            return ReflectUtils.newInstance(clazz, cause);
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
     }
 
     public static String toString(Throwable t) {

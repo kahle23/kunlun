@@ -1,7 +1,7 @@
 package artoria.file;
 
-import artoria.common.BeanListable;
-import artoria.common.MapListable;
+import artoria.data.BeanListable;
+import artoria.data.MapListable;
 
 import java.util.List;
 import java.util.Map;

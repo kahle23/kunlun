@@ -108,7 +108,7 @@ public class DatabaseClient {
         }
         catch (Exception e) {
             rollbackTransaction(connection);
-            throw ExceptionUtils.wrap(e, DatabaseException.class);
+            throw ExceptionUtils.wrap(e);
         }
         finally {
             closeTransaction(connection, autoCommit);

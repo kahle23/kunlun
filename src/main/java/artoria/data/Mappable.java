@@ -1,4 +1,4 @@
-package artoria.common;
+package artoria.data;
 
 import java.util.Map;
 
