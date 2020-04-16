@@ -44,6 +44,13 @@ public class NetUtilsTest {
     }
 
     @Test
+    public void testGetHostName() throws Exception {
+        log.info("{}", NetUtils.getHostName());
+        log.info("{}", NetUtils.getHostName());
+        log.info("{}", NetUtils.getHostName());
+    }
+
+    @Test
     public void testGetLocalHost() throws Exception {
         InetAddress localHost = NetUtils.getLocalHost();
         log.info(localHost.toString());

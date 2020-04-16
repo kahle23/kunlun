@@ -1,6 +1,9 @@
 package artoria.common;
 
 import artoria.file.FilenameUtils;
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
+import artoria.net.NetUtils;
 
 import java.nio.charset.Charset;
 
@@ -11,6 +14,7 @@ import java.nio.charset.Charset;
  * @author Kahle
  */
 public class Constants {
+    private static Logger log = LoggerFactory.getLogger(Constants.class);
 
     public static final String NEWLINE = System.getProperty("line.separator");
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
@@ -20,6 +24,7 @@ public class Constants {
     public static final String CLASSPATH = FilenameUtils.getClasspath();
     public static final String DEFAULT_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
     public static final String FULL_DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public static final String HOST_NAME = NetUtils.getHostName();
 
     public static final String GBK = "GBK";
     public static final String UTF_8 = "UTF-8";

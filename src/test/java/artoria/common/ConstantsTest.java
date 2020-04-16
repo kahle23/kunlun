@@ -17,6 +17,7 @@ public class ConstantsTest {
         log.info(COMPUTER_NAME);
         log.info(ROOT_PATH);
         log.info(CLASSPATH);
+        log.info(HOST_NAME);
         log.info(DEFAULT_CHARSET_NAME);
         log.info(GET);
     }

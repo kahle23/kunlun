@@ -157,8 +157,7 @@ public class SimpleDataSource implements DataSource {
         throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
     }
 
-//     TODO: 1.7
-//    @Override
+    @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
 
         throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);

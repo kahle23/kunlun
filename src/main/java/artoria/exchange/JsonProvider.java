@@ -23,11 +23,11 @@ public interface JsonProvider {
 
     /**
      * Parse json string to java object.
-     * @param text Json string
+     * @param jsonString Json string
      * @param type Java object type
      * @param <T> Java object type you want return
      * @return Java object
      */
-    <T> T parseObject(String text, Type type);
+    <T> T parseObject(String jsonString, Type type);
 
 }

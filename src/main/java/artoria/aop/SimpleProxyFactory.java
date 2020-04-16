@@ -12,23 +12,13 @@ import java.lang.reflect.Proxy;
  * @author Kahle
  */
 public class SimpleProxyFactory implements ProxyFactory {
-    private static final ClassLoader LOADER = ClassLoaderUtils.getDefaultClassLoader();
+    private static final ClassLoader CLASS_LOADER = ClassLoaderUtils.getDefaultClassLoader();
 
     private static class InvocationHandlerAdapter implements InvocationHandler {
-        private Interceptor interceptor;
+        private final Interceptor interceptor;
 
         public InvocationHandlerAdapter(Interceptor interceptor) {
-
-            this.interceptor = interceptor;
-        }
-
-        public Interceptor getInterceptor() {
-
-            return interceptor;
-        }
-
-        public void setInterceptor(Interceptor interceptor) {
-
+            Assert.notNull(interceptor, "Parameter \"interceptor\" must not null. ");
             this.interceptor = interceptor;
         }
 
@@ -47,7 +37,7 @@ public class SimpleProxyFactory implements ProxyFactory {
         Class<?>[] interfaces = originalClass.isInterface() ?
                 new Class[]{ originalClass } : originalClass.getInterfaces();
         InvocationHandler handler = new InvocationHandlerAdapter(interceptor);
-        return Proxy.newProxyInstance(LOADER, interfaces, handler);
+        return Proxy.newProxyInstance(CLASS_LOADER, interfaces, handler);
     }
 
 }

@@ -32,7 +32,7 @@ public class SimpleJsonProvider implements JsonProvider {
     }
 
     @Override
-    public <T> T parseObject(String text, Type type) {
+    public <T> T parseObject(String jsonString, Type type) {
 
         throw new UnsupportedOperationException();
     }
