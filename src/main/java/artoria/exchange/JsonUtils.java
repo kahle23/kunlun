@@ -31,9 +31,9 @@ public class JsonUtils {
         return getJsonProvider().toJsonString(object);
     }
 
-    public static <T> T parseObject(String text, Type type) {
+    public static <T> T parseObject(String jsonString, Type type) {
 
-        return getJsonProvider().parseObject(text, type);
+        return getJsonProvider().parseObject(jsonString, type);
     }
 
 }

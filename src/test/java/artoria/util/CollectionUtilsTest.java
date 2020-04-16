@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CollectionUtilsTest {
@@ -22,6 +23,22 @@ public class CollectionUtilsTest {
         list.add(null);
         list.add(RandomUtils.nextObject(Person.class));
         list.add(RandomUtils.nextObject(Person.class));
+    }
+
+    @Test
+    public void removeDuplicateTest() {
+        List<Integer> list = new ArrayList<Integer>();
+        Collections.addAll(list, 1, 2, 1, 2, 1, 2, 3, 3, 5, 4);
+        CollectionUtils.removeDuplicate(list);
+        log.info(String.valueOf(list));
+    }
+
+    @Test
+    public void removeDuplicateWithOrderTest() {
+        List<Integer> list = new ArrayList<Integer>();
+        Collections.addAll(list, 1, 2, 1, 2, 1, 2, 3, 3, 5, 4);
+        CollectionUtils.removeDuplicateWithOrder(list);
+        log.info(String.valueOf(list));
     }
 
     @Test

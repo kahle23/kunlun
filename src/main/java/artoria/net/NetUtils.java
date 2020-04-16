@@ -75,6 +75,19 @@ public class NetUtils {
         }
     }
 
+    public static String getHostName() {
+        try {
+            InetAddress localHost = InetAddress.getLocalHost();
+            if (localHost != null) {
+                return localHost.getHostName();
+            }
+        }
+        catch (Exception e) {
+            log.info("The host name get failed. ", e);
+        }
+        return null;
+    }
+
     public static InetAddress getLocalHost() {
         try {
             return InetAddress.getLocalHost();
