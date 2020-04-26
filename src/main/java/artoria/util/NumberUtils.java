@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.Format;
 
+import static artoria.common.Constants.ZERO;
+
 /**
  * Number tools.
  * @author Kahle
@@ -20,7 +22,7 @@ public class NumberUtils {
     }
 
     public static void setDefaultRoundMode(RoundingMode roundMode) {
-
+        Assert.notNull(roundMode, "Parameter \"roundMode\" must not null. ");
         defaultRoundMode = roundMode;
     }
 
@@ -30,7 +32,7 @@ public class NumberUtils {
     }
 
     public static void setDefaultPattern(String pattern) {
-
+        Assert.notNull(pattern, "Parameter \"pattern\" must not null. ");
         defaultPattern = pattern;
     }
 
@@ -40,7 +42,7 @@ public class NumberUtils {
     }
 
     public static void setDefaultScale(int scale) {
-
+        Assert.isTrue(scale >= ZERO, "Parameter \"scale\" must greater than or equal to 0. ");
         defaultScale = scale;
     }
 
@@ -73,8 +75,8 @@ public class NumberUtils {
             decimal = new BigDecimal((String) input);
         }
         else if (input instanceof Number) {
-            double value = ((Number) input).doubleValue();
-            decimal = BigDecimal.valueOf(value);
+            String value = String.valueOf(input);
+            decimal = new BigDecimal(value);
         }
         else {
             throw new IllegalArgumentException("Parameter \"input\" must String or Number. ");

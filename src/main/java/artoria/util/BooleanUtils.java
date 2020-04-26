@@ -8,12 +8,21 @@ import static artoria.common.Constants.*;
  */
 public class BooleanUtils {
 
-    public static boolean parseBoolean(final String boolString) {
-        Boolean booleanObj = BooleanUtils.valueOf(boolString);
+    public static boolean parseBoolean(Object boolObject) {
+        Boolean booleanObj = BooleanUtils.valueOf(boolObject);
         return Boolean.TRUE.equals(booleanObj);
     }
 
-    public static Boolean valueOf(final String boolString) {
+    public static Boolean valueOf(Object boolObject) {
+        if (boolObject == null) { return null; }
+        if (boolObject instanceof Boolean) {
+            return (Boolean) boolObject;
+        }
+        String boolStr = String.valueOf(boolObject);
+        return BooleanUtils.valueOf(boolStr);
+    }
+
+    public static Boolean valueOf(String boolString) {
         if (boolString == null) { return null; }
         switch (boolString.length()) {
             case ONE: {

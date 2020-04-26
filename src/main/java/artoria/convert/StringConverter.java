@@ -1,4 +1,4 @@
-package artoria.converter;
+package artoria.convert;
 
 import artoria.time.DateUtils;
 import artoria.util.Assert;

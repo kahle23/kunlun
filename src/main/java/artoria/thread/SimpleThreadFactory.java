@@ -12,7 +12,7 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class SimpleThreadFactory implements ThreadFactory {
-    private final AtomicInteger current;
+    private final AtomicInteger counter;
     private final String threadNamePrefix;
     private final Boolean daemon;
     private final int stepLength;
@@ -30,7 +30,7 @@ public class SimpleThreadFactory implements ThreadFactory {
         if (!threadNamePrefix.endsWith(MINUS)) {
             threadNamePrefix += MINUS;
         }
-        this.current = new AtomicInteger(initialValue);
+        this.counter = new AtomicInteger(initialValue);
         this.threadNamePrefix = threadNamePrefix;
         this.stepLength = stepLength;
         this.daemon = daemon;
@@ -39,7 +39,7 @@ public class SimpleThreadFactory implements ThreadFactory {
     @Override
     public Thread newThread(Runnable runnable) {
         Assert.notNull(runnable, "Parameter \"runnable\" must not null. ");
-        int getAndAdd = current.getAndAdd(stepLength);
+        int getAndAdd = counter.getAndAdd(stepLength);
         String threadName = threadNamePrefix + getAndAdd;
         Thread thread = new Thread(runnable, threadName);
         thread.setDaemon(daemon);

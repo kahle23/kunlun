@@ -1,10 +1,10 @@
-package artoria.converter;
+package artoria.convert;
 
 import artoria.util.Assert;
 import artoria.util.ClassUtils;
 
 /**
- * Simple converter, So is mapping Object.
+ * Simple converter, so is mapping object.
  * @author Kahle
  */
 public class ObjectConverter implements TypeConverter {

@@ -18,7 +18,7 @@ public class LoggerRenderer implements Renderer {
     private static final char ESCAPE_SYMBOL = '\\';
 
     @Override
-    public void render(Object data, Object output, String name, Object input, String charsetName) throws RenderException {
+    public void render(Object data, Object output, String name, Object input, String charset) throws RenderException {
         try {
             Assert.state(input == null || input instanceof String
                     , "Parameter \"input\" must instance of \"String\". ");

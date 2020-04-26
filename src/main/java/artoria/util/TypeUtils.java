@@ -90,11 +90,11 @@ public class TypeUtils {
         return new ParameterizedTypeImpl(ownerType, rawType, typeArguments);
     }
 
-    public static class WildcardTypeImpl implements WildcardType, Serializable {
+    static class WildcardTypeImpl implements WildcardType, Serializable {
         private final Type upperBound;
         private final Type lowerBound;
 
-        public WildcardTypeImpl(Type[] upperBounds, Type[] lowerBounds) {
+        WildcardTypeImpl(Type[] upperBounds, Type[] lowerBounds) {
             Assert.isTrue(
                     upperBounds.length == ONE
                     , "Parameter \"upperBounds\" length must == 1. "
@@ -147,10 +147,10 @@ public class TypeUtils {
 
     }
 
-    public static class GenericArrayTypeImpl implements GenericArrayType, Serializable {
+    static class GenericArrayTypeImpl implements GenericArrayType, Serializable {
         private final Type componentType;
 
-        public GenericArrayTypeImpl(Type componentType) {
+        GenericArrayTypeImpl(Type componentType) {
             Assert.notNull(
                     componentType
                     , "Parameter \"componentType\" must not null. "
@@ -166,12 +166,12 @@ public class TypeUtils {
 
     }
 
-    public static class ParameterizedTypeImpl implements ParameterizedType, Serializable {
+    static class ParameterizedTypeImpl implements ParameterizedType, Serializable {
         private final Type ownerType;
         private final Type rawType;
         private final Type[] typeArguments;
 
-        public ParameterizedTypeImpl(Type ownerType, Type rawType, Type... typeArguments) {
+        ParameterizedTypeImpl(Type ownerType, Type rawType, Type... typeArguments) {
             if (rawType instanceof Class<?>) {
                 // Require an owner type if the raw type needs it.
                 Class<?> rawTypeAsClass = (Class<?>) rawType;

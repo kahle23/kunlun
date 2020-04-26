@@ -1,6 +1,6 @@
 package artoria.beans;
 
-import artoria.converter.TypeConverter;
+import artoria.convert.TypeConverter;
 import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;

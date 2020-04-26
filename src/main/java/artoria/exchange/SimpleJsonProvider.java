@@ -2,6 +2,8 @@ package artoria.exchange;
 
 import java.lang.reflect.Type;
 
+import static java.lang.Boolean.FALSE;
+
 /**
  * Json provider simple implement by jdk.
  * @author Kahle
@@ -11,7 +13,7 @@ public class SimpleJsonProvider implements JsonProvider {
 
     public SimpleJsonProvider() {
 
-        this(false);
+        this(FALSE);
     }
 
     public SimpleJsonProvider(boolean prettyFormat) {

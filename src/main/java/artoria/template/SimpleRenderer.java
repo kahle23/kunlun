@@ -54,7 +54,7 @@ public class SimpleRenderer implements Renderer {
     }
 
     @Override
-    public void render(Object data, Object output, String name, Object input, String charsetName) throws RenderException {
+    public void render(Object data, Object output, String name, Object input, String charset) throws RenderException {
         try {
             Assert.state(output instanceof Writer, "Parameter \"output\" must instance of \"Writer\". ");
             Assert.notBlank(name, "Parameter \"name\" must not blank. ");
@@ -67,8 +67,8 @@ public class SimpleRenderer implements Renderer {
                 if (in == null) {
                     throw new IOException("Can not find template by \"" + name + "\" in classpath. ");
                 }
-                charsetName = StringUtils.isNotBlank(charsetName) ? charsetName : DEFAULT_CHARSET_NAME;
-                Reader reader = new InputStreamReader(in, charsetName);
+                charset = StringUtils.isNotBlank(charset) ? charset : DEFAULT_CHARSET_NAME;
+                Reader reader = new InputStreamReader(in, charset);
                 template = IOUtils.toString(reader);
             }
             render(data, (Writer) output, template);

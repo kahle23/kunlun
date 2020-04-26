@@ -4,7 +4,7 @@ import java.lang.reflect.*;
 import java.util.Map;
 
 /**
- * Reflect provider.
+ * Reflecter provider.
  * @author Kahle
  */
 public interface Reflecter {
@@ -40,35 +40,6 @@ public interface Reflecter {
     <T extends AccessibleObject> void makeAccessible(T accessible);
 
     /**
-     * Create object by reflection.
-     * @param clazz The type of object to create
-     * @param args Parameters to the constructor
-     * @param <T> The type of object to construct
-     * @return Objects created
-     */
-    <T> T newInstance(Class<T> clazz, Object... args) throws NoSuchMethodException
-            , IllegalAccessException, InvocationTargetException, InstantiationException;
-    // TODO: When JDK 1.7
-
-    /**
-     * Find all constructors.
-     * @param clazz The class will be find
-     * @param <T> The type of object to construct
-     * @return Constructors array
-     */
-    <T> Constructor<T>[] findConstructors(Class<T> clazz);
-
-    /**
-     * Find constructor and type similar.
-     * @param clazz The class will be find
-     * @param parameterTypes Parameter types
-     * @param <T> The type of object to construct
-     * @return The constructor
-     * @throws NoSuchMethodException No such method
-     */
-    <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException;
-
-    /**
      * Find all public fields.
      * @param clazz The class will be find
      * @return Fields array
@@ -97,6 +68,35 @@ public interface Reflecter {
      * @throws NoSuchFieldException No such field
      */
     Field findField(Class<?> clazz, String fieldName) throws NoSuchFieldException;
+
+    /**
+     * Create object by reflection.
+     * @param clazz The type of object to create
+     * @param args Parameters to the constructor
+     * @param <T> The type of object to construct
+     * @return Objects created
+     */
+    <T> T newInstance(Class<T> clazz, Object... args) throws NoSuchMethodException
+            , IllegalAccessException, InvocationTargetException, InstantiationException;
+    // TODO: When JDK 1.7
+
+    /**
+     * Find all constructors.
+     * @param clazz The class will be find
+     * @param <T> The type of object to construct
+     * @return Constructors array
+     */
+    <T> Constructor<T>[] findConstructors(Class<T> clazz);
+
+    /**
+     * Find constructor and type similar.
+     * @param clazz The class will be find
+     * @param parameterTypes Parameter types
+     * @param <T> The type of object to construct
+     * @return The constructor
+     * @throws NoSuchMethodException No such method
+     */
+    <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException;
 
     /**
      * Find all public methods.
