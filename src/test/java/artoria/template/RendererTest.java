@@ -5,6 +5,7 @@ import artoria.logging.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,16 +27,16 @@ public class RendererTest {
                 "hello, ${hello1}! \n" +
                 "hello, ${hello2}! \n" +
                 "${hello}${hello}.";
-        log.info(RenderUtils.renderToString(data, DEFAULT, tmp));
+        log.info(RenderUtils.renderToString(data, DEFAULT, new StringReader(tmp)));
     }
 
     @Test
     public void test2() {
-        log.info(RenderUtils.renderToString(data, DEFAULT, "\\${hello}abc"));
-        log.info(RenderUtils.renderToString(data, DEFAULT, "abc\\${hello}abc${hello}abc"));
-        log.info(RenderUtils.renderToString(data, DEFAULT, "\\\\${hello}abc"));
-        log.info(RenderUtils.renderToString(data, DEFAULT, "\\\\\\${hello}abc"));
-        log.info(RenderUtils.renderToString(data, DEFAULT, "abc\\\\${hello}abc${hello}abc"));
+        log.info(RenderUtils.renderToString(data, DEFAULT, new StringReader("\\${hello}abc")));
+        log.info(RenderUtils.renderToString(data, DEFAULT, new StringReader("abc\\${hello}abc${hello}abc")));
+        log.info(RenderUtils.renderToString(data, DEFAULT, new StringReader("\\\\${hello}abc")));
+        log.info(RenderUtils.renderToString(data, DEFAULT, new StringReader("\\\\\\${hello}abc")));
+        log.info(RenderUtils.renderToString(data, DEFAULT, new StringReader("abc\\\\${hello}abc${hello}abc")));
     }
 
 }

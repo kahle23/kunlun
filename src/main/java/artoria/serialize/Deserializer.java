@@ -12,7 +12,7 @@ public interface Deserializer<T> {
     /**
      * Read (assemble) an object of type T from the given InputStream.
      * @param inputStream The input stream
-     * @return The deserialized object
+     * @return The deserialize object
      * @throws IOException In case of errors reading from the stream
      */
     T deserialize(InputStream inputStream) throws IOException;

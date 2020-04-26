@@ -1,4 +1,4 @@
-package artoria.converter;
+package artoria.convert;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -20,10 +20,10 @@ public class TypeConvertUtils {
 
     static {
         CONVERTERS = new ConcurrentHashMap<Class<?>, TypeConverter>();
-        TypeConvertUtils.register(Date.class, new DateConverter());
+        TypeConvertUtils.register(Object.class, new ObjectConverter());
         TypeConvertUtils.register(String.class, new StringConverter());
         TypeConvertUtils.register(Number.class, new NumberConverter());
-        TypeConvertUtils.register(Object.class, new ObjectConverter());
+        TypeConvertUtils.register(Date.class, new DateConverter());
     }
 
     public static TypeConverter unregister(Class<?> clazz) {

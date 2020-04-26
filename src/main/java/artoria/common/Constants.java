@@ -48,6 +48,7 @@ public class Constants {
     public static final String ERROR = "error";
     public static final String SYSTEM = "system";
     public static final String SUCCESS = "success";
+    public static final String FAILURE = "failure";
     public static final String DEFAULT = "default";
     public static final String UNKNOWN = "unknown";
     public static final String ONE_STR = "1";
@@ -187,6 +188,7 @@ public class Constants {
     public static final int THIRTY_NINE = 39;
     public static final int FORTY = 40;
     public static final int FIFTY = 50;
+    public static final int FIFTY_ONE = 51;
     public static final int FIFTY_EIGHT = 58;
     public static final int FIFTY_NINE = 59;
     public static final int SIXTY = 60;

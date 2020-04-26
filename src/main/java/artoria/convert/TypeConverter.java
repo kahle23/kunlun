@@ -1,10 +1,10 @@
-package artoria.converter;
+package artoria.convert;
 
 /**
  * Type converter.
  * @author Kahle
  */
-public interface TypeConverter {
+public interface TypeConverter extends Converter {
 
     /**
      * Converts the given value object to the specified destination type.

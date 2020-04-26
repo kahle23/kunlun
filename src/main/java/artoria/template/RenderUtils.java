@@ -5,6 +5,11 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
+
 /**
  * Template render tools.
  * @author Kahle
@@ -25,36 +30,41 @@ public class RenderUtils {
         RenderUtils.renderer = renderer;
     }
 
-    public static void render(Object data, Object output, String name) {
+    public static void render(Object data, Writer output, String name, String charset) {
 
-        getRenderer().render(data, output, name, null, null);
+        getRenderer().render(data, output, name, null, charset);
     }
 
-    public static void render(Object data, Object output, String name, Object input) {
+    public static void render(Object data, Writer output, String name, Reader input) {
 
         getRenderer().render(data, output, name, input, null);
     }
 
-    public static void render(Object data, Object output, String name, Object input, String charsetName) {
+    public static void render(Object data, OutputStream output, String name, String charset) {
 
-        getRenderer().render(data, output, name, input, charsetName);
+        getRenderer().render(data, output, name, null, charset);
     }
 
-    public static String renderToString(Object data, String name) {
+    public static void render(Object data, OutputStream output, String name, InputStream input, String charset) {
+
+        getRenderer().render(data, output, name, input, charset);
+    }
+
+    public static String renderToString(Object data, String name, String charset) {
         StringBuilderWriter output = new StringBuilderWriter();
-        getRenderer().render(data, output, name, null, null);
+        getRenderer().render(data, output, name, null, charset);
         return output.toString();
     }
 
-    public static String renderToString(Object data, String name, Object input) {
+    public static String renderToString(Object data, String name, Reader input) {
         StringBuilderWriter output = new StringBuilderWriter();
         getRenderer().render(data, output, name, input, null);
         return output.toString();
     }
 
-    public static String renderToString(Object data, String name, Object input, String charsetName) {
+    public static String renderToString(Object data, String name, InputStream input, String charset) {
         StringBuilderWriter output = new StringBuilderWriter();
-        getRenderer().render(data, output, name, input, charsetName);
+        getRenderer().render(data, output, name, input, charset);
         return output.toString();
     }
 

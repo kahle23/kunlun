@@ -47,22 +47,6 @@ public class ReflectUtils {
         getReflecter().makeAccessible(accessible);
     }
 
-    public static <T> T newInstance(Class<T> clazz, Object... args) throws NoSuchMethodException
-            , IllegalAccessException, InvocationTargetException, InstantiationException {
-
-        return getReflecter().newInstance(clazz, args);
-    }
-
-    public static <T> Constructor<T>[] findConstructors(Class<T> clazz) {
-
-        return getReflecter().findConstructors(clazz);
-    }
-
-    public static <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
-
-        return getReflecter().findConstructor(clazz, parameterTypes);
-    }
-
     public static Field[] findFields(Class<?> clazz) {
 
         return getReflecter().findFields(clazz);
@@ -81,6 +65,22 @@ public class ReflectUtils {
     public static Field findField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
 
         return getReflecter().findField(clazz, fieldName);
+    }
+
+    public static <T> T newInstance(Class<T> clazz, Object... args) throws NoSuchMethodException
+            , IllegalAccessException, InvocationTargetException, InstantiationException {
+
+        return getReflecter().newInstance(clazz, args);
+    }
+
+    public static <T> Constructor<T>[] findConstructors(Class<T> clazz) {
+
+        return getReflecter().findConstructors(clazz);
+    }
+
+    public static <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
+
+        return getReflecter().findConstructor(clazz, parameterTypes);
     }
 
     public static Method[] findMethods(Class<?> clazz) {

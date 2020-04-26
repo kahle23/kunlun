@@ -16,17 +16,17 @@ public interface JsonProvider {
 
     /**
      * Serialize java object to json string.
-     * @param object Java object
-     * @return Json string
+     * @param object The java object
+     * @return The json string
      */
     String toJsonString(Object object);
 
     /**
      * Parse json string to java object.
-     * @param jsonString Json string
-     * @param type Java object type
-     * @param <T> Java object type you want return
-     * @return Java object
+     * @param jsonString The json string
+     * @param type The java object type
+     * @param <T> The java object type
+     * @return The java object
      */
     <T> T parseObject(String jsonString, Type type);
 
