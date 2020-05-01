@@ -2,6 +2,9 @@ package artoria.common;
 
 import java.io.Serializable;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 /**
  * Uniform result output object.
  * @param <T> Data type
@@ -15,26 +18,36 @@ public class Result<T> implements GenericResult, Serializable {
 
     public Result() {
 
-        this.success = true;
+        this(TRUE, null, null, null);
     }
 
     public Result(T data) {
-        this();
+
+        this(TRUE, null, null, data);
+    }
+
+    public Result(String code, String message) {
+
+        this(FALSE, code, message, null);
+    }
+
+    public Result(Boolean success, String code, String message) {
+
+        this(success, code, message, null);
+    }
+
+    public Result(Boolean success, String code, String message, T data) {
+        this.success = success;
+        this.code = code;
+        this.message = message;
         this.data = data;
     }
 
-    public Result(Boolean success, String message) {
-        this.success = success;
-        this.message = message;
-    }
-
-    @Override
     public Boolean getSuccess() {
 
         return success;
     }
 
-    @Override
     public void setSuccess(Boolean success) {
 
         this.success = success;

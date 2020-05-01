@@ -7,18 +7,6 @@ package artoria.common;
 public interface GenericResult {
 
     /**
-     * Get success.
-     * @return True or False
-     */
-    Boolean getSuccess();
-
-    /**
-     * Set success.
-     * @param success True or False
-     */
-    void setSuccess(Boolean success);
-
-    /**
      * Get status code.
      * @return Status code
      */

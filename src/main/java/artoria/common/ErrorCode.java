@@ -18,10 +18,4 @@ public interface ErrorCode {
      */
     String getDescription();
 
-    /**
-     * The message to display when this error occur.
-     * @return The message
-     */
-    String getMessage();
-
 }

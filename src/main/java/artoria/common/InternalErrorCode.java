@@ -1,26 +1,26 @@
 package artoria.common;
 
 /**
- * Default error code.
+ * Internal error code.
  * @author Kahle
  */
 public enum InternalErrorCode implements ErrorCode {
     /**
      * No login.
      */
-    NO_LOGIN("NO_LOGIN", "No login."),
+    NO_LOGIN(             "NO_LOGIN",              "No login."),
     /**
      * Invalid token.
      */
-    INVALID_TOKEN("INVALID_TOKEN", "Invalid token."),
+    INVALID_TOKEN(        "INVALID_TOKEN",         "Invalid token."),
     /**
      * Invalid user.
      */
-    INVALID_USER("INVALID_USER", "Invalid user."),
+    INVALID_USER(         "INVALID_USER",          "Invalid user."),
     /**
      * No permission.
      */
-    NO_PERMISSION("NO_PERMISSION", "No permission."),
+    NO_PERMISSION(        "NO_PERMISSION",         "No permission."),
     /**
      * Parameter is required.
      */
@@ -28,7 +28,7 @@ public enum InternalErrorCode implements ErrorCode {
     /**
      * Internal server busy.
      */
-    INTERNAL_SERVER_BUSY("INTERNAL_SERVER_BUSY", "Internal server busy."),
+    INTERNAL_SERVER_BUSY( "INTERNAL_SERVER_BUSY",  "Internal server busy."),
     /**
      * Internal server error.
      */
@@ -37,18 +37,10 @@ public enum InternalErrorCode implements ErrorCode {
 
     private String code;
     private String description;
-    private String message;
 
     InternalErrorCode(String code, String description) {
         this.code = code;
         this.description = description;
-        this.message = description;
-    }
-
-    InternalErrorCode(String code, String description, String message) {
-        this.code = code;
-        this.description = description;
-        this.message = message;
     }
 
     @Override
@@ -61,12 +53,6 @@ public enum InternalErrorCode implements ErrorCode {
     public String getDescription() {
 
         return description;
-    }
-
-    @Override
-    public String getMessage() {
-
-        return message;
     }
 
 }

@@ -21,9 +21,19 @@ public class PageResult<T> extends Result<T> {
         super(data);
     }
 
-    public PageResult(Boolean success, String message) {
+    public PageResult(String code, String message) {
 
-        super(success, message);
+        super(code, message);
+    }
+
+    public PageResult(Boolean success, String code, String message) {
+
+        super(success, code, message);
+    }
+
+    public PageResult(Boolean success, String code, String message, T data) {
+
+        super(success, code, message, data);
     }
 
     public Integer getPageNum() {
