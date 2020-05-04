@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * Provide access to extended data. Resolve the problem of passing attributes that do not exist.
+ * Provide access to extra data. Resolve the problem of passing attributes that do not exist.
  * @author Kahle
  */
-public interface ExtendedData extends Serializable {
+public interface ExtraData extends Serializable {
 
     /**
      * Get data value by name.
@@ -17,7 +17,7 @@ public interface ExtendedData extends Serializable {
     Object get(String name);
 
     /**
-     * Stores the data name and value in the extended data.
+     * Stores the data name and value in the extra data.
      * @param name Data name
      * @param value Data value
      * @return Old data value if have
@@ -32,20 +32,20 @@ public interface ExtendedData extends Serializable {
     Object remove(String name);
 
     /**
-     * Batch add extended data.
-     * @param data Extended data to be added
+     * Batch add extra data.
+     * @param data Extra data to be added
      */
     void putAll(Map<String, Object> data);
 
     /**
-     * Clear all extended data.
+     * Clear all extra data.
      */
     void clear();
 
     /**
-     * Get all extended data.
-     * @return All extended data
+     * Get all extra data.
+     * @return All extra data
      */
-    Map<String, Object> extendedData();
+    Map<String, Object> extraData();
 
 }

@@ -11,52 +11,52 @@ import java.util.Map;
 import static artoria.common.Constants.TWENTY;
 
 /**
- * Abstract extended data.
+ * Abstract extra data.
  * @author Kahle
  */
-public abstract class AbstractExtendedData implements ExtendedData, Mappable, Beanable, Serializable {
-    private Map<String, Object> extendedData = new HashMap<String, Object>();
+public abstract class AbstractExtraData implements ExtraData, Mappable, Beanable, Serializable {
+    private Map<String, Object> extraData = new HashMap<String, Object>();
 
     @Override
     public Object get(String name) {
 
-        return extendedData.get(name);
+        return extraData.get(name);
     }
 
     @Override
     public Object put(String name, Object value) {
 
-        return extendedData.put(name, value);
+        return extraData.put(name, value);
     }
 
     @Override
     public Object remove(String name) {
 
-        return extendedData.remove(name);
+        return extraData.remove(name);
     }
 
     @Override
     public void putAll(Map<String, Object> data) {
 
-        extendedData.putAll(data);
+        extraData.putAll(data);
     }
 
     @Override
     public void clear() {
 
-        extendedData.clear();
+        extraData.clear();
     }
 
     @Override
-    public Map<String, Object> extendedData() {
+    public Map<String, Object> extraData() {
 
-        return Collections.unmodifiableMap(extendedData);
+        return Collections.unmodifiableMap(extraData);
     }
 
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> resultMap = new HashMap<String, Object>(TWENTY);
-        resultMap.putAll(extendedData());
+        resultMap.putAll(extraData());
         Map<String, Object> beanToMap = BeanUtils.beanToMap(this);
         resultMap.putAll(beanToMap);
         return resultMap;
