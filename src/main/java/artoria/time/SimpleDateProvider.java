@@ -12,7 +12,7 @@ import java.util.Map;
  * Date formatter and parser simple implement by jdk.
  * @author Kahle
  */
-public class SimpleDateFormatter implements DateFormatter, DateParser {
+public class SimpleDateProvider implements DateProvider {
     private ThreadLocal<Map<String, SimpleDateFormat>> dateFormatCache = new ThreadLocal<Map<String, SimpleDateFormat>>();
 
     private SimpleDateFormat getDateFormat(String pattern) {

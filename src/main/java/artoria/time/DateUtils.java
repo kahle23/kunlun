@@ -20,19 +20,11 @@ import static artoria.common.Constants.*;
  */
 public class DateUtils {
     private static final Set<String> DATE_PATTERNS = new HashSet<String>();
-    private static final Class<? extends DateTime> DEFAULT_TIME_TYPE;
-    private static final DateFormatter DEFAULT_DATE_FORMATTER;
-    private static final DateParser DEFAULT_DATE_PARSER;
     private static Logger log = LoggerFactory.getLogger(DateUtils.class);
     private static Class<? extends DateTime> timeType;
-    private static DateFormatter dateFormatter;
-    private static DateParser dateParser;
+    private static DateProvider dateProvider;
 
     static {
-        SimpleDateFormatter formatter = new SimpleDateFormatter();
-        DEFAULT_DATE_FORMATTER = formatter;
-        DEFAULT_DATE_PARSER = formatter;
-        DEFAULT_TIME_TYPE = SimpleDateTime.class;
         DateUtils.register("yyyy-MM-dd'T'HH:mm:ss'Z'");
         DateUtils.register("yyyy-MM-dd'T'HH:mm:ssZ");
         DateUtils.register("yyyy-MM-dd HH:mm:ss");
@@ -46,8 +38,12 @@ public class DateUtils {
     }
 
     public static Class<? extends DateTime> getTimeType() {
-
-        return timeType != null ? timeType : DEFAULT_TIME_TYPE;
+        if (timeType != null) { return timeType; }
+        synchronized (DateUtils.class) {
+            if (timeType != null) { return timeType; }
+            DateUtils.setTimeType(SimpleDateTime.class);
+            return timeType;
+        }
     }
 
     public static void setTimeType(Class<? extends DateTime> timeType) {
@@ -56,38 +52,31 @@ public class DateUtils {
         DateUtils.timeType = timeType;
     }
 
-    public static DateFormatter getDateFormatter() {
-
-        return dateFormatter != null ? dateFormatter : DEFAULT_DATE_FORMATTER;
+    public static DateProvider getDateProvider() {
+        if (dateProvider != null) { return dateProvider; }
+        synchronized (DateUtils.class) {
+            if (dateProvider != null) { return dateProvider; }
+            DateUtils.setDateProvider(new SimpleDateProvider());
+            return dateProvider;
+        }
     }
 
-    public static void setDateFormatter(DateFormatter formatter) {
-        Assert.notNull(formatter, "Parameter \"formatter\" must not null. ");
-        log.info("Set date formatter: {}", formatter.getClass().getName());
-        DateUtils.dateFormatter = formatter;
-    }
-
-    public static DateParser getDateParser() {
-
-        return dateParser != null ? dateParser : DEFAULT_DATE_PARSER;
-    }
-
-    public static void setDateParser(DateParser parser) {
-        Assert.notNull(parser, "Parameter \"parser\" must not null. ");
-        log.info("Set date parser: {}", parser.getClass().getName());
-        DateUtils.dateParser = parser;
-    }
-
-    public static void unregister(String datePattern) {
-        Assert.notBlank(datePattern, "Parameter \"datePattern\" must not blank. ");
-        DATE_PATTERNS.remove(datePattern);
-        log.info("Unregister date pattern \"{}\" success. ", datePattern);
+    public static void setDateProvider(DateProvider dateProvider) {
+        Assert.notNull(dateProvider, "Parameter \"dateProvider\" must not null. ");
+        log.info("Set date provider: {}", dateProvider.getClass().getName());
+        DateUtils.dateProvider = dateProvider;
     }
 
     public static void register(String datePattern) {
         Assert.notBlank(datePattern, "Parameter \"datePattern\" must not blank. ");
         DATE_PATTERNS.add(datePattern);
         log.info("Register date pattern \"{}\" success. ", datePattern);
+    }
+
+    public static void unregister(String datePattern) {
+        Assert.notBlank(datePattern, "Parameter \"datePattern\" must not blank. ");
+        DATE_PATTERNS.remove(datePattern);
+        log.info("Unregister date pattern \"{}\" success. ", datePattern);
     }
 
     public static DateTime create() {
@@ -366,7 +355,7 @@ public class DateUtils {
 
     public static Date parse(String dateString, String pattern) {
         try {
-            return getDateParser().parse(dateString, pattern);
+            return getDateProvider().parse(dateString, pattern);
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
@@ -400,7 +389,7 @@ public class DateUtils {
 
     public static String format(Date date, String pattern) {
 
-        return getDateFormatter().format(date, pattern);
+        return getDateProvider().format(date, pattern);
     }
 
     public static String format(Long timestamp, String pattern) {
