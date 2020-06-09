@@ -1,4 +1,6 @@
-package artoria.convert;
+package artoria.convert.type;
+
+import artoria.convert.Converter;
 
 /**
  * Type converter.

@@ -1,4 +1,4 @@
-package artoria.convert;
+package artoria.convert.type;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
