@@ -1,58 +1,64 @@
 package artoria.reflect;
 
-import artoria.entity.Student;
+import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.random.RandomUtils;
+import artoria.test.bean.User;
 import org.junit.Test;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Map;
 
 public class ReflectUtilsTest {
     private static Logger log = LoggerFactory.getLogger(ReflectUtilsTest.class);
 
     @Test
-    public void findConstructors() throws Exception {
-        Constructor<?>[] constructors = ReflectUtils.findConstructors(Student.class);
+    public void testFindConstructors() throws Exception {
+        Constructor<?>[] constructors = ReflectUtils.findConstructors(User.class);
         for (Constructor<?> constructor : constructors) {
             log.info(Arrays.toString(constructor.getParameterTypes()));
         }
     }
 
     @Test
-    public void findFields() throws Exception {
-        Student student = RandomUtils.nextObject(Student.class);
-        Field[] fields = ReflectUtils.findAccessFields(Student.class);
+    public void testFindFields() throws Exception {
+        User user = FakeUtils.fake(User.class);
+        Field[] fields = ReflectUtils.findAccessFields(User.class);
         for (Field field : fields) {
             ReflectUtils.makeAccessible(field);
-            log.info("{} | {}", field.getName(), field.get(student));
+            log.info("{} | {}", field.getName(), field.get(user));
         }
     }
 
     @Test
-    public void findMethods() throws Exception {
-        Method[] methods = ReflectUtils.findAccessMethods(Student.class);
+    public void testFindMethods() throws Exception {
+        Method[] methods = ReflectUtils.findAccessMethods(User.class);
         for (Method method : methods) {
             log.info(method.getName());
         }
     }
 
     @Test
-    public void findReadMethodsAndWriteMethods() throws Exception {
-        Map<String, Method> readMethods = ReflectUtils.findReadMethods(Student.class);
-        for (Map.Entry<String, Method> entry : readMethods.entrySet()) {
-            log.info("{} | {}", entry.getKey(), entry.getValue().getName());
-        }
-
-        log.info("------------------------");
-
-        Map<String, Method> writeMethods = ReflectUtils.findWriteMethods(Student.class);
-        for (Map.Entry<String, Method> entry : writeMethods.entrySet()) {
-            log.info("{} | {}", entry.getKey(), entry.getValue().getName());
+    public void testFindPropertyDescriptors() throws Exception {
+        PropertyDescriptor[] descriptors = ReflectUtils.findPropertyDescriptors(User.class);
+        for (PropertyDescriptor descriptor : descriptors) {
+            Method writeMethod = descriptor.getWriteMethod();
+            Method readMethod = descriptor.getReadMethod();
+            String shortDescription = descriptor.getShortDescription();
+            String displayName = descriptor.getDisplayName();
+            String name = descriptor.getName();
+            Class<?> propertyType = descriptor.getPropertyType();
+            log.info("----------------");
+            log.info("Short description: {}", shortDescription);
+            log.info("Display name: {}", displayName);
+            log.info("Name: {}", name);
+            log.info("Property type: {}", propertyType);
+            log.info("Write method: {}", writeMethod);
+            log.info("Read method: {}", readMethod);
+            log.info("----------------");
         }
     }
 

@@ -4,118 +4,116 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
-import java.util.Map;
 
 /**
  * Reflect tools.
  * @author Kahle
  */
 public class ReflectUtils {
-    private static final Reflecter DEFAULT_REFLECTER = new SimpleReflecter();
     private static Logger log = LoggerFactory.getLogger(ReflectUtils.class);
-    private static Reflecter reflecter;
+    private static ReflectProvider reflectProvider;
 
-    public static Reflecter getReflecter() {
-
-        return reflecter != null ? reflecter : DEFAULT_REFLECTER;
+    public static ReflectProvider getReflectProvider() {
+        if (reflectProvider != null) { return reflectProvider; }
+        synchronized (ReflectUtils.class) {
+            if (reflectProvider != null) { return reflectProvider; }
+            ReflectUtils.setReflectProvider(new SimpleReflectProvider());
+            return reflectProvider;
+        }
     }
 
-    public static void setReflecter(Reflecter reflecter) {
-        Assert.notNull(reflecter, "Parameter \"reflecter\" must not null. ");
-        log.info("Set reflecter: {}", reflecter.getClass().getName());
-        ReflectUtils.reflecter = reflecter;
+    public static void setReflectProvider(ReflectProvider reflectProvider) {
+        Assert.notNull(reflectProvider, "Parameter \"reflectProvider\" must not null. ");
+        log.info("Set reflect provider: {}", reflectProvider.getClass().getName());
+        ReflectUtils.reflectProvider = reflectProvider;
     }
 
-    public static Class<?>[] findParameterTypes(Object... values) {
+    public static boolean matchTypes(Class<?>[] declaredTypes, Class<?>[] actualTypes) {
 
-        return getReflecter().findParameterTypes(values);
+        return getReflectProvider().matchTypes(declaredTypes, actualTypes);
     }
 
-    public static boolean matchParameterTypes(Class<?>[] declaredTypes, Class<?>[] actualTypes) {
+    public static boolean checkAccessible(AccessibleObject accessible) {
 
-        return getReflecter().matchParameterTypes(declaredTypes, actualTypes);
+        return getReflectProvider().checkAccessible(accessible);
     }
 
-    public static <T extends AccessibleObject> boolean checkAccessible(T accessible) {
+    public static void makeAccessible(AccessibleObject accessible) {
 
-        return getReflecter().checkAccessible(accessible);
+        getReflectProvider().makeAccessible(accessible);
     }
 
-    public static <T extends AccessibleObject> void makeAccessible(T accessible) {
+    public static Class<?>[] findTypes(Object[] params) {
 
-        getReflecter().makeAccessible(accessible);
+        return getReflectProvider().findTypes(params);
+    }
+
+    public static <T> Constructor<T>[] findConstructors(Class<T> clazz) {
+
+        return getReflectProvider().findConstructors(clazz);
+    }
+
+    public static <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
+
+        return getReflectProvider().findConstructor(clazz, parameterTypes);
     }
 
     public static Field[] findFields(Class<?> clazz) {
 
-        return getReflecter().findFields(clazz);
+        return getReflectProvider().findFields(clazz);
     }
 
     public static Field[] findDeclaredFields(Class<?> clazz) {
 
-        return getReflecter().findDeclaredFields(clazz);
+        return getReflectProvider().findDeclaredFields(clazz);
     }
 
     public static Field[] findAccessFields(Class<?> clazz) {
 
-        return getReflecter().findAccessFields(clazz);
+        return getReflectProvider().findAccessFields(clazz);
     }
 
     public static Field findField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
 
-        return getReflecter().findField(clazz, fieldName);
+        return getReflectProvider().findField(clazz, fieldName);
+    }
+
+    public static Method[] findMethods(Class<?> clazz) {
+
+        return getReflectProvider().findMethods(clazz);
+    }
+
+    public static Method[] findDeclaredMethods(Class<?> clazz) {
+
+        return getReflectProvider().findDeclaredMethods(clazz);
+    }
+
+    public static Method[] findAccessMethods(Class<?> clazz) {
+
+        return getReflectProvider().findAccessMethods(clazz);
+    }
+
+    public static Method findMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
+
+        return getReflectProvider().findMethod(clazz, methodName, parameterTypes);
+    }
+
+    public static Method findSimilarMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
+
+        return getReflectProvider().findSimilarMethod(clazz, methodName, parameterTypes);
+    }
+
+    public static PropertyDescriptor[] findPropertyDescriptors(Class<?> clazz) {
+
+        return getReflectProvider().findPropertyDescriptors(clazz);
     }
 
     public static <T> T newInstance(Class<T> clazz, Object... args) throws NoSuchMethodException
             , IllegalAccessException, InvocationTargetException, InstantiationException {
 
-        return getReflecter().newInstance(clazz, args);
-    }
-
-    public static <T> Constructor<T>[] findConstructors(Class<T> clazz) {
-
-        return getReflecter().findConstructors(clazz);
-    }
-
-    public static <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
-
-        return getReflecter().findConstructor(clazz, parameterTypes);
-    }
-
-    public static Method[] findMethods(Class<?> clazz) {
-
-        return getReflecter().findMethods(clazz);
-    }
-
-    public static Method[] findDeclaredMethods(Class<?> clazz) {
-
-        return getReflecter().findDeclaredMethods(clazz);
-    }
-
-    public static Method[] findAccessMethods(Class<?> clazz) {
-
-        return getReflecter().findAccessMethods(clazz);
-    }
-
-    public static Map<String, Method> findReadMethods(Class<?> clazz) {
-
-        return getReflecter().findReadMethods(clazz);
-    }
-
-    public static Map<String, Method> findWriteMethods(Class<?> clazz) {
-
-        return getReflecter().findWriteMethods(clazz);
-    }
-
-    public static Method findMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
-
-        return getReflecter().findMethod(clazz, methodName, parameterTypes);
-    }
-
-    public static Method findSimilarMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
-
-        return getReflecter().findSimilarMethod(clazz, methodName, parameterTypes);
+        return getReflectProvider().newInstance(clazz, args);
     }
 
 }
