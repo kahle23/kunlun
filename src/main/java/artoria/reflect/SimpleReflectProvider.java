@@ -1,23 +1,26 @@
 package artoria.reflect;
 
 import artoria.exception.ExceptionUtils;
-import artoria.util.*;
+import artoria.util.ArrayUtils;
+import artoria.util.Assert;
+import artoria.util.ClassUtils;
+import artoria.util.ObjectUtils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import static artoria.common.Constants.TWENTY;
 import static artoria.common.Constants.ZERO;
 
 /**
- * Reflecter provider simple implement by jdk.
+ * Reflect provider simple implement by jdk.
  * @author Kahle
  */
-public class SimpleReflecter implements Reflecter {
-    private static final Integer GET_OR_SET_LENGTH = 3;
+public class SimpleReflectProvider implements ReflectProvider {
 
     protected boolean notAccess(Class<?> thisClazz, Class<?> superClazz, Member member) {
         // In this class all, and super class not private.
@@ -25,20 +28,7 @@ public class SimpleReflecter implements Reflecter {
     }
 
     @Override
-    public Class<?>[] findParameterTypes(Object... parameters) {
-        if (parameters.length == ZERO) { return new Class[ZERO]; }
-        Class<?>[] result = new Class[parameters.length];
-        for (int i = ZERO; i < parameters.length; i++) {
-            Object value = parameters[i];
-            // Parameter null, maybe in method can input null.
-            // So in match method ignore null type.
-            result[i] = value == null ? null : value.getClass();
-        }
-        return result;
-    }
-
-    @Override
-    public boolean matchParameterTypes(Class<?>[] declaredTypes, Class<?>[] actualTypes) {
+    public boolean matchTypes(Class<?>[] declaredTypes, Class<?>[] actualTypes) {
         Assert.notNull(declaredTypes, "Parameter \"declaredTypes\" must not null. ");
         Assert.notNull(actualTypes, "Parameter \"actualTypes\" must not null. ");
         if (declaredTypes.length != actualTypes.length) {
@@ -56,7 +46,7 @@ public class SimpleReflecter implements Reflecter {
     }
 
     @Override
-    public <T extends AccessibleObject> boolean checkAccessible(T accessible) {
+    public boolean checkAccessible(AccessibleObject accessible) {
         Assert.notNull(accessible, "Parameter \"accessible\" must not null. ");
         if (accessible instanceof Member) {
             Member member = (Member) accessible;
@@ -73,9 +63,49 @@ public class SimpleReflecter implements Reflecter {
     }
 
     @Override
-    public <T extends AccessibleObject> void makeAccessible(T accessible) {
+    public void makeAccessible(AccessibleObject accessible) {
         if (!checkAccessible(accessible)) {
             accessible.setAccessible(true);
+        }
+    }
+
+    @Override
+    public Class<?>[] findTypes(Object[] params) {
+        if (ArrayUtils.isEmpty(params)) { return new Class[ZERO]; }
+        Class<?>[] result = new Class[params.length];
+        for (int i = ZERO; i < params.length; i++) {
+            Object value = params[i];
+            // Parameter null, maybe in method can input null.
+            // So in match method ignore null type.
+            result[i] = value == null ? null : value.getClass();
+        }
+        return result;
+    }
+
+    @Override
+    public <T> Constructor<T>[] findConstructors(Class<T> clazz) {
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        return ObjectUtils.cast(clazz.getDeclaredConstructors());
+    }
+
+    @Override
+    public <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        // Try invoking the "canonical" constructor,
+        // i.e. the one with exact matching argument types
+        try {
+            return clazz.getDeclaredConstructor(parameterTypes);
+        }
+        // If there is no exact match, try to find one that has a "similar"
+        // signature if primitive argument types are converted to their wrappers
+        catch (NoSuchMethodException e) {
+            Constructor<?>[] cts = findConstructors(clazz);
+            for (Constructor<?> ct : cts) {
+                Class<?>[] pTypes = ct.getParameterTypes();
+                boolean b = matchTypes(pTypes, parameterTypes);
+                if (b) { return ObjectUtils.cast(ct); }
+            }
+            throw e;
         }
     }
 
@@ -115,9 +145,7 @@ public class SimpleReflecter implements Reflecter {
             // Will inherit subclass
             clazz = clazz.getSuperclass();
         }
-        Field[] result = new Field[list.size()];
-        list.toArray(result);
-        return result;
+        return list.toArray(new Field[ZERO]);
     }
 
     @Override
@@ -145,44 +173,6 @@ public class SimpleReflecter implements Reflecter {
                 clazz = clazz.getSuperclass();
             }
             while (clazz != null);
-            throw e;
-        }
-    }
-
-    @Override
-    public <T> T newInstance(Class<T> clazz, Object... args) throws NoSuchMethodException
-            , IllegalAccessException, InvocationTargetException, InstantiationException {
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        if (ArrayUtils.isEmpty(args)) { return clazz.newInstance(); }
-        Class<?>[] types = findParameterTypes(args);
-        Constructor<T> constructor = findConstructor(clazz, types);
-        makeAccessible(constructor);
-        return constructor.newInstance(args);
-    }
-
-    @Override
-    public <T> Constructor<T>[] findConstructors(Class<T> clazz) {
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        return ObjectUtils.cast(clazz.getDeclaredConstructors());
-    }
-
-    @Override
-    public <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        // Try invoking the "canonical" constructor,
-        // i.e. the one with exact matching argument types
-        try {
-            return clazz.getDeclaredConstructor(parameterTypes);
-        }
-        // If there is no exact match, try to find one that has a "similar"
-        // signature if primitive argument types are converted to their wrappers
-        catch (NoSuchMethodException e) {
-            Constructor<?>[] cts = findConstructors(clazz);
-            for (Constructor<?> ct : cts) {
-                Class<?>[] pTypes = ct.getParameterTypes();
-                boolean b = matchParameterTypes(pTypes, parameterTypes);
-                if (b) { return ObjectUtils.cast(ct); }
-            }
             throw e;
         }
     }
@@ -221,55 +211,7 @@ public class SimpleReflecter implements Reflecter {
             }
             clazz = clazz.getSuperclass();
         }
-        Method[] methods = new Method[list.size()];
-        list.toArray(methods);
-        return methods;
-    }
-
-    @Override
-    public Map<String, Method> findReadMethods(Class<?> clazz) {
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        Map<String, Method> result = new HashMap<String, Method>(TWENTY);
-        try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-            PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
-            if (descriptors == null) { return result; }
-            for (PropertyDescriptor descriptor : descriptors) {
-                Method readMethod = descriptor.getReadMethod();
-                if (readMethod == null) { continue; }
-                String name = readMethod.getName();
-                name = name.substring(GET_OR_SET_LENGTH);
-                name = StringUtils.uncapitalize(name);
-                result.put(name, readMethod);
-            }
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
-        return result;
-    }
-
-    @Override
-    public Map<String, Method> findWriteMethods(Class<?> clazz) {
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        Map<String, Method> result = new HashMap<String, Method>(TWENTY);
-        try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-            PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
-            if (descriptors == null) { return result; }
-            for (PropertyDescriptor descriptor : descriptors) {
-                Method writeMethod = descriptor.getWriteMethod();
-                if (writeMethod == null) { continue; }
-                String name = writeMethod.getName();
-                name = name.substring(GET_OR_SET_LENGTH);
-                name = StringUtils.uncapitalize(name);
-                result.put(name, writeMethod);
-            }
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
-        return result;
+        return list.toArray(new Method[ZERO]);
     }
 
     @Override
@@ -309,7 +251,7 @@ public class SimpleReflecter implements Reflecter {
         // similar interpreted in when primitive argument types are converted to their wrappers
         for (Method method : findMethods(clazz)) {
             if (methodName.equals(method.getName()) &&
-                    matchParameterTypes(method.getParameterTypes(), parameterTypes)) {
+                    matchTypes(method.getParameterTypes(), parameterTypes)) {
                 return method;
             }
         }
@@ -321,7 +263,7 @@ public class SimpleReflecter implements Reflecter {
                     continue;
                 }
                 if (methodName.equals(method.getName()) &&
-                        matchParameterTypes(method.getParameterTypes(), parameterTypes)) {
+                        matchTypes(method.getParameterTypes(), parameterTypes)) {
                     return method;
                 }
             }
@@ -333,6 +275,30 @@ public class SimpleReflecter implements Reflecter {
         msg += Arrays.toString(parameterTypes) + "\" could be found on type \"";
         msg += inputClazz + "\". ";
         throw new NoSuchMethodException(msg);
+    }
+
+    @Override
+    public PropertyDescriptor[] findPropertyDescriptors(Class<?> clazz) {
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
+            PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
+            return descriptors != null ? descriptors : new PropertyDescriptor[ZERO];
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
+        }
+    }
+
+    @Override
+    public <T> T newInstance(Class<T> clazz, Object... args) throws NoSuchMethodException
+            , IllegalAccessException, InvocationTargetException, InstantiationException {
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        if (ArrayUtils.isEmpty(args)) { return clazz.newInstance(); }
+        Class<?>[] types = findTypes(args);
+        Constructor<T> constructor = findConstructor(clazz, types);
+        makeAccessible(constructor);
+        return constructor.newInstance(args);
     }
 
 }
