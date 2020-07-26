@@ -1,7 +1,6 @@
 package artoria.beans;
 
-import artoria.convert.TypeConvertUtils;
-import artoria.convert.TypeConverter;
+import artoria.convert.type.TypeConverter;
 import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -15,30 +14,24 @@ import java.util.List;
 import java.util.Map;
 
 import static artoria.common.Constants.THIRTY;
+import static artoria.convert.type.TypeConvertUtils.getConvertProvider;
 
 /**
  * Bean convert tools.
  * @author Kahle
  */
 public class BeanUtils {
-    private static final Class<? extends BeanMap> DEFAULT_MAP_TYPE = SimpleBeanMap.class;
-    private static final TypeConverter CONVERTER_AGENT = new TypeConverterAgent();
-    private static final BeanCopier DEFAULT_BEAN_COPIER = new SimpleBeanCopier();
     private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
     private static Class<? extends BeanMap> mapType;
     private static BeanCopier beanCopier;
 
-    private static class TypeConverterAgent implements TypeConverter {
-        @Override
-        public Object convert(Object source, Class<?> target) {
-
-            return TypeConvertUtils.convert(source, target);
-        }
-    }
-
     public static Class<? extends BeanMap> getMapType() {
-
-        return mapType != null ? mapType : DEFAULT_MAP_TYPE;
+        if (mapType != null) { return mapType; }
+        synchronized (BeanUtils.class) {
+            if (mapType != null) { return mapType; }
+            BeanUtils.setMapType(SimpleBeanMap.class);
+            return mapType;
+        }
     }
 
     public static void setMapType(Class<? extends BeanMap> mapType) {
@@ -51,8 +44,12 @@ public class BeanUtils {
     }
 
     public static BeanCopier getBeanCopier() {
-
-        return beanCopier != null ? beanCopier : DEFAULT_BEAN_COPIER;
+        if (beanCopier != null) { return beanCopier; }
+        synchronized (BeanUtils.class) {
+            if (beanCopier != null) { return beanCopier; }
+            BeanUtils.setBeanCopier(new SimpleBeanCopier());
+            return beanCopier;
+        }
     }
 
     public static void setBeanCopier(BeanCopier beanCopier) {
@@ -64,7 +61,7 @@ public class BeanUtils {
     public static BeanMap createBeanMap() {
         try {
             BeanMap beanMap = ReflectUtils.newInstance(getMapType());
-            beanMap.setTypeConverter(CONVERTER_AGENT);
+            beanMap.setTypeConverter(getConvertProvider());
             return beanMap;
         }
         catch (Exception e) {
@@ -93,7 +90,7 @@ public class BeanUtils {
 
     public static void copy(Object from, Object to) {
 
-        getBeanCopier().copy(from, to, CONVERTER_AGENT);
+        getBeanCopier().copy(from, to, getConvertProvider());
     }
 
     public static void copy(Object from, Object to, TypeConverter cvt) {
@@ -112,7 +109,7 @@ public class BeanUtils {
 
     public static <K, V> void copy(Map<K, V> from, Object to) {
 
-        BeanUtils.copy(from, to, CONVERTER_AGENT);
+        BeanUtils.copy(from, to, getConvertProvider());
     }
 
     public static <K, V> void copy(Map<K, V> from, Object to, TypeConverter cvt) {

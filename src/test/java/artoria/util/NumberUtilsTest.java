@@ -31,6 +31,11 @@ public class NumberUtilsTest {
         log.info(NumberUtils.format(99, "#######"));
         log.info(NumberUtils.format(8754.65638, "#######.###"));
         log.info(NumberUtils.format(8754.60000, "#######.##"));
+        log.info(NumberUtils.format(new BigDecimal("0.012003"), ".000"));
+        log.info(NumberUtils.format(new BigDecimal("0.012003"), "0.000"));
+        log.info(NumberUtils.format(new BigDecimal("9.012003"), "0.000"));
+        log.info(NumberUtils.format(new BigDecimal("99.012003"), "0.000"));
+        log.info(NumberUtils.format(new BigDecimal("689.012003"), "0.000"));
     }
 
 }

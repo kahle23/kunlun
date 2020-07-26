@@ -18,10 +18,9 @@ import static artoria.common.Constants.SLASH;
  * @author Kahle
  */
 public abstract class AbstractCrypto implements Crypto {
-    private static final SecureRandom RANDOM = new SecureRandom();
     private AlgorithmParameterSpec algorithmParameterSpec;
     private AlgorithmParameters algorithmParameters;
-    private SecureRandom secureRandom = RANDOM;
+    private SecureRandom secureRandom = new SecureRandom();
     private String algorithm;
     private String mode;
     private String padding;

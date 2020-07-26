@@ -1,6 +1,6 @@
 package artoria.beans;
 
-import artoria.convert.TypeConverter;
+import artoria.convert.type.TypeConverter;
 import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -8,7 +8,9 @@ import artoria.reflect.ReflectUtils;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
 import static artoria.common.Constants.ZERO;
@@ -36,10 +38,18 @@ public class SimpleBeanCopier implements BeanCopier {
         Assert.notNull(from, "Parameter \"from\" must is not null. ");
         Assert.notNull(to, "Parameter \"to\" must is not null. ");
         boolean hasCvt = converter != null;
-        Class<?> fromClass = from.getClass();
-        Class<?> toClass = to.getClass();
-        Map<String, Method> fromMths = ReflectUtils.findReadMethods(fromClass);
-        Map<String, Method> toMths = ReflectUtils.findWriteMethods(toClass);
+        PropertyDescriptor[] fromDescriptors = ReflectUtils.findPropertyDescriptors(from.getClass());
+        PropertyDescriptor[] toDescriptors = ReflectUtils.findPropertyDescriptors(to.getClass());
+        Map<String, Method> fromMths = new HashMap<String, Method>(fromDescriptors.length);
+        for (PropertyDescriptor fromDescriptor : fromDescriptors) {
+            Method readMethod = fromDescriptor.getReadMethod();
+            if (readMethod != null) { fromMths.put(fromDescriptor.getName(), readMethod); }
+        }
+        Map<String, Method> toMths = new HashMap<String, Method>(toDescriptors.length);
+        for (PropertyDescriptor toDescriptor : toDescriptors) {
+            Method writeMethod = toDescriptor.getWriteMethod();
+            if (writeMethod != null) { toMths.put(toDescriptor.getName(), writeMethod); }
+        }
         for (Map.Entry<String, Method> entry : fromMths.entrySet()) {
             String name = entry.getKey();
             Method destMth = toMths.get(name);

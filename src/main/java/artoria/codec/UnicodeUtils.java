@@ -9,13 +9,16 @@ import artoria.util.Assert;
  * @author Kahle
  */
 public class UnicodeUtils {
-    private static final Unicode DEFAULT_UNICODE = new Unicode();
     private static Logger log = LoggerFactory.getLogger(UnicodeUtils.class);
     private static Unicode unicode;
 
     public static Unicode getUnicode() {
-
-        return unicode != null ? unicode : DEFAULT_UNICODE;
+        if (unicode != null) { return unicode; }
+        synchronized (UnicodeUtils.class) {
+            if (unicode != null) { return unicode; }
+            UnicodeUtils.setUnicode(new Unicode());
+            return unicode;
+        }
     }
 
     public static void setUnicode(Unicode unicode) {

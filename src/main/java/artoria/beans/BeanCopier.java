@@ -1,6 +1,6 @@
 package artoria.beans;
 
-import artoria.convert.TypeConverter;
+import artoria.convert.type.TypeConverter;
 
 /**
  * The bean copier.

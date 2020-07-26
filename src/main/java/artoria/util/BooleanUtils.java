@@ -44,10 +44,10 @@ public class BooleanUtils {
                         OFF.equalsIgnoreCase(boolString) ? Boolean.FALSE : null;
             }
             case FOUR: {
-                return TRUE.equalsIgnoreCase(boolString) ? Boolean.TRUE : null;
+                return TRUE_STR.equalsIgnoreCase(boolString) ? Boolean.TRUE : null;
             }
             case FIVE: {
-                return FALSE.equalsIgnoreCase(boolString) ? Boolean.FALSE : null;
+                return FALSE_STR.equalsIgnoreCase(boolString) ? Boolean.FALSE : null;
             }
             default: { return null; }
         }
