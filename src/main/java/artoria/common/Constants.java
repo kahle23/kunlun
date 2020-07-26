@@ -1,8 +1,6 @@
 package artoria.common;
 
 import artoria.file.FilenameUtils;
-import artoria.logging.Logger;
-import artoria.logging.LoggerFactory;
 import artoria.net.NetUtils;
 
 import java.nio.charset.Charset;
@@ -14,8 +12,6 @@ import java.nio.charset.Charset;
  * @author Kahle
  */
 public class Constants {
-    private static Logger log = LoggerFactory.getLogger(Constants.class);
-
     public static final String NEWLINE = System.getProperty("line.separator");
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
     public static final String PATH_SEPARATOR = System.getProperty("path.separator");
@@ -25,6 +21,8 @@ public class Constants {
     public static final String DEFAULT_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
     public static final String FULL_DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public static final String HOST_NAME = NetUtils.getHostName();
+    public static final Object NULL_OBJ = null;
+    public static final String NULL_STR = null;
 
     public static final String GBK = "GBK";
     public static final String UTF_8 = "UTF-8";
@@ -43,8 +41,6 @@ public class Constants {
     public static final String PAGE = "page";
     public static final String ROOT = "root";
     public static final String NULL = "null";
-    public static final String TRUE = "true";
-    public static final String FALSE = "false";
     public static final String ERROR = "error";
     public static final String SYSTEM = "system";
     public static final String SUCCESS = "success";
@@ -53,6 +49,8 @@ public class Constants {
     public static final String UNKNOWN = "unknown";
     public static final String ONE_STR = "1";
     public static final String ZERO_STR = "0";
+    public static final String TRUE_STR = "true";
+    public static final String FALSE_STR = "false";
 
     public static final String MD2 = "MD2";
     public static final String MD5 = "MD5";

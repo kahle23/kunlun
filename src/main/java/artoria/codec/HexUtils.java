@@ -9,13 +9,16 @@ import artoria.util.Assert;
  * @author Kahle
  */
 public class HexUtils {
-    private static final Hex DEFAULT_HEX = new Hex();
     private static Logger log = LoggerFactory.getLogger(HexUtils.class);
     private static Hex hex;
 
     public static Hex getHex() {
-
-        return hex != null ? hex : DEFAULT_HEX;
+        if (hex != null) { return hex; }
+        synchronized (HexUtils.class) {
+            if (hex != null) { return hex; }
+            HexUtils.setHex(new Hex());
+            return hex;
+        }
     }
 
     public static void setHex(Hex hex) {

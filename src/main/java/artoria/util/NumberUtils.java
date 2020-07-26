@@ -13,7 +13,7 @@ import static artoria.common.Constants.ZERO;
  */
 public class NumberUtils {
     private static RoundingMode defaultRoundMode = RoundingMode.HALF_UP;
-    private static String defaultPattern = ".00";
+    private static String defaultPattern = "0.00";
     private static int defaultScale = 2;
 
     public static RoundingMode getDefaultRoundMode() {

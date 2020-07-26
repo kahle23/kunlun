@@ -1,6 +1,6 @@
 package artoria.beans;
 
-import artoria.convert.TypeConverter;
+import artoria.convert.type.TypeConverter;
 import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -10,6 +10,7 @@ import artoria.util.Assert;
 import artoria.util.ObjectUtils;
 import artoria.util.StringUtils;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,8 +25,8 @@ import static artoria.common.Constants.*;
  */
 public class SimpleBeanMap extends BeanMap {
     private static Logger log = LoggerFactory.getLogger(SimpleBeanMap.class);
-    private Map<String, Method> readMethods = new HashMap<String, Method>();
-    private Map<String, Method> writeMethods = new HashMap<String, Method>();
+    private Map<String, Method> writeMethodMap = new HashMap<String, Method>();
+    private Map<String, Method> readMethodMap = new HashMap<String, Method>();
     private Boolean ignoreException = true;
     private Class<?> beanClass;
 
@@ -54,8 +55,14 @@ public class SimpleBeanMap extends BeanMap {
             return;
         }
         beanClass = bean.getClass();
-        readMethods.putAll(ReflectUtils.findReadMethods(beanClass));
-        writeMethods.putAll(ReflectUtils.findWriteMethods(beanClass));
+        PropertyDescriptor[] descriptors = ReflectUtils.findPropertyDescriptors(beanClass);
+        for (PropertyDescriptor descriptor : descriptors) {
+            Method writeMethod = descriptor.getWriteMethod();
+            Method readMethod = descriptor.getReadMethod();
+            String name = descriptor.getName();
+            if (writeMethod != null) { writeMethodMap.put(name, writeMethod); }
+            if (readMethod != null) { readMethodMap.put(name, readMethod); }
+        }
     }
 
     @Override
@@ -66,7 +73,7 @@ public class SimpleBeanMap extends BeanMap {
             keyString = keyString.substring(THREE);
             keyString = StringUtils.uncapitalize(keyString);
         }
-        Method method = readMethods.get(keyString);
+        Method method = readMethodMap.get(keyString);
         if (method == null) { return null; }
         try {
             return method.invoke(bean);
@@ -90,7 +97,7 @@ public class SimpleBeanMap extends BeanMap {
             keyString = keyString.substring(THREE);
             keyString = StringUtils.uncapitalize(keyString);
         }
-        Method method = writeMethods.get(keyString);
+        Method method = writeMethodMap.get(keyString);
         if (method == null) { return null; }
         Class<?>[] types = method.getParameterTypes();
         TypeConverter cvt = getTypeConverter();
@@ -120,7 +127,7 @@ public class SimpleBeanMap extends BeanMap {
 
     @Override
     public Set<Object> keySet() {
-        Set<String> keys = readMethods.keySet();
+        Set<String> keys = readMethodMap.keySet();
         return ObjectUtils.cast(Collections.unmodifiableSet(keys));
     }
 

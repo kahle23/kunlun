@@ -9,13 +9,16 @@ import artoria.util.Assert;
  * @author Kahle
  */
 public class Base64Utils {
-    private static final Base64 DEFAULT_BASE64 = new Base64();
     private static Logger log = LoggerFactory.getLogger(Base64Utils.class);
     private static Base64 base64;
 
     public static Base64 getBase64() {
-
-        return base64 != null ? base64 : DEFAULT_BASE64;
+        if (base64 != null) { return base64; }
+        synchronized (Base64Utils.class) {
+            if (base64 != null) { return base64; }
+            Base64Utils.setBase64(new Base64());
+            return base64;
+        }
     }
 
     public static void setBase64(Base64 base64) {

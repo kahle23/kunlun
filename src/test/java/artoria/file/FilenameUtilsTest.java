@@ -25,6 +25,9 @@ public class FilenameUtilsTest {
         log.info(FilenameUtils.removeExtension("C:\\windows\\system\\123.txt"));
         log.info(FilenameUtils.removeExtension("C:\\windows\\system"));
         log.info(FilenameUtils.removeExtension("C:\\windows\\system\\"));
+        log.info(FilenameUtils.removeExtension("C:\\windows\\system\\.anonymous"));
+        log.info(FilenameUtils.removeExtension("C:\\windows\\system\\1.anonymous"));
+        log.info(FilenameUtils.removeExtension("C:\\windows\\system\\2.anonymous"));
     }
 
     @Test

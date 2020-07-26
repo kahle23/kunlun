@@ -1,6 +1,6 @@
 package artoria.beans;
 
-import artoria.convert.TypeConverter;
+import artoria.convert.type.TypeConverter;
 import artoria.util.Assert;
 import artoria.util.ObjectUtils;
 

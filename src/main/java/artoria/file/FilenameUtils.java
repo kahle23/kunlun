@@ -89,6 +89,7 @@ public class FilenameUtils {
         if (extIndex == MINUS_ONE) { return path; }
         int folderIndex = path.lastIndexOf(FILE_SEPARATOR);
         if (folderIndex > extIndex) { return path; }
+        if (folderIndex == extIndex - ONE) { return path; }
         return path.substring(ZERO, extIndex);
     }
 

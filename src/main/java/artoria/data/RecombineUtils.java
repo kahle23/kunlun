@@ -1,7 +1,7 @@
 package artoria.data;
 
 import artoria.beans.BeanUtils;
-import artoria.convert.TypeConvertUtils;
+import artoria.convert.type.TypeConvertUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
