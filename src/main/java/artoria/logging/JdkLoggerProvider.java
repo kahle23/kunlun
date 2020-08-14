@@ -1,7 +1,7 @@
 package artoria.logging;
 
-import artoria.template.LoggerRenderer;
-import artoria.template.Renderer;
+import artoria.template.LoggerTemplateEngine;
+import artoria.template.TemplateEngine;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.ClassLoaderUtils;
@@ -30,16 +30,16 @@ public class JdkLoggerProvider implements LoggerProvider {
      */
     private java.util.logging.Logger logger;
     /**
-     * Logger renderer.
+     * Logger template engine.
      */
-    private Renderer loggerRenderer;
+    private TemplateEngine loggerTemplateEngine;
 
     public JdkLoggerProvider() {
 
-        this(new LoggerRenderer());
+        this(new LoggerTemplateEngine());
     }
 
-    public JdkLoggerProvider(Renderer loggerRenderer) {
+    public JdkLoggerProvider(TemplateEngine loggerTemplateEngine) {
         logger = java.util.logging.Logger.getLogger(ROOT_LOGGER_NAME);
         InputStream in = ClassLoaderUtils
                 .getResourceAsStream(LOGGER_CONFIG_FILENAME, this.getClass());
@@ -67,17 +67,17 @@ public class JdkLoggerProvider implements LoggerProvider {
                 handler.setFormatter(formatter);
             }
         }
-        this.setLoggerRenderer(loggerRenderer);
+        setLoggerTemplateEngine(loggerTemplateEngine);
     }
 
-    public Renderer getLoggerRenderer() {
+    public TemplateEngine getLoggerTemplateEngine() {
 
-        return loggerRenderer;
+        return loggerTemplateEngine;
     }
 
-    public void setLoggerRenderer(Renderer loggerRenderer) {
-        Assert.notNull(loggerRenderer, "Parameter \"loggerRenderer\" must not null. ");
-        this.loggerRenderer = loggerRenderer;
+    public void setLoggerTemplateEngine(TemplateEngine loggerTemplateEngine) {
+        Assert.notNull(loggerTemplateEngine, "Parameter \"loggerTemplateEngine\" must not null. ");
+        this.loggerTemplateEngine = loggerTemplateEngine;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class JdkLoggerProvider implements LoggerProvider {
     public Logger getLogger(String name) {
         Assert.notNull(name, "Parameter \"name\" must not null. ");
         java.util.logging.Logger logger = java.util.logging.Logger.getLogger(name);
-        return new JdkLogger(logger, getLoggerRenderer());
+        return new JdkLogger(logger, getLoggerTemplateEngine());
     }
 
     @Override
