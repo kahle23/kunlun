@@ -3,7 +3,7 @@ package artoria.template;
 import artoria.exception.UncheckedException;
 
 /**
- * Render exception.
+ * Template render exception.
  * @author Kahle
  */
 public class RenderException extends UncheckedException {

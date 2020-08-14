@@ -1,7 +1,7 @@
 package artoria.logging;
 
 import artoria.io.StringBuilderWriter;
-import artoria.template.Renderer;
+import artoria.template.TemplateEngine;
 
 import java.util.logging.Level;
 
@@ -13,7 +13,7 @@ import static artoria.common.Constants.THREE;
  */
 public class JdkLogger implements Logger {
     private final java.util.logging.Logger logger;
-    private final Renderer loggerRenderer;
+    private final TemplateEngine templateEngine;
 
     private void logp(Level level, String format, Object[] arguments, Throwable throwable) {
         if (!logger.isLoggable(level)) { return; }
@@ -21,13 +21,13 @@ public class JdkLogger implements Logger {
         String clazzName = element.getClassName();
         String methodName = element.getMethodName();
         StringBuilderWriter writer = new StringBuilderWriter();
-        loggerRenderer.render(arguments, writer, null, format, null);
+        templateEngine.render(arguments, writer, null, format);
         String message = writer.toString();
         logger.logp(level, clazzName, methodName, message, throwable);
     }
 
-    public JdkLogger(java.util.logging.Logger logger, Renderer loggerRenderer) {
-        this.loggerRenderer = loggerRenderer;
+    public JdkLogger(java.util.logging.Logger logger, TemplateEngine templateEngine) {
+        this.templateEngine = templateEngine;
         this.logger = logger;
     }
 
