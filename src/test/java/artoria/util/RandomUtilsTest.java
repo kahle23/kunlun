@@ -1,10 +1,7 @@
-package artoria.random;
+package artoria.util;
 
-import artoria.entity.Menu;
-import artoria.entity.Student;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 
 import static artoria.common.Constants.*;
@@ -46,15 +43,6 @@ public class RandomUtilsTest {
         for (int i = ZERO; i < TWENTY; i++) {
             log.info("{}", RandomUtils.nextBoolean());
         }
-    }
-
-    @Test
-    public void testNextObject() {
-        Student student = RandomUtils.nextObject(Student.class);
-        log.info(JSON.toJSONString(student, true));
-
-        Menu menu = RandomUtils.nextObject(Menu.class);
-        log.info(JSON.toJSONString(menu, true));
     }
 
 }
