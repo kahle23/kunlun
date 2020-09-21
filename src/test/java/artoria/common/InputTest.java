@@ -1,9 +1,9 @@
 package artoria.common;
 
-import artoria.entity.Student;
+import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.random.RandomUtils;
+import artoria.test.bean.User;
 import artoria.time.DateUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
@@ -16,10 +16,10 @@ public class InputTest {
     @Test
     public void test1() {
         Input<Date> input = new Input<Date>();
-        input.setCurrentUser(RandomUtils.nextObject(Student.class));
+        input.setCurrentUser(FakeUtils.fake(User.class));
         input.setPaging(new Paging(1, 15));
         input.setData(new Date());
-        Student currentUser = (Student) input.getCurrentUser();
+        User currentUser = (User) input.getCurrentUser();
         Paging paging = input.getPaging();
         Date data = input.getData();
         log.info(JSON.toJSONString(currentUser));

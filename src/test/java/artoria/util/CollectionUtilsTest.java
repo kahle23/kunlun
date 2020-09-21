@@ -1,9 +1,9 @@
 package artoria.util;
 
-import artoria.entity.Person;
+import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.random.RandomUtils;
+import artoria.test.bean.Person;
 import com.alibaba.fastjson.JSON;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,10 +19,10 @@ public class CollectionUtilsTest {
     @Before
     public void init() {
         list.add(null);
-        list.add(RandomUtils.nextObject(Person.class));
+        list.add(FakeUtils.fake(Person.class));
         list.add(null);
-        list.add(RandomUtils.nextObject(Person.class));
-        list.add(RandomUtils.nextObject(Person.class));
+        list.add(FakeUtils.fake(Person.class));
+        list.add(FakeUtils.fake(Person.class));
     }
 
     @Test

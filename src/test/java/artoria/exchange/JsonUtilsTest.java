@@ -1,9 +1,9 @@
 package artoria.exchange;
 
-import artoria.entity.Student;
+import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.random.RandomUtils;
+import artoria.test.bean.User;
 import artoria.util.TypeUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Before;
@@ -20,30 +20,30 @@ import static artoria.common.Constants.ZERO;
 
 public class JsonUtilsTest {
     private static Logger log = LoggerFactory.getLogger(JsonUtilsTest.class);
-    private Student data = new Student();
-    private List<Student> data1 = new ArrayList<Student>();
-    private Map<Long, Student> data2 = new HashMap<Long, Student>();
+    private User data = new User();
+    private List<User> data1 = new ArrayList<User>();
+    private Map<Long, User> data2 = new HashMap<Long, User>();
     private String jsonString = null;
     private String jsonString1 = null;
     private String jsonString2 = null;
 
     @Before
     public void init() {
-        JsonUtils.setJsonProvider(new SimpleJsonProvider(true) {
+        JsonUtils.setJsonProvider(new SimpleJsonProvider() {
             @Override
-            public <T> T parseObject(String text,Type clazz) {
-                return JSON.parseObject(text, clazz);
+            public String toJsonString(Object object, JsonFeature... features) {
+                return JSON.toJSONString(object);
             }
             @Override
-            public String toJsonString(Object object) {
-                return JSON.toJSONString(object, this.getPrettyFormat());
+            public <T> T parseObject(String jsonString, Type type, JsonFeature... features) {
+                return JSON.parseObject(jsonString, type);
             }
         });
-        data = RandomUtils.nextObject(Student.class);
+        data = FakeUtils.fake(User.class);
         for (int i = ZERO; i < FIVE; i++) {
-            Student student = RandomUtils.nextObject(Student.class);
-            data1.add(student);
-            data2.put(student.getStudentId(), student);
+            User user = FakeUtils.fake(User.class);
+            data1.add(user);
+            data2.put(user.getId(), user);
         }
         jsonString = JsonUtils.toJsonString(data);
         jsonString1 = JsonUtils.toJsonString(data1);
@@ -59,21 +59,21 @@ public class JsonUtilsTest {
 
     @Test
     public void test1() {
-        Student student = JsonUtils.parseObject(jsonString, Student.class);
-        log.info(JsonUtils.toJsonString(student));
+        User user = JsonUtils.parseObject(jsonString, User.class);
+        log.info(JsonUtils.toJsonString(user));
     }
 
     @Test
     public void test2() {
-        List<Student> list = JsonUtils.parseObject(jsonString1
-                , TypeUtils.parameterizedOf(List.class, Student.class));
+        List<User> list = JsonUtils.parseObject(jsonString1
+                , TypeUtils.parameterizedOf(List.class, User.class));
         log.info(JsonUtils.toJsonString(list));
     }
 
     @Test
     public void test3() {
-        Map<Long, Student> map = JsonUtils.parseObject(jsonString2
-                , TypeUtils.parameterizedOf(Map.class, Long.class, Student.class));
+        Map<Long, User> map = JsonUtils.parseObject(jsonString2
+                , TypeUtils.parameterizedOf(Map.class, Long.class, User.class));
         log.info(JsonUtils.toJsonString(map));
     }
 
