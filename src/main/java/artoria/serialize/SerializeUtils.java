@@ -11,15 +11,17 @@ import java.io.*;
  * @author Kahle
  */
 public class SerializeUtils {
-    private static final Deserializer<Object> DEFAULT_DESERIALIZER = new SimpleDeserializer();
-    private static final Serializer<Object> DEFAULT_SERIALIZER = new SimpleSerializer();
     private static Logger log = LoggerFactory.getLogger(SerializeUtils.class);
     private static Deserializer<Object> deserializer;
     private static Serializer<Object> serializer;
 
     public static Deserializer<Object> getDeserializer() {
-
-        return deserializer != null ? deserializer : DEFAULT_DESERIALIZER;
+        if (deserializer != null) { return deserializer; }
+        synchronized (SerializeUtils.class) {
+            if (deserializer != null) { return deserializer; }
+            SerializeUtils.setDeserializer(new SimpleDeserializer());
+            return deserializer;
+        }
     }
 
     public static void setDeserializer(Deserializer<Object> deserializer) {
@@ -29,8 +31,12 @@ public class SerializeUtils {
     }
 
     public static Serializer<Object> getSerializer() {
-
-        return serializer != null ? serializer : DEFAULT_SERIALIZER;
+        if (serializer != null) { return serializer; }
+        synchronized (SerializeUtils.class) {
+            if (serializer != null) { return serializer; }
+            SerializeUtils.setSerializer(new SimpleSerializer());
+            return serializer;
+        }
     }
 
     public static void setSerializer(Serializer<Object> serializer) {

@@ -1,10 +1,10 @@
 package artoria.file;
 
 import artoria.beans.BeanUtils;
-import artoria.entity.Student;
+import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.random.RandomUtils;
+import artoria.test.bean.User;
 import org.junit.Test;
 
 import java.io.File;
@@ -19,22 +19,25 @@ public class CsvTest {
     private static File testGenerated = new File("target\\test-classes\\test_generated.csv");
     private static File testRead = new File("src\\test\\resources\\test_read.csv");
     private static List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
-    private static List<Student> beanList = new ArrayList<Student>();
+    private static List<User> beanList = new ArrayList<User>();
 
     static {
         for (int i = ZERO; i < TEN; i++) {
-            Student student = RandomUtils.nextObject(Student.class);
-            beanList.add(student);
+            User user = FakeUtils.fake(User.class);
+            beanList.add(user);
         }
         mapList.addAll(BeanUtils.beanToMapInList(beanList));
+        headerMappings.put("Uid", "uid");
         headerMappings.put("Name", "name");
-        headerMappings.put("Sex", "sex");
         headerMappings.put("Age", "age");
+        headerMappings.put("Gender", "gender");
+        headerMappings.put("Nickname", "nickname");
+        headerMappings.put("Avatar", "avatar");
+        headerMappings.put("Birthday", "birthday");
         headerMappings.put("Height", "height");
         headerMappings.put("Weight", "weight");
-        headerMappings.put("School Name", "schoolName");
-        headerMappings.put("Student Id", "studentId");
-        headerMappings.put("Graduated", "graduated");
+        headerMappings.put("Phone Number", "phoneNumber");
+        headerMappings.put("Introduce", "introduce");
     }
 
     @Test
@@ -84,11 +87,11 @@ public class CsvTest {
             builder.append(map).append(NEWLINE);
         }
         log.info(builder.toString());
-        List<Student> studentList = csv.toBeanList(Student.class);
+        List<User> userList = csv.toBeanList(User.class);
         builder.setLength(ZERO);
         builder.append(NEWLINE);
-        for (Student student : studentList) {
-            builder.append(BeanUtils.beanToMap(student)).append(NEWLINE);
+        for (User user : userList) {
+            builder.append(BeanUtils.beanToMap(user)).append(NEWLINE);
         }
         log.info(builder.toString());
     }

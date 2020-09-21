@@ -1,10 +1,10 @@
 package artoria.beans;
 
-import artoria.entity.Person;
-import artoria.entity.Student;
+import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.random.RandomUtils;
+import artoria.test.bean.Person;
+import artoria.test.bean.User;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 
@@ -15,14 +15,14 @@ import java.util.Map;
 
 public class BeanUtilsTest {
     private static Logger log = LoggerFactory.getLogger(BeanUtilsTest.class);
-    private static Person person = RandomUtils.nextObject(Student.class);
+    private static Person person = FakeUtils.fake(User.class);
     private static Map<String, Object> personMap = new HashMap<String, Object>();
     private static List<Person> persons = new ArrayList<Person>();
     private static List<Map<String, Object>> personsMap;
 
     static {
         BeanUtils.copy(person, personMap);
-        persons.add(RandomUtils.nextObject(Student.class));
+        persons.add(FakeUtils.fake(User.class));
         personsMap = BeanUtils.beanToMapInList(persons);
     }
 
@@ -35,29 +35,29 @@ public class BeanUtilsTest {
 
     @Test
     public void testCopyMapToBean() {
-        Student student = new Student();
-        BeanUtils.copy(personMap, student);
-        log.info(JSON.toJSONString(student));
+        User user = new User();
+        BeanUtils.copy(personMap, user);
+        log.info(JSON.toJSONString(user));
     }
 
     @Test
     public void testCopyBeanToBean() {
-        Student student = new Student();
-        BeanUtils.copy(person, student);
-        log.info(JSON.toJSONString(student));
+        User user = new User();
+        BeanUtils.copy(person, user);
+        log.info(JSON.toJSONString(user));
     }
 
     @Test
     public void mapToBean() throws Exception {
-        Student student = BeanUtils.mapToBean(personMap, Student.class);
-        log.info(JSON.toJSONString(student));
+        User user = BeanUtils.mapToBean(personMap, User.class);
+        log.info(JSON.toJSONString(user));
     }
 
     @Test
     public void mapToBean1() throws Exception {
-        Student student = new Student();
-        BeanUtils.mapToBean(personMap, student);
-        log.info(JSON.toJSONString(student));
+        User user = new User();
+        BeanUtils.mapToBean(personMap, user);
+        log.info(JSON.toJSONString(user));
     }
 
     @Test
@@ -68,22 +68,22 @@ public class BeanUtilsTest {
 
     @Test
     public void beanToBean() throws Exception {
-        Student student = BeanUtils.beanToBean(person, Student.class);
-        log.info(JSON.toJSONString(student));
+        User user = BeanUtils.beanToBean(person, User.class);
+        log.info(JSON.toJSONString(user));
     }
 
     @Test
     public void beanToBean1() throws Exception {
-        Student student = new Student();
-        BeanUtils.beanToBean(person, student);
-        log.info(JSON.toJSONString(student));
+        User user = new User();
+        BeanUtils.beanToBean(person, user);
+        log.info(JSON.toJSONString(user));
     }
 
     @Test
     public void mapToBeanInList() throws Exception {
         log.info("{}", personsMap);
-        List<Student> students = BeanUtils.mapToBeanInList(personsMap, Student.class);
-        log.info(JSON.toJSONString(students));
+        List<User> users = BeanUtils.mapToBeanInList(personsMap, User.class);
+        log.info(JSON.toJSONString(users));
     }
 
     @Test
@@ -94,8 +94,8 @@ public class BeanUtilsTest {
 
     @Test
     public void beanToBeanInList() throws Exception {
-        List<Student> students = BeanUtils.beanToBeanInList(persons, Student.class);
-        log.info(JSON.toJSONString(students));
+        List<User> users = BeanUtils.beanToBeanInList(persons, User.class);
+        log.info(JSON.toJSONString(users));
     }
 
 }
