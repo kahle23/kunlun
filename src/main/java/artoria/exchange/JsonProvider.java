@@ -9,25 +9,21 @@ import java.lang.reflect.Type;
 public interface JsonProvider {
 
     /**
-     * Serialize java object to pretty format json string.
-     * @return If true will serialize pretty format json else false
-     */
-    boolean getPrettyFormat();
-
-    /**
      * Serialize java object to json string.
      * @param object The java object
+     * @param features The json features
      * @return The json string
      */
-    String toJsonString(Object object);
+    String toJsonString(Object object, JsonFeature... features);
 
     /**
      * Parse json string to java object.
      * @param jsonString The json string
      * @param type The java object type
+     * @param features The json features
      * @param <T> The java object type
      * @return The java object
      */
-    <T> T parseObject(String jsonString, Type type);
+    <T> T parseObject(String jsonString, Type type, JsonFeature... features);
 
 }

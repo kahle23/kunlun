@@ -11,13 +11,16 @@ import java.lang.reflect.Type;
  * @author Kahle
  */
 public class JsonUtils {
-    private static final JsonProvider DEFAULT_JSON_PROVIDER = new SimpleJsonProvider();
     private static Logger log = LoggerFactory.getLogger(JsonUtils.class);
     private static JsonProvider jsonProvider;
 
     public static JsonProvider getJsonProvider() {
-
-        return jsonProvider != null ? jsonProvider : DEFAULT_JSON_PROVIDER;
+        if (jsonProvider != null) { return jsonProvider; }
+        synchronized (JsonUtils.class) {
+            if (jsonProvider != null) { return jsonProvider; }
+            JsonUtils.setJsonProvider(new SimpleJsonProvider());
+            return jsonProvider;
+        }
     }
 
     public static void setJsonProvider(JsonProvider jsonProvider) {
@@ -26,14 +29,14 @@ public class JsonUtils {
         JsonUtils.jsonProvider = jsonProvider;
     }
 
-    public static String toJsonString(Object object) {
+    public static String toJsonString(Object object, JsonFeature... features) {
 
-        return getJsonProvider().toJsonString(object);
+        return getJsonProvider().toJsonString(object, features);
     }
 
-    public static <T> T parseObject(String jsonString, Type type) {
+    public static <T> T parseObject(String jsonString, Type type, JsonFeature... features) {
 
-        return getJsonProvider().parseObject(jsonString, type);
+        return getJsonProvider().parseObject(jsonString, type, features);
     }
 
 }
