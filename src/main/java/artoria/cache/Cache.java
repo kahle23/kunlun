@@ -1,104 +1,60 @@
 package artoria.cache;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 /**
- * A cache is a Map-like data structure that provides
- * temporary storage of application data.
- * @param <K> The type of key
- * @param <V> The type of value
+ * Interface that defines common cache operations.
  * @author Kahle
  */
-public interface Cache<K, V> {
+public interface Cache {
 
     /**
-     * Return the name of the cache.
-     * @return The name of the cache
+     * Return the cache name.
+     * @return The cache name
      */
     String getName();
 
     /**
-     * Gets a value from the cache.
+     * Return the underlying native cache provider.
+     * @return Native cache provider
+     */
+    Object getNativeCache();
+
+    /**
+     * Return the value to which this cache maps the specified key,
+     * obtaining that value from value loader if necessary.
      * @param key The key whose associated value is to be returned
-     * @return The element, or null, if it does not exist
+     * @param callable The value loader
+     * @return The value to which this cache maps the specified key
      */
-    V get(K key);
+    <T> T get(Object key, Callable<T> callable);
 
     /**
-     * Associates the specified value with the specified key in the cache.
-     * @param key Key with which the specified value is to be associated
-     * @param value Value to be associated with the specified key
+     * Return the value to which this cache maps the specified key,
+     * generically specifying a type that return value will be cast to.
+     * @param key The key whose associated value is to be returned
+     * @param type The required type of the returned value
+     * @return The value to which this cache maps the specified key
      */
-    void put(K key, V value);
+    <T> T get(Object key, Class<T> type);
 
     /**
-     * Associates the specified value with the specified key in this cache,
-     * returning an existing value if one existed.
-     * @param key Key with which the specified value is to be associated
-     * @param value Value to be associated with the specified key
-     * @return The value associated with the key
-     *          at the start of the operation or null if none was associated
+     * Return the value to which this cache maps the specified key.
+     * @param key The key whose associated value is to be returned
+     * @return The value to which this cache maps the specified key
      */
-    V putAndGet(K key, V value);
-
-    /**
-     * Atomically associates the specified key with the given value
-     * if it is not already associated with a value.
-     * @param key Key with which the specified value is to be associated
-     * @param value Value to be associated with the specified key
-     * @return True if a value was set
-     */
-    V putIfAbsent(K key, V value);
-
-    /**
-     * Copies all of the entries from the specified map to the cache.
-     * @param map Mappings to be stored in this cache
-     */
-    void putAll(Map<? extends K, ? extends V> map);
-
-    /**
-     * Removes the mapping for a key from this cache if it is present.
-     * @param key Key whose mapping is to be removed from the cache
-     * @return False if there was no matching key
-     */
-    boolean remove(K key);
-
-    /**
-     * Atomically removes the mapping for a key only
-     * if currently mapped to the given value.
-     * @param key Key whose mapping is to be removed from the cache
-     * @param oldValue Value expected to be associated with the specified key
-     * @return False if there was no matching key
-     */
-    boolean remove(K key, V oldValue);
-
-    /**
-     * Removes values for the specified keys.
-     * @param keys the keys to remove
-     */
-    void remove(Collection<? extends K> keys);
-
-    /**
-     * Atomically removes the value for a key only
-     * if currently mapped to some value.
-     * @param key Key with which the specified value is associated
-     * @return The value if one existed
-     *          or null if no mapping existed for this key
-     */
-    V removeAndGet(K key);
+    Object get(Object key);
 
     /**
      * Determines if the cache contains a value for the specified key.
      * @param key Key whose presence in this cache is to be tested
      * @return True if this map contains a mapping for the specified key
      */
-    boolean containsKey(K key);
-
-    /**
-     * Clears the contents of the cache.
-     */
-    void clear();
+    boolean containsKey(Object key);
 
     /**
      * Return the number of key-value mappings in this cache.
@@ -107,30 +63,68 @@ public interface Cache<K, V> {
     int size();
 
     /**
-     * Loads the specified value into the cache using
-     * the CacheLoader for the given key.
-     * @param key The keys to load
-     * @param coverExisted Cover if key existed
+     * Associate the specified value with the specified key in this cache.
+     * @param key The key with which the specified value is to be associated
+     * @param value The value to be associated with the specified key
+     * @return The previous value associated with key, or null if there was no mapping for key
      */
-    void load(K key, boolean coverExisted);
+    Object put(Object key, Object value);
 
     /**
-     * Loads the specified values into the cache using
-     * the CacheLoader for the given keys.
-     * @param keys The keys to load
-     * @param coverExisted Cover if key existed
+     * Atomically associate the specified value with the specified key in this cache
+     * if it is not set already.
+     * @param key The key with which the specified value is to be associated
+     * @param value The value to be associated with the specified key
+     * @return The previous value associated with key, or null if there was no mapping for key
      */
-    void load(Iterable<? extends K> keys, boolean coverExisted);
+    Object putIfAbsent(Object key, Object value);
 
     /**
-     * Refresh this cache all keys.
+     * Copies all of the entries from the specified map to the cache.
+     * @param map Mappings to be stored in this cache
      */
-    void refresh();
+    void putAll(Map<?, ?> map);
+
+    boolean expire(Object key, long timeToLive, TimeUnit timeUnit);
+
+    boolean expireAt(Object key, Date date);
+
+    boolean persist(Object key);
 
     /**
-     * Gets original operation object.
-     * @return Original operation object
+     * Remove the mapping for this key from this cache if it is present.
+     * @param key The key whose mapping is to be removed from the cache
+     * @return The previous value associated with key
      */
-    Object getOriginal();
+    Object remove(Object key);
+
+    /**
+     * Removes entries for the specified keys.
+     * @param keys The keys to remove
+     */
+    void removeAll(Collection<?> keys);
+
+    /**
+     * Remove all mappings from the cache.
+     */
+    void clear();
+
+    /**
+     * Prune the objects that need to be cleaned according to the pruning strategy.
+     * @return Number of objects that have been cleaned out
+     */
+    int prune();
+
+    /**
+     * Return a view of all the keys for entries contained in this cache.
+     * @return The view of all the keys for entries contained in this cache
+     */
+    Collection<Object> keys();
+
+    /**
+     * Return a view of the entries stored in this cache as a map.
+     * @return The view of the entries stored in this cache
+     */
+    Map<Object, Object> entries();
 
 }
