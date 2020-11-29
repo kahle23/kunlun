@@ -1,5 +1,7 @@
 package artoria.collection;
 
+import artoria.lang.ReferenceType;
+import artoria.util.Assert;
 import artoria.util.CollectionUtils;
 import artoria.util.MapUtils;
 import artoria.util.ObjectUtils;
@@ -9,6 +11,9 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
+import static artoria.lang.ReferenceType.SOFT;
+import static artoria.lang.ReferenceType.WEAK;
+
 /**
  * Reference map can be wrapped as weak and soft references.
  * @author Kahle
@@ -16,17 +21,21 @@ import java.util.*;
 public class ReferenceMap<K, V> implements Map<K, V> {
     private final Map<K, ValueCell<K, V>> internalMap;
     private final ReferenceQueue<? super V> queue;
-    private final Type type;
+    private final ReferenceType type;
 
-    public ReferenceMap(Type type) {
+    public ReferenceMap(ReferenceType referenceType) {
 
-        this(new HashMap<K, ValueCell<K, V>>(), type);
+        this(referenceType, new HashMap<K, ValueCell<K, V>>());
     }
 
-    public ReferenceMap(Map<K, ValueCell<K, V>> internalMap, Type type) {
+    public ReferenceMap(ReferenceType referenceType, Map<K, ValueCell<K, V>> internalMap) {
+        Assert.notNull(referenceType, "Parameter \"referenceType\" must not null. ");
+        Assert.notNull(internalMap, "Parameter \"internalMap\" must not null. ");
+        Assert.isTrue(SOFT.equals(referenceType) || WEAK.equals(referenceType),
+                "Parameter \"referenceType\" must be soft reference or weak reference. ");
         this.queue = new ReferenceQueue<V>();
+        this.type = referenceType;
         this.internalMap = internalMap;
-        this.type = type;
     }
 
     private ValueCell<K, V> newValueCell(K key, V value, ReferenceQueue<? super V> queue) {
@@ -164,20 +173,6 @@ public class ReferenceMap<K, V> implements Map<K, V> {
             }
         }
         return kvPairs.entrySet();
-    }
-
-    public enum Type {
-
-        /**
-         * Reference type weak.
-         */
-        WEAK,
-
-        /**
-         * Reference type soft.
-         */
-        SOFT
-
     }
 
     public interface ValueCell<K, V> {

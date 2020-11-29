@@ -1,8 +1,12 @@
 package artoria.cache;
 
+import artoria.lang.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.mock.MockUtils;
+import artoria.test.bean.Book;
 import artoria.util.ThreadUtils;
+import com.alibaba.fastjson.JSON;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -20,12 +24,22 @@ public class CacheUtilsTest {
         SimpleCache cache = new SimpleCache(cacheName);
         cache.setPrintLog(true);
         CacheUtils.register(cache);
-        SimpleCache cache1 = new SimpleCache(cacheName1, TWO);
+        SimpleCache cache1 = new SimpleCache(
+                cacheName1, TWO, ZERO, ZERO, ReferenceType.WEAK
+        );
         cache1.setPrintLog(true);
         CacheUtils.register(cache1);
         SimpleCache cache2 = new SimpleCache(cacheName2);
         cache2.setPrintLog(true);
         CacheUtils.register(cache2);
+    }
+
+    @Test
+    public void test1() {
+        Book book = MockUtils.mock(Book.class);
+        log.info(JSON.toJSONString(book));
+        CacheUtils.put(DEFAULT, "test1", book);
+        log.info(JSON.toJSONString(CacheUtils.get(DEFAULT, "test1")));
     }
 
     @Test
@@ -35,7 +49,10 @@ public class CacheUtilsTest {
             CacheUtils.put(cacheName, i, "test-data-" + i);
             CacheUtils.expire(cacheName, i, timeToLive, TimeUnit.MILLISECONDS);
         }
-        ThreadUtils.sleepQuietly(ONE_THOUSAND);
+        log.info("Size: {}", CacheUtils.size(cacheName));
+        ThreadUtils.sleepQuietly(timeToLive);
+        CacheUtils.prune(cacheName);
+        log.info("Size: {}", CacheUtils.size(cacheName));
         for (int i = ZERO; i < TEN; i++) {
             log.info("{}", CacheUtils.get(cacheName, i));
         }
