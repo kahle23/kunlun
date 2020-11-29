@@ -10,13 +10,13 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * No cache.
+ * Undefined cache.
  * @author Kahle
  */
-public class NoCache implements Cache {
+public class UndefinedCache implements Cache {
     private final String name;
 
-    public NoCache(String name) {
+    public UndefinedCache(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         this.name = name;
     }

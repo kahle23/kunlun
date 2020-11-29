@@ -60,7 +60,7 @@ public interface Cache {
      * Return the number of key-value mappings in this cache.
      * @return The number of key-value mappings in this cache
      */
-    int size();
+    long size();
 
     /**
      * Associate the specified value with the specified key in this cache.
@@ -69,6 +69,8 @@ public interface Cache {
      * @return The previous value associated with key, or null if there was no mapping for key
      */
     Object put(Object key, Object value);
+
+    Object put(Object key, Object value, long timeToLive, TimeUnit timeUnit);
 
     /**
      * Atomically associate the specified value with the specified key in this cache
@@ -79,16 +81,44 @@ public interface Cache {
      */
     Object putIfAbsent(Object key, Object value);
 
+    Object putIfAbsent(Object key, Object value, long timeToLive, TimeUnit timeUnit);
+
     /**
      * Copies all of the entries from the specified map to the cache.
      * @param map Mappings to be stored in this cache
      */
     void putAll(Map<?, ?> map);
 
+    /**
+     * Associate the specified value with the specified key in this cache.
+     * @param key The key with which the specified value is to be associated
+     * @param value The value to be associated with the specified key
+     * @param timeToLive The amount of time for the element to live, in millisecond. 0 indicates unlimited
+     * @param timeToIdle The amount of time for the element to idle, in millisecond. 0 indicates unlimited
+     * @return The previous value associated with key, or null if there was no mapping for key
+     */
+    /**
+     * Set time to live for given {@code key}..
+     * @param key must not be {@literal null}.
+     * @param timeToLive
+     * @param timeUnit must not be {@literal null}.
+     * @return {@literal null} . // todo
+     */
     boolean expire(Object key, long timeToLive, TimeUnit timeUnit);
 
+    /**
+     * Set the expiration for given {@code key} as a {@literal date} timestamp.
+     * @param key must not be {@literal null}.
+     * @param date must not be {@literal null}.
+     * @return {@literal null} when  // todo
+     */
     boolean expireAt(Object key, Date date);
 
+    /**
+     * Remove the expiration from given {@code key}.
+     * @param key must not be {@literal null}.
+     * @return {@literal null} // todo
+     */
     boolean persist(Object key);
 
     /**
@@ -113,7 +143,7 @@ public interface Cache {
      * Prune the objects that need to be cleaned according to the pruning strategy.
      * @return Number of objects that have been cleaned out
      */
-    int prune();
+    long prune();
 
     /**
      * Return a view of all the keys for entries contained in this cache.

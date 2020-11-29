@@ -1,5 +1,6 @@
 package artoria.cache;
 
+import artoria.lang.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -11,23 +12,15 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import static artoria.collection.ReferenceMap.Type.SOFT;
-import static artoria.common.Constants.DEFAULT;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.Constants.*;
 
 /**
  * Cache tools.
  * @author Kahle
  */
 public class CacheUtils {
-    private static final Map<String, Cache> CACHE_MAP = new ConcurrentHashMap<String, Cache>();
+    private static final Map<String, Cache> STORAGE = new ConcurrentHashMap<String, Cache>();
     private static Logger log = LoggerFactory.getLogger(CacheUtils.class);
-
-    static {
-        SimpleCache cache = new SimpleCache(DEFAULT, ZERO, SOFT);
-        cache.setPrintLog(true);
-        register(cache);
-    }
 
     public static void register(Cache cache) {
         Assert.notNull(cache, "Parameter \"cache\" must not null. ");
@@ -35,12 +28,12 @@ public class CacheUtils {
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
         String cacheClassName = cache.getClass().getName();
         log.info("Register \"{}\" to \"{}\". ", cacheClassName, cacheName);
-        CACHE_MAP.put(cacheName, cache);
+        STORAGE.put(cacheName, cache);
     }
 
     public static Cache unregister(String cacheName) {
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        Cache remove = CACHE_MAP.remove(cacheName);
+        Cache remove = STORAGE.remove(cacheName);
         if (remove != null) {
             String removeClassName = remove.getClass().getName();
             log.info("Unregister \"{}\" to \"{}\". ", removeClassName, cacheName);
@@ -48,10 +41,23 @@ public class CacheUtils {
         return remove;
     }
 
+    public static Map<String, Cache> getStorage() {
+
+        return STORAGE;
+    }
+
     public static Cache getCache(String cacheName) {
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        Cache cache = CACHE_MAP.get(cacheName);
-        Assert.notNull(cache, "The cache does not exist. Please register first. ");
+        Cache cache = STORAGE.get(cacheName);
+        if (cache != null) { return cache; }
+        if (DEFAULT.equals(cacheName)) {
+            SimpleCache simpleCache = new SimpleCache(DEFAULT,
+                    ZERO, TimeUnit.HOURS.toMillis(TWO), ZERO, ReferenceType.SOFT);
+            simpleCache.setPrintLog(true);
+            register(cache = simpleCache);
+        }
+        else { register(cache = new UndefinedCache(cacheName)); }
+        //Assert.notNull(cache, "The cache does not exist. Please register first. ");
         return cache;
     }
 
@@ -75,7 +81,7 @@ public class CacheUtils {
         return getCache(cacheName).containsKey(key);
     }
 
-    public static int size(String cacheName) {
+    public static long size(String cacheName) {
 
         return getCache(cacheName).size();
     }
@@ -85,9 +91,19 @@ public class CacheUtils {
         return getCache(cacheName).put(key, value);
     }
 
+    public static Object put(String cacheName, Object key, Object value, long timeToLive, TimeUnit timeUnit) {
+
+        return getCache(cacheName).put(key, value, timeToLive, timeUnit);
+    }
+
     public static Object putIfAbsent(String cacheName, Object key, Object value) {
 
         return getCache(cacheName).putIfAbsent(key, value);
+    }
+
+    public static Object putIfAbsent(String cacheName, Object key, Object value, long timeToLive, TimeUnit timeUnit) {
+
+        return getCache(cacheName).putIfAbsent(key, value, timeToLive, timeUnit);
     }
 
     public static void putAll(String cacheName, Map<?, ?> map) {
@@ -125,7 +141,7 @@ public class CacheUtils {
         getCache(cacheName).clear();
     }
 
-    public static int prune(String cacheName) {
+    public static long prune(String cacheName) {
 
         return getCache(cacheName).prune();
     }

@@ -1,5 +1,6 @@
 package artoria.collection;
 
+import artoria.lang.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Ignore;
@@ -16,7 +17,7 @@ public class ReferenceMapTest {
 
     @Test
     public void test0() throws Exception {
-        Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceMap.Type.SOFT);
+        Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceType.SOFT);
         map.put("1", "val[1");
         map.put("2", "val[2");
         map.put("3", "val[3");
@@ -35,7 +36,7 @@ public class ReferenceMapTest {
 
     @Test
     public void test1() throws Exception {
-        Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceMap.Type.WEAK);
+        Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceType.WEAK);
         map.put("test1", new Object());
         log.info("{}", map.get("test1"));
         System.gc();
@@ -50,7 +51,7 @@ public class ReferenceMapTest {
             builder.append(i);
         }
         String content = builder.toString();
-        Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceMap.Type.SOFT);
+        Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceType.SOFT);
 //        Map<String, Object> map = new HashMap<String, Object>();
         for (long i = ZERO; i < 999999; i++) {
             map.put(i + "", content + i);
@@ -60,7 +61,7 @@ public class ReferenceMapTest {
 
     @Test
     public void test3() throws Exception {
-        Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceMap.Type.WEAK);
+        Map<String, Object> map = new ReferenceMap<String, Object>(ReferenceType.WEAK);
         for (int i = ZERO; i < ONE_HUNDRED; i++) {
             map.put("data" + i, "data - - " + i);
         }
