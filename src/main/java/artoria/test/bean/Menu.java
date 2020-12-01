@@ -4,30 +4,30 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Menu implements Serializable {
-    private String id;
-    private String parentId;
+    private Long   id;
+    private Long   parentId;
     private String name;
     private String type;
     private String icon;
     private String description;
     private List<Menu> children;
 
-    public String getId() {
+    public Long getId() {
 
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
 
         this.id = id;
     }
 
-    public String getParentId() {
+    public Long getParentId() {
 
         return parentId;
     }
 
-    public void setParentId(String parentId) {
+    public void setParentId(Long parentId) {
 
         this.parentId = parentId;
     }
