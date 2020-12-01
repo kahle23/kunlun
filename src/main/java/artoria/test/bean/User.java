@@ -1,13 +1,18 @@
 package artoria.test.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User extends Person {
+public class User implements Serializable {
     private Long   id;
-    private String uid;
     private String nickname;
     private String avatar;
+    private String name;
+    private String gender;
+    private Integer age;
     private Date   birthday;
+    private String height;
+    private String weigh;
     private String phoneNumber;
     private String introduce;
 
@@ -19,16 +24,6 @@ public class User extends Person {
     public void setId(Long id) {
 
         this.id = id;
-    }
-
-    public String getUid() {
-
-        return uid;
-    }
-
-    public void setUid(String uid) {
-
-        this.uid = uid;
     }
 
     public String getNickname() {
@@ -51,6 +46,36 @@ public class User extends Person {
         this.avatar = avatar;
     }
 
+    public String getName() {
+
+        return name;
+    }
+
+    public void setName(String name) {
+
+        this.name = name;
+    }
+
+    public String getGender() {
+
+        return gender;
+    }
+
+    public void setGender(String gender) {
+
+        this.gender = gender;
+    }
+
+    public Integer getAge() {
+
+        return age;
+    }
+
+    public void setAge(Integer age) {
+
+        this.age = age;
+    }
+
     public Date getBirthday() {
 
         return birthday;
@@ -59,6 +84,26 @@ public class User extends Person {
     public void setBirthday(Date birthday) {
 
         this.birthday = birthday;
+    }
+
+    public String getHeight() {
+
+        return height;
+    }
+
+    public void setHeight(String height) {
+
+        this.height = height;
+    }
+
+    public String getWeigh() {
+
+        return weigh;
+    }
+
+    public void setWeigh(String weigh) {
+
+        this.weigh = weigh;
     }
 
     public String getPhoneNumber() {
