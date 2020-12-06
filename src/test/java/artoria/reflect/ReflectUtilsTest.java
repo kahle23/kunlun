@@ -1,8 +1,8 @@
 package artoria.reflect;
 
-import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.mock.MockUtils;
 import artoria.test.bean.User;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class ReflectUtilsTest {
 
     @Test
     public void testFindConstructors() throws Exception {
-        Constructor<?>[] constructors = ReflectUtils.findConstructors(User.class);
+        Constructor<?>[] constructors = ReflectUtils.getConstructors(User.class);
         for (Constructor<?> constructor : constructors) {
             log.info(Arrays.toString(constructor.getParameterTypes()));
         }
@@ -25,8 +25,8 @@ public class ReflectUtilsTest {
 
     @Test
     public void testFindFields() throws Exception {
-        User user = FakeUtils.fake(User.class);
-        Field[] fields = ReflectUtils.findAccessFields(User.class);
+        User user = MockUtils.mock(User.class);
+        Field[] fields = ReflectUtils.getAccessibleFields(User.class);
         for (Field field : fields) {
             ReflectUtils.makeAccessible(field);
             log.info("{} | {}", field.getName(), field.get(user));
@@ -35,7 +35,7 @@ public class ReflectUtilsTest {
 
     @Test
     public void testFindMethods() throws Exception {
-        Method[] methods = ReflectUtils.findAccessMethods(User.class);
+        Method[] methods = ReflectUtils.getAccessibleMethods(User.class);
         for (Method method : methods) {
             log.info(method.getName());
         }
@@ -43,7 +43,7 @@ public class ReflectUtilsTest {
 
     @Test
     public void testFindPropertyDescriptors() throws Exception {
-        PropertyDescriptor[] descriptors = ReflectUtils.findPropertyDescriptors(User.class);
+        PropertyDescriptor[] descriptors = ReflectUtils.getPropertyDescriptors(User.class);
         for (PropertyDescriptor descriptor : descriptors) {
             Method writeMethod = descriptor.getWriteMethod();
             Method readMethod = descriptor.getReadMethod();

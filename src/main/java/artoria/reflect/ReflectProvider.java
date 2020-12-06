@@ -10,12 +10,10 @@ import java.lang.reflect.*;
 public interface ReflectProvider {
 
     /**
-     * Match declared types to actual types.
-     * @param declaredTypes The method declared types
-     * @param actualTypes The invoker input types
-     * @return True is matched, false is not
+     * Make accessible.
+     * @param accessible A operated accessible object
      */
-    boolean matchTypes(Class<?>[] declaredTypes, Class<?>[] actualTypes);
+    void makeAccessible(AccessibleObject accessible);
 
     /**
      * Check accessible.
@@ -25,120 +23,107 @@ public interface ReflectProvider {
     boolean checkAccessible(AccessibleObject accessible);
 
     /**
-     * Make accessible.
-     * @param accessible A operated accessible object
-     */
-    void makeAccessible(AccessibleObject accessible);
-
-    /**
-     * Find parameters types.
-     * @param params Parameters
-     * @return The parameters's types
-     */
-    Class<?>[] findTypes(Object[] params);
-
-    /**
-     * Find all constructors.
-     * @param clazz The class will be find
+     * Gets all constructors.
+     * @param clazz The class to be accessed
      * @param <T> The type of object to construct
-     * @return The constructors array
+     * @return An array of constructors that was obtained
      */
-    <T> Constructor<T>[] findConstructors(Class<T> clazz);
+    <T> Constructor<T>[] getConstructors(Class<T> clazz);
 
     /**
-     * Find constructor and type similar.
-     * @param clazz The class will be find
-     * @param parameterTypes Parameter types
+     * Gets a constructor of similar type.
+     * @param clazz The class to be accessed
+     * @param parameterTypes The parameter type of the constructor
      * @param <T> The type of object to construct
-     * @return The constructor
-     * @throws NoSuchMethodException No such method
+     * @return The constructor that was obtained
+     * @throws NoSuchMethodException The constructor could not be found
      */
-    <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException;
+    <T> Constructor<T> getConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException;
 
     /**
-     * Find all public fields.
-     * @param clazz The class will be find
-     * @return The fields array
+     * Gets all the public fields.
+     * @param clazz The class to be accessed
+     * @return An array of fields
      */
-    Field[] findFields(Class<?> clazz);
+    Field[] getFields(Class<?> clazz);
 
     /**
-     * Find all declared fields.
-     * @param clazz The class will be find
-     * @return The fields array
+     * Gets all the declared fields.
+     * @param clazz The class to be accessed
+     * @return An array of fields
      */
-    Field[] findDeclaredFields(Class<?> clazz);
+    Field[] getDeclaredFields(Class<?> clazz);
 
     /**
-     * Find all access fields.
-     * @param clazz The class will be find
-     * @return The fields array
+     * Gets all the accessible fields.
+     * @param clazz The class to be accessed
+     * @return An array of fields
      */
-    Field[] findAccessFields(Class<?> clazz);
+    Field[] getAccessibleFields(Class<?> clazz);
 
     /**
-     * Find field.
-     * @param clazz The class will be find
-     * @param fieldName Field name
-     * @return The field
-     * @throws NoSuchFieldException No such field
+     * Gets the field by the field name.
+     * @param clazz The class to be accessed
+     * @param fieldName The field name
+     * @return The field that was obtained
+     * @throws NoSuchFieldException The field could not be found
      */
-    Field findField(Class<?> clazz, String fieldName) throws NoSuchFieldException;
+    Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException;
 
     /**
-     * Find all public methods.
-     * @param clazz The class will be find
-     * @return The methods array
+     * Gets all the public methods.
+     * @param clazz The class to be accessed
+     * @return An array of methods
      */
-    Method[] findMethods(Class<?> clazz);
+    Method[] getMethods(Class<?> clazz);
 
     /**
-     * Find all declared methods.
-     * @param clazz The class will be find
-     * @return The methods array
+     * Gets all the declared methods.
+     * @param clazz The class to be accessed
+     * @return An array of methods
      */
-    Method[] findDeclaredMethods(Class<?> clazz);
+    Method[] getDeclaredMethods(Class<?> clazz);
 
     /**
-     * Find all access methods.
-     * @param clazz The class will be find
-     * @return The methods array
+     * Gets all the accessible methods.
+     * @param clazz The class to be accessed
+     * @return An array of methods
      */
-    Method[] findAccessMethods(Class<?> clazz);
+    Method[] getAccessibleMethods(Class<?> clazz);
 
     /**
-     * Find method.
-     * @param clazz The class will be find
-     * @param methodName Method name
-     * @param parameterTypes parameter types
-     * @return The method
-     * @throws NoSuchMethodException No such method
+     * Gets the method by the method name and the parameter types.
+     * @param clazz The class to be accessed
+     * @param methodName The method name
+     * @param parameterTypes The parameter types
+     * @return The method that was obtained
+     * @throws NoSuchMethodException The method could not be found
      */
-    Method findMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException;
+    Method getMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException;
 
     /**
-     * Find similar method.
-     * @param clazz The class will be find
-     * @param methodName Method name
-     * @param parameterTypes parameter types
-     * @return The method
-     * @throws NoSuchMethodException No such method
+     * Gets the similar method by the method name and the parameter types.
+     * @param clazz The class to be accessed
+     * @param methodName The method name
+     * @param parameterTypes The parameter types
+     * @return The method that was obtained
+     * @throws NoSuchMethodException The method could not be found
      */
-    Method findSimilarMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException;
+    Method getSimilarMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException;
 
     /**
-     * Find all property descriptors.
-     * @param clazz The class will be find
-     * @return The property descriptors
+     * Gets all the property descriptors.
+     * @param clazz The class to be accessed
+     * @return An array of property descriptors
      */
-    PropertyDescriptor[] findPropertyDescriptors(Class<?> clazz);
+    PropertyDescriptor[] getPropertyDescriptors(Class<?> clazz);
 
     /**
      * Create object by reflection.
      * @param clazz The type of object to create
-     * @param args Parameters to the constructor
-     * @param <T> The type of object to construct
-     * @return The object created
+     * @param args The arguments to the constructor
+     * @param <T> The type of object to create
+     * @return The object that was created
      */
     <T> T newInstance(Class<T> clazz, Object... args) throws NoSuchMethodException
             , IllegalAccessException, InvocationTargetException, InstantiationException;
