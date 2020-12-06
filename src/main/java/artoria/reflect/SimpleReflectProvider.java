@@ -27,8 +27,19 @@ public class SimpleReflectProvider implements ReflectProvider {
         return thisClazz != superClazz && Modifier.isPrivate(member.getModifiers());
     }
 
-    @Override
-    public boolean matchTypes(Class<?>[] declaredTypes, Class<?>[] actualTypes) {
+    protected Class<?>[] getParameterTypes(Object[] params) {
+        if (ArrayUtils.isEmpty(params)) { return new Class[ZERO]; }
+        Class<?>[] result = new Class[params.length];
+        for (int i = ZERO; i < params.length; i++) {
+            Object value = params[i];
+            // Parameter null, maybe in method can input null.
+            // So in match method ignore null type.
+            result[i] = value == null ? null : value.getClass();
+        }
+        return result;
+    }
+
+    protected boolean matchParameterTypes(Class<?>[] declaredTypes, Class<?>[] actualTypes) {
         Assert.notNull(declaredTypes, "Parameter \"declaredTypes\" must not null. ");
         Assert.notNull(actualTypes, "Parameter \"actualTypes\" must not null. ");
         if (declaredTypes.length != actualTypes.length) {
@@ -43,6 +54,13 @@ public class SimpleReflectProvider implements ReflectProvider {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void makeAccessible(AccessibleObject accessible) {
+        if (!checkAccessible(accessible)) {
+            accessible.setAccessible(true);
+        }
     }
 
     @Override
@@ -63,33 +81,13 @@ public class SimpleReflectProvider implements ReflectProvider {
     }
 
     @Override
-    public void makeAccessible(AccessibleObject accessible) {
-        if (!checkAccessible(accessible)) {
-            accessible.setAccessible(true);
-        }
-    }
-
-    @Override
-    public Class<?>[] findTypes(Object[] params) {
-        if (ArrayUtils.isEmpty(params)) { return new Class[ZERO]; }
-        Class<?>[] result = new Class[params.length];
-        for (int i = ZERO; i < params.length; i++) {
-            Object value = params[i];
-            // Parameter null, maybe in method can input null.
-            // So in match method ignore null type.
-            result[i] = value == null ? null : value.getClass();
-        }
-        return result;
-    }
-
-    @Override
-    public <T> Constructor<T>[] findConstructors(Class<T> clazz) {
+    public <T> Constructor<T>[] getConstructors(Class<T> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         return ObjectUtils.cast(clazz.getDeclaredConstructors());
     }
 
     @Override
-    public <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
+    public <T> Constructor<T> getConstructor(Class<T> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         // Try invoking the "canonical" constructor,
         // i.e. the one with exact matching argument types
@@ -99,10 +97,10 @@ public class SimpleReflectProvider implements ReflectProvider {
         // If there is no exact match, try to find one that has a "similar"
         // signature if primitive argument types are converted to their wrappers
         catch (NoSuchMethodException e) {
-            Constructor<?>[] cts = findConstructors(clazz);
+            Constructor<?>[] cts = getConstructors(clazz);
             for (Constructor<?> ct : cts) {
                 Class<?>[] pTypes = ct.getParameterTypes();
-                boolean b = matchTypes(pTypes, parameterTypes);
+                boolean b = matchParameterTypes(pTypes, parameterTypes);
                 if (b) { return ObjectUtils.cast(ct); }
             }
             throw e;
@@ -110,25 +108,25 @@ public class SimpleReflectProvider implements ReflectProvider {
     }
 
     @Override
-    public Field[] findFields(Class<?> clazz) {
+    public Field[] getFields(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         return clazz.getFields();
     }
 
     @Override
-    public Field[] findDeclaredFields(Class<?> clazz) {
+    public Field[] getDeclaredFields(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         return clazz.getDeclaredFields();
     }
 
     @Override
-    public Field[] findAccessFields(Class<?> clazz) {
+    public Field[] getAccessibleFields(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Class<?> inputClazz = clazz;
-        List<Field> list = new ArrayList<Field>();
         List<String> names = new ArrayList<String>();
+        List<Field> list = new ArrayList<Field>();
         while (clazz != null) {
-            Field[] fields = findDeclaredFields(clazz);
+            Field[] fields = getDeclaredFields(clazz);
             for (Field field : fields) {
                 // find this class all, and super class not private.
                 if (notAccess(inputClazz, clazz, field)) {
@@ -149,9 +147,9 @@ public class SimpleReflectProvider implements ReflectProvider {
     }
 
     @Override
-    public Field findField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+    public Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
         Assert.notBlank(fieldName, "Parameter \"fieldName\" must not blank. ");
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         // Try getting a public field
         try {
             return clazz.getField(fieldName);
@@ -178,25 +176,25 @@ public class SimpleReflectProvider implements ReflectProvider {
     }
 
     @Override
-    public Method[] findMethods(Class<?> clazz) {
+    public Method[] getMethods(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         return clazz.getMethods();
     }
 
     @Override
-    public Method[] findDeclaredMethods(Class<?> clazz) {
+    public Method[] getDeclaredMethods(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         return clazz.getDeclaredMethods();
     }
 
     @Override
-    public Method[] findAccessMethods(Class<?> clazz) {
+    public Method[] getAccessibleMethods(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        Class<?> inputClazz = clazz;
-        List<Method> list = new ArrayList<Method>();
         List<String> names = new ArrayList<String>();
+        List<Method> list = new ArrayList<Method>();
+        Class<?> inputClazz = clazz;
         while (clazz != null) {
-            Method[] methods = findDeclaredMethods(clazz);
+            Method[] methods = getDeclaredMethods(clazz);
             for (Method method : methods) {
                 if (notAccess(inputClazz, clazz, method)) {
                     continue;
@@ -215,9 +213,9 @@ public class SimpleReflectProvider implements ReflectProvider {
     }
 
     @Override
-    public Method findMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+    public Method getMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
         Assert.notBlank(methodName, "Parameter \"methodName\" must not blank. ");
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         // first priority : find a public method with exact signature match in class hierarchy
         try {
             return clazz.getMethod(methodName, parameterTypes);
@@ -244,26 +242,26 @@ public class SimpleReflectProvider implements ReflectProvider {
     }
 
     @Override
-    public Method findSimilarMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+    public Method getSimilarMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) throws NoSuchMethodException {
         Assert.notBlank(methodName, "Parameter \"methodName\" must not blank. ");
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         // first priority : find a public method with a "similar" signature in class hierarchy
         // similar interpreted in when primitive argument types are converted to their wrappers
-        for (Method method : findMethods(clazz)) {
+        for (Method method : getMethods(clazz)) {
             if (methodName.equals(method.getName()) &&
-                    matchTypes(method.getParameterTypes(), parameterTypes)) {
+                    matchParameterTypes(method.getParameterTypes(), parameterTypes)) {
                 return method;
             }
         }
         // second priority : find a non-public method with a "similar" signature on declaring class
         Class<?> inputClazz = clazz;
         do {
-            for (Method method : findDeclaredMethods(clazz)) {
+            for (Method method : getDeclaredMethods(clazz)) {
                 if (notAccess(inputClazz, clazz, method)) {
                     continue;
                 }
                 if (methodName.equals(method.getName()) &&
-                        matchTypes(method.getParameterTypes(), parameterTypes)) {
+                        matchParameterTypes(method.getParameterTypes(), parameterTypes)) {
                     return method;
                 }
             }
@@ -278,16 +276,13 @@ public class SimpleReflectProvider implements ReflectProvider {
     }
 
     @Override
-    public PropertyDescriptor[] findPropertyDescriptors(Class<?> clazz) {
+    public PropertyDescriptor[] getPropertyDescriptors(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         try {
             BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
             PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
             return descriptors != null ? descriptors : new PropertyDescriptor[ZERO];
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
+        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
     }
 
     @Override
@@ -295,8 +290,8 @@ public class SimpleReflectProvider implements ReflectProvider {
             , IllegalAccessException, InvocationTargetException, InstantiationException {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         if (ArrayUtils.isEmpty(args)) { return clazz.newInstance(); }
-        Class<?>[] types = findTypes(args);
-        Constructor<T> constructor = findConstructor(clazz, types);
+        Class<?>[] types = getParameterTypes(args);
+        Constructor<T> constructor = getConstructor(clazz, types);
         makeAccessible(constructor);
         return constructor.newInstance(args);
     }
