@@ -1,15 +1,15 @@
 package artoria.beans;
 
-import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.mock.MockUtils;
 import artoria.test.bean.User;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 
 public class BeanMapTest {
     private static Logger log = LoggerFactory.getLogger(BeanMapTest.class);
-    private User user = FakeUtils.fake(User.class);
+    private User user = MockUtils.mock(User.class);
 
     @Test
     public void test1() {

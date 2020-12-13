@@ -1,8 +1,8 @@
 package artoria.common;
 
-import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.mock.MockUtils;
 import artoria.test.bean.User;
 import artoria.time.DateUtils;
 import com.alibaba.fastjson.JSON;
@@ -16,7 +16,7 @@ public class InputTest {
     @Test
     public void test1() {
         Input<Date> input = new Input<Date>();
-        input.setCurrentUser(FakeUtils.fake(User.class));
+        input.setCurrentUser(MockUtils.mock(User.class));
         input.setPaging(new Paging(1, 15));
         input.setData(new Date());
         User currentUser = (User) input.getCurrentUser();

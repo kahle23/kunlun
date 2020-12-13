@@ -55,7 +55,7 @@ public class SimpleBeanMap extends BeanMap {
             return;
         }
         beanClass = bean.getClass();
-        PropertyDescriptor[] descriptors = ReflectUtils.findPropertyDescriptors(beanClass);
+        PropertyDescriptor[] descriptors = ReflectUtils.getPropertyDescriptors(beanClass);
         for (PropertyDescriptor descriptor : descriptors) {
             Method writeMethod = descriptor.getWriteMethod();
             Method readMethod = descriptor.getReadMethod();

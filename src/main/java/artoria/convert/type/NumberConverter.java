@@ -56,7 +56,7 @@ public class NumberConverter implements TypeConverter {
         name = StringUtils.uncapitalize(name);
         name = name + VALUE;
         try {
-            Method method = ReflectUtils.findMethod(clazz, name);
+            Method method = ReflectUtils.getMethod(clazz, name);
             return method.invoke(source);
         }
         catch (Exception e) {

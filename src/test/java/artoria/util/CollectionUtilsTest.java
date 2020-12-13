@@ -1,9 +1,9 @@
 package artoria.util;
 
-import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.test.bean.Person;
+import artoria.mock.MockUtils;
+import artoria.test.bean.User;
 import com.alibaba.fastjson.JSON;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,15 +14,15 @@ import java.util.List;
 
 public class CollectionUtilsTest {
     private static Logger log = LoggerFactory.getLogger(CollectionUtilsTest.class);
-    private List<Person> list = new ArrayList<Person>();
+    private List<User> list = new ArrayList<User>();
 
     @Before
     public void init() {
         list.add(null);
-        list.add(FakeUtils.fake(Person.class));
+        list.add(MockUtils.mock(User.class));
         list.add(null);
-        list.add(FakeUtils.fake(Person.class));
-        list.add(FakeUtils.fake(Person.class));
+        list.add(MockUtils.mock(User.class));
+        list.add(MockUtils.mock(User.class));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class CollectionUtilsTest {
 
     @Test
     public void testTakeFirstNotNullElement() {
-        Person person = CollectionUtils.firstNotNullElement(list);
+        User person = CollectionUtils.firstNotNullElement(list);
         log.info(JSON.toJSONString(person, true));
     }
 

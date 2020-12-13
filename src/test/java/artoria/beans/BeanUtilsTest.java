@@ -1,9 +1,8 @@
 package artoria.beans;
 
-import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.test.bean.Person;
+import artoria.mock.MockUtils;
 import artoria.test.bean.User;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
@@ -15,14 +14,14 @@ import java.util.Map;
 
 public class BeanUtilsTest {
     private static Logger log = LoggerFactory.getLogger(BeanUtilsTest.class);
-    private static Person person = FakeUtils.fake(User.class);
+    private static User person = MockUtils.mock(User.class);
     private static Map<String, Object> personMap = new HashMap<String, Object>();
-    private static List<Person> persons = new ArrayList<Person>();
+    private static List<User> persons = new ArrayList<User>();
     private static List<Map<String, Object>> personsMap;
 
     static {
         BeanUtils.copy(person, personMap);
-        persons.add(FakeUtils.fake(User.class));
+        persons.add(MockUtils.mock(User.class));
         personsMap = BeanUtils.beanToMapInList(persons);
     }
 
