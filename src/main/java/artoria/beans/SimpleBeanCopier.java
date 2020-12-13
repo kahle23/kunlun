@@ -38,8 +38,8 @@ public class SimpleBeanCopier implements BeanCopier {
         Assert.notNull(from, "Parameter \"from\" must is not null. ");
         Assert.notNull(to, "Parameter \"to\" must is not null. ");
         boolean hasCvt = converter != null;
-        PropertyDescriptor[] fromDescriptors = ReflectUtils.findPropertyDescriptors(from.getClass());
-        PropertyDescriptor[] toDescriptors = ReflectUtils.findPropertyDescriptors(to.getClass());
+        PropertyDescriptor[] fromDescriptors = ReflectUtils.getPropertyDescriptors(from.getClass());
+        PropertyDescriptor[] toDescriptors = ReflectUtils.getPropertyDescriptors(to.getClass());
         Map<String, Method> fromMths = new HashMap<String, Method>(fromDescriptors.length);
         for (PropertyDescriptor fromDescriptor : fromDescriptors) {
             Method readMethod = fromDescriptor.getReadMethod();

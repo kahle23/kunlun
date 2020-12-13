@@ -1,8 +1,8 @@
 package artoria.exchange;
 
-import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.mock.MockUtils;
 import artoria.test.bean.User;
 import artoria.util.TypeUtils;
 import com.alibaba.fastjson.JSON;
@@ -39,9 +39,9 @@ public class JsonUtilsTest {
                 return JSON.parseObject(jsonString, type);
             }
         });
-        data = FakeUtils.fake(User.class);
+        data = MockUtils.mock(User.class);
         for (int i = ZERO; i < FIVE; i++) {
-            User user = FakeUtils.fake(User.class);
+            User user = MockUtils.mock(User.class);
             data1.add(user);
             data2.put(user.getId(), user);
         }

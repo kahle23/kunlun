@@ -1,9 +1,9 @@
 package artoria.data;
 
-import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.test.bean.Person;
+import artoria.mock.MockUtils;
+import artoria.test.bean.User;
 import com.alibaba.fastjson.JSON;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,23 +14,23 @@ import java.util.Map;
 
 public class RecombineUtilsTest {
     private static Logger log = LoggerFactory.getLogger(RecombineUtilsTest.class);
-    private List<Person> list = new ArrayList<Person>();
+    private List<User> list = new ArrayList<User>();
 
     @Before
     public void init() {
         list.add(null);
-        list.add(FakeUtils.fake(Person.class));
-        list.add(FakeUtils.fake(Person.class));
-        list.add(FakeUtils.fake(Person.class));
+        list.add(MockUtils.mock(User.class));
+        list.add(MockUtils.mock(User.class));
+        list.add(MockUtils.mock(User.class));
         list.add(null);
-        list.add(FakeUtils.fake(Person.class));
-        list.add(FakeUtils.fake(Person.class));
+        list.add(MockUtils.mock(User.class));
+        list.add(MockUtils.mock(User.class));
     }
 
     @Test
     public void testListToListList() {
-        List<List<Person>> lists = RecombineUtils.listToListList(list, 2);
-        for (List<Person> people : lists) {
+        List<List<User>> lists = RecombineUtils.listToListList(list, 2);
+        for (List<User> people : lists) {
             log.info(JSON.toJSONString(people));
         }
     }
@@ -43,13 +43,13 @@ public class RecombineUtilsTest {
 
     @Test
     public void testListToMapBean() {
-        Map<String, Person> map = RecombineUtils.listToMapBean(list, "name");
+        Map<String, User> map = RecombineUtils.listToMapBean(list, "name");
         log.info(JSON.toJSONString(map, true));
     }
 
     @Test
     public void testListToMapList() {
-        Map<String, List<Person>> map = RecombineUtils.listToMapList(list, "name");
+        Map<String, List<User>> map = RecombineUtils.listToMapList(list, "name");
         log.info(JSON.toJSONString(map, true));
     }
 

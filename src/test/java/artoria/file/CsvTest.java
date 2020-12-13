@@ -1,9 +1,9 @@
 package artoria.file;
 
 import artoria.beans.BeanUtils;
-import artoria.fake.FakeUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.mock.MockUtils;
 import artoria.test.bean.User;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class CsvTest {
 
     static {
         for (int i = ZERO; i < TEN; i++) {
-            User user = FakeUtils.fake(User.class);
+            User user = MockUtils.mock(User.class);
             beanList.add(user);
         }
         mapList.addAll(BeanUtils.beanToMapInList(beanList));
