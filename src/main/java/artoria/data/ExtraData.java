@@ -5,6 +5,7 @@ import java.util.Map;
 
 /**
  * Provide access to extra data. Resolve the problem of passing attributes that do not exist.
+ * It can pass extra data in addition to normal data, and it can also pass extended data.
  * @author Kahle
  */
 public interface ExtraData extends Serializable {
