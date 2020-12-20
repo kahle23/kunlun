@@ -56,7 +56,7 @@ public class TypeConvertUtils {
 
     }
 
-    public static class SimpleConvertProvider implements ConvertProvider {
+    private static class SimpleConvertProvider implements ConvertProvider {
         private final Map<Class<?>, TypeConverter> converterMap;
 
         public SimpleConvertProvider() {

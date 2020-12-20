@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Uniform data input object.
- * @param <T> Data type
+ * @param <T> Data Type
  * @author Kahle
  */
 public class Input<T> implements Serializable {

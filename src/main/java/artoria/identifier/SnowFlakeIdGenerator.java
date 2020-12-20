@@ -82,9 +82,9 @@ public class SnowFlakeIdGenerator implements LongIdentifierGenerator {
     }
 
     /**
-     * Constructor method.
-     * @param dataCenterId Data center id
-     * @param workerId Work machine id
+     * The constructor method.
+     * @param dataCenterId The data center id
+     * @param workerId The work machine id
      * @param clock The clock
      */
     public SnowFlakeIdGenerator(long dataCenterId, long workerId, Clock clock) {

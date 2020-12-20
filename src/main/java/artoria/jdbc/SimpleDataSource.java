@@ -28,7 +28,6 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class SimpleDataSource implements DataSource {
-    private static final String UNSUPPORTED_OPERATION = "In \"SimpleDataSource\" this operation is unsupported. ";
     private static final String DEFAULT_CONFIG_NAME = "jdbc.properties";
     private BlockingQueue<Connection> queue;
     private String driverClass;
@@ -52,6 +51,36 @@ public class SimpleDataSource implements DataSource {
         catch (IOException e) {
             throw ExceptionUtils.wrap(e);
         }
+    }
+
+    private class ConnectionInterceptor implements Interceptor {
+        private static final String PROXY_METHOD = "close";
+        private BlockingQueue<Connection> queue;
+        private Connection connection;
+
+        ConnectionInterceptor(BlockingQueue<Connection> queue, Connection connection) {
+            this.connection = connection;
+            this.queue = queue;
+        }
+
+        @Override
+        public Object intercept(Object proxyObject, Method method, Object[] args) throws Throwable {
+            boolean offer = false;
+            if (PROXY_METHOD.equals(method.getName())) {
+                offer = queue.offer(connection);
+            }
+            if (!offer) {
+                return method.invoke(connection, args);
+            }
+            return null;
+        }
+
+    }
+
+    private Connection createConnection() throws SQLException {
+        Connection conn = DriverManager.getConnection(jdbcUrl, user, password);
+        ConnectionInterceptor interceptor = new ConnectionInterceptor(queue, conn);
+        return (Connection) Enhancer.enhance(Connection.class, interceptor);
     }
 
     public SimpleDataSource() {
@@ -100,17 +129,17 @@ public class SimpleDataSource implements DataSource {
         }
     }
 
-    public Connection createConnection() throws SQLException {
-        Connection conn = DriverManager.getConnection(jdbcUrl, user, password);
-        ConnectionInterceptor interceptor = new ConnectionInterceptor(queue, conn);
-        return (Connection) Enhancer.enhance(Connection.class, interceptor);
-    }
-
     @Override
     public Connection getConnection() throws SQLException {
         Connection conn = queue.poll();
         if (conn == null) {
             conn = createConnection();
+        }
+        else {
+            if (!conn.isValid(TEN)) {
+                conn.close();
+                conn = createConnection();
+            }
         }
         return conn;
     }
@@ -118,73 +147,49 @@ public class SimpleDataSource implements DataSource {
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
 
-        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
 
-        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
 
-        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public PrintWriter getLogWriter() throws SQLException {
 
-        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void setLogWriter(PrintWriter out) throws SQLException {
 
-        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void setLoginTimeout(int seconds) throws SQLException {
 
-        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public int getLoginTimeout() throws SQLException {
 
-        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
 
-        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION);
-    }
-
-    private class ConnectionInterceptor implements Interceptor {
-        private static final String PROXY_METHOD = "close";
-        private BlockingQueue<Connection> queue;
-        private Connection connection;
-
-        ConnectionInterceptor(BlockingQueue<Connection> queue, Connection connection) {
-            this.queue = queue;
-            this.connection = connection;
-        }
-
-        @Override
-        public Object intercept(Object proxyObject, Method method, Object[] args) throws Throwable {
-            boolean offer = false;
-            if (PROXY_METHOD.equals(method.getName())) {
-                offer = queue.offer(connection);
-            }
-            if (!offer) {
-                return method.invoke(connection, args);
-            }
-            return null;
-        }
-
+        throw new UnsupportedOperationException();
     }
 
 }

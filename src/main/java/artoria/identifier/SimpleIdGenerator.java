@@ -1,8 +1,5 @@
 package artoria.identifier;
 
-import artoria.util.Assert;
-import artoria.util.StringUtils;
-
 import java.util.UUID;
 
 import static artoria.common.Constants.EMPTY_STRING;
@@ -13,28 +10,16 @@ import static artoria.common.Constants.MINUS;
  * @author Kahle
  */
 public class SimpleIdGenerator implements StringIdentifierGenerator {
-    private boolean needReplace = false;
-    private String separator;
+    private boolean isSimple = false;
 
     public SimpleIdGenerator() {
 
-        this(EMPTY_STRING);
+        this(true);
     }
 
-    public SimpleIdGenerator(String separator) {
+    public SimpleIdGenerator(boolean isSimple) {
 
-        setSeparator(separator);
-    }
-
-    public String getSeparator() {
-
-        return separator;
-    }
-
-    public void setSeparator(String separator) {
-        Assert.notNull(separator, "Parameter \"separator\" must not null. ");
-        this.separator = separator;
-        this.needReplace = !MINUS.equals(separator);
+        this.isSimple = isSimple;
     }
 
     @Override
@@ -46,7 +31,7 @@ public class SimpleIdGenerator implements StringIdentifierGenerator {
     @Override
     public String nextStringIdentifier() {
         String uuid = UUID.randomUUID().toString();
-        return needReplace ? StringUtils.replace(uuid, MINUS, separator) : uuid;
+        return isSimple ? uuid.replaceAll(MINUS, EMPTY_STRING) : uuid;
     }
 
 }
