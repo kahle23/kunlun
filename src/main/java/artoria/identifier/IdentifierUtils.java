@@ -5,46 +5,52 @@ import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 /**
- * Identifier generator tools.
+ * Identifier tools.
  * @author Kahle
  */
 public class IdentifierUtils {
-    private static final StringIdentifierGenerator STRING_IDENTIFIER_GENERATOR = new SimpleIdGenerator();
-    private static final LongIdentifierGenerator LONG_IDENTIFIER_GENERATOR = new SnowFlakeIdGenerator();
     private static Logger log = LoggerFactory.getLogger(IdentifierUtils.class);
-    private static StringIdentifierGenerator stringIdentifierGenerator;
-    private static LongIdentifierGenerator longIdentifierGenerator;
+    private static StringIdentifierGenerator stringIdGenerator;
+    private static LongIdentifierGenerator longIdGenerator;
 
-    public static StringIdentifierGenerator getStringIdentifierGenerator() {
-
-        return stringIdentifierGenerator != null ? stringIdentifierGenerator : STRING_IDENTIFIER_GENERATOR;
+    public static StringIdentifierGenerator getStringIdGenerator() {
+        if (stringIdGenerator != null) { return stringIdGenerator; }
+        synchronized (IdentifierUtils.class) {
+            if (stringIdGenerator != null) { return stringIdGenerator; }
+            IdentifierUtils.setStringIdGenerator(new SimpleIdGenerator());
+            return stringIdGenerator;
+        }
     }
 
-    public static void setStringIdentifierGenerator(StringIdentifierGenerator stringIdentifierGenerator) {
-        Assert.notNull(stringIdentifierGenerator, "Parameter \"stringIdentifierGenerator\" must not null. ");
-        log.info("Set string identifier generator: {}", stringIdentifierGenerator.getClass().getName());
-        IdentifierUtils.stringIdentifierGenerator = stringIdentifierGenerator;
+    public static void setStringIdGenerator(StringIdentifierGenerator idGenerator) {
+        Assert.notNull(idGenerator, "Parameter \"idGenerator\" must not null. ");
+        log.info("Set string id generator: {}", idGenerator.getClass().getName());
+        IdentifierUtils.stringIdGenerator = idGenerator;
     }
 
-    public static LongIdentifierGenerator getLongIdentifierGenerator() {
-
-        return longIdentifierGenerator != null ? longIdentifierGenerator : LONG_IDENTIFIER_GENERATOR;
+    public static LongIdentifierGenerator getLongIdGenerator() {
+        if (longIdGenerator != null) { return longIdGenerator; }
+        synchronized (IdentifierUtils.class) {
+            if (longIdGenerator != null) { return longIdGenerator; }
+            IdentifierUtils.setLongIdGenerator(new SnowFlakeIdGenerator());
+            return longIdGenerator;
+        }
     }
 
-    public static void setLongIdentifierGenerator(LongIdentifierGenerator longIdentifierGenerator) {
-        Assert.notNull(longIdentifierGenerator, "Parameter \"longIdentifierGenerator\" must not null. ");
-        log.info("Set long identifier generator: {}", longIdentifierGenerator.getClass().getName());
-        IdentifierUtils.longIdentifierGenerator = longIdentifierGenerator;
+    public static void setLongIdGenerator(LongIdentifierGenerator idGenerator) {
+        Assert.notNull(idGenerator, "Parameter \"idGenerator\" must not null. ");
+        log.info("Set long id generator: {}", idGenerator.getClass().getName());
+        IdentifierUtils.longIdGenerator = idGenerator;
     }
 
     public static String nextStringIdentifier() {
 
-        return getStringIdentifierGenerator().nextStringIdentifier();
+        return getStringIdGenerator().nextStringIdentifier();
     }
 
     public static Long nextLongIdentifier() {
 
-        return getLongIdentifierGenerator().nextLongIdentifier();
+        return getLongIdGenerator().nextLongIdentifier();
     }
 
 }

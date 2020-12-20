@@ -17,7 +17,7 @@ import static artoria.common.Constants.THIRTY;
 import static artoria.convert.type.TypeConvertUtils.getConvertProvider;
 
 /**
- * Bean convert tools.
+ * Bean conversion tools.
  * @author Kahle
  */
 public class BeanUtils {

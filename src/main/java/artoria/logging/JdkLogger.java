@@ -15,7 +15,7 @@ public class JdkLogger implements Logger {
     private final java.util.logging.Logger logger;
     private final TemplateEngine templateEngine;
 
-    private void logp(Level level, String format, Object[] arguments, Throwable throwable) {
+    private void log(Level level, String format, Object[] arguments, Throwable throwable) {
         if (!logger.isLoggable(level)) { return; }
         StackTraceElement element = new Throwable().getStackTrace()[THREE];
         String clazzName = element.getClassName();
@@ -34,61 +34,61 @@ public class JdkLogger implements Logger {
     @Override
     public void trace(String format, Object... arguments) {
 
-        logp(Level.FINER, format, arguments, null);
+        log(Level.FINER, format, arguments, null);
     }
 
     @Override
     public void trace(String message, Throwable throwable) {
 
-        logp(Level.FINER, message, null, throwable);
+        log(Level.FINER, message, null, throwable);
     }
 
     @Override
     public void debug(String format, Object... arguments) {
 
-        logp(Level.FINE, format, arguments, null);
+        log(Level.FINE, format, arguments, null);
     }
 
     @Override
     public void debug(String message, Throwable throwable) {
 
-        logp(Level.FINE, message, null, throwable);
+        log(Level.FINE, message, null, throwable);
     }
 
     @Override
     public void info(String format, Object... arguments) {
 
-        logp(Level.INFO, format, arguments, null);
+        log(Level.INFO, format, arguments, null);
     }
 
     @Override
     public void info(String message, Throwable throwable) {
 
-        logp(Level.INFO, message, null, throwable);
+        log(Level.INFO, message, null, throwable);
     }
 
     @Override
     public void warn(String format, Object... arguments) {
 
-        logp(Level.WARNING, format, arguments, null);
+        log(Level.WARNING, format, arguments, null);
     }
 
     @Override
     public void warn(String message, Throwable throwable) {
 
-        logp(Level.WARNING, message, null, throwable);
+        log(Level.WARNING, message, null, throwable);
     }
 
     @Override
     public void error(String format, Object... arguments) {
 
-        logp(Level.SEVERE, format, arguments, null);
+        log(Level.SEVERE, format, arguments, null);
     }
 
     @Override
     public void error(String message, Throwable throwable) {
 
-        logp(Level.SEVERE, message, null, throwable);
+        log(Level.SEVERE, message, null, throwable);
     }
 
     @Override

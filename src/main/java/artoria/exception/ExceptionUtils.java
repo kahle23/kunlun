@@ -14,8 +14,8 @@ public class ExceptionUtils {
     private static Logger log = LoggerFactory.getLogger(ExceptionUtils.class);
 
     public static RuntimeException wrap(Exception cause) {
-        boolean isRE = cause instanceof RuntimeException;
-        return isRE ? (RuntimeException) cause : new UncheckedException(cause);
+        boolean isRunEx = cause instanceof RuntimeException;
+        return isRunEx ? (RuntimeException) cause : new UncheckedException(cause);
     }
 
     public static String toString(Throwable t) {
