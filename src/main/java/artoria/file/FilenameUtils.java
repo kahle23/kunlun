@@ -14,6 +14,9 @@ import static artoria.common.Constants.*;
  */
 public class FilenameUtils {
     private static final Class<?> THIS_CLASS = FilenameUtils.class;
+    private static final char EXTENSION_SEPARATOR = '.';
+    private static final char WINDOWS_SEPARATOR = '\\';
+    private static final char UNIX_SEPARATOR = '/';
 
     /**
      * Get the root path of the current project.
@@ -65,32 +68,62 @@ public class FilenameUtils {
     }
 
     /**
-     * Get the extension from the path.
-     * @param path Input path
-     * @return The extension name
+     * Returns the index of the last directory separator character.
+     * @param filename The filename to find the last path separator in, null returns -1
+     * @return The index of the last directory separator character
      */
-    public static String getExtension(String path) {
-        if (path == null) { return null; }
-        int dotIndex = path.lastIndexOf(DOT);
-        if (dotIndex == MINUS_ONE) { return EMPTY_STRING; }
-        int folderIndex = path.lastIndexOf(FILE_SEPARATOR);
-        if (folderIndex > dotIndex) { return EMPTY_STRING; }
-        return path.substring(dotIndex + ONE);
+    public static int indexOfLastSeparator(String filename) {
+        if (filename == null) { return MINUS_ONE; }
+        int lastWindowsIndex = filename.lastIndexOf(WINDOWS_SEPARATOR);
+        int lastUnixIndex = filename.lastIndexOf(UNIX_SEPARATOR);
+        return Math.max(lastUnixIndex, lastWindowsIndex);
     }
 
     /**
-     * Get the path without extensions.
-     * @param path Input path
-     * @return Path without extension
+     * Returns the index of the last extension separator character, which is a dot.
+     * @param filename The filename to find the last path separator in, null returns -1
+     * @return The index of the last extension separator character
      */
-    public static String removeExtension(String path) {
-        if (path == null) { return null; }
-        int extIndex = path.lastIndexOf(DOT);
-        if (extIndex == MINUS_ONE) { return path; }
-        int folderIndex = path.lastIndexOf(FILE_SEPARATOR);
-        if (folderIndex > extIndex) { return path; }
-        if (folderIndex == extIndex - ONE) { return path; }
-        return path.substring(ZERO, extIndex);
+    public static int indexOfExtension(String filename) {
+        if (filename == null) { return MINUS_ONE; }
+        int extensionIndex = filename.lastIndexOf(EXTENSION_SEPARATOR);
+        int separatorIndex = indexOfLastSeparator(filename);
+        return separatorIndex > extensionIndex ? MINUS_ONE : extensionIndex;
+    }
+
+    /**
+     * Gets the name minus the path from a full filename.
+     * @param filename The filename to query, null returns null
+     * @return The name of the file without the path
+     */
+    public static String getName(String filename) {
+        if (filename == null) { return null; }
+        int index = indexOfLastSeparator(filename);
+        return filename.substring(index + ONE);
+    }
+
+    /**
+     * Gets the extension of a filename.
+     * @param filename The filename to retrieve the extension of
+     * @return The extension of the file
+     */
+    public static String getExtension(String filename) {
+        if (filename == null) { return null; }
+        int index = indexOfExtension(filename);
+        if (index == MINUS_ONE) { return EMPTY_STRING; }
+        return filename.substring(index + ONE);
+    }
+
+    /**
+     * Removes the extension from a filename.
+     * @param filename The filename to query, null returns null
+     * @return The filename minus the extension
+     */
+    public static String removeExtension(String filename) {
+        if (filename == null) { return null; }
+        int index = indexOfExtension(filename);
+        if (index == MINUS_ONE) { return filename; }
+        return filename.substring(ZERO, index);
     }
 
     /**
