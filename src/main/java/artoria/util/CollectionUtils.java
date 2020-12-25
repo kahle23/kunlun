@@ -1,5 +1,8 @@
 package artoria.util;
 
+import artoria.logging.Logger;
+import artoria.logging.LoggerFactory;
+
 import java.util.*;
 
 import static artoria.common.Constants.ONE;
@@ -10,6 +13,7 @@ import static artoria.common.Constants.ZERO;
  * @author Kahle
  */
 public class CollectionUtils {
+    private static Logger log = LoggerFactory.getLogger(CollectionUtils.class);
 
     public static <E> boolean isEmpty(Collection<E> collection) {
 
@@ -47,13 +51,12 @@ public class CollectionUtils {
         }
     }
 
-    public static <E> void removeDuplicate(List<E> list) {
+    public static <E> List<E> removeDuplicate(List<E> list) {
         Set<E> eSet = new HashSet<E>(list);
-        list.clear();
-        list.addAll(eSet);
+        return new ArrayList<E>(eSet);
     }
 
-    public static <E> void removeDuplicateWithOrder(List<E> list) {
+    public static <E> List<E> removeDuplicateWithOrder(List<E> list) {
         List<E> newList = new ArrayList<E>();
         Set<E> eSet = new HashSet<E>();
         for (E next : list) {
@@ -61,8 +64,7 @@ public class CollectionUtils {
                 newList.add(next);
             }
         }
-        list.clear();
-        list.addAll(newList);
+        return newList;
     }
 
     /**
