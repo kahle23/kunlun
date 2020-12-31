@@ -1,10 +1,10 @@
-package artoria.template;
+package artoria.engine.template;
 
+import artoria.io.StringBuilderWriter;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
-import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
 
@@ -31,9 +31,9 @@ public class TemplateUtils {
         TemplateUtils.templateEngine = templateEngine;
     }
 
-    public static void render(Object data, Writer output, String logTag, String template) {
+    public static void render(String name, String encoding, Object data, Writer output) {
 
-        getTemplateEngine().render(data, output, logTag, template);
+        getTemplateEngine().render(name, encoding, data, output);
     }
 
     public static void render(Object data, Writer output, String logTag, Reader reader) {
@@ -41,34 +41,27 @@ public class TemplateUtils {
         getTemplateEngine().render(data, output, logTag, reader);
     }
 
-    public static void render(Object data, Writer output, String logTag, InputStream inputStream, String encoding) {
+    public static void render(Object data, Writer output, String logTag, String template) {
 
-        getTemplateEngine().render(data, output, logTag, inputStream, encoding);
-    }
-
-    public static void render(String name, String encoding, Object data, Writer output) {
-
-        getTemplateEngine().render(name, encoding, data, output);
-    }
-
-    public static String renderToString(Object data, String logTag, String template) {
-
-        return getTemplateEngine().renderToString(data, logTag, template);
-    }
-
-    public static String renderToString(Object data, String logTag, Reader reader) {
-
-        return getTemplateEngine().renderToString(data, logTag, reader);
-    }
-
-    public static String renderToString(Object data, String logTag, InputStream inputStream, String encoding) {
-
-        return getTemplateEngine().renderToString(data, logTag, inputStream, encoding);
+        getTemplateEngine().render(data, output, logTag, template);
     }
 
     public static String renderToString(String name, String encoding, Object data) {
+        StringBuilderWriter writer = new StringBuilderWriter();
+        getTemplateEngine().render(name, encoding, data, writer);
+        return writer.toString();
+    }
 
-        return getTemplateEngine().renderToString(name, encoding, data);
+    public static String renderToString(Object data, String logTag, Reader reader) {
+        StringBuilderWriter writer = new StringBuilderWriter();
+        getTemplateEngine().render(data, writer, logTag, reader);
+        return writer.toString();
+    }
+
+    public static String renderToString(Object data, String logTag, String template) {
+        StringBuilderWriter writer = new StringBuilderWriter();
+        getTemplateEngine().render(data, writer, logTag, template);
+        return writer.toString();
     }
 
 }
