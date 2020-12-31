@@ -5,6 +5,8 @@ import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 public class StringUtilsTest {
     private static Logger log = LoggerFactory.getLogger(StringUtilsTest.class);
@@ -54,6 +56,21 @@ public class StringUtilsTest {
         log.info(StringUtils.underlineToCamel("helloWorld"));
         log.info(StringUtils.underlineToCamel(""));
         log.info(StringUtils.underlineToCamel(null));
+    }
+
+    @Test
+    public void test4() {
+        String[] strArr = new String[]{"str1", "str2", "str3", "str4"};
+        log.info(StringUtils.join(strArr, " - ", 1, 3));
+        List<String> strList = Arrays.asList("str1", "str2", "str3", "str4");
+        log.info(StringUtils.join(strList, " - ", 1, 3));
+        String[] strArr1 = new String[]{"str1", "str2", "str3", "str4"};
+        log.info(StringUtils.join(strArr1, " - "));
+        List<String> strList1 = Arrays.asList("str1", "str2", "str3", "str4");
+        log.info(StringUtils.join(strList1, " - "));
+        log.info(StringUtils.join(new String[]{"str1 ", "str2 ", "str3 ", "str4 "}));
+        log.info(StringUtils.join(new String[]{"str1 ", "str2 ", "str3 "}));
+        log.info(StringUtils.join(new String[]{"str1 ", "str2 "}));
     }
 
 }

@@ -1,6 +1,11 @@
 package artoria.util;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
+
 import static artoria.common.Constants.*;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 /**
  * String tools.
@@ -101,42 +106,108 @@ public class StringUtils {
         return sb.toString();
     }
 
-    public static String replace(String inString, String oldPattern, String newPattern) {
-        if (StringUtils.isEmpty(inString)
-                || StringUtils.isEmpty(oldPattern)
-                || newPattern == null) {
-            return inString;
-        }
-        StringBuilder sb = new StringBuilder();
-        // our position in the old string
-        int pos = ZERO;
-        int index = inString.indexOf(oldPattern);
-        // the index of an occurrence we've found, or -1
-        int patLen = oldPattern.length();
-        while (index >= ZERO) {
-            sb.append(inString.substring(pos, index));
-            sb.append(newPattern);
-            pos = index + patLen;
-            index = inString.indexOf(oldPattern, pos);
-        }
-        sb.append(inString.substring(pos));
-        // remember to append any characters to the right of a match
-        return sb.toString();
+    public static String remove(String text, String remove) {
+        if (isEmpty(text) || isEmpty(remove)) { return text; }
+        return replace(text, remove, EMPTY_STRING);
     }
 
-    public static String delete(String inString, String pattern) {
+    public static String replace(String text, String searchString, String replacement) {
+        if (StringUtils.isEmpty(text)
+                || StringUtils.isEmpty(searchString)
+                || replacement == null) {
+            return text;
+        }
+        StringBuilder builder = new StringBuilder();
+        // our position in the old string
+        int pos = ZERO;
+        int index = text.indexOf(searchString);
+        // the index of an occurrence we've found, or -1
+        int searchLen = searchString.length();
+        while (index >= ZERO) {
+            builder.append(text.substring(pos, index));
+            builder.append(replacement);
+            pos = index + searchLen;
+            index = text.indexOf(searchString, pos);
+        }
+        builder.append(text.substring(pos));
+        // remember to append any characters to the right of a match
+        return builder.toString();
+    }
 
-        return StringUtils.replace(inString, pattern, EMPTY_STRING);
+    public static String join(Object objects) {
+        if (objects == null) { return null; }
+        return join(objects, EMPTY_STRING, ZERO, null);
+    }
+
+    public static String join(Object objects, Object separator) {
+        if (objects == null) { return null; }
+        return join(objects, separator, ZERO, null);
+    }
+
+    /**
+     * Joins the elements of the provided 'objects' into a single String containing the provided list of elements.
+     */
+    public static String join(Object objects, Object separator, Integer startIndex, Integer endIndex) {
+        if (objects == null) { return null; }
+        if (separator == null) { separator = EMPTY_STRING; }
+        if (startIndex == null || startIndex < ZERO) {
+            startIndex = ZERO;
+        }
+        boolean isArray = objects.getClass().isArray();
+        boolean isColl = objects instanceof Collection;
+        if (!isArray && !isColl) {
+            throw new UnsupportedOperationException(
+                    "The input 'objects' must be an array or 'Collection'. "
+            );
+        }
+        StringBuilder builder = new StringBuilder();
+        if (isArray) {
+            int length = Array.getLength(objects);
+            if (endIndex == null || endIndex > length) {
+                endIndex = length;
+            }
+            if ((endIndex - startIndex) <= ZERO) {
+                return EMPTY_STRING;
+            }
+            for (int i = startIndex; i < endIndex; i++) {
+                if (i > startIndex) {
+                    builder.append(separator);
+                }
+                Object obj = Array.get(objects, i);
+                if (obj != null) { builder.append(obj); }
+            }
+        }
+        if (isColl) {
+            Collection collection = (Collection) objects;
+            int size = collection.size();
+            if (endIndex == null || endIndex > size) {
+                endIndex = size;
+            }
+            if ((endIndex - startIndex) <= ZERO) {
+                return EMPTY_STRING;
+            }
+            int i = ZERO;
+            for (Object obj : collection) {
+                if (i > startIndex && i < endIndex) {
+                    builder.append(separator);
+                }
+                if (i >= startIndex && i < endIndex) {
+                    if (obj != null) { builder.append(obj); }
+                }
+                i++;
+            }
+        }
+        return builder.toString();
     }
 
     public static String capitalize(String str) {
 
-        return StringUtils.changeFirstCharacterCase(str, true);
+        return StringUtils.changeFirstCharacterCase(str, TRUE);
     }
 
     public static String uncapitalize(String str) {
 
-        return StringUtils.changeFirstCharacterCase(str, false);
+        return StringUtils.changeFirstCharacterCase(str, FALSE);
     }
 
     private static String changeFirstCharacterCase(String str, boolean capitalize) {
