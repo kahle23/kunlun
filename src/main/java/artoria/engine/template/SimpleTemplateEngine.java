@@ -1,4 +1,4 @@
-package artoria.template;
+package artoria.engine.template;
 
 import artoria.beans.BeanUtils;
 import artoria.util.Assert;

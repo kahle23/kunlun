@@ -1,4 +1,4 @@
-package artoria.template;
+package artoria.engine.template;
 
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
@@ -15,6 +15,12 @@ public class LoggerTemplateEngine extends AbstractTemplateEngine {
     private static final String PLACEHOLDER = LEFT_CURLY_BRACKET + RIGHT_CURLY_BRACKET;
     private static final Integer PLACEHOLDER_LENGTH = PLACEHOLDER.length();
     private static final char ESCAPE_SYMBOL = '\\';
+
+    @Override
+    public void render(String name, String encoding, Object data, Writer output) {
+
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public void render(Object data, Writer output, String logTag, String template) {
@@ -47,18 +53,6 @@ public class LoggerTemplateEngine extends AbstractTemplateEngine {
         catch (IOException e) {
             throw new RenderException(e);
         }
-    }
-
-    @Override
-    public void render(String name, String encoding, Object data, Writer output) {
-
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public String renderToString(String name, String encoding, Object data) {
-
-        throw new UnsupportedOperationException();
     }
 
 }

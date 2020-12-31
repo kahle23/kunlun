@@ -1,7 +1,7 @@
 package artoria.logging;
 
 import artoria.io.StringBuilderWriter;
-import artoria.template.TemplateEngine;
+import artoria.engine.template.TemplateEngine;
 
 import java.util.logging.Level;
 
