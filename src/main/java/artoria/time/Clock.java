@@ -1,15 +1,21 @@
 package artoria.time;
 
 /**
- * Provide the highest level of abstraction for Clock.
+ * Provide the highest level of abstraction for clock.
  * @author Kahle
  */
 public interface Clock {
 
     /**
-     * Get the timestamp of the current time in milliseconds.
-     * @return The timestamp of the current time
+     * Get the time in milliseconds.
+     * @return The time in milliseconds
      */
-    long getTime();
+    long getTimeInMillis();
+
+    /**
+     * Get the time in seconds.
+     * @return The time in seconds
+     */
+    long getTimeInSeconds();
 
 }
