@@ -7,14 +7,14 @@ import org.junit.Test;
 import static artoria.common.Constants.TWENTY;
 import static artoria.common.Constants.ZERO;
 
-public class SystemClockTest {
-    private static Logger log = LoggerFactory.getLogger(SystemClockTest.class);
+public class SimpleClockTest {
+    private static Logger log = LoggerFactory.getLogger(SimpleClockTest.class);
 
     @Test
     public void test1() {
-        Clock clock = new SystemClock();
+        Clock clock = new SimpleClock();
         for (int i = ZERO; i < TWENTY; i++) {
-            log.info("SystemClock: {}", clock.getTime());
+            log.info("Time in millis: {}", clock.getTimeInMillis());
         }
     }
 
