@@ -3,10 +3,10 @@ package artoria.jdbc;
 import java.sql.SQLException;
 
 /**
- * Database atom.
+ * Jdbc atom.
  * @author Kahle
  */
-public interface DatabaseAtom {
+public interface JdbcAtom {
 
     /**
      * Code run in atom.
