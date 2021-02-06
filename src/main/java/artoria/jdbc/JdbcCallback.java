@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Database callback.
+ * Jdbc callback.
  * @param <T> Call return type
  * @author Kahle
  */
-public interface DatabaseCallback<T> {
+public interface JdbcCallback<T> {
 
     /**
      * Callback will invoke.
