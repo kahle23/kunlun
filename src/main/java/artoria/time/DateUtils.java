@@ -22,7 +22,7 @@ public class DateUtils {
     private static final Set<String> DATE_PATTERNS = new HashSet<String>();
     private static Logger log = LoggerFactory.getLogger(DateUtils.class);
     private static Class<? extends DateTime> timeType;
-    private static DateProvider dateProvider;
+    private static DateFormatter dateFormatter;
 
     static {
         DateUtils.register("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -52,19 +52,19 @@ public class DateUtils {
         DateUtils.timeType = timeType;
     }
 
-    public static DateProvider getDateProvider() {
-        if (dateProvider != null) { return dateProvider; }
+    public static DateFormatter getDateFormatter() {
+        if (dateFormatter != null) { return dateFormatter; }
         synchronized (DateUtils.class) {
-            if (dateProvider != null) { return dateProvider; }
-            DateUtils.setDateProvider(new SimpleDateProvider());
-            return dateProvider;
+            if (dateFormatter != null) { return dateFormatter; }
+            DateUtils.setDateFormatter(new SimpleDateFormatter());
+            return dateFormatter;
         }
     }
 
-    public static void setDateProvider(DateProvider dateProvider) {
-        Assert.notNull(dateProvider, "Parameter \"dateProvider\" must not null. ");
-        log.info("Set date provider: {}", dateProvider.getClass().getName());
-        DateUtils.dateProvider = dateProvider;
+    public static void setDateFormatter(DateFormatter dateFormatter) {
+        Assert.notNull(dateFormatter, "Parameter \"dateFormatter\" must not null. ");
+        log.info("Set date formatter: {}", dateFormatter.getClass().getName());
+        DateUtils.dateFormatter = dateFormatter;
     }
 
     public static void register(String datePattern) {
@@ -151,12 +151,12 @@ public class DateUtils {
         return ObjectUtils.equals(dateTime1, dateTime2);
     }
 
-    public static long getTimestamp() {
+    public static long getTimeInMillis() {
 
         return System.currentTimeMillis();
     }
 
-    public static long getUnixTimestamp() {
+    public static long getTimeInSeconds() {
         long millis = System.currentTimeMillis();
         return millis / ONE_THOUSAND;
     }
@@ -355,7 +355,7 @@ public class DateUtils {
 
     public static Date parse(String dateString, String pattern) {
         try {
-            return getDateProvider().parse(dateString, pattern);
+            return getDateFormatter().parse(dateString, pattern);
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
@@ -389,7 +389,7 @@ public class DateUtils {
 
     public static String format(Date date, String pattern) {
 
-        return getDateProvider().format(date, pattern);
+        return getDateFormatter().format(date, pattern);
     }
 
     public static String format(Long timestamp, String pattern) {

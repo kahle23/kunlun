@@ -61,8 +61,8 @@ public class DateUtilsTest {
     public void testTimestamp() {
         log.info("");
 
-        log.info("The method getTimestamp(), result: {}", DateUtils.getTimestamp());
-        log.info("The method getUnixTimestamp(), result: {}", DateUtils.getUnixTimestamp());
+        log.info("The method getTimeInMillis(), result: {}", DateUtils.getTimeInMillis());
+        log.info("The method getTimeInSeconds(), result: {}", DateUtils.getTimeInSeconds());
 
         log.info("");
     }
