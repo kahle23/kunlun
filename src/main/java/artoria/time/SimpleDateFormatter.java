@@ -1,6 +1,7 @@
 package artoria.time;
 
 import artoria.collection.ReferenceMap;
+import artoria.lang.ReferenceType;
 import artoria.util.Assert;
 
 import java.text.ParseException;
@@ -12,13 +13,13 @@ import java.util.Map;
  * Date formatter and parser simple implement by jdk.
  * @author Kahle
  */
-public class SimpleDateProvider implements DateProvider {
+public class SimpleDateFormatter implements DateFormatter {
     private ThreadLocal<Map<String, SimpleDateFormat>> dateFormatCache = new ThreadLocal<Map<String, SimpleDateFormat>>();
 
     private SimpleDateFormat getDateFormat(String pattern) {
         Map<String, SimpleDateFormat> cache = dateFormatCache.get();
         if (cache == null) {
-            cache = new ReferenceMap<String, SimpleDateFormat>(ReferenceMap.Type.SOFT);
+            cache = new ReferenceMap<String, SimpleDateFormat>(ReferenceType.SOFT);
             dateFormatCache.set(cache);
         }
         SimpleDateFormat format = cache.get(pattern);
@@ -31,8 +32,8 @@ public class SimpleDateProvider implements DateProvider {
 
     @Override
     public String format(Date date, String pattern) {
-        Assert.notNull(date, "Parameter \"date\" must not null. ");
         Assert.notBlank(pattern, "Parameter \"pattern\" must not blank. ");
+        Assert.notNull(date, "Parameter \"date\" must not null. ");
         return getDateFormat(pattern).format(date);
     }
 

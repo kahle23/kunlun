@@ -63,8 +63,8 @@ public class SimpleDateTime implements DateTime {
     }
 
     @Override
-    public DateTime setTimeInMillis(long timestamp) {
-        calendar.setTimeInMillis(timestamp);
+    public DateTime setTimeInMillis(long timeInMillis) {
+        calendar.setTimeInMillis(timeInMillis);
         return this;
     }
 
@@ -75,8 +75,8 @@ public class SimpleDateTime implements DateTime {
     }
 
     @Override
-    public DateTime setTimeInSeconds(long unixTimestamp) {
-        long millis = unixTimestamp * ONE_THOUSAND;
+    public DateTime setTimeInSeconds(long timeInSeconds) {
+        long millis = timeInSeconds * ONE_THOUSAND;
         calendar.setTimeInMillis(millis);
         return this;
     }

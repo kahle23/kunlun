@@ -4,10 +4,10 @@ import java.text.ParseException;
 import java.util.Date;
 
 /**
- * Date provider.
+ * Date formatter.
  * @author Kahle
  */
-public interface DateProvider {
+public interface DateFormatter {
 
     /**
      * Format date object to date string.

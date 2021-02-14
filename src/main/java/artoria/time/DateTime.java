@@ -18,7 +18,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set date to DateTime object.
      * @param date The date object you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setDate(Date date);
 
@@ -31,117 +31,119 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set calendar to DateTime object.
      * @param calendar The calendar object you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setCalendar(Calendar calendar);
 
     /**
-     * Take current timestamp.
-     * @return Current timestamp
+     * The current time as UTC milliseconds from the epoch.
+     * @return The time in milliseconds
+     * @see <a href="https://en.wikipedia.org/wiki/Epoch_(computing)">Epoch (computing)</a>
      */
     long getTimeInMillis();
 
     /**
-     * Set timestamp to DateTime object.
-     * @param timestamp The timestamp you want
-     * @return Current DateTime object
+     * Set the time in milliseconds.
+     * @param timeInMillis The time in milliseconds
+     * @return The current date time object
      */
-    DateTime setTimeInMillis(long timestamp);
+    DateTime setTimeInMillis(long timeInMillis);
 
     /**
-     * Take current unix timestamp.
-     * @return Current unix timestamp
+     * The current time as UTC seconds from the epoch.
+     * @return The time in seconds
+     * @see <a href="https://en.wikipedia.org/wiki/Epoch_(computing)">Epoch (computing)</a>
      */
     long getTimeInSeconds();
 
     /**
-     * Set unix timestamp to DateTime object.
-     * @param unixTimestamp The unix timestamp you want
-     * @return Current DateTime object
+     * Set the time in seconds.
+     * @param timeInSeconds The time in seconds
+     * @return The current date time object
      */
-    DateTime setTimeInSeconds(long unixTimestamp);
+    DateTime setTimeInSeconds(long timeInSeconds);
 
     /**
      * Add year for DateTime object.
      * @param addYear Year you want add (the num can minus)
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime addYear(int addYear);
 
     /**
      * Add month for DateTime object.
      * @param addMonth Month you want add (the num can minus)
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime addMonth(int addMonth);
 
     /**
      * Add day for DateTime object.
      * @param addDay Day you want add (the num can minus)
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime addDay(int addDay);
 
     /**
      * Add hour for DateTime object.
      * @param addHour Hour you want add (the num can minus)
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime addHour(int addHour);
 
     /**
      * Add minute for DateTime object.
      * @param addMinute Minute you want add (the num can minus)
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime addMinute(int addMinute);
 
     /**
      * Add second for DateTime object.
      * @param addSecond Second you want add (the num can minus)
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime addSecond(int addSecond);
 
     /**
      * Add millisecond for DateTime object.
      * @param addMillisecond Millisecond you want add (the num can minus)
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime addMillisecond(int addMillisecond);
 
     /**
      * Add day of week for DateTime object.
      * @param addDayOfWeek Day of week you want add (the num can minus)
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime addDayOfWeek(int addDayOfWeek);
 
     /**
      * Add day of week in month for DateTime object.
      * @param addDayOfWeekInMonth Day of week in month you want add (the num can minus)
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime addDayOfWeekInMonth(int addDayOfWeekInMonth);
 
     /**
      * Add day of year for DateTime object.
      * @param addDayOfYear Day of year you want add (the num can minus)
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime addDayOfYear(int addDayOfYear);
 
     /**
      * Add week of month for DateTime object.
      * @param addWeekOfMonth Week of month you want add (the num can minus)
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime addWeekOfMonth(int addWeekOfMonth);
 
     /**
      * Add week of year for DateTime object.
      * @param addWeekOfYear Week of year you want add (the num can minus)
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime addWeekOfYear(int addWeekOfYear);
 
@@ -154,7 +156,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set year to DateTime object.
      * @param year The year you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setYear(int year);
 
@@ -167,7 +169,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set month to DateTime object.
      * @param month The month you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setMonth(int month);
 
@@ -180,7 +182,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set day to DateTime object.
      * @param day The day you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setDay(int day);
 
@@ -193,7 +195,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set hour to DateTime object.
      * @param hour The hour you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setHour(int hour);
 
@@ -206,7 +208,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set minute to DateTime object.
      * @param minute The minute you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setMinute(int minute);
 
@@ -219,7 +221,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set second to DateTime object.
      * @param second The second you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setSecond(int second);
 
@@ -232,7 +234,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set millisecond to DateTime object.
      * @param millisecond The millisecond you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setMillisecond(int millisecond);
 
@@ -245,7 +247,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set day of week to DateTime object.
      * @param dayOfWeek The day of week you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setDayOfWeek(int dayOfWeek);
 
@@ -258,7 +260,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set day of week in month to DateTime object.
      * @param dayOfWeekInMonth The day of week in month you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setDayOfWeekInMonth(int dayOfWeekInMonth);
 
@@ -271,7 +273,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set day of year to DateTime object.
      * @param dayOfYear The day of year you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setDayOfYear(int dayOfYear);
 
@@ -284,7 +286,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set week of month to DateTime object.
      * @param weekOfMonth The week of month you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setWeekOfMonth(int weekOfMonth);
 
@@ -297,7 +299,7 @@ public interface DateTime extends java.io.Serializable {
     /**
      * Set week of year to DateTime object.
      * @param weekOfYear The week of year you want
-     * @return Current DateTime object
+     * @return The current date time object
      */
     DateTime setWeekOfYear(int weekOfYear);
 
