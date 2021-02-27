@@ -10,51 +10,51 @@ import artoria.util.Assert;
  */
 public class HexUtils {
     private static Logger log = LoggerFactory.getLogger(HexUtils.class);
-    private static Hex hex;
+    private static HexFactory hexFactory;
 
-    public static Hex getHex() {
-        if (hex != null) { return hex; }
+    public static HexFactory getHexFactory() {
+        if (hexFactory != null) { return hexFactory; }
         synchronized (HexUtils.class) {
-            if (hex != null) { return hex; }
-            HexUtils.setHex(new Hex());
-            return hex;
+            if (hexFactory != null) { return hexFactory; }
+            HexUtils.setHexFactory(new SimpleHexFactory());
+            return hexFactory;
         }
     }
 
-    public static void setHex(Hex hex) {
-        Assert.notNull(hex, "Parameter \"hex\" must not null. ");
-        log.info("Set hex: {}", hex.getClass().getName());
-        HexUtils.hex = hex;
-    }
-
-    public static Object encode(Object source) {
-
-        return getHex().encode(source);
-    }
-
-    public static Object decode(Object source) {
-
-        return getHex().decode(source);
+    public static void setHexFactory(HexFactory hexFactory) {
+        Assert.notNull(hexFactory, "Parameter \"hexFactory\" must not null. ");
+        log.info("Set hex factory: {}", hexFactory.getClass().getName());
+        HexUtils.hexFactory = hexFactory;
     }
 
     public static byte[] encode(byte[] source) {
 
-        return getHex().encode(source);
+        return getHexFactory().getInstance().encode(source);
+    }
+
+    public static byte[] encode(byte[] source, boolean lowerCase) {
+
+        return getHexFactory().getInstance(lowerCase).encode(source);
     }
 
     public static byte[] decode(byte[] source) {
 
-        return getHex().decode(source);
+        return getHexFactory().getInstance().decode(source);
     }
 
     public static String encodeToString(byte[] source) {
 
-        return getHex().encodeToString(source);
+        return getHexFactory().getInstance().encodeToString(source);
+    }
+
+    public static String encodeToString(byte[] source, boolean lowerCase) {
+
+        return getHexFactory().getInstance(lowerCase).encodeToString(source);
     }
 
     public static byte[] decodeFromString(String source) {
 
-        return getHex().decodeFromString(source);
+        return getHexFactory().getInstance().decodeFromString(source);
     }
 
 }

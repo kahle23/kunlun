@@ -10,41 +10,31 @@ import artoria.util.Assert;
  */
 public class UnicodeUtils {
     private static Logger log = LoggerFactory.getLogger(UnicodeUtils.class);
-    private static Unicode unicode;
+    private static UnicodeFactory unicodeFactory;
 
-    public static Unicode getUnicode() {
-        if (unicode != null) { return unicode; }
+    public static UnicodeFactory getUnicodeFactory() {
+        if (unicodeFactory != null) { return unicodeFactory; }
         synchronized (UnicodeUtils.class) {
-            if (unicode != null) { return unicode; }
-            UnicodeUtils.setUnicode(new Unicode());
-            return unicode;
+            if (unicodeFactory != null) { return unicodeFactory; }
+            UnicodeUtils.setUnicodeFactory(new SimpleUnicodeFactory());
+            return unicodeFactory;
         }
     }
 
-    public static void setUnicode(Unicode unicode) {
-        Assert.notNull(unicode, "Parameter \"unicode\" must not null. ");
-        log.info("Set unicode: {}", unicode.getClass().getName());
-        UnicodeUtils.unicode = unicode;
-    }
-
-    public static Object encode(Object source) {
-
-        return getUnicode().encode(source);
-    }
-
-    public static Object decode(Object source) {
-
-        return getUnicode().decode(source);
+    public static void setUnicodeFactory(UnicodeFactory unicodeFactory) {
+        Assert.notNull(unicodeFactory, "Parameter \"unicodeFactory\" must not null. ");
+        log.info("Set unicode factory: {}", unicodeFactory.getClass().getName());
+        UnicodeUtils.unicodeFactory = unicodeFactory;
     }
 
     public static String encode(String source) {
 
-        return getUnicode().encode(source);
+        return getUnicodeFactory().getInstance().encode(source);
     }
 
     public static String decode(String source) {
 
-        return getUnicode().decode(source);
+        return getUnicodeFactory().getInstance().decode(source);
     }
 
 }
