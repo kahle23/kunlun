@@ -11,32 +11,37 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
-    private static final byte[] LOWER_CASE_DIGITS =
+    protected static final byte[] LOWER_CASE_DIGITS =
             {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-    private static final byte[] UPPER_CASE_DIGITS =
+    protected static final byte[] UPPER_CASE_DIGITS =
             {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-    private static final int HEX_01 = 0x01;
-    private static final int RADIX = 16;
-    private byte[] digits;
+    protected static final int HEX_01 = 0x01;
+    protected static final int RADIX = 16;
+    private boolean lowerCase;
 
     public Hex() {
 
-        this(false);
+        this(true);
     }
 
-    public Hex(boolean toUpperCase) {
-        this(toUpperCase
-                ? UPPER_CASE_DIGITS
-                : LOWER_CASE_DIGITS
-        );
+    public Hex(boolean lowerCase) {
+
+        this.lowerCase = lowerCase;
     }
 
-    protected Hex(byte[] digits) {
-        Assert.notEmpty(digits
-                , "Parameter \"digits\" must not empty. ");
-        Assert.state(digits.length == RADIX
-                , "Parameter \"digits\" length must equal 16. ");
-        this.digits = digits;
+    public boolean isLowerCase() {
+
+        return lowerCase;
+    }
+
+    public void setLowerCase(boolean lowerCase) {
+
+        this.lowerCase = lowerCase;
+    }
+
+    protected byte[] getDigits() {
+
+        return lowerCase ? LOWER_CASE_DIGITS : UPPER_CASE_DIGITS;
     }
 
     protected int toDigit(int ch, int index) {
@@ -68,8 +73,8 @@ public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
         byte[] out = new byte[len << ONE];
         // Two characters form the hex value.
         for (int i = ZERO, j = ZERO; i < len; i++) {
-            out[j++] = digits[(0xF0 & source[i]) >>> FOUR];
-            out[j++] = digits[0x0F & source[i]];
+            out[j++] = getDigits()[(0xF0 & source[i]) >>> FOUR];
+            out[j++] = getDigits()[0x0F & source[i]];
         }
         return out;
     }
