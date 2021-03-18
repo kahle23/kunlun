@@ -28,7 +28,18 @@ public class SimpleBeanMap extends BeanMap {
     private Map<String, Method> writeMethodMap = new HashMap<String, Method>();
     private Map<String, Method> readMethodMap = new HashMap<String, Method>();
     private Boolean ignoreException = true;
+    private static Method methodGetClass;
     private Class<?> beanClass;
+
+    static {
+        try {
+            String nameGetClass = "getClass";
+            methodGetClass = ReflectUtils.getMethod(Object.class, nameGetClass);
+        }
+        catch (NoSuchMethodException e) {
+            throw ExceptionUtils.wrap(e);
+        }
+    }
 
     public SimpleBeanMap() {
     }
@@ -60,6 +71,7 @@ public class SimpleBeanMap extends BeanMap {
             Method writeMethod = descriptor.getWriteMethod();
             Method readMethod = descriptor.getReadMethod();
             String name = descriptor.getName();
+            if (methodGetClass.equals(readMethod)) { continue; }
             if (writeMethod != null) { writeMethodMap.put(name, writeMethod); }
             if (readMethod != null) { readMethodMap.put(name, readMethod); }
         }
