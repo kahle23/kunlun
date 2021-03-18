@@ -22,25 +22,22 @@ import static artoria.convert.type.TypeConvertUtils.getConvertProvider;
  */
 public class BeanUtils {
     private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
-    private static Class<? extends BeanMap> mapType;
+    private static BeanMapFactory beanMapFactory;
     private static BeanCopier beanCopier;
 
-    public static Class<? extends BeanMap> getMapType() {
-        if (mapType != null) { return mapType; }
+    public static BeanMapFactory getBeanMapFactory() {
+        if (beanMapFactory != null) { return beanMapFactory; }
         synchronized (BeanUtils.class) {
-            if (mapType != null) { return mapType; }
-            BeanUtils.setMapType(SimpleBeanMap.class);
-            return mapType;
+            if (beanMapFactory != null) { return beanMapFactory; }
+            BeanUtils.setBeanMapFactory(new SimpleBeanMapFactory());
+            return beanMapFactory;
         }
     }
 
-    public static void setMapType(Class<? extends BeanMap> mapType) {
-        Assert.notNull(mapType, "Parameter \"mapType\" must not null. ");
-        if (mapType == BeanMap.class) {
-            throw new IllegalArgumentException("Parameter \"mapType\" must not \"BeanMap.class\". ");
-        }
-        log.info("Set bean map type: {}", mapType.getName());
-        BeanUtils.mapType = mapType;
+    public static void setBeanMapFactory(BeanMapFactory beanMapFactory) {
+        Assert.notNull(beanMapFactory, "Parameter \"beanMapFactory\" must not null. ");
+        log.info("Set bean map factory: {}", beanMapFactory.getClass().getName());
+        BeanUtils.beanMapFactory = beanMapFactory;
     }
 
     public static BeanCopier getBeanCopier() {
@@ -59,20 +56,13 @@ public class BeanUtils {
     }
 
     public static BeanMap createBeanMap() {
-        try {
-            BeanMap beanMap = ReflectUtils.newInstance(getMapType());
-            beanMap.setTypeConverter(getConvertProvider());
-            return beanMap;
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
+
+        return getBeanMapFactory().getInstance();
     }
 
     public static BeanMap createBeanMap(Object bean) {
-        BeanMap beanMap = createBeanMap();
-        beanMap.setBean(bean);
-        return beanMap;
+
+        return getBeanMapFactory().getInstance(bean);
     }
 
     public static Object clone(Object obj) {
