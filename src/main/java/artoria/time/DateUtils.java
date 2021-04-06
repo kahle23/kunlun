@@ -21,7 +21,7 @@ import static artoria.common.Constants.*;
 public class DateUtils {
     private static final Set<String> DATE_PATTERNS = new HashSet<String>();
     private static Logger log = LoggerFactory.getLogger(DateUtils.class);
-    private static Class<? extends DateTime> timeType;
+    private static DateTimeFactory dateTimeFactory;
     private static DateFormatter dateFormatter;
 
     static {
@@ -37,19 +37,19 @@ public class DateUtils {
         DateUtils.register(FULL_DATETIME_PATTERN);
     }
 
-    public static Class<? extends DateTime> getTimeType() {
-        if (timeType != null) { return timeType; }
+    public static DateTimeFactory getDateTimeFactory() {
+        if (dateTimeFactory != null) { return dateTimeFactory; }
         synchronized (DateUtils.class) {
-            if (timeType != null) { return timeType; }
-            DateUtils.setTimeType(SimpleDateTime.class);
-            return timeType;
+            if (dateTimeFactory != null) { return dateTimeFactory; }
+            DateUtils.setDateTimeFactory(new SimpleDateTimeFactory());
+            return dateTimeFactory;
         }
     }
 
-    public static void setTimeType(Class<? extends DateTime> timeType) {
-        Assert.notNull(timeType, "Parameter \"timeType\" must not null. ");
-        log.info("Set time type: {}", timeType.getName());
-        DateUtils.timeType = timeType;
+    public static void setDateTimeFactory(DateTimeFactory dateTimeFactory) {
+        Assert.notNull(dateTimeFactory, "Parameter \"dateTimeFactory\" must not null. ");
+        log.info("Set date time factory: {}", dateTimeFactory.getClass().getName());
+        DateUtils.dateTimeFactory = dateTimeFactory;
     }
 
     public static DateFormatter getDateFormatter() {
@@ -80,12 +80,14 @@ public class DateUtils {
     }
 
     public static DateTime create() {
-        try {
-            return getTimeType().newInstance();
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
+
+        return getDateTimeFactory().getInstance();
+    }
+
+    public static DateTime create(Long timeInMillis) {
+        DateTime dateTime = DateUtils.create();
+        timeInMillis = timeInMillis != null ? timeInMillis : ZERO;
+        return dateTime.setTimeInMillis(timeInMillis);
     }
 
     public static DateTime create(Date date) {
@@ -98,12 +100,6 @@ public class DateUtils {
         Assert.notNull(calendar, "Parameter \"calendar\" must not null. ");
         DateTime dateTime = DateUtils.create();
         return dateTime.setCalendar(calendar);
-    }
-
-    public static DateTime create(Long timestamp) {
-        DateTime dateTime = DateUtils.create();
-        timestamp = timestamp != null ? timestamp : ZERO;
-        return dateTime.setTimeInMillis(timestamp);
     }
 
     public static DateTime create(String dateString) {
