@@ -1,5 +1,7 @@
 package artoria.net;
 
+import artoria.lang.KeyValue;
+import artoria.lang.KeyValuePair;
 import artoria.util.Assert;
 
 import java.io.File;
@@ -8,8 +10,9 @@ import java.io.Writer;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static artoria.common.Constants.ZERO;
@@ -26,7 +29,7 @@ public class HttpRequest extends HttpMessage {
     private int connectTimeout = 19000;
     private int readTimeout = 19000;
     private Proxy proxy;
-    private Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+    private Collection<KeyValue<String, Object>> parameters = new ArrayList<KeyValue<String, Object>>();
     private Object body;
     private File responseBodyToFile;
     private OutputStream responseBodyToStream;
@@ -108,33 +111,37 @@ public class HttpRequest extends HttpMessage {
 
     public Object getParameter(String paramName) {
         Assert.notBlank(paramName, "Parameter \"paramName\" must not blank. ");
-        return parameters.get(paramName);
+        for (KeyValue<String, Object> parameter : parameters) {
+            if (paramName.equals(parameter.getKey())) {
+                return parameter.getValue();
+            }
+        }
+        return null;
     }
 
     public void addParameter(String paramName, Object paraValue) {
         Assert.notBlank(paramName, "Parameter \"paramName\" must not blank. ");
         Assert.notNull(paraValue, "Parameter \"paraValue\" must not null. ");
-        parameters.put(paramName, paraValue);
+        parameters.add(new KeyValuePair<String, Object>(paramName, paraValue));
+    }
+
+    public void addParameters(Collection<KeyValuePair<String, Object>> parameters) {
+        Assert.notEmpty(parameters, "Parameter \"parameters\" must not empty. ");
+        this.parameters.addAll(parameters);
     }
 
     public void addParameters(Map<String, Object> parameters) {
-        Assert.notNull(parameters, "Parameter \"parameters\" must not null. ");
-        this.parameters.putAll(parameters);
+        Assert.notEmpty(parameters, "Parameter \"parameters\" must not empty. ");
+        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+            Object value = entry.getValue();
+            String key = entry.getKey();
+            this.parameters.add(new KeyValuePair<String, Object>(key, value));
+        }
     }
 
-    public boolean containsParameter(String paramName) {
-        Assert.notBlank(paramName, "Parameter \"paramName\" must not blank. ");
-        return parameters.containsKey(paramName);
-    }
+    public Collection<KeyValue<String, Object>> getParameters() {
 
-    public void removeParameter(String paramName) {
-        Assert.notBlank(paramName, "Parameter \"paramName\" must not blank. ");
-        parameters.remove(paramName);
-    }
-
-    public Map<String, Object> getParameters() {
-
-        return Collections.unmodifiableMap(parameters);
+        return Collections.unmodifiableCollection(parameters);
     }
 
     public void clearParameters() {

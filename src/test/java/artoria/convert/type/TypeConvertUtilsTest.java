@@ -69,7 +69,7 @@ public class TypeConvertUtilsTest {
 
     @Test
     public void testLongStringToDate() {
-        Object obj = TypeConvertUtils.convert(String.valueOf(DateUtils.getTimestamp()), java.sql.Date.class);
+        Object obj = TypeConvertUtils.convert(String.valueOf(DateUtils.getTimeInMillis()), java.sql.Date.class);
         log.info("{} {}", obj.getClass(), obj);
         Object obj1 = TypeConvertUtils.convert("-45674576567", java.sql.Date.class);
         log.info("{} {}", obj1.getClass(), obj1);

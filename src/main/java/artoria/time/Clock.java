@@ -2,6 +2,7 @@ package artoria.time;
 
 /**
  * Provide the highest level of abstraction for clock.
+ * @see <a href="https://en.wikipedia.org/wiki/Timestamp">Timestamp</a>
  * @author Kahle
  */
 public interface Clock {
