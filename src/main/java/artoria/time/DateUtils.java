@@ -22,7 +22,7 @@ public class DateUtils {
     private static final Set<String> DATE_PATTERNS = new HashSet<String>();
     private static Logger log = LoggerFactory.getLogger(DateUtils.class);
     private static DateTimeFactory dateTimeFactory;
-    private static DateFormatter dateFormatter;
+    private static DateProvider dateProvider;
 
     static {
         DateUtils.register("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -52,19 +52,19 @@ public class DateUtils {
         DateUtils.dateTimeFactory = dateTimeFactory;
     }
 
-    public static DateFormatter getDateFormatter() {
-        if (dateFormatter != null) { return dateFormatter; }
+    public static DateProvider getDateProvider() {
+        if (dateProvider != null) { return dateProvider; }
         synchronized (DateUtils.class) {
-            if (dateFormatter != null) { return dateFormatter; }
-            DateUtils.setDateFormatter(new SimpleDateFormatter());
-            return dateFormatter;
+            if (dateProvider != null) { return dateProvider; }
+            DateUtils.setDateProvider(new SimpleDateProvider());
+            return dateProvider;
         }
     }
 
-    public static void setDateFormatter(DateFormatter dateFormatter) {
-        Assert.notNull(dateFormatter, "Parameter \"dateFormatter\" must not null. ");
-        log.info("Set date formatter: {}", dateFormatter.getClass().getName());
-        DateUtils.dateFormatter = dateFormatter;
+    public static void setDateProvider(DateProvider dateProvider) {
+        Assert.notNull(dateProvider, "Parameter \"dateProvider\" must not null. ");
+        log.info("Set date provider: {}", dateProvider.getClass().getName());
+        DateUtils.dateProvider = dateProvider;
     }
 
     public static void register(String datePattern) {
@@ -85,9 +85,8 @@ public class DateUtils {
     }
 
     public static DateTime create(Long timeInMillis) {
-        DateTime dateTime = DateUtils.create();
-        timeInMillis = timeInMillis != null ? timeInMillis : ZERO;
-        return dateTime.setTimeInMillis(timeInMillis);
+
+        return getDateTimeFactory().getInstance(timeInMillis);
     }
 
     public static DateTime create(Date date) {
@@ -351,7 +350,7 @@ public class DateUtils {
 
     public static Date parse(String dateString, String pattern) {
         try {
-            return getDateFormatter().parse(dateString, pattern);
+            return getDateProvider().parse(dateString, pattern);
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
@@ -385,7 +384,7 @@ public class DateUtils {
 
     public static String format(Date date, String pattern) {
 
-        return getDateFormatter().format(date, pattern);
+        return getDateProvider().format(date, pattern);
     }
 
     public static String format(Long timestamp, String pattern) {

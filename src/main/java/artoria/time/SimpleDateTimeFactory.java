@@ -1,5 +1,7 @@
 package artoria.time;
 
+import static artoria.common.Constants.ZERO;
+
 public class SimpleDateTimeFactory implements DateTimeFactory {
 
     @Override
@@ -10,6 +12,7 @@ public class SimpleDateTimeFactory implements DateTimeFactory {
 
     @Override
     public DateTime getInstance(Long timeInMillis) {
+        timeInMillis = timeInMillis != null ? timeInMillis : ZERO;
         DateTime dateTime = new SimpleDateTime();
         dateTime.setTimeInMillis(timeInMillis);
         return dateTime;

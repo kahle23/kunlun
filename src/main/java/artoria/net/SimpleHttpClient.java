@@ -4,6 +4,7 @@ import artoria.exception.ExceptionUtils;
 import artoria.file.FileEntity;
 import artoria.file.FileUtils;
 import artoria.io.IOUtils;
+import artoria.lang.KeyValue;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.*;
@@ -16,10 +17,7 @@ import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 import static artoria.common.Constants.*;
@@ -114,10 +112,10 @@ public class SimpleHttpClient implements HttpClient {
     }
 
     private static boolean needsMultipart(HttpRequest request) {
-        Map<String, Object> parameters = request.getParameters();
+        Collection<KeyValue<String, Object>> parameters = request.getParameters();
         boolean needsMultipart = false;
-        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-            Object value = entry.getValue();
+        for (KeyValue<String, Object> keyValue : parameters) {
+            Object value = keyValue.getValue();
             needsMultipart = needsMultipart(value);
             if (needsMultipart) { break; }
         }
@@ -280,7 +278,7 @@ public class SimpleHttpClient implements HttpClient {
     }
 
     private void updateRequestUrl(HttpRequest request) throws IOException {
-        Map<String, Object> parameters = request.getParameters();
+        Collection<KeyValue<String, Object>> parameters = request.getParameters();
         String charset = request.getCharset();
         URL oldUrl = request.getUrl();
         StringBuilder urlBuilder = new StringBuilder();
@@ -297,8 +295,8 @@ public class SimpleHttpClient implements HttpClient {
             urlBuilder.append(oldUrlQuery);
             first = false;
         }
-        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-            Object value = entry.getValue();
+        for (KeyValue<String, Object> keyValue : parameters) {
+            Object value = keyValue.getValue();
             if (needsMultipart(value)) {
                 throw new IOException("File not supported in URL query string. ");
             }
@@ -308,7 +306,7 @@ public class SimpleHttpClient implements HttpClient {
             else {
                 urlBuilder.append(AMPERSAND);
             }
-            String key = URLEncoder.encode(entry.getKey(), charset);
+            String key = URLEncoder.encode(keyValue.getKey(), charset);
             String val = URLEncoder.encode(String.valueOf(value), charset);
             urlBuilder.append(key).append(EQUAL).append(val);
         }
@@ -355,18 +353,18 @@ public class SimpleHttpClient implements HttpClient {
     }
 
     private void writeFormData(HttpRequest request, BufferedWriter writer) throws IOException {
-        Map<String, Object> parameters = request.getParameters();
+        Collection<KeyValue<String, Object>> parameters = request.getParameters();
         String charset = request.getCharset();
         boolean first = true;
-        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+        for (KeyValue<String, Object> keyValue : parameters) {
             if (first) {
                 first = false;
             }
             else {
                 writer.write(AMPERSAND);
             }
-            String key = entry.getKey();
-            String val = String.valueOf(entry.getValue());
+            String key = keyValue.getKey();
+            String val = String.valueOf(keyValue.getValue());
             key = URLEncoder.encode(key, charset);
             val = URLEncoder.encode(val, charset);
             writer.write(key);
@@ -410,12 +408,12 @@ public class SimpleHttpClient implements HttpClient {
     }
 
     private void writeMultipartData(HttpRequest request, String mimeBoundary, BufferedWriter writer) throws IOException {
-        Map<String, Object> parameters = request.getParameters();
+        Collection<KeyValue<String, Object>> parameters = request.getParameters();
         String charset = request.getCharset();
         boolean first = true;
-        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-            String key = entry.getKey();
-            Object val = entry.getValue();
+        for (KeyValue<String, Object> keyValue : parameters) {
+            String key = keyValue.getKey();
+            Object val = keyValue.getValue();
             if (first) { first = false; }
             else { writer.append(NEWLINE); }
             writer.append(DOUBLE_MINUS).append(mimeBoundary).append(NEWLINE);
@@ -637,7 +635,7 @@ public class SimpleHttpClient implements HttpClient {
         HttpMethod method = request.getMethod();
         boolean hasBody = method.hasBody();
         String mimeBoundary = null;
-        if (!hasBody && MapUtils.isNotEmpty(request.getParameters())) {
+        if (!hasBody && CollectionUtils.isNotEmpty(request.getParameters())) {
             updateRequestUrl(request);
         }
         else if (hasBody) {
