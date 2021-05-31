@@ -1,5 +1,6 @@
 package artoria.convert.type;
 
+import artoria.convert.type1.ConversionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.ArrayUtils;
@@ -22,7 +23,20 @@ public class TypeConvertUtils {
         if (convertProvider != null) { return convertProvider; }
         synchronized (TypeConvertUtils.class) {
             if (convertProvider != null) { return convertProvider; }
-            TypeConvertUtils.setConvertProvider(new SimpleConvertProvider());
+//            TypeConvertUtils.setConvertProvider(new SimpleConvertProvider());
+            TypeConvertUtils.setConvertProvider(new ConvertProvider() {
+                @Override
+                public void register(Class<?> clazz, TypeConverter converter) {
+                }
+                @Override
+                public TypeConverter unregister(Class<?> clazz) {
+                    return null;
+                }
+                @Override
+                public Object convert(Object source, Class<?> target) {
+                    return ConversionUtils.convert(source, null, target);
+                }
+            });
             return convertProvider;
         }
     }
