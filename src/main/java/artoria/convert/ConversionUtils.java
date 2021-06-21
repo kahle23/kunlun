@@ -1,4 +1,4 @@
-package artoria.convert.type1;
+package artoria.convert;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -6,6 +6,10 @@ import artoria.util.Assert;
 
 import java.lang.reflect.Type;
 
+/**
+ * Type conversion tools.
+ * @author Kahle
+ */
 public class ConversionUtils {
     private static Logger log = LoggerFactory.getLogger(ConversionUtils.class);
     private static ConversionProvider conversionProvider;

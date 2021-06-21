@@ -1,4 +1,4 @@
-package artoria.convert.type1;
+package artoria.convert;
 
 import java.lang.reflect.Type;
 
@@ -19,6 +19,14 @@ public interface ConversionProvider {
      * @param converter A type converter
      */
     void removeConverter(GenericConverter converter);
+
+    /**
+     * Gets a converter that converts the source type to the target type.
+     * @param sourceType The source type to convert from
+     * @param targetType The target type to convert to
+     * @return A type converter who can handle it or null
+     */
+    GenericConverter getConverter(Type sourceType, Type targetType);
 
     /**
      * Return true if objects of source type can be converted to the target type.

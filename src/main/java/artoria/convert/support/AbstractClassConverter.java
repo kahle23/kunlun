@@ -1,6 +1,6 @@
-package artoria.convert.type1.support;
+package artoria.convert.support;
 
-import artoria.convert.type1.ConversionProvider;
+import artoria.convert.ConversionProvider;
 import artoria.util.Assert;
 import artoria.util.ClassUtils;
 import artoria.util.ObjectUtils;

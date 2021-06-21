@@ -1,10 +1,10 @@
 package artoria.util;
 
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Map;
 
-import static artoria.common.Constants.*;
-import static java.lang.Boolean.FALSE;
+import static artoria.common.Constants.EIGHT;
 
 /**
  * Class tools.
@@ -55,59 +55,14 @@ public class ClassUtils {
         return result != null ? result : type;
     }
 
-    private static void addToClassHierarchy(Class<?> type, int index, boolean isArray,
-                                            Set<Class<?>> visited, List<Class<?>> hierarchy) {
-        if (isArray) {
-            Object instance = Array.newInstance(type, ZERO);
-            type = instance.getClass();
-        }
-        if (visited.add(type)) { hierarchy.add(index, type); }
-    }
-
-    public static List<Class<?>> getClassHierarchy(Class<?> type) {
-        Assert.notNull(type, "Parameter \"type\" must not null. ");
-        List<Class<?>> hierarchy = new ArrayList<Class<?>>(TWENTY);
-        Set<Class<?>> visited = new HashSet<Class<?>>(TWENTY);
-        boolean isArray = type.isArray();
-        addToClassHierarchy(getWrapper(type), ZERO, FALSE, visited, hierarchy);
-        // Handle the ordinary bean.
-        for (int i = ZERO; i < hierarchy.size(); i++) {
-            Class<?> candidate = hierarchy.get(i);
-            candidate = isArray ? candidate.getComponentType() : getWrapper(candidate);
-            Class<?> superclass = candidate.getSuperclass();
-            boolean flag = superclass != null &&
-                    superclass != Object.class && superclass != Enum.class;
-            if (flag) {
-                addToClassHierarchy(superclass, (i + ONE), isArray, visited, hierarchy);
-            }
-            Class<?>[] interfaces = candidate.getInterfaces();
-            for (Class<?> clazz : interfaces) {
-                addToClassHierarchy(clazz, hierarchy.size(), isArray, visited, hierarchy);
-            }
-        }
-        // Handle the enumeration.
-        if (Enum.class.isAssignableFrom(type)) {
-            addToClassHierarchy(Enum.class, hierarchy.size(), isArray, visited, hierarchy);
-            addToClassHierarchy(Enum.class, hierarchy.size(), FALSE, visited, hierarchy);
-            Class<?>[] interfaces = Enum.class.getInterfaces();
-            for (Class<?> clazz : interfaces) {
-                addToClassHierarchy(clazz, hierarchy.size(), isArray, visited, hierarchy);
-            }
-        }
-        // Handle the 'Object'.
-        addToClassHierarchy(Object.class, hierarchy.size(), isArray, visited, hierarchy);
-        addToClassHierarchy(Object.class, hierarchy.size(), FALSE, visited, hierarchy);
-        return hierarchy;
-    }
-
     public static boolean isPresent(String className, ClassLoader classLoader) {
 
         return ClassUtils.isPresent(className, true, classLoader);
     }
 
     public static boolean isPresent(String className, boolean initialize, ClassLoader classLoader) {
-        Assert.notNull(className, "Parameter \"className\" must not null. ");
         Assert.notNull(classLoader, "Parameter \"classLoader\" must not null. ");
+        Assert.notNull(className, "Parameter \"className\" must not null. ");
         try {
             Class.forName(className, initialize, classLoader);
             return true;

@@ -1,6 +1,6 @@
-package artoria.convert.type1;
+package artoria.convert;
 
-import artoria.convert.type1.support.CatToDogConverter;
+import artoria.convert.support.CatToDogConverter;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.mock.MockUtils;

@@ -1,7 +1,7 @@
-package artoria.convert.type1.support;
+package artoria.convert.support;
 
-import artoria.convert.type1.ConditionalConverter;
-import artoria.convert.type1.ConversionProvider;
+import artoria.convert.ConditionalConverter;
+import artoria.convert.ConversionProvider;
 import artoria.util.Assert;
 
 import java.lang.reflect.ParameterizedType;

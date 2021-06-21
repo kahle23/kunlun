@@ -1,4 +1,4 @@
-package artoria.convert.type1;
+package artoria.convert;
 
 import artoria.util.Assert;
 

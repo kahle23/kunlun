@@ -1,6 +1,6 @@
 package artoria.cache;
 
-import artoria.convert.type.TypeConvertUtils;
+import artoria.convert.ConversionUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -130,7 +130,7 @@ public abstract class AbstractCache implements Cache {
         Assert.notNull(type, "Parameter \"type\" must not null. ");
         Object object = get(key);
         if (object == null) { return null; }
-        object = TypeConvertUtils.convert(object, type);
+        object = ConversionUtils.convert(object, type);
         return ObjectUtils.cast(object, type);
     }
 

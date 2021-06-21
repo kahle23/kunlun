@@ -1,8 +1,11 @@
-package artoria.convert.type1;
+package artoria.convert;
 
-import artoria.convert.type1.support.CatToDogConverter;
-import artoria.convert.type1.support.ListBasicToListBasicConverter;
-import artoria.convert.type1.support.NumberToDateConverter;
+import artoria.cache.CacheUtils;
+import artoria.cache.SimpleCache;
+import artoria.convert.support.ListBasicToListBasicConverter;
+import artoria.convert.support.NumberToDateConverter;
+import artoria.convert.support.CatToDogConverter;
+import artoria.lang.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.mock.MockUtils;
@@ -18,19 +21,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static artoria.common.Constants.ZERO;
 import static artoria.util.ObjectUtils.cast;
 import static artoria.util.TypeUtils.parameterizedOf;
 
-public class ConversionProviderTest {
-    private static Logger log = LoggerFactory.getLogger(ConversionProviderTest.class);
-    private static ConversionProvider conversionProvider = new SimpleConversionProvider();
+public class CacheConversionProviderTest {
+    private static Logger log = LoggerFactory.getLogger(CacheConversionProviderTest.class);
+    private static ConversionProvider conversionProvider;
+
+    static {
+        String cacheName="test";
+        SimpleCache simpleCache = new SimpleCache(
+                cacheName, ZERO, 3 * 60 * 1000, ReferenceType.SOFT);
+        simpleCache.setPrintLog(true);
+        CacheUtils.register(simpleCache);
+        conversionProvider = new SimpleConversionProvider();
+        conversionProvider = new CacheConversionProvider(
+                conversionProvider, cacheName, 3L, TimeUnit.MINUTES);
+    }
 
     @Test
     public void testIntToPrimitiveDouble() {
         int src = 102;
         Object obj = conversionProvider.convert(src, double.class);
+        log.info("{} {}", obj.getClass(), obj);
+        obj = conversionProvider.convert(101, double.class);
         log.info("{} {}", obj.getClass(), obj);
     }
 

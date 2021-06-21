@@ -1,7 +1,7 @@
-package artoria.convert.type1.support;
+package artoria.convert.support;
 
-import artoria.convert.type1.ConversionProvider;
-import artoria.convert.type1.GenericConverter;
+import artoria.convert.ConversionProvider;
+import artoria.convert.GenericConverter;
 import artoria.util.Assert;
 
 import java.util.Collections;

@@ -1,6 +1,7 @@
 package artoria.beans;
 
-import artoria.convert.type.TypeConverter;
+import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 import static artoria.common.Constants.THIRTY;
-import static artoria.convert.type.TypeConvertUtils.getConvertProvider;
 
 /**
  * Bean conversion tools.
@@ -80,12 +80,12 @@ public class BeanUtils {
 
     public static void copy(Object from, Object to) {
 
-        getBeanCopier().copy(from, to, getConvertProvider());
+        getBeanCopier().copy(from, to, ConversionUtils.getConversionProvider());
     }
 
-    public static void copy(Object from, Object to, TypeConverter cvt) {
+    public static void copy(Object from, Object to, ConversionProvider conversionProvider) {
 
-        getBeanCopier().copy(from, to, cvt);
+        getBeanCopier().copy(from, to, conversionProvider);
     }
 
     public static <K, V> void copy(Object from, Map<K, V> to) {
@@ -99,15 +99,15 @@ public class BeanUtils {
 
     public static <K, V> void copy(Map<K, V> from, Object to) {
 
-        BeanUtils.copy(from, to, getConvertProvider());
+        BeanUtils.copy(from, to, ConversionUtils.getConversionProvider());
     }
 
-    public static <K, V> void copy(Map<K, V> from, Object to, TypeConverter cvt) {
+    public static <K, V> void copy(Map<K, V> from, Object to, ConversionProvider conversionProvider) {
         Assert.notNull(from, "Parameter \"from\" must not null. ");
         Assert.notNull(to, "Parameter \"to\" must not null. ");
-        BeanMap map = createBeanMap(to);
-        map.setTypeConverter(cvt);
-        map.putAll(from);
+        BeanMap beanMap = createBeanMap(to);
+        beanMap.setConversionProvider(conversionProvider);
+        beanMap.putAll(from);
     }
 
     public static <F, T> T beanToBean(F from, T to) {

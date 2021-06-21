@@ -1,6 +1,6 @@
 package artoria.mock;
 
-import artoria.convert.type.TypeConvertUtils;
+import artoria.convert.ConversionUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.reflect.ReflectUtils;
 import artoria.util.*;
@@ -64,7 +64,7 @@ public class SimpleMockProvider implements MockProvider {
         if (Number.class.isAssignableFrom(wrapper)) {
             double nextDouble = RandomUtils.nextDouble() * EIGHT_HUNDRED;
             nextDouble = NumberUtils.round(nextDouble).doubleValue();
-            return TypeConvertUtils.convert(nextDouble, wrapper);
+            return ConversionUtils.convert(nextDouble, wrapper);
         }
         else if (Boolean.class.isAssignableFrom(wrapper)) {
             return RandomUtils.nextBoolean();
@@ -74,7 +74,7 @@ public class SimpleMockProvider implements MockProvider {
         }
         else if (Date.class.isAssignableFrom(wrapper)) {
             Date nowDate = new Date();
-            return TypeConvertUtils.convert(nowDate, wrapper);
+            return ConversionUtils.convert(nowDate, wrapper);
         }
         else if (String.class.isAssignableFrom(wrapper)) {
             int size = RandomUtils.nextInt(EIGHT);

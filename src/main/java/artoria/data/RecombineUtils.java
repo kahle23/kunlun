@@ -1,7 +1,7 @@
 package artoria.data;
 
 import artoria.beans.BeanUtils;
-import artoria.convert.type.TypeConvertUtils;
+import artoria.convert.ConversionUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
@@ -67,7 +67,7 @@ public class RecombineUtils {
                 if (map == null) { continue; }
                 Object val = map.get(propertyName);
                 if (val == null) { continue; }
-                val = TypeConvertUtils.convert(val, propertyClass);
+                val = ConversionUtils.convert(val, propertyClass);
                 result.add(ObjectUtils.cast(val, propertyClass));
             }
             return result;

@@ -1,11 +1,9 @@
-package artoria.convert.type1;
+package artoria.convert;
 
-import artoria.convert.type1.GenericConverter.ConvertiblePair;
-import artoria.convert.type1.support.*;
+import artoria.convert.GenericConverter.ConvertiblePair;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
-import artoria.util.ClassUtils;
 import artoria.util.CollectionUtils;
 
 import java.lang.reflect.ParameterizedType;
@@ -23,7 +21,7 @@ import static artoria.common.Constants.FORTY;
  * Simple type conversion service provider.
  * @author Kahle
  */
-public class SimpleConversionProvider implements ConversionProvider {
+public class SimpleConversionProvider extends AbstractConversionProvider {
     private static Logger log = LoggerFactory.getLogger(SimpleConversionProvider.class);
     protected final Map<ConvertiblePair, ConverterGroup> converterMap;
     protected final Set<GenericConverter> globalConverters;
@@ -39,18 +37,7 @@ public class SimpleConversionProvider implements ConversionProvider {
                                        Set<GenericConverter> globalConverters) {
         this.globalConverters = globalConverters;
         this.converterMap = converterMap;
-        converters();
-    }
-
-    protected void converters() {
-        addConverter(new ObjectToStringConverter(this));
-        addConverter(new StringToBooleanConverter(this));
-        addConverter(new StringToNumberConverter(this));
-        addConverter(new StringToDateConverter(this));
-        addConverter(new DateToStringConverter(this));
-        addConverter(new DateToDateConverter(this));
-        addConverter(new NumberToNumberConverter(this));
-        addConverter(new NumberToDateConverter(this));
+        addDefaultConverters();
     }
 
     protected Class<?> primaryClass(Type type) {
@@ -76,13 +63,52 @@ public class SimpleConversionProvider implements ConversionProvider {
         return null;
     }
 
-    protected GenericConverter getConverter(Type sourceType, Type targetType) {
+    @Override
+    public void addConverter(GenericConverter converter) {
+        Assert.notNull(converter, "Parameter \"converter\" must not null. ");
+        log.info("Add converter: {}", converter.getClass().getName());
+        Set<ConvertiblePair> convertibleTypes = converter.getConvertibleTypes();
+        if (CollectionUtils.isEmpty(convertibleTypes)) {
+            Assert.state(converter instanceof ConditionalConverter,
+                    "Only conditional converters may return empty convertible types. ");
+            globalConverters.add(converter); return;
+        }
+        for (ConvertiblePair convertiblePair : convertibleTypes) {
+            ConverterGroup converterGroup = converterMap.get(convertiblePair);
+            if (converterGroup == null) {
+                converterMap.put(convertiblePair, (converterGroup = new ConverterGroup()));
+            }
+            converterGroup.add(converter);
+        }
+    }
+
+    @Override
+    public void removeConverter(GenericConverter converter) {
+        Assert.notNull(converter, "Parameter \"converter\" must not null. ");
+        log.info("Remove converter: {}", converter.getClass().getName());
+        Set<ConvertiblePair> convertibleTypes = converter.getConvertibleTypes();
+        if (CollectionUtils.isEmpty(convertibleTypes)) {
+            Assert.state(converter instanceof ConditionalConverter,
+                    "Only conditional converters may return empty convertible types. ");
+            globalConverters.remove(converter); return;
+        }
+        for (ConvertiblePair convertiblePair : convertibleTypes) {
+            ConverterGroup converterGroup = converterMap.get(convertiblePair);
+            if (converterGroup == null) { continue; }
+            converterGroup.remove(converter);
+        }
+    }
+
+    @Override
+    public GenericConverter getConverter(Type sourceType, Type targetType) {
+        Assert.notNull(sourceType, "Parameter \"sourceType\" must not null. ");
+        Assert.notNull(targetType, "Parameter \"targetType\" must not null. ");
         // Convert 'Type' to 'Class'.
         Class<?> sourceClass = primaryClass(sourceType);
         Class<?> targetClass = primaryClass(targetType);
         // Get the full type hierarchy.
-        List<Class<?>> sourceCandidates = ClassUtils.getClassHierarchy(sourceClass);
-        List<Class<?>> targetCandidates = ClassUtils.getClassHierarchy(targetClass);
+        List<Class<?>> sourceCandidates = getClassHierarchy(sourceClass);
+        List<Class<?>> targetCandidates = getClassHierarchy(targetClass);
         // Types traversal.
         for (Class<?> sourceCandidate : sourceCandidates) {
             for (Class<?> targetCandidate : targetCandidates) {
@@ -104,66 +130,9 @@ public class SimpleConversionProvider implements ConversionProvider {
         return null;
     }
 
-    @Override
-    public void addConverter(GenericConverter converter) {
-        Assert.notNull(converter, "Parameter \"converter\" must not null. ");
-        log.info("Add type converter: {}", converter.getClass().getName());
-        Set<ConvertiblePair> convertibleTypes = converter.getConvertibleTypes();
-        if (CollectionUtils.isEmpty(convertibleTypes)) {
-            Assert.state(converter instanceof ConditionalConverter,
-                    "Only conditional converters may return empty convertible types. ");
-            globalConverters.add(converter); return;
-        }
-        for (ConvertiblePair convertiblePair : convertibleTypes) {
-            ConverterGroup converterGroup = converterMap.get(convertiblePair);
-            if (converterGroup == null) {
-                converterMap.put(convertiblePair, (converterGroup = new ConverterGroup()));
-            }
-            converterGroup.add(converter);
-        }
-    }
-
-    @Override
-    public void removeConverter(GenericConverter converter) {
-        Assert.notNull(converter, "Parameter \"converter\" must not null. ");
-        log.info("Remove type converter: {}", converter.getClass().getName());
-        Set<ConvertiblePair> convertibleTypes = converter.getConvertibleTypes();
-        if (CollectionUtils.isEmpty(convertibleTypes)) {
-            Assert.state(converter instanceof ConditionalConverter,
-                    "Only conditional converters may return empty convertible types. ");
-            globalConverters.remove(converter); return;
-        }
-        for (ConvertiblePair convertiblePair : convertibleTypes) {
-            ConverterGroup converterGroup = converterMap.get(convertiblePair);
-            if (converterGroup == null) { continue; }
-            converterGroup.remove(converter);
-        }
-    }
-
-    @Override
-    public boolean canConvert(Type sourceType, Type targetType) {
-        Assert.notNull(targetType, "Target type to convert to cannot be null. ");
-        if (sourceType == null) { return true; }
-        GenericConverter converter = getConverter(sourceType, targetType);
-        return converter != null;
-    }
-
-    @Override
-    public Object convert(Object source, Type targetType) {
-
-        return convert(source, null, targetType);
-    }
-
-    @Override
-    public Object convert(Object source, Type sourceType, Type targetType) {
-        Assert.notNull(targetType, "Target type to convert to cannot be null. ");
-        if (source == null) { return null; }
-        if (sourceType == null) { sourceType = source.getClass(); }
-        GenericConverter converter = getConverter(sourceType, targetType);
-        if (converter == null) { return source; }
-        return converter.convert(source, sourceType, targetType);
-    }
-
+    /**
+     * The class for the converter group.
+     */
     protected static class ConverterGroup {
         private final Deque<GenericConverter> converters;
 

@@ -1,6 +1,6 @@
 package artoria.beans;
 
-import artoria.convert.type.TypeConverter;
+import artoria.convert.ConversionProvider;
 import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -46,6 +46,16 @@ public class SimpleBeanMap extends BeanMap {
 
     public SimpleBeanMap(Object bean) {
 
+        setBean(bean);
+    }
+
+    public SimpleBeanMap(ConversionProvider conversionProvider) {
+
+        setConversionProvider(conversionProvider);
+    }
+
+    public SimpleBeanMap(ConversionProvider conversionProvider, Object bean) {
+        setConversionProvider(conversionProvider);
         setBean(bean);
     }
 
@@ -112,15 +122,14 @@ public class SimpleBeanMap extends BeanMap {
         Method method = writeMethodMap.get(keyString);
         if (method == null) { return null; }
         Class<?>[] types = method.getParameterTypes();
-        TypeConverter cvt = getTypeConverter();
         try {
             boolean haveType = ArrayUtils.isNotEmpty(types);
             if (value == null && haveType
                     && types[ZERO].isPrimitive()) {
                 throw new NullPointerException();
             }
-            if (cvt != null && haveType) {
-                value = cvt.convert(value, types[ZERO]);
+            if (getConversionProvider() != null && haveType) {
+                value = getConversionProvider().convert(value, types[ZERO]);
             }
             // The return always null.
             // If want not null, must invoke getter first.

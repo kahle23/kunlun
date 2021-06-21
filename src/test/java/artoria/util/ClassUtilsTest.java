@@ -1,13 +1,11 @@
 package artoria.util;
 
-import artoria.lang.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.test.bean.Dog;
 import org.junit.Test;
 
 import java.lang.reflect.Array;
-import java.util.List;
 
 import static artoria.common.Constants.TEN;
 import static artoria.common.Constants.ZERO;
@@ -39,24 +37,6 @@ public class ClassUtilsTest {
         log.info("{}", ClassUtils.getPrimitive(void.class));
         log.info("{}", ClassUtils.getPrimitive(Void.class));
         log.info("{}", ClassUtils.getPrimitive(Dog.class));
-    }
-
-    @Test
-    public void test4() {
-        List<Class<?>> hierarchy = ClassUtils.getClassHierarchy(Integer.class);
-        for (Class<?> clazz : hierarchy) {
-            log.info("{}", clazz);
-        }
-        log.info(">>>> >>>> >>>> >>>>");
-        hierarchy = ClassUtils.getClassHierarchy(Long.class);
-        for (Class<?> clazz : hierarchy) {
-            log.info("{}", clazz);
-        }
-        log.info(">>>> >>>> >>>> >>>>");
-        hierarchy = ClassUtils.getClassHierarchy(ReferenceType.class);
-        for (Class<?> clazz : hierarchy) {
-            log.info("{}", clazz);
-        }
     }
 
 }

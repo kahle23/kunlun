@@ -1,6 +1,6 @@
 package artoria.beans;
 
-import artoria.convert.type.TypeConverter;
+import artoria.convert.ConversionProvider;
 import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -34,10 +34,10 @@ public class SimpleBeanCopier implements BeanCopier {
     }
 
     @Override
-    public void copy(Object from, Object to, TypeConverter converter) {
+    public void copy(Object from, Object to, ConversionProvider conversionProvider) {
         Assert.notNull(from, "Parameter \"from\" must is not null. ");
         Assert.notNull(to, "Parameter \"to\" must is not null. ");
-        boolean hasCvt = converter != null;
+        boolean haveCvn = conversionProvider != null;
         PropertyDescriptor[] fromDescriptors = ReflectUtils.getPropertyDescriptors(from.getClass());
         PropertyDescriptor[] toDescriptors = ReflectUtils.getPropertyDescriptors(to.getClass());
         Map<String, Method> fromMths = new HashMap<String, Method>(fromDescriptors.length);
@@ -63,8 +63,8 @@ public class SimpleBeanCopier implements BeanCopier {
                         && types[ZERO].isPrimitive()) {
                     throw new NullPointerException();
                 }
-                if (hasCvt && haveType) {
-                    input = converter.convert(input, types[ZERO]);
+                if (haveCvn && haveType) {
+                    input = conversionProvider.convert(input, types[ZERO]);
                 }
                 destMth.invoke(to, input);
             }
