@@ -1,4 +1,4 @@
-package artoria.collection;
+package artoria.collect;
 
 import artoria.lang.ReferenceType;
 import artoria.logging.Logger;

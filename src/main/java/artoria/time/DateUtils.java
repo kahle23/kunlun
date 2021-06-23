@@ -23,6 +23,7 @@ public class DateUtils {
     private static Logger log = LoggerFactory.getLogger(DateUtils.class);
     private static DateTimeFactory dateTimeFactory;
     private static DateProvider dateProvider;
+    private static Clock clock;
 
     static {
         DateUtils.register("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -65,6 +66,21 @@ public class DateUtils {
         Assert.notNull(dateProvider, "Parameter \"dateProvider\" must not null. ");
         log.info("Set date provider: {}", dateProvider.getClass().getName());
         DateUtils.dateProvider = dateProvider;
+    }
+
+    public static Clock getClock() {
+        if (clock != null) { return clock; }
+        synchronized (DateUtils.class) {
+            if (clock != null) { return clock; }
+            DateUtils.setClock(new SimpleClock());
+            return clock;
+        }
+    }
+
+    public static void setClock(Clock clock) {
+        Assert.notNull(clock, "Parameter \"clock\" must not null. ");
+        log.info("Set clock: {}", clock.getClass().getName());
+        DateUtils.clock = clock;
     }
 
     public static void register(String datePattern) {
@@ -148,12 +164,12 @@ public class DateUtils {
 
     public static long getTimeInMillis() {
 
-        return System.currentTimeMillis();
+        return getClock().getTimeInMillis();
     }
 
     public static long getTimeInSeconds() {
-        long millis = System.currentTimeMillis();
-        return millis / ONE_THOUSAND;
+
+        return getClock().getTimeInSeconds();
     }
 
     public static DateTime getDayOfStart(DateTime dateTime) {

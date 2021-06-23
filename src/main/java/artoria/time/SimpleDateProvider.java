@@ -1,6 +1,6 @@
 package artoria.time;
 
-import artoria.collection.ReferenceMap;
+import artoria.collect.ReferenceMap;
 import artoria.lang.ReferenceType;
 import artoria.util.Assert;
 
