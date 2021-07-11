@@ -5,6 +5,7 @@ import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 import static artoria.common.Constants.MINUS_ONE;
+import static java.lang.Boolean.TRUE;
 
 /**
  * Base64 tools.
@@ -12,81 +13,113 @@ import static artoria.common.Constants.MINUS_ONE;
  */
 public class Base64Utils {
     private static Logger log = LoggerFactory.getLogger(Base64Utils.class);
-    private static Base64Factory base64Factory;
+    private static Base64 mimeBase64;
+    private static Base64 urlBase64;
+    private static Base64 base64;
 
-    public static Base64Factory getBase64Factory() {
-        if (base64Factory != null) { return base64Factory; }
+    public static Base64 getBase64() {
+        if (base64 != null) { return base64; }
         synchronized (Base64Utils.class) {
-            if (base64Factory != null) { return base64Factory; }
-            Base64Utils.setBase64Factory(new SimpleBase64Factory());
-            return base64Factory;
+            if (base64 != null) { return base64; }
+            setBase64(new Base64());
+            return base64;
         }
     }
 
-    public static void setBase64Factory(Base64Factory base64Factory) {
-        Assert.notNull(base64Factory, "Parameter \"base64Factory\" must not null. ");
-        log.info("Set base64 factory: {}", base64Factory.getClass().getName());
-        Base64Utils.base64Factory = base64Factory;
+    public static void setBase64(Base64 base64) {
+        Assert.notNull(base64, "Parameter \"base64\" must not null. ");
+        log.info("Set base64: {}", base64.getClass().getName());
+        Base64Utils.base64 = base64;
+    }
+
+    public static Base64 getUrlBase64() {
+        if (urlBase64 != null) { return urlBase64; }
+        synchronized (Base64Utils.class) {
+            if (urlBase64 != null) { return urlBase64; }
+            setUrlBase64(new Base64(TRUE));
+            return urlBase64;
+        }
+    }
+
+    public static void setUrlBase64(Base64 urlBase64) {
+        Assert.notNull(urlBase64, "Parameter \"urlBase64\" must not null. ");
+        log.info("Set url base64: {}", urlBase64.getClass().getName());
+        Base64Utils.urlBase64 = urlBase64;
+    }
+
+    public static Base64 getMimeBase64() {
+        if (mimeBase64 != null) { return mimeBase64; }
+        synchronized (Base64Utils.class) {
+            if (mimeBase64 != null) { return mimeBase64; }
+            setMimeBase64(new Base64(TRUE, MINUS_ONE, null));
+            return mimeBase64;
+        }
+    }
+
+    public static void setMimeBase64(Base64 mimeBase64) {
+        Assert.notNull(mimeBase64, "Parameter \"mimeBase64\" must not null. ");
+        log.info("Set mime base64: {}", mimeBase64.getClass().getName());
+        Base64Utils.mimeBase64 = mimeBase64;
     }
 
     public static byte[] encode(byte[] source) {
 
-        return getBase64Factory().getInstance().encode(source);
+        return getBase64().encode(source);
     }
 
     public static byte[] decode(byte[] source) {
 
-        return getBase64Factory().getInstance().decode(source);
+        return getBase64().decode(source);
     }
 
     public static String encodeToString(byte[] source) {
 
-        return getBase64Factory().getInstance().encodeToString(source);
+        return getBase64().encodeToString(source);
     }
 
     public static byte[] decodeFromString(String source) {
 
-        return getBase64Factory().getInstance().decodeFromString(source);
+        return getBase64().decodeFromString(source);
     }
 
     public static byte[] encodeUrlSafe(byte[] source) {
 
-        return getBase64Factory().getInstance(true).encode(source);
+        return getUrlBase64().encode(source);
     }
 
     public static byte[] decodeUrlSafe(byte[] source) {
 
-        return getBase64Factory().getInstance(true).decode(source);
+        return getUrlBase64().decode(source);
     }
 
     public static String encodeToUrlSafeString(byte[] source) {
 
-        return getBase64Factory().getInstance(true).encodeToString(source);
+        return getUrlBase64().encodeToString(source);
     }
 
     public static byte[] decodeFromUrlSafeString(String source) {
 
-        return getBase64Factory().getInstance(true).decodeFromString(source);
+        return getUrlBase64().decodeFromString(source);
     }
 
     public static byte[] encodeMime(byte[] source) {
 
-        return getBase64Factory().getInstance(true, MINUS_ONE, null).encode(source);
+        return getMimeBase64().encode(source);
     }
 
     public static byte[] decodeMime(byte[] source) {
 
-        return getBase64Factory().getInstance(true, MINUS_ONE, null).decode(source);
+        return getMimeBase64().decode(source);
     }
 
     public static String encodeToMimeString(byte[] source) {
 
-        return getBase64Factory().getInstance(true, MINUS_ONE, null).encodeToString(source);
+        return getMimeBase64().encodeToString(source);
     }
 
     public static byte[] decodeFromMimeString(String source) {
 
-        return getBase64Factory().getInstance(true, MINUS_ONE, null).decodeFromString(source);
+        return getMimeBase64().decodeFromString(source);
     }
 
 }

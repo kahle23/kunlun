@@ -23,8 +23,8 @@ import static artoria.common.Constants.NULL;
  */
 public class KeyUtils {
     private static final SecureRandom RANDOM = new SecureRandom();
-    private static BinaryEncoder base64Encoder = Base64Utils.getBase64Factory().getInstance();
-    private static BinaryEncoder hexEncoder = HexUtils.getHexFactory().getInstance();
+    private static BinaryEncoder base64Encoder = Base64Utils.getBase64();
+    private static BinaryEncoder hexEncoder = HexUtils.getLowerCaseHex();
 
     public static void setBase64Encoder(BinaryEncoder base64Encoder) {
         Assert.notNull(base64Encoder, "Parameter \"base64Encoder\" must not null. ");

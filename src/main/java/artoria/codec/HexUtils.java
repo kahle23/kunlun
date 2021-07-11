@@ -4,57 +4,76 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 /**
  * Hex tools.
  * @author Kahle
  */
 public class HexUtils {
     private static Logger log = LoggerFactory.getLogger(HexUtils.class);
-    private static HexFactory hexFactory;
+    private static Hex upperCaseHex;
+    private static Hex lowerCaseHex;
 
-    public static HexFactory getHexFactory() {
-        if (hexFactory != null) { return hexFactory; }
+    public static Hex getUpperCaseHex() {
+        if (upperCaseHex != null) { return upperCaseHex; }
         synchronized (HexUtils.class) {
-            if (hexFactory != null) { return hexFactory; }
-            HexUtils.setHexFactory(new SimpleHexFactory());
-            return hexFactory;
+            if (upperCaseHex != null) { return upperCaseHex; }
+            setUpperCaseHex(new Hex(TRUE));
+            return upperCaseHex;
         }
     }
 
-    public static void setHexFactory(HexFactory hexFactory) {
-        Assert.notNull(hexFactory, "Parameter \"hexFactory\" must not null. ");
-        log.info("Set hex factory: {}", hexFactory.getClass().getName());
-        HexUtils.hexFactory = hexFactory;
+    public static void setUpperCaseHex(Hex upperCaseHex) {
+        Assert.notNull(upperCaseHex, "Parameter \"upperCaseHex\" must not null. ");
+        log.info("Set upper case hex: {}", upperCaseHex.getClass().getName());
+        HexUtils.upperCaseHex = upperCaseHex;
+    }
+
+    public static Hex getLowerCaseHex() {
+        if (lowerCaseHex != null) { return lowerCaseHex; }
+        synchronized (HexUtils.class) {
+            if (lowerCaseHex != null) { return lowerCaseHex; }
+            setLowerCaseHex(new Hex(FALSE));
+            return lowerCaseHex;
+        }
+    }
+
+    public static void setLowerCaseHex(Hex lowerCaseHex) {
+        Assert.notNull(lowerCaseHex, "Parameter \"lowerCaseHex\" must not null. ");
+        log.info("Set lower case hex: {}", lowerCaseHex.getClass().getName());
+        HexUtils.lowerCaseHex = lowerCaseHex;
     }
 
     public static byte[] encode(byte[] source) {
 
-        return getHexFactory().getInstance().encode(source);
+        return getLowerCaseHex().encode(source);
     }
 
-    public static byte[] encode(byte[] source, boolean lowerCase) {
+    public static byte[] encode(byte[] source, boolean upperCase) {
 
-        return getHexFactory().getInstance(lowerCase).encode(source);
+        return (upperCase ? getUpperCaseHex() : getLowerCaseHex()).encode(source);
     }
 
     public static byte[] decode(byte[] source) {
 
-        return getHexFactory().getInstance().decode(source);
+        return getLowerCaseHex().decode(source);
     }
 
     public static String encodeToString(byte[] source) {
 
-        return getHexFactory().getInstance().encodeToString(source);
+        return getLowerCaseHex().encodeToString(source);
     }
 
-    public static String encodeToString(byte[] source, boolean lowerCase) {
+    public static String encodeToString(byte[] source, boolean upperCase) {
 
-        return getHexFactory().getInstance(lowerCase).encodeToString(source);
+        return (upperCase ? getUpperCaseHex() : getLowerCaseHex()).encodeToString(source);
     }
 
     public static byte[] decodeFromString(String source) {
 
-        return getHexFactory().getInstance().decodeFromString(source);
+        return getLowerCaseHex().decodeFromString(source);
     }
 
 }

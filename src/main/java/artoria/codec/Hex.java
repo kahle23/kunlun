@@ -17,31 +17,21 @@ public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
             {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     protected static final int HEX_01 = 0x01;
     protected static final int RADIX = 16;
-    private boolean lowerCase;
+    protected final boolean upperCase;
 
     public Hex() {
 
-        this(true);
+        this(false);
     }
 
-    public Hex(boolean lowerCase) {
+    public Hex(boolean upperCase) {
 
-        this.lowerCase = lowerCase;
-    }
-
-    public boolean isLowerCase() {
-
-        return lowerCase;
-    }
-
-    public void setLowerCase(boolean lowerCase) {
-
-        this.lowerCase = lowerCase;
+        this.upperCase = upperCase;
     }
 
     protected byte[] getDigits() {
 
-        return lowerCase ? LOWER_CASE_DIGITS : UPPER_CASE_DIGITS;
+        return upperCase ? UPPER_CASE_DIGITS : LOWER_CASE_DIGITS;
     }
 
     protected int toDigit(int ch, int index) {
