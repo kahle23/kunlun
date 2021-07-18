@@ -52,7 +52,7 @@ public class CacheUtils {
         if (cache != null) { return cache; }
         if (DEFAULT.equals(cacheName)) {
             SimpleCache simpleCache = new SimpleCache(DEFAULT,
-                    ZERO, TimeUnit.HOURS.toMillis(TWO), ZERO, ReferenceType.SOFT);
+                    ZERO, TimeUnit.HOURS.toMillis(TWO), MINUS_ONE, ReferenceType.SOFT);
             simpleCache.setPrintLog(true);
             register(cache = simpleCache);
         }

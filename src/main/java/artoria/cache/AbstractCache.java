@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
 import static artoria.common.Constants.*;
 
@@ -43,21 +42,11 @@ public abstract class AbstractCache implements Cache {
         this.name = name;
     }
 
-    public Boolean getPrintLog() {
+    protected abstract Object getStorageValue(Object key);
 
-        return printLog;
-    }
+    protected abstract Object putStorageValue(Object key, Object value);
 
-    public void setPrintLog(Boolean printLog) {
-
-        this.printLog = printLog;
-    }
-
-    protected abstract ValueWrapper getValueWrapper(Object key);
-
-    protected abstract ValueWrapper putValueWrapper(Object key, ValueWrapper valueWrapper);
-
-    protected abstract ValueWrapper removeValueWrapper(Object key);
+    protected abstract Object removeStorageValue(Object key);
 
     protected boolean isFull() {
 
@@ -67,6 +56,21 @@ public abstract class AbstractCache implements Cache {
     protected long currentTimeMillis() {
 
         return System.currentTimeMillis();
+    }
+
+    protected long calcTimeToLive(long timeToLive, long timeToIdle) {
+        long result;
+        if (timeToLive >= ZERO && timeToIdle >= ZERO) {
+            result = Math.min(timeToLive, timeToIdle);
+        }
+        else if (timeToLive >= ZERO) {
+            result = timeToLive;
+        }
+        else if (timeToIdle >= ZERO) {
+            result = timeToIdle;
+        }
+        else { result = MINUS_ONE; }
+        return result;
     }
 
     protected void recordTouch(Object key, boolean touched) {
@@ -93,6 +97,16 @@ public abstract class AbstractCache implements Cache {
         log.info(content);
     }
 
+    public Boolean getPrintLog() {
+
+        return printLog;
+    }
+
+    public void setPrintLog(Boolean printLog) {
+
+        this.printLog = printLog;
+    }
+
     @Override
     public String getName() {
 
@@ -103,48 +117,41 @@ public abstract class AbstractCache implements Cache {
     public <T> T get(Object key, Callable<T> callable) {
         Assert.notNull(callable, "Parameter \"callable\" must not null. ");
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Object object = get(key);
-        if (object != null) {
-            return ObjectUtils.cast(object);
+        Object value = get(key);
+        if (value != null) {
+            return ObjectUtils.cast(value);
         }
         synchronized (String.valueOf(key).intern()) {
-            if ((object = get(key)) != null) {
-                return ObjectUtils.cast(object);
+            if ((value = getStorageValue(key)) != null) {
+                return ObjectUtils.cast(value);
             }
             try {
-                object = callable.call();
+                value = callable.call();
             }
             catch (Exception e) {
                 throw ExceptionUtils.wrap(e);
             }
-            if (object != null) {
-                put(key, object);
+            if (value != null) {
+                putStorageValue(key, value);
             }
         }
-        return ObjectUtils.cast(object);
+        return ObjectUtils.cast(value);
     }
 
     @Override
     public <T> T get(Object key, Class<T> type) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         Assert.notNull(type, "Parameter \"type\" must not null. ");
-        Object object = get(key);
-        if (object == null) { return null; }
-        object = ConversionUtils.convert(object, type);
-        return ObjectUtils.cast(object, type);
+        Object value = get(key);
+        if (value == null) { return null; }
+        value = ConversionUtils.convert(value, type);
+        return ObjectUtils.cast(value, type);
     }
 
     @Override
     public Object get(Object key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        ValueWrapper valueWrapper = getValueWrapper(key);
-        boolean notNull = valueWrapper != null;
-        if (notNull && valueWrapper.isExpired()) {
-            removeValueWrapper(key);
-            recordEviction(key, TWO);
-            notNull = false;
-        }
-        Object value = notNull ? valueWrapper.getValue() : null;
+        Object value = getStorageValue(key);
         recordTouch(key, value != null);
         return value;
     }
@@ -157,45 +164,25 @@ public abstract class AbstractCache implements Cache {
 
     @Override
     public Object put(Object key, Object value) {
-
-        return put(key, value, MINUS_ONE, null);
-    }
-
-    @Override
-    public Object put(Object key, Object value, long timeToLive, TimeUnit timeUnit) {
         Assert.notNull(value, "Parameter \"value\" must not null. ");
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        if (timeToLive >= ZERO && timeUnit == null) {
-            throw new IllegalArgumentException("Parameter \"timeUnit\" must not null. ");
-        }
-        ValueWrapper valueWrapper = getValueWrapper(key);
-        Object preValue = null;
-        if (valueWrapper != null && valueWrapper.isExpired()) {
-            preValue = valueWrapper.getValue();
-            removeValueWrapper(key);
-            recordEviction(key, TWO);
-            valueWrapper = null;
-        }
-        if (valueWrapper != null) {
-            valueWrapper.setValue(value);
-        }
-        else {
-            valueWrapper = new ValueWrapper(key, value);
-        }
-        if (timeToLive >= ZERO) {
-            valueWrapper.expire(timeUnit.toMillis(timeToLive));
-        }
-        else { valueWrapper.expire(MINUS_ONE); }
-        putValueWrapper(key, valueWrapper);
+        Object preValue = putStorageValue(key, value);
         if (isFull()) { prune(); }
         return preValue;
     }
 
     @Override
+    public Object put(Object key, Object value, long timeToLive, TimeUnit timeUnit) {
+        Assert.notNull(timeUnit, "Parameter \"timeUnit\" must not null. ");
+        Object preValue = put(key, value);
+        expire(key, timeToLive, timeUnit);
+        return preValue;
+    }
+
+    @Override
     public Object putIfAbsent(Object key, Object value) {
-        ValueWrapper valueWrapper = getValueWrapper(key);
-        if (valueWrapper == null ||
-                valueWrapper.getValue() == null) {
+        Object nowValue = getStorageValue(key);
+        if (nowValue == null) {
             return put(key, value);
         }
         return null;
@@ -203,9 +190,8 @@ public abstract class AbstractCache implements Cache {
 
     @Override
     public Object putIfAbsent(Object key, Object value, long timeToLive, TimeUnit timeUnit) {
-        ValueWrapper valueWrapper = getValueWrapper(key);
-        if (valueWrapper == null ||
-                valueWrapper.getValue() == null) {
+        Object nowValue = getStorageValue(key);
+        if (nowValue == null) {
             return put(key, value, timeToLive, timeUnit);
         }
         return null;
@@ -221,34 +207,14 @@ public abstract class AbstractCache implements Cache {
     }
 
     @Override
-    public boolean expire(Object key, long timeToLive, TimeUnit timeUnit) {
-        Assert.notNull(key, "Parameter \"key\" must not null. ");
-        if (timeToLive >= ZERO && timeUnit == null) {
-            throw new IllegalArgumentException("Parameter \"timeUnit\" must not null. ");
-        }
-        ValueWrapper valueWrapper = getValueWrapper(key);
-        if (valueWrapper != null && valueWrapper.isExpired()) {
-            removeValueWrapper(key);
-            recordEviction(key, TWO);
-            valueWrapper = null;
-        }
-        if (valueWrapper == null) { return false; }
-        if (timeToLive >= ZERO) {
-            valueWrapper.expire(timeUnit.toMillis(timeToLive));
-        }
-        else { valueWrapper.expire(MINUS_ONE); }
-        return true;
-    }
-
-    @Override
     public boolean expireAt(Object key, Date date) {
         Assert.notNull(date, "Parameter \"date\" must not null. ");
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         long timeToLive = date.getTime() - currentTimeMillis();
         if (timeToLive <= ZERO) {
-            ValueWrapper valueWrapper = getValueWrapper(key);
-            if (valueWrapper != null) {
-                removeValueWrapper(key);
+            Object value = getStorageValue(key);
+            if (value != null) {
+                removeStorageValue(key);
                 recordEviction(key, TWO);
             }
             return true;
@@ -257,17 +223,11 @@ public abstract class AbstractCache implements Cache {
     }
 
     @Override
-    public boolean persist(Object key) {
-        Assert.notNull(key, "Parameter \"key\" must not null. ");
-        return expire(key, MINUS_ONE, null);
-    }
-
-    @Override
     public Object remove(Object key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        ValueWrapper remove = removeValueWrapper(key);
+        Object remove = removeStorageValue(key);
         recordEviction(key, ONE);
-        return remove != null ? remove.getValue() : null;
+        return remove;
     }
 
     @Override
@@ -275,88 +235,20 @@ public abstract class AbstractCache implements Cache {
         if (CollectionUtils.isEmpty(keys)) { return; }
         for (Object key : keys) {
             if (key == null) { continue; }
-            removeValueWrapper(key);
-            recordEviction(key, ONE);
+            remove(key);
         }
+    }
+
+    @Override
+    public long prune() {
+
+        return ZERO;
     }
 
     @Override
     public Collection<Object> keys() {
 
         return entries().keySet();
-    }
-
-    protected class ValueWrapper {
-        /**
-         * The cache key.
-         */
-        private final Object key;
-        /**
-         * The value.
-         */
-        private Object value;
-        /**
-         * The expiration time.
-         */
-        private volatile long expirationTime;
-        /**
-         * The last access time.
-         */
-        private volatile long lastAccessTime;
-        /**
-         * The number of times the entry was accessed.
-         */
-        private final AtomicLong accessCount = new AtomicLong();
-
-        public ValueWrapper(Object key, Object value) {
-            Assert.notNull(key, "Parameter \"key\" must not null. ");
-            this.lastAccessTime = currentTimeMillis();
-            this.expirationTime = MINUS_ONE;
-            this.value = value;
-            this.key = key;
-        }
-
-        public long expirationTime() {
-
-            return expirationTime;
-        }
-
-        public long lastAccessTime() {
-
-            return lastAccessTime;
-        }
-
-        public long accessCount() {
-
-            return accessCount.get();
-        }
-
-        public boolean isExpired() {
-            if (expirationTime < ZERO) { return false; }
-            return (currentTimeMillis() - expirationTime) >= ZERO;
-        }
-
-        public void expire(long timeToLive) {
-            if (timeToLive < ZERO) { expirationTime = MINUS_ONE; }
-            else { expirationTime = currentTimeMillis() + timeToLive; }
-        }
-
-        public Object getKey() {
-
-            return key;
-        }
-
-        public Object getValue() {
-            lastAccessTime = currentTimeMillis();
-            accessCount.incrementAndGet();
-            return value;
-        }
-
-        public void setValue(Object value) {
-
-            this.value = value;
-        }
-
     }
 
 }

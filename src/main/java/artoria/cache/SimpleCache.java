@@ -24,7 +24,7 @@ import static java.util.Collections.emptyMap;
  * Memory cache simple implement by jdk.
  * @author Kahle
  */
-public class SimpleCache extends AbstractCache {
+public class SimpleCache extends AbstractValueWrapperCache {
     /**
      * The log object.
      */
@@ -56,46 +56,33 @@ public class SimpleCache extends AbstractCache {
 
     public SimpleCache(String name) {
 
-        this(name, ZERO, ZERO, ZERO, ReferenceType.WEAK);
+        this(name, ZERO, MINUS_ONE, MINUS_ONE, ReferenceType.WEAK);
     }
 
     public SimpleCache(String name, ReferenceType referenceType) {
 
-        this(name, ZERO, ZERO, ZERO, referenceType);
+        this(name, ZERO, MINUS_ONE, MINUS_ONE, referenceType);
     }
 
     public SimpleCache(String name, long capacity, ReferenceType referenceType) {
 
-        this(name, capacity, ZERO, ZERO, referenceType);
+        this(name, capacity, MINUS_ONE, MINUS_ONE, referenceType);
     }
 
     public SimpleCache(String name, long capacity, long timeToLive, ReferenceType referenceType) {
 
-        this(name, capacity, timeToLive, ZERO, referenceType);
+        this(name, capacity, timeToLive, MINUS_ONE, referenceType);
     }
 
     public SimpleCache(String name, long capacity, long timeToLive, long timeToIdle, ReferenceType referenceType) {
         super(name, false);
+        Assert.isFalse(timeToLive == ZERO, "Parameter \"timeToLive\" must not be equal to zero. ");
+        Assert.isFalse(timeToIdle == ZERO, "Parameter \"timeToIdle\" must not be equal to zero. ");
         Assert.notNull(referenceType, "Parameter \"referenceType\" must not null. ");
-        this.timeToLive = timeToLive < ZERO ? ZERO : timeToLive;
-        this.timeToIdle = timeToIdle < ZERO ? ZERO : timeToIdle;
+        this.timeToLive = timeToLive < ZERO ? MINUS_ONE : timeToLive;
+        this.timeToIdle = timeToIdle < ZERO ? MINUS_ONE : timeToIdle;
         this.capacity = capacity < ZERO ? ZERO : capacity;
         this.storage = buildStorage(referenceType);
-    }
-
-    protected long calcTimeToLive() {
-        long result;
-        if (timeToLive > ZERO && timeToIdle > ZERO) {
-            result = Math.min(timeToLive, timeToIdle);
-        }
-        else if (timeToLive > ZERO) {
-            result = timeToLive;
-        }
-        else if (timeToIdle > ZERO) {
-            result = timeToIdle;
-        }
-        else { result = MINUS_ONE; }
-        return result;
     }
 
     protected Map<Object, ValueWrapper> getStorage() {
@@ -111,23 +98,22 @@ public class SimpleCache extends AbstractCache {
     }
 
     @Override
-    protected ValueWrapper getValueWrapper(Object key) {
+    protected Object getStorageValue(Object key) {
 
         return storage.get(key);
     }
 
     @Override
-    protected ValueWrapper putValueWrapper(Object key, ValueWrapper valueWrapper) {
-        if (valueWrapper != null) {
-            long timeToLive = calcTimeToLive();
-            if (timeToLive > ZERO) {
-                long expireTime = valueWrapper.expirationTime();
-                if (expireTime < ZERO) { valueWrapper.expire(timeToLive); }
-                else {
-                    long targetTime = currentTimeMillis() + timeToLive;
-                    if (expireTime > ZERO && targetTime < expireTime) {
-                        valueWrapper.expire(timeToLive);
-                    }
+    protected Object putStorageValue(Object key, Object value) {
+        ValueWrapper valueWrapper = (ValueWrapper) value;
+        long timeToLive = calcTimeToLive(this.timeToLive, this.timeToIdle);
+        if (timeToLive >= ZERO) {
+            long expireTime = valueWrapper.expirationTime();
+            if (expireTime < ZERO) { valueWrapper.expire(timeToLive); }
+            else {
+                long targetTime = currentTimeMillis() + timeToLive;
+                if (expireTime > ZERO && targetTime < expireTime) {
+                    valueWrapper.expire(timeToLive);
                 }
             }
         }
@@ -135,7 +121,7 @@ public class SimpleCache extends AbstractCache {
     }
 
     @Override
-    protected ValueWrapper removeValueWrapper(Object key) {
+    protected Object removeStorageValue(Object key) {
 
         return storage.remove(key);
     }
@@ -171,7 +157,7 @@ public class SimpleCache extends AbstractCache {
     @Override
     public Object get(Object key) {
         Object value = super.get(key);
-        if (timeToIdle > ZERO) {
+        if (value != null && timeToIdle >= ZERO) {
             expire(key, timeToIdle, TimeUnit.MILLISECONDS);
         }
         return value;
@@ -181,7 +167,7 @@ public class SimpleCache extends AbstractCache {
     public boolean containsKey(Object key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         boolean containsKey = storage.containsKey(key);
-        if (timeToIdle > ZERO) {
+        if (containsKey && timeToIdle >= ZERO) {
             expire(key, timeToIdle, TimeUnit.MILLISECONDS);
         }
         recordTouch(key, containsKey);
@@ -236,7 +222,7 @@ public class SimpleCache extends AbstractCache {
             Object key = entry.getKey();
             if (key == null || val == null) { continue; }
             if (val.isExpired()) {
-                removeValueWrapper(key);
+                removeStorageValue(key);
                 recordEviction(key, TWO);
                 continue;
             }

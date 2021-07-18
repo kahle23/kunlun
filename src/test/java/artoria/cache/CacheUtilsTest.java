@@ -25,7 +25,7 @@ public class CacheUtilsTest {
         cache.setPrintLog(true);
         CacheUtils.register(cache);
         SimpleCache cache1 = new SimpleCache(
-                cacheName1, TWO, ZERO, ZERO, ReferenceType.WEAK
+                cacheName1, TWO, MINUS_ONE, MINUS_ONE, ReferenceType.WEAK
         );
         cache1.setPrintLog(true);
         CacheUtils.register(cache1);
