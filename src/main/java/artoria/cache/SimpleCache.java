@@ -75,7 +75,7 @@ public class SimpleCache extends AbstractValueWrapperCache {
     }
 
     public SimpleCache(String name, long capacity, long timeToLive, long timeToIdle, ReferenceType referenceType) {
-        super(name, false);
+        super(name);
         Assert.isFalse(timeToLive == ZERO, "Parameter \"timeToLive\" must not be equal to zero. ");
         Assert.isFalse(timeToIdle == ZERO, "Parameter \"timeToIdle\" must not be equal to zero. ");
         Assert.notNull(referenceType, "Parameter \"referenceType\" must not null. ");
@@ -98,30 +98,23 @@ public class SimpleCache extends AbstractValueWrapperCache {
     }
 
     @Override
-    protected Object getStorageValue(Object key) {
+    protected ValueWrapper getValueWrapper(Object key) {
 
         return storage.get(key);
     }
 
     @Override
-    protected Object putStorageValue(Object key, Object value) {
-        ValueWrapper valueWrapper = (ValueWrapper) value;
+    protected ValueWrapper putValueWrapper(Object key, ValueWrapper valueWrapper) {
         long timeToLive = calcTimeToLive(this.timeToLive, this.timeToIdle);
-        if (timeToLive >= ZERO) {
-            long expireTime = valueWrapper.expirationTime();
-            if (expireTime < ZERO) { valueWrapper.expire(timeToLive); }
-            else {
-                long targetTime = currentTimeMillis() + timeToLive;
-                if (expireTime > ZERO && targetTime < expireTime) {
-                    valueWrapper.expire(timeToLive);
-                }
-            }
-        }
+        // Since "put()" is called first, then "expire()" is called.
+        // There is no need to compare the old expiration time.
+        // And logically avoid setting the expiration time before saving the value.
+        if (timeToLive >= ZERO) { valueWrapper.expire(timeToLive); }
         return storage.put(key, valueWrapper);
     }
 
     @Override
-    protected Object removeStorageValue(Object key) {
+    protected ValueWrapper removeValueWrapper(Object key) {
 
         return storage.remove(key);
     }
@@ -135,7 +128,7 @@ public class SimpleCache extends AbstractValueWrapperCache {
     @Override
     protected void recordTouch(Object key, boolean touched) {
         (touched ? hitCount : missCount).incrementAndGet();
-        if (getPrintLog()) {
+        if (getRecordLog()) {
             String content = NEWLINE +
                     "---- Begin Cache ----" + NEWLINE +
                     "Name:        " + getName() + NEWLINE +
@@ -143,6 +136,7 @@ public class SimpleCache extends AbstractValueWrapperCache {
                     "Touched:     " + touched + NEWLINE +
                     "Hit Count:   " + hitCount + NEWLINE +
                     "Miss Count:  " + missCount + NEWLINE +
+                    "Provider:    " + getClass().getName() + NEWLINE +
                     "---- End Cache ----" + NEWLINE;
             log.info(content);
         }
@@ -222,7 +216,7 @@ public class SimpleCache extends AbstractValueWrapperCache {
             Object key = entry.getKey();
             if (key == null || val == null) { continue; }
             if (val.isExpired()) {
-                removeStorageValue(key);
+                removeValueWrapper(key);
                 recordEviction(key, TWO);
                 continue;
             }

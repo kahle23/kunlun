@@ -25,6 +25,18 @@ public interface Cache {
     Object getNativeCache();
 
     /**
+     * Obtain whether need to record log.
+     * @return True or false
+     */
+    Boolean getRecordLog();
+
+    /**
+     * Set whether need to record log.
+     * @param recordLog True or false
+     */
+    void setRecordLog(Boolean recordLog);
+
+    /**
      * Return the value to which this cache maps the specified key,
      * obtaining that value from value loader if necessary.
      * @param key The key whose associated value is to be returned
@@ -90,34 +102,26 @@ public interface Cache {
     void putAll(Map<?, ?> map);
 
     /**
-     * Associate the specified value with the specified key in this cache.
+     * Set time to live for given key.
      * @param key The key with which the specified value is to be associated
-     * @param value The value to be associated with the specified key
-     * @param timeToLive The amount of time for the element to live, in millisecond. 0 indicates unlimited
-     * @param timeToIdle The amount of time for the element to idle, in millisecond. 0 indicates unlimited
-     * @return The previous value associated with key, or null if there was no mapping for key
-     */
-    /**
-     * Set time to live for given {@code key}..
-     * @param key must not be {@literal null}.
-     * @param timeToLive
-     * @param timeUnit must not be {@literal null}.
-     * @return {@literal null} . // todo
+     * @param timeToLive The time to live of the key-value pair
+     * @param timeUnit The unit of time to live
+     * @return Whether the operation succeeds
      */
     boolean expire(Object key, long timeToLive, TimeUnit timeUnit);
 
     /**
-     * Set the expiration for given {@code key} as a {@literal date} timestamp.
-     * @param key must not be {@literal null}.
-     * @param date must not be {@literal null}.
-     * @return {@literal null} when  // todo
+     * Set the expiration for given key as the input date.
+     * @param key The key with which the specified value is to be associated
+     * @param date The date that will be set to expiration date
+     * @return Whether the operation succeeds
      */
     boolean expireAt(Object key, Date date);
 
     /**
-     * Remove the expiration from given {@code key}.
-     * @param key must not be {@literal null}.
-     * @return {@literal null} // todo
+     * Remove the expiration from given key.
+     * @param key The key with which the specified value is to be associated
+     * @return Whether the operation succeeds
      */
     boolean persist(Object key);
 

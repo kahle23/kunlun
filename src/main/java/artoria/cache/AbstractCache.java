@@ -31,14 +31,13 @@ public abstract class AbstractCache implements Cache {
      */
     private final String name;
     /**
-     * Print log.
+     * Record log.
      */
-    private Boolean printLog;
+    private Boolean recordLog;
 
-    public AbstractCache(String name, Boolean printLog) {
+    public AbstractCache(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        if (printLog == null) { printLog = false; }
-        this.printLog = printLog;
+        this.recordLog = false;
         this.name = name;
     }
 
@@ -74,18 +73,19 @@ public abstract class AbstractCache implements Cache {
     }
 
     protected void recordTouch(Object key, boolean touched) {
-        if (!printLog) { return; }
+        if (!recordLog) { return; }
         String content = NEWLINE +
                 "---- Begin Cache ----" + NEWLINE +
                 "Name:        " + getName() + NEWLINE +
                 "Key:         " + key + NEWLINE +
                 "Touched:     " + touched + NEWLINE +
+                "Provider:    " + getClass().getName() + NEWLINE +
                 "---- End Cache ----" + NEWLINE;
         log.info(content);
     }
 
     protected void recordEviction(Object key, int reasonCode) {
-        if (!printLog) { return; }
+        if (!recordLog) { return; }
         String reason = reasonCode == ONE ? "removed" :
                 reasonCode == TWO ? "expired" : EMPTY_STRING;
         String content = NEWLINE +
@@ -93,24 +93,27 @@ public abstract class AbstractCache implements Cache {
                 "Name:        " + getName() + NEWLINE +
                 "Key:         " + key + NEWLINE +
                 "Eviction:    " + reason + NEWLINE +
+                "Provider:    " + getClass().getName() + NEWLINE +
                 "---- End Cache ----" + NEWLINE;
         log.info(content);
-    }
-
-    public Boolean getPrintLog() {
-
-        return printLog;
-    }
-
-    public void setPrintLog(Boolean printLog) {
-
-        this.printLog = printLog;
     }
 
     @Override
     public String getName() {
 
         return name;
+    }
+
+    @Override
+    public Boolean getRecordLog() {
+
+        return recordLog;
+    }
+
+    @Override
+    public void setRecordLog(Boolean recordLog) {
+        Assert.notNull(recordLog, "Parameter \"recordLog\" must not null. ");
+        this.recordLog = recordLog;
     }
 
     @Override

@@ -21,16 +21,16 @@ public class CacheUtilsTest {
     private static String cacheName2 = "TEST2";
 
     static {
-        SimpleCache cache = new SimpleCache(cacheName);
-        cache.setPrintLog(true);
+        Cache cache = new SimpleCache(cacheName);
+        cache.setRecordLog(true);
         CacheUtils.register(cache);
-        SimpleCache cache1 = new SimpleCache(
+        Cache cache1 = new SimpleCache(
                 cacheName1, TWO, MINUS_ONE, MINUS_ONE, ReferenceType.WEAK
         );
-        cache1.setPrintLog(true);
+        cache1.setRecordLog(true);
         CacheUtils.register(cache1);
-        SimpleCache cache2 = new SimpleCache(cacheName2);
-        cache2.setPrintLog(true);
+        Cache cache2 = new SimpleCache(cacheName2);
+        cache2.setRecordLog(true);
         CacheUtils.register(cache2);
     }
 

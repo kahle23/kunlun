@@ -34,6 +34,17 @@ public class UndefinedCache implements Cache {
     }
 
     @Override
+    public Boolean getRecordLog() {
+
+        return false;
+    }
+
+    @Override
+    public void setRecordLog(Boolean recordLog) {
+
+    }
+
+    @Override
     public <T> T get(Object key, Callable<T> callable) {
         try {
             return callable.call();

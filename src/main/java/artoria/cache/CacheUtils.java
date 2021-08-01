@@ -6,6 +6,7 @@ import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -43,7 +44,7 @@ public class CacheUtils {
 
     public static Map<String, Cache> getStorage() {
 
-        return STORAGE;
+        return Collections.unmodifiableMap(STORAGE);
     }
 
     public static Cache getCache(String cacheName) {
@@ -53,11 +54,10 @@ public class CacheUtils {
         if (DEFAULT.equals(cacheName)) {
             SimpleCache simpleCache = new SimpleCache(DEFAULT,
                     ZERO, TimeUnit.HOURS.toMillis(TWO), MINUS_ONE, ReferenceType.SOFT);
-            simpleCache.setPrintLog(true);
+            simpleCache.setRecordLog(true);
             register(cache = simpleCache);
         }
         else { register(cache = new UndefinedCache(cacheName)); }
-        //Assert.notNull(cache, "The cache does not exist. Please register first. ");
         return cache;
     }
 
