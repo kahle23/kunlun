@@ -14,9 +14,9 @@ import java.io.Writer;
  */
 public class TemplateUtils {
     private static Logger log = LoggerFactory.getLogger(TemplateUtils.class);
-    private static TemplateEngine templateEngine;
+    private static RichTemplateEngine templateEngine;
 
-    public static TemplateEngine getTemplateEngine() {
+    public static RichTemplateEngine getTemplateEngine() {
         if (templateEngine != null) { return templateEngine; }
         synchronized (TemplateUtils.class) {
             if (templateEngine != null) { return templateEngine; }
@@ -25,7 +25,7 @@ public class TemplateUtils {
         }
     }
 
-    public static void setTemplateEngine(TemplateEngine templateEngine) {
+    public static void setTemplateEngine(RichTemplateEngine templateEngine) {
         Assert.notNull(templateEngine, "Parameter \"templateEngine\" must not null. ");
         log.info("Set template engine: {}", templateEngine.getClass().getName());
         TemplateUtils.templateEngine = templateEngine;
