@@ -21,8 +21,8 @@ import static artoria.common.Constants.*;
 public class DateUtils {
     private static final Set<String> DATE_PATTERNS = new HashSet<String>();
     private static Logger log = LoggerFactory.getLogger(DateUtils.class);
-    private static DateTimeFactory dateTimeFactory;
     private static DateProvider dateProvider;
+    private static TimeFactory timeFactory;
     private static Clock clock;
 
     static {
@@ -38,21 +38,6 @@ public class DateUtils {
         DateUtils.register(FULL_DATETIME_PATTERN);
     }
 
-    public static DateTimeFactory getDateTimeFactory() {
-        if (dateTimeFactory != null) { return dateTimeFactory; }
-        synchronized (DateUtils.class) {
-            if (dateTimeFactory != null) { return dateTimeFactory; }
-            DateUtils.setDateTimeFactory(new SimpleDateTimeFactory());
-            return dateTimeFactory;
-        }
-    }
-
-    public static void setDateTimeFactory(DateTimeFactory dateTimeFactory) {
-        Assert.notNull(dateTimeFactory, "Parameter \"dateTimeFactory\" must not null. ");
-        log.info("Set date time factory: {}", dateTimeFactory.getClass().getName());
-        DateUtils.dateTimeFactory = dateTimeFactory;
-    }
-
     public static DateProvider getDateProvider() {
         if (dateProvider != null) { return dateProvider; }
         synchronized (DateUtils.class) {
@@ -66,6 +51,21 @@ public class DateUtils {
         Assert.notNull(dateProvider, "Parameter \"dateProvider\" must not null. ");
         log.info("Set date provider: {}", dateProvider.getClass().getName());
         DateUtils.dateProvider = dateProvider;
+    }
+
+    public static TimeFactory getTimeFactory() {
+        if (timeFactory != null) { return timeFactory; }
+        synchronized (DateUtils.class) {
+            if (timeFactory != null) { return timeFactory; }
+            DateUtils.setTimeFactory(new SimpleTimeFactory());
+            return timeFactory;
+        }
+    }
+
+    public static void setTimeFactory(TimeFactory timeFactory) {
+        Assert.notNull(timeFactory, "Parameter \"timeFactory\" must not null. ");
+        log.info("Set time factory: {}", timeFactory.getClass().getName());
+        DateUtils.timeFactory = timeFactory;
     }
 
     public static Clock getClock() {
@@ -97,12 +97,12 @@ public class DateUtils {
 
     public static DateTime create() {
 
-        return getDateTimeFactory().getInstance();
+        return getTimeFactory().getInstance();
     }
 
     public static DateTime create(Long timeInMillis) {
 
-        return getDateTimeFactory().getInstance(timeInMillis);
+        return getTimeFactory().getInstance(timeInMillis);
     }
 
     public static DateTime create(Date date) {
