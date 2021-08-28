@@ -4,15 +4,15 @@ import artoria.convert.ConversionProvider;
 import artoria.convert.ConversionUtils;
 import artoria.util.Assert;
 
-public class SimpleBeanMapFactory implements BeanMapFactory {
+public class SimpleMapFactory implements MapFactory {
     private final ConversionProvider conversionProvider;
 
-    public SimpleBeanMapFactory() {
+    public SimpleMapFactory() {
 
         this(ConversionUtils.getConversionProvider());
     }
 
-    public SimpleBeanMapFactory(ConversionProvider conversionProvider) {
+    public SimpleMapFactory(ConversionProvider conversionProvider) {
         Assert.notNull(conversionProvider, "Parameter \"conversionProvider\" must not null. ");
         this.conversionProvider = conversionProvider;
     }

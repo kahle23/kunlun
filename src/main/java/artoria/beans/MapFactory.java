@@ -1,6 +1,6 @@
 package artoria.beans;
 
-public interface BeanMapFactory {
+public interface MapFactory {
 
     BeanMap getInstance();
 
