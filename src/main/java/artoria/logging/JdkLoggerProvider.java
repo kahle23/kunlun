@@ -1,7 +1,7 @@
 package artoria.logging;
 
 import artoria.engine.template.LoggerTemplateEngine;
-import artoria.engine.template.TemplateEngine;
+import artoria.engine.template.PlainTemplateEngine;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.ClassLoaderUtils;
@@ -32,14 +32,14 @@ public class JdkLoggerProvider implements LoggerProvider {
     /**
      * Logger template engine.
      */
-    private TemplateEngine loggerTemplateEngine;
+    private PlainTemplateEngine loggerTemplateEngine;
 
     public JdkLoggerProvider() {
 
         this(new LoggerTemplateEngine());
     }
 
-    public JdkLoggerProvider(TemplateEngine loggerTemplateEngine) {
+    public JdkLoggerProvider(PlainTemplateEngine loggerTemplateEngine) {
         logger = java.util.logging.Logger.getLogger(ROOT_LOGGER_NAME);
         InputStream in = ClassLoaderUtils
                 .getResourceAsStream(LOGGER_CONFIG_FILENAME, this.getClass());
@@ -70,12 +70,12 @@ public class JdkLoggerProvider implements LoggerProvider {
         setLoggerTemplateEngine(loggerTemplateEngine);
     }
 
-    public TemplateEngine getLoggerTemplateEngine() {
+    public PlainTemplateEngine getLoggerTemplateEngine() {
 
         return loggerTemplateEngine;
     }
 
-    public void setLoggerTemplateEngine(TemplateEngine loggerTemplateEngine) {
+    public void setLoggerTemplateEngine(PlainTemplateEngine loggerTemplateEngine) {
         Assert.notNull(loggerTemplateEngine, "Parameter \"loggerTemplateEngine\" must not null. ");
         this.loggerTemplateEngine = loggerTemplateEngine;
     }

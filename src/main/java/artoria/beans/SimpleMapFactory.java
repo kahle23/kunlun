@@ -4,6 +4,10 @@ import artoria.convert.ConversionProvider;
 import artoria.convert.ConversionUtils;
 import artoria.util.Assert;
 
+/**
+ * The bean map factory simple implement by jdk.
+ * @author Kahle
+ */
 public class SimpleMapFactory implements MapFactory {
     private final ConversionProvider conversionProvider;
 

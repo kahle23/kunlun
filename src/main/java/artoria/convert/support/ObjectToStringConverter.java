@@ -11,15 +11,7 @@ public class ObjectToStringConverter extends AbstractClassConverter {
 
     @Override
     protected Object convert(Object source, Class<?> sourceClass, Class<?> targetClass) {
-        /*if (Boolean.class.isAssignableFrom(sourceClass)) {
-            return source.toString();
-        }
-        if (Character.class.isAssignableFrom(sourceClass)) {
-            return source.toString();
-        }
-        if (Number.class.isAssignableFrom(sourceClass)) {
-            return source.toString();
-        }*/
+
         return source.toString();
     }
 

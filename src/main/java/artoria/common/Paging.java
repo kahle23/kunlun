@@ -6,7 +6,7 @@ import static artoria.common.Constants.ONE;
 import static artoria.common.Constants.TEN;
 
 /**
- * Simple paging info.
+ * The simple paging info.
  * @author Kahle
  */
 public class Paging implements Serializable {

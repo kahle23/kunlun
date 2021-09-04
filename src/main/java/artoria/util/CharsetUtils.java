@@ -13,6 +13,7 @@ import java.nio.charset.Charset;
  * And recode string charset.
  * @author Kahle
  */
+@Deprecated
 public class CharsetUtils {
 
     /**

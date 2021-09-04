@@ -20,7 +20,7 @@ import java.util.Set;
 import static artoria.common.Constants.*;
 
 /**
- * Bean map simple implement by jdk.
+ * The bean map simple implement by jdk.
  * @author Kahle
  */
 public class SimpleBeanMap extends BeanMap {

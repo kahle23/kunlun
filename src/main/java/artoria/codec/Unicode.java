@@ -50,7 +50,7 @@ public class Unicode implements StringEncoder, StringDecoder, Serializable {
         int index, pos = ZERO;
         StringBuilder result = new StringBuilder();
         while ((index = source.indexOf(BACKLASH_U, pos)) != EOF) {
-            result.append(source.substring(pos, index));
+            result.append(source, pos, index);
             if (index + FIVE < source.length()) {
                 pos = index + UNICODE_LENGTH;
                 String hex = source.substring(index + TWO, pos);
@@ -59,8 +59,7 @@ public class Unicode implements StringEncoder, StringDecoder, Serializable {
             }
         }
         if (source.length() > pos + ONE) {
-            String tmp = source.substring(pos, source.length());
-            result.append(tmp);
+            result.append(source, pos, source.length());
         }
         return result.toString();
     }

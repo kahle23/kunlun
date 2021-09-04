@@ -6,7 +6,7 @@ import java.lang.reflect.Type;
 import java.util.Set;
 
 /**
- * Generic converter interface for converting between two or more types.
+ * The generic converter interface for converting between two or more types.
  * @author Kahle
  */
 public interface GenericConverter {
@@ -34,8 +34,8 @@ public interface GenericConverter {
         private final Class<?> targetType;
 
         public ConvertiblePair(Class<?> sourceType, Class<?> targetType) {
-            Assert.notNull(sourceType, "Source type must not be null. ");
-            Assert.notNull(targetType, "Target type must not be null. ");
+            Assert.notNull(sourceType, "The source type must not be null. ");
+            Assert.notNull(targetType, "The target type must not be null. ");
             this.sourceType = sourceType;
             this.targetType = targetType;
         }

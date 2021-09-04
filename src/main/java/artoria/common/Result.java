@@ -6,8 +6,8 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 /**
- * Uniform result output object.
- * @param <T> Data Type
+ * The uniform result output object.
+ * @param <T> The data type
  * @author Kahle
  */
 public class Result<T> implements GenericResult, Serializable {

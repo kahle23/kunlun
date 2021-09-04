@@ -14,8 +14,9 @@ import static artoria.common.Constants.TWENTY;
  * Abstract extra data.
  * @author Kahle
  */
-public abstract class AbstractExtraData implements ExtraData, Mappable, Serializable {
+public abstract class AbstractExtraData implements ExtraData, RawData, Mappable, Serializable {
     private Map<String, Object> extraData = new HashMap<String, Object>();
+    private Object rawData;
 
     @Override
     public Object get(String name) {
@@ -51,6 +52,18 @@ public abstract class AbstractExtraData implements ExtraData, Mappable, Serializ
     public Map<String, Object> extraData() {
 
         return Collections.unmodifiableMap(extraData);
+    }
+
+    @Override
+    public Object rawData() {
+
+        return rawData;
+    }
+
+    @Override
+    public void rawData(Object rawData) {
+
+        this.rawData = rawData;
     }
 
     @Override

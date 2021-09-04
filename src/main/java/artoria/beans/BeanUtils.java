@@ -5,7 +5,6 @@ import artoria.convert.ConversionUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.reflect.ReflectUtils;
 import artoria.util.Assert;
 import artoria.util.ObjectUtils;
 
@@ -17,7 +16,7 @@ import java.util.Map;
 import static artoria.common.Constants.THIRTY;
 
 /**
- * Bean conversion tools.
+ * The bean conversion tools.
  * @author Kahle
  */
 public class BeanUtils {
@@ -63,19 +62,6 @@ public class BeanUtils {
     public static BeanMap createBeanMap(Object bean) {
 
         return getMapFactory().getInstance(bean);
-    }
-
-    public static Object clone(Object obj) {
-        Assert.notNull(obj, "Parameter \"obj\" must not null. ");
-        try {
-            Class<?> clazz = obj.getClass();
-            Object clone = ReflectUtils.newInstance(clazz);
-            BeanUtils.copy(obj, clone);
-            return clone;
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
     }
 
     public static void copy(Object from, Object to) {

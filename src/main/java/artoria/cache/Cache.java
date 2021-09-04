@@ -7,7 +7,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Interface that defines common cache operations.
+ * The interface that defines common cache operations.
  * @author Kahle
  */
 public interface Cache {
@@ -20,7 +20,7 @@ public interface Cache {
 
     /**
      * Return the underlying native cache provider.
-     * @return Native cache provider
+     * @return The native cache provider
      */
     Object getNativeCache();
 
@@ -63,7 +63,7 @@ public interface Cache {
 
     /**
      * Determines if the cache contains a value for the specified key.
-     * @param key Key whose presence in this cache is to be tested
+     * @param key The key whose presence in this cache is to be tested
      * @return True if this map contains a mapping for the specified key
      */
     boolean containsKey(Object key);
@@ -82,6 +82,14 @@ public interface Cache {
      */
     Object put(Object key, Object value);
 
+    /**
+     * Associate the specified value with the specified key in this cache and set a time to live.
+     * @param key The key with which the specified value is to be associated
+     * @param value The value to be associated with the specified key
+     * @param timeToLive The time to live of the key-value pair
+     * @param timeUnit The unit of time to live
+     * @return The previous value associated with key, or null if there was no mapping for key
+     */
     Object put(Object key, Object value, long timeToLive, TimeUnit timeUnit);
 
     /**
@@ -93,11 +101,20 @@ public interface Cache {
      */
     Object putIfAbsent(Object key, Object value);
 
+    /**
+     * Atomically associate the specified value with the specified key in this cache
+     * if it is not set already and set a time to live.
+     * @param key The key with which the specified value is to be associated
+     * @param value The value to be associated with the specified key
+     * @param timeToLive The time to live of the key-value pair
+     * @param timeUnit The unit of time to live
+     * @return The previous value associated with key, or null if there was no mapping for key
+     */
     Object putIfAbsent(Object key, Object value, long timeToLive, TimeUnit timeUnit);
 
     /**
      * Copies all of the entries from the specified map to the cache.
-     * @param map Mappings to be stored in this cache
+     * @param map The mappings to be stored in this cache
      */
     void putAll(Map<?, ?> map);
 
@@ -145,7 +162,7 @@ public interface Cache {
 
     /**
      * Prune the objects that need to be cleaned according to the pruning strategy.
-     * @return Number of objects that have been cleaned out
+     * @return The number of objects that have been cleaned out
      */
     long prune();
 

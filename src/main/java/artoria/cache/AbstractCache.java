@@ -41,10 +41,26 @@ public abstract class AbstractCache implements Cache {
         this.name = name;
     }
 
+    /**
+     * Get the value stored in the cache.
+     * @param key The specified key
+     * @return The stored value
+     */
     protected abstract Object getStorageValue(Object key);
 
+    /**
+     * Put the specified key and value into the cache.
+     * @param key The specified key
+     * @param value The specified value
+     * @return The old value for this key, if present
+     */
     protected abstract Object putStorageValue(Object key, Object value);
 
+    /**
+     * Remove the value of the specified key.
+     * @param key The specified key
+     * @return The removed value
+     */
     protected abstract Object removeStorageValue(Object key);
 
     protected boolean isFull() {

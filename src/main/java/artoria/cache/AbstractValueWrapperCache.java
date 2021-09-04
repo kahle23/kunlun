@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import static artoria.common.Constants.*;
 
 /**
- * Abstract cache.
+ * Abstract value wrapper cache.
  * @author Kahle
  */
 public abstract class AbstractValueWrapperCache extends AbstractCache {
@@ -24,10 +24,26 @@ public abstract class AbstractValueWrapperCache extends AbstractCache {
         super(name);
     }
 
+    /**
+     * Get the value of the specified type stored in the cache.
+     * @param key The specified key
+     * @return The stored value
+     */
     protected abstract ValueWrapper getValueWrapper(Object key);
 
+    /**
+     * Put the specified key and value into the cache.
+     * @param key The specified key
+     * @param valueWrapper The specified value
+     * @return The old value for this key, if present
+     */
     protected abstract ValueWrapper putValueWrapper(Object key, ValueWrapper valueWrapper);
 
+    /**
+     * Remove the value of the specified key.
+     * @param key The specified key
+     * @return The removed value
+     */
     protected abstract ValueWrapper removeValueWrapper(Object key);
 
     @Override

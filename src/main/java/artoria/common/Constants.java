@@ -6,7 +6,7 @@ import artoria.net.NetUtils;
 import java.nio.charset.Charset;
 
 /**
- * Common constants.
+ * The common constants.
  * @see <a href="https://en.wikipedia.org/wiki/Carriage_return">Carriage return</a>
  * @see <a href="https://en.wikipedia.org/wiki/Newline#Escape_sequences">Line feed</a>
  * @author Kahle

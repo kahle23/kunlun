@@ -1,32 +1,32 @@
 package artoria.common;
 
 /**
- * Generic result.
+ * The generic result.
  * @author Kahle
  */
 public interface GenericResult {
 
     /**
      * Get status code.
-     * @return Status code
+     * @return The status code
      */
     String getCode();
 
     /**
      * Set status code.
-     * @param code Status code
+     * @param code The status code
      */
     void setCode(String code);
 
     /**
      * Get message content.
-     * @return Message content
+     * @return The message content
      */
     String getMessage();
 
     /**
      * Set message content.
-     * @param message Message content
+     * @param message The message content
      */
     void setMessage(String message);
 

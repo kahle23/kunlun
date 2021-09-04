@@ -41,7 +41,7 @@ public class SimpleEventProvider extends AbstractEventProvider {
     }
 
     @Override
-    protected void edit(Event event) {
+    protected void process(Event event) {
 
     }
 

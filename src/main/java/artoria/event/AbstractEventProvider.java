@@ -20,10 +20,10 @@ public abstract class AbstractEventProvider implements EventProvider {
     private static Logger log = LoggerFactory.getLogger(AbstractEventProvider.class);
 
     /**
-     * Edit the event to add extended fields.
+     * Process the event to add extended fields.
      * @param event The event object passed in
      */
-    protected abstract void edit(Event event);
+    protected abstract void process(Event event);
 
     /**
      * Push the event to specific handlers.
@@ -64,11 +64,6 @@ public abstract class AbstractEventProvider implements EventProvider {
         try {
             // Validate parameters, errors are not allowed to be thrown out.
             Assert.notBlank(code, "Parameter \"code\" must not blank. ");
-            if (StringUtils.isBlank(distinctId) && StringUtils.isBlank(anonymousId)) {
-                throw new IllegalArgumentException(
-                    "Parameter \"distinctId\" and parameter \"anonymousId\" cannot both be blank. "
-                );
-            }
             if (properties == null) { properties = new LinkedHashMap<Object, Object>(); }
             if (time == null) { time = System.currentTimeMillis(); }
             // Build the event object.
@@ -78,8 +73,15 @@ public abstract class AbstractEventProvider implements EventProvider {
             event.setDistinctId(distinctId);
             event.setAnonymousId(anonymousId);
             event.setProperties(properties);
-            // Edit the event.
-            edit(event);
+            // Process the event.
+            process(event);
+            // Validate parameters.
+            if (StringUtils.isBlank(event.getDistinctId()) &&
+                    StringUtils.isBlank(event.getAnonymousId())) {
+                throw new IllegalArgumentException(
+                        "Parameter \"distinctId\" and parameter \"anonymousId\" cannot both be blank. "
+                );
+            }
             // Push the event.
             push(event);
         }

@@ -1,8 +1,8 @@
 package artoria.common;
 
 /**
- * Uniform page result output object.
- * @param <T> Data type
+ * The uniform page result output object.
+ * @param <T> The data type
  * @author Kahle
  */
 public class PageResult<T> extends Result<T> {

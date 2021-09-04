@@ -3,8 +3,8 @@ package artoria.common;
 import java.io.Serializable;
 
 /**
- * Uniform data input object.
- * @param <T> Data Type
+ * The uniform data input object.
+ * @param <T> The data type
  * @author Kahle
  */
 public class Input<T> implements Serializable {

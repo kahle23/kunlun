@@ -16,7 +16,7 @@ import java.util.Map;
 import static artoria.common.Constants.ZERO;
 
 /**
- * Bean copier simple implement by jdk.
+ * The bean copier simple implement by jdk.
  * @author Kahle
  */
 public class SimpleBeanCopier implements BeanCopier {

@@ -9,7 +9,7 @@ import java.util.*;
 import static artoria.common.Constants.*;
 
 /**
- * Bean map.
+ * The bean map.
  * @author Kahle
  */
 public abstract class BeanMap implements Map<Object, Object>, Cloneable {
@@ -198,11 +198,10 @@ public abstract class BeanMap implements Map<Object, Object>, Cloneable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         BeanMap newMap = (BeanMap) super.clone();
-        if (newMap.getBean() == null) {
-            return newMap;
-        }
         Object bean = getBean();
-        Object clone = BeanUtils.clone(bean);
+        if (bean == null) { return newMap; }
+        Class<?> beanClass = bean.getClass();
+        Object clone = BeanUtils.beanToBean(bean, beanClass);
         newMap.setBean(clone);
         return newMap;
     }

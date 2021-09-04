@@ -3,7 +3,7 @@ package artoria.convert;
 import java.lang.reflect.Type;
 
 /**
- * Conversions are supported based on the source type and target type.
+ * The conversions are supported based on the source type and target type.
  * @author Kahle
  */
 public interface ConditionalConverter extends GenericConverter {
