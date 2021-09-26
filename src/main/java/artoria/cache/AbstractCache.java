@@ -1,7 +1,6 @@
 package artoria.cache;
 
 import artoria.convert.ConversionUtils;
-import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -10,10 +9,7 @@ import artoria.util.MapUtils;
 import artoria.util.ObjectUtils;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import static artoria.common.Constants.*;
 
@@ -40,28 +36,6 @@ public abstract class AbstractCache implements Cache {
         this.recordLog = false;
         this.name = name;
     }
-
-    /**
-     * Get the value stored in the cache.
-     * @param key The specified key
-     * @return The stored value
-     */
-    protected abstract Object getStorageValue(Object key);
-
-    /**
-     * Put the specified key and value into the cache.
-     * @param key The specified key
-     * @param value The specified value
-     * @return The old value for this key, if present
-     */
-    protected abstract Object putStorageValue(Object key, Object value);
-
-    /**
-     * Remove the value of the specified key.
-     * @param key The specified key
-     * @return The removed value
-     */
-    protected abstract Object removeStorageValue(Object key);
 
     protected boolean isFull() {
 
@@ -133,46 +107,13 @@ public abstract class AbstractCache implements Cache {
     }
 
     @Override
-    public <T> T get(Object key, Callable<T> callable) {
-        Assert.notNull(callable, "Parameter \"callable\" must not null. ");
-        Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Object value = get(key);
-        if (value != null) {
-            return ObjectUtils.cast(value);
-        }
-        synchronized (String.valueOf(key).intern()) {
-            if ((value = getStorageValue(key)) != null) {
-                return ObjectUtils.cast(value);
-            }
-            try {
-                value = callable.call();
-            }
-            catch (Exception e) {
-                throw ExceptionUtils.wrap(e);
-            }
-            if (value != null) {
-                putStorageValue(key, value);
-            }
-        }
-        return ObjectUtils.cast(value);
-    }
-
-    @Override
     public <T> T get(Object key, Class<T> type) {
-        Assert.notNull(key, "Parameter \"key\" must not null. ");
         Assert.notNull(type, "Parameter \"type\" must not null. ");
+        Assert.notNull(key, "Parameter \"key\" must not null. ");
         Object value = get(key);
         if (value == null) { return null; }
         value = ConversionUtils.convert(value, type);
         return ObjectUtils.cast(value, type);
-    }
-
-    @Override
-    public Object get(Object key) {
-        Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Object value = getStorageValue(key);
-        recordTouch(key, value != null);
-        return value;
     }
 
     @Override
@@ -182,71 +123,12 @@ public abstract class AbstractCache implements Cache {
     }
 
     @Override
-    public Object put(Object key, Object value) {
-        Assert.notNull(value, "Parameter \"value\" must not null. ");
-        Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Object preValue = putStorageValue(key, value);
-        if (isFull()) { prune(); }
-        return preValue;
-    }
-
-    @Override
-    public Object put(Object key, Object value, long timeToLive, TimeUnit timeUnit) {
-        Assert.notNull(timeUnit, "Parameter \"timeUnit\" must not null. ");
-        Object preValue = put(key, value);
-        expire(key, timeToLive, timeUnit);
-        return preValue;
-    }
-
-    @Override
-    public Object putIfAbsent(Object key, Object value) {
-        Object nowValue = getStorageValue(key);
-        if (nowValue == null) {
-            return put(key, value);
-        }
-        return null;
-    }
-
-    @Override
-    public Object putIfAbsent(Object key, Object value, long timeToLive, TimeUnit timeUnit) {
-        Object nowValue = getStorageValue(key);
-        if (nowValue == null) {
-            return put(key, value, timeToLive, timeUnit);
-        }
-        return null;
-    }
-
-    @Override
     public void putAll(Map<?, ?> map) {
         Assert.notNull(map, "Parameter \"map\" must not null. ");
         if (MapUtils.isEmpty(map)) { return; }
         for (Map.Entry<?, ?> entry : map.entrySet()) {
             put(entry.getKey(), entry.getValue());
         }
-    }
-
-    @Override
-    public boolean expireAt(Object key, Date date) {
-        Assert.notNull(date, "Parameter \"date\" must not null. ");
-        Assert.notNull(key, "Parameter \"key\" must not null. ");
-        long timeToLive = date.getTime() - currentTimeMillis();
-        if (timeToLive <= ZERO) {
-            Object value = getStorageValue(key);
-            if (value != null) {
-                removeStorageValue(key);
-                recordEviction(key, TWO);
-            }
-            return true;
-        }
-        else { return expire(key, timeToLive, TimeUnit.MILLISECONDS); }
-    }
-
-    @Override
-    public Object remove(Object key) {
-        Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Object remove = removeStorageValue(key);
-        recordEviction(key, ONE);
-        return remove;
     }
 
     @Override

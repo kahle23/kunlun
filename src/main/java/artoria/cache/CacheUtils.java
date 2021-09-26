@@ -52,8 +52,8 @@ public class CacheUtils {
         Cache cache = STORAGE.get(cacheName);
         if (cache != null) { return cache; }
         if (DEFAULT.equals(cacheName)) {
-            SimpleCache simpleCache = new SimpleCache(DEFAULT,
-                    ZERO, TimeUnit.HOURS.toMillis(TWO), MINUS_ONE, ReferenceType.SOFT);
+            SimpleCache simpleCache = new SimpleCache(DEFAULT, ZERO, ONE,
+                    TimeUnit.HOURS.toMillis(TWO), MINUS_ONE, ReferenceType.SOFT);
             simpleCache.setRecordLog(true);
             register(cache = simpleCache);
         }
