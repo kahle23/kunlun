@@ -4,7 +4,7 @@ package artoria.beans;
  * The bean map factory.
  * @author Kahle
  */
-public interface MapFactory {
+public interface BeanMapFactory {
 
     /**
      * Get the bean map instance.

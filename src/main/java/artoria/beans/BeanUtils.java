@@ -21,8 +21,23 @@ import static artoria.common.Constants.THIRTY;
  */
 public class BeanUtils {
     private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
+    private static BeanMapFactory beanMapFactory;
     private static BeanCopier beanCopier;
-    private static MapFactory mapFactory;
+
+    public static BeanMapFactory getBeanMapFactory() {
+        if (beanMapFactory != null) { return beanMapFactory; }
+        synchronized (BeanUtils.class) {
+            if (beanMapFactory != null) { return beanMapFactory; }
+            BeanUtils.setBeanMapFactory(new SimpleBeanMapFactory());
+            return beanMapFactory;
+        }
+    }
+
+    public static void setBeanMapFactory(BeanMapFactory beanMapFactory) {
+        Assert.notNull(beanMapFactory, "Parameter \"beanMapFactory\" must not null. ");
+        log.info("Set bean map factory: {}", beanMapFactory.getClass().getName());
+        BeanUtils.beanMapFactory = beanMapFactory;
+    }
 
     public static BeanCopier getBeanCopier() {
         if (beanCopier != null) { return beanCopier; }
@@ -39,29 +54,14 @@ public class BeanUtils {
         BeanUtils.beanCopier = beanCopier;
     }
 
-    public static MapFactory getMapFactory() {
-        if (mapFactory != null) { return mapFactory; }
-        synchronized (BeanUtils.class) {
-            if (mapFactory != null) { return mapFactory; }
-            BeanUtils.setMapFactory(new SimpleMapFactory());
-            return mapFactory;
-        }
-    }
-
-    public static void setMapFactory(MapFactory mapFactory) {
-        Assert.notNull(mapFactory, "Parameter \"mapFactory\" must not null. ");
-        log.info("Set map factory: {}", mapFactory.getClass().getName());
-        BeanUtils.mapFactory = mapFactory;
-    }
-
     public static BeanMap createBeanMap() {
 
-        return getMapFactory().getInstance();
+        return getBeanMapFactory().getInstance();
     }
 
     public static BeanMap createBeanMap(Object bean) {
 
-        return getMapFactory().getInstance(bean);
+        return getBeanMapFactory().getInstance(bean);
     }
 
     public static void copy(Object from, Object to) {

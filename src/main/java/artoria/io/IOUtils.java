@@ -70,8 +70,8 @@ public class IOUtils {
 
     public static long copyLarge(InputStream input, OutputStream output, byte[] buffer) throws IOException {
         long count = ZERO;
-        for (int n; EOF != (n = input.read(buffer)); count += n) {
-            output.write(buffer, ZERO, n);
+        for (int len; EOF != (len = input.read(buffer)); count += len) {
+            output.write(buffer, ZERO, len);
         }
         output.flush();
         return count;

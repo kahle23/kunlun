@@ -8,15 +8,15 @@ import artoria.util.Assert;
  * The bean map factory simple implement by jdk.
  * @author Kahle
  */
-public class SimpleMapFactory implements MapFactory {
+public class SimpleBeanMapFactory implements BeanMapFactory {
     private final ConversionProvider conversionProvider;
 
-    public SimpleMapFactory() {
+    public SimpleBeanMapFactory() {
 
         this(ConversionUtils.getConversionProvider());
     }
 
-    public SimpleMapFactory(ConversionProvider conversionProvider) {
+    public SimpleBeanMapFactory(ConversionProvider conversionProvider) {
         Assert.notNull(conversionProvider, "Parameter \"conversionProvider\" must not null. ");
         this.conversionProvider = conversionProvider;
     }

@@ -124,7 +124,7 @@ public class StringUtils {
         // the index of an occurrence we've found, or -1
         int searchLen = searchString.length();
         while (index >= ZERO) {
-            builder.append(text.substring(pos, index));
+            builder.append(text, pos, index);
             builder.append(replacement);
             pos = index + searchLen;
             index = text.indexOf(searchString, pos);
