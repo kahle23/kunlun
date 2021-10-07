@@ -4,7 +4,6 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.time.DateUtils;
 import artoria.util.Assert;
-import artoria.util.StringUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -38,6 +37,7 @@ public abstract class AbstractEventProvider implements EventProvider {
     protected void show(Event event) {
         String content = NEWLINE +
                 "---- Begin Event ----" + NEWLINE +
+                "Platform:       " + event.getPlatform() + NEWLINE +
                 "Code:           " + event.getCode() + NEWLINE +
                 "Time:           " + DateUtils.format(event.getTime()) + NEWLINE +
                 "DistinctId:     " + event.getDistinctId() + NEWLINE +
@@ -48,19 +48,7 @@ public abstract class AbstractEventProvider implements EventProvider {
     }
 
     @Override
-    public void add(String code, String distinctId, Map<?, ?> properties) {
-        Assert.notBlank(distinctId, "Parameter \"distinctId\" must not blank. ");
-        add(code, null, distinctId, null, properties);
-    }
-
-    @Override
-    public void add(String code, String distinctId, String anonymousId, Map<?, ?> properties) {
-
-        add(code, null, distinctId, anonymousId, properties);
-    }
-
-    @Override
-    public void add(String code, Long time, String distinctId, String anonymousId, Map<?, ?> properties) {
+    public void track(String platform, String code, Long time, String distinctId, String anonymousId, Map<?, ?> properties) {
         try {
             // Validate parameters, errors are not allowed to be thrown out.
             Assert.notBlank(code, "Parameter \"code\" must not blank. ");
@@ -68,6 +56,7 @@ public abstract class AbstractEventProvider implements EventProvider {
             if (time == null) { time = System.currentTimeMillis(); }
             // Build the event object.
             Event event = new Event();
+            event.setPlatform(platform);
             event.setCode(code);
             event.setTime(time);
             event.setDistinctId(distinctId);
@@ -75,13 +64,6 @@ public abstract class AbstractEventProvider implements EventProvider {
             event.setProperties(properties);
             // Process the event.
             process(event);
-            // Validate parameters.
-            if (StringUtils.isBlank(event.getDistinctId()) &&
-                    StringUtils.isBlank(event.getAnonymousId())) {
-                throw new IllegalArgumentException(
-                        "Parameter \"distinctId\" and parameter \"anonymousId\" cannot both be blank. "
-                );
-            }
             // Push the event.
             push(event);
         }
@@ -99,6 +81,17 @@ public abstract class AbstractEventProvider implements EventProvider {
         private String distinctId;
         private Long   time;
         private String code;
+        private String platform;
+
+        public String getPlatform() {
+
+            return platform;
+        }
+
+        public void setPlatform(String platform) {
+
+            this.platform = platform;
+        }
 
         public String getCode() {
 
