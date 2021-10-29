@@ -2,7 +2,7 @@ package artoria.time;
 
 import static artoria.common.Constants.ZERO;
 
-public class SimpleTimeFactory implements TimeFactory {
+public class SimpleDateTimeFactory implements DateTimeFactory {
 
     @Override
     public DateTime getInstance() {

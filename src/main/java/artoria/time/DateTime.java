@@ -1,13 +1,16 @@
 package artoria.time;
 
+import artoria.lang.Time;
+
 import java.util.Calendar;
 import java.util.Date;
 
 /**
  * Date time interface.
+ * @see <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
  * @author Kahle
  */
-public interface DateTime extends java.io.Serializable {
+public interface DateTime extends Time, java.io.Serializable {
 
     /**
      * Get date from DateTime object.

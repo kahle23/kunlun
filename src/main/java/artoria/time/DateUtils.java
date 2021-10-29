@@ -5,12 +5,9 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 import artoria.util.ObjectUtils;
-import artoria.util.StringUtils;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import static artoria.common.Constants.*;
 
@@ -19,23 +16,24 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class DateUtils {
-    private static final Set<String> DATE_PATTERNS = new HashSet<String>();
     private static Logger log = LoggerFactory.getLogger(DateUtils.class);
+    private static DateTimeFactory dateTimeFactory;
     private static DateProvider dateProvider;
-    private static TimeFactory timeFactory;
     private static Clock clock;
 
-    static {
-        DateUtils.register("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        DateUtils.register("yyyy-MM-dd'T'HH:mm:ssZ");
-        DateUtils.register("yyyy-MM-dd HH:mm:ss");
-        DateUtils.register("yyyy-MM-dd HH:mm");
-        DateUtils.register("yyyy-MM-dd");
-        DateUtils.register("yyyy/MM/dd HH:mm:ss");
-        DateUtils.register("yyyy/MM/dd HH:mm");
-        DateUtils.register("yyyy/MM/dd");
-        DateUtils.register(DEFAULT_DATETIME_PATTERN);
-        DateUtils.register(FULL_DATETIME_PATTERN);
+    public static DateTimeFactory getDateTimeFactory() {
+        if (dateTimeFactory != null) { return dateTimeFactory; }
+        synchronized (DateUtils.class) {
+            if (dateTimeFactory != null) { return dateTimeFactory; }
+            DateUtils.setDateTimeFactory(new SimpleDateTimeFactory());
+            return dateTimeFactory;
+        }
+    }
+
+    public static void setDateTimeFactory(DateTimeFactory dateTimeFactory) {
+        Assert.notNull(dateTimeFactory, "Parameter \"dateTimeFactory\" must not null. ");
+        log.info("Set date time factory: {}", dateTimeFactory.getClass().getName());
+        DateUtils.dateTimeFactory = dateTimeFactory;
     }
 
     public static DateProvider getDateProvider() {
@@ -53,21 +51,6 @@ public class DateUtils {
         DateUtils.dateProvider = dateProvider;
     }
 
-    public static TimeFactory getTimeFactory() {
-        if (timeFactory != null) { return timeFactory; }
-        synchronized (DateUtils.class) {
-            if (timeFactory != null) { return timeFactory; }
-            DateUtils.setTimeFactory(new SimpleTimeFactory());
-            return timeFactory;
-        }
-    }
-
-    public static void setTimeFactory(TimeFactory timeFactory) {
-        Assert.notNull(timeFactory, "Parameter \"timeFactory\" must not null. ");
-        log.info("Set time factory: {}", timeFactory.getClass().getName());
-        DateUtils.timeFactory = timeFactory;
-    }
-
     public static Clock getClock() {
         if (clock != null) { return clock; }
         synchronized (DateUtils.class) {
@@ -83,26 +66,24 @@ public class DateUtils {
         DateUtils.clock = clock;
     }
 
-    public static void register(String datePattern) {
-        Assert.notBlank(datePattern, "Parameter \"datePattern\" must not blank. ");
-        DATE_PATTERNS.add(datePattern);
-        log.info("Register date pattern \"{}\" success. ", datePattern);
+    public static void register(String pattern) {
+        Assert.notBlank(pattern, "Parameter \"pattern\" must not blank. ");
+        getDateProvider().register(pattern);
     }
 
-    public static void unregister(String datePattern) {
-        Assert.notBlank(datePattern, "Parameter \"datePattern\" must not blank. ");
-        DATE_PATTERNS.remove(datePattern);
-        log.info("Unregister date pattern \"{}\" success. ", datePattern);
+    public static void deregister(String pattern) {
+        Assert.notBlank(pattern, "Parameter \"pattern\" must not blank. ");
+        getDateProvider().deregister(pattern);
     }
 
     public static DateTime create() {
 
-        return getTimeFactory().getInstance();
+        return getDateTimeFactory().getInstance();
     }
 
     public static DateTime create(Long timeInMillis) {
 
-        return getTimeFactory().getInstance(timeInMillis);
+        return getDateTimeFactory().getInstance(timeInMillis);
     }
 
     public static DateTime create(Date date) {
@@ -350,18 +331,8 @@ public class DateUtils {
     }
 
     public static Date parse(String dateString) {
-        if (StringUtils.isBlank(dateString)) { return null; }
-        for (String datePattern : DATE_PATTERNS) {
-            try {
-                return DateUtils.parse(dateString, datePattern);
-            }
-            catch (Exception e) {
-                log.debug("It's ok. ", e);
-            }
-        }
-        throw new UnsupportedOperationException(
-                "All registered date pattern are not supported. "
-        );
+
+        return getDateProvider().parse(dateString);
     }
 
     public static Date parse(String dateString, String pattern) {
@@ -385,17 +356,17 @@ public class DateUtils {
 
     public static String format(Date date) {
 
-        return DateUtils.format(date, DEFAULT_DATETIME_PATTERN);
+        return getDateProvider().format(date);
     }
 
     public static String format(Long timestamp) {
 
-        return DateUtils.format(timestamp, DEFAULT_DATETIME_PATTERN);
+        return DateUtils.format(DateUtils.parse(timestamp));
     }
 
     public static String format(DateTime dateTime) {
-
-        return DateUtils.format(dateTime, DEFAULT_DATETIME_PATTERN);
+        Assert.notNull(dateTime, "Parameter \"dateTime\" must not null. ");
+        return DateUtils.format(dateTime.getDate());
     }
 
     public static String format(Date date, String pattern) {

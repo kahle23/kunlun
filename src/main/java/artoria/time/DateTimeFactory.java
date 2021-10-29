@@ -1,6 +1,6 @@
 package artoria.time;
 
-public interface TimeFactory {
+public interface DateTimeFactory {
 
     DateTime getInstance();
 
