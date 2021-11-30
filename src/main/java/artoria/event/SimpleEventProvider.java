@@ -3,7 +3,6 @@ package artoria.event;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.time.DateUtils;
-import artoria.util.Assert;
 import artoria.util.StringUtils;
 
 import java.util.Collection;
@@ -44,7 +43,6 @@ public class SimpleEventProvider extends AbstractEventProvider {
     @Override
     protected void process(Event event) {
         // Validate parameters.
-        Assert.notBlank(event.getPlatform(), "Parameter \"platform\" must not blank. ");
         if (StringUtils.isBlank(event.getDistinctId()) &&
                 StringUtils.isBlank(event.getAnonymousId())) {
             throw new IllegalArgumentException(
@@ -80,7 +78,6 @@ public class SimpleEventProvider extends AbstractEventProvider {
         // Build the string to print and print it.
         String content = NEWLINE +
                 "---- Begin Event ----" + NEWLINE +
-                "Platform:           " + event.getPlatform() + NEWLINE +
                 "Code:               " + event.getCode() + NEWLINE +
                 "Time:               " + DateUtils.format(event.getTime()) + NEWLINE +
                 "DistinctId:         " + event.getDistinctId() + NEWLINE +

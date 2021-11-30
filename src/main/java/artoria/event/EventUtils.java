@@ -29,19 +29,19 @@ public class EventUtils {
         EventUtils.eventProvider = eventProvider;
     }
 
-    public static void track(String platform, String code, String distinctId, Map<?, ?> properties) {
+    public static void track(String code, String distinctId, Map<?, ?> properties) {
 
-        getEventProvider().track(platform, code, null, distinctId, null, properties);
+        getEventProvider().track(code, null, distinctId, null, properties);
     }
 
-    public static void track(String platform, String code, String distinctId, String anonymousId, Map<?, ?> properties) {
+    public static void track(String code, String distinctId, String anonymousId, Map<?, ?> properties) {
 
-        getEventProvider().track(platform, code, null, distinctId, anonymousId, properties);
+        getEventProvider().track(code, null, distinctId, anonymousId, properties);
     }
 
-    public static void track(String platform, String code, Long time, String distinctId, String anonymousId, Map<?, ?> properties) {
+    public static void track(String code, Long time, String distinctId, String anonymousId, Map<?, ?> properties) {
 
-        getEventProvider().track(platform, code, time, distinctId, anonymousId, properties);
+        getEventProvider().track(code, time, distinctId, anonymousId, properties);
     }
 
 }

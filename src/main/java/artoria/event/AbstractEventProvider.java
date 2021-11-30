@@ -37,7 +37,6 @@ public abstract class AbstractEventProvider implements EventProvider {
     protected void show(Event event) {
         String content = NEWLINE +
                 "---- Begin Event ----" + NEWLINE +
-                "Platform:       " + event.getPlatform() + NEWLINE +
                 "Code:           " + event.getCode() + NEWLINE +
                 "Time:           " + DateUtils.format(event.getTime()) + NEWLINE +
                 "DistinctId:     " + event.getDistinctId() + NEWLINE +
@@ -48,7 +47,7 @@ public abstract class AbstractEventProvider implements EventProvider {
     }
 
     @Override
-    public void track(String platform, String code, Long time, String distinctId, String anonymousId, Map<?, ?> properties) {
+    public void track(String code, Long time, String distinctId, String anonymousId, Map<?, ?> properties) {
         try {
             // Validate parameters, errors are not allowed to be thrown out.
             Assert.notBlank(code, "Parameter \"code\" must not blank. ");
@@ -56,7 +55,6 @@ public abstract class AbstractEventProvider implements EventProvider {
             if (time == null) { time = System.currentTimeMillis(); }
             // Build the event object.
             Event event = new Event();
-            event.setPlatform(platform);
             event.setCode(code);
             event.setTime(time);
             event.setDistinctId(distinctId);
@@ -81,17 +79,6 @@ public abstract class AbstractEventProvider implements EventProvider {
         private String distinctId;
         private Long   time;
         private String code;
-        private String platform;
-
-        public String getPlatform() {
-
-            return platform;
-        }
-
-        public void setPlatform(String platform) {
-
-            this.platform = platform;
-        }
 
         public String getCode() {
 
