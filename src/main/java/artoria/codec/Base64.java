@@ -9,7 +9,7 @@ import java.io.Serializable;
 import static artoria.common.Constants.*;
 
 /**
- * Base64 encode and decode tools.
+ * The base64 encode and decode tools.
  * @author Kahle
  */
 public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {

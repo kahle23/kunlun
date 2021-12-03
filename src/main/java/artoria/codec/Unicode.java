@@ -8,7 +8,7 @@ import static artoria.common.Constants.*;
 import static artoria.io.IOUtils.EOF;
 
 /**
- * Unicode encode and decode tools.
+ * The unicode encode and decode tools.
  * @author Kahle
  */
 public class Unicode implements StringEncoder, StringDecoder, Serializable {

@@ -5,7 +5,7 @@ import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 /**
- * Object enhancer.
+ * The object enhancer.
  * @author Kahle
  */
 public class Enhancer {

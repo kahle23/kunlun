@@ -3,7 +3,7 @@ package artoria.cache;
 import artoria.exception.UncheckedException;
 
 /**
- * Cache exception.
+ * The cache exception.
  * @author Kahle
  */
 public class CacheException extends UncheckedException {

@@ -1,7 +1,7 @@
 package artoria.codec;
 
 /**
- * Provide the highest level of abstraction for Encoder.
+ * Provide the highest level of abstraction for encoder.
  * @author Kahle
  */
 public interface Encoder {

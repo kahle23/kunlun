@@ -3,7 +3,7 @@ package artoria.aop;
 import java.lang.reflect.Method;
 
 /**
- * Interceptor for enhance object method.
+ * The interceptor for enhance object method.
  * @author Kahle
  */
 public interface Interceptor {

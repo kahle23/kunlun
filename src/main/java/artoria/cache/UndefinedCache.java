@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Undefined cache.
+ * The undefined cache.
  * @author Kahle
  */
 public class UndefinedCache implements Cache {

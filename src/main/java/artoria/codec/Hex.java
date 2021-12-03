@@ -7,7 +7,7 @@ import java.io.Serializable;
 import static artoria.common.Constants.*;
 
 /**
- * Hex encode and decode tools.
+ * The hex encode and decode tools.
  * @author Kahle
  */
 public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {

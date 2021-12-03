@@ -8,7 +8,7 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 /**
- * Hex tools.
+ * The hex tools.
  * @author Kahle
  */
 public class HexUtils {

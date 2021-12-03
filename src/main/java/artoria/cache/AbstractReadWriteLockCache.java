@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import static artoria.common.Constants.*;
 
 /**
- * Abstract value wrapper cache.
+ * The abstract value wrapper cache.
  * @author Kahle
  */
 public abstract class AbstractReadWriteLockCache extends AbstractCache {

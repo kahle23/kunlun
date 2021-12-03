@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * No cache.
+ * The no cache.
  * @author Kahle
  */
 public class NoCache implements Cache {

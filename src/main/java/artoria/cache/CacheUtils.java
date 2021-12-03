@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import static artoria.common.Constants.*;
 
 /**
- * Cache tools.
+ * The cache tools.
  * @author Kahle
  */
 public class CacheUtils {

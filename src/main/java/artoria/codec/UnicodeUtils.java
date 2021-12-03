@@ -5,7 +5,7 @@ import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 /**
- * Unicode tools.
+ * The unicode tools.
  * @author Kahle
  */
 public class UnicodeUtils {

@@ -1,7 +1,7 @@
 package artoria.aop;
 
 /**
- * Proxy factory for generate proxy object.
+ * The proxy factory for generate proxy object.
  * @author Kahle
  */
 public interface ProxyFactory {

@@ -14,7 +14,7 @@ import java.util.Map;
 import static artoria.common.Constants.*;
 
 /**
- * Abstract cache.
+ * The abstract cache.
  * @author Kahle
  */
 public abstract class AbstractCache implements Cache {

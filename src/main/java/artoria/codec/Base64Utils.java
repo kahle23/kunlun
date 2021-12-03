@@ -8,7 +8,7 @@ import static artoria.common.Constants.MINUS_ONE;
 import static java.lang.Boolean.TRUE;
 
 /**
- * Base64 tools.
+ * The base64 tools.
  * @author Kahle
  */
 public class Base64Utils {

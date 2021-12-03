@@ -18,7 +18,7 @@ import static java.util.Collections.emptyMap;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
- * Memory cache simple implement by jdk.
+ * The memory cache simple implement by jdk.
  * @author Kahle
  */
 public class SimpleCache extends AbstractReadWriteLockCache {

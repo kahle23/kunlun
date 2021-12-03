@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
- * Proxy factory simple implement by jdk.
+ * The proxy factory simple implement by jdk.
  * @author Kahle
  */
 public class SimpleProxyFactory implements ProxyFactory {
