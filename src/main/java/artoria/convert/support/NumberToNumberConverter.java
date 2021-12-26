@@ -14,6 +14,11 @@ public class NumberToNumberConverter extends AbstractClassConverter {
     private static final String VALUE = "Value";
     private static final String INT = "int";
 
+    public NumberToNumberConverter() {
+
+        super(Number.class, Number.class);
+    }
+
     public NumberToNumberConverter(ConversionProvider conversionProvider) {
 
         super(conversionProvider, Number.class, Number.class);

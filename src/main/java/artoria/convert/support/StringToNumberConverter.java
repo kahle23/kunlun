@@ -7,6 +7,11 @@ import java.math.BigDecimal;
 
 public class StringToNumberConverter extends AbstractClassConverter {
 
+    public StringToNumberConverter() {
+
+        super(String.class, Number.class);
+    }
+
     public StringToNumberConverter(ConversionProvider conversionProvider) {
 
         super(conversionProvider, String.class, Number.class);

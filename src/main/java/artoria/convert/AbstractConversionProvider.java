@@ -25,14 +25,14 @@ public abstract class AbstractConversionProvider implements ConversionProvider {
      * Add some default type converters.
      */
     protected void addDefaultConverters() {
-        addConverter(new ObjectToStringConverter(this));
-        addConverter(new StringToBooleanConverter(this));
-        addConverter(new StringToNumberConverter(this));
-        addConverter(new StringToDateConverter(this));
-        addConverter(new DateToStringConverter(this));
-        addConverter(new DateToDateConverter(this));
-        addConverter(new NumberToNumberConverter(this));
-        addConverter(new NumberToDateConverter(this));
+        addConverter(new ObjectToStringConverter());
+        addConverter(new StringToBooleanConverter());
+        addConverter(new StringToNumberConverter());
+        addConverter(new StringToDateConverter());
+        addConverter(new DateToStringConverter());
+        addConverter(new DateToDateConverter());
+        addConverter(new NumberToNumberConverter());
+        addConverter(new NumberToDateConverter());
     }
 
     private void addToClassHierarchy(Class<?> type, int index, boolean isArray,

@@ -7,9 +7,19 @@ import artoria.util.ObjectUtils;
 
 import java.lang.reflect.Type;
 
+/**
+ * The abstract class converter.
+ * @author Kahle
+ */
 public abstract class AbstractClassConverter extends AbstractGenericConverter {
     private final Class<?> sourceClass;
     private final Class<?> targetClass;
+
+    protected AbstractClassConverter(Class<?> sourceClass, Class<?> targetClass) {
+        super(sourceClass, targetClass);
+        this.sourceClass = sourceClass;
+        this.targetClass = targetClass;
+    }
 
     protected AbstractClassConverter(ConversionProvider conversionProvider,
                                      Class<?> sourceClass, Class<?> targetClass) {
@@ -24,8 +34,6 @@ public abstract class AbstractClassConverter extends AbstractGenericConverter {
         }
         return ObjectUtils.cast(type);
     }
-
-    protected abstract Object convert(Object source, Class<?> sourceClass, Class<?> targetClass);
 
     @Override
     public Object convert(Object source, Type sourceType, Type targetType) {
@@ -46,5 +54,14 @@ public abstract class AbstractClassConverter extends AbstractGenericConverter {
         }
         return convert(source, sourceClass, targetClass);
     }
+
+    /**
+     * Convert the source object to the target class.
+     * @param source The source object to convert
+     * @param sourceClass The source class to convert from
+     * @param targetClass The target class to convert to
+     * @return The converted object or source object
+     */
+    protected abstract Object convert(Object source, Class<?> sourceClass, Class<?> targetClass);
 
 }

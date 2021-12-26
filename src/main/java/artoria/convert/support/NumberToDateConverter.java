@@ -11,6 +11,11 @@ import static artoria.common.Constants.ONE_THOUSAND;
 public class NumberToDateConverter extends AbstractClassConverter {
     private Boolean unixTimestamp = false;
 
+    public NumberToDateConverter() {
+
+        super(Number.class, Date.class);
+    }
+
     public NumberToDateConverter(ConversionProvider conversionProvider) {
 
         super(conversionProvider, Number.class, Date.class);

@@ -1,12 +1,10 @@
 package artoria.convert.support;
 
-import artoria.convert.ConversionProvider;
-
 public class StringToBooleanConverter extends AbstractClassConverter {
 
-    public StringToBooleanConverter(ConversionProvider conversionProvider) {
+    public StringToBooleanConverter() {
 
-        super(conversionProvider, String.class, Boolean.class);
+        super(String.class, Boolean.class);
     }
 
     @Override

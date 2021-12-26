@@ -18,7 +18,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import static artoria.common.Constants.FORTY;
 
 /**
- * Simple type conversion service provider.
+ * The simple type conversion service provider.
  * @author Kahle
  */
 public class SimpleConversionProvider extends AbstractConversionProvider {

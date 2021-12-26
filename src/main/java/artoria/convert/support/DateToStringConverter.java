@@ -1,6 +1,5 @@
 package artoria.convert.support;
 
-import artoria.convert.ConversionProvider;
 import artoria.time.DateUtils;
 import artoria.util.Assert;
 
@@ -11,9 +10,9 @@ import static artoria.common.Constants.DEFAULT_DATETIME_PATTERN;
 public class DateToStringConverter extends AbstractClassConverter {
     private String dateToStringPattern = DEFAULT_DATETIME_PATTERN;
 
-    public DateToStringConverter(ConversionProvider conversionProvider) {
+    public DateToStringConverter() {
 
-        super(conversionProvider, Date.class, String.class);
+        super(Date.class, String.class);
     }
 
     public String getDateToStringPattern() {

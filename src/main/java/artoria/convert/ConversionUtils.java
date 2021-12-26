@@ -7,7 +7,7 @@ import artoria.util.Assert;
 import java.lang.reflect.Type;
 
 /**
- * Type conversion tools.
+ * The type conversion tools.
  * @author Kahle
  */
 public class ConversionUtils {
@@ -34,7 +34,7 @@ public class ConversionUtils {
         getConversionProvider().addConverter(converter);
     }
 
-    public static void unregister(GenericConverter converter) {
+    public static void deregister(GenericConverter converter) {
 
         getConversionProvider().removeConverter(converter);
     }

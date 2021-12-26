@@ -1,12 +1,10 @@
 package artoria.convert.support;
 
-import artoria.convert.ConversionProvider;
-
 public class ObjectToStringConverter extends AbstractClassConverter {
 
-    public ObjectToStringConverter(ConversionProvider conversionProvider) {
+    public ObjectToStringConverter() {
 
-        super(conversionProvider, Object.class, String.class);
+        super(Object.class, String.class);
     }
 
     @Override

@@ -8,6 +8,11 @@ import java.util.Date;
 
 public class StringToDateConverter extends AbstractClassConverter {
 
+    public StringToDateConverter() {
+
+        super(String.class, Date.class);
+    }
+
     public StringToDateConverter(ConversionProvider conversionProvider) {
 
         super(conversionProvider, String.class, Date.class);
