@@ -2,10 +2,13 @@ package artoria.util;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.test.bean.Cat;
 import artoria.test.bean.Dog;
 import org.junit.Test;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.util.Date;
 
 import static artoria.common.Constants.TEN;
 import static artoria.common.Constants.ZERO;
@@ -37,6 +40,20 @@ public class ClassUtilsTest {
         log.info("{}", ClassUtils.getPrimitive(void.class));
         log.info("{}", ClassUtils.getPrimitive(Void.class));
         log.info("{}", ClassUtils.getPrimitive(Dog.class));
+    }
+
+    @Test
+    public void test4() {
+        log.info("{}", ClassUtils.isSimpleValueType(BigDecimal.class));
+        log.info("{}", ClassUtils.isSimpleValueType(Cat.class));
+        log.info("{}", ClassUtils.isSimpleValueType(Dog.class));
+        log.info("{}", ClassUtils.isSimpleValueType(String.class));
+        log.info("{}", ClassUtils.isSimpleValueType(Date.class));
+        log.info("{}", ClassUtils.isSimpleValueType(ClassUtils.class));
+        log.info("{}", ClassUtils.isSimpleValueType(Boolean.class));
+        log.info("{}", ClassUtils.isSimpleValueType(Number.class));
+        log.info("{}", ClassUtils.isSimpleValueType(Character.class));
+        log.info("{}", ClassUtils.isSimpleValueType(Class.class));
     }
 
 }
