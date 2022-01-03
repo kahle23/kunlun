@@ -15,7 +15,7 @@ import static artoria.lang.ReferenceType.SOFT;
 import static artoria.lang.ReferenceType.WEAK;
 
 /**
- * Reference map can be wrapped as weak and soft references.
+ * The reference map can be wrapped as weak and soft references.
  * @author Kahle
  */
 public class ReferenceMap<K, V> implements Map<K, V> {
