@@ -1,6 +1,8 @@
 package artoria.message;
 
 import artoria.lang.Code;
+import artoria.lang.callback.FailureCallback;
+import artoria.lang.callback.SuccessCallback;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -8,14 +10,14 @@ import artoria.util.Assert;
 import java.util.List;
 
 /**
- * The message send tools.
+ * The message tools.
  * @author Kahle
  */
 public class MessageUtils {
     private static Logger log = LoggerFactory.getLogger(MessageUtils.class);
-    private static MessageProvider messageProvider;
+    private static volatile AsyncMessageProvider messageProvider;
 
-    public static MessageProvider getMessageProvider() {
+    public static AsyncMessageProvider getMessageProvider() {
         if (messageProvider != null) { return messageProvider; }
         synchronized (MessageUtils.class) {
             if (messageProvider != null) { return messageProvider; }
@@ -24,30 +26,40 @@ public class MessageUtils {
         }
     }
 
-    public static void setMessageProvider(MessageProvider messageProvider) {
+    public static void setMessageProvider(AsyncMessageProvider messageProvider) {
         Assert.notNull(messageProvider, "Parameter \"messageProvider\" must not null. ");
         log.info("Set message provider: {}", messageProvider.getClass().getName());
         MessageUtils.messageProvider = messageProvider;
     }
 
-    public static void send(Object message, Code<?>... types) {
+    public static Object send(Object message, Code<?>... types) {
 
-        getMessageProvider().send(message, types);
+        return getMessageProvider().send(message, types);
     }
 
-    public static void sendAsync(Object message, Code<?>... types) {
+    public static Object batchSend(List<?> messages, Code<?>... types) {
 
-        getMessageProvider().sendAsync(message, types);
+        return getMessageProvider().batchSend(messages, types);
     }
 
-    public static void batchSend(List<?> messages, Code<?>... types) {
+    public static <T> T info(Object input, Class<T> clazz) {
 
-        getMessageProvider().batchSend(messages, types);
+        return getMessageProvider().info(input, clazz);
     }
 
-    public static void batchSendAsync(List<?> messages, Code<?>... types) {
+    public static <T> List<T> search(Object input, Class<T> clazz) {
 
-        getMessageProvider().batchSendAsync(messages, types);
+        return getMessageProvider().search(input, clazz);
+    }
+
+    public static void sendAsync(Object message, SuccessCallback<?> fine, FailureCallback fail, Code<?>... types) {
+
+        getMessageProvider().sendAsync(message, fine, fail, types);
+    }
+
+    public static void batchSendAsync(List<?> list, SuccessCallback<?> fine, FailureCallback fail, Code<?>... types) {
+
+        getMessageProvider().batchSendAsync(list, fine, fail, types);
     }
 
 }

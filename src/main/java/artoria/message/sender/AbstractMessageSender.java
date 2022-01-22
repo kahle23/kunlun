@@ -3,6 +3,7 @@ package artoria.message.sender;
 import artoria.lang.Code;
 import artoria.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,12 +26,26 @@ public abstract class AbstractMessageSender implements MessageSender {
     }
 
     @Override
-    public void batchSend(Map<?, ?> properties, List<?> messages) {
+    public Object batchSend(Map<?, ?> properties, List<?> messages) {
         Assert.notEmpty(messages, "Parameter \"messages\" must not empty. ");
+        List<Object> result = new ArrayList<Object>();
         for (Object message : messages) {
-            if (message == null) { continue; }
-            send(properties, message);
+            Object send = send(properties, message);
+            result.add(send);
         }
+        return result;
+    }
+
+    @Override
+    public <T> T info(Map<?, ?> properties, Object input, Class<T> clazz) {
+
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T> List<T> search(Map<?, ?> properties, Object input, Class<T> clazz) {
+
+        throw new UnsupportedOperationException();
     }
 
 }

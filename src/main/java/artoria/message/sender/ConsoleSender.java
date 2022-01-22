@@ -5,6 +5,8 @@ import artoria.exchange.JsonUtils;
 import artoria.lang.Code;
 import artoria.lang.Dict;
 import artoria.message.MessageType;
+import artoria.util.ClassUtils;
+import artoria.util.MapUtils;
 import artoria.util.StringUtils;
 
 import java.util.Map;
@@ -27,12 +29,9 @@ public class ConsoleSender extends AbstractMessageSender {
         super(type);
     }
 
-    private boolean isBasic(Object obj) {
-        return obj instanceof String || obj instanceof Number
-                || obj instanceof Boolean || obj instanceof Character;
-    }
-
-    protected void fill(Map<?, ?> map, StringBuilder builder) {
+    protected void append(StringBuilder builder, Map<?, ?> map) {
+        if (MapUtils.isEmpty(map)) { return; }
+        if (builder == null) { return; }
         for (Map.Entry<?, ?> entry : map.entrySet()) {
             Object entryValue = entry.getValue();
             Object entryKey = entry.getKey();
@@ -46,7 +45,7 @@ public class ConsoleSender extends AbstractMessageSender {
             for (int i = ZERO; i < length; i++) {
                 builder.append(BLANK_SPACE);
             }
-            if (isBasic(entryValue)) {
+            if (entryValue == null || ClassUtils.isSimpleValueType(entryValue.getClass())) {
                 builder.append(entryValue).append(NEWLINE);
             }
             else {
@@ -63,13 +62,13 @@ public class ConsoleSender extends AbstractMessageSender {
         builder.append("Type:               ").append(typeInfo).append(NEWLINE);
         builder.append("Provider:           ").append(getClass().getName()).append(NEWLINE);
         // Fill the builder with properties.
-        fill(properties, builder);
+        append(builder, properties);
         // Fill the builder with message.
-        if (isBasic(message)) {
-            fill(Dict.of("message", String.valueOf(message)), builder);
+        if (message == null || ClassUtils.isSimpleValueType(message.getClass())) {
+            append(builder, Dict.of("message", String.valueOf(message)));
         }
         else {
-            fill(BeanUtils.beanToMap(message), builder);
+            append(builder, BeanUtils.beanToMap(message));
         }
         // End building message
         builder.append("---- End Message ----").append(NEWLINE);
@@ -77,9 +76,9 @@ public class ConsoleSender extends AbstractMessageSender {
     }
 
     @Override
-    public void send(Map<?, ?> properties, Object message) {
-
+    public Object send(Map<?, ?> properties, Object message) {
         System.out.println(convert(message, properties));
+        return Boolean.TRUE;
     }
 
 }

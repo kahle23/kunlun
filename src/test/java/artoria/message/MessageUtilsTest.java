@@ -5,6 +5,8 @@ import artoria.exchange.JsonFeature;
 import artoria.exchange.JsonUtils;
 import artoria.exchange.SimpleJsonProvider;
 import artoria.lang.Dict;
+import artoria.lang.callback.FailureCallback;
+import artoria.lang.callback.SuccessCallback;
 import artoria.mock.MockUtils;
 import artoria.test.bean.User;
 import artoria.util.ThreadUtils;
@@ -36,7 +38,13 @@ public class MessageUtilsTest {
     @Test
     public void test1() {
         MessageUtils.send("Hello, World! ", CONSOLE, LOG);
-        MessageUtils.sendAsync("Async: Hello, World! ", LOG);
+        MessageUtils.sendAsync("Async: Hello, World! ", new SuccessCallback<Object>() {
+            @Override
+            public void onSuccess(Object result) {}
+        }, new FailureCallback() {
+            @Override
+            public void onFailure(Throwable th) {}
+        }, LOG);
     }
 
     @Test
@@ -48,7 +56,13 @@ public class MessageUtilsTest {
     @Test
     public void test3() {
         for (int i = 0; i < 2000; i++) {
-            MessageUtils.sendAsync("Hello, World! ", LOG);
+            MessageUtils.sendAsync("Hello, World! ", new SuccessCallback<Object>() {
+                @Override
+                public void onSuccess(Object result) {}
+            }, new FailureCallback() {
+                @Override
+                public void onFailure(Throwable th) {}
+            }, LOG);
         }
         ThreadUtils.sleepQuietly(1000L);
     }

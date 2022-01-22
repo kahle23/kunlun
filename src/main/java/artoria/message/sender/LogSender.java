@@ -25,9 +25,9 @@ public class LogSender extends ConsoleSender {
     }
 
     @Override
-    public void send(Map<?, ?> properties, Object message) {
-
+    public Object send(Map<?, ?> properties, Object message) {
         log.info(convert(message, properties));
+        return Boolean.TRUE;
     }
 
 }
