@@ -25,7 +25,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * The simple message provider.
  * @author Kahle
  */
-public class SimpleMessageProvider extends AbstractMessageProvider implements AsyncMessageProvider {
+public class SimpleMessageProvider extends ClassBasedMessageProvider implements AsyncMessageProvider {
     private static final String ASYNC_SEND_THREAD_NAME = "message-async-send-executor";
     private static Logger log = LoggerFactory.getLogger(SimpleMessageProvider.class);
     private final ExecutorService executorService;
