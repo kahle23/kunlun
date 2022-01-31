@@ -5,7 +5,7 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 
 /**
- * The reference type of Java.
+ * The reference type of java.
  * @author Kahle
  */
 public enum ReferenceType {

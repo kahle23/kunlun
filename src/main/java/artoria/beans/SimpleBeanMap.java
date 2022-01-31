@@ -13,7 +13,7 @@ import artoria.util.StringUtils;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,10 +25,10 @@ import static artoria.common.Constants.*;
  */
 public class SimpleBeanMap extends BeanMap {
     private static Logger log = LoggerFactory.getLogger(SimpleBeanMap.class);
-    private Map<String, Method> writeMethodMap = new HashMap<String, Method>();
-    private Map<String, Method> readMethodMap = new HashMap<String, Method>();
-    private Boolean ignoreException = true;
     private static Method methodGetClass;
+    private Map<String, Method> writeMethodMap = new LinkedHashMap<String, Method>();
+    private Map<String, Method> readMethodMap = new LinkedHashMap<String, Method>();
+    private Boolean ignoreException = true;
     private Class<?> beanClass;
 
     static {

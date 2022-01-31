@@ -3,6 +3,7 @@ package artoria.convert;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
+import artoria.util.ObjectUtils;
 
 import java.lang.reflect.Type;
 
@@ -12,7 +13,7 @@ import java.lang.reflect.Type;
  */
 public class ConversionUtils {
     private static Logger log = LoggerFactory.getLogger(ConversionUtils.class);
-    private static ConversionProvider conversionProvider;
+    private static volatile ConversionProvider conversionProvider;
 
     public static ConversionProvider getConversionProvider() {
         if (conversionProvider != null) { return conversionProvider; }
@@ -52,6 +53,12 @@ public class ConversionUtils {
     public static Object convert(Object source, Type sourceType, Type targetType) {
 
         return getConversionProvider().convert(source, sourceType, targetType);
+    }
+
+    public static <T> T convert(Object source, Class<T> targetType) {
+        // Make sure that the target type can be converted successfully,
+        // Otherwise, a cast exception will occur.
+        return ObjectUtils.cast(convert(source, (Type) targetType), targetType);
     }
 
 }
