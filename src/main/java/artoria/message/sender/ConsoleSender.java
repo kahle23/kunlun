@@ -2,13 +2,10 @@ package artoria.message.sender;
 
 import artoria.beans.BeanUtils;
 import artoria.exchange.JsonUtils;
-import artoria.lang.Code;
 import artoria.lang.Dict;
-import artoria.message.MessageType;
-import artoria.util.ClassUtils;
-import artoria.util.MapUtils;
-import artoria.util.StringUtils;
+import artoria.util.*;
 
+import java.util.List;
 import java.util.Map;
 
 import static artoria.common.Constants.*;
@@ -18,16 +15,6 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class ConsoleSender extends AbstractMessageSender {
-
-    public ConsoleSender() {
-
-        this(MessageType.CONSOLE);
-    }
-
-    public ConsoleSender(Code<?> type) {
-
-        super(type);
-    }
 
     protected void append(StringBuilder builder, Map<?, ?> map) {
         if (MapUtils.isEmpty(map)) { return; }
@@ -58,8 +45,6 @@ public class ConsoleSender extends AbstractMessageSender {
         StringBuilder builder = new StringBuilder(NEWLINE);
         builder.append("---- Begin Message ----").append(NEWLINE);
         // Begin building message.
-        String typeInfo = getType().getCode() + " (" + getType().getDescription() + ")";
-        builder.append("Type:               ").append(typeInfo).append(NEWLINE);
         builder.append("Provider:           ").append(getClass().getName()).append(NEWLINE);
         // Fill the builder with properties.
         append(builder, properties);
@@ -76,9 +61,23 @@ public class ConsoleSender extends AbstractMessageSender {
     }
 
     @Override
-    public Object send(Map<?, ?> properties, Object message) {
+    public <T> T send(Map<?, ?> properties, Object message, Class<T> clazz) {
+        Assert.notNull(message, "Parameter \"message\" must not null. ");
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        isSupport(new Class[]{Object.class, Boolean.class}, clazz);
         System.out.println(convert(message, properties));
-        return Boolean.TRUE;
+        return ObjectUtils.cast(Boolean.TRUE, clazz);
+    }
+
+    @Override
+    public <T> T batchSend(Map<?, ?> properties, List<?> messages, Class<T> clazz) {
+        Assert.notEmpty(messages, "Parameter \"messages\" must not empty. ");
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        isSupport(new Class[]{Object.class, Boolean.class}, clazz);
+        for (Object message : messages) {
+            System.out.println(convert(message, properties));
+        }
+        return ObjectUtils.cast(Boolean.TRUE, clazz);
     }
 
 }

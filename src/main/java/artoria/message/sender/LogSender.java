@@ -1,10 +1,11 @@
 package artoria.message.sender;
 
-import artoria.lang.Code;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.message.MessageType;
+import artoria.util.Assert;
+import artoria.util.ObjectUtils;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,20 +15,24 @@ import java.util.Map;
 public class LogSender extends ConsoleSender {
     private static Logger log = LoggerFactory.getLogger(LogSender.class);
 
-    public LogSender() {
-
-        this(MessageType.LOG);
-    }
-
-    public LogSender(Code<?> type) {
-
-        super(type);
+    @Override
+    public <T> T send(Map<?, ?> properties, Object message, Class<T> clazz) {
+        Assert.notNull(message, "Parameter \"message\" must not null. ");
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        isSupport(new Class[]{Object.class, Boolean.class}, clazz);
+        log.info(convert(message, properties));
+        return ObjectUtils.cast(Boolean.TRUE, clazz);
     }
 
     @Override
-    public Object send(Map<?, ?> properties, Object message) {
-        log.info(convert(message, properties));
-        return Boolean.TRUE;
+    public <T> T batchSend(Map<?, ?> properties, List<?> messages, Class<T> clazz) {
+        Assert.notEmpty(messages, "Parameter \"messages\" must not empty. ");
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        isSupport(new Class[]{Object.class, Boolean.class}, clazz);
+        for (Object message : messages) {
+            log.info(convert(message, properties));
+        }
+        return ObjectUtils.cast(Boolean.TRUE, clazz);
     }
 
 }

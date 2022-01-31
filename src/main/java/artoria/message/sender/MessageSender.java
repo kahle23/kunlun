@@ -1,7 +1,5 @@
 package artoria.message.sender;
 
-import artoria.lang.Code;
-
 import java.util.List;
 import java.util.Map;
 
@@ -12,26 +10,22 @@ import java.util.Map;
 public interface MessageSender {
 
     /**
-     * The type that the message sender can handle.
-     * @return The type of the message sender
-     */
-    Code<?> getType();
-
-    /**
      * Sends a message.
      * @param properties Some of the properties
      * @param message The message to be sent
+     * @param clazz The type of the return value
      * @return The result of the invoke
      */
-    Object send(Map<?, ?> properties, Object message);
+    <T> T send(Map<?, ?> properties, Object message, Class<T> clazz);
 
     /**
      * Batch sends multiple message.
      * @param properties Some of the properties
      * @param messages The list of messages to be sent
+     * @param clazz The type of the return value
      * @return The result of the invoke
      */
-    Object batchSend(Map<?, ?> properties, List<?> messages);
+    <T> T batchSend(Map<?, ?> properties, List<?> messages, Class<T> clazz);
 
     /**
      * Query message based on entered criteria.

@@ -1,6 +1,6 @@
 package artoria.message;
 
-import artoria.lang.Code;
+import artoria.message.sender.MessageSender;
 
 import java.util.List;
 import java.util.Map;
@@ -30,37 +30,60 @@ public interface MessageProvider {
     Map<String, Object> getCommonProperties();
 
     /**
-     * Sends a message(perhaps more than one) of the specified multiple types.
-     * @param message The message to be sent
-     * @param types The type or channel of message (abstract and custom)
-     * @return The result of the sender invoke
+     * Register the message sender.
+     * @param type The message parameters type
+     * @param senderName The name of the message sender
+     * @param messageSender The message sender
      */
-    Object send(Object message, Code<?>... types);
+    void registerSender(Class<?> type, String senderName, MessageSender messageSender);
 
     /**
-     * Batch sends multiple messages of the specified multiple types.
-     * @param messages The list of messages to be sent
-     * @param types The type or channel of message (abstract and custom)
+     * Deregister the message sender.
+     * @param type The message parameters type
+     * @param senderName The name of the message sender
+     */
+    void deregisterSender(Class<?> type, String senderName);
+
+    /**
+     * Sends a message(perhaps more than one).
+     * If you want to be asynchronous, the message object can contain "SuccessCallback" and "FailureCallback".
+     * @param message The message to be sent
+     * @param senderName The name of the message sender
+     * @param clazz The type of the return value
+     * @param <T> The generic type of the return value
      * @return The result of the sender invoke
      */
-    Object batchSend(List<?> messages, Code<?>... types);
+    <T> T send(Object message, String senderName, Class<T> clazz);
+
+    /**
+     * Batch sends multiple messages.
+     * If you want to be asynchronous, the message object can contain "SuccessCallback" and "FailureCallback".
+     * @param messages The list of messages to be sent
+     * @param senderName The name of the message sender
+     * @param clazz The type of the return value
+     * @param <T> The generic type of the return value
+     * @return The result of the sender invoke
+     */
+    <T> T batchSend(List<?> messages, String senderName, Class<T> clazz);
 
     /**
      * Query message based on entered criteria.
      * @param input The input query criteria
+     * @param senderName The name of the message sender
      * @param clazz The type of the return value
      * @param <T> The generic type of the return value
      * @return The queried message record or null
      */
-    <T> T info(Object input, Class<T> clazz);
+    <T> T info(Object input, String senderName, Class<T> clazz);
 
     /**
      * Search the list of messages based on entered criteria.
      * @param input The input query criteria
+     * @param senderName The name of the message sender
      * @param clazz The type of the return value
      * @param <T> The generic type of the return value
      * @return The queried message list or null
      */
-    <T> List<T> search(Object input, Class<T> clazz);
+    <T> List<T> search(Object input, String senderName, Class<T> clazz);
 
 }

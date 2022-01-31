@@ -1,9 +1,5 @@
 package artoria.message.sender;
 
-import artoria.lang.Code;
-import artoria.util.Assert;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,28 +8,24 @@ import java.util.Map;
  * @author Kahle
  */
 public abstract class AbstractMessageSender implements MessageSender {
-    private final Code<?> type;
 
-    public AbstractMessageSender(Code<?> type) {
-        Assert.notNull(type, "Parameter \"type\" must not null. ");
-        this.type = type;
-    }
-
-    @Override
-    public Code<?> getType() {
-
-        return type;
-    }
-
-    @Override
-    public Object batchSend(Map<?, ?> properties, List<?> messages) {
-        Assert.notEmpty(messages, "Parameter \"messages\" must not empty. ");
-        List<Object> result = new ArrayList<Object>();
-        for (Object message : messages) {
-            Object send = send(properties, message);
-            result.add(send);
+    protected void isSupport(Class<?>[] supportClasses, Class<?> clazz) {
+        for (Class<?> supportClass : supportClasses) {
+            if (supportClass.equals(clazz)) { return; }
         }
-        return result;
+        throw new IllegalArgumentException("Parameter \"clazz\" is not supported. ");
+    }
+
+    @Override
+    public <T> T send(Map<?, ?> properties, Object message, Class<T> clazz) {
+
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T> T batchSend(Map<?, ?> properties, List<?> messages, Class<T> clazz) {
+
+        throw new UnsupportedOperationException();
     }
 
     @Override
