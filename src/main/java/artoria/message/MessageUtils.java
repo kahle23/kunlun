@@ -2,7 +2,7 @@ package artoria.message;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.message.sender.MessageSender;
+import artoria.message.handler.MessageHandler;
 import artoria.util.Assert;
 
 import java.util.List;
@@ -32,29 +32,29 @@ public class MessageUtils {
         MessageUtils.messageProvider = messageProvider;
     }
 
-    public static void registerSender(Class<?> type, String senderName, MessageSender messageSender) {
+    public static void registerHandler(Class<?> type, String handlerName, MessageHandler messageHandler) {
 
-        getMessageProvider().registerSender(type, senderName, messageSender);
+        getMessageProvider().registerHandler(type, handlerName, messageHandler);
     }
 
-    public static void registerSender(Class<?> type, MessageSender messageSender) {
+    public static void registerHandler(Class<?> type, MessageHandler messageHandler) {
 
-        getMessageProvider().registerSender(type, EMPTY_STRING, messageSender);
+        getMessageProvider().registerHandler(type, EMPTY_STRING, messageHandler);
     }
 
-    public static void deregisterSender(Class<?> type, String senderName) {
+    public static void deregisterHandler(Class<?> type, String handlerName) {
 
-        getMessageProvider().deregisterSender(type, senderName);
+        getMessageProvider().deregisterHandler(type, handlerName);
     }
 
-    public static void deregisterSender(Class<?> type) {
+    public static void deregisterHandler(Class<?> type) {
 
-        getMessageProvider().deregisterSender(type, EMPTY_STRING);
+        getMessageProvider().deregisterHandler(type, EMPTY_STRING);
     }
 
-    public static <T> T send(Object message, String senderName, Class<T> clazz) {
+    public static <T> T send(Object message, String handlerName, Class<T> clazz) {
 
-        return getMessageProvider().send(message, senderName, clazz);
+        return getMessageProvider().send(message, handlerName, clazz);
     }
 
     public static <T> T send(Object message, Class<T> clazz) {
@@ -62,9 +62,9 @@ public class MessageUtils {
         return getMessageProvider().send(message, EMPTY_STRING, clazz);
     }
 
-    public static <T> T batchSend(List<?> messages, String senderName, Class<T> clazz) {
+    public static <T> T batchSend(List<?> messages, String handlerName, Class<T> clazz) {
 
-        return getMessageProvider().batchSend(messages, senderName, clazz);
+        return getMessageProvider().batchSend(messages, handlerName, clazz);
     }
 
     public static <T> T batchSend(List<?> messages, Class<T> clazz) {
@@ -72,9 +72,9 @@ public class MessageUtils {
         return getMessageProvider().batchSend(messages, EMPTY_STRING, clazz);
     }
 
-    public static <T> T info(Object input, String senderName, Class<T> clazz) {
+    public static <T> T info(Object input, String handlerName, Class<T> clazz) {
 
-        return getMessageProvider().info(input, senderName, clazz);
+        return getMessageProvider().info(input, handlerName, clazz);
     }
 
     public static <T> T info(Object input, Class<T> clazz) {
@@ -82,9 +82,9 @@ public class MessageUtils {
         return getMessageProvider().info(input, EMPTY_STRING, clazz);
     }
 
-    public static <T> List<T> search(Object input, String senderName, Class<T> clazz) {
+    public static <T> List<T> search(Object input, String handlerName, Class<T> clazz) {
 
-        return getMessageProvider().search(input, senderName, clazz);
+        return getMessageProvider().search(input, handlerName, clazz);
     }
 
     public static <T> List<T> search(Object input, Class<T> clazz) {

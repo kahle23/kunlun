@@ -1,4 +1,4 @@
-package artoria.message.sender;
+package artoria.message.handler;
 
 import artoria.beans.BeanUtils;
 import artoria.exchange.JsonUtils;
@@ -11,10 +11,10 @@ import java.util.Map;
 import static artoria.common.Constants.*;
 
 /**
- * The sender of the message sent to the console.
+ * The handler of the message sent to the console.
  * @author Kahle
  */
-public class ConsoleSender extends AbstractMessageSender {
+public class ConsoleMessageHandler extends AbstractMessageHandler {
 
     protected void append(StringBuilder builder, Map<?, ?> map) {
         if (MapUtils.isEmpty(map)) { return; }
@@ -64,7 +64,7 @@ public class ConsoleSender extends AbstractMessageSender {
     public <T> T send(Map<?, ?> properties, Object message, Class<T> clazz) {
         Assert.notNull(message, "Parameter \"message\" must not null. ");
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        isSupport(new Class[]{Object.class, Boolean.class}, clazz);
+        isSupport(new Class[]{Boolean.class}, clazz);
         System.out.println(convert(message, properties));
         return ObjectUtils.cast(Boolean.TRUE, clazz);
     }
@@ -73,7 +73,7 @@ public class ConsoleSender extends AbstractMessageSender {
     public <T> T batchSend(Map<?, ?> properties, List<?> messages, Class<T> clazz) {
         Assert.notEmpty(messages, "Parameter \"messages\" must not empty. ");
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        isSupport(new Class[]{Object.class, Boolean.class}, clazz);
+        isSupport(new Class[]{Boolean.class}, clazz);
         for (Object message : messages) {
             System.out.println(convert(message, properties));
         }

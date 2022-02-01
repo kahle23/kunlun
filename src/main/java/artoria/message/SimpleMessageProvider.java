@@ -2,9 +2,9 @@ package artoria.message;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.message.sender.ConsoleSender;
-import artoria.message.sender.LogSender;
-import artoria.message.sender.MessageSender;
+import artoria.message.handler.ConsoleMessageHandler;
+import artoria.message.handler.LogMessageHandler;
+import artoria.message.handler.MessageHandler;
 
 import java.util.Map;
 
@@ -16,13 +16,13 @@ public class SimpleMessageProvider extends AbstractMessageProvider {
     private static Logger log = LoggerFactory.getLogger(SimpleMessageProvider.class);
 
     protected SimpleMessageProvider(Map<String, Object> commonProperties,
-                                 Map<String, MessageSender> messageSenders) {
-        super(commonProperties, messageSenders);
+                                 Map<String, MessageHandler> messageHandlers) {
+        super(commonProperties, messageHandlers);
     }
 
     public SimpleMessageProvider() {
-        registerSender(String.class, "console", new ConsoleSender());
-        registerSender(String.class, "log", new LogSender());
+        registerHandler(String.class, "console", new ConsoleMessageHandler());
+        registerHandler(String.class, "log", new LogMessageHandler());
     }
 
 }

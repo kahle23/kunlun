@@ -1,13 +1,21 @@
-package artoria.message.sender;
+package artoria.message.handler;
+
+import artoria.lang.Handler;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * The message sender used to send and query messages.
+ * The message handler used to send and query messages.
  * @author Kahle
  */
-public interface MessageSender {
+public interface MessageHandler extends Handler {
+
+    /**
+     *
+     * @param listener
+     */
+    void registerListener(Object listener);
 
     /**
      * Sends a message.

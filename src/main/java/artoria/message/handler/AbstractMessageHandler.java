@@ -1,19 +1,26 @@
-package artoria.message.sender;
+package artoria.message.handler;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * The abstract message sender.
+ * The abstract message handler.
  * @author Kahle
  */
-public abstract class AbstractMessageSender implements MessageSender {
+public abstract class AbstractMessageHandler implements MessageHandler {
 
     protected void isSupport(Class<?>[] supportClasses, Class<?> clazz) {
+        if (Object.class.equals(clazz)) { return; }
         for (Class<?> supportClass : supportClasses) {
             if (supportClass.equals(clazz)) { return; }
         }
         throw new IllegalArgumentException("Parameter \"clazz\" is not supported. ");
+    }
+
+    @Override
+    public void registerListener(Object listener) {
+
+        throw new UnsupportedOperationException();
     }
 
     @Override
