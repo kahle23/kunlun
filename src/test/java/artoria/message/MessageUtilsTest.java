@@ -5,8 +5,8 @@ import artoria.exchange.JsonFeature;
 import artoria.exchange.JsonUtils;
 import artoria.exchange.SimpleJsonProvider;
 import artoria.lang.Dict;
-import artoria.message.handler.ConsoleMessageHandler;
-import artoria.message.handler.LogMessageHandler;
+import artoria.message.handler.ConsoleHandler;
+import artoria.message.handler.LogHandler;
 import artoria.mock.MockUtils;
 import artoria.test.bean.User;
 import com.alibaba.fastjson.JSON;
@@ -31,8 +31,11 @@ public class MessageUtilsTest {
         });
         Dict dict = Dict.of("hostname", Constants.HOST_NAME);
         MessageUtils.getMessageProvider().registerCommonProperties(dict);
-        MessageUtils.registerHandler(User.class, CONSOLE, new ConsoleMessageHandler());
-        MessageUtils.registerHandler(User.class, LOG, new LogMessageHandler());
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        LogHandler logHandler = new LogHandler();
+        MessageUtils.registerHandler(CONSOLE, consoleHandler);
+        MessageUtils.registerHandler(LOG, logHandler);
+        MessageUtils.registerHandler(User.class, consoleHandler);
     }
 
     @Test
@@ -44,7 +47,7 @@ public class MessageUtilsTest {
     @Test
     public void test2() {
         User user = MockUtils.mock(User.class);
-        MessageUtils.send(user, CONSOLE, Boolean.class);
+        MessageUtils.send(user, Boolean.class);
         MessageUtils.send(user, LOG, Boolean.class);
     }
 

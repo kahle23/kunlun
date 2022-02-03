@@ -12,12 +12,6 @@ import java.util.Map;
 public interface MessageHandler extends Handler {
 
     /**
-     *
-     * @param listener
-     */
-    void registerListener(Object listener);
-
-    /**
      * Sends a message.
      * @param properties Some of the properties
      * @param message The message to be sent

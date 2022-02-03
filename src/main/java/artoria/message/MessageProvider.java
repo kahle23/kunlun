@@ -31,18 +31,16 @@ public interface MessageProvider {
 
     /**
      * Register the message handler.
-     * @param type The message parameters type
-     * @param handlerName The name of the message handler
+     * @param handlerName The message handler name or the name of the type of input parameter
      * @param messageHandler The message handler
      */
-    void registerHandler(Class<?> type, String handlerName, MessageHandler messageHandler);
+    void registerHandler(String handlerName, MessageHandler messageHandler);
 
     /**
      * Deregister the message handler.
-     * @param type The message parameters type
-     * @param handlerName The name of the message handler
+     * @param handlerName The message handler name or the name of the type of input parameter
      */
-    void deregisterHandler(Class<?> type, String handlerName);
+    void deregisterHandler(String handlerName);
 
     /**
      * Sends a message(perhaps more than one).

@@ -18,12 +18,6 @@ public abstract class AbstractMessageHandler implements MessageHandler {
     }
 
     @Override
-    public void registerListener(Object listener) {
-
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public <T> T send(Map<?, ?> properties, Object message, Class<T> clazz) {
 
         throw new UnsupportedOperationException();

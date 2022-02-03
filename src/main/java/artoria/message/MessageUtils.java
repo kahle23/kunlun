@@ -32,24 +32,24 @@ public class MessageUtils {
         MessageUtils.messageProvider = messageProvider;
     }
 
-    public static void registerHandler(Class<?> type, String handlerName, MessageHandler messageHandler) {
+    public static void registerHandler(String handlerName, MessageHandler messageHandler) {
 
-        getMessageProvider().registerHandler(type, handlerName, messageHandler);
+        getMessageProvider().registerHandler(handlerName, messageHandler);
     }
 
     public static void registerHandler(Class<?> type, MessageHandler messageHandler) {
-
-        getMessageProvider().registerHandler(type, EMPTY_STRING, messageHandler);
+        Assert.notNull(type, "Parameter \"type\" must not null. ");
+        getMessageProvider().registerHandler(type.getName(), messageHandler);
     }
 
-    public static void deregisterHandler(Class<?> type, String handlerName) {
+    public static void deregisterHandler(String handlerName) {
 
-        getMessageProvider().deregisterHandler(type, handlerName);
+        getMessageProvider().deregisterHandler(handlerName);
     }
 
     public static void deregisterHandler(Class<?> type) {
-
-        getMessageProvider().deregisterHandler(type, EMPTY_STRING);
+        Assert.notNull(type, "Parameter \"type\" must not null. ");
+        getMessageProvider().deregisterHandler(type.getName());
     }
 
     public static <T> T send(Object message, String handlerName, Class<T> clazz) {

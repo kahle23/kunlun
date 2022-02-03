@@ -12,8 +12,8 @@ import java.util.Map;
  * The handler of the message sent to the log.
  * @author Kahle
  */
-public class LogMessageHandler extends ConsoleMessageHandler {
-    private static Logger log = LoggerFactory.getLogger(LogMessageHandler.class);
+public class LogHandler extends ConsoleHandler {
+    private static Logger log = LoggerFactory.getLogger(LogHandler.class);
 
     @Override
     public <T> T send(Map<?, ?> properties, Object message, Class<T> clazz) {

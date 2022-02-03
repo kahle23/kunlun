@@ -2,8 +2,8 @@ package artoria.message;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.message.handler.ConsoleMessageHandler;
-import artoria.message.handler.LogMessageHandler;
+import artoria.message.handler.ConsoleHandler;
+import artoria.message.handler.LogHandler;
 import artoria.message.handler.MessageHandler;
 
 import java.util.Map;
@@ -21,8 +21,8 @@ public class SimpleMessageProvider extends AbstractMessageProvider {
     }
 
     public SimpleMessageProvider() {
-        registerHandler(String.class, "console", new ConsoleMessageHandler());
-        registerHandler(String.class, "log", new LogMessageHandler());
+        registerHandler("console", new ConsoleHandler());
+        registerHandler("log", new LogHandler());
     }
 
 }

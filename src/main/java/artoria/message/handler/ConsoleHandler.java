@@ -14,7 +14,7 @@ import static artoria.common.Constants.*;
  * The handler of the message sent to the console.
  * @author Kahle
  */
-public class ConsoleMessageHandler extends AbstractMessageHandler {
+public class ConsoleHandler extends AbstractMessageHandler {
 
     protected void append(StringBuilder builder, Map<?, ?> map) {
         if (MapUtils.isEmpty(map)) { return; }
