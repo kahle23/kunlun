@@ -36,7 +36,6 @@ public class CacheConversionProviderTest {
         String cacheName="test";
         Cache cache = new SimpleCache(
                 cacheName, ZERO, 3 * 60 * 1000, ReferenceType.SOFT);
-        cache.setRecordLog(true);
         CacheUtils.register(cache);
         conversionProvider = new SimpleConversionProvider();
         conversionProvider = new CacheConversionProvider(

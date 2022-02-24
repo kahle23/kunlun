@@ -1,8 +1,6 @@
 package artoria.cache;
 
 import artoria.exception.ExceptionUtils;
-import artoria.logging.Logger;
-import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 import artoria.util.ObjectUtils;
 
@@ -10,44 +8,23 @@ import java.util.Date;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import static artoria.common.Constants.*;
+import static artoria.common.Constants.MINUS_ONE;
+import static artoria.common.Constants.ZERO;
 
 /**
  * The abstract value wrapper cache.
  * @author Kahle
  */
-public abstract class AbstractReadWriteLockCache extends AbstractCache {
+public abstract class AbstractValueWrapperCache extends AbstractCache {
+
     /**
-     * The log object.
+     * The default constructor.
+     * @param name The cache name
      */
-    private static Logger log = LoggerFactory.getLogger(AbstractReadWriteLockCache.class);
-    /**
-     * The read write lock.
-     */
-    private final ReadWriteLock readWriteLock;
+    public AbstractValueWrapperCache(String name) {
 
-    public AbstractReadWriteLockCache(String name) {
-
-        this(name, new ReentrantReadWriteLock());
-    }
-
-    public AbstractReadWriteLockCache(String name, ReadWriteLock readWriteLock) {
         super(name);
-        Assert.notNull(readWriteLock, "Parameter \"readWriteLock\" must not null. ");
-        this.readWriteLock = readWriteLock;
-    }
-
-    /**
-     * Get the read write lock.
-     * @return The read write lock
-     */
-    protected ReadWriteLock getReadWriteLock() {
-
-        return readWriteLock;
     }
 
     /**
@@ -77,6 +54,27 @@ public abstract class AbstractReadWriteLockCache extends AbstractCache {
      */
     protected abstract void clearExpired();
 
+    /**
+     * Calculate time to live.
+     * @param timeToLive The amount of time for the element to live
+     * @param timeToIdle The amount of time for the element to idle
+     * @return The time to live
+     */
+    protected long calcTimeToLive(long timeToLive, long timeToIdle) {
+        long result;
+        if (timeToLive >= ZERO && timeToIdle >= ZERO) {
+            result = Math.min(timeToLive, timeToIdle);
+        }
+        else if (timeToLive >= ZERO) {
+            result = timeToLive;
+        }
+        else if (timeToIdle >= ZERO) {
+            result = timeToIdle;
+        }
+        else { result = MINUS_ONE; }
+        return result;
+    }
+
     @Override
     public <T> T get(Object key, Callable<T> callable) {
         Assert.notNull(callable, "Parameter \"callable\" must not null. ");
@@ -85,17 +83,10 @@ public abstract class AbstractReadWriteLockCache extends AbstractCache {
         if (value != null) { return ObjectUtils.cast(value); }
         synchronized (String.valueOf(key).intern()) {
             // Try to get again.
-            Lock readLock = getReadWriteLock().readLock();
-            readLock.lock();
-            try {
-                ValueWrapper valueWrapper = getStorageValue(key);
-                if (valueWrapper != null) {
-                    value = valueWrapper.getValue();
-                    return ObjectUtils.cast(value);
-                }
-            }
-            finally {
-                readLock.unlock();
+            ValueWrapper valueWrapper = getStorageValue(key);
+            if (valueWrapper != null) {
+                value = valueWrapper.getValue();
+                return ObjectUtils.cast(value);
             }
             // Try to call.
             try {
@@ -115,37 +106,21 @@ public abstract class AbstractReadWriteLockCache extends AbstractCache {
     @Override
     public Object get(Object key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Lock readLock = getReadWriteLock().readLock();
-        readLock.lock();
-        try {
-            ValueWrapper valueWrapper = getStorageValue(key);
-            Object value = valueWrapper != null ? valueWrapper.getValue() : null;
-            recordTouch(key, value != null);
-            return value;
-        }
-        finally {
-            readLock.unlock();
-        }
+        ValueWrapper valueWrapper = getStorageValue(key);
+        return valueWrapper != null ? valueWrapper.getValue() : null;
     }
 
     @Override
     public Object put(Object key, Object value) {
         Assert.notNull(value, "Parameter \"value\" must not null. ");
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Lock writeLock = getReadWriteLock().writeLock();
-        writeLock.lock();
-        try {
-            // Querying and reusing old values requires resetting the expiration time.
-            // So it's a good idea to construct a new value and set it.
-            ValueWrapper valueWrapper = putStorageValue(key, new ValueWrapper(key, value));
-            Object preValue = valueWrapper != null ? valueWrapper.getValue() : null;
-            if (isFull()) { prune(); }
-            else { clearExpired(); }
-            return preValue;
-        }
-        finally {
-            writeLock.unlock();
-        }
+        // Querying and reusing old values requires resetting the expiration time.
+        // So it's a good idea to construct a new value and set it.
+        ValueWrapper valueWrapper = putStorageValue(key, new ValueWrapper(key, value));
+        Object preValue = valueWrapper != null ? valueWrapper.getValue() : null;
+        if (isFull()) { prune(); }
+        else { clearExpired(); }
+        return preValue;
     }
 
     @Override
@@ -155,35 +130,20 @@ public abstract class AbstractReadWriteLockCache extends AbstractCache {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         Assert.isTrue(timeToLive >= ZERO,
                 "Parameter \"timeToLive\" must greater than or equal to 0. ");
-        Lock writeLock = getReadWriteLock().writeLock();
-        writeLock.lock();
-        try {
-            Object preValue = put(key, value);
-            expire(key, timeToLive, timeUnit);
-            return preValue;
-        }
-        finally {
-            writeLock.unlock();
-        }
+        Object preValue = put(key, value);
+        expire(key, timeToLive, timeUnit);
+        return preValue;
     }
 
     @Override
     public Object putIfAbsent(Object key, Object value) {
         Assert.notNull(value, "Parameter \"value\" must not null. ");
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Lock writeLock = getReadWriteLock().writeLock();
-        writeLock.lock();
-        try {
-            // Write locks can acquire read locks.
-            ValueWrapper nowValue = getStorageValue(key);
-            if (nowValue == null) {
-                return put(key, value);
-            }
-            return null;
+        ValueWrapper nowValue = getStorageValue(key);
+        if (nowValue == null) {
+            return put(key, value);
         }
-        finally {
-            writeLock.unlock();
-        }
+        return null;
     }
 
     @Override
@@ -193,18 +153,11 @@ public abstract class AbstractReadWriteLockCache extends AbstractCache {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         Assert.isTrue(timeToLive >= ZERO,
                 "Parameter \"timeToLive\" must greater than or equal to 0. ");
-        Lock writeLock = getReadWriteLock().writeLock();
-        writeLock.lock();
-        try {
-            ValueWrapper nowValue = getStorageValue(key);
-            if (nowValue == null) {
-                return put(key, value, timeToLive, timeUnit);
-            }
-            return null;
+        ValueWrapper nowValue = getStorageValue(key);
+        if (nowValue == null) {
+            return put(key, value, timeToLive, timeUnit);
         }
-        finally {
-            writeLock.unlock();
-        }
+        return null;
     }
 
     @Override
@@ -213,19 +166,10 @@ public abstract class AbstractReadWriteLockCache extends AbstractCache {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         Assert.isTrue(timeToLive >= ZERO,
                 "Parameter \"timeToLive\" must greater than or equal to 0. ");
-        Lock readLock = getReadWriteLock().readLock();
-        readLock.lock();
-        try {
-            // It does not change the reference to the value wrapper.
-            // So using read locks is enough.
-            ValueWrapper valueWrapper = getStorageValue(key);
-            if (valueWrapper == null) { return false; }
-            valueWrapper.expire(timeUnit.toMillis(timeToLive));
-            return true;
-        }
-        finally {
-            readLock.unlock();
-        }
+        ValueWrapper valueWrapper = getStorageValue(key);
+        if (valueWrapper == null) { return false; }
+        valueWrapper.expire(timeUnit.toMillis(timeToLive));
+        return true;
     }
 
     @Override
@@ -240,33 +184,18 @@ public abstract class AbstractReadWriteLockCache extends AbstractCache {
     @Override
     public boolean persist(Object key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Lock readLock = getReadWriteLock().readLock();
-        readLock.lock();
-        try {
-            ValueWrapper valueWrapper = getStorageValue(key);
-            if (valueWrapper == null) { return false; }
-            valueWrapper.expire(MINUS_ONE);
-            return true;
-        }
-        finally {
-            readLock.unlock();
-        }
+        ValueWrapper valueWrapper = getStorageValue(key);
+        if (valueWrapper == null) { return false; }
+        valueWrapper.expire(MINUS_ONE);
+        return true;
     }
 
     @Override
     public Object remove(Object key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Lock writeLock = getReadWriteLock().writeLock();
-        writeLock.lock();
-        try {
-            ValueWrapper remove = removeStorageValue(key);
-            recordEviction(key, ONE);
-            clearExpired();
-            return remove;
-        }
-        finally {
-            writeLock.unlock();
-        }
+        ValueWrapper remove = removeStorageValue(key);
+        clearExpired();
+        return remove;
     }
 
     protected class ValueWrapper {
@@ -291,7 +220,7 @@ public abstract class AbstractReadWriteLockCache extends AbstractCache {
          */
         private final AtomicLong accessCount = new AtomicLong();
 
-        public ValueWrapper(Object key, Object value) {
+        protected ValueWrapper(Object key, Object value) {
             Assert.notNull(key, "Parameter \"key\" must not null. ");
             this.lastAccessTime = currentTimeMillis();
             this.expirationTime = MINUS_ONE;

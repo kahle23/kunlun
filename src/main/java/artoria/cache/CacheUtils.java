@@ -20,7 +20,7 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class CacheUtils {
-    private static final Map<String, Cache> STORAGE = new ConcurrentHashMap<String, Cache>();
+    private static final Map<String, Cache> MANAGER = new ConcurrentHashMap<String, Cache>();
     private static Logger log = LoggerFactory.getLogger(CacheUtils.class);
 
     public static void register(Cache cache) {
@@ -29,32 +29,31 @@ public class CacheUtils {
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
         String cacheClassName = cache.getClass().getName();
         log.info("Register \"{}\" to \"{}\". ", cacheClassName, cacheName);
-        STORAGE.put(cacheName, cache);
+        MANAGER.put(cacheName, cache);
     }
 
-    public static Cache unregister(String cacheName) {
+    public static Cache deregister(String cacheName) {
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        Cache remove = STORAGE.remove(cacheName);
+        Cache remove = MANAGER.remove(cacheName);
         if (remove != null) {
             String removeClassName = remove.getClass().getName();
-            log.info("Unregister \"{}\" to \"{}\". ", removeClassName, cacheName);
+            log.info("Deregister \"{}\" to \"{}\". ", removeClassName, cacheName);
         }
         return remove;
     }
 
-    public static Map<String, Cache> getStorage() {
+    public static Map<String, Cache> getManager() {
 
-        return Collections.unmodifiableMap(STORAGE);
+        return Collections.unmodifiableMap(MANAGER);
     }
 
     public static Cache getCache(String cacheName) {
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        Cache cache = STORAGE.get(cacheName);
+        Cache cache = MANAGER.get(cacheName);
         if (cache != null) { return cache; }
         if (DEFAULT.equals(cacheName)) {
             SimpleCache simpleCache = new SimpleCache(DEFAULT, ZERO, ONE,
                     TimeUnit.HOURS.toMillis(TWO), MINUS_ONE, ReferenceType.SOFT);
-            simpleCache.setRecordLog(true);
             register(cache = simpleCache);
         }
         else { register(cache = new UndefinedCache(cacheName)); }

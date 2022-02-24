@@ -7,9 +7,11 @@ import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Lock;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static artoria.common.Constants.*;
 import static artoria.lang.ReferenceType.SOFT;
@@ -21,39 +23,32 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * The memory cache simple implement by jdk.
  * @author Kahle
  */
-public class SimpleCache extends AbstractReadWriteLockCache {
+public class SimpleCache extends AbstractValueWrapperCache {
     /**
      * The log object.
      */
     private static Logger log = LoggerFactory.getLogger(SimpleCache.class);
     /**
-     * The number of times the cache was missed.
+     * The cached storage object.
      */
-    private final AtomicLong missCount = new AtomicLong();
-    /**
-     * The number of times the cache was hit.
-     */
-    private final AtomicLong hitCount = new AtomicLong();
-    /**
-     * Cached storage object.
-     */
-    private final Map<Object, ValueWrapper> storage;
+    protected final Map<Object, ValueWrapper> storage;
     /**
      * The amount of time for the element to idle, in millisecond. 0 indicates unlimited.
      */
-    private final Long timeToIdle;
+    protected final Long timeToIdle;
     /**
      * The amount of time for the element to live, in millisecond. 0 indicates unlimited.
      */
-    private final Long timeToLive;
+    protected final Long timeToLive;
     /**
-     * Cache capacity. 0 indicates unlimited.
+     * The cache capacity. 0 indicates unlimited.
      */
-    private final Long capacity;
+    protected final Long capacity;
     /**
      * The ratio that determines whether it is full, between zero and one.
      */
-    private final Float fullRatio;
+    protected final Float fullRatio;
+
 
     public SimpleCache(String name) {
 
@@ -87,16 +82,17 @@ public class SimpleCache extends AbstractReadWriteLockCache {
         this.storage = buildStorage(referenceType);
     }
 
-    protected Map<Object, ValueWrapper> getStorage() {
-
-        return storage;
-    }
-
     protected Map<Object, ValueWrapper> buildStorage(ReferenceType referenceType) {
         Assert.isTrue(SOFT.equals(referenceType) || WEAK.equals(referenceType),
                 "Parameter \"referenceType\" must be soft reference or weak reference. ");
         return new ReferenceMap<Object, ValueWrapper>(referenceType
-                , new HashMap<Object, ReferenceMap.ValueCell<Object, ValueWrapper>>(THIRTY));
+                , new ConcurrentHashMap<Object, ReferenceMap.ValueCell<Object, ValueWrapper>>(THIRTY));
+    }
+
+    @Override
+    protected boolean isFull() {
+
+        return capacity > ZERO && size() >= (capacity * fullRatio);
     }
 
     @Override
@@ -104,12 +100,7 @@ public class SimpleCache extends AbstractReadWriteLockCache {
         ValueWrapper valueWrapper = storage.get(key);
         if (valueWrapper == null) { return null; }
         if (valueWrapper.isExpired()) {
-            // Old: Write locks cannot be used because read locks are in use.
-            // Old: Upgrading read locks to write locks is not supported.
-            // The deletion should not be done here.
-            // If there is a simultaneous traversal operation,
-            //      an "ConcurrentModificationException" error will occur.
-            return null;
+            return storage.remove(key);
         }
         return valueWrapper;
     }
@@ -143,36 +134,12 @@ public class SimpleCache extends AbstractReadWriteLockCache {
             }
             if (valueWrapper.isExpired()) {
                 storage.remove(key);
-                recordEviction(key, TWO);
             }
         }
     }
 
     @Override
-    protected boolean isFull() {
-
-        return capacity > ZERO && size() >= (capacity * fullRatio);
-    }
-
-    @Override
-    protected void recordTouch(Object key, boolean touched) {
-        (touched ? hitCount : missCount).incrementAndGet();
-        if (getRecordLog()) {
-            String content = NEWLINE +
-                    "---- Begin Cache ----" + NEWLINE +
-                    "Name:        " + getName() + NEWLINE +
-                    "Key:         " + key + NEWLINE +
-                    "Touched:     " + touched + NEWLINE +
-                    "Hit Count:   " + hitCount + NEWLINE +
-                    "Miss Count:  " + missCount + NEWLINE +
-                    "Provider:    " + getClass().getName() + NEWLINE +
-                    "---- End Cache ----" + NEWLINE;
-            log.info(content);
-        }
-    }
-
-    @Override
-    public Object getNativeCache() {
+    public Map<Object, ValueWrapper> getNative() {
 
         return storage;
     }
@@ -180,38 +147,22 @@ public class SimpleCache extends AbstractReadWriteLockCache {
     @Override
     public Object get(Object key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Lock readLock = getReadWriteLock().readLock();
-        readLock.lock();
-        try {
-            ValueWrapper valueWrapper = getStorageValue(key);
-            Object value = valueWrapper != null ? valueWrapper.getValue() : null;
-            recordTouch(key, value != null);
-            if (value != null && timeToIdle >= ZERO) {
-                valueWrapper.expire(MILLISECONDS.toMillis(timeToIdle));
-            }
-            return value;
+        ValueWrapper valueWrapper = getStorageValue(key);
+        Object value = valueWrapper != null ? valueWrapper.getValue() : null;
+        if (value != null && timeToIdle >= ZERO) {
+            valueWrapper.expire(MILLISECONDS.toMillis(timeToIdle));
         }
-        finally {
-            readLock.unlock();
-        }
+        return value;
     }
 
     @Override
     public boolean containsKey(Object key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        Lock readLock = getReadWriteLock().readLock();
-        readLock.lock();
-        try {
-            boolean containsKey = storage.containsKey(key);
-            recordTouch(key, containsKey);
-            if (containsKey && timeToIdle >= ZERO) {
-                expire(key, timeToIdle, MILLISECONDS);
-            }
-            return containsKey;
+        boolean containsKey = storage.containsKey(key);
+        if (containsKey && timeToIdle >= ZERO) {
+            expire(key, timeToIdle, MILLISECONDS);
         }
-        finally {
-            readLock.unlock();
-        }
+        return containsKey;
     }
 
     @Override
@@ -222,85 +173,52 @@ public class SimpleCache extends AbstractReadWriteLockCache {
 
     @Override
     public void clear() {
-        Lock writeLock = getReadWriteLock().writeLock();
-        writeLock.lock();
-        try {
-            storage.clear();
-            hitCount.set(ZERO);
-            missCount.set(ZERO);
-        }
-        finally {
-            writeLock.unlock();
-        }
+
+        storage.clear();
     }
 
     @Override
     public long prune() {
         if (MapUtils.isEmpty(storage)) { return ZERO; }
-        Lock writeLock = getReadWriteLock().writeLock();
-        writeLock.lock();
-        try {
-            long count = ZERO;
-            for (Map.Entry<Object, ValueWrapper> entry : storage.entrySet()) {
-                ValueWrapper valueWrapper = entry.getValue();
-                Object key = entry.getKey();
-                if (valueWrapper == null) {
-                    if (key != null) {
-                        storage.remove(key);
-                        recordEviction(key, TWO);
-                    }
-                    continue;
-                }
-                if (valueWrapper.isExpired()) {
+        long count = ZERO;
+        for (Map.Entry<Object, ValueWrapper> entry : storage.entrySet()) {
+            ValueWrapper valueWrapper = entry.getValue();
+            Object key = entry.getKey();
+            if (valueWrapper == null) {
+                if (key != null) {
                     storage.remove(key);
-                    recordEviction(key, TWO);
-                    count++;
                 }
+                continue;
             }
-            if (isFull()) {
-                log.warn("The cache named \"{}\" is still full after pruning. ", getName());
+            if (valueWrapper.isExpired()) {
+                storage.remove(key);
+                count++;
             }
-            return count;
         }
-        finally {
-            writeLock.unlock();
+        if (isFull()) {
+            log.warn("The cache named \"{}\" is still full after pruning. ", getName());
         }
+        return count;
     }
 
     @Override
     public Collection<Object> keys() {
-        // "Collections.unmodifiableSet" is not secure because it still reads the original data.
-        // If at the same time to delete, error "ConcurrentModificationException" will happen.
-        Lock readLock = getReadWriteLock().readLock();
-        readLock.lock();
-        try {
-            Map<Object, ValueWrapper> newMap = new LinkedHashMap<Object, ValueWrapper>(storage);
-            return Collections.unmodifiableSet(newMap.keySet());
-        }
-        finally {
-            readLock.unlock();
-        }
+
+        return Collections.unmodifiableSet(storage.keySet());
     }
 
     @Override
     public Map<Object, Object> entries() {
         if (MapUtils.isEmpty(storage)) { return emptyMap(); }
-        Lock readLock = getReadWriteLock().readLock();
-        readLock.lock();
-        try {
-            Map<Object, Object> result = new HashMap<Object, Object>(storage.size());
-            for (Map.Entry<Object, ValueWrapper> entry : storage.entrySet()) {
-                ValueWrapper val = entry.getValue();
-                Object key = entry.getKey();
-                if (key == null || val == null) { continue; }
-                if (val.isExpired()) { continue; }
-                result.put(key, val.getValue());
-            }
-            return Collections.unmodifiableMap(result);
+        Map<Object, Object> result = new HashMap<Object, Object>(storage.size());
+        for (Map.Entry<Object, ValueWrapper> entry : storage.entrySet()) {
+            ValueWrapper val = entry.getValue();
+            Object key = entry.getKey();
+            if (key == null || val == null) { continue; }
+            if (val.isExpired()) { continue; }
+            result.put(key, val.getValue());
         }
-        finally {
-            readLock.unlock();
-        }
+        return Collections.unmodifiableMap(result);
     }
 
 }

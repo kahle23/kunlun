@@ -1,8 +1,6 @@
 package artoria.cache;
 
 import artoria.convert.ConversionUtils;
-import artoria.logging.Logger;
-import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
 import artoria.util.MapUtils;
@@ -11,7 +9,7 @@ import artoria.util.ObjectUtils;
 import java.util.Collection;
 import java.util.Map;
 
-import static artoria.common.Constants.*;
+import static artoria.common.Constants.ZERO;
 
 /**
  * The abstract cache.
@@ -19,73 +17,35 @@ import static artoria.common.Constants.*;
  */
 public abstract class AbstractCache implements Cache {
     /**
-     * The log object.
-     */
-    private static Logger log = LoggerFactory.getLogger(AbstractCache.class);
-    /**
-     * Cache name.
+     * The cache name.
      */
     private final String name;
-    /**
-     * Record log.
-     */
-    private Boolean recordLog;
 
+    /**
+     * The default constructor.
+     * @param name The cache name
+     */
     public AbstractCache(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        this.recordLog = false;
         this.name = name;
     }
 
-    protected boolean isFull() {
-
-        return false;
-    }
-
+    /**
+     * Returns the current time in milliseconds.
+     * @return The current time in milliseconds
+     */
     protected long currentTimeMillis() {
 
         return System.currentTimeMillis();
     }
 
-    protected long calcTimeToLive(long timeToLive, long timeToIdle) {
-        long result;
-        if (timeToLive >= ZERO && timeToIdle >= ZERO) {
-            result = Math.min(timeToLive, timeToIdle);
-        }
-        else if (timeToLive >= ZERO) {
-            result = timeToLive;
-        }
-        else if (timeToIdle >= ZERO) {
-            result = timeToIdle;
-        }
-        else { result = MINUS_ONE; }
-        return result;
-    }
+    /**
+     * Determines whether the current cache is full.
+     * @return If true means full, otherwise not full
+     */
+    protected boolean isFull() {
 
-    protected void recordTouch(Object key, boolean touched) {
-        if (!recordLog) { return; }
-        String content = NEWLINE +
-                "---- Begin Cache ----" + NEWLINE +
-                "Name:        " + getName() + NEWLINE +
-                "Key:         " + key + NEWLINE +
-                "Touched:     " + touched + NEWLINE +
-                "Provider:    " + getClass().getName() + NEWLINE +
-                "---- End Cache ----" + NEWLINE;
-        log.info(content);
-    }
-
-    protected void recordEviction(Object key, int reasonCode) {
-        if (!recordLog) { return; }
-        String reason = reasonCode == ONE ? "removed" :
-                reasonCode == TWO ? "expired" : EMPTY_STRING;
-        String content = NEWLINE +
-                "---- Begin Cache ----" + NEWLINE +
-                "Name:        " + getName() + NEWLINE +
-                "Key:         " + key + NEWLINE +
-                "Eviction:    " + reason + NEWLINE +
-                "Provider:    " + getClass().getName() + NEWLINE +
-                "---- End Cache ----" + NEWLINE;
-        log.info(content);
+        return false;
     }
 
     @Override
@@ -95,15 +55,9 @@ public abstract class AbstractCache implements Cache {
     }
 
     @Override
-    public Boolean getRecordLog() {
+    public Object getNative() {
 
-        return recordLog;
-    }
-
-    @Override
-    public void setRecordLog(Boolean recordLog) {
-        Assert.notNull(recordLog, "Parameter \"recordLog\" must not null. ");
-        this.recordLog = recordLog;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -120,6 +74,12 @@ public abstract class AbstractCache implements Cache {
     public boolean containsKey(Object key) {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         return get(key) != null;
+    }
+
+    @Override
+    public long size() {
+
+        return ZERO;
     }
 
     @Override
@@ -141,6 +101,11 @@ public abstract class AbstractCache implements Cache {
     }
 
     @Override
+    public void clear() {
+
+    }
+
+    @Override
     public long prune() {
 
         return ZERO;
@@ -150,6 +115,12 @@ public abstract class AbstractCache implements Cache {
     public Collection<Object> keys() {
 
         return entries().keySet();
+    }
+
+    @Override
+    public Map<Object, Object> entries() {
+
+        throw new UnsupportedOperationException();
     }
 
 }

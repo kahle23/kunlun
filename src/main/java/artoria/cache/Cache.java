@@ -22,19 +22,7 @@ public interface Cache {
      * Return the underlying native cache provider.
      * @return The native cache provider
      */
-    Object getNativeCache();
-
-    /**
-     * Obtain whether need to record log.
-     * @return True or false
-     */
-    Boolean getRecordLog();
-
-    /**
-     * Set whether need to record log.
-     * @param recordLog True or false
-     */
-    void setRecordLog(Boolean recordLog);
+    Object getNative();
 
     /**
      * Return the value to which this cache maps the specified key,
@@ -64,7 +52,7 @@ public interface Cache {
     /**
      * Determines if the cache contains a value for the specified key.
      * @param key The key whose presence in this cache is to be tested
-     * @return True if this map contains a mapping for the specified key
+     * @return True if this cache contains a mapping for the specified key
      */
     boolean containsKey(Object key);
 

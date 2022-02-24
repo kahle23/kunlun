@@ -21,15 +21,12 @@ public class CacheUtilsTest {
     private static String cacheName2 = "TEST2";
 
     static {
-        Cache cache = new SimpleCache(cacheName);
-        cache.setRecordLog(true);
+        SimpleCache cache = new SimpleCache(cacheName);
         CacheUtils.register(cache);
-        Cache cache1 = new SimpleCache(cacheName1,
+        SimpleCache cache1 = new SimpleCache(cacheName1,
                 TWO, 0.7f, MINUS_ONE, MINUS_ONE, ReferenceType.WEAK);
-        cache1.setRecordLog(true);
         CacheUtils.register(cache1);
-        Cache cache2 = new SimpleCache(cacheName2);
-        cache2.setRecordLog(true);
+        SimpleCache cache2 = new SimpleCache(cacheName2);
         CacheUtils.register(cache2);
     }
 
@@ -81,6 +78,35 @@ public class CacheUtilsTest {
             CacheUtils.put(cacheName2, i, builder.toString());
             CacheUtils.get(cacheName2, i);
         }
+    }
+
+    @Ignore
+    @Test
+    public void testConcurrentModificationException() {
+        long start = System.currentTimeMillis();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 1000000; i++) {
+                    CacheUtils.put(cacheName2, i, i, 100, TimeUnit.MILLISECONDS);
+                    ThreadUtils.sleepQuietly(0);
+                }
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ThreadUtils.sleepQuietly(100);
+                for (int i = 0; i < 1000000; i++) {
+                    CacheUtils.get(cacheName2, i);
+                }
+            }
+        }).start();
+        for (int i = 0; i < 1000000; i++) {
+            CacheUtils.put(cacheName2, ">> "+i, i, 100, TimeUnit.MILLISECONDS);
+        }
+        long end = System.currentTimeMillis();
+        log.info("Time spent: {}", (end - start) / 1000);
     }
 
 }
