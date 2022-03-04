@@ -1,4 +1,4 @@
-package artoria.action.handler;
+package artoria.action;
 
 import artoria.lang.Handler;
 
@@ -21,5 +21,7 @@ public interface ActionHandler extends Handler {
      * @return The attributes that is set
      */
     Map<Object, Object> attrs();
+
+    Object execute(Object[] arguments);
 
 }

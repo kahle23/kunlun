@@ -1,4 +1,4 @@
-package artoria.action.handler;
+package artoria.action;
 
 import artoria.util.Assert;
 

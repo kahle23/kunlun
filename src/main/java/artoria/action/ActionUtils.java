@@ -1,11 +1,10 @@
 package artoria.action;
 
-import artoria.action.handler.ActionHandler;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
-import java.util.List;
+import java.lang.reflect.Type;
 
 import static artoria.common.Constants.EMPTY_STRING;
 
@@ -39,7 +38,7 @@ public class ActionUtils {
 
     public static void registerHandler(Class<?> type, ActionHandler actionHandler) {
         Assert.notNull(type, "Parameter \"type\" must not null. ");
-        getActionProvider().registerHandler(type.getName(), actionHandler);
+        getActionProvider().registerHandler("class:" + type.getName(), actionHandler);
     }
 
     public static void deregisterHandler(String actionName) {
@@ -52,34 +51,19 @@ public class ActionUtils {
         getActionProvider().deregisterHandler(type.getName());
     }
 
-    public static <T> T execute(Object input, String actionName, Class<T> clazz) {
+    public static Object execute(String actionName, Object[] arguments) {
 
-        return getActionProvider().execute(input, actionName, clazz);
+        return getActionProvider().execute(actionName, arguments);
     }
 
-    public static <T> T execute(Object input, Class<T> clazz) {
+    public static <T> T execute(Object input, String actionName, Type type) {
 
-        return getActionProvider().execute(input, EMPTY_STRING, clazz);
+        return getActionProvider().execute(input, actionName, type);
     }
 
-    public static <T> T info(Object input, String actionName, Class<T> clazz) {
+    public static <T> T execute(Object input, Type type) {
 
-        return getActionProvider().info(input, actionName, clazz);
-    }
-
-    public static <T> T info(Object input, Class<T> clazz) {
-
-        return getActionProvider().info(input, EMPTY_STRING, clazz);
-    }
-
-    public static <T> List<T> search(Object input, String actionName, Class<T> clazz) {
-
-        return getActionProvider().search(input, actionName, clazz);
-    }
-
-    public static <T> List<T> search(Object input, Class<T> clazz) {
-
-        return getActionProvider().search(input, EMPTY_STRING, clazz);
+        return getActionProvider().execute(input, EMPTY_STRING, type);
     }
 
 }

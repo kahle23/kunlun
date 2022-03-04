@@ -1,21 +1,19 @@
 package artoria.action;
 
-import artoria.action.handler.ActionHandler;
-import artoria.action.handler.ExecuteHandler;
-import artoria.action.handler.InfoHandler;
-import artoria.action.handler.SearchHandler;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
 import artoria.util.ObjectUtils;
+import artoria.util.StringUtils;
 
+import java.lang.reflect.Type;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static artoria.util.StringUtils.isNotBlank;
+import static artoria.common.Constants.ONE;
+import static artoria.common.Constants.ZERO;
 
 /**
  * The abstract action tools provider.
@@ -39,15 +37,12 @@ public abstract class AbstractActionProvider implements ActionProvider {
                 new ConcurrentHashMap<String, ActionHandler>());
     }
 
-    public <T extends ActionHandler> T getActionHandler(String actionName, Class<T> clazz) {
+    public ActionHandler getActionHandler(String actionName) {
         Assert.notBlank(actionName, "Parameter \"actionName\" must not blank. ");
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         ActionHandler actionHandler = actionHandlers.get(actionName);
         Assert.notNull(actionHandler,
                 "The corresponding action handler could not be found by input name. ");
-        Assert.isInstanceOf(clazz, actionHandler,
-                "The action handler found does not support the current action. ");
-        return ObjectUtils.cast(actionHandler, clazz);
+        return actionHandler;
     }
 
     @Override
@@ -92,27 +87,21 @@ public abstract class AbstractActionProvider implements ActionProvider {
     }
 
     @Override
-    public <T> T execute(Object input, String actionName, Class<T> clazz) {
-        Assert.notNull(input, "Parameter \"input\" must not null. ");
-        actionName = isNotBlank(actionName) ? actionName : input.getClass().getName();
-        ExecuteHandler handler = getActionHandler(actionName, ExecuteHandler.class);
-        return handler.execute(input, clazz);
+    public Object execute(String actionName, Object[] arguments) {
+        if (StringUtils.isBlank(actionName)) {
+            Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");
+            Assert.isTrue(arguments.length >= ONE
+                , "The length of parameter \"arguments\" must be at least 1. ");
+            Assert.notNull(arguments[ZERO], "Parameter \"arguments[0]\" must not null. ");
+            actionName = "class:" + arguments[ZERO].getClass().getName();
+        }
+        return getActionHandler(actionName).execute(arguments);
     }
 
     @Override
-    public <T> T info(Object input, String actionName, Class<T> clazz) {
-        Assert.notNull(input, "Parameter \"input\" must not null. ");
-        actionName = isNotBlank(actionName) ? actionName : input.getClass().getName();
-        InfoHandler handler = getActionHandler(actionName, InfoHandler.class);
-        return handler.info(input, clazz);
-    }
+    public <T> T execute(Object input, String actionName, Type type) {
 
-    @Override
-    public <T> List<T> search(Object input, String actionName, Class<T> clazz) {
-        Assert.notNull(input, "Parameter \"input\" must not null. ");
-        actionName = isNotBlank(actionName) ? actionName : input.getClass().getName();
-        SearchHandler handler = getActionHandler(actionName, SearchHandler.class);
-        return handler.search(input, clazz);
+        return ObjectUtils.cast(execute(actionName, new Object[]{ input, type }));
     }
 
 }
