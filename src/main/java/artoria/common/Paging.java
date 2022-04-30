@@ -19,8 +19,8 @@ public class Paging implements Serializable {
     }
 
     public Paging(Integer pageNum, Integer pageSize) {
-        this.pageNum = pageNum;
         this.pageSize = pageSize;
+        this.pageNum = pageNum;
     }
 
     public Integer getPageNum() {

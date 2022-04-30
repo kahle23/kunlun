@@ -1,6 +1,5 @@
 package artoria.time;
 
-import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -336,12 +335,8 @@ public class DateUtils {
     }
 
     public static Date parse(String dateString, String pattern) {
-        try {
-            return getDateProvider().parse(dateString, pattern);
-        }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
-        }
+
+        return getDateProvider().parse(dateString, pattern);
     }
 
     public static String format() {

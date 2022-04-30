@@ -1,6 +1,5 @@
 package artoria.time;
 
-import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -54,8 +53,7 @@ public interface DateProvider {
      * @param dateString A string whose beginning should be parsed
      * @param pattern The pattern describing the date and time format
      * @return A date parsed from the string
-     * @throws ParseException The parse error
      */
-    Date parse(String dateString, String pattern) throws ParseException;
+    Date parse(String dateString, String pattern);
 
 }

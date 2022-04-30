@@ -1,13 +1,13 @@
 package artoria.time;
 
 import artoria.collect.ReferenceMap;
+import artoria.exception.ExceptionUtils;
 import artoria.lang.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 import artoria.util.StringUtils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
@@ -114,10 +114,15 @@ public class SimpleDateProvider implements DateProvider {
     }
 
     @Override
-    public Date parse(String dateString, String pattern) throws ParseException {
+    public Date parse(String dateString, String pattern) {
         Assert.notBlank(dateString, "Parameter \"dateString\" must not blank. ");
         Assert.notBlank(pattern, "Parameter \"pattern\" must not blank. ");
-        return getDateFormat(pattern).parse(dateString);
+        try {
+            return getDateFormat(pattern).parse(dateString);
+        }
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
+        }
     }
 
 }

@@ -15,7 +15,8 @@ import static artoria.common.Constants.ZERO;
 public class ThreadUtils {
 
     public static void sleepQuietly(long millis) {
-        Assert.isTrue(millis > ZERO, "Parameter \"millis\" must greater than 0. ");
+        Assert.isTrue(millis >= ZERO
+                , "Parameter \"millis\" must greater than or equal to 0. ");
         try {
             Thread.sleep(millis);
         }
