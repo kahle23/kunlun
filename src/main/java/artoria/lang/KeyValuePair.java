@@ -2,6 +2,12 @@ package artoria.lang;
 
 import java.io.Serializable;
 
+/**
+ * An implementation class for a key-value pair of two elements.
+ * @param <K> The key type
+ * @param <V> The value type
+ * @author Kahle
+ */
 public class KeyValuePair<K, V> implements KeyValue<K, V>, Pair<K, V>, Serializable {
     private V value;
     private K key;
