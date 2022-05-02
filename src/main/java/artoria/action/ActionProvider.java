@@ -39,11 +39,17 @@ public interface ActionProvider {
      */
     void deregisterHandler(String actionName);
 
+    /**
+     * Execute a specific logic.
+     * The arguments mean (most of the scenes): 0 input object, 1 return value type
+     * @param actionName The name of action
+     * @param arguments The arguments to the execution of a specific logic
+     * @return The execution result of a specific logic
+     */
     Object execute(String actionName, Object[] arguments);
 
     /**
-     * Do the execute action.
-     * The methods "info" and "search" do not need to use "Type" because they can be abused.
+     * Execute a specific logic.
      * @param input The input parameters to be handled
      * @param actionName The name of action
      * @param type The type of the return value

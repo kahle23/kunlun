@@ -33,7 +33,7 @@ public interface PropertySource {
     void setProperties(Map<?, ?> properties);
 
     /**
-     * Return all of the properties.
+     * Return all the properties.
      * @return The properties
      */
     Map<String, Object> getProperties();

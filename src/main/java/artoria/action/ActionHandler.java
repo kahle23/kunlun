@@ -22,6 +22,12 @@ public interface ActionHandler extends Handler {
      */
     Map<Object, Object> attrs();
 
+    /**
+     * Execute a specific logic.
+     * The arguments mean (most of the scenes): 0 input object, 1 return value type
+     * @param arguments The arguments to the execution of a specific logic
+     * @return The execution result of a specific logic
+     */
     Object execute(Object[] arguments);
 
 }

@@ -8,8 +8,12 @@ import artoria.util.MapUtils;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * The abstract property source.
+ * @author Kahle
+ */
 public abstract class AbstractPropertySource implements PropertySource {
-    private static Logger log = LoggerFactory.getLogger(AbstractPropertySource.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractPropertySource.class);
     private Map<Object, Object> attrs = Collections.emptyMap();
     private final String name;
 

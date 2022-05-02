@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Kahle
  */
 public class SimplePropertyProvider implements PropertyProvider {
-    private static Logger log = LoggerFactory.getLogger(SimplePropertyProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(SimplePropertyProvider.class);
     protected final Map<String, PropertySource> propertySources;
     protected final Map<String, Object> commonProperties;
     protected String defaultSourceName;

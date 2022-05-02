@@ -13,7 +13,7 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class PropertyUtils {
-    private static Logger log = LoggerFactory.getLogger(PropertyUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(PropertyUtils.class);
     private static PropertyProvider propertyProvider;
 
     public static PropertyProvider getPropertyProvider() {

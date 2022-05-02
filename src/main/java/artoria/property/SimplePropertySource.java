@@ -1,12 +1,15 @@
 package artoria.property;
 
 import artoria.util.Assert;
-import artoria.util.MapUtils;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * The simple property source.
+ * @author Kahle
+ */
 public class SimplePropertySource extends AbstractPropertySource {
     private final Map<String, Object> properties;
 

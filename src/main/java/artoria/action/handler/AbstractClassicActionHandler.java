@@ -31,6 +31,13 @@ public abstract class AbstractClassicActionHandler extends AbstractActionHandler
         return execute(input, type);
     }
 
+    /**
+     * Execute a specific logic.
+     * @param input The input parameters to be executed
+     * @param type The type of the return value
+     * @param <T> The generic type of the return value
+     * @return The return value
+     */
     public <T> T execute(Object input, Type type) {
         Assert.isInstanceOf(Class.class, type, "Parameter \"type\" must instance of class. ");
         Class<T> clazz = ObjectUtils.cast(type);
