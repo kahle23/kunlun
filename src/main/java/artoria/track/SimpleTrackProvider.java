@@ -1,31 +1,36 @@
-package artoria.event;
+package artoria.track;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.time.DateUtils;
 import artoria.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 import static artoria.common.Constants.*;
 import static java.util.Collections.emptyList;
 
 /**
- * The simple event provider.
+ * The simple track provider.
  * @author Kahle
  */
-public class SimpleEventProvider extends AbstractEventProvider {
-    private static Logger log = LoggerFactory.getLogger(SimpleEventProvider.class);
+public class SimpleTrackProvider extends AbstractTrackProvider {
+    private static Logger log = LoggerFactory.getLogger(SimpleTrackProvider.class);
     private Collection<String> showPropertyNames;
 
-    public SimpleEventProvider() {
+    protected SimpleTrackProvider(Map<String, Object> commonProperties) {
 
-        this(Collections.<String>emptyList());
+        super(commonProperties);
     }
 
-    public SimpleEventProvider(Collection<String> showKeys) {
+    public SimpleTrackProvider() {
+
+        this(Arrays.asList("serverId", "serverAppId", "processTime", "message", "summary"));
+    }
+
+    public SimpleTrackProvider(Collection<String> showKeys) {
 
         setShowPropertyNames(showKeys);
     }
@@ -42,13 +47,7 @@ public class SimpleEventProvider extends AbstractEventProvider {
 
     @Override
     protected void process(Event event) {
-        // Validate parameters.
-        if (StringUtils.isBlank(event.getDistinctId()) &&
-                StringUtils.isBlank(event.getAnonymousId())) {
-            throw new IllegalArgumentException(
-                    "Parameter \"distinctId\" and parameter \"anonymousId\" cannot both be blank. "
-            );
-        }
+
     }
 
     @Override
@@ -80,8 +79,7 @@ public class SimpleEventProvider extends AbstractEventProvider {
                 "---- Begin Event ----" + NEWLINE +
                 "Code:               " + event.getCode() + NEWLINE +
                 "Time:               " + DateUtils.format(event.getTime()) + NEWLINE +
-                "DistinctId:         " + event.getDistinctId() + NEWLINE +
-                "AnonymousId:        " + event.getAnonymousId() + NEWLINE +
+                "Principal:          " + event.getPrincipal() + NEWLINE +
                 "Provider:           " + getClass().getName() + NEWLINE +
                 builder +
                 "---- End Event ----" + NEWLINE;
