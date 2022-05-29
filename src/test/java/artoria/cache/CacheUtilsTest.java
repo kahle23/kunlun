@@ -23,8 +23,8 @@ public class CacheUtilsTest {
     static {
         SimpleCache cache = new SimpleCache(cacheName);
         CacheUtils.register(cache);
-        SimpleCache cache1 = new SimpleCache(cacheName1,
-                TWO, 0.7f, MINUS_ONE, MINUS_ONE, ReferenceType.WEAK);
+        SimpleCacheConfig cacheConfig1 = new SimpleCacheConfig(ReferenceType.WEAK, 2L);
+        SimpleCache cache1 = new SimpleCache(cacheName1, cacheConfig1);
         CacheUtils.register(cache1);
         SimpleCache cache2 = new SimpleCache(cacheName2);
         CacheUtils.register(cache2);

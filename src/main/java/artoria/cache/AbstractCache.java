@@ -1,6 +1,5 @@
 package artoria.cache;
 
-import artoria.convert.ConversionUtils;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
 import artoria.util.MapUtils;
@@ -66,7 +65,6 @@ public abstract class AbstractCache implements Cache {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         Object value = get(key);
         if (value == null) { return null; }
-        value = ConversionUtils.convert(value, type);
         return ObjectUtils.cast(value, type);
     }
 

@@ -1,5 +1,7 @@
 package artoria.cache;
 
+import artoria.beans.BeanMap;
+import artoria.beans.BeanUtils;
 import artoria.collect.ReferenceMap;
 import artoria.lang.ReferenceType;
 import artoria.logging.Logger;
@@ -12,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 import static artoria.common.Constants.*;
 import static artoria.lang.ReferenceType.SOFT;
@@ -33,15 +36,15 @@ public class SimpleCache extends AbstractValueWrapperCache {
      */
     protected final Map<Object, ValueWrapper> storage;
     /**
-     * The amount of time for the element to idle, in millisecond. 0 indicates unlimited.
+     * The amount of time for the element to idle, in millisecond. -1 indicates unlimited.
      */
     protected final Long timeToIdle;
     /**
-     * The amount of time for the element to live, in millisecond. 0 indicates unlimited.
+     * The amount of time for the element to live, in millisecond. -1 indicates unlimited.
      */
     protected final Long timeToLive;
     /**
-     * The cache capacity. 0 indicates unlimited.
+     * The cache capacity. -1 indicates unlimited.
      */
     protected final Long capacity;
     /**
@@ -49,27 +52,30 @@ public class SimpleCache extends AbstractValueWrapperCache {
      */
     protected final Float fullRatio;
 
+//    public SimpleCache(String name) {
+//
+//        this(name, MINUS_ONE, ONE, MINUS_ONE, MINUS_ONE, ReferenceType.WEAK);
+//    }
 
-    public SimpleCache(String name) {
-
-        this(name, ZERO, ONE, MINUS_ONE, MINUS_ONE, ReferenceType.WEAK);
-    }
-
+    @Deprecated
     public SimpleCache(String name, ReferenceType referenceType) {
 
-        this(name, ZERO, ONE, MINUS_ONE, MINUS_ONE, referenceType);
+        this(name, MINUS_ONE, ONE, MINUS_ONE, MINUS_ONE, referenceType);
     }
 
+    @Deprecated
     public SimpleCache(String name, long capacity, ReferenceType referenceType) {
 
         this(name, capacity, 0.8f, MINUS_ONE, MINUS_ONE, referenceType);
     }
 
+    @Deprecated
     public SimpleCache(String name, long capacity, long timeToLive, ReferenceType referenceType) {
 
         this(name, capacity, 0.8f, timeToLive, MINUS_ONE, referenceType);
     }
 
+    @Deprecated
     public SimpleCache(String name, long capacity, float fullRatio, long timeToLive, long timeToIdle, ReferenceType referenceType) {
         super(name);
         Assert.isFalse(timeToLive == ZERO, "Parameter \"timeToLive\" must not be equal to zero. ");
@@ -78,21 +84,64 @@ public class SimpleCache extends AbstractValueWrapperCache {
         this.timeToLive = timeToLive < ZERO ? MINUS_ONE : timeToLive;
         this.timeToIdle = timeToIdle < ZERO ? MINUS_ONE : timeToIdle;
         this.fullRatio = fullRatio < ZERO || fullRatio > ONE ? 0.8f : fullRatio;
-        this.capacity = capacity < ZERO ? ZERO : capacity;
+        this.capacity = capacity < ZERO ? MINUS_ONE : capacity;
+        this.storage = buildStorage(referenceType);
+    }
+
+    public SimpleCache(String name) {
+
+        this(name, new SimpleCacheConfig());
+    }
+
+    public SimpleCache(String name, CacheConfig cacheConfig) {
+        super(name);
+        // Process the cache config.
+        Assert.notNull(cacheConfig, "Parameter \"cacheConfig\" must not null. ");
+        SimpleCacheConfig config = BeanUtils.beanToBean(cacheConfig, SimpleCacheConfig.class);
+        BeanMap beanMap = BeanUtils.createBeanMap(cacheConfig);
+        // Process the capacity and the full ratio.
+        Float fullRatio = (Float) beanMap.get("fullRatio");
+        Long capacity = config.getCapacity();
+        this.fullRatio = fullRatio == null || fullRatio < ZERO || fullRatio > ONE ? 0.95f : fullRatio;
+        this.capacity = capacity == null || capacity < ZERO ? -1L : capacity;
+        // Process the timeToLive and the timeToLiveUnit.
+        TimeUnit timeToLiveUnit = config.getTimeToLiveUnit();
+        Long timeToLive = config.getTimeToLive();
+        if (timeToLive != null) {
+            Assert.notNull(timeToLiveUnit, "Parameter \"timeToLiveUnit\" must not null. ");
+            Assert.isFalse(timeToLive == ZERO
+                    , "Parameter \"timeToLive\" must not be equal to zero. ");
+            this.timeToLive = timeToLive < ZERO ? -1L : timeToLiveUnit.toMillis(timeToLive);
+        }
+        else { this.timeToLive = -1L; }
+        // Process the timeToIdle and the timeToIdleUnit.
+        TimeUnit timeToIdleUnit = config.getTimeToIdleUnit();
+        Long timeToIdle = config.getTimeToIdle();
+        if (timeToIdle != null) {
+            Assert.notNull(timeToIdleUnit, "Parameter \"timeToIdleUnit\" must not null. ");
+            Assert.isFalse(timeToIdle == ZERO
+                    , "Parameter \"timeToIdle\" must not be equal to zero. ");
+            this.timeToIdle = timeToIdle < ZERO ? -1L : timeToIdleUnit.toMillis(timeToIdle);
+        }
+        else { this.timeToIdle = -1L; }
+        // Process the reference type (default weak).
+        ReferenceType referenceType = config.getReferenceType();
+        if (referenceType == null) { referenceType = ReferenceType.WEAK; }
         this.storage = buildStorage(referenceType);
     }
 
     protected Map<Object, ValueWrapper> buildStorage(ReferenceType referenceType) {
         Assert.isTrue(SOFT.equals(referenceType) || WEAK.equals(referenceType),
-                "Parameter \"referenceType\" must be soft reference or weak reference. ");
+            "Parameter \"referenceType\" must be only soft reference or weak reference. ");
         return new ReferenceMap<Object, ValueWrapper>(referenceType
                 , new ConcurrentHashMap<Object, ReferenceMap.ValueCell<Object, ValueWrapper>>(THIRTY));
     }
 
     @Override
     protected boolean isFull() {
-
-        return capacity > ZERO && size() >= (capacity * fullRatio);
+        // If the fullRatio is 0, it is always full.
+        // If the capacity is 0, it is always full.
+        return capacity >= ZERO && size() >= (capacity * fullRatio);
     }
 
     @Override
@@ -100,7 +149,8 @@ public class SimpleCache extends AbstractValueWrapperCache {
         ValueWrapper valueWrapper = storage.get(key);
         if (valueWrapper == null) { return null; }
         if (valueWrapper.isExpired()) {
-            return storage.remove(key);
+            storage.remove(key);
+            return null;
         }
         return valueWrapper;
     }

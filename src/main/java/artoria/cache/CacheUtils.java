@@ -1,6 +1,5 @@
 package artoria.cache;
 
-import artoria.lang.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -13,15 +12,14 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import static artoria.common.Constants.*;
-
 /**
  * The cache tools.
  * @author Kahle
  */
 public class CacheUtils {
-    private static final Map<String, Cache> MANAGER = new ConcurrentHashMap<String, Cache>();
+    private static final Map<String, Cache> CACHES = new ConcurrentHashMap<String, Cache>();
     private static Logger log = LoggerFactory.getLogger(CacheUtils.class);
+    private static volatile CacheFactory cacheFactory;
 
     public static void register(Cache cache) {
         Assert.notNull(cache, "Parameter \"cache\" must not null. ");
@@ -29,12 +27,12 @@ public class CacheUtils {
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
         String cacheClassName = cache.getClass().getName();
         log.info("Register \"{}\" to \"{}\". ", cacheClassName, cacheName);
-        MANAGER.put(cacheName, cache);
+        CACHES.put(cacheName, cache);
     }
 
     public static Cache deregister(String cacheName) {
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        Cache remove = MANAGER.remove(cacheName);
+        Cache remove = CACHES.remove(cacheName);
         if (remove != null) {
             String removeClassName = remove.getClass().getName();
             log.info("Deregister \"{}\" to \"{}\". ", removeClassName, cacheName);
@@ -42,21 +40,31 @@ public class CacheUtils {
         return remove;
     }
 
-    public static Map<String, Cache> getManager() {
+    public static CacheFactory getCacheFactory() {
+        if (cacheFactory != null) { return cacheFactory; }
+        synchronized (CacheUtils.class) {
+            if (cacheFactory != null) { return cacheFactory; }
+            CacheUtils.setCacheFactory(new SimpleCacheFactory());
+            return cacheFactory;
+        }
+    }
 
-        return Collections.unmodifiableMap(MANAGER);
+    public static void setCacheFactory(CacheFactory cacheFactory) {
+        Assert.notNull(cacheFactory, "Parameter \"cacheFactory\" must not null. ");
+        log.info("Set cache factory: {}", cacheFactory.getClass().getName());
+        CacheUtils.cacheFactory = cacheFactory;
+    }
+
+    public static Map<String, Cache> getCaches() {
+
+        return Collections.unmodifiableMap(CACHES);
     }
 
     public static Cache getCache(String cacheName) {
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        Cache cache = MANAGER.get(cacheName);
+        Cache cache = CACHES.get(cacheName);
         if (cache != null) { return cache; }
-        if (DEFAULT.equals(cacheName)) {
-            SimpleCache simpleCache = new SimpleCache(DEFAULT, ZERO, ONE,
-                    TimeUnit.HOURS.toMillis(TWO), MINUS_ONE, ReferenceType.SOFT);
-            register(cache = simpleCache);
-        }
-        else { register(cache = new UndefinedCache(cacheName)); }
+        register(cache = getCacheFactory().getInstance(cacheName));
         return cache;
     }
 
