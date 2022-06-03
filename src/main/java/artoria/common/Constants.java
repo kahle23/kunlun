@@ -20,7 +20,14 @@ public class Constants {
     public static final String HOST_NAME = NetUtils.getHostName();
     public static final String ROOT_PATH = FilenameUtils.getRootPath();
     public static final String CLASSPATH = FilenameUtils.getClasspath();
-    public static final String DEFAULT_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
+
+    public static final String NORM_DATETIME_MS_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
+    public static final String NORM_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    @Deprecated
+    public static final String DEFAULT_DATETIME_PATTERN = NORM_DATETIME_MS_PATTERN;
+    public static final String UTC_SIMPLE_MS_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    public static final String UTC_MS_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    @Deprecated
     public static final String FULL_DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     public static final Object NULL_OBJ = null;

@@ -1,10 +1,10 @@
 package artoria.time;
 
-import static artoria.common.Constants.ONE_THOUSAND;
+import artoria.lang.Clock;
 
 /**
- * Clock simple implement by jdk.
- * @see System#currentTimeMillis()
+ * The clock simple implement by jdk.
+ * @see java.lang.System#currentTimeMillis()
  * @see <a href="https://en.wikipedia.org/wiki/Epoch_(computing)">Epoch (computing)</a>
  * @author Kahle
  */
@@ -15,19 +15,19 @@ public class SimpleClock implements Clock {
      * @return The time in milliseconds
      */
     @Override
-    public long getTimeInMillis() {
+    public Long getRawTime() {
 
         return System.currentTimeMillis();
     }
 
     /**
-     * The current time as UTC seconds from the epoch.
-     * @return The time in seconds
+     * The current time as UTC milliseconds from the epoch.
+     * @return The time in milliseconds
      */
     @Override
-    public long getTimeInSeconds() {
+    public long getTimeInMillis() {
 
-        return getTimeInMillis() / ONE_THOUSAND;
+        return getRawTime();
     }
 
 }

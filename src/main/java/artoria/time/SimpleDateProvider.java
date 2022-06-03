@@ -14,8 +14,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static artoria.common.Constants.DEFAULT_DATETIME_PATTERN;
-import static artoria.common.Constants.FULL_DATETIME_PATTERN;
+import static artoria.common.Constants.*;
 
 /**
  * The date formatter and parser simple implement by jdk.
@@ -43,12 +42,18 @@ public class SimpleDateProvider implements DateProvider {
 
     public SimpleDateProvider() {
 
-        this(DEFAULT_DATETIME_PATTERN);
+        this(NORM_DATETIME_PATTERN);
     }
 
     public SimpleDateProvider(String defaultPattern) {
         Assert.notBlank(defaultPattern, "Parameter \"defaultPattern\" must not blank. ");
         register(this.defaultPattern = defaultPattern);
+        register(FULL_DATETIME_PATTERN);
+        register(NORM_DATETIME_MS_PATTERN);
+        register(NORM_DATETIME_PATTERN);
+        register(UTC_SIMPLE_MS_PATTERN);
+        register(UTC_MS_PATTERN);
+        register("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         register("yyyy-MM-dd'T'HH:mm:ss'Z'");
         register("yyyy-MM-dd'T'HH:mm:ssZ");
         register("yyyy-MM-dd HH:mm:ss");
@@ -57,8 +62,6 @@ public class SimpleDateProvider implements DateProvider {
         register("yyyy/MM/dd HH:mm:ss");
         register("yyyy/MM/dd HH:mm");
         register("yyyy/MM/dd");
-        register(DEFAULT_DATETIME_PATTERN);
-        register(FULL_DATETIME_PATTERN);
     }
 
     @Override

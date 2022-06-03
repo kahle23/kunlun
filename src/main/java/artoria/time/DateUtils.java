@@ -1,5 +1,6 @@
 package artoria.time;
 
+import artoria.lang.Clock;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -149,7 +150,7 @@ public class DateUtils {
 
     public static long getTimeInSeconds() {
 
-        return getClock().getTimeInSeconds();
+        return getClock().getTimeInMillis() / ONE_THOUSAND;
     }
 
     public static DateTime getDayOfStart(DateTime dateTime) {
