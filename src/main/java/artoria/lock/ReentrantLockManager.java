@@ -13,7 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ReentrantLockManager extends AbstractJavaLockManager {
 
     public ReentrantLockManager() {
-
+        // When using ReentrantLock, it is usually a static variable, so ConcurrentHashMap is OK.
         super(new ConcurrentHashMap<String, Lock>());
     }
 

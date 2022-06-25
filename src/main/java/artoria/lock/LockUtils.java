@@ -46,14 +46,14 @@ public class LockUtils {
         return getLockProvider().getLockManager(managerName);
     }
 
-    public static Object getLock(String managerName, String lockName) {
+    public static Object getLock(String lockName) {
 
-        return getLockProvider().getLock(managerName, lockName);
+        return getLock(EMPTY_STRING, lockName);
     }
 
-    public static Object removeLock(String managerName, String lockName) {
+    public static Object removeLock(String lockName) {
 
-        return getLockProvider().removeLock(managerName, lockName);
+        return removeLock(EMPTY_STRING, lockName);
     }
 
     public static void lock(String lockName) {
@@ -79,6 +79,16 @@ public class LockUtils {
     public static boolean tryLock(String lockName, long time, TimeUnit unit) {
 
         return tryLock(EMPTY_STRING, lockName, time, unit);
+    }
+
+    public static Object getLock(String managerName, String lockName) {
+
+        return getLockProvider().getLock(managerName, lockName);
+    }
+
+    public static Object removeLock(String managerName, String lockName) {
+
+        return getLockProvider().removeLock(managerName, lockName);
     }
 
     public static void lock(String managerName, String lockName) {
