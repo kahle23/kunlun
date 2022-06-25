@@ -3,7 +3,7 @@ package artoria.util;
 import static artoria.common.Constants.*;
 
 /**
- * Boolean tools.
+ * The boolean tools.
  * @author Kahle
  */
 public class BooleanUtils {

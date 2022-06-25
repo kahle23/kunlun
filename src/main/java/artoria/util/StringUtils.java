@@ -8,7 +8,7 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 /**
- * String tools.
+ * The string tools.
  * @author Kahle
  */
 public class StringUtils {

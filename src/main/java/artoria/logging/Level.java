@@ -1,33 +1,33 @@
 package artoria.logging;
 
 /**
- * Logger level.
+ * The logger level.
  * @author Kahle
  */
 public enum Level {
 
     /**
-     * Level trace
+     * The level trace.
      */
     TRACE,
 
     /**
-     * Level debug
+     * The level debug.
      */
     DEBUG,
 
     /**
-     * Level info
+     * The level info.
      */
     INFO,
 
     /**
-     * Level warn
+     * The level warn.
      */
     WARN,
 
     /**
-     * Level error
+     * The level error.
      */
     ERROR
 

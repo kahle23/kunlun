@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Combined runnable.
+ * The combined runnable.
  * @author Kahle
  */
 public class CombinedRunnable implements Runnable {

@@ -14,7 +14,7 @@ import static artoria.common.Constants.EMPTY_STRING;
  */
 public class LockUtils {
     private static Logger log = LoggerFactory.getLogger(LockUtils.class);
-    private static LockProvider lockProvider;
+    private static volatile LockProvider lockProvider;
 
     public static LockProvider getLockProvider() {
         if (lockProvider != null) { return lockProvider; }

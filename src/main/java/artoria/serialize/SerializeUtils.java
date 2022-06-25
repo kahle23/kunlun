@@ -12,8 +12,8 @@ import java.io.*;
  */
 public class SerializeUtils {
     private static Logger log = LoggerFactory.getLogger(SerializeUtils.class);
-    private static Deserializer<Object> deserializer;
-    private static Serializer<Object> serializer;
+    private static volatile Deserializer<Object> deserializer;
+    private static volatile Serializer<Object> serializer;
 
     public static Deserializer<Object> getDeserializer() {
         if (deserializer != null) { return deserializer; }

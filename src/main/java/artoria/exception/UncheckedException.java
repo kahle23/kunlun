@@ -1,7 +1,7 @@
 package artoria.exception;
 
 /**
- * Unchecked exception.
+ * The unchecked exception.
  * @author Kahle
  */
 public class UncheckedException extends RuntimeException {

@@ -11,7 +11,7 @@ import static artoria.common.Constants.ONE;
 import static artoria.common.Constants.ZERO;
 
 /**
- * Random tools.
+ * The random tools.
  * @author Kahle
  */
 public class RandomUtils {

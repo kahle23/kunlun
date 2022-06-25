@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Logger factory.
+ * The logger factory.
  * @author Kahle
  */
 public class LoggerFactory {

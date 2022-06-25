@@ -13,32 +13,32 @@ import java.util.Map;
 public interface MessageProvider {
 
     /**
-     * Register common properties information.
+     * Register common properties' information.
      * @param commonProperties The common properties
      */
     void registerCommonProperties(Map<?, ?> commonProperties);
 
     /**
-     * Clears common properties information.
+     * Clears common properties' information.
      */
     void clearCommonProperties();
 
     /**
-     * Get common properties information.
+     * Get common properties' information.
      * @return The common properties
      */
     Map<String, Object> getCommonProperties();
 
     /**
      * Register the message handler.
-     * @param handlerName The message handler name or the name of the type of input parameter
+     * @param handlerName The message handler name
      * @param messageHandler The message handler
      */
     void registerHandler(String handlerName, MessageHandler messageHandler);
 
     /**
      * Deregister the message handler.
-     * @param handlerName The message handler name or the name of the type of input parameter
+     * @param handlerName The message handler name
      */
     void deregisterHandler(String handlerName);
 

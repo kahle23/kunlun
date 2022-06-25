@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Kahle
  */
 public class SimpleMessageProvider extends AbstractMessageProvider {
-    private static Logger log = LoggerFactory.getLogger(SimpleMessageProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleMessageProvider.class);
 
     protected SimpleMessageProvider(Map<String, Object> commonProperties,
                                  Map<String, MessageHandler> messageHandlers) {

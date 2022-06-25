@@ -18,7 +18,7 @@ import static artoria.util.StringUtils.isNotBlank;
  * @author Kahle
  */
 public abstract class AbstractMessageProvider implements MessageProvider {
-    private static Logger log = LoggerFactory.getLogger(AbstractMessageProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractMessageProvider.class);
     protected final Map<String, MessageHandler> messageHandlers;
     protected final Map<String, Object> commonProperties;
 

@@ -1,5 +1,6 @@
 package artoria.time;
 
+import artoria.lang.Clock;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;

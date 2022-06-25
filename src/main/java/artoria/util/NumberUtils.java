@@ -8,7 +8,7 @@ import java.text.Format;
 import static artoria.common.Constants.ZERO;
 
 /**
- * Number tools.
+ * The number tools.
  * @author Kahle
  */
 public class NumberUtils {

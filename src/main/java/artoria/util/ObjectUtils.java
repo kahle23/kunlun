@@ -7,7 +7,7 @@ import java.util.Map;
 import static artoria.common.Constants.ZERO;
 
 /**
- * Object tools.
+ * The object tools.
  * @author Kahle
  */
 public class ObjectUtils {

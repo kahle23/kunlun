@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class HttpUtils {
     private static Logger log = LoggerFactory.getLogger(HttpUtils.class);
-    private static HttpClient httpClient;
+    private static volatile HttpClient httpClient;
 
     public static HttpClient getHttpClient() {
         if (httpClient != null) { return httpClient; }

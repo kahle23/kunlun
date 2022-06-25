@@ -17,7 +17,7 @@ import java.util.List;
 import static artoria.common.Constants.ZERO;
 
 /**
- * Reflect provider simple implement by jdk.
+ * The reflect provider based on jdk simple implementation.
  * @author Kahle
  */
 public class SimpleReflectProvider implements ReflectProvider {

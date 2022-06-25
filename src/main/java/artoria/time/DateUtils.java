@@ -12,14 +12,14 @@ import java.util.Date;
 import static artoria.common.Constants.*;
 
 /**
- * Date tools.
+ * The date tools.
  * @author Kahle
  */
 public class DateUtils {
     private static Logger log = LoggerFactory.getLogger(DateUtils.class);
-    private static DateTimeFactory dateTimeFactory;
-    private static DateProvider dateProvider;
-    private static Clock clock;
+    private static volatile DateTimeFactory dateTimeFactory;
+    private static volatile DateProvider dateProvider;
+    private static volatile Clock clock;
 
     public static DateTimeFactory getDateTimeFactory() {
         if (dateTimeFactory != null) { return dateTimeFactory; }

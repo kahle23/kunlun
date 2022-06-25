@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
- * Executor service cleaner.
+ * The executor service cleaner.
  * @author Kahle
  */
 public class ExecutorServiceCleaner implements Runnable {

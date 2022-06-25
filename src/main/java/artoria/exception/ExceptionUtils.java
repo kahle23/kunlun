@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * Exception tools.
+ * The exception tools.
  * @author Kahle
  */
 public class ExceptionUtils {

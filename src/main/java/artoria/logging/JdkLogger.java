@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import static artoria.common.Constants.THREE;
 
 /**
- * Jdk logger wrapper.
+ * The jdk logger wrapper.
  * @author Kahle
  */
 public class JdkLogger implements Logger {

@@ -8,7 +8,7 @@ import java.util.Date;
 import static artoria.common.Constants.*;
 
 /**
- * Date time simple implement by jdk.
+ * The date time simple implement by jdk.
  * @author Kahle
  */
 public class SimpleDateTime implements DateTime {

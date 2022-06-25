@@ -9,7 +9,7 @@ import java.lang.management.ThreadMXBean;
 import static artoria.common.Constants.ZERO;
 
 /**
- * Thread tools.
+ * The thread tools.
  * @author Kahle
  */
 public class ThreadUtils {

@@ -14,7 +14,7 @@ import static artoria.common.Constants.EMPTY_STRING;
  * @author Kahle
  */
 public class MessageUtils {
-    private static Logger log = LoggerFactory.getLogger(MessageUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(MessageUtils.class);
     private static volatile MessageProvider messageProvider;
 
     public static MessageProvider getMessageProvider() {

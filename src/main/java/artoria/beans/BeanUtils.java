@@ -21,8 +21,8 @@ import static artoria.common.Constants.THIRTY;
  */
 public class BeanUtils {
     private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
-    private static BeanMapFactory beanMapFactory;
-    private static BeanCopier beanCopier;
+    private static volatile BeanMapFactory beanMapFactory;
+    private static volatile BeanCopier beanCopier;
 
     public static BeanMapFactory getBeanMapFactory() {
         if (beanMapFactory != null) { return beanMapFactory; }

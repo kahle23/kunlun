@@ -13,12 +13,12 @@ import java.util.logging.Handler;
 import java.util.logging.LogManager;
 
 /**
- * Jdk logger provider.
+ * The jdk logger provider.
  * @author Kahle
  */
 public class JdkLoggerProvider implements LoggerProvider {
     /**
-     * Default logger config filename.
+     * The default logger config filename.
      */
     private static final String LOGGER_CONFIG_FILENAME = "logging.properties";
     /**
@@ -26,7 +26,7 @@ public class JdkLoggerProvider implements LoggerProvider {
      */
     private static final String ROOT_LOGGER_NAME = "";
     /**
-     * Root logger object.
+     * The root logger object.
      */
     private java.util.logging.Logger logger;
     /**

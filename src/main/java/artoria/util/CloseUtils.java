@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Close tools.
+ * The close tools.
  * @author Kahle
  */
 public class CloseUtils {

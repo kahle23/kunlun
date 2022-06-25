@@ -10,7 +10,7 @@ import static artoria.common.Constants.*;
 
 public class OptionUtils {
     private static Logger log = LoggerFactory.getLogger(OptionUtils.class);
-    private static OptionProvider optionProvider;
+    private static volatile OptionProvider optionProvider;
 
     public static OptionProvider getOptionProvider() {
         if (optionProvider != null) { return optionProvider; }

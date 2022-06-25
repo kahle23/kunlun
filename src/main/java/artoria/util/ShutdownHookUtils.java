@@ -6,7 +6,7 @@ import artoria.thread.ExecutorServiceCleaner;
 import java.util.concurrent.ExecutorService;
 
 /**
- * Shutdown hook tools.
+ * The shutdown hook tools.
  * @author Kahle
  */
 public class ShutdownHookUtils {

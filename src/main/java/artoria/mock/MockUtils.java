@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
 
 public class MockUtils {
     private static Logger log = LoggerFactory.getLogger(MockUtils.class);
-    private static MockProvider mockProvider;
+    private static volatile MockProvider mockProvider;
 
     public static MockProvider getMockProvider() {
         if (mockProvider != null) { return mockProvider; }

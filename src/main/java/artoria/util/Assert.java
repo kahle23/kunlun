@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Assert, verify data state, if failure, will throw exception.
+ * The assert, verify data state, if failure, will throw exception.
  * @author Kahle
  */
 public class Assert {

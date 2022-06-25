@@ -1,7 +1,7 @@
 package artoria.logging;
 
 /**
- * Logger provider.
+ * The logger provider.
  * @author Kahle
  */
 public interface LoggerProvider {

@@ -13,9 +13,9 @@ import static java.lang.Boolean.TRUE;
  */
 public class Base64Utils {
     private static Logger log = LoggerFactory.getLogger(Base64Utils.class);
-    private static Base64 mimeBase64;
-    private static Base64 urlBase64;
-    private static Base64 base64;
+    private static volatile Base64 mimeBase64;
+    private static volatile Base64 urlBase64;
+    private static volatile Base64 base64;
 
     public static Base64 getBase64() {
         if (base64 != null) { return base64; }

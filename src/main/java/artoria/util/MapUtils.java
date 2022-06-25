@@ -3,7 +3,7 @@ package artoria.util;
 import java.util.Map;
 
 /**
- * Map tools.
+ * The map tools.
  * @author Kahle
  */
 public class MapUtils {

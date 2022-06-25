@@ -8,12 +8,12 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 
 /**
- * Reflect tools.
+ * The reflect tools.
  * @author Kahle
  */
 public class ReflectUtils {
     private static Logger log = LoggerFactory.getLogger(ReflectUtils.class);
-    private static ReflectProvider reflectProvider;
+    private static volatile ReflectProvider reflectProvider;
 
     public static ReflectProvider getReflectProvider() {
         if (reflectProvider != null) { return reflectProvider; }

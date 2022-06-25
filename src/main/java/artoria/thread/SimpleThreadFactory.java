@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static artoria.common.Constants.*;
 
 /**
- * Simple thread factory.
+ * The simple thread factory.
  * @author Kahle
  */
 public class SimpleThreadFactory implements ThreadFactory {

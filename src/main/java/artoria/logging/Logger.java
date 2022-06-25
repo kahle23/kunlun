@@ -7,70 +7,70 @@ package artoria.logging;
 public interface Logger {
 
     /**
-     * Logger trace.
+     * The logger trace.
      * @param format The format string
      * @param arguments The arguments
      */
     void trace(String format, Object... arguments);
 
     /**
-     * Logger trace.
+     * The logger trace.
      * @param message The log message
      * @param throwable Exception object
      */
     void trace(String message, Throwable throwable);
 
     /**
-     * Logger debug.
+     * The logger debug.
      * @param format The format string
      * @param arguments The arguments
      */
     void debug(String format, Object... arguments);
 
     /**
-     * Logger debug.
+     * The logger debug.
      * @param message The log message
      * @param throwable Exception object
      */
     void debug(String message, Throwable throwable);
 
     /**
-     * Logger information.
+     * The logger information.
      * @param format The format string
      * @param arguments The arguments
      */
     void info(String format, Object... arguments);
 
     /**
-     * Logger information.
+     * The logger information.
      * @param message The log message
      * @param throwable Exception object
      */
     void info(String message, Throwable throwable);
 
     /**
-     * Logger warning.
+     * The logger warning.
      * @param format The format string
      * @param arguments The arguments
      */
     void warn(String format, Object... arguments);
 
     /**
-     * Logger warning.
+     * The logger warning.
      * @param message The log message
      * @param throwable Exception object
      */
     void warn(String message, Throwable throwable);
 
     /**
-     * Logger error.
+     * The logger error.
      * @param format The format string
      * @param arguments The arguments
      */
     void error(String format, Object... arguments);
 
     /**
-     * Logger error.
+     * The logger error.
      * @param message The log message
      * @param throwable Exception object
      */

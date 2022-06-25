@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Date time interface.
+ * The date time interface.
  * @see <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
  * @author Kahle
  */

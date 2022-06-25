@@ -13,8 +13,8 @@ import static java.lang.Boolean.TRUE;
  */
 public class HexUtils {
     private static Logger log = LoggerFactory.getLogger(HexUtils.class);
-    private static Hex upperCaseHex;
-    private static Hex lowerCaseHex;
+    private static volatile Hex upperCaseHex;
+    private static volatile Hex lowerCaseHex;
 
     public static Hex getUpperCaseHex() {
         if (upperCaseHex != null) { return upperCaseHex; }

@@ -7,7 +7,7 @@ import static artoria.common.Constants.ONE;
 import static artoria.common.Constants.ZERO;
 
 /**
- * Type tools.
+ * The type tools.
  * @author Kahle
  */
 public class TypeUtils {

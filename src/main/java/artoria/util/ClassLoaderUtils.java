@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import static artoria.common.Constants.*;
 
 /**
- * ClassLoader tools.
+ * The class loader tools.
  * @author Kahle
  */
 public class ClassLoaderUtils {

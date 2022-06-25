@@ -9,7 +9,7 @@ import static artoria.common.Constants.ONE;
 import static artoria.common.Constants.ZERO;
 
 /**
- * Collection tools.
+ * The collection tools.
  * @author Kahle
  */
 public class CollectionUtils {

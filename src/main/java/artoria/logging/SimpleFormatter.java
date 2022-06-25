@@ -14,7 +14,7 @@ import java.util.logging.LogRecord;
 import static artoria.common.Constants.*;
 
 /**
- * Simple jdk logger formatter.
+ * The simple jdk logger formatter.
  * @author Kahle
  */
 public class SimpleFormatter extends java.util.logging.SimpleFormatter {

@@ -1,7 +1,7 @@
 package artoria.logging;
 
 /**
- * Fail safe logger.
+ * The fail safe logger.
  * @author Kahle
  */
 public class FailSafeLogger implements Logger {

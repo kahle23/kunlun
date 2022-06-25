@@ -4,7 +4,7 @@ import static artoria.common.Constants.ONE;
 import static artoria.common.Constants.ZERO;
 
 /**
- * Array tools.
+ * The array tools.
  * @author Kahle
  */
 public class ArrayUtils {
