@@ -1,52 +1,34 @@
 package artoria.message.handler;
 
-import artoria.lang.Handler;
+import artoria.lang.handler.OperatingSupportHandler;
 
-import java.util.List;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
  * The message handler used to send and query messages.
  * @author Kahle
  */
-public interface MessageHandler extends Handler {
+public interface MessageHandler extends OperatingSupportHandler {
+
+    /**
+     * Set attributes for the handler.
+     * @param attrs The attributes to be set
+     */
+    void attrs(Map<?, ?> attrs);
+
+    /**
+     * Get the attributes of the settings.
+     * @return The attributes that is set
+     */
+    Map<Object, Object> attrs();
 
     /**
      * Sends a message.
-     * @param properties Some of the properties
      * @param message The message to be sent
-     * @param clazz The type of the return value
-     * @return The result of the invoke
+     * @param type The type of the return value
+     * @return The result of the invoked
      */
-    <T> T send(Map<?, ?> properties, Object message, Class<T> clazz);
-
-    /**
-     * Batch sends multiple message.
-     * @param properties Some of the properties
-     * @param messages The list of messages to be sent
-     * @param clazz The type of the return value
-     * @return The result of the invoke
-     */
-    <T> T batchSend(Map<?, ?> properties, List<?> messages, Class<T> clazz);
-
-    /**
-     * Query message based on entered criteria.
-     * @param properties Some of the properties
-     * @param input The input query criteria
-     * @param clazz The type of the return value
-     * @param <T> The generic type of the return value
-     * @return The queried message record or null
-     */
-    <T> T info(Map<?, ?> properties, Object input, Class<T> clazz);
-
-    /**
-     * Search the list of messages based on entered criteria.
-     * @param properties Some of the properties
-     * @param input The input query criteria
-     * @param clazz The type of the return value
-     * @param <T> The generic type of the return value
-     * @return The queried message list or null
-     */
-    <T> List<T> search(Map<?, ?> properties, Object input, Class<T> clazz);
+    Object send(Object message, Type type);
 
 }

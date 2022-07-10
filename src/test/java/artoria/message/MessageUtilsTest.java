@@ -35,7 +35,7 @@ public class MessageUtilsTest {
         LogHandler logHandler = new LogHandler();
         MessageUtils.registerHandler(CONSOLE, consoleHandler);
         MessageUtils.registerHandler(LOG, logHandler);
-        MessageUtils.registerHandler(User.class, consoleHandler);
+        MessageUtils.registerHandler("class:" + User.class.getName(), consoleHandler);
     }
 
     @Test

@@ -1,8 +1,9 @@
 package artoria.message;
 
+import artoria.lang.Router;
 import artoria.message.handler.MessageHandler;
 
-import java.util.List;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
@@ -43,45 +44,42 @@ public interface MessageProvider {
     void deregisterHandler(String handlerName);
 
     /**
+     * Get the message handler.
+     * @param handlerName The message handler name
+     * @return The message handler
+     */
+    MessageHandler getMessageHandler(String handlerName);
+
+    /**
+     * Set the message router.
+     * @param router The message router
+     */
+    void setRouter(Router router);
+
+    /**
+     * Get the message router.
+     * @return The message router
+     */
+    Router getRouter();
+
+    /**
      * Sends a message(perhaps more than one).
      * If you want to be asynchronous, the message object can contain "SuccessCallback" and "FailureCallback".
      * @param message The message to be sent
      * @param handlerName The name of the message handler
-     * @param clazz The type of the return value
+     * @param type The type of the return value
      * @param <T> The generic type of the return value
      * @return The result of the handler invoke
      */
-    <T> T send(Object message, String handlerName, Class<T> clazz);
+    <T> T send(Object message, String handlerName, Type type);
 
     /**
-     * Batch sends multiple messages.
-     * If you want to be asynchronous, the message object can contain "SuccessCallback" and "FailureCallback".
-     * @param messages The list of messages to be sent
+     * Perform an operation and return the corresponding result.
+     * @param operation The name of the operation to be performed
      * @param handlerName The name of the message handler
-     * @param clazz The type of the return value
-     * @param <T> The generic type of the return value
-     * @return The result of the handler invoke
+     * @param arguments The arguments for the operation to be performed
+     * @return The result of the operation
      */
-    <T> T batchSend(List<?> messages, String handlerName, Class<T> clazz);
-
-    /**
-     * Query message based on entered criteria.
-     * @param input The input query criteria
-     * @param handlerName The name of the message handler
-     * @param clazz The type of the return value
-     * @param <T> The generic type of the return value
-     * @return The queried message record or null
-     */
-    <T> T info(Object input, String handlerName, Class<T> clazz);
-
-    /**
-     * Search the list of messages based on entered criteria.
-     * @param input The input query criteria
-     * @param handlerName The name of the message handler
-     * @param clazz The type of the return value
-     * @param <T> The generic type of the return value
-     * @return The queried message list or null
-     */
-    <T> List<T> search(Object input, String handlerName, Class<T> clazz);
+    <T> T operate(String operation, String handlerName, Object[] arguments);
 
 }

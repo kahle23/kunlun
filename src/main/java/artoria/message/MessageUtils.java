@@ -1,11 +1,12 @@
 package artoria.message;
 
+import artoria.lang.Router;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.message.handler.MessageHandler;
 import artoria.util.Assert;
 
-import java.util.List;
+import java.lang.reflect.Type;
 
 import static artoria.common.Constants.EMPTY_STRING;
 
@@ -37,59 +38,54 @@ public class MessageUtils {
         getMessageProvider().registerHandler(handlerName, messageHandler);
     }
 
-    public static void registerHandler(Class<?> type, MessageHandler messageHandler) {
-        Assert.notNull(type, "Parameter \"type\" must not null. ");
-        getMessageProvider().registerHandler(type.getName(), messageHandler);
-    }
-
     public static void deregisterHandler(String handlerName) {
 
         getMessageProvider().deregisterHandler(handlerName);
     }
 
-    public static void deregisterHandler(Class<?> type) {
-        Assert.notNull(type, "Parameter \"type\" must not null. ");
-        getMessageProvider().deregisterHandler(type.getName());
+    public static MessageHandler getMessageHandler(String handlerName) {
+
+        return getMessageProvider().getMessageHandler(handlerName);
     }
 
-    public static <T> T send(Object message, String handlerName, Class<T> clazz) {
+    public static void setRouter(Router router) {
 
-        return getMessageProvider().send(message, handlerName, clazz);
+        getMessageProvider().setRouter(router);
     }
 
-    public static <T> T send(Object message, Class<T> clazz) {
+    public static Router getRouter() {
 
-        return getMessageProvider().send(message, EMPTY_STRING, clazz);
+        return getMessageProvider().getRouter();
     }
 
-    public static <T> T batchSend(List<?> messages, String handlerName, Class<T> clazz) {
+    public static <T> T send(Object message, Type type) {
 
-        return getMessageProvider().batchSend(messages, handlerName, clazz);
+        return getMessageProvider().send(message, EMPTY_STRING, type);
     }
 
-    public static <T> T batchSend(List<?> messages, Class<T> clazz) {
+    public static <T> T send(Object message, String handlerName, Type type) {
 
-        return getMessageProvider().batchSend(messages, EMPTY_STRING, clazz);
+        return getMessageProvider().send(message, handlerName, type);
     }
 
-    public static <T> T info(Object input, String handlerName, Class<T> clazz) {
+    public static <T> T operate(String operation, Object input, Type type) {
 
-        return getMessageProvider().info(input, handlerName, clazz);
+        return getMessageProvider().operate(operation, EMPTY_STRING, new Object[]{input, type});
     }
 
-    public static <T> T info(Object input, Class<T> clazz) {
+    public static <T> T operate(String operation, String handlerName, Object input, Type type) {
 
-        return getMessageProvider().info(input, EMPTY_STRING, clazz);
+        return getMessageProvider().operate(operation, handlerName, new Object[]{input, type});
     }
 
-    public static <T> List<T> search(Object input, String handlerName, Class<T> clazz) {
+    public static <T> T operate(String operation, Object[] arguments) {
 
-        return getMessageProvider().search(input, handlerName, clazz);
+        return getMessageProvider().operate(operation, EMPTY_STRING, arguments);
     }
 
-    public static <T> List<T> search(Object input, Class<T> clazz) {
+    public static <T> T operate(String operation, String handlerName, Object[] arguments) {
 
-        return getMessageProvider().search(input, EMPTY_STRING, clazz);
+        return getMessageProvider().operate(operation, handlerName, arguments);
     }
 
 }

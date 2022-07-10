@@ -6,33 +6,43 @@ import artoria.util.Assert;
 import artoria.util.ObjectUtils;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The handler of the message sent to the log.
  * @author Kahle
  */
 public class LogHandler extends ConsoleHandler {
-    private static Logger log = LoggerFactory.getLogger(LogHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(LogHandler.class);
 
     @Override
-    public <T> T send(Map<?, ?> properties, Object message, Class<T> clazz) {
-        Assert.notNull(message, "Parameter \"message\" must not null. ");
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        isSupport(new Class[]{Boolean.class}, clazz);
-        log.info(convert(message, properties));
-        return ObjectUtils.cast(Boolean.TRUE, clazz);
-    }
-
-    @Override
-    public <T> T batchSend(Map<?, ?> properties, List<?> messages, Class<T> clazz) {
-        Assert.notEmpty(messages, "Parameter \"messages\" must not empty. ");
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        isSupport(new Class[]{Boolean.class}, clazz);
-        for (Object message : messages) {
-            log.info(convert(message, properties));
+    public Object operate(Object input, String name, Class<?> clazz) {
+        if (SEND.equals(name)) {
+            Assert.notNull(input, "Parameter \"input\" must not null. ");
+            Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+            if (input instanceof List) {
+                return operate(input, "batchSend", clazz);
+            }
+            isSupport(new Class[]{Boolean.class}, clazz);
+            log.info(convert(input, attrs()));
+            return ObjectUtils.cast(Boolean.TRUE, clazz);
         }
-        return ObjectUtils.cast(Boolean.TRUE, clazz);
+        else if (BATCH_SEND.equals(name)) {
+            Assert.isInstanceOf(List.class, input
+                    , "Parameter \"input\" must instance of list. ");
+            List<?> messages = (List<?>) input;
+            Assert.notEmpty(messages, "Parameter \"input\" must not empty. ");
+            Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+            isSupport(new Class[]{Boolean.class}, clazz);
+            for (Object message : messages) {
+                log.info(convert(message, attrs()));
+            }
+            return ObjectUtils.cast(Boolean.TRUE, clazz);
+        }
+        else {
+            throw new UnsupportedOperationException(
+                    "Unsupported operation name \"" + name + "\"! "
+            );
+        }
     }
 
 }
