@@ -14,7 +14,7 @@ import static artoria.common.Constants.*;
  */
 public class PropertyUtils {
     private static final Logger log = LoggerFactory.getLogger(PropertyUtils.class);
-    private static PropertyProvider propertyProvider;
+    private static volatile PropertyProvider propertyProvider;
 
     public static PropertyProvider getPropertyProvider() {
         if (propertyProvider != null) { return propertyProvider; }
@@ -39,6 +39,11 @@ public class PropertyUtils {
     public static void deregisterSource(String sourceName) {
 
         getPropertyProvider().deregisterSource(sourceName);
+    }
+
+    public static PropertySource getPropertySource(String sourceName) {
+
+        return getPropertyProvider().getPropertySource(sourceName);
     }
 
     public static String getString(String name) {

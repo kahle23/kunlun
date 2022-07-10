@@ -38,6 +38,13 @@ public interface PropertyProvider {
     void deregisterSource(String sourceName);
 
     /**
+     * Get the property source.
+     * @param sourceName The property source name
+     * @return The property source
+     */
+    PropertySource getPropertySource(String sourceName);
+
+    /**
      * Return the property value associated with the given name, converted to
      * the given target type (never null).
      * @param source The property source name
