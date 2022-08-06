@@ -9,12 +9,12 @@ public class ValidatorUtilsTest {
 
     @Test
     public void testNumeric() {
-        ValidatorUtils.register(new NumericValidator("numeric"));
+        ValidatorUtils.register("numeric", new NumericValidator());
         log.info("{}", ValidatorUtils.validate("numeric", "888.666"));
         log.info("{}", ValidatorUtils.validate("numeric", "-888.666"));
-        log.info("{}", ValidatorUtils.validate("numeric", "+888.666"));
-        log.info("{}", ValidatorUtils.validate("numeric", "888.666w"));
-        log.info("{}", ValidatorUtils.validate("numeric", "hello, world! "));
+        log.info("{}", ValidatorUtils.validateToBoolean("numeric", "+888.666"));
+        log.info("{}", ValidatorUtils.validateToBoolean("numeric", "888.666w"));
+        log.info("{}", ValidatorUtils.validateToBoolean("numeric", "hello, world! "));
     }
 
 }

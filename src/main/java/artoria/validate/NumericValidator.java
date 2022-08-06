@@ -7,15 +7,10 @@ import artoria.util.StringUtils;
  * The numeric validator.
  * @author Kahle
  */
-public class NumericValidator extends AbstractValidator {
-
-    public NumericValidator(String name) {
-
-        super(name);
-    }
+public class NumericValidator implements Validator {
 
     @Override
-    public boolean validate(Object target) {
+    public Boolean validate(Object target) {
         Assert.isInstanceOf(CharSequence.class, target
                 , "The argument must be of type char sequence. ");
         return StringUtils.isNumeric((String) target);

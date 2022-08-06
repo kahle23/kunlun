@@ -7,16 +7,10 @@ package artoria.validate;
 public interface Validator {
 
     /**
-     * Return the validator name.
-     * @return The validator name
-     */
-    String getName();
-
-    /**
      * The validate method of a target validator.
      * @param target The object that is to be validated
-     * @return The validation result
+     * @return The result of validation or an exception thrown
      */
-    boolean validate(Object target);
+    Object validate(Object target);
 
 }
