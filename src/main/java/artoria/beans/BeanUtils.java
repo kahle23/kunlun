@@ -56,7 +56,7 @@ public class BeanUtils {
 
     public static BeanMap createBeanMap() {
 
-        return getBeanMapFactory().getInstance();
+        return getBeanMapFactory().getInstance(null);
     }
 
     public static BeanMap createBeanMap(Object bean) {

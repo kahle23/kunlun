@@ -22,14 +22,10 @@ public class SimpleBeanMapFactory implements BeanMapFactory {
     }
 
     @Override
-    public BeanMap getInstance() {
-
-        return new SimpleBeanMap(conversionProvider);
-    }
-
-    @Override
     public BeanMap getInstance(Object bean) {
-
+        if (bean == null) {
+            return new SimpleBeanMap(conversionProvider);
+        }
         return new SimpleBeanMap(conversionProvider, bean);
     }
 

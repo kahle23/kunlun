@@ -8,13 +8,7 @@ public interface BeanMapFactory {
 
     /**
      * Get the bean map instance.
-     * @return The bean map instance
-     */
-    BeanMap getInstance();
-
-    /**
-     * Get the bean map instance.
-     * @param bean The bean object
+     * @param bean The bean object (nullable)
      * @return The bean map instance
      */
     BeanMap getInstance(Object bean);
