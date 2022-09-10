@@ -1,4 +1,4 @@
-package artoria.engine.template;
+package artoria.renderer.support.text;
 
 import artoria.beans.BeanUtils;
 import artoria.util.Assert;
@@ -7,7 +7,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-public abstract class AbstractStringTemplateEngine implements StringTemplateEngine {
+public abstract class AbstractTextRenderer implements TextRenderer {
 
     protected Charset getEncoding(Object data) {
         Assert.notNull(data, "Parameter \"data\" must not null. ");

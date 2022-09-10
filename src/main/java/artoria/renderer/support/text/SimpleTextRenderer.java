@@ -1,10 +1,10 @@
-package artoria.engine.template;
+package artoria.renderer.support.text;
 
 import artoria.beans.BeanUtils;
+import artoria.exception.ExceptionUtils;
 import artoria.util.Assert;
 import artoria.util.StringUtils;
 
-import java.io.IOException;
 import java.io.Writer;
 import java.text.ParseException;
 import java.util.Map;
@@ -15,7 +15,7 @@ import static artoria.io.IOUtils.EOF;
 /**
  * Template renderer simple implement by jdk.
  */
-public class SimpleTemplateEngine extends AbstractRichTemplateEngine {
+public class SimpleTextRenderer extends AbstractNormalTextRenderer {
     private static final String LEFT_PLACEHOLDER = DOLLAR_SIGN + LEFT_CURLY_BRACKET;
     private static final String RIGHT_PLACEHOLDER = RIGHT_CURLY_BRACKET;
     private static final char ESCAPE_SYMBOL = '\\';
@@ -83,11 +83,8 @@ public class SimpleTemplateEngine extends AbstractRichTemplateEngine {
             String render = render(template, dataMap);
             writer.write(render);
         }
-        catch (ParseException e) {
-            throw new RenderException(e);
-        }
-        catch (IOException e) {
-            throw new RenderException(e);
+        catch (Exception e) {
+            throw ExceptionUtils.wrap(e);
         }
     }
 

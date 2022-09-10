@@ -1,8 +1,8 @@
-package artoria.engine.template;
+package artoria.renderer.support.text;
 
 import java.io.Writer;
 
-public interface RichTemplateEngine extends StringTemplateEngine {
+public interface NormalTextRenderer extends TextRenderer {
 
     /**
      * Renders the input template using the data into the output writer.

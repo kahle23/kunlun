@@ -1,4 +1,4 @@
-package artoria.engine.template;
+package artoria.renderer;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;

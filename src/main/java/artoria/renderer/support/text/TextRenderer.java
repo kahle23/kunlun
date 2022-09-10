@@ -1,13 +1,15 @@
-package artoria.engine.template;
+package artoria.renderer.support.text;
+
+import artoria.renderer.Renderer;
 
 import java.io.Reader;
 import java.io.Writer;
 
 /**
- * The template engine for handling strings.
+ * The renderer for handling strings.
  * @author Kahle
  */
-public interface StringTemplateEngine extends TemplateEngine {
+public interface TextRenderer extends Renderer {
 
     /**
      * Renders the input reader using the data into the output writer.

@@ -1,5 +1,6 @@
-package artoria.engine.template;
+package artoria.renderer.support.text;
 
+import artoria.exception.ExceptionUtils;
 import artoria.io.IOUtils;
 import artoria.util.Assert;
 
@@ -8,7 +9,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
-public abstract class AbstractPlainTemplateEngine extends AbstractStringTemplateEngine implements PlainTemplateEngine {
+public abstract class AbstractFormatTextRenderer extends AbstractTextRenderer implements FormatTextRenderer {
 
     @Override
     public void render(Object data, Writer writer, String tag, Reader reader) {
@@ -26,7 +27,7 @@ public abstract class AbstractPlainTemplateEngine extends AbstractStringTemplate
             writer.write(render);
         }
         catch (IOException e) {
-            throw new RenderException(e);
+            throw ExceptionUtils.wrap(e);
         }
     }
 

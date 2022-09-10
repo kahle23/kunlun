@@ -1,7 +1,7 @@
 package artoria.logging;
 
-import artoria.engine.template.LoggerTemplateEngine;
-import artoria.engine.template.PlainTemplateEngine;
+import artoria.renderer.support.text.FormatTextRenderer;
+import artoria.renderer.support.text.LoggerTextRenderer;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.ClassLoaderUtils;
@@ -30,16 +30,16 @@ public class JdkLoggerProvider implements LoggerProvider {
      */
     private java.util.logging.Logger logger;
     /**
-     * Logger template engine.
+     * The logger text renderer.
      */
-    private PlainTemplateEngine loggerTemplateEngine;
+    private FormatTextRenderer textRenderer;
 
     public JdkLoggerProvider() {
 
-        this(new LoggerTemplateEngine());
+        this(new LoggerTextRenderer());
     }
 
-    public JdkLoggerProvider(PlainTemplateEngine loggerTemplateEngine) {
+    public JdkLoggerProvider(FormatTextRenderer textRenderer) {
         logger = java.util.logging.Logger.getLogger(ROOT_LOGGER_NAME);
         InputStream in = ClassLoaderUtils
                 .getResourceAsStream(LOGGER_CONFIG_FILENAME, this.getClass());
@@ -67,17 +67,17 @@ public class JdkLoggerProvider implements LoggerProvider {
                 handler.setFormatter(formatter);
             }
         }
-        setLoggerTemplateEngine(loggerTemplateEngine);
+        setTextRenderer(textRenderer);
     }
 
-    public PlainTemplateEngine getLoggerTemplateEngine() {
+    public FormatTextRenderer getTextRenderer() {
 
-        return loggerTemplateEngine;
+        return textRenderer;
     }
 
-    public void setLoggerTemplateEngine(PlainTemplateEngine loggerTemplateEngine) {
-        Assert.notNull(loggerTemplateEngine, "Parameter \"loggerTemplateEngine\" must not null. ");
-        this.loggerTemplateEngine = loggerTemplateEngine;
+    public void setTextRenderer(FormatTextRenderer textRenderer) {
+        Assert.notNull(textRenderer, "Parameter \"textRenderer\" must not null. ");
+        this.textRenderer = textRenderer;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class JdkLoggerProvider implements LoggerProvider {
     public Logger getLogger(String name) {
         Assert.notNull(name, "Parameter \"name\" must not null. ");
         java.util.logging.Logger logger = java.util.logging.Logger.getLogger(name);
-        return new JdkLogger(logger, getLoggerTemplateEngine());
+        return new JdkLogger(logger, getTextRenderer());
     }
 
     @Override

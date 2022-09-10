@@ -1,6 +1,6 @@
-package artoria.engine.template;
+package artoria.renderer.support.text;
 
-public class PrintfTemplateEngine extends AbstractPlainTemplateEngine {
+public class PrintfTextRenderer extends AbstractFormatTextRenderer {
 
     @Override
     public String render(String template, Object[] arguments) {

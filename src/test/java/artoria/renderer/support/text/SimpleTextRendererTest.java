@@ -1,4 +1,4 @@
-package artoria.engine.template;
+package artoria.renderer.support.text;
 
 import artoria.io.StringBuilderWriter;
 import artoria.lang.Dict;
@@ -8,9 +8,9 @@ import org.junit.Test;
 
 import static artoria.common.Constants.DEFAULT;
 
-public class SimpleTemplateEngineTest {
-    private static Logger log = LoggerFactory.getLogger(SimpleTemplateEngineTest.class);
-    private static RichTemplateEngine engine = new SimpleTemplateEngine();
+public class SimpleTextRendererTest {
+    private static Logger log = LoggerFactory.getLogger(SimpleTextRendererTest.class);
+    private static NormalTextRenderer renderer = new SimpleTextRenderer();
 
     @Test
     public void test1() {
@@ -22,7 +22,7 @@ public class SimpleTemplateEngineTest {
 //                .set("param1", "Earth")
                 .set("param2", new Object());
         StringBuilderWriter writer = new StringBuilderWriter();
-        engine.render(data, writer, DEFAULT, template);
+        renderer.render(data, writer, DEFAULT, template);
         log.info(writer.toString());
     }
 
@@ -37,7 +37,7 @@ public class SimpleTemplateEngineTest {
         Dict data = Dict.of("param", "World")
                 .set("param1", "Earth");
         StringBuilderWriter writer = new StringBuilderWriter();
-        engine.render(data, writer, DEFAULT, template);
+        renderer.render(data, writer, DEFAULT, template);
         log.info(writer.toString());
     }
 

@@ -1,14 +1,16 @@
-package artoria.engine.template;
+package artoria.renderer;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * The template engine for handling bytes or strings.
+ * The renderer for handling bytes or strings.
+ * @see <a href="https://en.wikipedia.org/wiki/Render">Render</a>
  * @see <a href="https://en.wikipedia.org/wiki/Template_processor">Template processor</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Rendering_(computer_graphics)">Rendering (computer graphics)</a>
  * @author Kahle
  */
-public interface TemplateEngine {
+public interface Renderer {
 
     /**
      * Renders the input stream using the data into the output stream.

@@ -1,8 +1,10 @@
-package artoria.engine.template;
+package artoria.renderer;
 
 import artoria.io.StringBuilderWriter;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.renderer.support.text.NormalTextRenderer;
+import artoria.renderer.support.text.SimpleTextRenderer;
 import artoria.util.Assert;
 
 import java.io.Reader;
@@ -14,18 +16,18 @@ import java.io.Writer;
  */
 public class TemplateUtils {
     private static Logger log = LoggerFactory.getLogger(TemplateUtils.class);
-    private static RichTemplateEngine templateEngine;
+    private static volatile NormalTextRenderer templateEngine;
 
-    public static RichTemplateEngine getTemplateEngine() {
+    public static NormalTextRenderer getTemplateEngine() {
         if (templateEngine != null) { return templateEngine; }
         synchronized (TemplateUtils.class) {
             if (templateEngine != null) { return templateEngine; }
-            TemplateUtils.setTemplateEngine(new SimpleTemplateEngine());
+            TemplateUtils.setTemplateEngine(new SimpleTextRenderer());
             return templateEngine;
         }
     }
 
-    public static void setTemplateEngine(RichTemplateEngine templateEngine) {
+    public static void setTemplateEngine(NormalTextRenderer templateEngine) {
         Assert.notNull(templateEngine, "Parameter \"templateEngine\" must not null. ");
         log.info("Set template engine: {}", templateEngine.getClass().getName());
         TemplateUtils.templateEngine = templateEngine;

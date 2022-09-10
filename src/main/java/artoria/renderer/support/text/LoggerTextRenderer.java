@@ -1,4 +1,4 @@
-package artoria.engine.template;
+package artoria.renderer.support.text;
 
 import artoria.util.ArrayUtils;
 import artoria.util.StringUtils;
@@ -8,7 +8,7 @@ import static artoria.common.Constants.*;
 /**
  * Log parameters renderer.
  */
-public class LoggerTemplateEngine extends AbstractPlainTemplateEngine {
+public class LoggerTextRenderer extends AbstractFormatTextRenderer {
     private static final String PLACEHOLDER = LEFT_CURLY_BRACKET + RIGHT_CURLY_BRACKET;
     private static final Integer PLACEHOLDER_LENGTH = PLACEHOLDER.length();
     private static final char ESCAPE_SYMBOL = '\\';
