@@ -8,10 +8,6 @@ import artoria.util.ObjectUtils;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-import static artoria.common.Constants.THREE;
-import static artoria.common.Constants.ZERO;
 
 /**
  * The cache conversion service provider (static proxy).
@@ -20,24 +16,12 @@ import static artoria.common.Constants.ZERO;
 public class CacheConversionProvider extends AbstractConversionProvider {
     private final ConversionProvider conversionProvider;
     private final String cacheName;
-    private final TimeUnit timeUnit;
-    private final Long typeTimeToLive;
-    private final Long timeToLive;
 
-    public CacheConversionProvider(ConversionProvider conversionProvider,
-                                   String cacheName,
-                                   Long timeToLive,
-                                   TimeUnit timeUnit) {
+    public CacheConversionProvider(ConversionProvider conversionProvider, String cacheName) {
         Assert.notNull(conversionProvider, "Parameter \"conversionProvider\" must not null. ");
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        Assert.notNull(timeToLive, "Parameter \"timeToLive\" must not null. ");
-        Assert.notNull(timeUnit, "Parameter \"timeUnit\" must not null. ");
-        Assert.isTrue(timeToLive >= ZERO, "Parameter \"timeToLive\" must >= 0. ");
         this.conversionProvider = conversionProvider;
         this.cacheName = cacheName;
-        this.typeTimeToLive = timeToLive * THREE;
-        this.timeToLive = timeToLive;
-        this.timeUnit = timeUnit;
     }
 
     @Override
@@ -48,7 +32,7 @@ public class CacheConversionProvider extends AbstractConversionProvider {
         if (result != null) { return result; }
         result = super.getClassHierarchy(type);
         if (result == null) { return null; }
-        CacheUtils.put(cacheName, cacheKey, result, typeTimeToLive, timeUnit);
+        CacheUtils.put(cacheName, cacheKey, result);
         return result;
     }
 
@@ -85,7 +69,7 @@ public class CacheConversionProvider extends AbstractConversionProvider {
         if (converter != null) { return converter; }
         converter = conversionProvider.getConverter(sourceType, targetType);
         if (converter == null) { return null; }
-        CacheUtils.put(cacheName, cacheKey, converter, timeToLive, timeUnit);
+        CacheUtils.put(cacheName, cacheKey, converter);
         return converter;
     }
 

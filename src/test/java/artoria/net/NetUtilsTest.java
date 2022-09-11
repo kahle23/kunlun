@@ -2,6 +2,7 @@ package artoria.net;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.util.CollectionUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -72,7 +73,12 @@ public class NetUtilsTest {
     public void testGetInetAddresses() throws Exception {
         List<NetworkInterface> interfaces = NetUtils.getNetworkInterfaces();
         for (NetworkInterface networkInterface : interfaces) {
-            log.info("{}", NetUtils.getInetAddresses(networkInterface));
+            List<InetAddress> addresses = NetUtils.getInetAddresses(networkInterface);
+            if (CollectionUtils.isEmpty(addresses)) { continue; }
+            for (InetAddress address : addresses) {
+                log.info("{}", address.getHostAddress());
+            }
+            log.info("---- ----");
         }
     }
 

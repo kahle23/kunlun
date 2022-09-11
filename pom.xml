@@ -127,7 +127,7 @@
                 </executions>
             </plugin>
 
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
@@ -137,9 +137,13 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <!-- disable format checking -->
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -164,6 +168,26 @@
                     </execution>
                 </executions>
             </plugin>-->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Bundle-Vendor>${project.groupId}</Bundle-Vendor>
+                            <Bundle-Name>${project.artifactId}</Bundle-Name>
+                            <Bundle-Version>${project.version}</Bundle-Version>
+                            <Bundle-Description>${project.description}</Bundle-Description>
+                            <Watched>true</Watched>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
 
         </plugins>
 
@@ -235,6 +259,10 @@
                                 <goals>
                                     <goal>jar</goal>
                                 </goals>
+                                <!-- disable format checking -->
+                                <!-- <configuration>
+                                    <additionalparam>-Xdoclint:none</additionalparam>
+                                </configuration> -->
                             </execution>
                         </executions>
                     </plugin>
@@ -261,6 +289,26 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>2.4</version>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                </manifest>
+                                <manifestEntries>
+                                    <Bundle-Vendor>${project.groupId}</Bundle-Vendor>
+                                    <Bundle-Name>${project.artifactId}</Bundle-Name>
+                                    <Bundle-Version>${project.version}</Bundle-Version>
+                                    <Bundle-Description>${project.description}</Bundle-Description>
+                                    <Watched>true</Watched>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
                     </plugin>
 
                 </plugins>

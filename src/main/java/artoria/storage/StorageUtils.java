@@ -18,7 +18,7 @@ import static artoria.common.Constants.DEFAULT;
  * @author Kahle
  */
 public class StorageUtils {
-    private static final Map<String, Storage> MANAGER = new ConcurrentHashMap<String, Storage>();
+    private static final Map<String, Storage> STORAGES = new ConcurrentHashMap<String, Storage>();
     private static Logger log = LoggerFactory.getLogger(StorageUtils.class);
 
     public static void register(Storage storage) {
@@ -27,12 +27,12 @@ public class StorageUtils {
         Assert.notBlank(storageName, "Parameter \"storageName\" must not blank. ");
         String storageClassName = storage.getClass().getName();
         log.info("Register \"{}\" to \"{}\". ", storageClassName, storageName);
-        MANAGER.put(storageName, storage);
+        STORAGES.put(storageName, storage);
     }
 
     public static Storage deregister(String storageName) {
         Assert.notBlank(storageName, "Parameter \"storageName\" must not blank. ");
-        Storage remove = MANAGER.remove(storageName);
+        Storage remove = STORAGES.remove(storageName);
         if (remove != null) {
             String removeClassName = remove.getClass().getName();
             log.info("Deregister \"{}\" to \"{}\". ", removeClassName, storageName);
@@ -40,14 +40,14 @@ public class StorageUtils {
         return remove;
     }
 
-    public static Map<String, Storage> getManager() {
+    public static Map<String, Storage> getStorages() {
 
-        return Collections.unmodifiableMap(MANAGER);
+        return Collections.unmodifiableMap(STORAGES);
     }
 
     public static Storage getStorage(String storageName) {
         Assert.notBlank(storageName, "Parameter \"storageName\" must not blank. ");
-        Storage storage = MANAGER.get(storageName);
+        Storage storage = STORAGES.get(storageName);
         if (storage != null) { return storage; }
         if (DEFAULT.equals(storageName)) {
             register(storage = new LocalFileStorage(storageName));

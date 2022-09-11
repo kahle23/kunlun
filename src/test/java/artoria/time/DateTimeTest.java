@@ -4,7 +4,6 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -60,7 +59,7 @@ public class DateTimeTest {
     }
 
     @Test
-    public void testCreate() throws ParseException {
+    public void testCreate() {
         log.info("");
 
         log.info("The method create(), result: {}", DateUtils.create().toString());
@@ -69,7 +68,7 @@ public class DateTimeTest {
         log.info("The method create(Calendar), result: {}", DateUtils.create(Calendar.getInstance()));
         log.info("The method create(String), result: {}", DateUtils.create(DateUtils.create().toString()));
         log.info("The method create(String, String), the pattern is \"yyyy-MM-dd HH:mm:ss SSS\", result: {}"
-                , DateUtils.create(DateUtils.create().toString(), "yyyy-MM-dd HH:mm:ss SSS"));
+                , DateUtils.create(DateUtils.create().toString(), NORM_DATETIME_PATTERN));
         log.info("The method create(1990, 12, 12), result: {}", DateUtils.create(1990, TWELVE, TWELVE));
         log.info("The method create(1990, 12, 12, 12, 12, 12), result: {}"
                 , DateUtils.create(1990, TWELVE, TWELVE, TWELVE, TWELVE, TWELVE));

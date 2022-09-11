@@ -3,6 +3,7 @@ package artoria.storage;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.storage.support.LocalFileStorage;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -34,6 +35,22 @@ public class StorageUtilsTest {
         for (File file : files) {
             log.info("{}", file);
         }
+    }
+
+    @Ignore
+    @Test
+    public void test() {
+        // This is just an example, and the configuration part is omitted.
+        File inputFile = new File("/test/input_file.txt");
+        String testPath = "/test/test_file.txt";
+        // Save the file to a local folder.
+        StorageUtils.put("local", testPath, inputFile);
+        // Save the file to HuaWei cloud OBS.
+        StorageUtils.put("obs",   testPath, inputFile);
+        // Save the file to Ali cloud OSS.
+        StorageUtils.put("oss",   testPath, inputFile);
+        // Save the file to MinIO.
+        StorageUtils.put("minio", testPath, inputFile);
     }
 
 }
