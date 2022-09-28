@@ -1,11 +1,12 @@
 package artoria.action;
 
+import artoria.lang.Router;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
 import artoria.util.ObjectUtils;
-import artoria.util.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -20,9 +21,10 @@ import static artoria.common.Constants.ZERO;
  * @author Kahle
  */
 public abstract class AbstractActionProvider implements ActionProvider {
-    private static Logger log = LoggerFactory.getLogger(AbstractActionProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractActionProvider.class);
     protected final Map<String, ActionHandler> actionHandlers;
     protected final Map<String, Object> commonProperties;
+    private Router router;
 
     protected AbstractActionProvider(Map<String, Object> commonProperties,
                                      Map<String, ActionHandler> actionHandlers) {
@@ -30,6 +32,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
         Assert.notNull(actionHandlers, "Parameter \"actionHandlers\" must not null. ");
         this.commonProperties = commonProperties;
         this.actionHandlers = actionHandlers;
+        setRouter(new SimpleActionRouter());
     }
 
     public AbstractActionProvider() {
@@ -37,11 +40,16 @@ public abstract class AbstractActionProvider implements ActionProvider {
                 new ConcurrentHashMap<String, ActionHandler>());
     }
 
-    public ActionHandler getActionHandler(String actionName) {
-        Assert.notBlank(actionName, "Parameter \"actionName\" must not blank. ");
-        ActionHandler actionHandler = actionHandlers.get(actionName);
+    protected ActionHandler getActionHandlerInner(Object... arguments) {
+        Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");
+        // Parameter "arguments" usually is: 0 action name, 1 strategy or operation, 2 input, 3 type
+        Object routeObj = getRouter().route(arguments);
+        String route = routeObj != null ? String.valueOf(routeObj) : null;
+        Assert.notBlank(route,
+                "The route calculated according to the arguments is blank. ");
+        ActionHandler actionHandler = actionHandlers.get(route);
         Assert.notNull(actionHandler,
-                "The corresponding action handler could not be found by input name. ");
+                "The corresponding action handler could not be found by name. ");
         return actionHandler;
     }
 
@@ -87,21 +95,40 @@ public abstract class AbstractActionProvider implements ActionProvider {
     }
 
     @Override
-    public Object execute(String actionName, Object[] arguments) {
-        if (StringUtils.isBlank(actionName)) {
-            Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");
-            Assert.isTrue(arguments.length >= ONE
-                , "The length of parameter \"arguments\" must be at least 1. ");
-            Assert.notNull(arguments[ZERO], "Parameter \"arguments[0]\" must not null. ");
-            actionName = "class:" + arguments[ZERO].getClass().getName();
-        }
-        return getActionHandler(actionName).execute(arguments);
+    public ActionHandler getActionHandler(String actionName) {
+        Assert.notBlank(actionName, "Parameter \"actionName\" must not blank. ");
+        return actionHandlers.get(actionName);
     }
 
     @Override
-    public <T> T execute(Object input, String actionName, Type type) {
+    public void setRouter(Router router) {
+        Assert.notNull(router, "Parameter \"router\" must not null. ");
+        this.router = router;
+    }
 
-        return ObjectUtils.cast(execute(actionName, new Object[]{ input, type }));
+    @Override
+    public Router getRouter() {
+
+        return router;
+    }
+
+    @Override
+    public Object execute(String actionName, Object[] arguments) {
+        // Parameter "arguments" usually is: 0 strategy or operation, 1 input, 2 type
+        Object[] newArgs;
+        if (ArrayUtils.isNotEmpty(arguments)) {
+            newArgs = new Object[arguments.length + ONE];
+            newArgs[ZERO] = actionName;
+            System.arraycopy(arguments, ZERO, newArgs, ONE, arguments.length);
+        }
+        else { newArgs = new Object[]{actionName, null, null}; }
+        return getActionHandlerInner(newArgs).execute(arguments);
+    }
+
+    @Override
+    public <T> T execute(Object input, String actionName, String operation, Type type) {
+
+        return ObjectUtils.cast(execute(actionName, new Object[]{ operation, input, type }));
     }
 
 }

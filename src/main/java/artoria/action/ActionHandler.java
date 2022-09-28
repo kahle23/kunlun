@@ -24,7 +24,10 @@ public interface ActionHandler extends Handler {
 
     /**
      * Execute a specific logic.
-     * The arguments mean (most of the scenes): 0 input object, 1 return value type
+     * The arguments mean (most of the scenes):
+     *      0 strategy or operation or null,
+     *      1 input object,
+     *      2 return value type
      * @param arguments The arguments to the execution of a specific logic
      * @return The execution result of a specific logic
      */

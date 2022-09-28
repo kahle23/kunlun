@@ -1,5 +1,6 @@
 package artoria.action;
 
+import artoria.lang.Router;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -13,7 +14,7 @@ import static artoria.common.Constants.EMPTY_STRING;
  * @author Kahle
  */
 public class ActionUtils {
-    private static Logger log = LoggerFactory.getLogger(ActionUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ActionUtils.class);
     private static volatile ActionProvider actionProvider;
 
     public static ActionProvider getActionProvider() {
@@ -36,19 +37,24 @@ public class ActionUtils {
         getActionProvider().registerHandler(actionName, actionHandler);
     }
 
-    public static void registerHandler(Class<?> type, ActionHandler actionHandler) {
-        Assert.notNull(type, "Parameter \"type\" must not null. ");
-        getActionProvider().registerHandler("class:" + type.getName(), actionHandler);
-    }
-
     public static void deregisterHandler(String actionName) {
 
         getActionProvider().deregisterHandler(actionName);
     }
 
-    public static void deregisterHandler(Class<?> type) {
-        Assert.notNull(type, "Parameter \"type\" must not null. ");
-        getActionProvider().deregisterHandler(type.getName());
+    public static ActionHandler getActionHandler(String actionName) {
+
+        return getActionProvider().getActionHandler(actionName);
+    }
+
+    public static void setRouter(Router router) {
+
+        getActionProvider().setRouter(router);
+    }
+
+    public static Router getRouter() {
+
+        return getActionProvider().getRouter();
     }
 
     public static Object execute(String actionName, Object[] arguments) {
@@ -56,14 +62,19 @@ public class ActionUtils {
         return getActionProvider().execute(actionName, arguments);
     }
 
+    public static <T> T execute(Object input, String actionName, String operation, Type type) {
+
+        return getActionProvider().execute(input, actionName, operation, type);
+    }
+
     public static <T> T execute(Object input, String actionName, Type type) {
 
-        return getActionProvider().execute(input, actionName, type);
+        return getActionProvider().execute(input, actionName, EMPTY_STRING, type);
     }
 
     public static <T> T execute(Object input, Type type) {
 
-        return getActionProvider().execute(input, EMPTY_STRING, type);
+        return getActionProvider().execute(input, EMPTY_STRING, EMPTY_STRING, type);
     }
 
 }
