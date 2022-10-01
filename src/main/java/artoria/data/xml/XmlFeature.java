@@ -1,7 +1,7 @@
-package artoria.exchange;
+package artoria.data.xml;
 
 /**
- * Xml feature.
+ * The xml feature.
  * @author Kahle
  */
 public interface XmlFeature {

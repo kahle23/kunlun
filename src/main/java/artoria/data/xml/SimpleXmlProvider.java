@@ -1,9 +1,9 @@
-package artoria.exchange;
+package artoria.data.xml;
 
 import java.lang.reflect.Type;
 
 /**
- * Xml provider simple implement by jdk.
+ * The xml conversion provider based on jdk simple implementation.
  * @author Kahle
  */
 public class SimpleXmlProvider implements XmlProvider {

@@ -1,4 +1,4 @@
-package artoria.exchange;
+package artoria.data.xml;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -7,12 +7,12 @@ import artoria.util.Assert;
 import java.lang.reflect.Type;
 
 /**
- * Xml tools.
+ * The xml conversion tools.
  * @author Kahle
  */
 public class XmlUtils {
     private static Logger log = LoggerFactory.getLogger(XmlUtils.class);
-    private static XmlProvider xmlProvider;
+    private static volatile XmlProvider xmlProvider;
 
     public static XmlProvider getXmlProvider() {
         if (xmlProvider != null) { return xmlProvider; }

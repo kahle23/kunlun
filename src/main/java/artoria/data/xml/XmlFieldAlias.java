@@ -1,7 +1,7 @@
-package artoria.exchange;
+package artoria.data.xml;
 
 /**
- * Xml field alias.
+ * The xml field alias.
  * @author Kahle
  */
 public class XmlFieldAlias implements XmlFeature {

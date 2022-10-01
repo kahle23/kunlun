@@ -1,9 +1,9 @@
-package artoria.exchange;
+package artoria.data.xml;
 
 import java.lang.reflect.Type;
 
 /**
- * Xml provider.
+ * The xml conversion provider.
  * @author Kahle
  */
 public interface XmlProvider {
