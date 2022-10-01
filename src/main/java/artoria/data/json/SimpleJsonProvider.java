@@ -1,9 +1,9 @@
-package artoria.exchange;
+package artoria.data.json;
 
 import java.lang.reflect.Type;
 
 /**
- * Json provider simple implement by jdk.
+ * The json conversion provider based on jdk simple implementation.
  * @author Kahle
  */
 public class SimpleJsonProvider implements JsonProvider {

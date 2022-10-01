@@ -1,7 +1,7 @@
-package artoria.exchange;
+package artoria.data.json;
 
 /**
- * Json feature.
+ * The json feature.
  * @author Kahle
  */
 public interface JsonFeature {

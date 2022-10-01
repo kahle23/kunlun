@@ -1,4 +1,4 @@
-package artoria.exchange;
+package artoria.data.json;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;

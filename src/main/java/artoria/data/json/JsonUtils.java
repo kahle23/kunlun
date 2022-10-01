@@ -1,4 +1,4 @@
-package artoria.exchange;
+package artoria.data.json;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -7,12 +7,12 @@ import artoria.util.Assert;
 import java.lang.reflect.Type;
 
 /**
- * Json tools.
+ * The json conversion tools.
  * @author Kahle
  */
 public class JsonUtils {
     private static Logger log = LoggerFactory.getLogger(JsonUtils.class);
-    private static JsonProvider jsonProvider;
+    private static volatile JsonProvider jsonProvider;
 
     public static JsonProvider getJsonProvider() {
         if (jsonProvider != null) { return jsonProvider; }

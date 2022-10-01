@@ -1,5 +1,9 @@
-package artoria.exchange;
+package artoria.data.json;
 
+/**
+ * The json format.
+ * @author Kahle
+ */
 public enum JsonFormat implements JsonFeature {
 
     /**

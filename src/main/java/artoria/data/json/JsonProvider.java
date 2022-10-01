@@ -1,9 +1,9 @@
-package artoria.exchange;
+package artoria.data.json;
 
 import java.lang.reflect.Type;
 
 /**
- * Json provider.
+ * The json conversion provider.
  * @author Kahle
  */
 public interface JsonProvider {
