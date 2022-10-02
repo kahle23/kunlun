@@ -82,6 +82,6 @@ public interface DictProvider {
      * @param <T> The generic type of dictionary data
      * @return The list of dictionary items
      */
-    <T> List<T> findList(Object dictQuery, Type dataType);
+    <T> List<T> findMultiple(Object dictQuery, Type dataType);
 
 }

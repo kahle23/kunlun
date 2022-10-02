@@ -43,4 +43,11 @@ public interface Dict {
      */
     Integer getSort();
 
+    /**
+     * Get the extra data of the dictionary item.
+     * The extra data or incidental data (maybe it's extended data).
+     * @return The extra data (most case is Map)
+     */
+    Object getExtraData();
+
 }

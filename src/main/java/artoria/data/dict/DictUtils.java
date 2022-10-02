@@ -55,9 +55,9 @@ public class DictUtils {
         return getDictProvider().findOne(dictQuery);
     }
 
-    public static <T> List<T> findList(Object dictQuery, Type dataType) {
+    public static <T> List<T> findMultiple(Object dictQuery, Type dataType) {
 
-        return getDictProvider().findList(dictQuery, dataType);
+        return getDictProvider().findMultiple(dictQuery, dataType);
     }
 
 }

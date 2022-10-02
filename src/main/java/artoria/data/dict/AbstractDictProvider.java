@@ -54,7 +54,7 @@ public abstract class AbstractDictProvider implements DictProvider {
     }
 
     @Override
-    public <T> List<T> findList(Object dictQuery, Type dataType) {
+    public <T> List<T> findMultiple(Object dictQuery, Type dataType) {
 
         throw new UnsupportedOperationException();
     }
