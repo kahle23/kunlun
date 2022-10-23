@@ -1,4 +1,4 @@
-package artoria.beans;
+package artoria.data.bean;
 
 import artoria.convert.ConversionProvider;
 import artoria.convert.ConversionUtils;

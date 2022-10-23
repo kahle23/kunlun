@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import static artoria.beans.BeanUtils.beanToBean;
 import static artoria.common.Constants.DEFAULT;
+import static artoria.data.bean.BeanUtils.beanToBean;
 
 /**
  * The simple cache factory.

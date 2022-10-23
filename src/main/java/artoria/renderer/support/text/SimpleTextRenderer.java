@@ -1,6 +1,6 @@
 package artoria.renderer.support.text;
 
-import artoria.beans.BeanUtils;
+import artoria.data.bean.BeanUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.util.Assert;
 import artoria.util.StringUtils;

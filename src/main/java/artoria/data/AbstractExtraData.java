@@ -1,6 +1,6 @@
 package artoria.data;
 
-import artoria.beans.BeanUtils;
+import artoria.data.bean.BeanUtils;
 import artoria.util.MapUtils;
 
 import java.io.Serializable;

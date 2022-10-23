@@ -1,6 +1,6 @@
 package artoria.convert.support;
 
-import artoria.beans.BeanUtils;
+import artoria.data.bean.BeanUtils;
 import artoria.convert.ConversionProvider;
 import artoria.test.bean.Cat;
 import artoria.test.bean.Dog;

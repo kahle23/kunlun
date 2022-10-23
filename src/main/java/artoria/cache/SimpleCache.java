@@ -1,8 +1,8 @@
 package artoria.cache;
 
-import artoria.beans.BeanMap;
-import artoria.beans.BeanUtils;
 import artoria.collect.ReferenceMap;
+import artoria.data.bean.BeanMap;
+import artoria.data.bean.BeanUtils;
 import artoria.lang.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;

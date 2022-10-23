@@ -1,4 +1,4 @@
-package artoria.beans;
+package artoria.data.bean;
 
 /**
  * The bean map factory.
