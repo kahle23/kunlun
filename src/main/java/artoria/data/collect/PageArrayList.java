@@ -1,4 +1,4 @@
-package artoria.collect;
+package artoria.data.collect;
 
 import java.util.ArrayList;
 import java.util.Collection;

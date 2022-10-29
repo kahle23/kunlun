@@ -1,4 +1,4 @@
-package artoria.lang;
+package artoria.data;
 
 import artoria.convert.ConversionUtils;
 import artoria.util.ArrayUtils;

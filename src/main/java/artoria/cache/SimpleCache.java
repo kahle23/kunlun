@@ -1,9 +1,9 @@
 package artoria.cache;
 
-import artoria.collect.ReferenceMap;
+import artoria.data.ReferenceType;
 import artoria.data.bean.BeanMap;
 import artoria.data.bean.BeanUtils;
-import artoria.lang.ReferenceType;
+import artoria.data.collect.ReferenceMap;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -17,8 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import static artoria.common.Constants.*;
-import static artoria.lang.ReferenceType.SOFT;
-import static artoria.lang.ReferenceType.WEAK;
+import static artoria.data.ReferenceType.SOFT;
+import static artoria.data.ReferenceType.WEAK;
 import static java.util.Collections.emptyMap;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 

@@ -1,6 +1,6 @@
-package artoria.collect;
+package artoria.data.collect;
 
-import artoria.lang.ReferenceType;
+import artoria.data.ReferenceType;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
 import artoria.util.MapUtils;
@@ -11,8 +11,8 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
-import static artoria.lang.ReferenceType.SOFT;
-import static artoria.lang.ReferenceType.WEAK;
+import static artoria.data.ReferenceType.SOFT;
+import static artoria.data.ReferenceType.WEAK;
 
 /**
  * The reference map can be wrapped as weak and soft references.
@@ -96,7 +96,7 @@ public class ReferenceMap<K, V> implements Map<K, V> {
             processQueue();
             return;
         }
-        for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
+        for (Entry<? extends K, ? extends V> entry : map.entrySet()) {
             put(entry.getKey(), entry.getValue());
         }
     }
@@ -158,7 +158,7 @@ public class ReferenceMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public Set<Map.Entry<K, V>> entrySet() {
+    public Set<Entry<K, V>> entrySet() {
         // Throw out garbage collected values first.
         processQueue();
         Collection<K> keys = internalMap.keySet();

@@ -1,4 +1,4 @@
-package artoria.lang;
+package artoria.data;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;

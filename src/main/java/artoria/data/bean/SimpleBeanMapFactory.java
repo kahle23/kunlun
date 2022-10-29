@@ -23,10 +23,9 @@ public class SimpleBeanMapFactory implements BeanMapFactory {
 
     @Override
     public BeanMap getInstance(Object bean) {
-        if (bean == null) {
-            return new SimpleBeanMap(conversionProvider);
-        }
-        return new SimpleBeanMap(conversionProvider, bean);
+        SimpleBeanMap beanMap = new SimpleBeanMap(conversionProvider);
+        if (bean != null) { beanMap.setBean(bean); }
+        return beanMap;
     }
 
 }

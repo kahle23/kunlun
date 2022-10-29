@@ -1,4 +1,4 @@
-package artoria.lang;
+package artoria.data;
 
 /**
  * A key value pair consisting of two elements.

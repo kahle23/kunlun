@@ -1,4 +1,4 @@
-package artoria.lang;
+package artoria.data;
 
 import artoria.data.bean.BeanUtils;
 import artoria.logging.Logger;

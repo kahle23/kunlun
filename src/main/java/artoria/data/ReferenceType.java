@@ -1,4 +1,4 @@
-package artoria.lang;
+package artoria.data;
 
 import java.lang.ref.PhantomReference;
 import java.lang.ref.SoftReference;

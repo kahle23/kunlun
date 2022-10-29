@@ -1,7 +1,7 @@
 package artoria.renderer.support.text;
 
-import artoria.io.StringBuilderWriter;
-import artoria.lang.Dict;
+import artoria.data.Dict;
+import artoria.io.stream.StringBuilderWriter;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;

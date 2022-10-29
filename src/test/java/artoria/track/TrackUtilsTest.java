@@ -1,6 +1,6 @@
 package artoria.track;
 
-import artoria.lang.Dict;
+import artoria.data.Dict;
 import artoria.mock.MockUtils;
 import artoria.test.bean.User;
 import org.junit.Test;

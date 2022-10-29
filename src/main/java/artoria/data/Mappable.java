@@ -3,21 +3,21 @@ package artoria.data;
 import java.util.Map;
 
 /**
- * Can convert to or convert back from map.
+ * The ability to convert to and from map.
  * @author Kahle
  */
 public interface Mappable {
 
     /**
-     * Convert to map.
-     * @return Converted map
+     * The ability to convert back from map.
+     * @param map The map to be read
      */
-    Map<String, Object> toMap();
+    void fromMap(Map<?, ?> map);
 
     /**
-     * Convert back from map.
-     * @param map Input map
+     * The ability to convert to map.
+     * @return The map that has been converted
      */
-    void fromMap(Map<String, Object> map);
+    Map<Object, Object> toMap();
 
 }

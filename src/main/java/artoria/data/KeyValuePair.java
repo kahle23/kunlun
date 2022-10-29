@@ -1,4 +1,4 @@
-package artoria.lang;
+package artoria.data;
 
 import java.io.Serializable;
 

@@ -1,10 +1,10 @@
 package artoria.message;
 
 import artoria.common.Constants;
+import artoria.data.Dict;
 import artoria.data.json.JsonFeature;
 import artoria.data.json.JsonUtils;
 import artoria.data.json.SimpleJsonProvider;
-import artoria.lang.Dict;
 import artoria.message.handler.ConsoleHandler;
 import artoria.message.handler.LogHandler;
 import artoria.mock.MockUtils;

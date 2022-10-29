@@ -1,6 +1,6 @@
 package artoria.cache;
 
-import artoria.lang.ReferenceType;
+import artoria.data.ReferenceType;
 import artoria.util.Assert;
 
 import java.util.Map;

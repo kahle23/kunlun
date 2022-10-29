@@ -1,12 +1,14 @@
 package artoria.io;
 
+import artoria.io.stream.StringBuilderWriter;
+
 import java.io.*;
 
 import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
 import static artoria.common.Constants.ZERO;
 
 /**
- * The IO tools.
+ * The io tools.
  * @author Kahle
  */
 public class IOUtils {

@@ -7,7 +7,7 @@ import artoria.cache.SimpleCacheConfig;
 import artoria.convert.support.CatToDogConverter;
 import artoria.convert.support.ListBasicToListBasicConverter;
 import artoria.convert.support.NumberToDateConverter;
-import artoria.lang.ReferenceType;
+import artoria.data.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.mock.MockUtils;
