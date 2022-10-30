@@ -15,19 +15,9 @@ public class SimpleClock implements Clock {
      * @return The time in milliseconds
      */
     @Override
-    public Long getRawTime() {
+    public Long getTime() {
 
         return System.currentTimeMillis();
-    }
-
-    /**
-     * The current time as UTC milliseconds from the epoch.
-     * @return The time in milliseconds
-     */
-    @Override
-    public long getTimeInMillis() {
-
-        return getRawTime();
     }
 
 }

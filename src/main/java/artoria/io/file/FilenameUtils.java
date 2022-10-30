@@ -1,4 +1,4 @@
-package artoria.file;
+package artoria.io.file;
 
 import artoria.util.Assert;
 import artoria.util.StringUtils;
@@ -9,7 +9,7 @@ import java.net.URL;
 import static artoria.common.Constants.*;
 
 /**
- * Filename and filepath tools.
+ * The filename and filepath tools.
  * @author Kahle
  */
 public class FilenameUtils {

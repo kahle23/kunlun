@@ -72,7 +72,11 @@ public class SimpleTrackProvider extends AbstractTrackProvider {
             for (int i = ZERO; i < length; i++) {
                 builder.append(BLANK_SPACE);
             }
-            builder.append(value).append(NEWLINE);
+            String valueOf = String.valueOf(value);
+            if (valueOf.length() > TWO_HUNDRED) {
+                valueOf = valueOf.substring(ZERO, TWO_HUNDRED) + " ...";
+            }
+            builder.append(valueOf).append(NEWLINE);
         }
         // Build the string to print and print it.
         String content = NEWLINE +

@@ -1,11 +1,8 @@
-package artoria.data;
+package artoria.util;
 
-import artoria.beans.BeanUtils;
+import artoria.data.bean.BeanUtils;
 import artoria.convert.ConversionUtils;
 import artoria.exception.ExceptionUtils;
-import artoria.util.Assert;
-import artoria.util.CollectionUtils;
-import artoria.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +13,7 @@ import static artoria.common.Constants.ONE;
 import static artoria.common.Constants.ZERO;
 
 /**
- * Data recombine tools.
+ * The data recombine tools.
  * @author Kahle
  */
 public class RecombineUtils {

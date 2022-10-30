@@ -1,7 +1,7 @@
 package artoria.net;
 
-import artoria.lang.KeyValue;
-import artoria.lang.KeyValuePair;
+import artoria.data.KeyValue;
+import artoria.data.KeyValuePair;
 import artoria.util.Assert;
 
 import java.io.File;

@@ -13,6 +13,12 @@ import java.util.concurrent.Future;
 
 /**
  * The asynchronous supported handler.
+ *
+ * The main flow:
+ * buildContext -> async or sync
+ *                 async -> submit task (include doExecute) -> getResult
+ *                 sync  -> doExecute (include getResult)   -> or getResult
+ *
  * @author Kahle
  */
 public interface AsyncSupportHandler extends ContextSupportHandler, Handler {

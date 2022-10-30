@@ -1,6 +1,6 @@
 package artoria.util;
 
-import artoria.lang.BasicType;
+import artoria.data.BasicType;
 
 import java.net.URI;
 import java.net.URL;

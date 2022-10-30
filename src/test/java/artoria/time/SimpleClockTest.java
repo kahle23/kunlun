@@ -1,6 +1,5 @@
 package artoria.time;
 
-import artoria.lang.Clock;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
@@ -13,9 +12,9 @@ public class SimpleClockTest {
 
     @Test
     public void test1() {
-        Clock clock = new SimpleClock();
+        SimpleClock clock = new SimpleClock();
         for (int i = ZERO; i < TWENTY; i++) {
-            log.info("Time in millis: {}", clock.getTimeInMillis());
+            log.info("Time in millis: {}", clock.getTime());
         }
     }
 

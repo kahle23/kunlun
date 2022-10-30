@@ -1,9 +1,8 @@
 package artoria.file;
 
-import artoria.data.Mappable;
 import artoria.exception.ExceptionUtils;
 import artoria.io.IOUtils;
-import artoria.io.StringBuilderWriter;
+import artoria.io.stream.StringBuilderWriter;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
 import artoria.util.StringUtils;
@@ -17,7 +16,7 @@ import java.util.Properties;
  * Properties file.
  * @author Kahle
  */
-public class Prop extends TextFile implements Mappable {
+public class Prop extends TextFile {
     private Properties properties;
 
     public Prop() {
@@ -83,7 +82,6 @@ public class Prop extends TextFile implements Mappable {
         properties.store(writer, null);
     }
 
-    @Override
     public Map<String, Object> toMap() {
         Map<String, Object> result =
                 new HashMap<String, Object>(properties.size());
@@ -95,7 +93,6 @@ public class Prop extends TextFile implements Mappable {
         return result;
     }
 
-    @Override
     public void fromMap(Map<String, Object> map) {
         properties.clear();
         if (MapUtils.isEmpty(map)) { return; }

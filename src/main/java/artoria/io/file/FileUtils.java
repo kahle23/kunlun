@@ -1,4 +1,4 @@
-package artoria.file;
+package artoria.io.file;
 
 import artoria.io.IOUtils;
 import artoria.logging.Logger;
@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import static artoria.common.Constants.ZERO;
 
 /**
- * File tools.
+ * The file tools.
  * @author Kahle
  */
 public class FileUtils {

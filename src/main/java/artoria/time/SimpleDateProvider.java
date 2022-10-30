@@ -1,8 +1,8 @@
 package artoria.time;
 
-import artoria.collect.ReferenceMap;
+import artoria.data.ReferenceType;
+import artoria.data.collect.ReferenceMap;
 import artoria.exception.ExceptionUtils;
-import artoria.lang.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;

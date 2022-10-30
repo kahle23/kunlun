@@ -1,6 +1,5 @@
 package artoria.time;
 
-import artoria.lang.Clock;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -19,7 +18,7 @@ public class DateUtils {
     private static Logger log = LoggerFactory.getLogger(DateUtils.class);
     private static volatile DateTimeFactory dateTimeFactory;
     private static volatile DateProvider dateProvider;
-    private static volatile Clock clock;
+    private static volatile SimpleClock clock;
 
     public static DateTimeFactory getDateTimeFactory() {
         if (dateTimeFactory != null) { return dateTimeFactory; }
@@ -51,7 +50,7 @@ public class DateUtils {
         DateUtils.dateProvider = dateProvider;
     }
 
-    public static Clock getClock() {
+    public static SimpleClock getClock() {
         if (clock != null) { return clock; }
         synchronized (DateUtils.class) {
             if (clock != null) { return clock; }
@@ -60,7 +59,7 @@ public class DateUtils {
         }
     }
 
-    public static void setClock(Clock clock) {
+    public static void setClock(SimpleClock clock) {
         Assert.notNull(clock, "Parameter \"clock\" must not null. ");
         log.info("Set clock: {}", clock.getClass().getName());
         DateUtils.clock = clock;
@@ -145,12 +144,12 @@ public class DateUtils {
 
     public static long getTimeInMillis() {
 
-        return getClock().getTimeInMillis();
+        return getClock().getTime();
     }
 
     public static long getTimeInSeconds() {
 
-        return getClock().getTimeInMillis() / ONE_THOUSAND;
+        return getClock().getTime() / ONE_THOUSAND;
     }
 
     public static DateTime getDayOfStart(DateTime dateTime) {

@@ -1,8 +1,8 @@
 package artoria.message.handler;
 
+import artoria.data.Dict;
 import artoria.data.bean.BeanUtils;
 import artoria.data.json.JsonUtils;
-import artoria.lang.Dict;
 import artoria.util.*;
 
 import java.util.List;

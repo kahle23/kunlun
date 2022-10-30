@@ -1,6 +1,6 @@
 package artoria.cache;
 
-import artoria.lang.ReferenceType;
+import artoria.data.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.mock.MockUtils;
