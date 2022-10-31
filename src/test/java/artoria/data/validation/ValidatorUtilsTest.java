@@ -1,5 +1,6 @@
-package artoria.validate;
+package artoria.data.validation;
 
+import artoria.data.validation.support.NumericValidator;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package artoria.validate;
+package artoria.data.validation;
 
 /**
  * Provide the highest level of abstraction for validator.

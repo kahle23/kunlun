@@ -1,5 +1,6 @@
-package artoria.validate;
+package artoria.data.validation.support;
 
+import artoria.data.validation.Validator;
 import artoria.util.Assert;
 import artoria.util.StringUtils;
 
