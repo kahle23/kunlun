@@ -1,8 +1,10 @@
-package artoria.storage;
+package artoria.io.storage;
 
+import artoria.io.file.FileBase;
+import artoria.io.file.FileEntity;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.storage.support.LocalFileStorage;
+import com.alibaba.fastjson.JSON;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -13,27 +15,25 @@ import static artoria.common.Constants.DEFAULT;
 
 public class StorageUtilsTest {
     private static Logger log = LoggerFactory.getLogger(StorageUtilsTest.class);
-    private static final String TEST_KEY = "/test/test_file.txt";
-    private static final String TEST_DIR = "testDir";
+    private static final String TEST_KEY = ".\\target\\test\\test_file.txt";
 
     @Test
     public void test1() {
-        StorageUtils.register(new LocalFileStorage(TEST_DIR, "\\test_dir"));
         StorageUtils.put(DEFAULT, TEST_KEY, "Hello, world! ");
-        log.info(StorageUtils.get(DEFAULT, TEST_KEY, String.class));
+        log.info(JSON.toJSONString(StorageUtils.get(DEFAULT, TEST_KEY, FileEntity.class)));
     }
 
     @Test
     public void test2() {
         StorageUtils.put(DEFAULT, TEST_KEY, "Hello, world! ");
-        log.info("{}", StorageUtils.remove(DEFAULT, TEST_KEY));
+        log.info("{}", StorageUtils.delete(DEFAULT, TEST_KEY));
     }
 
     @Test
     public void test3() {
-        Collection<File> files = StorageUtils.keys(DEFAULT, "", File.class);
-        for (File file : files) {
-            log.info("{}", file);
+        Collection<FileBase> files = StorageUtils.list(DEFAULT, ".\\target", FileBase.class);
+        for (FileBase file : files) {
+            log.info("{}", JSON.toJSONString(file));
         }
     }
 
