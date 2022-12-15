@@ -1,6 +1,6 @@
-package artoria.lang.handler;
+package artoria.core.handler;
 
-import artoria.lang.Handler;
+import artoria.core.Handler;
 
 /**
  * The configuration supported handler.

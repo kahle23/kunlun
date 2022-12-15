@@ -1,6 +1,6 @@
 package artoria.time;
 
-import artoria.lang.Clock;
+import artoria.core.Clock;
 
 /**
  * The clock simple implement by jdk.

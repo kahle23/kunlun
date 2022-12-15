@@ -1,7 +1,7 @@
 package artoria.io.storage;
 
 import artoria.io.file.LocalFileStorage;
-import artoria.lang.Storage;
+import artoria.core.Storage;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;

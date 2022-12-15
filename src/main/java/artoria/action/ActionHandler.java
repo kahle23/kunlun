@@ -1,6 +1,6 @@
 package artoria.action;
 
-import artoria.lang.Handler;
+import artoria.core.Handler;
 
 import java.util.Map;
 

@@ -1,6 +1,6 @@
 package artoria.io.storage;
 
-import artoria.lang.Storage;
+import artoria.core.Storage;
 
 import java.util.Collection;
 

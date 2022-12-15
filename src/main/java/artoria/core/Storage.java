@@ -1,4 +1,4 @@
-package artoria.lang;
+package artoria.core;
 
 /**
  * Provide the highest level of abstraction for storage.

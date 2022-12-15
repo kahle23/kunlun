@@ -1,7 +1,7 @@
 package artoria.io.storage;
 
 import artoria.data.KeyValuePair;
-import artoria.lang.Storage;
+import artoria.core.Storage;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
 

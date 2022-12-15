@@ -1,7 +1,7 @@
-package artoria.lang.handler;
+package artoria.core.handler;
 
-import artoria.lang.Context;
-import artoria.lang.Handler;
+import artoria.core.Context;
+import artoria.core.Handler;
 
 /**
  * The context supported handler.

@@ -1,6 +1,6 @@
 package artoria.time;
 
-import artoria.lang.Time;
+import artoria.core.Time;
 
 import java.util.Calendar;
 import java.util.Date;

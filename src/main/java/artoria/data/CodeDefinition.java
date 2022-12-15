@@ -1,6 +1,6 @@
 package artoria.data;
 
-import artoria.lang.Definition;
+import artoria.core.Definition;
 
 /**
  * The code definition.

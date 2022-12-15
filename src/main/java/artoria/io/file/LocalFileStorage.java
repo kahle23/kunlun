@@ -1,5 +1,6 @@
 package artoria.io.file;
 
+import artoria.core.Storage;
 import artoria.data.KeyValue;
 import artoria.data.Pair;
 import artoria.exception.ExceptionUtils;
@@ -7,7 +8,6 @@ import artoria.io.file.support.FileBaseImpl;
 import artoria.io.file.support.FileEntityImpl;
 import artoria.io.storage.AbstractStorage;
 import artoria.io.storage.NormalStorage;
-import artoria.lang.Storage;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;

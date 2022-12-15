@@ -1,6 +1,6 @@
 package artoria.message;
 
-import artoria.lang.Router;
+import artoria.core.Router;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.message.handler.MessageHandler;

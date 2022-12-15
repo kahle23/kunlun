@@ -1,4 +1,4 @@
-package artoria.lang.callback;
+package artoria.core.callback;
 
 /**
  * The success callback.

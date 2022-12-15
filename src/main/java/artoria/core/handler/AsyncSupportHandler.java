@@ -1,8 +1,8 @@
-package artoria.lang.handler;
+package artoria.core.handler;
 
-import artoria.lang.Handler;
-import artoria.lang.callback.FailureCallback;
-import artoria.lang.callback.SuccessCallback;
+import artoria.core.Handler;
+import artoria.core.callback.FailureCallback;
+import artoria.core.callback.SuccessCallback;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;

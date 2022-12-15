@@ -1,6 +1,6 @@
 package artoria.io.file;
 
-import artoria.lang.Resource;
+import artoria.core.Resource;
 
 /**
  * The base information about the file.
