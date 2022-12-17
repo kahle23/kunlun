@@ -1,5 +1,6 @@
 package artoria.aop;
 
+import artoria.aop.support.SimpleProxyFactory;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;

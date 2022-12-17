@@ -1,8 +1,6 @@
 package artoria.message;
 
 import artoria.core.Router;
-import artoria.message.handler.MessageHandler;
-
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -63,7 +61,7 @@ public interface MessageProvider {
     Router getRouter();
 
     /**
-     * Sends a message(perhaps more than one).
+     * Send a message (perhaps more than one) (from: most message sending scenarios).
      * If you want to be asynchronous, the message object can contain "SuccessCallback" and "FailureCallback".
      * @param message The message to be sent
      * @param handlerName The name of the message handler

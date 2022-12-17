@@ -69,7 +69,7 @@ public class ConsoleHandler extends AbstractClassicMessageHandler {
                 return operate(input, "batchSend", clazz);
             }
             isSupport(new Class[]{Boolean.class}, clazz);
-            System.out.println(convert(input, attrs()));
+            System.out.println(convert(input, getCommonProperties()));
             return ObjectUtils.cast(Boolean.TRUE, clazz);
         }
         else if (BATCH_SEND.equals(name)) {
@@ -80,7 +80,7 @@ public class ConsoleHandler extends AbstractClassicMessageHandler {
             Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
             isSupport(new Class[]{Boolean.class}, clazz);
             for (Object message : messages) {
-                System.out.println(convert(message, attrs()));
+                System.out.println(convert(message, getCommonProperties()));
             }
             return ObjectUtils.cast(Boolean.TRUE, clazz);
         }

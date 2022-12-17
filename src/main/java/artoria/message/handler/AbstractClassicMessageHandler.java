@@ -1,5 +1,6 @@
 package artoria.message.handler;
 
+import artoria.message.MessageHandler;
 import artoria.util.Assert;
 
 import java.lang.reflect.Type;
@@ -26,13 +27,25 @@ public abstract class AbstractClassicMessageHandler implements MessageHandler {
      */
     protected static final String FIND_ONE = "findOne";
     /**
-     * The standard operation name: find list.
+     * The standard operation name: find multiple.
      */
     protected static final String FIND_MULTIPLE = "findMultiple";
     /**
-     * The common attributes.
+     * The standard operation name: receive.
      */
-    private Map<Object, Object> attrs = Collections.emptyMap();
+    protected static final String RECEIVE = "receive";
+    /**
+     * The standard operation name: subscribe.
+     */
+    protected static final String SUBSCRIBE = "subscribe";
+    /**
+     * The standard operation name: unsubscribe.
+     */
+    protected static final String UNSUBSCRIBE = "unsubscribe";
+    /**
+     * The common properties.
+     */
+    private Map<Object, Object> commonProperties = Collections.emptyMap();
 
     protected void isSupport(Class<?>[] supportClasses, Class<?> clazz) {
         if (Object.class.equals(clazz)) { return; }
@@ -43,21 +56,33 @@ public abstract class AbstractClassicMessageHandler implements MessageHandler {
     }
 
     @Override
-    public void attrs(Map<?, ?> attrs) {
-        Assert.notNull(attrs, "Parameter \"attrs\" must not null. ");
-        this.attrs = Collections.unmodifiableMap(attrs);
+    public Map<Object, Object> getCommonProperties() {
+
+        return commonProperties;
     }
 
     @Override
-    public Map<Object, Object> attrs() {
-
-        return attrs;
+    public void setCommonProperties(Map<?, ?> properties) {
+        Assert.notNull(properties, "Parameter \"properties\" must not null. ");
+        this.commonProperties = Collections.unmodifiableMap(properties);
     }
 
     @Override
     public Object send(Object message, Type type) {
 
-        return operate("send", new Object[]{ message, type });
+        return operate(SEND, new Object[]{ message, type });
+    }
+
+    @Override
+    public Object receive(Object condition, Type type) {
+
+        throw new UnsupportedOperationException("This method is not supported! ");
+    }
+
+    @Override
+    public Object subscribe(Object condition, Object messageListener) {
+
+        throw new UnsupportedOperationException("This method is not supported! ");
     }
 
     @Override
@@ -78,7 +103,7 @@ public abstract class AbstractClassicMessageHandler implements MessageHandler {
 
     /**
      * The message related operations.
-     * The standard operation: send, batchSend, info, search
+     * The standard operation: send, batchSend, findOne, findMultiple, receive, subscribe, unsubscribe
      * @param input The input parameters to the operation
      * @param name The name of operation
      * @param clazz The return value class of the operation

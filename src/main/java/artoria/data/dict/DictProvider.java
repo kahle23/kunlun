@@ -78,10 +78,10 @@ public interface DictProvider {
     /**
      * Condition query the dictionary items list.
      * @param dictQuery The dictionary query condition (multiple types may be supported)
-     * @param dataType The type of dictionary data
+     * @param type The type of dictionary data
      * @param <T> The generic type of dictionary data
      * @return The list of dictionary items
      */
-    <T> List<T> findMultiple(Object dictQuery, Type dataType);
+    <T> List<T> findMultiple(Object dictQuery, Type type);
 
 }

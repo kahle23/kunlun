@@ -131,6 +131,14 @@ public class Assert {
         }
     }
 
+    public static void isInstanceOf(Class<?> type, Object obj) {
+        if (type == null) { throw new NullPointerException(); }
+        String objName = obj != null ? obj.getClass().getName() : "null";
+        String format = String.format(
+                "The parameter of type \"%s\" must instance of \"%s\". ", objName, type.getName());
+        isInstanceOf(type, obj, format);
+    }
+
     public static void isInstanceOf(Class<?> type, Object obj, String message) {
         if (!type.isInstance(obj)) {
             throw new IllegalArgumentException(message);

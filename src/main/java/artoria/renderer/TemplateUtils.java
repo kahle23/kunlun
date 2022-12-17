@@ -1,6 +1,6 @@
 package artoria.renderer;
 
-import artoria.io.StringBuilderWriter;
+import artoria.io.stream.StringBuilderWriter;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.renderer.support.text.NormalTextRenderer;

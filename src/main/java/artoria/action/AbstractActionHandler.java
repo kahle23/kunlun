@@ -10,7 +10,7 @@ import java.util.Map;
  * @author Kahle
  */
 public abstract class AbstractActionHandler implements ActionHandler {
-    private Map<Object, Object> attrs = Collections.emptyMap();
+    private Map<Object, Object> commonProperties = Collections.emptyMap();
 
     protected void isSupport(Class<?>[] supportClasses, Class<?> clazz) {
         if (Object.class.equals(clazz)) { return; }
@@ -21,15 +21,15 @@ public abstract class AbstractActionHandler implements ActionHandler {
     }
 
     @Override
-    public void attrs(Map<?, ?> attrs) {
-        Assert.notNull(attrs, "Parameter \"attrs\" must not null. ");
-        this.attrs = Collections.unmodifiableMap(attrs);
+    public Map<Object, Object> getCommonProperties() {
+
+        return commonProperties;
     }
 
     @Override
-    public Map<Object, Object> attrs() {
-
-        return attrs;
+    public void setCommonProperties(Map<?, ?> properties) {
+        Assert.notNull(properties, "Parameter \"properties\" must not null. ");
+        this.commonProperties = Collections.unmodifiableMap(properties);
     }
 
 }

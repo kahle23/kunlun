@@ -80,7 +80,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
         Assert.notBlank(actionName, "Parameter \"actionName\" must not blank. ");
         String className = actionHandler.getClass().getName();
         actionHandlers.put(actionName, actionHandler);
-        actionHandler.attrs(getCommonProperties());
+        actionHandler.setCommonProperties(getCommonProperties());
         log.info("Register the action handler \"{}\" to \"{}\". ", className, actionName);
     }
 

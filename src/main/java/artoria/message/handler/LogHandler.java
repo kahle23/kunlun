@@ -23,7 +23,7 @@ public class LogHandler extends ConsoleHandler {
                 return operate(input, "batchSend", clazz);
             }
             isSupport(new Class[]{Boolean.class}, clazz);
-            log.info(convert(input, attrs()));
+            log.info(convert(input, getCommonProperties()));
             return ObjectUtils.cast(Boolean.TRUE, clazz);
         }
         else if (BATCH_SEND.equals(name)) {
@@ -34,7 +34,7 @@ public class LogHandler extends ConsoleHandler {
             Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
             isSupport(new Class[]{Boolean.class}, clazz);
             for (Object message : messages) {
-                log.info(convert(message, attrs()));
+                log.info(convert(message, getCommonProperties()));
             }
             return ObjectUtils.cast(Boolean.TRUE, clazz);
         }

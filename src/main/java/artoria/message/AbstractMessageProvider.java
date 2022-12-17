@@ -3,7 +3,6 @@ package artoria.message;
 import artoria.core.Router;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.message.handler.MessageHandler;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
@@ -80,9 +79,9 @@ public abstract class AbstractMessageProvider implements MessageProvider {
         Assert.notNull(messageHandler, "Parameter \"messageHandler\" must not null. ");
         Assert.notBlank(handlerName, "Parameter \"handlerName\" must not blank. ");
         String className = messageHandler.getClass().getName();
-        log.info("Register the handler \"{}\" to \"{}\". ", className, handlerName);
+        log.info("Register the message handler \"{}\" to \"{}\". ", className, handlerName);
         messageHandlers.put(handlerName, messageHandler);
-        messageHandler.attrs(getCommonProperties());
+        messageHandler.setCommonProperties(getCommonProperties());
     }
 
     @Override
@@ -91,7 +90,7 @@ public abstract class AbstractMessageProvider implements MessageProvider {
         MessageHandler remove = messageHandlers.remove(handlerName);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the handler \"{}\" from \"{}\". ", className, handlerName);
+            log.info("Deregister the message handler \"{}\" from \"{}\". ", className, handlerName);
         }
     }
 

@@ -113,9 +113,9 @@ public class CacheDictProvider extends AbstractDictProvider {
     }
 
     @Override
-    public <T> List<T> findMultiple(Object dictQuery, Type dataType) {
+    public <T> List<T> findMultiple(Object dictQuery, Type type) {
 
-        return dictProvider.findMultiple(dictQuery, dataType);
+        return dictProvider.findMultiple(dictQuery, type);
     }
 
     /*@Override

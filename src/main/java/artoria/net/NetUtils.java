@@ -19,7 +19,7 @@ import static artoria.common.Constants.*;
 import static artoria.io.IOUtils.EOF;
 
 /**
- * Net tools.
+ * The net tools.
  * @author Kahle
  */
 public class NetUtils {
@@ -38,7 +38,7 @@ public class NetUtils {
             return inetAddress.isReachable(timeout);
         }
         catch (IOException e) {
-            return false;
+            throw ExceptionUtils.wrap(e);
         }
     }
 
@@ -47,7 +47,7 @@ public class NetUtils {
             return inetAddress.isReachable(timeout);
         }
         catch (IOException e) {
-            return false;
+            throw ExceptionUtils.wrap(e);
         }
     }
 
@@ -67,8 +67,11 @@ public class NetUtils {
             socket.connect(socketAddress, timeout);
             return socket.isConnected();
         }
-        catch (IOException e) {
+        catch (SocketTimeoutException e) {
             return false;
+        }
+        catch (IOException e) {
+            throw ExceptionUtils.wrap(e);
         }
         finally {
             CloseUtils.closeQuietly(socket);

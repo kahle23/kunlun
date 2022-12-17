@@ -31,8 +31,8 @@ public class ThreadUtils {
     }
 
     public static ThreadInfo getThreadInfo(long threadId) {
-        ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
-        return threadMXBean.getThreadInfo(threadId);
+        ThreadMXBean mxBean = ManagementFactory.getThreadMXBean();
+        return mxBean.getThreadInfo(threadId);
     }
 
 }

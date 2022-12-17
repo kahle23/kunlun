@@ -28,13 +28,16 @@ public interface TrackProvider {
     /**
      * Track an event (Who did what and when).
      *
+     * Normally, it is silent (not throw exception) and executes synchronously.
+     * Controlling the execution of different modes through parameters is an expected implementation.
+     *
      * In the parameter list, the "platform" is not necessary, because "platform" can be passed through "properties".
      * It can also be passed directly through the implementation class.
      *
      * The event category is not necessary, because it can be associated with the event code.
      *
      * The category of event code:
-     *      log:*           the log type event
+     *      record:*        the record type event
      *      error:*         the error type event
      *      access:*        the access type event
      *      statistic:*     the statistic type event

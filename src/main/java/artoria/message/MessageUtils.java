@@ -3,7 +3,6 @@ package artoria.message;
 import artoria.core.Router;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.message.handler.MessageHandler;
 import artoria.util.Assert;
 
 import java.lang.reflect.Type;
