@@ -1,5 +1,7 @@
 package artoria.codec;
 
+import artoria.core.codec.BinaryDecoder;
+import artoria.core.codec.BinaryEncoder;
 import artoria.util.Assert;
 
 import java.io.Serializable;
@@ -45,19 +47,19 @@ public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
     }
 
     @Override
-    public Object encode(Object source) throws EncodeException {
+    public Object encode(Object source) {
 
         return encode((byte[]) source);
     }
 
     @Override
-    public Object decode(Object source) throws DecodeException {
+    public Object decode(Object source) {
 
         return decode((byte[]) source);
     }
 
     @Override
-    public byte[] encode(byte[] source) throws EncodeException {
+    public byte[] encode(byte[] source) {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         int len = source.length;
         byte[] out = new byte[len << ONE];
@@ -70,7 +72,7 @@ public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
     }
 
     @Override
-    public byte[] decode(byte[] source) throws DecodeException {
+    public byte[] decode(byte[] source) {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         int len = source.length;
         if ((len & HEX_01) != ZERO) {

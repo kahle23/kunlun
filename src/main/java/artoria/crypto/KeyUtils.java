@@ -1,7 +1,7 @@
 package artoria.crypto;
 
 import artoria.codec.Base64Utils;
-import artoria.codec.BinaryEncoder;
+import artoria.core.codec.BinaryEncoder;
 import artoria.codec.HexUtils;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;

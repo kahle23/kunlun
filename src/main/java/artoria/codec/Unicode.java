@@ -1,5 +1,7 @@
 package artoria.codec;
 
+import artoria.core.codec.StringDecoder;
+import artoria.core.codec.StringEncoder;
 import artoria.util.Assert;
 
 import java.io.Serializable;
@@ -17,19 +19,19 @@ public class Unicode implements StringEncoder, StringDecoder, Serializable {
     private static final int RADIX = 16;
 
     @Override
-    public Object encode(Object source) throws EncodeException {
+    public Object encode(Object source) {
 
         return encode((String) source);
     }
 
     @Override
-    public Object decode(Object source) throws DecodeException {
+    public Object decode(Object source) {
 
         return decode((String) source);
     }
 
     @Override
-    public String encode(String source) throws EncodeException {
+    public String encode(String source) {
         Assert.notBlank(source, "Parameter \"source\" must not blank. ");
         StringBuilder unicode = new StringBuilder();
         char[] chars = source.toCharArray();
@@ -45,7 +47,7 @@ public class Unicode implements StringEncoder, StringDecoder, Serializable {
     }
 
     @Override
-    public String decode(String source) throws DecodeException {
+    public String decode(String source) {
         Assert.notBlank(source, "Parameter \"source\" must not blank. ");
         int index, pos = ZERO;
         StringBuilder result = new StringBuilder();
