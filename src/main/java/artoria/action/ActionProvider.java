@@ -1,6 +1,5 @@
 package artoria.action;
 
-import artoria.core.Router;
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -46,19 +45,6 @@ public interface ActionProvider {
      * @return The action handler
      */
     ActionHandler getActionHandler(String actionName);
-
-    /**
-     * Set the action router.
-     * @param router The action router
-     */
-    void setRouter(Router router);
-
-    /**
-     * Get the action router.
-     * The action name is fixed, but where to get the action name is uncertain, so need a router.
-     * @return The action router
-     */
-    Router getRouter();
 
     /**
      * Execute a specific logic.

@@ -1,12 +1,8 @@
 package artoria.action;
 
-import artoria.core.Router;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.util.ArrayUtils;
-import artoria.util.Assert;
-import artoria.util.MapUtils;
-import artoria.util.ObjectUtils;
+import artoria.util.*;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -14,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static artoria.common.Constants.ONE;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.Constants.TWO;
 
 /**
  * The abstract action tools provider.
@@ -24,7 +20,6 @@ public abstract class AbstractActionProvider implements ActionProvider {
     private static final Logger log = LoggerFactory.getLogger(AbstractActionProvider.class);
     protected final Map<String, ActionHandler> actionHandlers;
     protected final Map<String, Object> commonProperties;
-    private Router router;
 
     protected AbstractActionProvider(Map<String, Object> commonProperties,
                                      Map<String, ActionHandler> actionHandlers) {
@@ -32,7 +27,6 @@ public abstract class AbstractActionProvider implements ActionProvider {
         Assert.notNull(actionHandlers, "Parameter \"actionHandlers\" must not null. ");
         this.commonProperties = commonProperties;
         this.actionHandlers = actionHandlers;
-        setRouter(new SimpleActionRouter());
     }
 
     public AbstractActionProvider() {
@@ -40,14 +34,19 @@ public abstract class AbstractActionProvider implements ActionProvider {
                 new ConcurrentHashMap<String, ActionHandler>());
     }
 
-    protected ActionHandler getActionHandlerInner(Object... arguments) {
-        Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");
-        // Parameter "arguments" usually is: 0 action name, 1 strategy or operation, 2 input, 3 type
-        Object routeObj = getRouter().route(arguments);
-        String route = routeObj != null ? String.valueOf(routeObj) : null;
-        Assert.notBlank(route,
-                "The route calculated according to the arguments is blank. ");
-        ActionHandler actionHandler = actionHandlers.get(route);
+    protected ActionHandler getActionHandlerInner(String actionName, Object input) {
+        String name = null;
+        // TODO: 2023/5/5 The action name is required in the future, no longer handle "class:"
+        if (StringUtils.isNotBlank(actionName)) { name = actionName; }
+        else {
+            // The input parameter should not be null.
+            if (input != null) {
+                // Other scenarios concatenate class names directly.
+                name = "class:" + input.getClass().getName();
+            }
+        }
+        Assert.notBlank(name, "Parameter \"actionName\" must not blank. ");
+        ActionHandler actionHandler = actionHandlers.get(name);
         Assert.notNull(actionHandler,
                 "The corresponding action handler could not be found by name. ");
         return actionHandler;
@@ -101,28 +100,13 @@ public abstract class AbstractActionProvider implements ActionProvider {
     }
 
     @Override
-    public void setRouter(Router router) {
-        Assert.notNull(router, "Parameter \"router\" must not null. ");
-        this.router = router;
-    }
-
-    @Override
-    public Router getRouter() {
-
-        return router;
-    }
-
-    @Override
     public Object execute(String actionName, Object[] arguments) {
         // Parameter "arguments" usually is: 0 strategy or operation, 1 input, 2 type
-        Object[] newArgs;
-        if (ArrayUtils.isNotEmpty(arguments)) {
-            newArgs = new Object[arguments.length + ONE];
-            newArgs[ZERO] = actionName;
-            System.arraycopy(arguments, ZERO, newArgs, ONE, arguments.length);
+        Object input = null;
+        if (ArrayUtils.isNotEmpty(arguments) && arguments.length >= TWO) {
+            input = arguments[ONE];
         }
-        else { newArgs = new Object[]{actionName, null, null}; }
-        return getActionHandlerInner(newArgs).execute(arguments);
+        return getActionHandlerInner(actionName, input).execute(arguments);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package artoria.message;
 
-import artoria.core.Router;
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -47,18 +46,6 @@ public interface MessageProvider {
      * @return The message handler
      */
     MessageHandler getMessageHandler(String handlerName);
-
-    /**
-     * Set the message router.
-     * @param router The message router
-     */
-    void setRouter(Router router);
-
-    /**
-     * Get the message router.
-     * @return The message router
-     */
-    Router getRouter();
 
     /**
      * Send a message (perhaps more than one) (from: most message sending scenarios).

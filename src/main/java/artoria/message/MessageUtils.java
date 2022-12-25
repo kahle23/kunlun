@@ -1,6 +1,5 @@
 package artoria.message;
 
-import artoria.core.Router;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -45,16 +44,6 @@ public class MessageUtils {
     public static MessageHandler getMessageHandler(String handlerName) {
 
         return getMessageProvider().getMessageHandler(handlerName);
-    }
-
-    public static void setRouter(Router router) {
-
-        getMessageProvider().setRouter(router);
-    }
-
-    public static Router getRouter() {
-
-        return getMessageProvider().getRouter();
     }
 
     public static <T> T send(Object message, Type type) {

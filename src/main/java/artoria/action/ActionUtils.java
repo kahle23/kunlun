@@ -1,6 +1,5 @@
 package artoria.action;
 
-import artoria.core.Router;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -47,16 +46,6 @@ public class ActionUtils {
         return getActionProvider().getActionHandler(actionName);
     }
 
-    public static void setRouter(Router router) {
-
-        getActionProvider().setRouter(router);
-    }
-
-    public static Router getRouter() {
-
-        return getActionProvider().getRouter();
-    }
-
     public static Object execute(String actionName, Object[] arguments) {
 
         return getActionProvider().execute(actionName, arguments);
@@ -72,6 +61,7 @@ public class ActionUtils {
         return getActionProvider().execute(input, actionName, EMPTY_STRING, type);
     }
 
+    @Deprecated
     public static <T> T execute(Object input, Type type) {
 
         return getActionProvider().execute(input, EMPTY_STRING, EMPTY_STRING, type);
