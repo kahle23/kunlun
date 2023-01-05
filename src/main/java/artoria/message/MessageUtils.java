@@ -7,6 +7,7 @@ import artoria.util.Assert;
 import java.lang.reflect.Type;
 
 import static artoria.common.Constants.EMPTY_STRING;
+import static artoria.util.ObjectUtils.cast;
 
 /**
  * The message tools.
@@ -46,6 +47,7 @@ public class MessageUtils {
         return getMessageProvider().getMessageHandler(handlerName);
     }
 
+    @Deprecated
     public static <T> T send(Object message, Type type) {
 
         return getMessageProvider().send(message, EMPTY_STRING, type);
@@ -56,24 +58,36 @@ public class MessageUtils {
         return getMessageProvider().send(message, handlerName, type);
     }
 
+    public static <T> T receive(Object condition, String handlerName, Type type) {
+
+        return getMessageProvider().receive(condition, handlerName, type);
+    }
+
+    public static Object subscribe(String handlerName, Object condition, Object messageListener) {
+
+        return getMessageProvider().subscribe(handlerName, condition, messageListener);
+    }
+
+    public static <T> T operate(String handlerName, String operation, Object input, Type type) {
+
+        return cast(operate(handlerName, operation, new Object[]{input, type}));
+    }
+
+    public static Object operate(String handlerName, String operation, Object[] arguments) {
+
+        return getMessageProvider().operate(handlerName, operation, arguments);
+    }
+
+    @Deprecated
     public static <T> T operate(String operation, Object input, Type type) {
 
-        return getMessageProvider().operate(operation, EMPTY_STRING, new Object[]{input, type});
+        return operate(EMPTY_STRING, operation, input, type);
     }
 
-    public static <T> T operate(String operation, String handlerName, Object input, Type type) {
+    @Deprecated
+    public static Object operate(String operation, Object[] arguments) {
 
-        return getMessageProvider().operate(operation, handlerName, new Object[]{input, type});
-    }
-
-    public static <T> T operate(String operation, Object[] arguments) {
-
-        return getMessageProvider().operate(operation, EMPTY_STRING, arguments);
-    }
-
-    public static <T> T operate(String operation, String handlerName, Object[] arguments) {
-
-        return getMessageProvider().operate(operation, handlerName, arguments);
+        return getMessageProvider().operate(EMPTY_STRING, operation, arguments);
     }
 
 }

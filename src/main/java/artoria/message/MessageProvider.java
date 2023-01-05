@@ -59,12 +59,31 @@ public interface MessageProvider {
     <T> T send(Object message, String handlerName, Type type);
 
     /**
-     * Perform an operation and return the corresponding result.
-     * @param operation The name of the operation to be performed
+     * Receive a message (from: amqp and delay message).
+     * @param condition Maybe is topic or topic + other parameters
      * @param handlerName The name of the message handler
+     * @param type The type of the return value
+     * @param <T> The generic type of the return value
+     * @return The result received
+     */
+    <T> T receive(Object condition, String handlerName, Type type);
+
+    /**
+     * Subscribe to a topic (from: message queue).
+     * @param handlerName The name of the message handler
+     * @param condition Maybe is topic or topic + "subExpression" or null
+     * @param messageListener The message listener (maybe the condition is also contained in the listener)
+     * @return The subscription result or null (most scenarios are null)
+     */
+    Object subscribe(String handlerName, Object condition, Object messageListener);
+
+    /**
+     * Perform an operation and return the corresponding result.
+     * @param handlerName The name of the message handler
+     * @param operation The name of the operation to be performed
      * @param arguments The arguments for the operation to be performed
      * @return The result of the operation
      */
-    <T> T operate(String operation, String handlerName, Object[] arguments);
+    Object operate(String handlerName, String operation, Object[] arguments);
 
 }

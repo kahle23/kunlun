@@ -123,11 +123,28 @@ public abstract class AbstractMessageProvider implements MessageProvider {
     }
 
     @Override
-    public <T> T operate(String operation, String handlerName, Object[] arguments) {
+    public <T> T receive(Object condition, String handlerName, Type type) {
+        Assert.notBlank(handlerName, "Parameter \"handlerName\" must not blank. ");
+        Assert.notNull(condition, "Parameter \"condition\" must not null. ");
+        Assert.notNull(type, "Parameter \"type\" must not null. ");
+        MessageHandler handler = getMessageHandlerInner(handlerName, null);
+        return ObjectUtils.cast(handler.receive(condition, type));
+    }
+
+    @Override
+    public Object subscribe(String handlerName, Object condition, Object messageListener) {
+        Assert.notBlank(handlerName, "Parameter \"handlerName\" must not blank. ");
+        Assert.notNull(messageListener, "Parameter \"messageListener\" must not null. ");
+        MessageHandler handler = getMessageHandlerInner(handlerName, null);
+        return handler.subscribe(condition, messageListener);
+    }
+
+    @Override
+    public Object operate(String handlerName, String operation, Object[] arguments) {
         Assert.notBlank(handlerName, "Parameter \"handlerName\" must not blank. ");
         Assert.notBlank(operation, "Parameter \"operation\" must not blank. ");
         MessageHandler handler = getMessageHandlerInner(handlerName, null);
-        return ObjectUtils.cast(handler.operate(operation, arguments));
+        return handler.operate(operation, arguments);
     }
 
 }
