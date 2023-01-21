@@ -1,5 +1,6 @@
 package artoria.track;
 
+import artoria.core.Builder;
 import artoria.data.bean.BeanUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -42,6 +43,9 @@ public abstract class AbstractTrackProvider implements TrackProvider {
         // Build a map by properties.
         // The properties to override the common properties.
         Map<Object, Object> map = new LinkedHashMap<Object, Object>(getCommonProperties());
+        if (properties instanceof Builder) {
+            properties = ((Builder) properties).build();
+        }
         if (properties == null) {
             // Do nothing.
         }
