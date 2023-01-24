@@ -136,7 +136,7 @@ public interface AsyncSupportHandler extends ContextSupportHandler, Handler {
      * @author Kahle
      */
     class AsyncExecuteTask implements Callable<Object> {
-        private static Logger log = LoggerFactory.getLogger(AsyncExecuteTask.class);
+        private static final Logger log = LoggerFactory.getLogger(AsyncExecuteTask.class);
         private final AsyncSupportHandler asyncSupportHandler;
         private final AsyncSupportContext context;
 

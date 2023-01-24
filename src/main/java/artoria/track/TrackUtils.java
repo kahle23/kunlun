@@ -9,7 +9,7 @@ import artoria.util.Assert;
  * @author Kahle
  */
 public class TrackUtils {
-    private static Logger log = LoggerFactory.getLogger(TrackUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(TrackUtils.class);
     private static volatile TrackProvider trackProvider;
 
     public static TrackProvider getTrackProvider() {

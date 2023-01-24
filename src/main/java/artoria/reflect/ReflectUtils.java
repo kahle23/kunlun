@@ -12,7 +12,7 @@ import java.lang.reflect.*;
  * @author Kahle
  */
 public class ReflectUtils {
-    private static Logger log = LoggerFactory.getLogger(ReflectUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ReflectUtils.class);
     private static volatile ReflectProvider reflectProvider;
 
     public static ReflectProvider getReflectProvider() {

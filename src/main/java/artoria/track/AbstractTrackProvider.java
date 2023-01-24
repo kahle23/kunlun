@@ -23,7 +23,7 @@ import static artoria.util.ObjectUtils.cast;
  * @author Kahle
  */
 public abstract class AbstractTrackProvider implements TrackProvider {
-    private static Logger log = LoggerFactory.getLogger(AbstractTrackProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractTrackProvider.class);
     protected final Map<String, Object> commonProperties;
 
     protected AbstractTrackProvider(Map<String, Object> commonProperties) {

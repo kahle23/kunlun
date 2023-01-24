@@ -24,17 +24,17 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class SimpleBeanMap extends BeanMap {
-    private static Logger log = LoggerFactory.getLogger(SimpleBeanMap.class);
-    private static Method methodGetClass;
-    private Map<String, Method> writeMethodMap = new LinkedHashMap<String, Method>();
-    private Map<String, Method> readMethodMap = new LinkedHashMap<String, Method>();
+    private static final Logger log = LoggerFactory.getLogger(SimpleBeanMap.class);
+    private static final Method METHOD_GET_CLASS;
+    private final Map<String, Method> writeMethodMap = new LinkedHashMap<String, Method>();
+    private final Map<String, Method> readMethodMap = new LinkedHashMap<String, Method>();
     private Boolean ignoreException = true;
     private Class<?> beanClass;
 
     static {
         try {
             String nameGetClass = "getClass";
-            methodGetClass = ReflectUtils.getMethod(Object.class, nameGetClass);
+            METHOD_GET_CLASS = ReflectUtils.getMethod(Object.class, nameGetClass);
         }
         catch (NoSuchMethodException e) {
             throw ExceptionUtils.wrap(e);
@@ -81,7 +81,7 @@ public class SimpleBeanMap extends BeanMap {
             Method writeMethod = descriptor.getWriteMethod();
             Method readMethod = descriptor.getReadMethod();
             String name = descriptor.getName();
-            if (methodGetClass.equals(readMethod)) { continue; }
+            if (METHOD_GET_CLASS.equals(readMethod)) { continue; }
             if (writeMethod != null) { writeMethodMap.put(name, writeMethod); }
             if (readMethod != null) { readMethodMap.put(name, readMethod); }
         }

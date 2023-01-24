@@ -30,7 +30,7 @@ public class SimpleCache extends AbstractValueWrapperCache {
     /**
      * The log object.
      */
-    private static Logger log = LoggerFactory.getLogger(SimpleCache.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleCache.class);
     /**
      * The cached storage object.
      */

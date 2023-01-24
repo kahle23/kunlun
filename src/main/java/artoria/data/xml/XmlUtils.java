@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
  * @author Kahle
  */
 public class XmlUtils {
-    private static Logger log = LoggerFactory.getLogger(XmlUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(XmlUtils.class);
     private static volatile XmlProvider xmlProvider;
 
     public static XmlProvider getXmlProvider() {

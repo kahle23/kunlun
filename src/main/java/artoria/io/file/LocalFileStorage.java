@@ -28,7 +28,7 @@ import static artoria.common.Constants.UTF_8;
  * @author Kahle
  */
 public class LocalFileStorage extends AbstractStorage implements Storage, NormalStorage {
-    private static Logger log = LoggerFactory.getLogger(LocalFileStorage.class);
+    private static final Logger log = LoggerFactory.getLogger(LocalFileStorage.class);
     private final String charset;
 
     public LocalFileStorage(String charset) {

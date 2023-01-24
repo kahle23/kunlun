@@ -11,7 +11,7 @@ import java.io.StringWriter;
  * @author Kahle
  */
 public class ExceptionUtils {
-    private static Logger log = LoggerFactory.getLogger(ExceptionUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ExceptionUtils.class);
 
     public static RuntimeException wrap(Exception cause) {
         boolean isRunEx = cause instanceof RuntimeException;

@@ -25,7 +25,7 @@ import static artoria.io.IOUtils.EOF;
 public class NetUtils {
     private static final Integer DEFAULT_REACHABLE_TIMEOUT = 1000;
     private static final Integer DEFAULT_CONNECTED_TIMEOUT = 1000;
-    private static Logger log = LoggerFactory.getLogger(NetUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(NetUtils.class);
 
     public static boolean reachable(String ipAddress) {
 

@@ -20,7 +20,7 @@ import static artoria.common.Constants.ZERO;
  * @author Kahle
  */
 public class SimpleBeanCopier implements BeanCopier {
-    private static Logger log = LoggerFactory.getLogger(SimpleBeanCopier.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleBeanCopier.class);
     private Boolean ignoreException = true;
 
     public Boolean getIgnoreException() {

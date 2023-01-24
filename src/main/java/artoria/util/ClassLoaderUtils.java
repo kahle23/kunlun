@@ -17,7 +17,7 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class ClassLoaderUtils {
-    private static Logger log = Logger.getLogger(ClassLoaderUtils.class.getName());
+    private static final Logger log = Logger.getLogger(ClassLoaderUtils.class.getName());
 
     private static Enumeration<URL> getResources(ClassLoader classLoader, String resourceName) {
         if (classLoader == null) { return null; }

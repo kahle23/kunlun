@@ -18,7 +18,7 @@ public class RandomUtils {
     private static final char[] DEFAULT_CHAR_ARRAY = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private static final Long TIME_INTERVAL = 6 * 60 * 60 * 1000L;
     private static volatile Long lastUpdatedTime = 0L;
-    private static Logger log = LoggerFactory.getLogger(RandomUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(RandomUtils.class);
     private static Random random;
 
     private static Random getRandom() {

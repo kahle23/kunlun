@@ -1,7 +1,7 @@
 package artoria.io.storage;
 
-import artoria.io.file.LocalFileStorage;
 import artoria.core.Storage;
+import artoria.io.file.LocalFileStorage;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -20,7 +20,7 @@ import static artoria.common.Constants.DEFAULT;
  */
 public class StorageUtils {
     private static final Map<String, NormalStorage> STORAGE_MAP = new ConcurrentHashMap<String, NormalStorage>();
-    private static Logger log = LoggerFactory.getLogger(StorageUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(StorageUtils.class);
 
     public static void register(String name, NormalStorage storage) {
         Assert.notNull(storage, "Parameter \"storage\" must not null. ");

@@ -9,7 +9,7 @@ import artoria.util.Assert;
  * @author Kahle
  */
 public class OcrUtils {
-    private static Logger log = LoggerFactory.getLogger(OcrUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(OcrUtils.class);
     private static volatile OcrProvider ocrProvider;
     private static String defaultHandlerName = "default";
 

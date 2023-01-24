@@ -9,7 +9,7 @@ import artoria.util.Assert;
  * @author Kahle
  */
 public class UnicodeUtils {
-    private static Logger log = LoggerFactory.getLogger(UnicodeUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(UnicodeUtils.class);
     private static volatile Unicode unicode;
 
     public static Unicode getUnicode() {

@@ -10,7 +10,7 @@ import artoria.util.Assert;
  * @author Kahle
  */
 public class Enhancer {
-    private static Logger log = LoggerFactory.getLogger(Enhancer.class);
+    private static final Logger log = LoggerFactory.getLogger(Enhancer.class);
     private static volatile ProxyFactory proxyFactory;
 
     public static ProxyFactory getProxyFactory() {

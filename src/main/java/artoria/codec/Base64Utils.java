@@ -12,7 +12,7 @@ import static java.lang.Boolean.TRUE;
  * @author Kahle
  */
 public class Base64Utils {
-    private static Logger log = LoggerFactory.getLogger(Base64Utils.class);
+    private static final Logger log = LoggerFactory.getLogger(Base64Utils.class);
     private static volatile Base64 mimeBase64;
     private static volatile Base64 urlBase64;
     private static volatile Base64 base64;

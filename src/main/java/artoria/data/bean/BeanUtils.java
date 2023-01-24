@@ -20,7 +20,7 @@ import static artoria.common.Constants.THIRTY;
  * @author Kahle
  */
 public class BeanUtils {
-    private static Logger log = LoggerFactory.getLogger(BeanUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(BeanUtils.class);
     private static volatile BeanMapFactory beanMapFactory;
     private static volatile BeanCopier beanCopier;
 

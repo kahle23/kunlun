@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class CacheUtils {
     private static final Map<String, Cache> CACHES = new ConcurrentHashMap<String, Cache>();
-    private static Logger log = LoggerFactory.getLogger(CacheUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(CacheUtils.class);
     private static volatile CacheFactory cacheFactory;
 
     public static void register(Cache cache) {

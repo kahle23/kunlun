@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
  * @author Kahle
  */
 public class ConversionUtils {
-    private static Logger log = LoggerFactory.getLogger(ConversionUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ConversionUtils.class);
     private static volatile ConversionProvider conversionProvider;
 
     public static ConversionProvider getConversionProvider() {

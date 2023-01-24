@@ -22,7 +22,7 @@ import static artoria.common.Constants.FORTY;
  * @author Kahle
  */
 public class SimpleConversionProvider extends AbstractConversionProvider {
-    private static Logger log = LoggerFactory.getLogger(SimpleConversionProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleConversionProvider.class);
     protected final Map<ConvertiblePair, ConverterGroup> converterMap;
     protected final Set<GenericConverter> globalConverters;
 

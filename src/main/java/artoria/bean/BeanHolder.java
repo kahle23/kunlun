@@ -12,7 +12,7 @@ import java.util.Map;
  * @author Kahle
  */
 public class BeanHolder {
-    private static Logger log = LoggerFactory.getLogger(BeanHolder.class);
+    private static final Logger log = LoggerFactory.getLogger(BeanHolder.class);
     private static volatile BeanManager beanManager;
 
     public static BeanManager getBeanManager() {

@@ -19,7 +19,7 @@ import static artoria.common.Constants.ZERO;
  */
 public class FileUtils {
     private static final long FILE_COPY_BUFFER_SIZE = 1024 * 1024 * 10;
-    private static Logger log = LoggerFactory.getLogger(FileUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(FileUtils.class);
 
     public static boolean rename(File path, String newName) {
         File dest = new File(path.getParent(), newName);

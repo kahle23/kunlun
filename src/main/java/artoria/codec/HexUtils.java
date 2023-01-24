@@ -12,7 +12,7 @@ import static java.lang.Boolean.TRUE;
  * @author Kahle
  */
 public class HexUtils {
-    private static Logger log = LoggerFactory.getLogger(HexUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(HexUtils.class);
     private static volatile Hex upperCaseHex;
     private static volatile Hex lowerCaseHex;
 
