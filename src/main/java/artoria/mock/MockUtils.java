@@ -7,7 +7,7 @@ import artoria.util.Assert;
 import java.lang.reflect.Type;
 
 public class MockUtils {
-    private static Logger log = LoggerFactory.getLogger(MockUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(MockUtils.class);
     private static volatile MockProvider mockProvider;
 
     public static MockProvider getMockProvider() {

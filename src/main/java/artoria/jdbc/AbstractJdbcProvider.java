@@ -17,7 +17,7 @@ import static artoria.common.Constants.ONE;
 import static artoria.common.Constants.ZERO;
 
 public abstract class AbstractJdbcProvider implements JdbcProvider {
-    private static Logger log = LoggerFactory.getLogger(AbstractJdbcProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractJdbcProvider.class);
 
     Connection getConnection() throws SQLException {
 

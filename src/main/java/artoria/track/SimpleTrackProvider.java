@@ -17,7 +17,7 @@ import static java.util.Collections.emptyList;
  * @author Kahle
  */
 public class SimpleTrackProvider extends AbstractTrackProvider {
-    private static Logger log = LoggerFactory.getLogger(SimpleTrackProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleTrackProvider.class);
     private Collection<String> showPropertyNames;
 
     protected SimpleTrackProvider(Map<String, Object> commonProperties) {

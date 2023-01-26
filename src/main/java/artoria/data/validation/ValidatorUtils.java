@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ValidatorUtils {
     private static final Map<String, Validator> VALIDATORS = new ConcurrentHashMap<String, Validator>();
-    private static Logger log = LoggerFactory.getLogger(ValidatorUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ValidatorUtils.class);
 
     public static void register(String name, Validator validator) {
         Assert.notNull(validator, "Parameter \"validator\" must not null. ");

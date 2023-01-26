@@ -9,7 +9,7 @@ import artoria.util.Assert;
  * @author Kahle
  */
 public class IdUtils {
-    private static Logger log = LoggerFactory.getLogger(IdUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(IdUtils.class);
     private static volatile IdProvider idProvider;
 
     public static IdProvider getIdProvider() {

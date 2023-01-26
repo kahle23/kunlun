@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
  * @author Kahle
  */
 public class JsonUtils {
-    private static Logger log = LoggerFactory.getLogger(JsonUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(JsonUtils.class);
     private static volatile JsonProvider jsonProvider;
 
     public static JsonProvider getJsonProvider() {

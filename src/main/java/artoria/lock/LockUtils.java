@@ -13,7 +13,7 @@ import static artoria.common.Constants.EMPTY_STRING;
  * @author Kahle
  */
 public class LockUtils {
-    private static Logger log = LoggerFactory.getLogger(LockUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(LockUtils.class);
     private static volatile LockProvider lockProvider;
 
     public static LockProvider getLockProvider() {

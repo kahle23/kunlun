@@ -11,7 +11,7 @@ import java.util.Collection;
  * @author Kahle
  */
 public class LifecycleUtils {
-    private static Logger log = LoggerFactory.getLogger(LifecycleUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(LifecycleUtils.class);
 
     public static void initialize(Object obj) throws LifecycleException {
         if (obj instanceof Initializable) {

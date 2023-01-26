@@ -80,7 +80,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
         String className = actionHandler.getClass().getName();
         actionHandlers.put(actionName, actionHandler);
         actionHandler.setCommonProperties(getCommonProperties());
-        log.info("Register the action handler \"{}\" to \"{}\". ", className, actionName);
+        log.debug("Register the action handler \"{}\" to \"{}\". ", className, actionName);
     }
 
     @Override
@@ -89,7 +89,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
         ActionHandler remove = actionHandlers.remove(actionName);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the action handler \"{}\" from \"{}\". ", className, actionName);
+            log.debug("Deregister the action handler \"{}\" from \"{}\". ", className, actionName);
         }
     }
 

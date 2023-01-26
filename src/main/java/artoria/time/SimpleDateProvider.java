@@ -24,7 +24,7 @@ public class SimpleDateProvider implements DateProvider {
     private final ThreadLocal<Map<String, SimpleDateFormat>> dateFormatCache = new ThreadLocal<Map<String, SimpleDateFormat>>();
     private final Set<String> datePatterns = new HashSet<String>();
     private final String defaultPattern;
-    private static Logger log = LoggerFactory.getLogger(SimpleDateProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleDateProvider.class);
 
     private SimpleDateFormat getDateFormat(String pattern) {
         Map<String, SimpleDateFormat> cache = dateFormatCache.get();

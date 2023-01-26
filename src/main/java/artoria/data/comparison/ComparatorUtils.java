@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ComparatorUtils {
     private static final Map<String, Comparator> COMPARATORS = new ConcurrentHashMap<String, Comparator>();
-    private static Logger log = LoggerFactory.getLogger(ComparatorUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ComparatorUtils.class);
 
     public static void register(String name, Comparator comparator) {
         Assert.notNull(comparator, "Parameter \"comparator\" must not null. ");

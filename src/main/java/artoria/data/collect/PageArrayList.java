@@ -28,6 +28,7 @@ public class PageArrayList<E> extends ArrayList<E> {
     public PageArrayList(Collection<? extends E> c) {
         super(c);
         if (c instanceof PageArrayList) {
+            @SuppressWarnings("rawtypes")
             PageArrayList pl = (PageArrayList) c;
             this.setPageNum(pl.getPageNum());
             this.setPageSize(pl.getPageSize());
@@ -90,6 +91,17 @@ public class PageArrayList<E> extends ArrayList<E> {
     public List<E> getData() {
 
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "PageArrayList{" +
+                "pageCount=" + pageCount +
+                ", pageSize=" + pageSize +
+                ", pageNum=" + pageNum +
+                ", total=" + total +
+                ", scrollId='" + scrollId + '\'' +
+                "} " + super.toString();
     }
 
 }

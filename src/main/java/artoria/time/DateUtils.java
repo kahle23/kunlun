@@ -15,7 +15,7 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public class DateUtils {
-    private static Logger log = LoggerFactory.getLogger(DateUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(DateUtils.class);
     private static volatile DateTimeFactory dateTimeFactory;
     private static volatile DateProvider dateProvider;
     private static volatile SimpleClock clock;

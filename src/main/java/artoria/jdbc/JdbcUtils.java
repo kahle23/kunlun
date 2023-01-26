@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class JdbcUtils {
-    private static Logger log = LoggerFactory.getLogger(JdbcUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(JdbcUtils.class);
     private static JdbcProvider jdbcProvider;
 
     public static JdbcProvider getJdbcProvider() {

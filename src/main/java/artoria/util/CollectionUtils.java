@@ -13,7 +13,7 @@ import static artoria.common.Constants.ZERO;
  * @author Kahle
  */
 public class CollectionUtils {
-    private static Logger log = LoggerFactory.getLogger(CollectionUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(CollectionUtils.class);
 
     public static <E> boolean isEmpty(Collection<E> collection) {
 

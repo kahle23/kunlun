@@ -11,9 +11,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class SimpleJdbcProvider extends AbstractJdbcProvider {
-    private static Logger log = LoggerFactory.getLogger(SimpleJdbcProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleJdbcProvider.class);
     private final ThreadLocal<Connection> threadConnection = new ThreadLocal<Connection>();
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     public SimpleJdbcProvider(DataSource dataSource) {
         Assert.notNull(dataSource, "Parameter \"dataSource\" must not null. ");

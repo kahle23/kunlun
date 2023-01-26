@@ -86,11 +86,13 @@ public class LocalFileStorage extends AbstractStorage implements Storage, Normal
                 path = fileEntity.getPath();
             }
             else if (data instanceof KeyValue) {
+                @SuppressWarnings("rawtypes")
                 KeyValue keyValue = (KeyValue) data;
                 inputStream = convertToStream(keyValue.getValue(), charset);
                 path = keyValue.getKey() != null ? String.valueOf(keyValue.getKey()) : null;
             }
             else if (data instanceof Pair) {
+                @SuppressWarnings("rawtypes")
                 Pair pair = (Pair) data;
                 inputStream = convertToStream(pair.getRight(), charset);
                 path = pair.getLeft() != null ? String.valueOf(pair.getLeft()) : null;

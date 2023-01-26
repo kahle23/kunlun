@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @author Kahle
  */
 public class SimpleLockProvider implements LockProvider {
-    private static Logger log = LoggerFactory.getLogger(SimpleLockProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleLockProvider.class);
     protected final Map<String, LockManager> lockManagers;
     private final String defaultManagerName;
 

@@ -13,10 +13,10 @@ import java.util.List;
 import static artoria.common.Constants.*;
 
 public class NetUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(NetUtilsTest.class);
-    private static String testIp0 = "www.bing.com";
-    private static String testIp1 = "www.github.com";
-    private static String testIp2 = "192.168.1.1";
+    private static final Logger log = LoggerFactory.getLogger(NetUtilsTest.class);
+    private static final String testIp0 = "www.bing.com";
+    private static final String testIp1 = "www.github.com";
+    private static final String testIp2 = "192.168.1.1";
 
     @Test
     @Ignore

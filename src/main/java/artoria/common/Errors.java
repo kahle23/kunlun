@@ -61,8 +61,8 @@ public enum Errors implements ErrorCode {
     NO_PERMISSION(         "A012S104", "No permission."),
     ;
 
-    private String description;
-    private String code;
+    private final String description;
+    private final String code;
 
     Errors(String code, String description) {
         this.description = description;
