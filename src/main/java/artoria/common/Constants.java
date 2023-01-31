@@ -89,7 +89,9 @@ public class Constants {
     public static final String RSA = "RSA";
     public static final String DIFFIE_HELLMAN = "DiffieHellman";
 
+//    /** @see artoria.common.constant.Symbols */ @Deprecated
     public static final String DOT = ".";
+//    /** @see artoria.common.constant.Symbols */ @Deprecated
     public static final String PLUS = "+";
     public static final String MINUS = "-";
     public static final String EQUAL = "=";
@@ -131,7 +133,9 @@ public class Constants {
     public static final String DOUBLE_EQUAL = "==";
     public static final String DOUBLE_SLASH = "//";
 
+//    /** @see artoria.common.constant.Numbers */ @Deprecated
     public static final int MINUS_NINETY = -90;
+//    /** @see artoria.common.constant.Numbers */ @Deprecated
     public static final int MINUS_EIGHTY = -80;
     public static final int MINUS_SEVENTY = -70;
     public static final int MINUS_SIXTY = -60;
