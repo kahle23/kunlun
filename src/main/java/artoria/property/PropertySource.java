@@ -15,16 +15,16 @@ public interface PropertySource {
     String getName();
 
     /**
-     * Set attributes for the handler.
-     * @param attrs The attributes to be set
+     * Get the common properties of the settings.
+     * @return The common properties that is set
      */
-    void attrs(Map<?, ?> attrs);
+    Map<Object, Object> getCommonProperties();
 
     /**
-     * Get the attributes of the settings.
-     * @return The attributes that is set
+     * Set common properties for the property source.
+     * @param properties The properties to be set
      */
-    Map<Object, Object> attrs();
+    void setCommonProperties(Map<?, ?> properties);
 
     /**
      * Set property data in batches.

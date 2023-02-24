@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public abstract class AbstractPropertySource implements PropertySource {
     private static final Logger log = LoggerFactory.getLogger(AbstractPropertySource.class);
-    private Map<Object, Object> attrs = Collections.emptyMap();
+    private Map<Object, Object> commonProperties = Collections.emptyMap();
     private final String name;
 
     public AbstractPropertySource(String name) {
@@ -29,15 +29,15 @@ public abstract class AbstractPropertySource implements PropertySource {
     }
 
     @Override
-    public void attrs(Map<?, ?> attrs) {
-        Assert.notNull(attrs, "Parameter \"attrs\" must not null. ");
-        this.attrs = Collections.unmodifiableMap(attrs);
+    public Map<Object, Object> getCommonProperties() {
+
+        return commonProperties;
     }
 
     @Override
-    public Map<Object, Object> attrs() {
-
-        return attrs;
+    public void setCommonProperties(Map<?, ?> properties) {
+        Assert.notNull(properties, "Parameter \"properties\" must not null. ");
+        this.commonProperties = Collections.unmodifiableMap(properties);
     }
 
     @Override

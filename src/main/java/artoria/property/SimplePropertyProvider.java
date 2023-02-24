@@ -81,7 +81,7 @@ public class SimplePropertyProvider implements PropertyProvider {
         Assert.notBlank(sourceName, "Parameter \"sourceName\" must not blank. ");
         String className = propertySource.getClass().getName();
         propertySources.put(sourceName, propertySource);
-        propertySource.attrs(getCommonProperties());
+        propertySource.setCommonProperties(getCommonProperties());
         log.info("Register the property source \"{}\" to \"{}\". ", className, sourceName);
     }
 
