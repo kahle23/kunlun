@@ -1,12 +1,14 @@
 package artoria.property;
 
+import artoria.core.handler.PropertySupportHandler;
+
 import java.util.Map;
 
 /**
  * The property source.
  * @author Kahle
  */
-public interface PropertySource {
+public interface PropertySource extends PropertySupportHandler {
 
     /**
      * Get the property source name.
@@ -37,34 +39,5 @@ public interface PropertySource {
      * @return The properties
      */
     Map<String, Object> getProperties();
-
-    /**
-     * Return whether the given property name is available.
-     * @param name The given property name
-     * @return The available or not
-     */
-    boolean containsProperty(String name);
-
-    /**
-     * Set the property name and property value.
-     * @param name The property name
-     * @param value The property value
-     * @return The previous value associated with name, or null
-     */
-    Object setProperty(String name, Object value);
-
-    /**
-     * Return the property value associated with the given name.
-     * @param name The property name
-     * @return The property value
-     */
-    Object getProperty(String name);
-
-    /**
-     * Remove the property value based on the property name.
-     * @param name The property name
-     * @return The property value or null
-     */
-    Object removeProperty(String name);
 
 }
