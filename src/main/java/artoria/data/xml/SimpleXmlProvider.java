@@ -9,13 +9,13 @@ import java.lang.reflect.Type;
 public class SimpleXmlProvider implements XmlProvider {
 
     @Override
-    public String toXmlString(Object object, XmlFeature... features) {
+    public String toXmlString(Object object, Object... arguments) {
 
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <T> T parseObject(String xmlString, Type type, XmlFeature... features) {
+    public <T> T parseObject(String xmlString, Type type, Object... arguments) {
 
         throw new UnsupportedOperationException();
     }

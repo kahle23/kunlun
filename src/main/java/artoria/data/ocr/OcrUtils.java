@@ -53,14 +53,14 @@ public class OcrUtils {
         return getOcrProvider().getOcrHandler(name);
     }
 
-    public static <T> T handle(Object type, Object data, Class<T> clazz, OcrFeature... features) {
+    public static <T> T handle(Object type, Object data, Class<T> clazz, Object... arguments) {
 
-        return getOcrProvider().handle(getDefaultHandlerName(), type, data, clazz, features);
+        return getOcrProvider().handle(getDefaultHandlerName(), type, data, clazz, arguments);
     }
 
-    public static <T> T handle(String name, Object type, Object data, Class<T> clazz, OcrFeature... features) {
+    public static <T> T handle(String name, Object type, Object data, Class<T> clazz, Object... arguments) {
 
-        return getOcrProvider().handle(name, type, data, clazz, features);
+        return getOcrProvider().handle(name, type, data, clazz, arguments);
     }
 
 }

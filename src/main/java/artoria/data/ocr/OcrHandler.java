@@ -27,9 +27,9 @@ public interface OcrHandler extends Handler {
      * @param type The ocr data type
      * @param data The ocr data
      * @param clazz The ocr result class
-     * @param features The ocr features
+     * @param arguments The ocr arguments (maybe is configuration or feature)
      * @return The ocr result or null
      */
-    <T> T handle(Object type, Object data, Class<T> clazz, OcrFeature... features);
+    <T> T handle(Object type, Object data, Class<T> clazz, Object... arguments);
 
 }

@@ -1,20 +1,22 @@
 package artoria.data.xml;
 
+import java.io.Serializable;
+
 /**
  * The xml class alias.
  * @author Kahle
  */
-public class XmlClassAlias implements XmlFeature {
+public class XmlClassAlias implements Serializable {
     private Class<?> type;
     private String alias;
-
-    public XmlClassAlias() {
-
-    }
 
     public XmlClassAlias(String alias, Class<?> type) {
         this.alias = alias;
         this.type = type;
+    }
+
+    public XmlClassAlias() {
+
     }
 
     public String getAlias() {

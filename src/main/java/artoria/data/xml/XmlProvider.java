@@ -11,19 +11,19 @@ public interface XmlProvider {
     /**
      * Serialize java object to xml string.
      * @param object The java object
-     * @param features The xml features
+     * @param arguments The arguments (maybe is configuration or feature)
      * @return The xml string
      */
-    String toXmlString(Object object, XmlFeature... features);
+    String toXmlString(Object object, Object... arguments);
 
     /**
      * Parse xml string to java object.
      * @param xmlString The xml string
      * @param type The java object type
-     * @param features The xml features
+     * @param arguments The arguments (maybe is configuration or feature)
      * @param <T> The java object type
      * @return The java object
      */
-    <T> T parseObject(String xmlString, Type type, XmlFeature... features);
+    <T> T parseObject(String xmlString, Type type, Object... arguments);
 
 }

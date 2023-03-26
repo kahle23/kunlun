@@ -4,6 +4,7 @@ import java.util.Map;
 
 /**
  * The optical character recognition provider.
+ * (If you want to use provider directly, you must know which handlers are registered.)
  * @see <a href="https://en.wikipedia.org/wiki/Optical_character_recognition">Optical character recognition</a>
  * @author Kahle
  */
@@ -52,9 +53,9 @@ public interface OcrProvider {
      * @param type The ocr data type
      * @param data The ocr data
      * @param clazz The ocr result class
-     * @param features The ocr features
+     * @param arguments The ocr arguments (maybe is configuration or feature)
      * @return The ocr result or null
      */
-    <T> T handle(String name, Object type, Object data, Class<T> clazz, OcrFeature... features);
+    <T> T handle(String name, Object type, Object data, Class<T> clazz, Object... arguments);
 
 }

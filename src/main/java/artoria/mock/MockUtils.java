@@ -6,6 +6,12 @@ import artoria.util.Assert;
 
 import java.lang.reflect.Type;
 
+import static artoria.util.ObjectUtils.cast;
+
+/**
+ * The mock tools.
+ * @author Kahle
+ */
 public class MockUtils {
     private static final Logger log = LoggerFactory.getLogger(MockUtils.class);
     private static volatile MockProvider mockProvider;
@@ -25,14 +31,14 @@ public class MockUtils {
         MockUtils.mockProvider = mockProvider;
     }
 
-    public static <T> T mock(Class<T> clazz, MockFeature... features) {
+    public static <T> T mock(Class<T> clazz, Object... arguments) {
 
-        return getMockProvider().mock(clazz, features);
+        return cast(getMockProvider().mock(clazz, arguments));
     }
 
-    public static <T> T mock(Type type, MockFeature... features) {
+    public static <T> T mock(Type type, Object... arguments) {
 
-        return getMockProvider().mock(type, features);
+        return cast(getMockProvider().mock(type, arguments));
     }
 
 }

@@ -3,7 +3,10 @@ package artoria.mock;
 import artoria.convert.ConversionUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.reflect.ReflectUtils;
-import artoria.util.*;
+import artoria.util.Assert;
+import artoria.util.ClassUtils;
+import artoria.util.NumberUtils;
+import artoria.util.RandomUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
@@ -39,26 +42,26 @@ public class SimpleMockProvider implements MockProvider {
     }
 
     protected Object mockAnyData(Type attrType, String attrName
-            , MockFeature[] features, int nested, Class<?> originalType, Type... genericTypes) {
+            , Object[] arguments, int nested, Class<?> originalType, Type... genericTypes) {
         Assert.notNull(attrType, "Parameter \"attrType\" must not null. ");
         if (attrType instanceof ParameterizedType) {
             ParameterizedType parameterizedType = (ParameterizedType) attrType;
             Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
             Type rawType = parameterizedType.getRawType();
-            return mockAnyData(rawType, attrName, features, nested, originalType, actualTypeArguments);
+            return mockAnyData(rawType, attrName, arguments, nested, originalType, actualTypeArguments);
         }
         else if (attrType instanceof GenericArrayType) {
-            return mockArrayData(attrType, attrName, features, nested, originalType);
+            return mockArrayData(attrType, attrName, arguments, nested, originalType);
         }
         //else if (attrType instanceof TypeVariable) {
         //}
         else {
-            return mockClassData((Class) attrType, attrName, features, nested, originalType, genericTypes);
+            return mockClassData((Class) attrType, attrName, arguments, nested, originalType, genericTypes);
         }
     }
 
     protected Object mockClassData(Class<?> attrType, String attrName
-            , MockFeature[] features, int nested, Class<?> originalType, Type... genericTypes) {
+            , Object[] arguments, int nested, Class<?> originalType, Type... genericTypes) {
         Assert.notNull(attrType, "Parameter \"attrType\" must not null. ");
         Class<?> wrapper = ClassUtils.getWrapper(attrType);
         if (Number.class.isAssignableFrom(wrapper)) {
@@ -84,24 +87,24 @@ public class SimpleMockProvider implements MockProvider {
             return new Object();
         }
         else if (wrapper.isEnum()) {
-            return mockEnumData(wrapper, attrName, features, nested, originalType);
+            return mockEnumData(wrapper, attrName, arguments, nested, originalType);
         }
         else if (wrapper.isArray()) {
-            return mockArrayData(wrapper, attrName, features, nested, originalType);
+            return mockArrayData(wrapper, attrName, arguments, nested, originalType);
         }
         else if (Map.class.isAssignableFrom(wrapper)) {
-            return mockMapData(wrapper, attrName, features, nested, originalType, genericTypes);
+            return mockMapData(wrapper, attrName, arguments, nested, originalType, genericTypes);
         }
         else if (Collection.class.isAssignableFrom(wrapper)) {
-            return mockCollectionData(wrapper, attrName, features, nested, originalType, genericTypes);
+            return mockCollectionData(wrapper, attrName, arguments, nested, originalType, genericTypes);
         }
         else {
-            return mockBeanData(wrapper, attrName, features, nested, originalType, genericTypes);
+            return mockBeanData(wrapper, attrName, arguments, nested, originalType, genericTypes);
         }
     }
 
     protected Object mockArrayData(Type attrType, String attrName
-            , MockFeature[] features, int nested, Class<?> originalType) {
+            , Object[] arguments, int nested, Class<?> originalType) {
         Assert.notNull(attrType, "Parameter \"attrType\" must not null. ");
         if (nested > maxNestedCount - ONE) { return null; }
         if (attrType instanceof GenericArrayType) {
@@ -113,14 +116,14 @@ public class SimpleMockProvider implements MockProvider {
         Object result = Array.newInstance(componentClass, size);
         if (size == ZERO) { return result; }
         for (int index = ZERO; index < size; index++) {
-            Object value = mockAnyData(componentClass, attrName, features, nested, originalType);
+            Object value = mockAnyData(componentClass, attrName, arguments, nested, originalType);
             Array.set(result, index, value);
         }
         return result;
     }
 
     protected Object mockEnumData(Class<?> attrType, String attrName
-            , MockFeature[] features, int nested, Class<?> originalType) {
+            , Object[] arguments, int nested, Class<?> originalType) {
         Assert.notNull(attrType, "Parameter \"attrType\" must not null. ");
         Enum[] enums = (Enum[]) attrType.getEnumConstants();
         if (enums.length == 0) {
@@ -130,7 +133,7 @@ public class SimpleMockProvider implements MockProvider {
     }
 
     protected Object mockMapData(Class<?> attrType, String attrName
-            , MockFeature[] features, int nested, Class<?> originalType, Type... genericTypes) {
+            , Object[] arguments, int nested, Class<?> originalType, Type... genericTypes) {
         Assert.notNull(attrType, "Parameter \"attrType\" must not null. ");
         if (nested > maxNestedCount - ONE) { return null; }
         int size = RandomUtils.nextInt(TEN);
@@ -151,15 +154,15 @@ public class SimpleMockProvider implements MockProvider {
         Type valueType = genericTypes[ONE];
         Type keyType = genericTypes[ZERO];
         for (int index = ZERO; index < size; index++) {
-            Object valueObj = mockAnyData(valueType, attrName, features, nested, originalType);
-            Object keyObj = mockAnyData(keyType, attrName, features, nested, originalType);
+            Object valueObj = mockAnyData(valueType, attrName, arguments, nested, originalType);
+            Object keyObj = mockAnyData(keyType, attrName, arguments, nested, originalType);
             result.put(keyObj, valueObj);
         }
         return result;
     }
 
     protected Object mockBeanData(Class<?> attrType, String attrName
-            , MockFeature[] features, int nested, Class<?> originalType, Type... genericTypes) {
+            , Object[] arguments, int nested, Class<?> originalType, Type... genericTypes) {
         Assert.notNull(attrType, "Parameter \"attrType\" must not null. ");
         if (originalType != null && originalType.isAssignableFrom(attrType)) { nested++; }
         if (nested > maxNestedCount) { return null; }
@@ -171,7 +174,7 @@ public class SimpleMockProvider implements MockProvider {
                 String attrNameKey = entry.getKey();
                 Method method = entry.getValue();
                 Type valueType = method.getGenericParameterTypes()[ZERO];
-                Object value = mockAnyData(valueType, attrNameKey, features, nested, originalType);
+                Object value = mockAnyData(valueType, attrNameKey, arguments, nested, originalType);
                 if (value != null) { method.invoke(bean, value); }
             }
             return bean;
@@ -182,7 +185,7 @@ public class SimpleMockProvider implements MockProvider {
     }
 
     protected Object mockCollectionData(Class<?> attrType, String attrName
-            , MockFeature[] features, int nested, Class<?> originalType, Type... genericTypes) {
+            , Object[] arguments, int nested, Class<?> originalType, Type... genericTypes) {
         Assert.notNull(attrType, "Parameter \"attrType\" must not null. ");
         if (nested > maxNestedCount - ONE) { return null; }
         int size = RandomUtils.nextInt(TEN);
@@ -202,17 +205,16 @@ public class SimpleMockProvider implements MockProvider {
         if (size == ZERO) { return result; }
         Type objectType = genericTypes[ZERO];
         for (int index = ZERO; index < size; index++) {
-            Object value = mockAnyData(objectType, attrName, features, nested, originalType);
+            Object value = mockAnyData(objectType, attrName, arguments, nested, originalType);
             result.add(value);
         }
         return result;
     }
 
     @Override
-    public <T> T mock(Type type, MockFeature... features) {
+    public Object mock(Type type, Object... arguments) {
         Assert.notNull(type, "Parameter \"type\" must not null. ");
-        Object value = mockAnyData(type, null, features, ZERO, null);
-        return ObjectUtils.cast(value);
+        return mockAnyData(type, null, arguments, ZERO, null);
     }
 
 }

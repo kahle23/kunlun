@@ -79,11 +79,11 @@ public class SimpleOcrProvider implements OcrProvider {
     }
 
     @Override
-    public <T> T handle(String name, Object type, Object data, Class<T> clazz, OcrFeature... features) {
+    public <T> T handle(String name, Object type, Object data, Class<T> clazz, Object... arguments) {
         OcrHandler ocrHandler = getOcrHandler(name);
         Assert.notNull(ocrHandler
                 , "The corresponding ocr handler could not be found by name. ");
-        return ocrHandler.handle(type, data, clazz, features);
+        return ocrHandler.handle(type, data, clazz, arguments);
     }
 
 }

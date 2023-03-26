@@ -29,14 +29,14 @@ public class XmlUtils {
         XmlUtils.xmlProvider = xmlProvider;
     }
 
-    public static String toXmlString(Object object, XmlFeature... features) {
+    public static String toXmlString(Object object, Object... arguments) {
 
-        return getXmlProvider().toXmlString(object, features);
+        return getXmlProvider().toXmlString(object, arguments);
     }
 
-    public static <T> T parseObject(String xmlString, Type type, XmlFeature... features) {
+    public static <T> T parseObject(String xmlString, Type type, Object... arguments) {
 
-        return getXmlProvider().parseObject(xmlString, type, features);
+        return getXmlProvider().parseObject(xmlString, type, arguments);
     }
 
 }
