@@ -3,22 +3,22 @@ package artoria.data;
 import java.io.Serializable;
 
 /**
- * An implementation class for a key-value pair of two elements.
+ * An implementation class for a key-value of two elements.
  * @param <K> The key type
  * @param <V> The value type
  * @author Kahle
  */
-@Deprecated
-public class KeyValuePair<K, V> implements KeyValue<K, V>, Pair<K, V>, Serializable {
+public class KeyValueImpl<K, V> implements KeyValue<K, V>, Serializable {
     private V value;
     private K key;
 
-    public KeyValuePair() {
-    }
-
-    public KeyValuePair(K key, V value) {
+    public KeyValueImpl(K key, V value) {
         this.value = value;
         this.key = key;
+    }
+
+    public KeyValueImpl() {
+
     }
 
     @Override
@@ -44,24 +44,12 @@ public class KeyValuePair<K, V> implements KeyValue<K, V>, Pair<K, V>, Serializa
     }
 
     @Override
-    public K getLeft() {
-
-        return getKey();
-    }
-
-    @Override
-    public V getRight() {
-
-        return getValue();
-    }
-
-    @Override
     public boolean equals(Object object) {
         if (this == object) { return true; }
         if (object == null || getClass() != object.getClass()) {
             return false;
         }
-        KeyValuePair<?, ?> that = (KeyValuePair<?, ?>) object;
+        KeyValueImpl<?, ?> that = (KeyValueImpl<?, ?>) object;
         if (value != null ? !value.equals(that.value) : that.value != null) {
             return false;
         }
@@ -77,7 +65,7 @@ public class KeyValuePair<K, V> implements KeyValue<K, V>, Pair<K, V>, Serializa
 
     @Override
     public String toString() {
-        return "KeyValuePair{" +
+        return "KeyValueImpl{" +
                 "value=" + value +
                 ", key=" + key +
                 '}';

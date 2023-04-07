@@ -1,7 +1,7 @@
 package artoria.net.http.support;
 
 import artoria.data.KeyValue;
-import artoria.data.KeyValuePair;
+import artoria.data.KeyValueImpl;
 import artoria.net.http.HttpMethod;
 import artoria.net.http.HttpRequest;
 import artoria.util.Assert;
@@ -95,10 +95,10 @@ public class SimpleRequest extends AbstractHttpBase implements HttpRequest {
 
     public void addParameter(String paramName, Object paraValue) {
         Assert.notBlank(paramName, "Parameter \"paramName\" must not blank. ");
-        parameters.add(new KeyValuePair<String, Object>(paramName, paraValue));
+        parameters.add(new KeyValueImpl<String, Object>(paramName, paraValue));
     }
 
-    public void addParameters(Collection<KeyValuePair<String, Object>> parameters) {
+    public void addParameters(Collection<KeyValue<String, Object>> parameters) {
         Assert.notEmpty(parameters, "Parameter \"parameters\" must not empty. ");
         this.parameters.addAll(parameters);
     }
@@ -108,7 +108,7 @@ public class SimpleRequest extends AbstractHttpBase implements HttpRequest {
         for (Map.Entry<?, ?> entry : parameters.entrySet()) {
             String key   = String.valueOf(entry.getKey());
             Object value = entry.getValue();
-            this.parameters.add(new KeyValuePair<String, Object>(key, value));
+            this.parameters.add(new KeyValueImpl<String, Object>(key, value));
         }
     }
 

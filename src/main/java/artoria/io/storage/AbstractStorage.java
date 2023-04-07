@@ -1,7 +1,7 @@
 package artoria.io.storage;
 
-import artoria.data.KeyValuePair;
 import artoria.core.Storage;
+import artoria.data.KeyValueImpl;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
 
@@ -48,7 +48,7 @@ public abstract class AbstractStorage implements Storage {
     public Object put(Object key, Object value) {
         Assert.notNull(value, "Parameter \"value\" must not null. ");
         Assert.notNull(key, "Parameter \"key\" must not null. ");
-        return put(new KeyValuePair<Object, Object>(key, value));
+        return put(new KeyValueImpl<Object, Object>(key, value));
     }
 
     public Object putAll(Collection<?> data) {
