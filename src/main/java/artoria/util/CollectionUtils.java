@@ -5,8 +5,8 @@ import artoria.logging.LoggerFactory;
 
 import java.util.*;
 
-import static artoria.common.Constants.ONE;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ONE;
+import static artoria.common.constant.Numbers.ZERO;
 
 /**
  * The collection tools.
@@ -49,6 +49,11 @@ public class CollectionUtils {
         while (enumeration.hasMoreElements()) {
             collection.add(enumeration.nextElement());
         }
+    }
+
+    public static <E> E getFirst(List<E> list) {
+        if (isEmpty(list)) { return null; }
+        return list.get(ZERO);
     }
 
     public static <E> List<E> removeDuplicate(List<E> list) {

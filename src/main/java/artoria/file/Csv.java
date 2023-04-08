@@ -329,7 +329,11 @@ public class Csv extends TextFile implements Table {
             headerList.addAll(propertiesMapping.values());
         }
         else {
-            Map<String, Object> first = CollectionUtils.firstNotNullElement(mapList);
+            Map<String, Object> first = null;
+            for (Map<String, Object> map : mapList) {
+                if (map != null) { first = map; break; }
+            }
+            Assert.notNull(first, "Parameter \"mapList\" must contain not null element. ");
             headerList.addAll(first.keySet());
         }
         if (columnStartNumber != ZERO) {

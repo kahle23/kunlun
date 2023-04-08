@@ -128,6 +128,7 @@ public class BeanUtils {
 
     public static <F> Map<String, Object> beanToMap(F from) {
         if (from == null) { return null; }
+        if (from instanceof Map) { return ObjectUtils.cast(from); }
         Map<String, Object> result = new HashMap<String, Object>(THIRTY);
         BeanUtils.copy(from, result);
         return result;

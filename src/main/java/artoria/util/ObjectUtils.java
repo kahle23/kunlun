@@ -38,17 +38,19 @@ public class ObjectUtils {
             return ((CharSequence) obj).length() == ZERO;
         }
         if (obj instanceof Collection) {
+            //noinspection rawtypes
             return ((Collection) obj).isEmpty();
         }
         if (obj instanceof Map) {
+            //noinspection rawtypes
             return ((Map) obj).isEmpty();
         }
         return false;
     }
 
-    public static boolean equals(Object o1, Object o2) {
+    public static boolean equals(Object obj1, Object obj2) {
 
-        return o1 == null ? o2 == null : o1.equals(o2);
+        return obj1 == null ? obj2 == null : obj1.equals(obj2);
     }
 
     @SuppressWarnings("unchecked")

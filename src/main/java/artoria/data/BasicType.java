@@ -48,8 +48,8 @@ public enum BasicType {
     CHAR(char.class,       Character.class),
     ;
 
-    private Class<?> primitive;
-    private Class<?> wrapper;
+    private final Class<?> primitive;
+    private final Class<?> wrapper;
 
     BasicType(Class<?> primitive, Class<?> wrapper) {
         this.primitive = primitive;

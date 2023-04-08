@@ -57,8 +57,6 @@ public abstract class AbstractHttpBase implements HttpClient.HttpBase {
     }
 
     public void addHeader(String name, String value) {
-        Assert.notNull(value, "Parameter \"value\" must not null. ");
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         List<String> list = headers.get(name);
         if (list == null) {
             headers.put(name, list = new ArrayList<String>());
@@ -67,13 +65,13 @@ public abstract class AbstractHttpBase implements HttpClient.HttpBase {
     }
 
     public void addHeader(String name, List<String> values) {
-        Assert.notEmpty(values, "Parameter \"values\" must not empty. ");
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         List<String> list = headers.get(name);
         if (list == null) {
             headers.put(name, list = new ArrayList<String>());
         }
-        list.addAll(values);
+        if (CollectionUtils.isNotEmpty(values)) {
+            list.addAll(values);
+        }
     }
 
     public void addHeaders(Map<String, List<String>> headers) {
@@ -84,8 +82,6 @@ public abstract class AbstractHttpBase implements HttpClient.HttpBase {
     }
 
     public void removeHeader(String name, String value) {
-        Assert.notNull(value, "Parameter \"value\" must not null. ");
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         if (!headers.containsKey(name)) { return; }
         List<String> list = headers.get(name);
         if (CollectionUtils.isEmpty(list)) {
@@ -95,7 +91,7 @@ public abstract class AbstractHttpBase implements HttpClient.HttpBase {
     }
 
     public void removeHeader(String name) {
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
+
         headers.remove(name);
     }
 
@@ -105,17 +101,16 @@ public abstract class AbstractHttpBase implements HttpClient.HttpBase {
     }
 
     public List<String> getHeader(String name) {
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
+
         return headers.get(name);
     }
 
     public boolean containsHeader(String name) {
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
+
         return headers.containsKey(name);
     }
 
     public String getFirstHeader(String name) {
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         List<String> list = headers.get(name);
         return CollectionUtils.isNotEmpty(list) ? list.get(ZERO) : null;
     }

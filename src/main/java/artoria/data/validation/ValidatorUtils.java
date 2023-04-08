@@ -19,7 +19,7 @@ public class ValidatorUtils {
         Assert.notNull(validator, "Parameter \"validator\" must not null. ");
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         String className = validator.getClass().getName();
-        log.info("Register \"{}\" to \"{}\". ", className, name);
+        log.debug("Register \"{}\" to \"{}\". ", className, name);
         VALIDATORS.put(name, validator);
     }
 
@@ -28,7 +28,7 @@ public class ValidatorUtils {
         Validator remove = VALIDATORS.remove(name);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister \"{}\" to \"{}\". ", className, name);
+            log.debug("Deregister \"{}\" to \"{}\". ", className, name);
         }
         return remove;
     }

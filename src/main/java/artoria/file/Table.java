@@ -118,4 +118,16 @@ public interface Table {
      */
     void clearHeaders();
 
+    /**
+     * Convert to map list.
+     * @return Converted map list
+     */
+    List<Map<String, Object>> toMapList();
+
+    /**
+     * Convert back from map list.
+     * @param mapList Input map list
+     */
+    void fromMapList(List<Map<String, Object>> mapList);
+
 }
