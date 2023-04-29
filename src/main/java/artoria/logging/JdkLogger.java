@@ -1,6 +1,6 @@
 package artoria.logging;
 
-import artoria.renderer.support.text.FormatTextRenderer;
+import artoria.renderer.support.FormatTextRenderer;
 
 import java.util.logging.Level;
 

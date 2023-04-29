@@ -1,7 +1,7 @@
 package artoria.logging;
 
-import artoria.renderer.support.text.FormatTextRenderer;
-import artoria.renderer.support.text.LoggerTextRenderer;
+import artoria.renderer.support.FormatTextRenderer;
+import artoria.renderer.support.LoggerTextRenderer;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 import artoria.util.ClassLoaderUtils;
@@ -28,7 +28,7 @@ public class JdkLoggerProvider implements LoggerProvider {
     /**
      * The root logger object.
      */
-    private java.util.logging.Logger logger;
+    private final java.util.logging.Logger logger;
     /**
      * The logger text renderer.
      */

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import static artoria.common.Constants.DEFAULT;
 
+@Deprecated
 public class TemplateUtilsTest {
     private static Logger log = LoggerFactory.getLogger(TemplateUtilsTest.class);
     private Map<String, Object> data = new HashMap<String, Object>();

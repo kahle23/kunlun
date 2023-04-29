@@ -1,5 +1,9 @@
-package artoria.renderer.support.text;
+package artoria.renderer.support;
 
+/**
+ * The printf format text renderer.
+ * @author Kahle
+ */
 public class PrintfTextRenderer extends AbstractFormatTextRenderer {
 
     @Override

@@ -1,7 +1,4 @@
-package artoria.renderer;
-
-import java.io.InputStream;
-import java.io.OutputStream;
+package artoria.core;
 
 /**
  * The renderer for handling bytes or strings.
@@ -13,12 +10,12 @@ import java.io.OutputStream;
 public interface Renderer {
 
     /**
-     * Renders the input stream using the data into the output stream.
+     * Render the data to the output through the template.
+     * @param template The template (stream, reader, string, etc) to be rendered
+     * @param name The template name (most scenarios used for log, nullable)
      * @param data The data to use in rendering input template
-     * @param output The stream in which to render the output
-     * @param tag The string to be used as the template name
-     * @param input The input stream to be rendered
+     * @param output The output stream or writer in which to render the output
      */
-    void render(Object data, OutputStream output, String tag, InputStream input);
+    void render(Object template, String name, Object data, Object output);
 
 }
