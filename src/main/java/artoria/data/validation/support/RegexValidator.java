@@ -1,6 +1,6 @@
 package artoria.data.validation.support;
 
-import artoria.data.validation.Validator;
+import artoria.data.validation.BooleanValidator;
 import artoria.util.Assert;
 
 import java.util.regex.Pattern;
@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * The regex validator.
  * @author Kahle
  */
-public class RegexValidator implements Validator {
+public class RegexValidator implements BooleanValidator {
     private final Pattern pattern;
     private final String regex;
 

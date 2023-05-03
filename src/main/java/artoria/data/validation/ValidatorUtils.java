@@ -4,47 +4,52 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * The validator tools.
  * @author Kahle
  */
 public class ValidatorUtils {
-    private static final Map<String, Validator> VALIDATORS = new ConcurrentHashMap<String, Validator>();
     private static final Logger log = LoggerFactory.getLogger(ValidatorUtils.class);
+    private static volatile ValidatorProvider validatorProvider;
 
-    public static void register(String name, Validator validator) {
-        Assert.notNull(validator, "Parameter \"validator\" must not null. ");
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        String className = validator.getClass().getName();
-        log.debug("Register \"{}\" to \"{}\". ", className, name);
-        VALIDATORS.put(name, validator);
+    public static ValidatorProvider getValidatorProvider() {
+        if (validatorProvider != null) { return validatorProvider; }
+        synchronized (ValidatorUtils.class) {
+            if (validatorProvider != null) { return validatorProvider; }
+            ValidatorUtils.setValidatorProvider(new SimpleValidatorProvider());
+            return validatorProvider;
+        }
     }
 
-    public static Validator deregister(String name) {
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        Validator remove = VALIDATORS.remove(name);
-        if (remove != null) {
-            String className = remove.getClass().getName();
-            log.debug("Deregister \"{}\" to \"{}\". ", className, name);
-        }
-        return remove;
+    public static void setValidatorProvider(ValidatorProvider validatorProvider) {
+        Assert.notNull(validatorProvider, "Parameter \"validatorProvider\" must not null. ");
+        log.info("Set validator provider: {}", validatorProvider.getClass().getName());
+        ValidatorUtils.validatorProvider = validatorProvider;
+    }
+
+    public static void registerValidator(String name, Validator validator) {
+
+        getValidatorProvider().registerValidator(name, validator);
+    }
+
+    public static void deregisterValidator(String name) {
+
+        getValidatorProvider().deregisterValidator(name);
+    }
+
+    public static Validator getValidator(String name) {
+
+        return getValidatorProvider().getValidator(name);
     }
 
     public static Object validate(String name, Object target) {
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        Validator validator = VALIDATORS.get(name);
-        Assert.state(validator != null,
-                "The validator named \"" + name + "\" could not be found. ");
-        return validator.validate(target);
+
+        return getValidatorProvider().validate(name, target);
     }
 
     public static boolean validateToBoolean(String name, Object target) {
-        Object validate = validate(name, target);
-        Assert.notNull(validate, "The validate result cannot be null. ");
-        return (Boolean) validate;
+
+        return getValidatorProvider().validateToBoolean(name, target);
     }
 
 }

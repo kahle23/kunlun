@@ -7,7 +7,7 @@ package artoria.data.validation;
 public interface Validator {
 
     /**
-     * The validate method of a target validator.
+     * Validate that the target data meets expectations.
      * @param target The object that is to be validated
      * @return The result of validation or an exception thrown
      */
