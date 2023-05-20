@@ -6,6 +6,7 @@ import artoria.exception.UncheckedException;
  * Jdbc exception.
  * @author Kahle
  */
+@Deprecated
 public class JdbcException extends UncheckedException {
 
     public JdbcException() {

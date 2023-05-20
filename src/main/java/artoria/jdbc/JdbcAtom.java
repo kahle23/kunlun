@@ -6,6 +6,7 @@ import java.sql.SQLException;
  * Jdbc atom.
  * @author Kahle
  */
+@Deprecated
 public interface JdbcAtom {
 
     /**

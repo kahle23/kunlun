@@ -8,6 +8,7 @@ import java.io.Serializable;
  * @param <V> The value type
  * @author Kahle
  */
+@Deprecated
 public class KeyValueImpl<K, V> implements KeyValue<K, V>, Serializable {
     private V value;
     private K key;

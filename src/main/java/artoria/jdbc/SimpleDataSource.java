@@ -27,6 +27,7 @@ import static artoria.common.Constants.*;
  * Simple data source.
  * @author Kahle
  */
+@Deprecated
 public class SimpleDataSource implements DataSource {
     private static final String DEFAULT_CONFIG_NAME = "jdbc.properties";
     private BlockingQueue<Connection> queue;

@@ -31,7 +31,7 @@ public class Symbols {
     public static final String BLANK_SPACE = " ";
     public static final String EMPTY_STRING = "";
     public static final String PERCENT_SIGN = "%";
-    public static final String SINGLE_QUOTE = "\'";
+    public static final String SINGLE_QUOTE = "'";
     public static final String DOUBLE_QUOTE = "\"";
     public static final String VERTICAL_BAR = "|";
     public static final String QUESTION_MARK = "?";

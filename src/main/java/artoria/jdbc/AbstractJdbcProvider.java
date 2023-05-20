@@ -16,6 +16,7 @@ import java.util.Map;
 import static artoria.common.Constants.ONE;
 import static artoria.common.Constants.ZERO;
 
+@Deprecated
 public abstract class AbstractJdbcProvider implements JdbcProvider {
     private static final Logger log = LoggerFactory.getLogger(AbstractJdbcProvider.class);
 

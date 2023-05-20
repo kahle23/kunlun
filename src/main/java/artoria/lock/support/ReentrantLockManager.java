@@ -1,4 +1,6 @@
-package artoria.lock;
+package artoria.lock.support;
+
+import artoria.lock.AbstractJavaLockManager;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

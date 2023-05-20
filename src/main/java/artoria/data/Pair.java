@@ -6,6 +6,7 @@ package artoria.data;
  * @param <R> The right element type
  * @author Kahle
  */
+@Deprecated
 public interface Pair<L, R> {
 
     /**

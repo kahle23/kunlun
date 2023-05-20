@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public interface JdbcProvider {
 
     boolean transaction(JdbcAtom atom, Integer level) throws SQLException;

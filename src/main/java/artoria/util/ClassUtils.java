@@ -46,6 +46,21 @@ public class ClassUtils {
         }
     }
 
+    public static boolean isSupport(Class<?>[] supportClasses, boolean assignable, Class<?> targetClass) {
+        Assert.notNull(supportClasses, "Parameter \"supportClasses\" must not null. ");
+        Assert.notNull(targetClass, "Parameter \"targetClass\" must not null. ");
+        for (Class<?> supportClass : supportClasses) {
+            if (supportClass == null) { continue; }
+            if (!assignable && supportClass.equals(targetClass)) {
+                return true;
+            }
+            if (assignable && supportClass.isAssignableFrom(targetClass)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean isSimpleValueType(Class<?> type) {
         Assert.notNull(type, "Parameter \"type\" must not null. ");
         return BasicType.isPrimitive(type)

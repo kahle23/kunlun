@@ -60,6 +60,8 @@ public abstract class AbstractMessageProvider implements MessageProvider {
                 }
             }
         }
+//        Assert.notBlank(name,
+//                "The route calculated according to the arguments is blank. ");
         Assert.notBlank(name, "Parameter \"handlerName\" must not blank. ");
         MessageHandler messageHandler = messageHandlers.get(name);
         Assert.notNull(messageHandler,

@@ -12,6 +12,7 @@ import java.util.Map;
 public abstract class AbstractActionHandler implements ActionHandler {
     private Map<Object, Object> commonProperties = Collections.emptyMap();
 
+    @Deprecated
     protected void isSupport(Class<?>[] supportClasses, Class<?> clazz) {
         if (Object.class.equals(clazz)) { return; }
         for (Class<?> supportClass : supportClasses) {

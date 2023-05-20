@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public class JdbcUtils {
     private static final Logger log = LoggerFactory.getLogger(JdbcUtils.class);
     private static JdbcProvider jdbcProvider;

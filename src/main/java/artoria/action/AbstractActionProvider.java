@@ -45,7 +45,9 @@ public abstract class AbstractActionProvider implements ActionProvider {
                 name = "class:" + input.getClass().getName();
             }
         }
-        Assert.notBlank(name, "Parameter \"actionName\" must not blank. ");
+//        Assert.notBlank(name,
+//                "The route calculated according to the arguments is blank. ");
+        Assert.notBlank(actionName, "Parameter \"actionName\" must not blank. ");
         ActionHandler actionHandler = actionHandlers.get(name);
         Assert.notNull(actionHandler,
                 "The corresponding action handler could not be found by name. ");
@@ -101,6 +103,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
 
     @Override
     public Object execute(String actionName, Object[] arguments) {
+//        Assert.notBlank(actionName, "Parameter \"actionName\" must not blank. ");
         // Parameter "arguments" usually is: 0 strategy or operation, 1 input, 2 type
         Object input = null;
         if (ArrayUtils.isNotEmpty(arguments) && arguments.length >= TWO) {

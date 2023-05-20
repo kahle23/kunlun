@@ -126,22 +126,23 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
 
     @Override
     public String format(LogRecord record) {
+        // 30 gloss white, 31 red, 32 green, 33 yellow, 34 blue, 35 purple, 36 cyan, 37 off white
         String throwable = printfThrowable(record);
-        return coloring(printfTime(record), THIRTY_NINE, THIRTY_NINE)
+        return coloring(printfTime(record), THIRTY_SEVEN, ZERO)
                 + BLANK_SPACE
                 + BLANK_SPACE
-                + coloring(printfLevel(record), THIRTY_TWO, THIRTY_NINE)
+                + coloring(printfLevel(record), THIRTY_TWO, ZERO)
                 + BLANK_SPACE
-                + coloring(printfThread(record), THIRTY_NINE, THIRTY_NINE)
+                + coloring(printfThread(record), THIRTY_SEVEN, ZERO)
                 + BLANK_SPACE
-                + coloring(printfSource(record), THIRTY_SIX, THIRTY_NINE)
+                + coloring(printfSource(record), THIRTY_SIX, ZERO)
                 + BLANK_SPACE
-                + COLON
+                + coloring(COLON, THIRTY_SEVEN, ZERO)
                 + BLANK_SPACE
-                + coloring(printfMessage(record), THIRTY_NINE, THIRTY_NINE)
+                + coloring(printfMessage(record), THIRTY_SEVEN, ZERO)
                 + (
                     throwable != null
-                        ? BLANK_SPACE + coloring(throwable, THIRTY_NINE, THIRTY_NINE)
+                        ? BLANK_SPACE + coloring(throwable, THIRTY_SEVEN, ZERO)
                         : EMPTY_STRING
                 )
                 + NEWLINE;

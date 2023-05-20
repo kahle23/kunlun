@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@Deprecated
 public class SimpleJdbcProvider extends AbstractJdbcProvider {
     private static final Logger log = LoggerFactory.getLogger(SimpleJdbcProvider.class);
     private final ThreadLocal<Connection> threadConnection = new ThreadLocal<Connection>();

@@ -1,5 +1,6 @@
 package artoria.lock;
 
+import artoria.lock.support.ReentrantLockManager;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;

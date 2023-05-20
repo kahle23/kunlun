@@ -6,6 +6,7 @@ package artoria.data;
  * @param <V> The value type
  * @author Kahle
  */
+@Deprecated
 public interface KeyValue<K, V> {
 
     /**

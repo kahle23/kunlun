@@ -75,15 +75,16 @@ public class SimpleOcrProvider implements OcrProvider {
     @Override
     public OcrHandler getOcrHandler(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        return handlers.get(name);
+        OcrHandler ocrHandler = handlers.get(name);
+        Assert.notNull(ocrHandler
+                , "The corresponding ocr handler could not be found by name. ");
+        return ocrHandler;
     }
 
     @Override
     public <T> T handle(String name, Object type, Object data, Class<T> clazz, Object... arguments) {
-        OcrHandler ocrHandler = getOcrHandler(name);
-        Assert.notNull(ocrHandler
-                , "The corresponding ocr handler could not be found by name. ");
-        return ocrHandler.handle(type, data, clazz, arguments);
+
+        return getOcrHandler(name).handle(type, data, clazz, arguments);
     }
 
 }

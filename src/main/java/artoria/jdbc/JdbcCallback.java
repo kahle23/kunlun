@@ -8,6 +8,7 @@ import java.sql.SQLException;
  * @param <T> Call return type
  * @author Kahle
  */
+@Deprecated
 public interface JdbcCallback<T> {
 
     /**

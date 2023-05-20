@@ -139,6 +139,7 @@ public abstract class BeanMap implements Map<Object, Object>, Cloneable {
         return Collections.unmodifiableMap(newMap).entrySet();
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Map)) {
@@ -162,6 +163,7 @@ public abstract class BeanMap implements Map<Object, Object>, Cloneable {
         return true;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public int hashCode() {
         int code = ZERO;
@@ -175,6 +177,7 @@ public abstract class BeanMap implements Map<Object, Object>, Cloneable {
         return code;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

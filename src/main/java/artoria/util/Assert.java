@@ -3,6 +3,9 @@ package artoria.util;
 import java.util.Collection;
 import java.util.Map;
 
+import static artoria.common.constant.Numbers.TWO;
+import static artoria.common.constant.Numbers.ZERO;
+
 /**
  * The assert, verify data state, if failure, will throw exception.
  * @author Kahle
@@ -121,6 +124,31 @@ public class Assert {
 
     public static void notContain(String textToSearch, String substring, String message) {
         if (textToSearch.contains(substring)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void isSupport(Class<?> targetClass, boolean assignable, Class<?>... supportClasses) {
+        Assert.notEmpty(supportClasses, "Parameter \"supportClasses\" must not empty. ");
+        if (ClassUtils.isSupport(supportClasses, assignable, targetClass)) { return; }
+        StringBuilder builder = new StringBuilder();
+        String separator = ", ", content = "is empty";
+        for (Class<?> supportClass : supportClasses) {
+        if (supportClass == null) { continue; }
+            builder.append(supportClass.getName()).append(separator);
+        }
+        int length = builder.length();
+        if (length >= TWO) {
+            content = builder.substring(ZERO, length - TWO);
+        }
+        String format = String.format(
+            "Parameter \"targetClass\" is not supported. (Only support %s)", content
+        );
+        throw new IllegalArgumentException(format);
+    }
+
+    public static void isSupport(Class<?>[] supportClasses, boolean assignable, Class<?> targetClass, String message) {
+        if (!ClassUtils.isSupport(supportClasses, assignable, targetClass)) {
             throw new IllegalArgumentException(message);
         }
     }
