@@ -1,8 +1,7 @@
 package artoria.crypto;
 
-import artoria.codec.Base64Utils;
-import artoria.core.codec.BinaryEncoder;
-import artoria.codec.HexUtils;
+import artoria.codec.CodecUtils;
+import artoria.core.Encoder;
 import artoria.util.ArrayUtils;
 import artoria.util.Assert;
 
@@ -14,8 +13,11 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+import static artoria.codec.CodecUtils.BASE64;
+import static artoria.codec.CodecUtils.HEX;
 import static artoria.common.Constants.EMPTY_STRING;
 import static artoria.common.Constants.NULL;
+import static artoria.util.ObjectUtils.cast;
 
 /**
  * Key tools.
@@ -23,15 +25,15 @@ import static artoria.common.Constants.NULL;
  */
 public class KeyUtils {
     private static final SecureRandom RANDOM = new SecureRandom();
-    private static BinaryEncoder base64Encoder = Base64Utils.getBase64();
-    private static BinaryEncoder hexEncoder = HexUtils.getLowerCaseHex();
+    private static Encoder<byte[]> base64Encoder = cast(CodecUtils.getEncoder(BASE64));
+    private static Encoder<byte[]> hexEncoder = cast(CodecUtils.getEncoder(HEX));
 
-    public static void setBase64Encoder(BinaryEncoder base64Encoder) {
+    public static void setBase64Encoder(Encoder<byte[]> base64Encoder) {
         Assert.notNull(base64Encoder, "Parameter \"base64Encoder\" must not null. ");
         KeyUtils.base64Encoder = base64Encoder;
     }
 
-    public static void setHexEncoder(BinaryEncoder hexEncoder) {
+    public static void setHexEncoder(Encoder<byte[]> hexEncoder) {
         Assert.notNull(hexEncoder, "Parameter \"hexEncoder\" must not null. ");
         KeyUtils.hexEncoder = hexEncoder;
     }
@@ -119,7 +121,7 @@ public class KeyUtils {
         return generator.generateKeyPair();
     }
 
-    private static String toEncoderString(BinaryEncoder encoder, Key key) {
+    private static String toEncoderString(Encoder<byte[]> encoder, Key key) {
         if (key == null) { return NULL; }
         byte[] encoded = key.getEncoded();
         if (ArrayUtils.isEmpty(encoded)) {

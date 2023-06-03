@@ -1,12 +1,16 @@
-package artoria.codec;
+package artoria.codec.support;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
+/**
+ * The unicode codec Test.
+ * @author Kahle
+ */
 public class UnicodeTest {
-    private static Logger log = LoggerFactory.getLogger(UnicodeTest.class);
-    private static Unicode unicode = new Unicode();
+    private static final Logger log = LoggerFactory.getLogger(UnicodeTest.class);
+    private static final Unicode unicode = new Unicode();
 
     @Test
     public void test1() {

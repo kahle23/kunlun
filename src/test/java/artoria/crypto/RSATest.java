@@ -1,6 +1,6 @@
 package artoria.crypto;
 
-import artoria.codec.Base64Utils;
+import artoria.codec.CodecUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -10,6 +10,7 @@ import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import static artoria.codec.CodecUtils.BASE64;
 import static artoria.common.Constants.RSA;
 import static artoria.crypto.KeyType.PRIVATE_KEY;
 import static artoria.crypto.KeyType.PUBLIC_KEY;
@@ -51,13 +52,13 @@ public class RSATest extends BouncyCastleSupport {
         asymmetricCrypto.setMode(mode);
         asymmetricCrypto.setPadding(padding);
         byte[] bytes = asymmetricCrypto.encrypt(data, PUBLIC_KEY);
-        log.info("Encrypt public key: {}", Base64Utils.encodeToString(bytes));
+        log.info("Encrypt public key: {}", CodecUtils.encodeToString(BASE64, bytes));
         byte[] bytes1 = asymmetricCrypto.decrypt(bytes, PRIVATE_KEY);
         log.info("Decrypt private key: {}", new String(bytes1));
 //        bytes1 = asymmetricCrypto.decrypt(bytes, PUBLIC_KEY);
 //        log.info("Decrypt public key: {}", new String(bytes1));
         bytes = asymmetricCrypto.encrypt(data, PRIVATE_KEY);
-        log.info("Encrypt private key: {}", Base64Utils.encodeToString(bytes));
+        log.info("Encrypt private key: {}", CodecUtils.encodeToString(BASE64, bytes));
         bytes1 = asymmetricCrypto.decrypt(bytes, PUBLIC_KEY);
         log.info("Decrypt public key: {}", new String(bytes1));
 //        bytes1 = asymmetricCrypto.decrypt(bytes, PRIVATE_KEY);

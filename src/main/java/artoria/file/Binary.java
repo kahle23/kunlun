@@ -1,6 +1,6 @@
 package artoria.file;
 
-import artoria.codec.HexUtils;
+import artoria.codec.CodecUtils;
 import artoria.io.IOUtils;
 
 import java.io.ByteArrayInputStream;
@@ -41,7 +41,7 @@ public class Binary extends BinaryFile {
 
     public String writeToHexString() {
 
-        return HexUtils.encodeToString(data);
+        return CodecUtils.encodeToString(CodecUtils.HEX, data);
     }
 
 }

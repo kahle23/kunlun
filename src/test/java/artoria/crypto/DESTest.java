@@ -1,6 +1,6 @@
 package artoria.crypto;
 
-import artoria.codec.Base64Utils;
+import artoria.codec.CodecUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -14,6 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.GeneralSecurityException;
 import java.security.spec.KeySpec;
 
+import static artoria.codec.CodecUtils.BASE64;
 import static artoria.common.Constants.DES;
 
 /**
@@ -52,7 +53,7 @@ public class DESTest extends BouncyCastleSupport {
         symmetricCrypto.setMode(mode);
         symmetricCrypto.setPadding(padding);
         byte[] bytes = symmetricCrypto.encrypt(data);
-        log.info("Encrypt: {}", Base64Utils.encodeToString(bytes));
+        log.info("Encrypt: {}", CodecUtils.encodeToString(BASE64, bytes));
         byte[] bytes1 = symmetricCrypto.decrypt(bytes);
         log.info("Decrypt: {}", new String(bytes1));
         log.info("End test DES/{}/{}", mode, padding);

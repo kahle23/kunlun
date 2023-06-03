@@ -1,16 +1,16 @@
-package artoria.core.codec;
+package artoria.core;
 
 /**
  * Provide the highest level of abstraction for decoder.
  * @author Kahle
  */
-public interface Decoder {
+public interface Decoder<T> {
 
     /**
      * Decode a source data and return the result.
      * @param source The data to be decoded
      * @return The decoded content
      */
-    Object decode(Object source);
+    T decode(T source);
 
 }

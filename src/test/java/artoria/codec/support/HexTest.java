@@ -1,4 +1,4 @@
-package artoria.codec;
+package artoria.codec.support;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -6,9 +6,13 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+/**
+ * The hex codec Test.
+ * @author Kahle
+ */
 public class HexTest {
-    private static Logger log = LoggerFactory.getLogger(HexTest.class);
-    private Hex hex = new Hex(true);
+    private static final Logger log = LoggerFactory.getLogger(HexTest.class);
+    private final Hex hex = new Hex(true);
 
     @Test
     public void test1() {

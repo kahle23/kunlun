@@ -1,7 +1,7 @@
-package artoria.codec;
+package artoria.codec.support;
 
-import artoria.core.codec.StringDecoder;
-import artoria.core.codec.StringEncoder;
+import artoria.core.Decoder;
+import artoria.core.Encoder;
 import artoria.util.Assert;
 
 import java.io.Serializable;
@@ -13,22 +13,10 @@ import static artoria.io.IOUtils.EOF;
  * The unicode encode and decode tools.
  * @author Kahle
  */
-public class Unicode implements StringEncoder, StringDecoder, Serializable {
+public class Unicode implements Encoder<String>, Decoder<String>, Serializable {
     private static final String BACKLASH_U = "\\u";
     private static final int UNICODE_LENGTH = 6;
     private static final int RADIX = 16;
-
-    @Override
-    public Object encode(Object source) {
-
-        return encode((String) source);
-    }
-
-    @Override
-    public Object decode(Object source) {
-
-        return decode((String) source);
-    }
 
     @Override
     public String encode(String source) {

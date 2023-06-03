@@ -1,7 +1,7 @@
-package artoria.codec;
+package artoria.codec.support;
 
-import artoria.core.codec.BinaryDecoder;
-import artoria.core.codec.BinaryEncoder;
+import artoria.core.Decoder;
+import artoria.core.Encoder;
 import artoria.util.ArrayUtils;
 import artoria.util.StringUtils;
 
@@ -14,7 +14,7 @@ import static artoria.common.Constants.*;
  * The base64 encode and decode tools.
  * @author Kahle
  */
-public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
+public class Base64 implements Encoder<byte[]>, Decoder<byte[]>, Serializable {
     /**
      * Default MIME line separator.
      */
@@ -80,18 +80,6 @@ public class Base64 implements BinaryEncoder, BinaryDecoder, Serializable {
     public byte[] getLineSeparator() {
 
         return lineSeparator;
-    }
-
-    @Override
-    public Object encode(Object source) {
-
-        return encode((byte[]) source);
-    }
-
-    @Override
-    public Object decode(Object source) {
-
-        return decode((byte[]) source);
     }
 
     @Override

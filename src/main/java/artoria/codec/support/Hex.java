@@ -1,7 +1,7 @@
-package artoria.codec;
+package artoria.codec.support;
 
-import artoria.core.codec.BinaryDecoder;
-import artoria.core.codec.BinaryEncoder;
+import artoria.core.Decoder;
+import artoria.core.Encoder;
 import artoria.util.Assert;
 
 import java.io.Serializable;
@@ -12,7 +12,7 @@ import static artoria.common.Constants.*;
  * The hex encode and decode tools.
  * @author Kahle
  */
-public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
+public class Hex implements Encoder<byte[]>, Decoder<byte[]>, Serializable {
     protected static final byte[] LOWER_CASE_DIGITS =
             {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
     protected static final byte[] UPPER_CASE_DIGITS =
@@ -44,18 +44,6 @@ public class Hex implements BinaryEncoder, BinaryDecoder, Serializable {
             );
         }
         return digit;
-    }
-
-    @Override
-    public Object encode(Object source) {
-
-        return encode((byte[]) source);
-    }
-
-    @Override
-    public Object decode(Object source) {
-
-        return decode((byte[]) source);
     }
 
     @Override
