@@ -1,7 +1,7 @@
 package artoria.jdbc;
 
-import artoria.aop.Enhancer;
 import artoria.aop.Interceptor;
+import artoria.aop.ProxyUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.util.Assert;
 import artoria.util.ClassLoaderUtils;
@@ -81,7 +81,7 @@ public class SimpleDataSource implements DataSource {
     private Connection createConnection() throws SQLException {
         Connection conn = DriverManager.getConnection(jdbcUrl, user, password);
         ConnectionInterceptor interceptor = new ConnectionInterceptor(queue, conn);
-        return (Connection) Enhancer.enhance(Connection.class, interceptor);
+        return (Connection) ProxyUtils.proxy(Connection.class, interceptor);
     }
 
     public SimpleDataSource() {

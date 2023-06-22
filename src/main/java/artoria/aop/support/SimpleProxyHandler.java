@@ -1,7 +1,7 @@
 package artoria.aop.support;
 
+import artoria.aop.AbstractProxyHandler;
 import artoria.aop.Interceptor;
-import artoria.aop.ProxyFactory;
 import artoria.util.Assert;
 import artoria.util.ClassLoaderUtils;
 
@@ -10,10 +10,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
- * The proxy factory simple implement by jdk.
+ * The proxy handler simple implement by jdk.
  * @author Kahle
  */
-public class SimpleProxyFactory implements ProxyFactory {
+public class SimpleProxyHandler extends AbstractProxyHandler {
     private static final ClassLoader CLASS_LOADER = ClassLoaderUtils.getDefaultClassLoader();
 
     private static class InvocationHandlerAdapter implements InvocationHandler {
@@ -33,7 +33,7 @@ public class SimpleProxyFactory implements ProxyFactory {
     }
 
     @Override
-    public Object getInstance(Class<?> originalClass, Interceptor interceptor) {
+    public Object proxy(Class<?> originalClass, Interceptor interceptor) {
         Assert.notNull(originalClass, "Parameter \"originalClass\" must not null. ");
         Assert.notNull(interceptor, "Parameter \"interceptor\" must not null. ");
         Class<?>[] interfaces = originalClass.isInterface() ?

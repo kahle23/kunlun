@@ -1,5 +1,9 @@
 package artoria.aop;
 
+/**
+ * The real subject for proxy Test.
+ * @author Kahle
+ */
 public class RealSubject implements Subject {
 
     @Override
