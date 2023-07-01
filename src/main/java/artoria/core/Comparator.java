@@ -22,8 +22,9 @@ public interface Comparator {
      * Compare the left and right objects passed in.
      * @param left The left object to be compared
      * @param right The right object to be compared
+     * @param arguments The arguments to be compared (maybe is configuration or feature)
      * @return The compare result
      */
-    Object compare(Object left, Object right);
+    Object compare(Object left, Object right, Object... arguments);
 
 }

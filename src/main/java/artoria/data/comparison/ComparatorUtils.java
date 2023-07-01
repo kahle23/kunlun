@@ -17,7 +17,7 @@ public class ComparatorUtils {
     private static final Map<String, Comparator> COMPARATORS = new ConcurrentHashMap<String, Comparator>();
     private static final Logger log = LoggerFactory.getLogger(ComparatorUtils.class);
 
-    public static void register(String name, Comparator comparator) {
+    public static void registerComparator(String name, Comparator comparator) {
         Assert.notNull(comparator, "Parameter \"comparator\" must not null. ");
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         String className = comparator.getClass().getName();
@@ -25,7 +25,7 @@ public class ComparatorUtils {
         COMPARATORS.put(name, comparator);
     }
 
-    public static Comparator deregister(String name) {
+    public static Comparator deregisterComparator(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         Comparator remove = COMPARATORS.remove(name);
         if (remove != null) {
@@ -40,12 +40,12 @@ public class ComparatorUtils {
         return COMPARATORS.get(name);
     }
 
-    public static <T> T compare(String name, Object left, Object right) {
+    public static <T> T compare(String name, Object left, Object right, Object... arguments) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         Comparator comparator = COMPARATORS.get(name);
         Assert.state(comparator != null,
                 "The comparator named \"" + name + "\" could not be found. ");
-        return ObjectUtils.cast(comparator.compare(left, right));
+        return ObjectUtils.cast(comparator.compare(left, right, arguments));
     }
 
 }
