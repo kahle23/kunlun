@@ -1,7 +1,5 @@
 package artoria.core;
 
-import java.util.Map;
-
 /**
  * Provide the highest level of abstraction for AI (Artificial Intelligence).
  *
@@ -18,18 +16,6 @@ import java.util.Map;
  * @author Kahle
  */
 public interface ArtificialIntelligence {
-
-    /**
-     * Get the common properties of the settings.
-     * @return The common properties that is set
-     */
-    Map<Object, Object> getCommonProperties();
-
-    /**
-     * Set common properties for the artificial intelligence.
-     * @param properties The properties to be set
-     */
-    void setCommonProperties(Map<?, ?> properties);
 
     /**
      * The artificial intelligence performs reasoning operations.

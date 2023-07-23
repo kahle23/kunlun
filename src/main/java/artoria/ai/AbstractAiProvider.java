@@ -13,20 +13,20 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The abstract ai engine provider.
+ * The abstract artificial intelligence provider.
  * @author Kahle
  */
 public abstract class AbstractAiProvider implements AiProvider {
     private static final Logger log = LoggerFactory.getLogger(AbstractAiProvider.class);
-    protected final Map<String, ArtificialIntelligence> aiEngines;
+    protected final Map<String, ArtificialIntelligence> aiHandlers;
     protected final Map<String, Object> commonProperties;
 
     protected AbstractAiProvider(Map<String, Object> commonProperties,
-                                 Map<String, ArtificialIntelligence> aiEngines) {
+                                 Map<String, ArtificialIntelligence> aiHandlers) {
         Assert.notNull(commonProperties, "Parameter \"commonProperties\" must not null. ");
-        Assert.notNull(aiEngines, "Parameter \"aiEngines\" must not null. ");
+        Assert.notNull(aiHandlers, "Parameter \"aiHandlers\" must not null. ");
         this.commonProperties = commonProperties;
-        this.aiEngines = aiEngines;
+        this.aiHandlers = aiHandlers;
     }
 
     public AbstractAiProvider() {
@@ -34,11 +34,10 @@ public abstract class AbstractAiProvider implements AiProvider {
                 new ConcurrentHashMap<String, ArtificialIntelligence>());
     }
 
-    protected ArtificialIntelligence getEngineInner(String engineName) {
-        ArtificialIntelligence aiEngine = getEngine(engineName);
-        Assert.notNull(aiEngine
-                , "The corresponding ai engine could not be found by name. ");
-        return aiEngine;
+    protected ArtificialIntelligence getHandlerInner(String handlerName) {
+        ArtificialIntelligence aiHandler = getHandler(handlerName);
+        Assert.notNull(aiHandler, "The corresponding ai handler could not be found by name. ");
+        return aiHandler;
     }
 
     @Override
@@ -63,41 +62,43 @@ public abstract class AbstractAiProvider implements AiProvider {
     }
 
     @Override
-    public void registerEngine(String engineName, ArtificialIntelligence aiEngine) {
-        Assert.notBlank(engineName, "Parameter \"engineName\" must not blank. ");
-        Assert.notNull(aiEngine, "Parameter \"aiEngine\" must not null. ");
-        String className = aiEngine.getClass().getName();
-        aiEngines.put(engineName, aiEngine);
-        aiEngine.setCommonProperties(getCommonProperties());
-        log.info("Register the ai engine \"{}\" to \"{}\". ", className, engineName);
+    public void registerHandler(String handlerName, ArtificialIntelligence aiHandler) {
+        Assert.notBlank(handlerName, "Parameter \"handlerName\" must not blank. ");
+        Assert.notNull(aiHandler, "Parameter \"aiHandler\" must not null. ");
+        String className = aiHandler.getClass().getName();
+        aiHandlers.put(handlerName, aiHandler);
+        if (aiHandler instanceof AbstractAiHandler) {
+            ((AbstractAiHandler) aiHandler).setCommonProperties(getCommonProperties());
+        }
+        log.info("Register the ai handler \"{}\" to \"{}\". ", className, handlerName);
     }
 
     @Override
-    public void deregisterEngine(String engineName) {
-        Assert.notBlank(engineName, "Parameter \"engineName\" must not blank. ");
-        ArtificialIntelligence remove = aiEngines.remove(engineName);
+    public void deregisterHandler(String handlerName) {
+        Assert.notBlank(handlerName, "Parameter \"handlerName\" must not blank. ");
+        ArtificialIntelligence remove = aiHandlers.remove(handlerName);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the ai engine \"{}\" from \"{}\". ", className, engineName);
+            log.info("Deregister the ai handler \"{}\" from \"{}\". ", className, handlerName);
         }
     }
 
     @Override
-    public ArtificialIntelligence getEngine(String engineName) {
-        Assert.notBlank(engineName, "Parameter \"engineName\" must not blank. ");
-        return aiEngines.get(engineName);
+    public ArtificialIntelligence getHandler(String handlerName) {
+        Assert.notBlank(handlerName, "Parameter \"handlerName\" must not blank. ");
+        return aiHandlers.get(handlerName);
     }
 
     @Override
-    public Object execute(String engineName, Object[] arguments) {
+    public Object execute(String handlerName, Object[] arguments) {
         // Parameter "arguments" usually is: 0 strategy or scene, 1 input, 2 type
-        return getEngineInner(engineName).execute(arguments);
+        return getHandlerInner(handlerName).execute(arguments);
     }
 
     @Override
-    public <T> T execute(Object input, String engineName, String strategy, Type type) {
+    public <T> T execute(String handlerName, Object input, String operation, Type type) {
 
-        return ObjectUtils.cast(execute(engineName, new Object[] { strategy, input, type }));
+        return ObjectUtils.cast(execute(handlerName, new Object[] {operation, input, type }));
     }
 
 }

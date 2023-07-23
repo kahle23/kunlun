@@ -1,15 +1,15 @@
 package artoria.ai.support;
 
-import artoria.ai.AbstractAiEngine;
+import artoria.ai.AbstractAiHandler;
 import artoria.util.Assert;
 
 import static artoria.common.Constants.*;
 
 /**
- * The abstract classic ai engine.
+ * The abstract classic ai handler.
  * @author Kahle
  */
-public abstract class AbstractClassicAiEngine extends AbstractAiEngine {
+public abstract class AbstractClassicAiHandler extends AbstractAiHandler {
 
     @Override
     public Object execute(Object[] arguments) {
@@ -30,12 +30,12 @@ public abstract class AbstractClassicAiEngine extends AbstractAiEngine {
     }
 
     /**
-     * Execute a specific logic.
-     * @param input The input parameters to be executed
-     * @param strategy The input parameters to be executed
+     * The artificial intelligence performs reasoning operations.
+     * @param input The input parameters for inference calculations
+     * @param operation The strategy or operation or null for ai handler execution
      * @param clazz The class of the return value
-     * @return The return value
+     * @return The result of the inference calculation
      */
-    public abstract Object execute(Object input, String strategy, Class<?> clazz);
+    public abstract Object execute(Object input, String operation, Class<?> clazz);
 
 }

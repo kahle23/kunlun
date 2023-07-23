@@ -11,6 +11,16 @@ import static artoria.common.Constants.EMPTY_STRING;
 
 /**
  * The artificial intelligence tools.
+ *
+ * Artificial Intelligence (AI)
+ * - Machine Learning (ML)
+ *      - Deep Learning (DL)  [Artificial neural network (ANNs)]
+ *          - Generative pre-trained transformers (GPT)
+ *          - Large Language Model (LLM)
+ * - Natural Language Processing (NLP)
+ * - Machine perception
+ *      - Optical character recognition (OCR)
+ *
  * @author Kahle
  */
 public class AiUtils {
@@ -32,34 +42,34 @@ public class AiUtils {
         AiUtils.aiProvider = aiProvider;
     }
 
-    public static void registerHandler(String engineName, ArtificialIntelligence aiEngine) {
+    public static void registerHandler(String handlerName, ArtificialIntelligence aiHandler) {
 
-        getAiProvider().registerEngine(engineName, aiEngine);
+        getAiProvider().registerHandler(handlerName, aiHandler);
     }
 
-    public static void deregisterHandler(String engineName) {
+    public static void deregisterHandler(String handlerName) {
 
-        getAiProvider().deregisterEngine(engineName);
+        getAiProvider().deregisterHandler(handlerName);
     }
 
-    public static ArtificialIntelligence getEngine(String engineName) {
+    public static ArtificialIntelligence getHandler(String handlerName) {
 
-        return getAiProvider().getEngine(engineName);
+        return getAiProvider().getHandler(handlerName);
     }
 
-    public static <T> T execute(Object input, String engineName, String strategy, Type type) {
+    public static <T> T execute(String handlerName, Object input, String operation, Type type) {
 
-        return getAiProvider().execute(input, engineName, strategy, type);
+        return getAiProvider().execute(handlerName, input, operation, type);
     }
 
-    public static <T> T execute(Object input, String engineName, Type type) {
+    public static <T> T execute(String handlerName, Object input, Type type) {
 
-        return getAiProvider().execute(input, engineName, EMPTY_STRING, type);
+        return getAiProvider().execute(handlerName, input, EMPTY_STRING, type);
     }
 
-    public static Object execute(String engineName, Object[] arguments) {
+    public static Object execute(String handlerName, Object[] arguments) {
 
-        return getAiProvider().execute(engineName, arguments);
+        return getAiProvider().execute(handlerName, arguments);
     }
 
 }

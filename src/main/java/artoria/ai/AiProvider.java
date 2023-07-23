@@ -6,7 +6,7 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
- * The ai engine provider.
+ * The artificial intelligence provider.
  * @author Kahle
  */
 public interface AiProvider {
@@ -29,46 +29,46 @@ public interface AiProvider {
     Map<String, Object> getCommonProperties();
 
     /**
-     * Register the ai engine.
-     * @param engineName The ai engine name
-     * @param aiEngine The ai engine
+     * Register the ai handler.
+     * @param handlerName The ai handler name
+     * @param aiHandler The ai handler
      */
-    void registerEngine(String engineName, ArtificialIntelligence aiEngine);
+    void registerHandler(String handlerName, ArtificialIntelligence aiHandler);
 
     /**
-     * Deregister the ai engine.
-     * @param engineName The ai engine name
+     * Deregister the ai handler.
+     * @param handlerName The ai handler name
      */
-    void deregisterEngine(String engineName);
+    void deregisterHandler(String handlerName);
 
     /**
-     * Get the ai engine (the ai engine name is fixed).
-     * @param engineName The ai engine name
-     * @return The ai engine
+     * Get the ai handler (the ai handler name is fixed).
+     * @param handlerName The ai handler name
+     * @return The ai handler
      */
-    ArtificialIntelligence getEngine(String engineName);
+    ArtificialIntelligence getHandler(String handlerName);
 
     /**
      * The artificial intelligence performs reasoning operations.
      * The arguments mean (most of the scenes):
-     *      0 strategy or scene or null,
+     *      0 strategy or operation or null,
      *      1 input object,
      *      2 return value type
-     * @param engineName The ai engine name
+     * @param handlerName The ai handler name
      * @param arguments The arguments for inference calculations
      * @return The result of the inference calculation
      */
-    Object execute(String engineName, Object[] arguments);
+    Object execute(String handlerName, Object[] arguments);
 
     /**
      * The artificial intelligence performs reasoning operations.
+     * @param handlerName The ai handler name
      * @param input The input parameters for inference calculations
-     * @param engineName The ai engine name
-     * @param strategy The strategy or scene or null for ai engine execution
+     * @param operation The strategy or operation or null for ai handler execution
      * @param type The type of the return value
      * @param <T> The generic type of the return value
      * @return The result of the inference calculation
      */
-    <T> T execute(Object input, String engineName, String strategy, Type type);
+    <T> T execute(String handlerName, Object input, String operation, Type type);
 
 }
