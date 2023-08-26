@@ -1,7 +1,7 @@
-package artoria.cache;
+package artoria.cache.support;
 
+import artoria.data.Dict;
 import artoria.data.ReferenceType;
-import artoria.data.bean.BeanMap;
 import artoria.data.bean.BeanUtils;
 import artoria.data.collect.ReferenceMap;
 import artoria.logging.Logger;
@@ -90,23 +90,21 @@ public class SimpleCache extends AbstractValueWrapperCache {
 
     public SimpleCache(String name) {
 
-        this(name, new SimpleCacheConfig());
+        this(name, (Object) null);
     }
 
-    public SimpleCache(String name, CacheConfig cacheConfig) {
+    public SimpleCache(String name, Object cacheConfig) {
         super(name);
         // Process the cache config.
-        Assert.notNull(cacheConfig, "Parameter \"cacheConfig\" must not null. ");
-        SimpleCacheConfig config = BeanUtils.beanToBean(cacheConfig, SimpleCacheConfig.class);
-        BeanMap beanMap = BeanUtils.createBeanMap(cacheConfig);
+        Dict config = Dict.of(BeanUtils.beanToMap(cacheConfig));
         // Process the capacity and the full ratio.
-        Float fullRatio = (Float) beanMap.get("fullRatio");
-        Long capacity = config.getCapacity();
+        Float fullRatio = config.getFloat("fullRatio");
+        Long capacity = config.getLong("capacity");
         this.fullRatio = fullRatio == null || fullRatio < ZERO || fullRatio > ONE ? 0.95f : fullRatio;
         this.capacity = capacity == null || capacity < ZERO ? -1L : capacity;
         // Process the timeToLive and the timeToLiveUnit.
-        TimeUnit timeToLiveUnit = config.getTimeToLiveUnit();
-        Long timeToLive = config.getTimeToLive();
+        TimeUnit timeToLiveUnit = config.get("timeToLiveUnit", TimeUnit.class);
+        Long timeToLive = config.getLong("timeToLive");
         if (timeToLive != null) {
             Assert.notNull(timeToLiveUnit, "Parameter \"timeToLiveUnit\" must not null. ");
             Assert.isFalse(timeToLive == ZERO
@@ -115,8 +113,8 @@ public class SimpleCache extends AbstractValueWrapperCache {
         }
         else { this.timeToLive = -1L; }
         // Process the timeToIdle and the timeToIdleUnit.
-        TimeUnit timeToIdleUnit = config.getTimeToIdleUnit();
-        Long timeToIdle = config.getTimeToIdle();
+        TimeUnit timeToIdleUnit = config.get("timeToIdleUnit", TimeUnit.class);
+        Long timeToIdle = config.getLong("timeToIdle");
         if (timeToIdle != null) {
             Assert.notNull(timeToIdleUnit, "Parameter \"timeToIdleUnit\" must not null. ");
             Assert.isFalse(timeToIdle == ZERO
@@ -125,7 +123,7 @@ public class SimpleCache extends AbstractValueWrapperCache {
         }
         else { this.timeToIdle = -1L; }
         // Process the reference type (default weak).
-        ReferenceType referenceType = config.getReferenceType();
+        ReferenceType referenceType = config.get("referenceType", ReferenceType.class);
         if (referenceType == null) { referenceType = ReferenceType.WEAK; }
         this.storage = buildStorage(referenceType);
     }

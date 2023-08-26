@@ -1,166 +1,155 @@
 package artoria.cache;
 
+import artoria.cache.support.SimpleCache;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+
+import static artoria.common.Constants.DEFAULT;
 
 /**
  * The cache tools.
  * @author Kahle
  */
 public class CacheUtils {
-    private static final Map<String, Cache> CACHES = new ConcurrentHashMap<String, Cache>();
     private static final Logger log = LoggerFactory.getLogger(CacheUtils.class);
-    private static volatile CacheFactory cacheFactory;
+    private static volatile CacheProvider cacheProvider;
 
-    public static void register(Cache cache) {
-        Assert.notNull(cache, "Parameter \"cache\" must not null. ");
-        String cacheName = cache.getName();
-        Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        String cacheClassName = cache.getClass().getName();
-        log.info("Register \"{}\" to \"{}\". ", cacheClassName, cacheName);
-        CACHES.put(cacheName, cache);
-    }
-
-    public static Cache deregister(String cacheName) {
-        Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        Cache remove = CACHES.remove(cacheName);
-        if (remove != null) {
-            String removeClassName = remove.getClass().getName();
-            log.info("Deregister \"{}\" to \"{}\". ", removeClassName, cacheName);
-        }
-        return remove;
-    }
-
-    public static CacheFactory getCacheFactory() {
-        if (cacheFactory != null) { return cacheFactory; }
+    public static CacheProvider getCacheProvider() {
+        if (cacheProvider != null) { return cacheProvider; }
         synchronized (CacheUtils.class) {
-            if (cacheFactory != null) { return cacheFactory; }
-            CacheUtils.setCacheFactory(new SimpleCacheFactory());
-            return cacheFactory;
+            if (cacheProvider != null) { return cacheProvider; }
+            CacheUtils.setCacheProvider(new SimpleCacheProvider());
+            CacheUtils.registerCache(new SimpleCache(DEFAULT));
+            return cacheProvider;
         }
     }
 
-    public static void setCacheFactory(CacheFactory cacheFactory) {
-        Assert.notNull(cacheFactory, "Parameter \"cacheFactory\" must not null. ");
-        log.info("Set cache factory: {}", cacheFactory.getClass().getName());
-        CacheUtils.cacheFactory = cacheFactory;
+    public static void setCacheProvider(CacheProvider cacheProvider) {
+        Assert.notNull(cacheProvider, "Parameter \"cacheFactory\" must not null. ");
+        log.info("Set cache factory: {}", cacheProvider.getClass().getName());
+        CacheUtils.cacheProvider = cacheProvider;
     }
 
-    public static Map<String, Cache> getCaches() {
+    public static void registerCache(Cache cache) {
 
-        return Collections.unmodifiableMap(CACHES);
+        getCacheProvider().registerCache(cache);
+    }
+
+    public static void deregisterCache(String cacheName) {
+
+        getCacheProvider().deregisterCache(cacheName);
     }
 
     public static Cache getCache(String cacheName) {
-        Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        Cache cache = CACHES.get(cacheName);
-        if (cache != null) { return cache; }
-        register(cache = getCacheFactory().getInstance(cacheName));
-        return cache;
+
+        return getCacheProvider().getCache(cacheName);
+    }
+
+    public static Collection<String> getCacheNames() {
+
+        return getCacheProvider().getCacheNames();
     }
 
     public static <T> T get(String cacheName, Object key, Callable<T> callable) {
 
-        return getCache(cacheName).get(key, callable);
+        return getCacheProvider().get(cacheName, key, callable);
     }
 
     public static <T> T get(String cacheName, Object key, Class<T> type) {
 
-        return getCache(cacheName).get(key, type);
+        return getCacheProvider().get(cacheName, key, type);
     }
 
     public static Object get(String cacheName, Object key) {
 
-        return getCache(cacheName).get(key);
+        return getCacheProvider().get(cacheName, key);
     }
 
     public static boolean containsKey(String cacheName, Object key) {
 
-        return getCache(cacheName).containsKey(key);
+        return getCacheProvider().containsKey(cacheName, key);
     }
 
     public static long size(String cacheName) {
 
-        return getCache(cacheName).size();
+        return getCacheProvider().size(cacheName);
     }
 
     public static Object put(String cacheName, Object key, Object value) {
 
-        return getCache(cacheName).put(key, value);
+        return getCacheProvider().put(cacheName, key, value);
     }
 
     public static Object put(String cacheName, Object key, Object value, long timeToLive, TimeUnit timeUnit) {
 
-        return getCache(cacheName).put(key, value, timeToLive, timeUnit);
+        return getCacheProvider().put(cacheName, key, value, timeToLive, timeUnit);
     }
 
     public static Object putIfAbsent(String cacheName, Object key, Object value) {
 
-        return getCache(cacheName).putIfAbsent(key, value);
+        return getCacheProvider().putIfAbsent(cacheName, key, value);
     }
 
     public static Object putIfAbsent(String cacheName, Object key, Object value, long timeToLive, TimeUnit timeUnit) {
 
-        return getCache(cacheName).putIfAbsent(key, value, timeToLive, timeUnit);
+        return getCacheProvider().putIfAbsent(cacheName, key, value, timeToLive, timeUnit);
     }
 
     public static void putAll(String cacheName, Map<?, ?> map) {
 
-        getCache(cacheName).putAll(map);
+        getCacheProvider().putAll(cacheName, map);
     }
 
     public static boolean expire(String cacheName, Object key, long timeToLive, TimeUnit timeUnit) {
 
-        return getCache(cacheName).expire(key, timeToLive, timeUnit);
+        return getCacheProvider().expire(cacheName, key, timeToLive, timeUnit);
     }
 
     public static boolean expireAt(String cacheName, Object key, Date date) {
 
-        return getCache(cacheName).expireAt(key, date);
+        return getCacheProvider().expireAt(cacheName, key, date);
     }
 
     public static boolean persist(String cacheName, Object key) {
 
-        return getCache(cacheName).persist(key);
+        return getCacheProvider().persist(cacheName, key);
     }
 
     public static Object remove(String cacheName, Object key) {
 
-        return getCache(cacheName).remove(key);
+        return getCacheProvider().remove(cacheName, key);
     }
 
     public static void removeAll(String cacheName, Collection<?> keys) {
 
-        getCache(cacheName).removeAll(keys);
+        getCacheProvider().removeAll(cacheName, keys);
     }
 
     public static void clear(String cacheName) {
 
-        getCache(cacheName).clear();
+        getCacheProvider().clear(cacheName);
     }
 
     public static long prune(String cacheName) {
 
-        return getCache(cacheName).prune();
+        return getCacheProvider().prune(cacheName);
     }
 
     public static Collection<Object> keys(String cacheName) {
 
-        return getCache(cacheName).keys();
+        return getCacheProvider().keys(cacheName);
     }
 
     public static Map<Object, Object> entries(String cacheName) {
 
-        return getCache(cacheName).entries();
+        return getCacheProvider().entries(cacheName);
     }
 
 }

@@ -2,11 +2,11 @@ package artoria.convert;
 
 import artoria.cache.Cache;
 import artoria.cache.CacheUtils;
-import artoria.cache.SimpleCache;
-import artoria.cache.SimpleCacheConfig;
+import artoria.cache.support.SimpleCache;
 import artoria.convert.support.CatToDogConverter;
 import artoria.convert.support.ListBasicToListBasicConverter;
 import artoria.convert.support.NumberToDateConverter;
+import artoria.data.Dict;
 import artoria.data.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -35,11 +35,11 @@ public class CacheConversionProviderTest {
 
     static {
         String cacheName="test";
-        SimpleCacheConfig cacheConfig = new SimpleCacheConfig(ReferenceType.SOFT);
-        cacheConfig.setTimeToLive(3L);
-        cacheConfig.setTimeToLiveUnit(TimeUnit.MINUTES);
+        Dict cacheConfig = Dict.of("referenceType", ReferenceType.SOFT)
+                .set("timeToLive", 3L)
+                .set("timeToLiveUnit", TimeUnit.MINUTES);
         Cache cache = new SimpleCache(cacheName, cacheConfig);
-        CacheUtils.register(cache);
+        CacheUtils.registerCache(cache);
         conversionProvider = new CacheConversionProvider(new SimpleConversionProvider(), cacheName);
     }
 

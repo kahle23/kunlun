@@ -1,5 +1,7 @@
 package artoria.cache;
 
+import artoria.cache.support.SimpleCache;
+import artoria.data.Dict;
 import artoria.data.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -22,12 +24,12 @@ public class CacheUtilsTest {
 
     static {
         SimpleCache cache = new SimpleCache(cacheName);
-        CacheUtils.register(cache);
-        SimpleCacheConfig cacheConfig1 = new SimpleCacheConfig(ReferenceType.WEAK, 2L);
-        SimpleCache cache1 = new SimpleCache(cacheName1, cacheConfig1);
-        CacheUtils.register(cache1);
+        CacheUtils.registerCache(cache);
+        SimpleCache cache1 = new SimpleCache(cacheName1,
+                Dict.of("referenceType", ReferenceType.WEAK).set("capacity", 2L));
+        CacheUtils.registerCache(cache1);
         SimpleCache cache2 = new SimpleCache(cacheName2);
-        CacheUtils.register(cache2);
+        CacheUtils.registerCache(cache2);
     }
 
     @Test

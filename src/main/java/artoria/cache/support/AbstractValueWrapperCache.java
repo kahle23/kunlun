@@ -1,5 +1,6 @@
-package artoria.cache;
+package artoria.cache.support;
 
+import artoria.cache.AbstractCache;
 import artoria.exception.ExceptionUtils;
 import artoria.util.Assert;
 import artoria.util.ObjectUtils;

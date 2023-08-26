@@ -1,14 +1,17 @@
 package artoria.cache;
 
+import artoria.exception.ExceptionUtils;
+import artoria.lock.LockUtils;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
 import artoria.util.MapUtils;
 import artoria.util.ObjectUtils;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
-
-import static artoria.common.Constants.ZERO;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The abstract cache.
@@ -39,6 +42,15 @@ public abstract class AbstractCache implements Cache {
     }
 
     /**
+     * Gets the lock manager object.
+     * @return The lock manager object
+     */
+    protected String getLockManager() {
+
+        return null;
+    }
+
+    /**
      * Determines whether the current cache is full.
      * @return If true means full, otherwise not full
      */
@@ -60,6 +72,36 @@ public abstract class AbstractCache implements Cache {
     }
 
     @Override
+    public <T> T get(Object key, Callable<T> callable) {
+        Assert.notNull(callable, "Parameter \"callable\" must not null. ");
+        Assert.notNull(key, "Parameter \"key\" must not null. ");
+        Object value = get(key);
+        if (value != null) { return ObjectUtils.cast(value); }
+        String lockName = "lock-name:" + getClass().getName() + ":" + key;
+        LockUtils.lock(getLockManager(), lockName);
+        try {
+            // Try to get again.
+            value = get(key);
+            if (value != null) { return ObjectUtils.cast(value); }
+            // Try to call.
+            try {
+                value = callable.call();
+            }
+            catch (Exception e) {
+                throw ExceptionUtils.wrap(e);
+            }
+            // Cache the result.
+            if (value != null) {
+                put(key, value);
+            }
+            return ObjectUtils.cast(value);
+        }
+        finally {
+            LockUtils.unlock(getLockManager(), lockName);
+        }
+    }
+
+    @Override
     public <T> T get(Object key, Class<T> type) {
         Assert.notNull(type, "Parameter \"type\" must not null. ");
         Assert.notNull(key, "Parameter \"key\" must not null. ");
@@ -77,7 +119,28 @@ public abstract class AbstractCache implements Cache {
     @Override
     public long size() {
 
-        return ZERO;
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Object putIfAbsent(Object key, Object value) {
+        Assert.notNull(key, "Parameter \"key\" must not null. ");
+        Object oldValue = get(key);
+        if (oldValue == null) {
+            put(key, value);
+        }
+        return oldValue;
+    }
+
+    @Override
+    public Object putIfAbsent(Object key, Object value, long timeToLive, TimeUnit timeUnit) {
+        Assert.notNull(key, "Parameter \"key\" must not null. ");
+        Object oldValue = get(key);
+        if (oldValue == null) {
+            put(key, value);
+            expire(key, timeToLive, timeUnit);
+        }
+        return oldValue;
     }
 
     @Override
@@ -87,6 +150,15 @@ public abstract class AbstractCache implements Cache {
         for (Map.Entry<?, ?> entry : map.entrySet()) {
             put(entry.getKey(), entry.getValue());
         }
+    }
+
+    @Override
+    public boolean expireAt(Object key, Date date) {
+        Assert.notNull(date, "Parameter \"date\" must not null. ");
+        Assert.notNull(key, "Parameter \"key\" must not null. ");
+        Assert.isTrue(date.after(new Date()), "Parameter \"date\" must after now date. ");
+        long timeToLive = date.getTime() - System.currentTimeMillis();
+        return expire(key, timeToLive, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -101,12 +173,13 @@ public abstract class AbstractCache implements Cache {
     @Override
     public void clear() {
 
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long prune() {
 
-        return ZERO;
+        throw new UnsupportedOperationException();
     }
 
     @Override
