@@ -1,12 +1,12 @@
-package artoria.io.storage;
+package artoria.io.storage.support;
 
-import artoria.core.Storage;
+import artoria.io.storage.AbstractDataStorage;
 
 /**
  * The undefined storage.
  * @author Kahle
  */
-public class UndefinedStorage extends AbstractStorage implements Storage, NormalStorage {
+public class UndefinedStorage extends AbstractDataStorage {
 
     @Override
     public Object get(Object key) {

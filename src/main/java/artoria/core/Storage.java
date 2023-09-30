@@ -10,38 +10,14 @@ package artoria.core;
 public interface Storage {
 
     /**
-     * Determine whether the data exists based on the resource information (key).
-     * @param key The resource information (key)
-     * @return The exist or not exist
+     * Perform storage related operations.
+     * The arguments mean (most of the scenes):
+     *      0 strategy or operation or null,
+     *      1 input object,
+     *      2 return value type
+     * @param arguments The arguments required for the operation
+     * @return The result of the operation
      */
-    boolean exist(Object key);
-
-    /**
-     * Obtain the data based on the resource information (key).
-     * @param key The resource information (key)
-     * @return The data
-     */
-    Object get(Object key);
-
-    /**
-     * Put the data.
-     * @param data The data
-     * @return The old data or null
-     */
-    Object put(Object data);
-
-    /**
-     * Delete the data based on the resource information (key).
-     * @param key The resource information (key)
-     * @return The deleted data or null
-     */
-    Object delete(Object key);
-
-    /**
-     * Condition query the resource information list.
-     * @param conditions The query conditions
-     * @return The query result or null
-     */
-    Object list(Object conditions);
+    Object execute(Object[] arguments);
 
 }

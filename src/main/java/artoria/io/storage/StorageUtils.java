@@ -1,7 +1,9 @@
 package artoria.io.storage;
 
 import artoria.core.Storage;
-import artoria.io.file.LocalFileStorage;
+import artoria.io.DataStorage;
+import artoria.io.file.support.LocalFileStorage;
+import artoria.io.storage.support.UndefinedStorage;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -19,10 +21,10 @@ import static artoria.common.Constants.DEFAULT;
  * @author Kahle
  */
 public class StorageUtils {
-    private static final Map<String, NormalStorage> STORAGE_MAP = new ConcurrentHashMap<String, NormalStorage>();
+    private static final Map<String, DataStorage> STORAGE_MAP = new ConcurrentHashMap<String, DataStorage>();
     private static final Logger log = LoggerFactory.getLogger(StorageUtils.class);
 
-    public static void register(String name, NormalStorage storage) {
+    public static void register(String name, DataStorage storage) {
         Assert.notNull(storage, "Parameter \"storage\" must not null. ");
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         String storageClassName = storage.getClass().getName();
@@ -30,9 +32,9 @@ public class StorageUtils {
         STORAGE_MAP.put(name, storage);
     }
 
-    public static NormalStorage deregister(String storageName) {
+    public static DataStorage deregister(String storageName) {
         Assert.notBlank(storageName, "Parameter \"storageName\" must not blank. ");
-        NormalStorage remove = STORAGE_MAP.remove(storageName);
+        DataStorage remove = STORAGE_MAP.remove(storageName);
         if (remove != null) {
             String removeClassName = remove.getClass().getName();
             log.info("Deregister \"{}\" to \"{}\". ", removeClassName, storageName);
@@ -40,7 +42,7 @@ public class StorageUtils {
         return remove;
     }
 
-    public static Map<String, NormalStorage> getStorages() {
+    public static Map<String, DataStorage> getStorages() {
 
         return Collections.unmodifiableMap(STORAGE_MAP);
     }
@@ -50,9 +52,9 @@ public class StorageUtils {
         return ObjectUtils.cast(getStorage(name), type);
     }
 
-    public static NormalStorage getStorage(String name) {
+    public static DataStorage getStorage(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        NormalStorage storage = STORAGE_MAP.get(name);
+        DataStorage storage = STORAGE_MAP.get(name);
         if (storage != null) { return storage; }
         if (DEFAULT.equals(name)) {
             register(name, storage = new LocalFileStorage());

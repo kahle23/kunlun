@@ -1,13 +1,12 @@
-package artoria.io.file;
+package artoria.io.file.support;
 
-import artoria.core.Storage;
 import artoria.data.KeyValue;
 import artoria.data.Pair;
 import artoria.exception.ExceptionUtils;
-import artoria.io.file.support.FileBaseImpl;
-import artoria.io.file.support.FileEntityImpl;
-import artoria.io.storage.AbstractStorage;
-import artoria.io.storage.NormalStorage;
+import artoria.io.FileBase;
+import artoria.io.FileEntity;
+import artoria.io.file.FileUtils;
+import artoria.io.storage.AbstractDataStorage;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -15,6 +14,8 @@ import artoria.util.CloseUtils;
 import artoria.util.ObjectUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +28,7 @@ import static artoria.common.Constants.UTF_8;
  * The local file storage.
  * @author Kahle
  */
-public class LocalFileStorage extends AbstractStorage implements Storage, NormalStorage {
+public class LocalFileStorage extends AbstractDataStorage {
     private static final Logger log = LoggerFactory.getLogger(LocalFileStorage.class);
     private final String charset;
 
@@ -71,7 +72,14 @@ public class LocalFileStorage extends AbstractStorage implements Storage, Normal
         File file = convertToFile(key);
         if (!file.exists()) { return null; }
         Assert.isTrue(file.isFile(), "Parameter \"key\" must correspond to a file. ");
-        return new FileEntityImpl(file.getName(), file.getPath());
+        String name = file.getName();
+        String path = file.getPath();
+        InputStream inputStream;
+        try { inputStream = new FileInputStream(file); }
+        catch (FileNotFoundException e) {
+            throw ExceptionUtils.wrap(e);
+        }
+        return new FileEntityImpl(name, path, inputStream);
     }
 
     @Override

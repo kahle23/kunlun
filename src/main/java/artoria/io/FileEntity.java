@@ -1,4 +1,4 @@
-package artoria.io.file;
+package artoria.io;
 
 import java.io.InputStream;
 

@@ -1,6 +1,6 @@
 package artoria.io.file.support;
 
-import artoria.io.file.FileBase;
+import artoria.io.FileBase;
 import artoria.util.Assert;
 
 /**
@@ -8,18 +8,23 @@ import artoria.util.Assert;
  * @author Kahle
  */
 public class FileBaseImpl implements FileBase {
-    private final String path;
-    private final String name;
+    private String charset;
+    private String path;
+    private String name;
+
+    public FileBaseImpl(String name, String path) {
+        Assert.notNull(path, "Parameter \"path\" must not null. ");
+        this.path = path;
+        this.name = name;
+    }
 
     public FileBaseImpl(String path) {
 
         this(null, path);
     }
 
-    public FileBaseImpl(String name, String path) {
-        Assert.notNull(path, "Parameter \"path\" must not null. ");
-        this.path = path;
-        this.name = name;
+    public FileBaseImpl() {
+
     }
 
     @Override
@@ -28,10 +33,31 @@ public class FileBaseImpl implements FileBase {
         return name;
     }
 
+    public void setName(String name) {
+
+        this.name = name;
+    }
+
     @Override
     public String getPath() {
 
         return path;
+    }
+
+    public void setPath(String path) {
+
+        this.path = path;
+    }
+
+    @Override
+    public String getCharset() {
+
+        return charset;
+    }
+
+    public void setCharset(String charset) {
+
+        this.charset = charset;
     }
 
 }

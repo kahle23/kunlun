@@ -1,7 +1,7 @@
 package artoria.io.storage;
 
-import artoria.io.file.FileBase;
-import artoria.io.file.FileEntity;
+import artoria.io.FileBase;
+import artoria.io.FileEntity;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import com.alibaba.fastjson.JSON;

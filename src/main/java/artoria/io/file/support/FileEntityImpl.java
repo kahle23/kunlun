@@ -1,14 +1,8 @@
 package artoria.io.file.support;
 
-import artoria.exception.ExceptionUtils;
-import artoria.io.file.FileEntity;
-import artoria.io.file.FilenameUtils;
+import artoria.io.FileEntity;
 import artoria.util.Assert;
-import artoria.util.StringUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
@@ -17,46 +11,29 @@ import java.io.InputStream;
  */
 public class FileEntityImpl implements FileEntity {
     private InputStream inputStream;
-    private final String path;
-    private final String name;
+    private String charset;
+    private String path;
+    private String name;
 
-    public FileEntityImpl(String path) {
-
-        this(null, path, (InputStream) null);
+    public FileEntityImpl(String name, String path, InputStream inputStream) {
+        Assert.notNull(path, "Parameter \"path\" must not null. ");
+        this.inputStream = inputStream;
+        this.path = path;
+        this.name = name;
     }
 
     public FileEntityImpl(String name, String path) {
 
-        this(name, path, (InputStream) null);
+        this(name, path, null);
     }
 
-    public FileEntityImpl(String path, byte[] bytes) {
+    public FileEntityImpl(String path) {
 
-        this(null, path, new ByteArrayInputStream(bytes));
+        this(null, path, null);
     }
 
-    public FileEntityImpl(String path, InputStream inputStream) {
+    public FileEntityImpl() {
 
-        this(null, path, inputStream);
-    }
-
-    public FileEntityImpl(String name, String path, byte[] bytes) {
-
-        this(name, path, new ByteArrayInputStream(bytes));
-    }
-
-    public FileEntityImpl(String name, String path, InputStream inputStream) {
-        Assert.notNull(path, "Parameter \"path\" must not null. ");
-        this.path = path;
-        if (inputStream != null) {
-            this.inputStream = inputStream;
-        }
-        if (StringUtils.isNotBlank(name)) {
-            this.name = name;
-        }
-        else {
-            this.name = FilenameUtils.getName(path);
-        }
     }
 
     @Override
@@ -65,27 +42,42 @@ public class FileEntityImpl implements FileEntity {
         return name;
     }
 
+    public void setName(String name) {
+
+        this.name = name;
+    }
+
     @Override
     public String getPath() {
 
         return path;
     }
 
+    public void setPath(String path) {
+
+        this.path = path;
+    }
+
+    @Override
+    public String getCharset() {
+
+        return charset;
+    }
+
+    public void setCharset(String charset) {
+
+        this.charset = charset;
+    }
+
     @Override
     public InputStream getInputStream() {
-        if (inputStream != null) {
-            return inputStream;
-        }
-        if (StringUtils.isBlank(path)) {
-            return null;
-        }
-        try {
-            inputStream = new FileInputStream(path);
-        }
-        catch (FileNotFoundException e) {
-            throw ExceptionUtils.wrap(e);
-        }
+
         return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+
+        this.inputStream = inputStream;
     }
 
 }

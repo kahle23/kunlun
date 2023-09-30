@@ -1,4 +1,4 @@
-package artoria.io.file;
+package artoria.io.util;
 
 import artoria.io.IOUtils;
 import artoria.logging.Logger;
@@ -17,7 +17,6 @@ import static artoria.common.Constants.ZERO;
  * The file tools.
  * @author Kahle
  */
-@Deprecated
 public class FileUtils {
     private static final long FILE_COPY_BUFFER_SIZE = 1024 * 1024 * 10;
     private static final Logger log = LoggerFactory.getLogger(FileUtils.class);

@@ -1,4 +1,4 @@
-package artoria.io.file;
+package artoria.io;
 
 import artoria.core.Resource;
 
@@ -19,5 +19,11 @@ public interface FileBase extends Resource {
      * @return The file path
      */
     String getPath();
+
+    /**
+     * Get the file charset (nullable).
+     * @return The file charset (nullable)
+     */
+    String getCharset();
 
 }

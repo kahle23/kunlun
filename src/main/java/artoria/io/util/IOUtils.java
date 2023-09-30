@@ -1,4 +1,4 @@
-package artoria.io;
+package artoria.io.util;
 
 import artoria.io.stream.StringBuilderWriter;
 
@@ -11,7 +11,6 @@ import static artoria.common.Constants.ZERO;
  * The io tools.
  * @author Kahle
  */
-@Deprecated
 public class IOUtils {
     public static final int DEFAULT_BUFFER_SIZE = 8192;
     public static final int EOF = -1;

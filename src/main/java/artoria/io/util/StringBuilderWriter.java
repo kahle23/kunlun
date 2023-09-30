@@ -1,4 +1,4 @@
-package artoria.io.stream;
+package artoria.io.util;
 
 import java.io.Serializable;
 import java.io.Writer;
@@ -7,7 +7,6 @@ import java.io.Writer;
  * The string writer who using StringBuilder.
  * @author Kahle
  */
-@Deprecated
 public class StringBuilderWriter extends Writer implements Serializable {
     private final StringBuilder builder;
 

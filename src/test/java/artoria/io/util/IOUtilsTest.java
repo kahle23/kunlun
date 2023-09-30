@@ -1,4 +1,4 @@
-package artoria.io;
+package artoria.io.util;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;

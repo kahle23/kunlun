@@ -1,4 +1,4 @@
-package artoria.io.file;
+package artoria.io.util;
 
 import artoria.util.Assert;
 import artoria.util.StringUtils;
@@ -12,7 +12,6 @@ import static artoria.common.Constants.*;
  * The filename and filepath tools.
  * @author Kahle
  */
-@Deprecated
 public class FilenameUtils {
     private static final Class<?> THIS_CLASS = FilenameUtils.class;
     private static final char EXTENSION_SEPARATOR = '.';
