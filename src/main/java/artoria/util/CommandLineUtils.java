@@ -9,6 +9,7 @@ import static artoria.common.Constants.*;
  * Command line tools.
  * @author Kahle
  */
+@Deprecated // TODO: can delete
 public class CommandLineUtils {
 
     public static Map<String, String> parseParameters(String[] args) {
