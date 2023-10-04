@@ -60,6 +60,7 @@ public class Dict extends LinkedHashMap<Object, Object> {
     public <T> T get(Object key, Class<T> clazz) {
         Object result = get(key);
         if (result == null) { return null; }
+        // TODO: 2023/10/04 do not use ConversionUtils
         return ConversionUtils.convert(result, clazz);
     }
 
