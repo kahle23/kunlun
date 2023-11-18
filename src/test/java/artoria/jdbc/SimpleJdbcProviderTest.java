@@ -16,6 +16,7 @@ import java.util.Map;
 
 import static artoria.common.Constants.*;
 
+@Deprecated
 @Ignore
 public class SimpleJdbcProviderTest {
     private static Logger log = LoggerFactory.getLogger(SimpleJdbcProviderTest.class);
