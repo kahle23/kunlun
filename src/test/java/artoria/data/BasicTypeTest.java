@@ -2,7 +2,7 @@ package artoria.data;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.test.bean.Dog;
+import artoria.test.pojo.entity.animal.Dog;
 import org.junit.Test;
 
 public class BasicTypeTest {

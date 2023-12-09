@@ -1,7 +1,11 @@
-package artoria.test.bean;
+package artoria.test.pojo.entity.other;
 
 import java.io.Serializable;
 
+/**
+ * The book (test bean).
+ * @author Kahle
+ */
 public class Book implements Serializable {
     private Long   id;
     private String name;

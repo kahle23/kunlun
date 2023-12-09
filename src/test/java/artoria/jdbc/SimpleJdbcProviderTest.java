@@ -2,7 +2,7 @@ package artoria.jdbc;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.test.bean.User;
+import artoria.test.pojo.entity.system.User;
 import com.alibaba.fastjson.JSON;
 import org.junit.Ignore;
 import org.junit.Test;

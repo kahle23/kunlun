@@ -1,6 +1,10 @@
-package artoria.test.bean;
+package artoria.test.pojo.entity.animal;
 
-public class Dog extends Animal {
+/**
+ * The dog (test bean).
+ * @author Kahle
+ */
+public class Dog extends AbstractAnimal {
     private String breed;
     private String size;
     private String sound;

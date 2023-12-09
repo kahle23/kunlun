@@ -6,7 +6,7 @@ import artoria.data.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.mock.MockUtils;
-import artoria.test.bean.Book;
+import artoria.test.pojo.entity.other.Book;
 import artoria.util.ThreadUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Ignore;

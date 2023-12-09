@@ -1,8 +1,12 @@
-package artoria.test.bean;
+package artoria.test.pojo.entity.system;
 
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * The user (test bean).
+ * @author Kahle
+ */
 public class User implements Serializable {
     private Long   id;
     private String nickname;

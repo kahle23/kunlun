@@ -2,7 +2,7 @@ package artoria.util;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.test.bean.User;
+import artoria.test.pojo.entity.system.User;
 import org.junit.Test;
 
 import java.lang.reflect.GenericArrayType;

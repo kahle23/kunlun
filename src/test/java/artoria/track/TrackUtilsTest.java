@@ -2,7 +2,7 @@ package artoria.track;
 
 import artoria.data.Dict;
 import artoria.mock.MockUtils;
-import artoria.test.bean.User;
+import artoria.test.pojo.entity.system.User;
 import org.junit.Test;
 
 public class TrackUtilsTest {

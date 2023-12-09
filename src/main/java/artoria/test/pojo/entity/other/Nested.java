@@ -1,8 +1,12 @@
-package artoria.test.bean;
+package artoria.test.pojo.entity.other;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The nested (test bean).
+ * @author Kahle
+ */
 public class Nested {
     private Long   id;
     private String name;

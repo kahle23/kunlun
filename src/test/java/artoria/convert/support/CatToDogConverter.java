@@ -2,8 +2,8 @@ package artoria.convert.support;
 
 import artoria.data.bean.BeanUtils;
 import artoria.convert.ConversionProvider;
-import artoria.test.bean.Cat;
-import artoria.test.bean.Dog;
+import artoria.test.pojo.entity.animal.Cat;
+import artoria.test.pojo.entity.animal.Dog;
 
 public class CatToDogConverter extends AbstractClassConverter {
 

@@ -1,8 +1,12 @@
-package artoria.test.bean;
+package artoria.test.pojo.entity.system;
 
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * The menu (test bean).
+ * @author Kahle
+ */
 public class Menu implements Serializable {
     private Long   id;
     private Long   parentId;

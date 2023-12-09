@@ -1,7 +1,7 @@
 package artoria.mock;
 
-import artoria.test.bean.Book;
-import artoria.test.bean.Nested;
+import artoria.test.pojo.entity.other.Book;
+import artoria.test.pojo.entity.other.Nested;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 

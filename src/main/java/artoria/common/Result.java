@@ -10,6 +10,7 @@ import static java.lang.Boolean.TRUE;
  * @param <T> The data type
  * @author Kahle
  */
+@Deprecated
 public class Result<T> implements GenericResult, Serializable {
     private Boolean success;
     private String code;

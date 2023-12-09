@@ -7,7 +7,7 @@ import artoria.data.json.support.AbstractJsonHandler;
 import artoria.message.handler.ConsoleHandler;
 import artoria.message.handler.LogHandler;
 import artoria.mock.MockUtils;
-import artoria.test.bean.User;
+import artoria.test.pojo.entity.system.User;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 

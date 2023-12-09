@@ -5,6 +5,7 @@ package artoria.common;
  * @param <T> The data type
  * @author Kahle
  */
+@Deprecated
 public class PageResult<T> extends Result<T> {
     private Integer pageNum;
     private Integer pageSize;

@@ -3,7 +3,7 @@ package artoria.reflect;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.mock.MockUtils;
-import artoria.test.bean.User;
+import artoria.test.pojo.entity.system.User;
 import org.junit.Test;
 
 import java.beans.PropertyDescriptor;

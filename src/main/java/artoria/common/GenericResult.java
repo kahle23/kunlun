@@ -4,6 +4,7 @@ package artoria.common;
  * The generic result.
  * @author Kahle
  */
+@Deprecated
 public interface GenericResult {
 
     /**

@@ -2,8 +2,8 @@ package artoria.util;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.test.bean.Cat;
-import artoria.test.bean.Dog;
+import artoria.test.pojo.entity.animal.Cat;
+import artoria.test.pojo.entity.animal.Dog;
 import org.junit.Test;
 
 import java.lang.reflect.Array;
