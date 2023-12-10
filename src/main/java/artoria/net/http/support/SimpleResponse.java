@@ -1,7 +1,7 @@
 package artoria.net.http.support;
 
 import artoria.exception.ExceptionUtils;
-import artoria.io.IOUtils;
+import artoria.io.util.IOUtils;
 import artoria.net.http.HttpResponse;
 import artoria.util.StringUtils;
 

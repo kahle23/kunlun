@@ -7,10 +7,14 @@ import org.junit.Test;
 
 import static artoria.common.Constants.*;
 
+/**
+ * The id tools Test.
+ * @author Kahle
+ */
 public class IdUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(IdUtilsTest.class);
-    private Integer groupLength = FIVE;
-    private Integer count = 100;
+    private static final Logger log = LoggerFactory.getLogger(IdUtilsTest.class);
+    private final Integer groupLength = FIVE;
+    private final Integer count = 100;
 
     @Test
     public void test1() {

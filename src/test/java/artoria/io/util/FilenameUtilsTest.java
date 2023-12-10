@@ -4,8 +4,12 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
+/**
+ * The filename tools Test.
+ * @author Kahle
+ */
 public class FilenameUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(FilenameUtilsTest.class);
+    private static final Logger log = LoggerFactory.getLogger(FilenameUtilsTest.class);
 
     @Test
     public void testRootPathAndClasspath() {

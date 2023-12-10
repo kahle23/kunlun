@@ -10,7 +10,7 @@ import static artoria.common.Constants.MINUS;
  * @author Kahle
  */
 public class SimpleIdGenerator extends AbstractIdGenerator implements StringIdGenerator {
-    private boolean isSimple = false;
+    private final boolean isSimple;
 
     public SimpleIdGenerator() {
 

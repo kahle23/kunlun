@@ -8,8 +8,8 @@ import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 
 import static artoria.common.Constants.ZERO;
-import static artoria.io.IOUtils.DEFAULT_BUFFER_SIZE;
-import static artoria.io.IOUtils.EOF;
+import static artoria.io.util.IOUtils.DEFAULT_BUFFER_SIZE;
+import static artoria.io.util.IOUtils.EOF;
 
 /**
  * Hash tools, in JDK, support list:

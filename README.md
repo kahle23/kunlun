@@ -1,29 +1,15 @@
-# What is Artoria
+<h1 align="center">Artoria</h1>
+<h3 align="center">Artoria is a Java technology framework based on the Facade pattern.</h3>
+<h3 align="center">English | <a href="documents/zh/README.md">中文</a></h3>
 
-A toolkit only rely on the jdk. And provide aop, bean copy, bean to map, lock,
-some usually codec, type converter, simple encapsulation jdk crypto, reflect,
-file, io, http, serialize and more usually tools. These are only rely on jdk.
+# Introduction
 
+Artoria is a Java technology framework based on the Facade pattern. Its design philosophy is to provide users with a unified interface for interaction with other modules through the Facade pattern. Users do not need to understand the implementation details of other modules, and they will not be coupled with a specific implementation, which is more conducive to extension and maintenance.
 
-# How to begin
+# Functions
 
-In first, import this package in your project. If you using maven to package 
-management tools, you can write following code in you "pom.xml" file.
-
-```
-<dependency>
-    <groupId>com.github.kahlkn</groupId>
-    <artifactId>artoria</artifactId>
-    <version>latest</version>
-</dependency>
-```
-
-Finally, you can using this package provide function now.
+![artoria functions](documents/assets/artoria-functions-en.png)
 
 
-# Why the name is Artoria
 
-It is come from "Artoria Pendragon", is an anime person. ([Artoria Pendragon in Wikipedia](https://en.wikipedia.org/wiki/Saber_(Fate/stay_night)))
-
-![Artoria Pendragon](artoria.jpg)
 

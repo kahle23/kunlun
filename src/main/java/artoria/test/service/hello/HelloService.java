@@ -1,21 +1,21 @@
-package artoria.aop;
+package artoria.test.service.hello;
 
 /**
- * The subject for proxy Test.
+ * The hello service (test class).
  * @author Kahle
  */
-public interface Subject {
+public interface HelloService {
 
     /**
      * Say hello.
-     * @param name The user name
+     * @param name The name
      * @return The result
      */
     String sayHello(String name);
 
     /**
      * Say goodbye.
-     * @param name The user name
+     * @param name The name
      * @return The result
      */
     String sayGoodbye(String name);

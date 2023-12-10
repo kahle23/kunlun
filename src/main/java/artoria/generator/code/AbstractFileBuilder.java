@@ -2,7 +2,7 @@ package artoria.generator.code;
 
 import artoria.core.Renderer;
 import artoria.exception.ExceptionUtils;
-import artoria.io.IOUtils;
+import artoria.io.util.IOUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static artoria.common.Constants.ZERO;
-import static artoria.io.IOUtils.EOF;
+import static artoria.io.util.IOUtils.EOF;
 
 public abstract class AbstractFileBuilder implements FileBuilder {
     private static final Logger log = LoggerFactory.getLogger(AbstractFileBuilder.class);

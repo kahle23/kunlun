@@ -7,10 +7,14 @@ import artoria.logging.LoggerFactory;
 import artoria.util.ObjectUtils;
 import org.junit.Test;
 
+/**
+ * The action tools Test.
+ * @author Kahle
+ */
 public class ActionUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(ActionUtilsTest.class);
-    private static String actionName1 = "Hello1";
-    private static String actionName = "Hello";
+    private static final Logger log = LoggerFactory.getLogger(ActionUtilsTest.class);
+    private static final String actionName1 = "Hello1";
+    private static final String actionName = "Hello";
 
     static {
         ActionUtils.registerHandler(actionName, new AbstractClassicActionHandler() {

@@ -6,8 +6,12 @@ import org.junit.Test;
 
 import static artoria.common.Constants.*;
 
+/**
+ * The constants Test.
+ * @author Kahle
+ */
 public class ConstantsTest {
-    private static Logger log = LoggerFactory.getLogger(ConstantsTest.class);
+    private static final Logger log = LoggerFactory.getLogger(ConstantsTest.class);
 
     @Test
     public void test1() {

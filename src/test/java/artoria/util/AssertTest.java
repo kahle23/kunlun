@@ -1,10 +1,10 @@
 package artoria.util;
 
-import artoria.aop.RealSubject;
-import artoria.aop.Subject;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.test.pojo.entity.system.User;
+import artoria.test.service.hello.HelloService;
+import artoria.test.service.hello.HelloServiceImpl;
 import org.junit.Test;
 
 /**
@@ -39,7 +39,7 @@ public class AssertTest {
     @Test
     public void testIsSupport1() {
         try {
-            Assert.isSupport(RealSubject.class, Boolean.TRUE, Subject.class, null, String.class);
+            Assert.isSupport(HelloServiceImpl.class, Boolean.TRUE, HelloService.class, null, String.class);
 //            Assert.isSupport(RealSubject.class, Boolean.FALSE, Subject.class, null, String.class);
         }
         catch (Exception e) {

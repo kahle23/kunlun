@@ -1,6 +1,6 @@
 package artoria.util;
 
-import artoria.io.IOUtils;
+import artoria.io.util.IOUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.Assert.assertNotNull;
 
 public class ClassLoaderUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(ClassLoaderUtilsTest.class);
+    private static final Logger log = LoggerFactory.getLogger(ClassLoaderUtilsTest.class);
 
     @Test
     public void testGetResource() throws IOException {

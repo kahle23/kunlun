@@ -2,6 +2,8 @@ package artoria.aop;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.test.service.hello.HelloService;
+import artoria.test.service.hello.HelloServiceImpl;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -16,9 +18,9 @@ public class ProxyUtilsTest {
 
     @Test
     public void testJdkProxy() {
-        RealSubject subject = new RealSubject();
-        Subject subjectProxy = ProxyUtils.proxy(
-                new AbstractInterceptor<RealSubject>(subject) {
+        HelloServiceImpl realHelloService = new HelloServiceImpl();
+        HelloService helloService = ProxyUtils.proxy(
+                new AbstractInterceptor<HelloServiceImpl>(realHelloService) {
             @Override
             public Object intercept(Object proxyObject, Method method, Object[] args) throws Throwable {
                 log.info("Proxy object's class is {}", proxyObject.getClass().getName());
@@ -26,8 +28,8 @@ public class ProxyUtilsTest {
                 return method.invoke(getOriginalObject(), args);
             }
         });
-        log.info(subjectProxy.sayHello(name));
-        log.info(subjectProxy.sayGoodbye(name));
+        log.info(helloService.sayHello(name));
+        log.info(helloService.sayGoodbye(name));
     }
 
 }

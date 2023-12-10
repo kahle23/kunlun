@@ -9,7 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * The http tools test class.
+ * The http tools Test.
  * @author Kahle
  */
 @Ignore
@@ -18,7 +18,7 @@ public class HttpUtilsTest {
 
     @Test
     public void testExecute1() {
-        String testUrl = "https://www.github.com";
+        String testUrl = "https://info.cern.ch";
         HttpResponse response = HttpUtils.execute(new SimpleRequest(testUrl, HttpMethod.GET));
         log.info(response.getBodyAsString());
         assertNotNull(response);
@@ -26,7 +26,7 @@ public class HttpUtilsTest {
 
     @Test
     public void testExecute2() {
-        String testUrl = "https://www.bing.com";
+        String testUrl = "http://www.gnu.org";
         HttpResponse response = HttpUtils.execute(new SimpleRequest(testUrl, HttpMethod.GET));
         log.info(response.getBodyAsString());
         assertNotNull(response);

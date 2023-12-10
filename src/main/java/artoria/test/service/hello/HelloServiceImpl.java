@@ -1,10 +1,10 @@
-package artoria.aop;
+package artoria.test.service.hello;
 
 /**
- * The real subject for proxy Test.
+ * The hello service implementation class (test class).
  * @author Kahle
  */
-public class RealSubject implements Subject {
+public class HelloServiceImpl implements HelloService {
 
     @Override
     public String sayHello(String name) {

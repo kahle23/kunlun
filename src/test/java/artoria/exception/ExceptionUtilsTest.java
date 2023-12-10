@@ -6,8 +6,12 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+/**
+ * The exception tools Test.
+ * @author Kahle
+ */
 public class ExceptionUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(ExceptionUtilsTest.class);
+    private static final Logger log = LoggerFactory.getLogger(ExceptionUtilsTest.class);
 
     @Test
     public void test1() {

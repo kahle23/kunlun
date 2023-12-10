@@ -1,6 +1,6 @@
 package artoria.io;
 
-import artoria.io.stream.StringBuilderWriter;
+import artoria.io.util.StringBuilderWriter;
 
 import java.io.*;
 

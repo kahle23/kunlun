@@ -3,7 +3,7 @@ package artoria.renderer.support;
 import artoria.data.Pair;
 import artoria.data.bean.BeanUtils;
 import artoria.exception.ExceptionUtils;
-import artoria.io.IOUtils;
+import artoria.io.util.IOUtils;
 import artoria.util.*;
 
 import java.io.InputStream;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import static artoria.common.Constants.*;
-import static artoria.io.IOUtils.EOF;
+import static artoria.io.util.IOUtils.EOF;
 import static artoria.util.ObjectUtils.cast;
 
 /**

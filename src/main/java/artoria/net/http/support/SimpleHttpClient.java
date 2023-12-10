@@ -1,8 +1,8 @@
 package artoria.net.http.support;
 
-import artoria.data.KeyValue;
+import artoria.data.tuple.KeyValue;
 import artoria.exception.ExceptionUtils;
-import artoria.io.IOUtils;
+import artoria.io.util.IOUtils;
 import artoria.net.http.HttpMethod;
 import artoria.net.http.HttpRequest;
 import artoria.net.http.HttpResponse;
@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 import static artoria.common.Constants.*;
-import static artoria.io.IOUtils.EOF;
+import static artoria.io.util.IOUtils.EOF;
 import static artoria.net.http.HttpMethod.HEAD;
 
 public class SimpleHttpClient extends AbstractHttpClient {

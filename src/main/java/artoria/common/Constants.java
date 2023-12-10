@@ -1,6 +1,6 @@
 package artoria.common;
 
-import artoria.io.file.FilenameUtils;
+import artoria.io.util.FilenameUtils;
 import artoria.net.NetUtils;
 
 import java.nio.charset.Charset;

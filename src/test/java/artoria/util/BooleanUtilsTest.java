@@ -4,8 +4,12 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
+/**
+ * The boolean tools Test.
+ * @author Kahle
+ */
 public class BooleanUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(BooleanUtilsTest.class);
+    private static final Logger log = LoggerFactory.getLogger(BooleanUtilsTest.class);
 
     @Test
     public void parseBooleanTest() {

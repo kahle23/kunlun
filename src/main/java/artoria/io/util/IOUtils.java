@@ -1,7 +1,5 @@
 package artoria.io.util;
 
-import artoria.io.stream.StringBuilderWriter;
-
 import java.io.*;
 
 import static artoria.common.Constants.DEFAULT_CHARSET_NAME;

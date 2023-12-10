@@ -1,8 +1,8 @@
 package artoria.file;
 
 import artoria.exception.ExceptionUtils;
-import artoria.io.IOUtils;
-import artoria.io.stream.StringBuilderWriter;
+import artoria.io.util.IOUtils;
+import artoria.io.util.StringBuilderWriter;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
 import artoria.util.StringUtils;

@@ -7,9 +7,9 @@ import artoria.data.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.mock.MockUtils;
-import artoria.test.pojo.entity.other.Book;
 import artoria.test.pojo.entity.animal.Cat;
 import artoria.test.pojo.entity.animal.Dog;
+import artoria.test.pojo.entity.other.Book;
 import artoria.time.DateUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
@@ -25,9 +25,13 @@ import static artoria.common.Constants.ZERO;
 import static artoria.util.ObjectUtils.cast;
 import static artoria.util.TypeUtils.parameterizedOf;
 
+/**
+ * The conversion provider Test.
+ * @author Kahle
+ */
 public class ConversionProviderTest {
-    private static Logger log = LoggerFactory.getLogger(ConversionProviderTest.class);
-    private static ConversionProvider conversionProvider = new SimpleConversionProvider();
+    private static final Logger log = LoggerFactory.getLogger(ConversionProviderTest.class);
+    private static final ConversionProvider conversionProvider = new SimpleConversionProvider();
 
     @Test
     public void testIntToPrimitiveDouble() {

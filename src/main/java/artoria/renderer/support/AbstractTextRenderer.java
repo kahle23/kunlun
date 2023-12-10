@@ -1,6 +1,6 @@
 package artoria.renderer.support;
 
-import artoria.io.stream.StringBuilderWriter;
+import artoria.io.util.StringBuilderWriter;
 import artoria.renderer.AbstractRenderer;
 import artoria.renderer.TextRenderer;
 

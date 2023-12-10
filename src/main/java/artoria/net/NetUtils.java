@@ -16,7 +16,7 @@ import java.util.Formatter;
 import java.util.List;
 
 import static artoria.common.Constants.*;
-import static artoria.io.IOUtils.EOF;
+import static artoria.io.util.IOUtils.EOF;
 
 /**
  * The net tools.

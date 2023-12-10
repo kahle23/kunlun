@@ -1,7 +1,6 @@
-package artoria.core.chain;
+package artoria.chain.support;
 
 import artoria.chain.ListChain;
-import artoria.chain.support.PolyglotChainNode;
 import artoria.core.Chain;
 import artoria.core.ChainNode;
 import artoria.data.Dict;
@@ -15,8 +14,12 @@ import java.util.Map;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class Chain1Test {
-    private static final Logger log = LoggerFactory.getLogger(Chain1Test.class);
+/**
+ * The polyglot chain tools Test.
+ * @author Kahle
+ */
+public class PolyglotChainNodeTest {
+    private static final Logger log = LoggerFactory.getLogger(PolyglotChainNodeTest.class);
     private static final ListChain chain = new ListChain();
 
     static {

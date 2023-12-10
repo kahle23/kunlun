@@ -1,7 +1,7 @@
 package artoria.file;
 
 import artoria.codec.CodecUtils;
-import artoria.io.IOUtils;
+import artoria.io.util.IOUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

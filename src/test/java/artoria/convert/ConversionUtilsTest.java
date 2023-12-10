@@ -15,8 +15,12 @@ import java.util.Date;
 
 import static artoria.util.ObjectUtils.cast;
 
+/**
+ * The conversion tools Test.
+ * @author Kahle
+ */
 public class ConversionUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(ConversionUtilsTest.class);
+    private static final Logger log = LoggerFactory.getLogger(ConversionUtilsTest.class);
 
     @Test
     public void testIntToPrimitiveDouble() {

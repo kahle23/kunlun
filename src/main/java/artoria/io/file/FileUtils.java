@@ -1,6 +1,6 @@
 package artoria.io.file;
 
-import artoria.io.IOUtils;
+import artoria.io.util.IOUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.ArrayUtils;

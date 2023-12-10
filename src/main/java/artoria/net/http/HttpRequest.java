@@ -1,6 +1,6 @@
 package artoria.net.http;
 
-import artoria.data.KeyValue;
+import artoria.data.tuple.KeyValue;
 
 import java.util.Collection;
 

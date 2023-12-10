@@ -1,7 +1,7 @@
 package artoria.net.http.support;
 
-import artoria.data.KeyValue;
-import artoria.data.KeyValueImpl;
+import artoria.data.tuple.KeyValue;
+import artoria.data.tuple.KeyValueImpl;
 import artoria.net.http.HttpMethod;
 import artoria.net.http.HttpRequest;
 import artoria.util.Assert;

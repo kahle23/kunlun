@@ -1,6 +1,5 @@
-package artoria.core.chain;
+package artoria.chain;
 
-import artoria.chain.ListChain;
 import artoria.core.Chain;
 import artoria.core.ChainNode;
 import artoria.logging.Logger;
@@ -10,8 +9,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class Chain0Test {
-    private static final Logger log = LoggerFactory.getLogger(Chain0Test.class);
+/**
+ * The chain tools Test.
+ * @author Kahle
+ */
+public class ChainTest {
+    private static final Logger log = LoggerFactory.getLogger(ChainTest.class);
     private static final ListChain chain = new ListChain();
 
     static {

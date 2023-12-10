@@ -16,11 +16,15 @@ import java.util.concurrent.TimeUnit;
 
 import static artoria.common.Constants.*;
 
+/**
+ * The cache tools Test.
+ * @author Kahle
+ */
 public class CacheUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(CacheUtilsTest.class);
-    private static String cacheName = "TEST";
-    private static String cacheName1 = "TEST1";
-    private static String cacheName2 = "TEST2";
+    private static final Logger log = LoggerFactory.getLogger(CacheUtilsTest.class);
+    private static final String cacheName = "TEST";
+    private static final String cacheName1 = "TEST1";
+    private static final String cacheName2 = "TEST2";
 
     static {
         SimpleCache cache = new SimpleCache(cacheName);

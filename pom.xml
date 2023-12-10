@@ -7,9 +7,9 @@
     <artifactId>artoria</artifactId>
     <version>1.0.0.20210919.beta</version>
     <packaging>jar</packaging>
-    <name>Artoria</name>
+    <name>artoria</name>
     <url>https://github.com/kahle23/artoria</url>
-    <description>A toolkit only rely on the jdk.</description>
+    <description>Artoria is a java technology framework based on the facade pattern.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

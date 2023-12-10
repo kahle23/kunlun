@@ -10,8 +10,12 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+/**
+ * The bean holder Test.
+ * @author Kahle
+ */
 public class BeanHolderTest {
-    private static Logger log = LoggerFactory.getLogger(BeanHolderTest.class);
+    private static final Logger log = LoggerFactory.getLogger(BeanHolderTest.class);
 
     @Test
     public void test1() {

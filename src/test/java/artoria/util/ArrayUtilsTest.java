@@ -6,8 +6,12 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+/**
+ * The array tools Test.
+ * @author Kahle
+ */
 public class ArrayUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(ArrayUtilsTest.class);
+    private static final Logger log = LoggerFactory.getLogger(ArrayUtilsTest.class);
 
     @Test
     public void reverseTest1() {

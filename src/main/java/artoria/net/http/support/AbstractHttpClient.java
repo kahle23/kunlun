@@ -1,8 +1,8 @@
 package artoria.net.http.support;
 
-import artoria.data.KeyValue;
+import artoria.data.tuple.KeyValue;
 import artoria.exception.ExceptionUtils;
-import artoria.io.IOUtils;
+import artoria.io.util.IOUtils;
 import artoria.net.http.HttpClient;
 import artoria.net.http.HttpMethod;
 import artoria.net.http.HttpRequest;
@@ -100,13 +100,15 @@ public abstract class AbstractHttpClient implements HttpClient {
     protected boolean hasBody(HttpMethod method) {
         Assert.notNull(method, "Parameter \"method\" must not null. ");
         switch (method) {
-            case GET:     return false;
-            case POST:    return true;
-            case PUT:     return true;
-            case DELETE:  return false;
-            case HEAD:    return false;
-            case OPTIONS: return false;
-            case TRACE:   return false;
+            case GET:
+            case DELETE:
+            case HEAD:
+            case OPTIONS:
+            case TRACE:
+                return false;
+            case POST:
+            case PUT:
+                return true;
 //            case CONNECT: return false;
 //            case PATCH:   return false;
             default: throw new UnsupportedOperationException("Parameter \"method\" is unsupported. ");
