@@ -3,6 +3,7 @@ package artoria.renderer;
 import artoria.core.Renderer;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.renderer.support.SimpleTextRenderer;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
 
@@ -18,6 +19,7 @@ public class SimpleRendererProvider implements RendererProvider {
     private static final Logger log = LoggerFactory.getLogger(SimpleRendererProvider.class);
     protected final Map<String, Renderer> renderers;
     protected final Map<String, Object> commonProperties;
+    private String defaultRendererName = "default";
 
     protected SimpleRendererProvider(Map<String, Object> commonProperties,
                                      Map<String, Renderer> renderers) {
@@ -25,6 +27,8 @@ public class SimpleRendererProvider implements RendererProvider {
         Assert.notNull(renderers, "Parameter \"renderers\" must not null. ");
         this.commonProperties = commonProperties;
         this.renderers = renderers;
+        // Register the default renderer.
+        registerRenderer(getDefaultRendererName(), new SimpleTextRenderer());
     }
 
     public SimpleRendererProvider() {
@@ -51,6 +55,18 @@ public class SimpleRendererProvider implements RendererProvider {
     public Map<String, Object> getCommonProperties() {
 
         return Collections.unmodifiableMap(commonProperties);
+    }
+
+    @Override
+    public String getDefaultRendererName() {
+
+        return defaultRendererName;
+    }
+
+    @Override
+    public void setDefaultRendererName(String defaultRendererName) {
+        Assert.notBlank(defaultRendererName, "Parameter \"defaultRendererName\" must not blank. ");
+        this.defaultRendererName = defaultRendererName;
     }
 
     @Override

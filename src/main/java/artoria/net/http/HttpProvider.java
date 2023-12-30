@@ -26,6 +26,20 @@ public interface HttpProvider {
     Map<String, Object> getCommonProperties();
 
     /**
+     * Get the default client name.
+     * @return The default client name
+     */
+    String getDefaultClientName();
+
+    /**
+     * Set the default client name.
+     * Depending on the implementation class, this method may throw an error
+     *  (i.e. it does not allow the modification of the default client name).
+     * @param defaultClientName The default client name
+     */
+    void setDefaultClientName(String defaultClientName);
+
+    /**
      * Register the http client.
      * @param name The http client name
      * @param httpClient The http client

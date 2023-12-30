@@ -2,6 +2,7 @@ package artoria.net.http;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
+import artoria.net.http.support.SimpleHttpClient;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
 
@@ -17,6 +18,7 @@ public class SimpleHttpProvider implements HttpProvider {
     private static final Logger log = LoggerFactory.getLogger(SimpleHttpProvider.class);
     protected final Map<String, HttpClient> clients;
     protected final Map<String, Object> commonProperties;
+    private String defaultClientName = "default";
 
     protected SimpleHttpProvider(Map<String, Object> commonProperties,
                                 Map<String, HttpClient> clients) {
@@ -24,6 +26,8 @@ public class SimpleHttpProvider implements HttpProvider {
         Assert.notNull(clients, "Parameter \"clients\" must not null. ");
         this.commonProperties = commonProperties;
         this.clients = clients;
+        // Register the default http client.
+        registerClient(getDefaultClientName(), new SimpleHttpClient());
     }
 
     public SimpleHttpProvider() {
@@ -50,6 +54,18 @@ public class SimpleHttpProvider implements HttpProvider {
     public Map<String, Object> getCommonProperties() {
 
         return Collections.unmodifiableMap(commonProperties);
+    }
+
+    @Override
+    public String getDefaultClientName() {
+
+        return defaultClientName;
+    }
+
+    @Override
+    public void setDefaultClientName(String defaultClientName) {
+        Assert.notBlank(defaultClientName, "Parameter \"defaultClientName\" must not blank. ");
+        this.defaultClientName = defaultClientName;
     }
 
     @Override

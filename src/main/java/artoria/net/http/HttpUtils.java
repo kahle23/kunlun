@@ -2,7 +2,6 @@ package artoria.net.http;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.net.http.support.SimpleHttpClient;
 import artoria.util.Assert;
 
 /**
@@ -12,12 +11,6 @@ import artoria.util.Assert;
 public class HttpUtils {
     private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
     private static volatile HttpProvider httpProvider;
-    private static String defaultClientName = "default";
-
-    static {
-        // Register http client.
-        registerClient(getDefaultClientName(), new SimpleHttpClient());
-    }
 
     public static HttpProvider getHttpProvider() {
         if (httpProvider != null) { return httpProvider; }
@@ -36,12 +29,12 @@ public class HttpUtils {
 
     public static String getDefaultClientName() {
 
-        return defaultClientName;
+        return getHttpProvider().getDefaultClientName();
     }
 
     public static void setDefaultClientName(String defaultClientName) {
-        Assert.notBlank(defaultClientName, "Parameter \"defaultClientName\" must not blank. ");
-        HttpUtils.defaultClientName = defaultClientName;
+
+        getHttpProvider().setDefaultClientName(defaultClientName);
     }
 
     public static void registerClient(String name, HttpClient httpClient) {

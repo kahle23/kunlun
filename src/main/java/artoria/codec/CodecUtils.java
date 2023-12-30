@@ -1,8 +1,5 @@
 package artoria.codec;
 
-import artoria.codec.support.Base64;
-import artoria.codec.support.Hex;
-import artoria.codec.support.Unicode;
 import artoria.core.Decoder;
 import artoria.core.Encoder;
 import artoria.logging.Logger;
@@ -21,18 +18,6 @@ public class CodecUtils {
         synchronized (CodecUtils.class) {
             if (codecProvider != null) { return codecProvider; }
             CodecUtils.setCodecProvider(new SimpleCodecProvider());
-            // The unicode.
-            Unicode unicode = new Unicode();
-            registerEncoder(UNICODE, unicode);
-            registerDecoder(UNICODE, unicode);
-            // The base64.
-            Base64 base64 = new Base64();
-            registerEncoder(BASE64, base64);
-            registerDecoder(BASE64, base64);
-            // The hex.
-            Hex hex = new Hex();
-            registerEncoder(HEX, hex);
-            registerDecoder(HEX, hex);
             return codecProvider;
         }
     }

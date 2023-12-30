@@ -26,6 +26,20 @@ public interface ProxyProvider {
     Map<String, Object> getCommonProperties();
 
     /**
+     * Get the default handler name.
+     * @return The default handler name
+     */
+    String getDefaultHandlerName();
+
+    /**
+     * Set the default handler name.
+     * Depending on the implementation class, this method may throw an error
+     *  (i.e. it does not allow the modification of the default handler name).
+     * @param defaultHandlerName The default handler name
+     */
+    void setDefaultHandlerName(String defaultHandlerName);
+
+    /**
      * Register the proxy handler.
      * @param name The proxy handler name
      * @param proxyHandler The proxy handler

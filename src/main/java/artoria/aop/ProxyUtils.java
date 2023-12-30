@@ -1,6 +1,5 @@
 package artoria.aop;
 
-import artoria.aop.support.SimpleProxyHandler;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -12,14 +11,12 @@ import artoria.util.Assert;
 public class ProxyUtils {
     private static final Logger log = LoggerFactory.getLogger(ProxyUtils.class);
     private static volatile ProxyProvider proxyProvider;
-    private static String defaultHandlerName = "default";
 
     public static ProxyProvider getProxyProvider() {
         if (proxyProvider != null) { return proxyProvider; }
         synchronized (ProxyUtils.class) {
-        if (proxyProvider != null) { return proxyProvider; }
+            if (proxyProvider != null) { return proxyProvider; }
             ProxyUtils.setProxyProvider(new SimpleProxyProvider());
-            ProxyUtils.registerHandler(defaultHandlerName, new SimpleProxyHandler());
             return proxyProvider;
         }
     }
@@ -32,12 +29,12 @@ public class ProxyUtils {
 
     public static String getDefaultHandlerName() {
 
-        return defaultHandlerName;
+        return getProxyProvider().getDefaultHandlerName();
     }
 
     public static void setDefaultHandlerName(String defaultHandlerName) {
-        Assert.notBlank(defaultHandlerName, "Parameter \"defaultHandlerName\" must not blank. ");
-        ProxyUtils.defaultHandlerName = defaultHandlerName;
+
+        getProxyProvider().setDefaultHandlerName(defaultHandlerName);
     }
 
     public static void registerHandler(String name, ProxyHandler proxyHandler) {

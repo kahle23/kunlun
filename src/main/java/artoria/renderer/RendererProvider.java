@@ -28,6 +28,20 @@ public interface RendererProvider {
     Map<String, Object> getCommonProperties();
 
     /**
+     * Get the default renderer name.
+     * @return The default renderer name
+     */
+    String getDefaultRendererName();
+
+    /**
+     * Set the default renderer name.
+     * Depending on the implementation class, this method may throw an error
+     *  (i.e. it does not allow the modification of the default renderer name).
+     * @param defaultRendererName The default renderer name
+     */
+    void setDefaultRendererName(String defaultRendererName);
+
+    /**
      * Register the renderer.
      * @param rendererName The renderer name
      * @param renderer The renderer

@@ -1,5 +1,6 @@
 package artoria.aop;
 
+import artoria.aop.support.SimpleProxyHandler;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -17,6 +18,7 @@ public class SimpleProxyProvider implements ProxyProvider {
     private static final Logger log = LoggerFactory.getLogger(SimpleProxyProvider.class);
     protected final Map<String, ProxyHandler> handlers;
     protected final Map<String, Object> commonProperties;
+    private String defaultHandlerName = "default";
 
     protected SimpleProxyProvider(Map<String, Object> commonProperties,
                                   Map<String, ProxyHandler> handlers) {
@@ -24,6 +26,8 @@ public class SimpleProxyProvider implements ProxyProvider {
         Assert.notNull(handlers, "Parameter \"handlers\" must not null. ");
         this.commonProperties = commonProperties;
         this.handlers = handlers;
+        // Register the default handler.
+        registerHandler(getDefaultHandlerName(), new SimpleProxyHandler());
     }
 
     public SimpleProxyProvider() {
@@ -50,6 +54,18 @@ public class SimpleProxyProvider implements ProxyProvider {
     public Map<String, Object> getCommonProperties() {
 
         return Collections.unmodifiableMap(commonProperties);
+    }
+
+    @Override
+    public String getDefaultHandlerName() {
+
+        return defaultHandlerName;
+    }
+
+    @Override
+    public void setDefaultHandlerName(String defaultHandlerName) {
+        Assert.notBlank(defaultHandlerName, "Parameter \"defaultHandlerName\" must not blank. ");
+        this.defaultHandlerName = defaultHandlerName;
     }
 
     @Override

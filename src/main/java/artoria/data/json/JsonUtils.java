@@ -1,6 +1,5 @@
 package artoria.data.json;
 
-import artoria.data.json.support.SimpleJsonHandler;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -14,14 +13,12 @@ import java.lang.reflect.Type;
 public class JsonUtils {
     private static final Logger log = LoggerFactory.getLogger(JsonUtils.class);
     private static volatile JsonProvider jsonProvider;
-    private static String defaultHandlerName = "default";
 
     public static JsonProvider getJsonProvider() {
         if (jsonProvider != null) { return jsonProvider; }
         synchronized (JsonUtils.class) {
             if (jsonProvider != null) { return jsonProvider; }
             JsonUtils.setJsonProvider(new SimpleJsonProvider());
-            JsonUtils.registerHandler(defaultHandlerName, new SimpleJsonHandler());
             return jsonProvider;
         }
     }
@@ -34,12 +31,12 @@ public class JsonUtils {
 
     public static String getDefaultHandlerName() {
 
-        return defaultHandlerName;
+        return getJsonProvider().getDefaultHandlerName();
     }
 
     public static void setDefaultHandlerName(String defaultHandlerName) {
-        Assert.notBlank(defaultHandlerName, "Parameter \"defaultHandlerName\" must not blank. ");
-        JsonUtils.defaultHandlerName = defaultHandlerName;
+
+        getJsonProvider().setDefaultHandlerName(defaultHandlerName);
     }
 
     public static void registerHandler(String name, JsonHandler jsonHandler) {

@@ -1,5 +1,6 @@
 package artoria.data.json;
 
+import artoria.data.json.support.SimpleJsonHandler;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -18,6 +19,7 @@ public class SimpleJsonProvider implements JsonProvider {
     private static final Logger log = LoggerFactory.getLogger(SimpleJsonProvider.class);
     protected final Map<String, JsonHandler> handlers;
     protected final Map<String, Object> commonProperties;
+    private String defaultHandlerName = "default";
 
     protected SimpleJsonProvider(Map<String, Object> commonProperties,
                                  Map<String, JsonHandler> handlers) {
@@ -25,6 +27,8 @@ public class SimpleJsonProvider implements JsonProvider {
         Assert.notNull(handlers, "Parameter \"handlers\" must not null. ");
         this.commonProperties = commonProperties;
         this.handlers = handlers;
+        // Register the default handler.
+        registerHandler(getDefaultHandlerName(), new SimpleJsonHandler());
     }
 
     public SimpleJsonProvider() {
@@ -51,6 +55,18 @@ public class SimpleJsonProvider implements JsonProvider {
     public Map<String, Object> getCommonProperties() {
 
         return Collections.unmodifiableMap(commonProperties);
+    }
+
+    @Override
+    public String getDefaultHandlerName() {
+
+        return defaultHandlerName;
+    }
+
+    @Override
+    public void setDefaultHandlerName(String defaultHandlerName) {
+        Assert.notBlank(defaultHandlerName, "Parameter \"defaultHandlerName\" must not blank. ");
+        this.defaultHandlerName = defaultHandlerName;
     }
 
     @Override

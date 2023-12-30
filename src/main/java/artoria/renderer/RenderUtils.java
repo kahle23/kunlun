@@ -4,7 +4,6 @@ import artoria.core.Renderer;
 import artoria.data.ocr.OcrUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.renderer.support.SimpleTextRenderer;
 import artoria.util.Assert;
 
 /**
@@ -14,14 +13,12 @@ import artoria.util.Assert;
 public class RenderUtils {
     private static final Logger log = LoggerFactory.getLogger(OcrUtils.class);
     private static volatile RendererProvider rendererProvider;
-    private static String defaultRendererName = "default";
 
     public static RendererProvider getRendererProvider() {
         if (rendererProvider != null) { return rendererProvider; }
         synchronized (RenderUtils.class) {
             if (rendererProvider != null) { return rendererProvider; }
             RenderUtils.setRendererProvider(new SimpleRendererProvider());
-            RenderUtils.registerRenderer(defaultRendererName, new SimpleTextRenderer());
             return rendererProvider;
         }
     }
@@ -34,12 +31,12 @@ public class RenderUtils {
 
     public static String getDefaultRendererName() {
 
-        return defaultRendererName;
+        return getRendererProvider().getDefaultRendererName();
     }
 
     public static void setDefaultRendererName(String defaultRendererName) {
-        Assert.notBlank(defaultRendererName, "Parameter \"defaultRendererName\" must not blank. ");
-        RenderUtils.defaultRendererName = defaultRendererName;
+
+        getRendererProvider().setDefaultRendererName(defaultRendererName);
     }
 
     public static void registerRenderer(String rendererName, Renderer renderer) {
