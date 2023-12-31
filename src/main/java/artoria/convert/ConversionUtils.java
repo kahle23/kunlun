@@ -13,46 +13,46 @@ import java.lang.reflect.Type;
  */
 public class ConversionUtils {
     private static final Logger log = LoggerFactory.getLogger(ConversionUtils.class);
-    private static volatile ConversionProvider conversionProvider;
+    private static volatile ConversionService conversionService;
 
-    public static ConversionProvider getConversionProvider() {
-        if (conversionProvider != null) { return conversionProvider; }
+    public static ConversionService getConversionService() {
+        if (conversionService != null) { return conversionService; }
         synchronized (ConversionUtils.class) {
-            if (conversionProvider != null) { return conversionProvider; }
-            ConversionUtils.setConversionProvider(new SimpleConversionProvider());
-            return conversionProvider;
+            if (conversionService != null) { return conversionService; }
+            ConversionUtils.setConversionService(new SimpleConversionService());
+            return conversionService;
         }
     }
 
-    public static void setConversionProvider(ConversionProvider conversionProvider) {
-        Assert.notNull(conversionProvider, "Parameter \"conversionProvider\" must not null. ");
-        log.info("Set type conversion provider: {}", conversionProvider.getClass().getName());
-        ConversionUtils.conversionProvider = conversionProvider;
+    public static void setConversionService(ConversionService conversionService) {
+        Assert.notNull(conversionService, "Parameter \"conversionService\" must not null. ");
+        log.info("Set type conversion service: {}", conversionService.getClass().getName());
+        ConversionUtils.conversionService = conversionService;
     }
 
     public static void register(GenericConverter converter) {
 
-        getConversionProvider().addConverter(converter);
+        getConversionService().addConverter(converter);
     }
 
     public static void deregister(GenericConverter converter) {
 
-        getConversionProvider().removeConverter(converter);
+        getConversionService().removeConverter(converter);
     }
 
     public static boolean canConvert(Type sourceType, Type targetType) {
 
-        return getConversionProvider().canConvert(sourceType, targetType);
+        return getConversionService().canConvert(sourceType, targetType);
     }
 
     public static Object convert(Object source, Type targetType) {
 
-        return getConversionProvider().convert(source, targetType);
+        return getConversionService().convert(source, targetType);
     }
 
     public static Object convert(Object source, Type sourceType, Type targetType) {
 
-        return getConversionProvider().convert(source, sourceType, targetType);
+        return getConversionService().convert(source, sourceType, targetType);
     }
 
     public static <T> T convert(Object source, Class<T> targetType) {

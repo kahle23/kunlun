@@ -31,7 +31,7 @@ import static artoria.util.TypeUtils.parameterizedOf;
  */
 public class ConversionProviderTest {
     private static final Logger log = LoggerFactory.getLogger(ConversionProviderTest.class);
-    private static final ConversionProvider conversionProvider = new SimpleConversionProvider();
+    private static final ConversionService conversionProvider = new SimpleConversionService();
 
     @Test
     public void testIntToPrimitiveDouble() {
@@ -176,7 +176,7 @@ public class ConversionProviderTest {
         new GetClassHierarchyTest().testGetClassHierarchy();
     }
 
-    private static class GetClassHierarchyTest extends AbstractConversionProvider {
+    private static class GetClassHierarchyTest extends AbstractConversionService {
         @Override
         public void addConverter(GenericConverter converter) {
         }

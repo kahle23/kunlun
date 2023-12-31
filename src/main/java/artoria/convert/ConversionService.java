@@ -3,10 +3,11 @@ package artoria.convert;
 import java.lang.reflect.Type;
 
 /**
- * The provider interface for the type conversion service.
+ * The service interface for type conversion.
+ * This is the entry point into the convert system.
  * @author Kahle
  */
-public interface ConversionProvider {
+public interface ConversionService {
 
     /**
      * Add a converter to this provider.

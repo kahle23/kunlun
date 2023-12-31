@@ -88,7 +88,7 @@ public class ConversionUtilsTest {
 
     @Test
     public void testCatToDog() {
-        ConversionUtils.register(new CatToDogConverter(ConversionUtils.getConversionProvider()));
+        ConversionUtils.register(new CatToDogConverter(ConversionUtils.getConversionService()));
         Cat cat = MockUtils.mock(Cat.class);
         log.info("{}", JSON.toJSONString(cat));
         Dog dog = cast(ConversionUtils.convert(cat, Dog.class));

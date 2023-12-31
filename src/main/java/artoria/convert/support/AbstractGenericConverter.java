@@ -1,6 +1,6 @@
 package artoria.convert.support;
 
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 import artoria.convert.ConversionUtils;
 import artoria.convert.GenericConverter;
 import artoria.util.Assert;
@@ -14,39 +14,39 @@ import java.util.Set;
  * @author Kahle
  */
 public abstract class AbstractGenericConverter implements GenericConverter {
-    private final ConversionProvider conversionProvider;
+    private final ConversionService conversionService;
     private final Set<ConvertiblePair> convertibleTypes;
 
     protected AbstractGenericConverter(Class<?> sourceClass, Class<?> targetClass) {
 
-        this(new ProxyConversionProvider(), sourceClass, targetClass);
+        this(new ProxyConversionService(), sourceClass, targetClass);
     }
 
-    protected AbstractGenericConverter(ConversionProvider conversionProvider,
+    protected AbstractGenericConverter(ConversionService conversionService,
                                        Class<?> sourceClass, Class<?> targetClass) {
-        Assert.notNull(conversionProvider, "Parameter \"conversionProvider\" must not null. ");
+        Assert.notNull(conversionService, "Parameter \"conversionService\" must not null. ");
         Assert.notNull(sourceClass, "Parameter \"sourceClass\" must not null. ");
         Assert.notNull(targetClass, "Parameter \"targetClass\" must not null. ");
         ConvertiblePair pair = new ConvertiblePair(sourceClass, targetClass);
-        this.conversionProvider = conversionProvider;
+        this.conversionService = conversionService;
         this.convertibleTypes = Collections.singleton(pair);
     }
 
     protected AbstractGenericConverter(Set<ConvertiblePair> convertibleTypes) {
 
-        this(new ProxyConversionProvider(), convertibleTypes);
+        this(new ProxyConversionService(), convertibleTypes);
     }
 
-    protected AbstractGenericConverter(ConversionProvider conversionProvider,
+    protected AbstractGenericConverter(ConversionService conversionService,
                                        Set<ConvertiblePair> convertibleTypes) {
-        Assert.notNull(conversionProvider, "Parameter \"conversionProvider\" must not null. ");
-        this.conversionProvider = conversionProvider;
+        Assert.notNull(conversionService, "Parameter \"conversionService\" must not null. ");
+        this.conversionService = conversionService;
         this.convertibleTypes = convertibleTypes;
     }
 
-    protected ConversionProvider getConversionProvider() {
+    protected ConversionService getConversionService() {
 
-        return conversionProvider;
+        return conversionService;
     }
 
     @Override
@@ -58,7 +58,7 @@ public abstract class AbstractGenericConverter implements GenericConverter {
     /**
      * The static proxy class for the conversion tools.
      */
-    private static class ProxyConversionProvider implements ConversionProvider {
+    private static class ProxyConversionService implements ConversionService {
 
         @Override
         public void addConverter(GenericConverter converter) {
@@ -74,8 +74,8 @@ public abstract class AbstractGenericConverter implements GenericConverter {
 
         @Override
         public GenericConverter getConverter(Type sourceType, Type targetType) {
-            ConversionProvider conversionProvider = ConversionUtils.getConversionProvider();
-            return conversionProvider.getConverter(sourceType, targetType);
+            ConversionService conversionService = ConversionUtils.getConversionService();
+            return conversionService.getConverter(sourceType, targetType);
         }
 
         @Override

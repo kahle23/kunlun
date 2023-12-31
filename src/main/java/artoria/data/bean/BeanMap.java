@@ -1,6 +1,6 @@
 package artoria.data.bean;
 
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 import artoria.util.Assert;
 import artoria.util.ObjectUtils;
 
@@ -13,17 +13,17 @@ import static artoria.common.Constants.*;
  * @author Kahle
  */
 public abstract class BeanMap implements Map<Object, Object>, Cloneable {
-    private ConversionProvider conversionProvider;
+    private ConversionService conversionService;
     private Object bean;
 
-    public ConversionProvider getConversionProvider() {
+    public ConversionService getConversionService() {
 
-        return conversionProvider;
+        return conversionService;
     }
 
-    public void setConversionProvider(ConversionProvider conversionProvider) {
+    public void setConversionService(ConversionService conversionService) {
 
-        this.conversionProvider = conversionProvider;
+        this.conversionService = conversionService;
     }
 
     public Object getBean() {

@@ -1,6 +1,6 @@
 package artoria.data.bean;
 
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 import artoria.convert.ConversionUtils;
 import artoria.util.Assert;
 
@@ -9,21 +9,21 @@ import artoria.util.Assert;
  * @author Kahle
  */
 public class SimpleBeanMapFactory implements BeanMapFactory {
-    private final ConversionProvider conversionProvider;
+    private final ConversionService conversionService;
 
     public SimpleBeanMapFactory() {
 
-        this(ConversionUtils.getConversionProvider());
+        this(ConversionUtils.getConversionService());
     }
 
-    public SimpleBeanMapFactory(ConversionProvider conversionProvider) {
-        Assert.notNull(conversionProvider, "Parameter \"conversionProvider\" must not null. ");
-        this.conversionProvider = conversionProvider;
+    public SimpleBeanMapFactory(ConversionService conversionService) {
+        Assert.notNull(conversionService, "Parameter \"conversionService\" must not null. ");
+        this.conversionService = conversionService;
     }
 
     @Override
     public BeanMap getInstance(Object bean) {
-        SimpleBeanMap beanMap = new SimpleBeanMap(conversionProvider);
+        SimpleBeanMap beanMap = new SimpleBeanMap(conversionService);
         if (bean != null) { beanMap.setBean(bean); }
         return beanMap;
     }

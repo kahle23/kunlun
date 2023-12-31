@@ -16,10 +16,10 @@ import static artoria.util.ClassUtils.getWrapper;
 import static java.lang.Boolean.FALSE;
 
 /**
- * The abstract conversion service provider.
+ * The abstract conversion service.
  * @author Kahle
  */
-public abstract class AbstractConversionProvider implements ConversionProvider {
+public abstract class AbstractConversionService implements ConversionService {
 
     /**
      * Add some default type converters.

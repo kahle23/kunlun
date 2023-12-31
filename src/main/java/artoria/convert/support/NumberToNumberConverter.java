@@ -1,6 +1,6 @@
 package artoria.convert.support;
 
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 import artoria.exception.ExceptionUtils;
 import artoria.reflect.ReflectUtils;
 import artoria.util.StringUtils;
@@ -19,9 +19,9 @@ public class NumberToNumberConverter extends AbstractClassConverter {
         super(Number.class, Number.class);
     }
 
-    public NumberToNumberConverter(ConversionProvider conversionProvider) {
+    public NumberToNumberConverter(ConversionService conversionService) {
 
-        super(conversionProvider, Number.class, Number.class);
+        super(conversionService, Number.class, Number.class);
     }
 
     @Override

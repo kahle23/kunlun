@@ -21,20 +21,20 @@ import static artoria.common.Constants.FORTY;
  * The simple type conversion service provider.
  * @author Kahle
  */
-public class SimpleConversionProvider extends AbstractConversionProvider {
-    private static final Logger log = LoggerFactory.getLogger(SimpleConversionProvider.class);
+public class SimpleConversionService extends AbstractConversionService {
+    private static final Logger log = LoggerFactory.getLogger(SimpleConversionService.class);
     protected final Map<ConvertiblePair, ConverterGroup> converterMap;
     protected final Set<GenericConverter> globalConverters;
 
-    public SimpleConversionProvider() {
+    public SimpleConversionService() {
         this(
                 new ConcurrentHashMap<ConvertiblePair, ConverterGroup>(FORTY),
                 new ConcurrentHashMap<GenericConverter, Boolean>().keySet(Boolean.TRUE)
         );
     }
 
-    protected SimpleConversionProvider(Map<ConvertiblePair, ConverterGroup> converterMap,
-                                       Set<GenericConverter> globalConverters) {
+    protected SimpleConversionService(Map<ConvertiblePair, ConverterGroup> converterMap,
+                                      Set<GenericConverter> globalConverters) {
         this.globalConverters = globalConverters;
         this.converterMap = converterMap;
         addDefaultConverters();

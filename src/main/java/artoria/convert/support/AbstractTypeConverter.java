@@ -1,6 +1,6 @@
 package artoria.convert.support;
 
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 
 import java.util.Set;
 
@@ -11,10 +11,10 @@ public abstract class AbstractTypeConverter extends AbstractGenericConverter {
         super(sourceClass, targetClass);
     }
 
-    protected AbstractTypeConverter(ConversionProvider conversionProvider,
+    protected AbstractTypeConverter(ConversionService conversionService,
                                     Class<?> sourceClass, Class<?> targetClass) {
 
-        super(conversionProvider, sourceClass, targetClass);
+        super(conversionService, sourceClass, targetClass);
     }
 
     protected AbstractTypeConverter(Set<ConvertiblePair> convertibleTypes) {
@@ -22,10 +22,10 @@ public abstract class AbstractTypeConverter extends AbstractGenericConverter {
         super(convertibleTypes);
     }
 
-    protected AbstractTypeConverter(ConversionProvider conversionProvider,
+    protected AbstractTypeConverter(ConversionService conversionService,
                                     Set<ConvertiblePair> convertibleTypes) {
 
-        super(conversionProvider, convertibleTypes);
+        super(conversionService, convertibleTypes);
     }
 
 }

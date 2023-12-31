@@ -10,17 +10,17 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The cache conversion service provider (static proxy).
+ * The cache conversion service (static proxy).
  * @author Kahle
  */
-public class CacheConversionProvider extends AbstractConversionProvider {
-    private final ConversionProvider conversionProvider;
+public class CacheConversionService extends AbstractConversionService {
+    private final ConversionService conversionService;
     private final String cacheName;
 
-    public CacheConversionProvider(ConversionProvider conversionProvider, String cacheName) {
-        Assert.notNull(conversionProvider, "Parameter \"conversionProvider\" must not null. ");
+    public CacheConversionService(ConversionService conversionService, String cacheName) {
+        Assert.notNull(conversionService, "Parameter \"conversionService\" must not null. ");
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        this.conversionProvider = conversionProvider;
+        this.conversionService = conversionService;
         this.cacheName = cacheName;
     }
 
@@ -39,13 +39,13 @@ public class CacheConversionProvider extends AbstractConversionProvider {
     @Override
     public void addConverter(GenericConverter converter) {
 
-        conversionProvider.addConverter(converter);
+        conversionService.addConverter(converter);
     }
 
     @Override
     public void removeConverter(GenericConverter converter) {
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
-        conversionProvider.removeConverter(converter);
+        conversionService.removeConverter(converter);
         if (converter instanceof ConditionalConverter) {
             CacheUtils.clear(cacheName); return;
         }
@@ -67,7 +67,7 @@ public class CacheConversionProvider extends AbstractConversionProvider {
         ConverterCacheKey cacheKey = new ConverterCacheKey(sourceType, targetType);
         GenericConverter converter = CacheUtils.get(cacheName, cacheKey, GenericConverter.class);
         if (converter != null) { return converter; }
-        converter = conversionProvider.getConverter(sourceType, targetType);
+        converter = conversionService.getConverter(sourceType, targetType);
         if (converter == null) { return null; }
         CacheUtils.put(cacheName, cacheKey, converter);
         return converter;

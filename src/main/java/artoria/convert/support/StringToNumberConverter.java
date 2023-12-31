@@ -1,6 +1,6 @@
 package artoria.convert.support;
 
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 import artoria.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -12,9 +12,9 @@ public class StringToNumberConverter extends AbstractClassConverter {
         super(String.class, Number.class);
     }
 
-    public StringToNumberConverter(ConversionProvider conversionProvider) {
+    public StringToNumberConverter(ConversionService conversionService) {
 
-        super(conversionProvider, String.class, Number.class);
+        super(conversionService, String.class, Number.class);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class StringToNumberConverter extends AbstractClassConverter {
         if (StringUtils.isBlank(numString)) { return source; }
         numString = numString.trim();
         BigDecimal decimal = new BigDecimal(numString);
-        return getConversionProvider().convert(decimal, targetClass);
+        return getConversionService().convert(decimal, targetClass);
     }
 
 }

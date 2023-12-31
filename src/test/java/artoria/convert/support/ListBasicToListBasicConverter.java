@@ -1,7 +1,7 @@
 package artoria.convert.support;
 
 import artoria.convert.ConditionalConverter;
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 import artoria.util.Assert;
 
 import java.lang.reflect.ParameterizedType;
@@ -13,9 +13,9 @@ import static artoria.common.Constants.ZERO;
 
 public class ListBasicToListBasicConverter extends AbstractTypeConverter implements ConditionalConverter {
 
-    public ListBasicToListBasicConverter(ConversionProvider conversionProvider) {
+    public ListBasicToListBasicConverter(ConversionService conversionService) {
 
-        super(conversionProvider, List.class, List.class);
+        super(conversionService, List.class, List.class);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ListBasicToListBasicConverter extends AbstractTypeConverter impleme
         if (((ParameterizedType) targetType).getRawType() != List.class) { return false; }
         Type sourceArgsType = ((ParameterizedType) sourceType).getActualTypeArguments()[ZERO];
         Type targetArgsType = ((ParameterizedType) targetType).getActualTypeArguments()[ZERO];
-        return getConversionProvider().canConvert(sourceArgsType, targetArgsType);
+        return getConversionService().canConvert(sourceArgsType, targetArgsType);
     }
 
     @SuppressWarnings("unchecked")
@@ -43,7 +43,7 @@ public class ListBasicToListBasicConverter extends AbstractTypeConverter impleme
         Type targetArgsType = ((ParameterizedType) targetType).getActualTypeArguments()[ZERO];
 
         for (Object sourceItem : sourceList) {
-            Object convert = getConversionProvider().convert(sourceItem, sourceArgsType, targetArgsType);
+            Object convert = getConversionService().convert(sourceItem, sourceArgsType, targetArgsType);
             targetList.add(convert);
         }
 

@@ -1,6 +1,6 @@
 package artoria.convert.support;
 
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 import artoria.time.DateUtils;
 import artoria.util.Assert;
 
@@ -16,9 +16,9 @@ public class NumberToDateConverter extends AbstractClassConverter {
         super(Number.class, Date.class);
     }
 
-    public NumberToDateConverter(ConversionProvider conversionProvider) {
+    public NumberToDateConverter(ConversionService conversionService) {
 
-        super(conversionProvider, Number.class, Date.class);
+        super(conversionService, Number.class, Date.class);
     }
 
     public Boolean getUnixTimestamp() {
@@ -38,7 +38,7 @@ public class NumberToDateConverter extends AbstractClassConverter {
         lg = unixTimestamp ? lg * ONE_THOUSAND : lg;
         Date date = DateUtils.parse(lg);
         // Maybe target is sql date or timestamp
-        return getConversionProvider().convert(date, targetClass);
+        return getConversionService().convert(date, targetClass);
     }
 
 }

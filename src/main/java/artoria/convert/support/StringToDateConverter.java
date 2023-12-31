@@ -1,6 +1,6 @@
 package artoria.convert.support;
 
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 import artoria.time.DateUtils;
 import artoria.util.StringUtils;
 
@@ -13,9 +13,9 @@ public class StringToDateConverter extends AbstractClassConverter {
         super(String.class, Date.class);
     }
 
-    public StringToDateConverter(ConversionProvider conversionProvider) {
+    public StringToDateConverter(ConversionService conversionService) {
 
-        super(conversionProvider, String.class, Date.class);
+        super(conversionService, String.class, Date.class);
     }
 
     @Override
@@ -25,11 +25,11 @@ public class StringToDateConverter extends AbstractClassConverter {
             Long parseLong = Long.parseLong(srcStr);
             // Maybe is unix timestamp
             // So hand on NumberConverter
-            return getConversionProvider().convert(parseLong, targetClass);
+            return getConversionService().convert(parseLong, targetClass);
         }
         try {
             Date date = DateUtils.parse(srcStr);
-            return getConversionProvider().convert(date, targetClass);
+            return getConversionService().convert(date, targetClass);
         }
         catch (Exception e) {
             // Do nothing.

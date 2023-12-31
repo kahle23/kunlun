@@ -1,6 +1,6 @@
 package artoria.convert.support;
 
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 import artoria.util.Assert;
 import artoria.util.ClassUtils;
 import artoria.util.ObjectUtils;
@@ -21,9 +21,9 @@ public abstract class AbstractClassConverter extends AbstractGenericConverter {
         this.targetClass = targetClass;
     }
 
-    protected AbstractClassConverter(ConversionProvider conversionProvider,
+    protected AbstractClassConverter(ConversionService conversionService,
                                      Class<?> sourceClass, Class<?> targetClass) {
-        super(conversionProvider, sourceClass, targetClass);
+        super(conversionService, sourceClass, targetClass);
         this.sourceClass = sourceClass;
         this.targetClass = targetClass;
     }

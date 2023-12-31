@@ -1,6 +1,6 @@
 package artoria.data.bean;
 
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 import artoria.convert.ConversionUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.logging.Logger;
@@ -66,12 +66,12 @@ public class BeanUtils {
 
     public static void copy(Object from, Object to) {
 
-        getBeanCopier().copy(from, to, ConversionUtils.getConversionProvider());
+        getBeanCopier().copy(from, to, ConversionUtils.getConversionService());
     }
 
-    public static void copy(Object from, Object to, ConversionProvider conversionProvider) {
+    public static void copy(Object from, Object to, ConversionService conversionService) {
 
-        getBeanCopier().copy(from, to, conversionProvider);
+        getBeanCopier().copy(from, to, conversionService);
     }
 
     public static <K, V> void copy(Object from, Map<K, V> to) {
@@ -85,14 +85,14 @@ public class BeanUtils {
 
     public static <K, V> void copy(Map<K, V> from, Object to) {
 
-        BeanUtils.copy(from, to, ConversionUtils.getConversionProvider());
+        BeanUtils.copy(from, to, ConversionUtils.getConversionService());
     }
 
-    public static <K, V> void copy(Map<K, V> from, Object to, ConversionProvider conversionProvider) {
+    public static <K, V> void copy(Map<K, V> from, Object to, ConversionService conversionService) {
         Assert.notNull(from, "Parameter \"from\" must not null. ");
         Assert.notNull(to, "Parameter \"to\" must not null. ");
         BeanMap beanMap = createBeanMap(to);
-        beanMap.setConversionProvider(conversionProvider);
+        beanMap.setConversionService(conversionService);
         beanMap.putAll(from);
     }
 

@@ -31,7 +31,7 @@ import static artoria.util.TypeUtils.parameterizedOf;
 
 public class CacheConversionProviderTest {
     private static Logger log = LoggerFactory.getLogger(CacheConversionProviderTest.class);
-    private static ConversionProvider conversionProvider;
+    private static ConversionService conversionProvider;
 
     static {
         String cacheName="test";
@@ -40,7 +40,7 @@ public class CacheConversionProviderTest {
                 .set("timeToLiveUnit", TimeUnit.MINUTES);
         Cache cache = new SimpleCache(cacheName, cacheConfig);
         CacheUtils.registerCache(cache);
-        conversionProvider = new CacheConversionProvider(new SimpleConversionProvider(), cacheName);
+        conversionProvider = new CacheConversionService(new SimpleConversionService(), cacheName);
     }
 
     @Test

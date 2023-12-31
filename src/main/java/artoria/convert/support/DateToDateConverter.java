@@ -1,6 +1,6 @@
 package artoria.convert.support;
 
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -13,9 +13,9 @@ public class DateToDateConverter extends AbstractClassConverter {
         super(Date.class, Date.class);
     }
 
-    public DateToDateConverter(ConversionProvider conversionProvider) {
+    public DateToDateConverter(ConversionService conversionService) {
 
-        super(conversionProvider, Date.class, Date.class);
+        super(conversionService, Date.class, Date.class);
     }
 
     @Override
