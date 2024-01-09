@@ -1,14 +1,30 @@
 package artoria.core;
 
+import java.util.Map;
+
 public interface ChainNode {
 
+    void execute(Map<String, ?> config, Context context);
+
+
     /**
-     *
-     * Here, it can be determined whether the current node is executable by evaluation.
-     * If it cannot be executed, you can terminate the current node by using `return true`;
-     * @param context
-     * @return
+     * The chain node context.
+     * @author Kahle
      */
-    boolean execute(Chain.Context context);
+    interface Context extends artoria.core.Context {
+
+        String getChainId();
+
+        Object[] getArguments();
+
+        Object getResult();
+
+        void setResult(Object result);
+
+        String getSelectedNextName();
+
+        void setSelectedNextName(String nextName);
+
+    }
 
 }
