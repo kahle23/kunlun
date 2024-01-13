@@ -27,10 +27,10 @@ public interface CacheProvider {
 
     /**
      * Register the ocr handler.
-     * @param name The ocr handler name
-     * @param ocrHandler The ocr handler
+     * @param cacheName The cache name
+     * @param cache The cache
      */
-    void registerCache(Cache cache);
+    void registerCache(String cacheName, Cache cache);
 
     /**
      * Deregister the ocr handler.

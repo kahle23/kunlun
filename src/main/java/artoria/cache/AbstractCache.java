@@ -18,19 +18,6 @@ import java.util.concurrent.TimeUnit;
  * @author Kahle
  */
 public abstract class AbstractCache implements Cache {
-    /**
-     * The cache name.
-     */
-    private final String name;
-
-    /**
-     * The default constructor.
-     * @param name The cache name
-     */
-    public AbstractCache(String name) {
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        this.name = name;
-    }
 
     /**
      * Returns the current time in milliseconds.
@@ -57,12 +44,6 @@ public abstract class AbstractCache implements Cache {
     protected boolean isFull() {
 
         return false;
-    }
-
-    @Override
-    public String getName() {
-
-        return name;
     }
 
     @Override

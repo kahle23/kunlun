@@ -2,7 +2,6 @@ package artoria.cache.support;
 
 import artoria.cache.Cache;
 import artoria.exception.ExceptionUtils;
-import artoria.util.Assert;
 
 import java.util.Collection;
 import java.util.Date;
@@ -15,22 +14,13 @@ import java.util.concurrent.TimeUnit;
  * @author Kahle
  */
 public class NoCache implements Cache {
-    private final String name;
 
-    public NoCache(String name) {
+    public NoCache(Object cacheConfig) {
 
-        this(name, null);
     }
 
-    public NoCache(String name, Object cacheConfig) {
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        this.name = name;
-    }
+    public NoCache() {
 
-    @Override
-    public String getName() {
-
-        return name;
     }
 
     @Override

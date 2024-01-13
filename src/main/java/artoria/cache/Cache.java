@@ -13,12 +13,6 @@ import java.util.concurrent.TimeUnit;
 public interface Cache {
 
     /**
-     * Return the cache name (it can make it easier to manage).
-     * @return The cache name
-     */
-    String getName();
-
-    /**
      * Return the underlying native cache provider.
      * @return The native cache provider
      */

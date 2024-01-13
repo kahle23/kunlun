@@ -20,15 +20,6 @@ import static artoria.common.Constants.ZERO;
 public abstract class AbstractValueWrapperCache extends AbstractCache {
 
     /**
-     * The default constructor.
-     * @param name The cache name
-     */
-    public AbstractValueWrapperCache(String name) {
-
-        super(name);
-    }
-
-    /**
      * Get the value stored in the cache.
      * @param key The specified key
      * @return The stored value

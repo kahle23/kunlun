@@ -27,13 +27,13 @@ public class CacheUtilsTest {
     private static final String cacheName2 = "TEST2";
 
     static {
-        SimpleCache cache = new SimpleCache(cacheName);
-        CacheUtils.registerCache(cache);
-        SimpleCache cache1 = new SimpleCache(cacheName1,
+        SimpleCache cache = new SimpleCache();
+        CacheUtils.registerCache(cacheName, cache);
+        SimpleCache cache1 = new SimpleCache(
                 Dict.of("referenceType", ReferenceType.WEAK).set("capacity", 2L));
-        CacheUtils.registerCache(cache1);
-        SimpleCache cache2 = new SimpleCache(cacheName2);
-        CacheUtils.registerCache(cache2);
+        CacheUtils.registerCache(cacheName1, cache1);
+        SimpleCache cache2 = new SimpleCache();
+        CacheUtils.registerCache(cacheName2, cache2);
     }
 
     @Test

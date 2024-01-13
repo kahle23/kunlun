@@ -11,9 +11,9 @@ import artoria.data.ReferenceType;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.mock.MockUtils;
-import artoria.test.pojo.entity.other.Book;
 import artoria.test.pojo.entity.animal.Cat;
 import artoria.test.pojo.entity.animal.Dog;
+import artoria.test.pojo.entity.other.Book;
 import artoria.time.DateUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
@@ -38,8 +38,8 @@ public class CacheConversionProviderTest {
         Dict cacheConfig = Dict.of("referenceType", ReferenceType.SOFT)
                 .set("timeToLive", 3L)
                 .set("timeToLiveUnit", TimeUnit.MINUTES);
-        Cache cache = new SimpleCache(cacheName, cacheConfig);
-        CacheUtils.registerCache(cache);
+        Cache cache = new SimpleCache(cacheConfig);
+        CacheUtils.registerCache(cacheName, cache);
         conversionProvider = new CacheConversionService(new SimpleConversionService(), cacheName);
     }
 

@@ -77,7 +77,7 @@ public class SimpleCache extends AbstractValueWrapperCache {
 
     @Deprecated
     public SimpleCache(String name, long capacity, float fullRatio, long timeToLive, long timeToIdle, ReferenceType referenceType) {
-        super(name);
+//        super(name);
         Assert.isFalse(timeToLive == ZERO, "Parameter \"timeToLive\" must not be equal to zero. ");
         Assert.isFalse(timeToIdle == ZERO, "Parameter \"timeToIdle\" must not be equal to zero. ");
         Assert.notNull(referenceType, "Parameter \"referenceType\" must not null. ");
@@ -88,13 +88,12 @@ public class SimpleCache extends AbstractValueWrapperCache {
         this.storage = buildStorage(referenceType);
     }
 
-    public SimpleCache(String name) {
+    public SimpleCache() {
 
-        this(name, (Object) null);
+        this(null);
     }
 
-    public SimpleCache(String name, Object cacheConfig) {
-        super(name);
+    public SimpleCache(Object cacheConfig) {
         // Process the cache config.
         Dict config = Dict.of(BeanUtils.beanToMap(cacheConfig));
         // Process the capacity and the full ratio.
@@ -244,7 +243,7 @@ public class SimpleCache extends AbstractValueWrapperCache {
             }
         }
         if (isFull()) {
-            log.warn("The cache named \"{}\" is still full after pruning. ", getName());
+            log.warn("The cache \"{}\" is still full after pruning. ", this.toString());
         }
         return count;
     }

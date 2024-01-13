@@ -1,5 +1,6 @@
 package artoria.cache;
 
+import artoria.cache.support.SimpleCache;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -12,6 +13,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+
+import static artoria.common.Constants.DEFAULT;
 
 /**
  * The simple optical character recognition provider.
@@ -28,6 +31,8 @@ public class SimpleCacheProvider implements CacheProvider {
         Assert.notNull(caches, "Parameter \"caches\" must not null. ");
         this.commonProperties = commonProperties;
         this.caches = caches;
+        // Register the default cache.
+        registerCache(DEFAULT, new SimpleCache());
     }
 
     public SimpleCacheProvider() {
@@ -57,10 +62,9 @@ public class SimpleCacheProvider implements CacheProvider {
     }
 
     @Override
-    public void registerCache(Cache cache) {
-        Assert.notNull(cache, "Parameter \"cache\" must not null. ");
-        String cacheName = cache.getName();
+    public void registerCache(String cacheName, Cache cache) {
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
+        Assert.notNull(cache, "Parameter \"cache\" must not null. ");
         String className = cache.getClass().getName();
         caches.put(cacheName, cache);
         log.info("Register the cache \"{}\" to \"{}\". ", className, cacheName);

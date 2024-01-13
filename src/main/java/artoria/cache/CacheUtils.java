@@ -1,6 +1,5 @@
 package artoria.cache;
 
-import artoria.cache.support.SimpleCache;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
@@ -10,8 +9,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
-
-import static artoria.common.Constants.DEFAULT;
 
 /**
  * The cache tools.
@@ -26,7 +23,6 @@ public class CacheUtils {
         synchronized (CacheUtils.class) {
             if (cacheProvider != null) { return cacheProvider; }
             CacheUtils.setCacheProvider(new SimpleCacheProvider());
-            CacheUtils.registerCache(new SimpleCache(DEFAULT));
             return cacheProvider;
         }
     }
@@ -37,9 +33,9 @@ public class CacheUtils {
         CacheUtils.cacheProvider = cacheProvider;
     }
 
-    public static void registerCache(Cache cache) {
+    public static void registerCache(String cacheName, Cache cache) {
 
-        getCacheProvider().registerCache(cache);
+        getCacheProvider().registerCache(cacheName, cache);
     }
 
     public static void deregisterCache(String cacheName) {
