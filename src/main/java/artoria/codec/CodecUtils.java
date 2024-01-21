@@ -6,6 +6,10 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
+/**
+ * The codec tools.
+ * @author Kahle
+ */
 public class CodecUtils {
     private static final Logger log = LoggerFactory.getLogger(CodecUtils.class);
     private static volatile CodecProvider codecProvider;

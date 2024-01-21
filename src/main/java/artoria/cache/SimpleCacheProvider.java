@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 import static artoria.common.Constants.DEFAULT;
 
 /**
- * The simple optical character recognition provider.
+ * The simple cache provider.
  * @author Kahle
  */
 public class SimpleCacheProvider implements CacheProvider {

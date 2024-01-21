@@ -132,6 +132,7 @@ public class SimpleConversionService extends AbstractConversionService {
 
     /**
      * The class for the converter group.
+     * @author Kahle
      */
     protected static class ConverterGroup {
         private final Deque<GenericConverter> converters;

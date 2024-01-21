@@ -9,18 +9,18 @@ import java.util.Map;
 public interface TrackProvider {
 
     /**
-     * Register common properties information.
+     * Register common properties' information.
      * @param commonProperties The common properties
      */
     void registerCommonProperties(Map<?, ?> commonProperties);
 
     /**
-     * Clears common properties information.
+     * Clears common properties' information.
      */
     void clearCommonProperties();
 
     /**
-     * Get common properties information.
+     * Get common properties' information.
      * @return The common properties
      */
     Map<String, Object> getCommonProperties();

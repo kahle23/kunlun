@@ -98,8 +98,9 @@ log.info("{}", CacheUtils.get(cacheName, "key2"));
 <br /><br /><br />
 
 
-## Chain of Responsibility Tools
-A set of tools designed based on the Chain of Responsibility pattern. It is used for most scenarios that can employ the Chain of Responsibility. For example:
+## Chain Tools or Workflow Tools
+A set of tools designed based on the responsibility chain and workflow, used for handling most scenarios where a responsibility chain or workflow can be applied.
+For example:
 - Approval processes (approval workflow);
 - Various activities in e-commerce systems;
 

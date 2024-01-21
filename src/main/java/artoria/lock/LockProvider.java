@@ -81,7 +81,7 @@ public interface LockProvider {
 
     /**
      * Acquires the lock if it is free within the given waiting time and the
-     * current thread has not been interrupted (interrupt exception may be nested).
+     *  current thread has not been interrupted (interrupt exception may be nested).
      * @param managerName The lock manager name
      * @param lockName The lock's name
      * @param time The maximum time to wait for the lock

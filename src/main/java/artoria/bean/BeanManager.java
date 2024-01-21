@@ -14,7 +14,7 @@ import java.util.Map;
  * Because in some scenarios containers are a convenient way to do it.
  * IOC or DI are not needed in these scenarios because they are too heavy.
  *
- * Because generic type erasure and its positioning are just container
+ * Because generic type erasure, and it's positioning are just container
  * (there is no need to store bean definitions), so just need "Class" instead of "Type".
  * The bean definitions are required only when building an instance, not after.
  *
@@ -62,7 +62,7 @@ public interface BeanManager {
 
     /**
      * Put the bean instance by name.
-     * If the name already exists, an exception is usually thrown.
+     *  If the name already exists, an exception is usually thrown.
      * @param name The name of the bean instance (name must be unique)
      * @param bean The bean instance to be put
      * @return The old bean instance or null (maybe throw exception)

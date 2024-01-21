@@ -28,6 +28,7 @@ public interface GenericConverter {
 
     /**
      * The source-to-target pair.
+     * @author Kahle
      */
     final class ConvertiblePair {
         private final Class<?> sourceType;
@@ -69,7 +70,6 @@ public interface GenericConverter {
 
             return sourceType.getName() + " -> " + targetType.getName();
         }
-
     }
 
 }

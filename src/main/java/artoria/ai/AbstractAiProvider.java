@@ -36,7 +36,7 @@ public abstract class AbstractAiProvider implements AiProvider {
 
     protected ArtificialIntelligence getHandlerInner(String handlerName) {
         ArtificialIntelligence aiHandler = getHandler(handlerName);
-        Assert.notNull(aiHandler, "The corresponding ai handler could not be found by name. ");
+        Assert.notNull(aiHandler, "The corresponding AI handler could not be found by name. ");
         return aiHandler;
     }
 
@@ -70,7 +70,7 @@ public abstract class AbstractAiProvider implements AiProvider {
         if (aiHandler instanceof AbstractAiHandler) {
             ((AbstractAiHandler) aiHandler).setCommonProperties(getCommonProperties());
         }
-        log.info("Register the ai handler \"{}\" to \"{}\". ", className, handlerName);
+        log.info("Register the AI handler \"{}\" to \"{}\". ", className, handlerName);
     }
 
     @Override
@@ -79,7 +79,7 @@ public abstract class AbstractAiProvider implements AiProvider {
         ArtificialIntelligence remove = aiHandlers.remove(handlerName);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the ai handler \"{}\" from \"{}\". ", className, handlerName);
+            log.info("Deregister the AI handler \"{}\" from \"{}\". ", className, handlerName);
         }
     }
 
@@ -91,7 +91,7 @@ public abstract class AbstractAiProvider implements AiProvider {
 
     @Override
     public Object execute(String handlerName, Object[] arguments) {
-        // Parameter "arguments" usually is: 0 strategy or scene, 1 input, 2 type
+        // Parameter "arguments" is usually: 0 strategy or scene, 1 input, 2 type
         return getHandlerInner(handlerName).execute(arguments);
     }
 

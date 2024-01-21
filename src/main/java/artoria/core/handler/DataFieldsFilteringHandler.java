@@ -4,7 +4,7 @@ import artoria.core.Handler;
 
 /**
  * The data fields filtering handler.
- * It is generally used for the processing of the result of the invoke
+ * It is generally used for the processing of the result of the invoked
  *      (usually in the case of data permissions).
  * @author Kahle
  */

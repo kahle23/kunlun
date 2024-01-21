@@ -2,6 +2,10 @@ package artoria.core;
 
 import java.util.Map;
 
+/**
+ * The service interface that the process (chain) invokes.
+ * @author Kahle
+ */
 public interface ChainService {
 
     /**
@@ -42,10 +46,14 @@ public interface ChainService {
     ChainNode getChainNode(String nodeName);
 
     /**
+     * Execute the corresponding logic chain based on the chain ID and input arguments.
      * The arguments mean (most of the scenes):
      *      0 strategy or operation or null,
      *      1 input object,
      *      2 return value type
+     * @param chainId The chain ID
+     * @param arguments The arguments when executing the chain
+     * @return The execution result of the chain
      */
     Object execute(String chainId, Object[] arguments);
 

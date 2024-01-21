@@ -12,7 +12,7 @@ public abstract class AbstractInvokeActionHandler extends AbstractOperateActionH
     /**
      * Build the context object from the parameters.
      * @param input The input object
-     * @param name The invoke name
+     * @param name The invoked name
      * @param clazz The expected class
      * @return The core context object
      */
@@ -92,8 +92,8 @@ public abstract class AbstractInvokeActionHandler extends AbstractOperateActionH
     public interface InvokeContext {
 
         /**
-         * Get the invoke name.
-         * @return The invoke name
+         * Get the invoked name.
+         * @return The invoked name
          */
         String getInvokeName();
 
@@ -172,7 +172,7 @@ public abstract class AbstractInvokeActionHandler extends AbstractOperateActionH
     }
 
     /**
-     * The invoke context simple implementation.
+     * The invoked context simple implementation.
      * @author Kahle
      */
     public static class InvokeContextImpl implements InvokeContext {

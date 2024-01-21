@@ -38,7 +38,7 @@ public class AiUtils {
 
     public static void setAiProvider(AiProvider aiProvider) {
         Assert.notNull(aiProvider, "Parameter \"aiProvider\" must not null. ");
-        log.info("Set ai provider: {}", aiProvider.getClass().getName());
+        log.info("Set AI provider: {}", aiProvider.getClass().getName());
         AiUtils.aiProvider = aiProvider;
     }
 

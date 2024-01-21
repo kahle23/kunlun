@@ -7,7 +7,7 @@ import static artoria.common.constant.Numbers.TWO;
 import static artoria.common.constant.Numbers.ZERO;
 
 /**
- * The assert, verify data state, if failure, will throw exception.
+ * To assert, verify data state, if failure, will throw exception.
  * @author Kahle
  */
 public class Assert {

@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * The message provider. If the message fails to be sent and needs to be retried,
- * retrying means invoking the send method again.
+ *  retrying means invoking the send method again.
  * @author Kahle
  */
 public interface MessageProvider {

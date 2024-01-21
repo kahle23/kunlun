@@ -190,6 +190,10 @@ public abstract class AbstractValueWrapperCache extends AbstractCache {
         return remove;
     }
 
+    /**
+     * The cache value wrapper.
+     * @author Kahle
+     */
     protected class ValueWrapper {
         /**
          * The cache key.
@@ -260,7 +264,6 @@ public abstract class AbstractValueWrapperCache extends AbstractCache {
 
             this.value = value;
         }
-
     }
 
 }

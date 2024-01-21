@@ -52,7 +52,7 @@ public interface LockManager {
 
     /**
      * Acquires the lock if it is free within the given waiting time and the
-     * current thread has not been interrupted (interrupt exception may be nested).
+     *  current thread has not been interrupted (interrupt exception may be nested).
      * @param lockName The lock's name
      * @param time The maximum time to wait for the lock
      * @param unit The time unit of the time argument

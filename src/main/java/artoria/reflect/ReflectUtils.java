@@ -8,7 +8,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 
 /**
- * The reflect tools.
+ * The reflection tools.
  * @author Kahle
  */
 public class ReflectUtils {

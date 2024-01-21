@@ -75,6 +75,7 @@ public class CacheConversionService extends AbstractConversionService {
 
     /**
      * The class of the cached key at type conversion.
+     * @author Kahle
      */
     protected class ConverterCacheKey {
         private final Type sourceType;
@@ -108,7 +109,6 @@ public class CacheConversionService extends AbstractConversionService {
                     ", targetType=" + targetType +
                     '}';
         }
-
     }
 
 }

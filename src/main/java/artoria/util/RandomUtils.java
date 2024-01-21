@@ -37,9 +37,9 @@ public class RandomUtils {
 
     /**
      * Confuse array elements.
-     * @param arr A array will be confuse
+     * @param arr An array will be confused
      * @param <T> Array element type
-     * @return A array reference inputted
+     * @return An array reference inputted
      */
     public static <T> T[] confuse(T[] arr) {
         for (int i = arr.length - ONE; i > ONE; --i) {
@@ -53,7 +53,7 @@ public class RandomUtils {
 
     /**
      * Confuse list elements.
-     * @param list A list will be confuse
+     * @param list A list will be confused
      * @param <T> List element type
      * @return A list reference inputted
      */

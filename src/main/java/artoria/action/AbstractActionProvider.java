@@ -104,7 +104,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
     @Override
     public Object execute(String actionName, Object[] arguments) {
 //        Assert.notBlank(actionName, "Parameter \"actionName\" must not blank. ");
-        // Parameter "arguments" usually is: 0 strategy or operation, 1 input, 2 type
+        // Parameter "arguments" is usually: 0 strategy or operation, 1 input, 2 type
         Object input = null;
         if (ArrayUtils.isNotEmpty(arguments) && arguments.length >= TWO) {
             input = arguments[ONE];

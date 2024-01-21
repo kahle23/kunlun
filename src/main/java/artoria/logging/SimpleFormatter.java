@@ -126,7 +126,7 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
 
     @Override
     public String format(LogRecord record) {
-        // 30 gloss white, 31 red, 32 green, 33 yellow, 34 blue, 35 purple, 36 cyan, 37 off white
+        // 30 gloss white, 31 red, 32 green, 33 yellow, 34 blue, 35 purple, 36 cyan, 37 off-white
         String throwable = printfThrowable(record);
         return coloring(printfTime(record), THIRTY_SEVEN, ZERO)
                 + BLANK_SPACE

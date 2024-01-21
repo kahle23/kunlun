@@ -30,21 +30,21 @@ public interface AiProvider {
 
     /**
      * Register the ai handler.
-     * @param handlerName The ai handler name
-     * @param aiHandler The ai handler
+     * @param handlerName The AI handler name
+     * @param aiHandler The AI handler
      */
     void registerHandler(String handlerName, ArtificialIntelligence aiHandler);
 
     /**
      * Deregister the ai handler.
-     * @param handlerName The ai handler name
+     * @param handlerName The AI handler name
      */
     void deregisterHandler(String handlerName);
 
     /**
-     * Get the ai handler (the ai handler name is fixed).
-     * @param handlerName The ai handler name
-     * @return The ai handler
+     * Get the AI handler (the AI handler name is fixed).
+     * @param handlerName The AI handler name
+     * @return The AI handler
      */
     ArtificialIntelligence getHandler(String handlerName);
 
@@ -54,7 +54,7 @@ public interface AiProvider {
      *      0 strategy or operation or null,
      *      1 input object,
      *      2 return value type
-     * @param handlerName The ai handler name
+     * @param handlerName The AI handler name
      * @param arguments The arguments for inference calculations
      * @return The result of the inference calculation
      */
@@ -62,9 +62,9 @@ public interface AiProvider {
 
     /**
      * The artificial intelligence performs reasoning operations.
-     * @param handlerName The ai handler name
+     * @param handlerName The AI handler name
      * @param input The input parameters for inference calculations
-     * @param operation The strategy or operation or null for ai handler execution
+     * @param operation The strategy or operation or null for AI handler execution
      * @param type The type of the return value
      * @param <T> The generic type of the return value
      * @return The result of the inference calculation

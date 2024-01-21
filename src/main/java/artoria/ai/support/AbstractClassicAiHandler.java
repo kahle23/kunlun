@@ -6,7 +6,7 @@ import artoria.util.Assert;
 import static artoria.common.Constants.*;
 
 /**
- * The abstract classic ai handler.
+ * The abstract classic AI handler.
  * @author Kahle
  */
 public abstract class AbstractClassicAiHandler extends AbstractAiHandler {
@@ -32,7 +32,7 @@ public abstract class AbstractClassicAiHandler extends AbstractAiHandler {
     /**
      * The artificial intelligence performs reasoning operations.
      * @param input The input parameters for inference calculations
-     * @param operation The strategy or operation or null for ai handler execution
+     * @param operation The strategy or operation or null for AI handler execution
      * @param clazz The class of the return value
      * @return The result of the inference calculation
      */

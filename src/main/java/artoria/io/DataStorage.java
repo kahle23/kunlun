@@ -13,7 +13,7 @@ public interface DataStorage extends Storage {
     /**
      * Determine whether the data exists based on the resource information (key).
      * @param key The resource information (key)
-     * @return The exist or not exist
+     * @return Whether it exists
      */
     boolean exist(Object key);
 

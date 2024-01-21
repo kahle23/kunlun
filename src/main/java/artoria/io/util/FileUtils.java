@@ -105,7 +105,7 @@ public class FileUtils {
         while (!fileList.isEmpty()) {
             File current = fileList.removeFirst();
             File[] files = current.listFiles();
-            // Don't have sub file or subdirectory, try delete.
+            // Don't have sub file or subdirectory, try to delete.
             if (ArrayUtils.isEmpty(files)) {
                 if (!current.delete()) {
                     log.info("Directory \"{}\" delete fail. ", current);
@@ -135,7 +135,7 @@ public class FileUtils {
     }
 
     public static void moveFile(File source, File destination) throws IOException {
-        // The append is false.
+        // To append is false.
         // Meaning the destination directory not exists the source file name's file.
         FileUtils.copyFileToDirectory(source, destination, false);
         FileUtils.deleteFile(source);
@@ -223,7 +223,7 @@ public class FileUtils {
                     fileList.addFirst(file);
                 }
                 else {
-                    // The append is false meaning the destination directory is new.
+                    // To append is false meaning the destination directory is new.
                     FileUtils.copyFileToFile(file, destPath, false);
                 }
             }

@@ -7,8 +7,8 @@ package artoria.core.callback;
 public interface FailureCallback {
 
     /**
-     * Called when the invoke fails.
-     * @param th The exception that occurs in the invoke
+     * Called when the invoked fails.
+     * @param th The exception that occurs in the invoked
      */
     void onFailure(Throwable th);
 

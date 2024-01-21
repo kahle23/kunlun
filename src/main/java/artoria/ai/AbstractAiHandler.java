@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * The abstract ai handler.
+ * The abstract AI handler.
  * @author Kahle
  */
 public abstract class AbstractAiHandler implements ArtificialIntelligence, Handler {

@@ -28,8 +28,8 @@ public class CacheUtils {
     }
 
     public static void setCacheProvider(CacheProvider cacheProvider) {
-        Assert.notNull(cacheProvider, "Parameter \"cacheFactory\" must not null. ");
-        log.info("Set cache factory: {}", cacheProvider.getClass().getName());
+        Assert.notNull(cacheProvider, "Parameter \"cacheProvider\" must not null. ");
+        log.info("Set cache provider: {}", cacheProvider.getClass().getName());
         CacheUtils.cacheProvider = cacheProvider;
     }
 

@@ -62,7 +62,7 @@ public abstract class AbstractTrackProvider implements TrackProvider {
         else {
             map.putAll(BeanUtils.beanToMap(properties));
         }
-        // The parameters extraction.
+        // The parameters' extraction.
         // Because the event code is required,
         // it must be extracted when the event object is created
         if (StringUtils.isBlank(code)) {

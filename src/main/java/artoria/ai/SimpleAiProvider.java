@@ -5,7 +5,7 @@ import artoria.core.ArtificialIntelligence;
 import java.util.Map;
 
 /**
- * The simple ai engine provider.
+ * The simple AI engine provider.
  * @author Kahle
  */
 public class SimpleAiProvider extends AbstractAiProvider {

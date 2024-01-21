@@ -131,8 +131,8 @@ public class SimpleBeanMap extends BeanMap {
             if (getConversionService() != null && haveType) {
                 value = getConversionService().convert(value, types[ZERO]);
             }
-            // The return always null.
-            // If want not null, must invoke getter first.
+            // The always return null.
+            // If you want not null, must invoke getter first.
             return method.invoke(bean, value);
         }
         catch (Exception e) {

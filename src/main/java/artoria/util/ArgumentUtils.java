@@ -9,7 +9,7 @@ import java.util.Map;
 import static artoria.common.Constants.*;
 
 /**
- * The arguments tools.
+ * The arguments tool.
  * @author Kahle
  */
 public class ArgumentUtils {

@@ -97,8 +97,8 @@ log.info("{}", CacheUtils.get(cacheName, "key2"));
 <br /><br /><br />
 
 
-## Chain of Responsibility Tools（责任链工具）
-基于责任链设计的一套工具。用于应对大部分可以使用责任链的场景。
+## Chain Tools or Workflow Tools（链工具或工作流工具）
+基于责任链和工作流设计的一套工具。用于应对大部分可以使用责任链或工作流的场景。
 比如：
 - 审批流程（审批流）；
 - 电商系统中的各种活动；

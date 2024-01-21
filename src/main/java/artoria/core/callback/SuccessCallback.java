@@ -8,8 +8,8 @@ package artoria.core.callback;
 public interface SuccessCallback<T> {
 
     /**
-     * Called when the invoke succeeds.
-     * @param result The result returned by the invoke
+     * Called when the invoked succeeds.
+     * @param result The result returned by the invoked
      */
     void onSuccess(T result);
 

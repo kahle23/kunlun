@@ -57,6 +57,7 @@ public abstract class AbstractGenericConverter implements GenericConverter {
 
     /**
      * The static proxy class for the conversion tools.
+     * @author Kahle
      */
     private static class ProxyConversionService implements ConversionService {
 

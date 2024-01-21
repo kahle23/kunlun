@@ -64,7 +64,7 @@ public interface RendererProvider {
     /**
      * Render the data to the output through the template.
      * @param rendererName The renderer name
-     * @param template The template (stream, reader, string, etc) to be rendered
+     * @param template The template (stream, reader, string, etc.) to be rendered
      * @param name The template name (most scenarios used for log, nullable)
      * @param data The data to use in rendering input template
      * @param output The output stream or writer in which to render the output
@@ -74,7 +74,7 @@ public interface RendererProvider {
     /**
      * Render the data into binary via template.
      * @param rendererName The renderer name
-     * @param template The template (stream, reader, string, etc) to be rendered
+     * @param template The template (stream, reader, string, etc.) to be rendered
      * @param name The template name (most scenarios used for log, nullable)
      * @param data The data to use in rendering input template
      * @return The rendered text results
@@ -84,7 +84,7 @@ public interface RendererProvider {
     /**
      * Render the data into text via template.
      * @param rendererName The renderer name
-     * @param template The template (stream, reader, string, etc) to be rendered
+     * @param template The template (stream, reader, string, etc.) to be rendered
      * @param name The template name (most scenarios used for log, nullable)
      * @param data The data to use in rendering input template
      * @return The rendered text results

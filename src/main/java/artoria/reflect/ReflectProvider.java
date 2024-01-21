@@ -4,7 +4,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 
 /**
- * The reflect provider.
+ * The reflection provider.
  * @author Kahle
  */
 public interface ReflectProvider {

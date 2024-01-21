@@ -20,7 +20,7 @@ public interface Cache {
 
     /**
      * Return the value to which this cache maps the specified key,
-     * obtaining that value from value loader if necessary.
+     *  obtaining that value from value loader if necessary.
      * @param key The key whose associated value is to be returned
      * @param callable The value loader
      * @return The value to which this cache maps the specified key
@@ -29,7 +29,7 @@ public interface Cache {
 
     /**
      * Return the value to which this cache maps the specified key,
-     * generically specifying a type that return value will be cast to.
+     *  generically specifying a type that return value will be cast to.
      * @param key The key whose associated value is to be returned
      * @param type The required type of the returned value
      * @return The value to which this cache maps the specified key
@@ -76,7 +76,7 @@ public interface Cache {
 
     /**
      * Atomically associate the specified value with the specified key in this cache
-     * if it is not set already.
+     *  if it is not set already.
      * @param key The key with which the specified value is to be associated
      * @param value The value to be associated with the specified key
      * @return The previous value associated with key, or null if there was no mapping for key
@@ -85,7 +85,7 @@ public interface Cache {
 
     /**
      * Atomically associate the specified value with the specified key in this cache
-     * if it is not set already and set a time to live.
+     *  if it is not set already and set a time to live.
      * @param key The key with which the specified value is to be associated
      * @param value The value to be associated with the specified key
      * @param timeToLive The time to live of the key-value pair
@@ -95,7 +95,7 @@ public interface Cache {
     Object putIfAbsent(Object key, Object value, long timeToLive, TimeUnit timeUnit);
 
     /**
-     * Copies all of the entries from the specified map to the cache.
+     * Copies all the entries from the specified map to the cache.
      * @param map The mappings to be stored in this cache
      */
     void putAll(Map<?, ?> map);

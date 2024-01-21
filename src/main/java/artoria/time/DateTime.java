@@ -68,84 +68,84 @@ public interface DateTime extends Time, java.io.Serializable {
 
     /**
      * Add year for DateTime object.
-     * @param addYear Year you want add (the num can minus)
+     * @param addYear Year you want to add (the num can minus)
      * @return The current date time object
      */
     DateTime addYear(int addYear);
 
     /**
      * Add month for DateTime object.
-     * @param addMonth Month you want add (the num can minus)
+     * @param addMonth Month you want to add (the num can minus)
      * @return The current date time object
      */
     DateTime addMonth(int addMonth);
 
     /**
      * Add day for DateTime object.
-     * @param addDay Day you want add (the num can minus)
+     * @param addDay Day you want to add (the num can minus)
      * @return The current date time object
      */
     DateTime addDay(int addDay);
 
     /**
      * Add hour for DateTime object.
-     * @param addHour Hour you want add (the num can minus)
+     * @param addHour Hour you want to add (the num can minus)
      * @return The current date time object
      */
     DateTime addHour(int addHour);
 
     /**
      * Add minute for DateTime object.
-     * @param addMinute Minute you want add (the num can minus)
+     * @param addMinute Minute you want to add (the num can minus)
      * @return The current date time object
      */
     DateTime addMinute(int addMinute);
 
     /**
      * Add second for DateTime object.
-     * @param addSecond Second you want add (the num can minus)
+     * @param addSecond Second you want to add (the num can minus)
      * @return The current date time object
      */
     DateTime addSecond(int addSecond);
 
     /**
      * Add millisecond for DateTime object.
-     * @param addMillisecond Millisecond you want add (the num can minus)
+     * @param addMillisecond Millisecond you want to add (the num can minus)
      * @return The current date time object
      */
     DateTime addMillisecond(int addMillisecond);
 
     /**
      * Add day of week for DateTime object.
-     * @param addDayOfWeek Day of week you want add (the num can minus)
+     * @param addDayOfWeek Day of week you want to add (the num can minus)
      * @return The current date time object
      */
     DateTime addDayOfWeek(int addDayOfWeek);
 
     /**
      * Add day of week in month for DateTime object.
-     * @param addDayOfWeekInMonth Day of week in month you want add (the num can minus)
+     * @param addDayOfWeekInMonth Day of week in month you want to add (the num can minus)
      * @return The current date time object
      */
     DateTime addDayOfWeekInMonth(int addDayOfWeekInMonth);
 
     /**
      * Add day of year for DateTime object.
-     * @param addDayOfYear Day of year you want add (the num can minus)
+     * @param addDayOfYear Day of year you want to add (the num can minus)
      * @return The current date time object
      */
     DateTime addDayOfYear(int addDayOfYear);
 
     /**
      * Add week of month for DateTime object.
-     * @param addWeekOfMonth Week of month you want add (the num can minus)
+     * @param addWeekOfMonth Week of month you want to add (the num can minus)
      * @return The current date time object
      */
     DateTime addWeekOfMonth(int addWeekOfMonth);
 
     /**
      * Add week of year for DateTime object.
-     * @param addWeekOfYear Week of year you want add (the num can minus)
+     * @param addWeekOfYear Week of year you want to add (the num can minus)
      * @return The current date time object
      */
     DateTime addWeekOfYear(int addWeekOfYear);
