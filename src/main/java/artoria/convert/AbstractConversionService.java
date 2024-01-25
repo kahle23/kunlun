@@ -22,17 +22,17 @@ import static java.lang.Boolean.FALSE;
 public abstract class AbstractConversionService implements ConversionService {
 
     /**
-     * Add some default type converters.
+     * Register some default type converters.
      */
-    protected void addDefaultConverters() {
-        addConverter(new ObjectToStringConverter());
-        addConverter(new StringToBooleanConverter());
-        addConverter(new StringToNumberConverter());
-        addConverter(new StringToDateConverter());
-        addConverter(new DateToStringConverter());
-        addConverter(new DateToDateConverter());
-        addConverter(new NumberToNumberConverter());
-        addConverter(new NumberToDateConverter());
+    protected void registerDefaultConverters() {
+        registerConverter(new ObjectToStringConverter());
+        registerConverter(new StringToBooleanConverter());
+        registerConverter(new StringToNumberConverter());
+        registerConverter(new StringToDateConverter());
+        registerConverter(new DateToStringConverter());
+        registerConverter(new DateToDateConverter());
+        registerConverter(new NumberToNumberConverter());
+        registerConverter(new NumberToDateConverter());
     }
 
     private void addToClassHierarchy(Class<?> type, int index, boolean isArray,
@@ -91,6 +91,7 @@ public abstract class AbstractConversionService implements ConversionService {
      * @param targetType The target type to convert to
      * @return The result of whether it can be assigned
      */
+    @SuppressWarnings("rawtypes")
     protected boolean assignable(Type sourceType, Type targetType) {
         if (sourceType == targetType) { return true; }
         if (sourceType instanceof Class && targetType instanceof Class) {

@@ -1,10 +1,12 @@
 package artoria.data.validation.support;
 
+import java.io.Serializable;
+
 /**
  * The validation config.
  * @author Kahle
  */
-public class ValidationConfig {
+public class ValidationConfig implements Serializable {
     /**
      * The value's expression or property name.
      */

@@ -149,6 +149,7 @@ public class Dict extends LinkedHashMap<Object, Object> {
         return get(key, String.class, defaultValue);
     }
 
+    @SuppressWarnings("rawtypes")
     public Dict getDict(Object key) {
         Object result = get(key);
         if (result == null) { return null; }

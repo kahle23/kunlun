@@ -62,15 +62,15 @@ public abstract class AbstractGenericConverter implements GenericConverter {
     private static class ProxyConversionService implements ConversionService {
 
         @Override
-        public void addConverter(GenericConverter converter) {
+        public void registerConverter(GenericConverter converter) {
 
-            ConversionUtils.register(converter);
+            ConversionUtils.registerConverter(converter);
         }
 
         @Override
-        public void removeConverter(GenericConverter converter) {
+        public void deregisterConverter(GenericConverter converter) {
 
-            ConversionUtils.deregister(converter);
+            ConversionUtils.deregisterConverter(converter);
         }
 
         @Override

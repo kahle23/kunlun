@@ -1,7 +1,7 @@
 package artoria.util;
 
-import artoria.data.bean.BeanUtils;
 import artoria.convert.ConversionUtils;
+import artoria.data.bean.BeanUtils;
 import artoria.exception.ExceptionUtils;
 
 import java.util.ArrayList;
@@ -31,12 +31,12 @@ public class RecombineUtils {
         Assert.state(groupSize != ZERO, "Parameter \"groupSize\" must not equal 0. ");
         int listSize = list.size();
         int count = listSize / groupSize;
-        count = listSize % groupSize == ZERO ? count : ++count;
+        if (listSize % groupSize != ZERO) { ++count; }
         List<T> tmp;
         for (int i = ZERO; i < count; i++) {
             int fromIndex = i * groupSize;
             int toIndex = (i + ONE) * groupSize;
-            toIndex = toIndex > listSize ? listSize : toIndex;
+            toIndex = Math.min(toIndex, listSize);
             tmp = new ArrayList<T>(list.subList(fromIndex, toIndex));
             result.add(tmp);
         }

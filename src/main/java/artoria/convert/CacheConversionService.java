@@ -37,15 +37,15 @@ public class CacheConversionService extends AbstractConversionService {
     }
 
     @Override
-    public void addConverter(GenericConverter converter) {
+    public void registerConverter(GenericConverter converter) {
 
-        conversionService.addConverter(converter);
+        conversionService.registerConverter(converter);
     }
 
     @Override
-    public void removeConverter(GenericConverter converter) {
+    public void deregisterConverter(GenericConverter converter) {
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
-        conversionService.removeConverter(converter);
+        conversionService.deregisterConverter(converter);
         if (converter instanceof ConditionalConverter) {
             CacheUtils.clear(cacheName); return;
         }
@@ -77,7 +77,7 @@ public class CacheConversionService extends AbstractConversionService {
      * The class of the cached key at type conversion.
      * @author Kahle
      */
-    protected class ConverterCacheKey {
+    protected static class ConverterCacheKey {
         private final Type sourceType;
         private final Type targetType;
 

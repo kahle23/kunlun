@@ -11,16 +11,16 @@ import java.util.Map;
 public interface IdGenerator extends Generator {
 
     /**
-     * Set properties for the id generator.
-     * @param properties The properties to be set
+     * Get the common properties of the settings.
+     * @return The common properties that is set
      */
-    void setProperties(Map<?, ?> properties);
+    Map<Object, Object> getCommonProperties();
 
     /**
-     * Get the properties of the settings.
-     * @return The properties that is set
+     * Set common properties for the id generator.
+     * @param properties The properties to be set
      */
-    Map<Object, Object> getProperties();
+    void setCommonProperties(Map<?, ?> properties);
 
     /**
      * Generate the next identifier.

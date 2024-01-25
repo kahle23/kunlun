@@ -25,12 +25,13 @@ public class SimpleIdProvider implements IdProvider {
         Assert.notNull(idGenerators, "Parameter \"idGenerators\" must not null. ");
         this.commonProperties = commonProperties;
         this.idGenerators = idGenerators;
+        // Register the uuid generator.
+        registerGenerator("uuid", new SimpleIdGenerator());
     }
 
     public SimpleIdProvider() {
         this(new ConcurrentHashMap<String, Object>(),
                 new ConcurrentHashMap<String, IdGenerator>());
-        registerGenerator("uuid", new SimpleIdGenerator());
     }
 
     @Override
@@ -59,7 +60,7 @@ public class SimpleIdProvider implements IdProvider {
         Assert.notNull(idGenerator, "Parameter \"idGenerator\" must not null. ");
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         String className = idGenerator.getClass().getName();
-        idGenerator.setProperties(getCommonProperties());
+        idGenerator.setCommonProperties(getCommonProperties());
         idGenerators.put(name, idGenerator);
         log.info("Register the id generator \"{}\" to \"{}\". ", className, name);
     }

@@ -116,7 +116,7 @@ public class CacheConversionProviderTest {
         log.info("{}", DateUtils.format(convert));
         NumberToDateConverter numberToDateConverter = new NumberToDateConverter(conversionProvider);
         numberToDateConverter.setUnixTimestamp(true);
-        conversionProvider.addConverter(numberToDateConverter);
+        conversionProvider.registerConverter(numberToDateConverter);
         convert = cast(conversionProvider.convert(timeInMillis, Date.class));
         log.info("{}", DateUtils.format(convert));
     }
@@ -130,7 +130,7 @@ public class CacheConversionProviderTest {
 
     @Test
     public void testCatToDog() {
-        conversionProvider.addConverter(new CatToDogConverter(conversionProvider));
+        conversionProvider.registerConverter(new CatToDogConverter(conversionProvider));
         Cat cat = MockUtils.mock(Cat.class);
         log.info("{}", JSON.toJSONString(cat));
         Dog dog = cast(conversionProvider.convert(cat, Dog.class));
@@ -141,15 +141,15 @@ public class CacheConversionProviderTest {
     public void testAddAndRemoveConverter() {
         GenericConverter converter1 = new ListBasicToListBasicConverter(conversionProvider);
         GenericConverter converter2 = new CatToDogConverter(conversionProvider);
-        conversionProvider.addConverter(converter1);
-        conversionProvider.addConverter(converter2);
-        conversionProvider.removeConverter(converter1);
-        conversionProvider.removeConverter(converter2);
+        conversionProvider.registerConverter(converter1);
+        conversionProvider.registerConverter(converter2);
+        conversionProvider.deregisterConverter(converter1);
+        conversionProvider.deregisterConverter(converter2);
     }
 
     @Test
     public void testListBasicToListBasic() {
-        conversionProvider.addConverter(new ListBasicToListBasicConverter(conversionProvider));
+        conversionProvider.registerConverter(new ListBasicToListBasicConverter(conversionProvider));
         List<String> list = new ArrayList<String>();
         Collections.addAll(list, "10", "11", "12", "13", "14", "15");
         Object convert = conversionProvider.convert(list,
@@ -162,7 +162,7 @@ public class CacheConversionProviderTest {
 
     @Test
     public void testListBasicToListBasic1() {
-        conversionProvider.addConverter(new ListBasicToListBasicConverter(conversionProvider));
+        conversionProvider.registerConverter(new ListBasicToListBasicConverter(conversionProvider));
         boolean canConvert = conversionProvider.canConvert(
                 parameterizedOf(List.class, Book.class),
                 parameterizedOf(List.class, Dog.class));
@@ -175,7 +175,7 @@ public class CacheConversionProviderTest {
                 parameterizedOf(List.class, Cat.class),
                 parameterizedOf(List.class, Dog.class));
         log.info("Cat to Dog: {}", canConvert);
-        conversionProvider.addConverter(new CatToDogConverter(conversionProvider));
+        conversionProvider.registerConverter(new CatToDogConverter(conversionProvider));
         canConvert = conversionProvider.canConvert(
                 parameterizedOf(List.class, Cat.class),
                 parameterizedOf(List.class, Dog.class));

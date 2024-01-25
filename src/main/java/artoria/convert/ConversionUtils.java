@@ -30,14 +30,14 @@ public class ConversionUtils {
         ConversionUtils.conversionService = conversionService;
     }
 
-    public static void register(GenericConverter converter) {
+    public static void registerConverter(GenericConverter converter) {
 
-        getConversionService().addConverter(converter);
+        getConversionService().registerConverter(converter);
     }
 
-    public static void deregister(GenericConverter converter) {
+    public static void deregisterConverter(GenericConverter converter) {
 
-        getConversionService().removeConverter(converter);
+        getConversionService().deregisterConverter(converter);
     }
 
     public static boolean canConvert(Type sourceType, Type targetType) {

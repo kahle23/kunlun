@@ -15,10 +15,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import static artoria.common.Constants.FORTY;
+import static artoria.common.constant.Numbers.FORTY;
 
 /**
- * The simple type conversion service provider.
+ * The simple type conversion service.
  * @author Kahle
  */
 public class SimpleConversionService extends AbstractConversionService {
@@ -37,7 +37,7 @@ public class SimpleConversionService extends AbstractConversionService {
                                       Set<GenericConverter> globalConverters) {
         this.globalConverters = globalConverters;
         this.converterMap = converterMap;
-        addDefaultConverters();
+        registerDefaultConverters();
     }
 
     protected Class<?> primaryClass(Type type) {
@@ -64,9 +64,9 @@ public class SimpleConversionService extends AbstractConversionService {
     }
 
     @Override
-    public void addConverter(GenericConverter converter) {
+    public void registerConverter(GenericConverter converter) {
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
-        log.info("Add converter: {}", converter.getClass().getName());
+        log.info("Register converter: {}", converter.getClass().getName());
         Set<ConvertiblePair> convertibleTypes = converter.getConvertibleTypes();
         if (CollectionUtils.isEmpty(convertibleTypes)) {
             Assert.state(converter instanceof ConditionalConverter,
@@ -83,9 +83,9 @@ public class SimpleConversionService extends AbstractConversionService {
     }
 
     @Override
-    public void removeConverter(GenericConverter converter) {
+    public void deregisterConverter(GenericConverter converter) {
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
-        log.info("Remove converter: {}", converter.getClass().getName());
+        log.info("Deregister converter: {}", converter.getClass().getName());
         Set<ConvertiblePair> convertibleTypes = converter.getConvertibleTypes();
         if (CollectionUtils.isEmpty(convertibleTypes)) {
             Assert.state(converter instanceof ConditionalConverter,

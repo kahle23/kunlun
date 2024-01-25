@@ -10,16 +10,16 @@ import java.lang.reflect.Type;
 public interface ConversionService {
 
     /**
-     * Add a converter to this provider.
-     * @param converter A type converter
+     * Register the converter to this service.
+     * @param converter The type converter
      */
-    void addConverter(GenericConverter converter);
+    void registerConverter(GenericConverter converter);
 
     /**
-     * Remove a converter from this provider.
-     * @param converter A type converter
+     * Deregister the converter from this service.
+     * @param converter The type converter
      */
-    void removeConverter(GenericConverter converter);
+    void deregisterConverter(GenericConverter converter);
 
     /**
      * Gets a converter that converts the source type to the target type.

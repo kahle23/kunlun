@@ -176,7 +176,7 @@ public class FileUtils {
             long count;
             while (pos < size) {
                 count = size - pos;
-                count = count > FILE_COPY_BUFFER_SIZE ? FILE_COPY_BUFFER_SIZE : count;
+                count = Math.min(count, FILE_COPY_BUFFER_SIZE);
                 pos += output.transferFrom(input, pos, count);
             }
         }
