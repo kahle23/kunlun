@@ -29,14 +29,49 @@ public class XmlUtils {
         XmlUtils.xmlProvider = xmlProvider;
     }
 
+    public static String getDefaultHandlerName() {
+
+        return getXmlProvider().getDefaultHandlerName();
+    }
+
+    public static void setDefaultHandlerName(String defaultHandlerName) {
+
+        getXmlProvider().setDefaultHandlerName(defaultHandlerName);
+    }
+
+    public static void registerHandler(String name, XmlHandler xmlHandler) {
+
+        getXmlProvider().registerHandler(name, xmlHandler);
+    }
+
+    public static void deregisterHandler(String name) {
+
+        getXmlProvider().deregisterHandler(name);
+    }
+
+    public static XmlHandler getXmlHandler(String name) {
+
+        return getXmlProvider().getXmlHandler(name);
+    }
+
     public static String toXmlString(Object object, Object... arguments) {
 
-        return getXmlProvider().toXmlString(object, arguments);
+        return getXmlProvider().toXmlString(getDefaultHandlerName(), object, arguments);
+    }
+
+    public static String toXmlString(String name, Object object, Object... arguments) {
+
+        return getXmlProvider().toXmlString(name, object, arguments);
     }
 
     public static <T> T parseObject(String xmlString, Type type, Object... arguments) {
 
-        return getXmlProvider().parseObject(xmlString, type, arguments);
+        return getXmlProvider().parseObject(getDefaultHandlerName(), xmlString, type, arguments);
+    }
+
+    public static <T> T parseObject(String name, String xmlString, Type type, Object... arguments) {
+
+        return getXmlProvider().parseObject(name, xmlString, type, arguments);
     }
 
 }
