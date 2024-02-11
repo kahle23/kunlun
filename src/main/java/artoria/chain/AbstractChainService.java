@@ -5,16 +5,21 @@ import artoria.core.ChainService;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
-import artoria.util.CollectionUtils;
 import artoria.util.MapUtils;
 import artoria.util.StringUtils;
 
-import java.io.Serializable;
-import java.util.*;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static artoria.core.ChainNode.Config;
 
 /**
  * The abstract chain service.
+ * @author Kahle
  */
 public abstract class AbstractChainService implements ChainService {
     private static final Logger log = LoggerFactory.getLogger(AbstractChainService.class);
@@ -84,10 +89,10 @@ public abstract class AbstractChainService implements ChainService {
     }
 
     /**
-     *
-     * @param chainId
-     * @param arguments
-     * @return
+     * Construct a context based on the chainId and arguments.
+     * @param chainId The chain ID
+     * @param arguments The arguments when executing the chain
+     * @return The context object
      */
     protected ContextImpl buildContext(String chainId, Object[] arguments) {
 
@@ -95,160 +100,70 @@ public abstract class AbstractChainService implements ChainService {
     }
 
     /**
-     *
-     * @param chainId
-     * @return
+     * Build the configuration map based on the configuration object.
+     * @param nodeConfig The node configuration object
+     * @return The node configuration map
      */
-    protected abstract Collection<NodeConfig> getNodeConfigs(String chainId);
+    protected Map<String, Object> buildConfig(Config nodeConfig) {
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        if (MapUtils.isNotEmpty(nodeConfig.getConfigContent())) {
+            map.putAll(nodeConfig.getConfigContent());
+        }
+        map.put("_id", nodeConfig.getId());
+        map.put("_description", nodeConfig.getDescription());
+        map.put("_nodeName", nodeConfig.getNodeName());
+        map.put("_nextConfigId", nodeConfig.getNextConfigId());
+        return map;
+    }
 
     @Override
     public Object execute(String chainId, Object[] arguments) {
-        //
+        // Build the context.
         ChainNode.Context context = buildContext(chainId, arguments);
-        //
-        Collection<NodeConfig> nodeConfigs = getNodeConfigs(chainId);
-        Map<String, List<NodeConfig>> map = new LinkedHashMap<String, List<NodeConfig>>();
-        NodeConfig first = null;
-        for (NodeConfig config : nodeConfigs) {
+        // Convert the node configs to map.
+        Collection<? extends Config> nodeConfigs = getNodeConfigs(chainId);
+        Map<String, Config> configMap = new LinkedHashMap<String, Config>();
+        Config first = null;
+        for (Config config : nodeConfigs) {
             if (config == null) { continue; }
             if (first == null) { first = config; }
-            String nodeName = config.getName();
-            List<NodeConfig> list = map.get(nodeName);
-            if (list == null) {
-                map.put(nodeName, list = new ArrayList<NodeConfig>());
-            }
-            list.add(config);
+            configMap.put(config.getId(), config);
         }
-        //
-        NodeConfig now = first;
+        // Iterate the node configs.
+        Config now = first;
         while (now != null) {
-            //
-            ChainNode chainNode = getChainNode(now.getName());
-            chainNode.execute(now.getContent(), context);
-            //
-            List<String> nextNames = now.getNextNames();
-            String selectedName;
-            if (nextNames != null && nextNames.size() == 1) {
-                selectedName = CollectionUtils.getFirst(nextNames);
+            // Execute the chain node.
+            ChainNode chainNode = getChainNode(now.getNodeName());
+            chainNode.execute(buildConfig(now), context);
+            // Get the next config id.
+            String nextConfigId = context.getNextConfigId();
+            if (StringUtils.isBlank(nextConfigId)) {
+                nextConfigId = now.getNextConfigId();
             }
-            else { selectedName = context.getSelectedNextName(); }
-            //
-            if (StringUtils.isBlank(selectedName)) { break; }
-            //
-            List<NodeConfig> list = map.get(selectedName);
-            if (list.size() > 1) {
-                Integer order = now.getOrder();
-                for (NodeConfig config : list) {
-                    if (config.getOrder() > order) {
-                        now = config; break;
-                    }
-                    else {
-                        throw new IllegalStateException("next node config error! ");
-                    }
-                }
-            }
-            else { now = CollectionUtils.getFirst(list); }
+            if (StringUtils.isBlank(nextConfigId)) { break; }
+            // Get the next config object.
+            Config config = configMap.get(nextConfigId);
+            Assert.notNull(config, "next node config error! ");
+            now = config;
         }
         return context.getResult();
     }
 
-    /**
-     * The node config.
-     */
-    public interface NodeConfig {
+    @Override
+    public Object execute(String chainId, Object input, Type type) {
 
-        Long    getId();
-
-        String  getName();
-
-        Integer getOrder();
-
-        List<String> getNextNames();
-
-        Map<String, Object> getContent();
-
+        return execute(chainId, new Object[]{ null, input, type });
     }
 
     /**
-     * The node config.
+     * The inner chain context.
+     * @author Kahle
      */
-    public static class NodeConfigImpl implements NodeConfig, Serializable {
-        private Long    id;
-        private String  name;
-        private Integer order;
-        private List<String> nextNames;
-        private Map<String, Object> content;
-
-        public NodeConfigImpl(String name, List<String> nextNames) {
-            this.nextNames = nextNames;
-            this.name = name;
-        }
-
-        public NodeConfigImpl() {
-
-        }
-
-        @Override
-        public Long getId() {
-
-            return id;
-        }
-
-        public void setId(Long id) {
-
-            this.id = id;
-        }
-
-        @Override
-        public String getName() {
-
-            return name;
-        }
-
-        public void setName(String name) {
-
-            this.name = name;
-        }
-
-        @Override
-        public Integer getOrder() {
-
-            return order;
-        }
-
-        public void setOrder(Integer order) {
-
-            this.order = order;
-        }
-
-        @Override
-        public List<String> getNextNames() {
-
-            return nextNames;
-        }
-
-        public void setNextNames(List<String> nextNames) {
-
-            this.nextNames = nextNames;
-        }
-
-        @Override
-        public Map<String, Object> getContent() {
-
-            return content;
-        }
-
-        public void setContent(Map<String, Object> content) {
-
-            this.content = content;
-        }
-    }
-
-    public static class ContextImpl implements ChainNode.Context {
+    protected static class ContextImpl implements ChainNode.Context {
         private String chainId;
         private Object[] arguments;
         private Object result;
-        private String selectedNextName;
+        private String nextConfigId;
 
         public ContextImpl(String chainId, Object[] arguments) {
             this.arguments = arguments;
@@ -293,15 +208,15 @@ public abstract class AbstractChainService implements ChainService {
         }
 
         @Override
-        public String getSelectedNextName() {
+        public String getNextConfigId() {
 
-            return selectedNextName;
+            return nextConfigId;
         }
 
         @Override
-        public void setSelectedNextName(String selectedNextName) {
+        public void setNextConfigId(String nextConfigId) {
 
-            this.selectedNextName = selectedNextName;
+            this.nextConfigId = nextConfigId;
         }
     }
 

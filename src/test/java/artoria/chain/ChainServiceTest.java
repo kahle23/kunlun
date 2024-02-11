@@ -1,17 +1,15 @@
 package artoria.chain;
 
+import artoria.chain.support.NodeConfigImpl;
 import artoria.core.ChainNode;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.ObjectUtils;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 
-import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -20,37 +18,32 @@ import static org.junit.Assert.assertTrue;
  */
 public class ChainServiceTest {
     private static final Logger log = LoggerFactory.getLogger(ChainServiceTest.class);
-    private static final AbstractChainService chainService;
+    private static final String chainId = "1";
 
     static {
-        chainService = new AbstractChainService() {
-            @Override
-            protected Collection<NodeConfig> getNodeConfigs(String chainId) {
-                List<NodeConfig> list = new ArrayList<NodeConfig>();
-                list.add(new NodeConfigImpl("a", singletonList("b")));
-                list.add(new NodeConfigImpl("b", singletonList("c")));
-                list.add(new NodeConfigImpl("c", null));
-                return list;
-            }
-        };
-        chainService.registerNode("a", new ChainNode() {
+        ChainUtils.addNodeConfigs(chainId, Arrays.asList(
+                new NodeConfigImpl("a", "node1", "b"),
+                new NodeConfigImpl("b", "node2", "c"),
+                new NodeConfigImpl("c", "node3", null)
+        ));
+        ChainUtils.registerNode("node1", new ChainNode() {
             @Override
             public void execute(Map<String, ?> config, Context context) {
-                Object data = context.getResult() != null ? context.getResult() : context.getArguments()[0];
+                Object data = context.getResult() != null ? context.getResult() : context.getArguments()[1];
                 context.setResult((Integer) data + 1);
             }
         });
-        chainService.registerNode("b", new ChainNode() {
+        ChainUtils.registerNode("node2", new ChainNode() {
             @Override
             public void execute(Map<String, ?> config, Context context) {
-                Object data = context.getResult() != null ? context.getResult() : context.getArguments()[0];
+                Object data = context.getResult() != null ? context.getResult() : context.getArguments()[1];
                 context.setResult((Integer) data + 2);
             }
         });
-        chainService.registerNode("c", new ChainNode() {
+        ChainUtils.registerNode("node3", new ChainNode() {
             @Override
             public void execute(Map<String, ?> config, Context context) {
-                Object data = context.getResult() != null ? context.getResult() : context.getArguments()[0];
+                Object data = context.getResult() != null ? context.getResult() : context.getArguments()[1];
                 context.setResult((Integer) data + 3);
             }
         });
@@ -58,7 +51,7 @@ public class ChainServiceTest {
 
     @Test
     public void test1() {
-        Object result = chainService.execute("1", new Object[]{1});
+        Number result = ChainUtils.execute(chainId, 1, Number.class);
         log.info("result: {}", result);
         assertTrue(ObjectUtils.equals(result, 7));
     }

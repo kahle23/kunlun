@@ -1,6 +1,10 @@
 package artoria.core;
 
+import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.Map;
+
+import static artoria.core.ChainNode.Config;
 
 /**
  * The service interface that the process (chain) invokes.
@@ -46,6 +50,26 @@ public interface ChainService {
     ChainNode getChainNode(String nodeName);
 
     /**
+     * Add node configurations.
+     * @param chainId The chain ID
+     * @param nodeConfigs The node configurations
+     */
+    void addNodeConfigs(String chainId, Collection<? extends Config> nodeConfigs);
+
+    /**
+     * Remove node configurations based on the chain id.
+     * @param chainId The chain ID
+     */
+    void removeNodeConfigs(String chainId);
+
+    /**
+     * Get node configurations based on the chain id.
+     * @param chainId The chain ID
+     * @return The node configurations
+     */
+    Collection<? extends Config> getNodeConfigs(String chainId);
+
+    /**
      * Execute the corresponding logic chain based on the chain ID and input arguments.
      * The arguments mean (most of the scenes):
      *      0 strategy or operation or null,
@@ -56,5 +80,14 @@ public interface ChainService {
      * @return The execution result of the chain
      */
     Object execute(String chainId, Object[] arguments);
+
+    /**
+     * Execute the corresponding logic chain based on the chain ID and input arguments.
+     * @param chainId The chain ID
+     * @param input The arguments when executing the chain
+     * @param type The type of the return value
+     * @return The execution result of the chain
+     */
+    Object execute(String chainId, Object input, Type type);
 
 }

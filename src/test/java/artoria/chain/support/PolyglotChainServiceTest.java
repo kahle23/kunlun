@@ -1,6 +1,6 @@
 package artoria.chain.support;
 
-import artoria.chain.AbstractChainService;
+import artoria.chain.ChainUtils;
 import artoria.core.ChainNode;
 import artoria.data.Dict;
 import artoria.logging.Logger;
@@ -8,12 +8,9 @@ import artoria.logging.LoggerFactory;
 import artoria.util.ObjectUtils;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 
-import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -23,42 +20,37 @@ import static org.junit.Assert.assertTrue;
  */
 public class PolyglotChainServiceTest {
     private static final Logger log = LoggerFactory.getLogger(PolyglotChainServiceTest.class);
-    private static final AbstractChainService chainService;
+    private static final String chainId = "1";
 
     static {
-        chainService = new AbstractChainService() {
-            @Override
-            protected Collection<NodeConfig> getNodeConfigs(String chainId) {
-                List<NodeConfig> list = new ArrayList<NodeConfig>();
-                list.add(new NodeConfigImpl("0", singletonList("a")));
-                list.add(new NodeConfigImpl("a", singletonList("b")));
-                list.add(new NodeConfigImpl("b", singletonList("c")));
-                list.add(new NodeConfigImpl("c", null));
-                return list;
-            }
-        };
+        ChainUtils.addNodeConfigs(chainId, Arrays.asList(
+                new NodeConfigImpl("0", "node0", "a"),
+                new NodeConfigImpl("a", "node1", "b"),
+                new NodeConfigImpl("b", "node2", "c"),
+                new NodeConfigImpl("c", "node3", null)
+        ));
         String scriptName = "javascript";
-        chainService.registerNode("0",
+        ChainUtils.registerNode("node0",
                 new ChainNode() {
                     @Override
                     public void execute(Map<String, ?> config, Context context) {
-                        context.setResult(context.getArguments()[0]);
+                        context.setResult(context.getArguments()[1]);
                     }
                 });
-        chainService.registerNode("a",
+        ChainUtils.registerNode("node1",
                 new PolyglotChainNode(scriptName, "result.a = result.a + 1;\n" +
                 "result.b = result.b + 1;\n" +
                 "result.c = null;\n" +
                 "result;"
                 ));
-        chainService.registerNode("b",
+        ChainUtils.registerNode("node2",
                 new PolyglotChainNode(scriptName, "result.d = 1;" +
                 "result.e = 2;" +
                 "result.f = 3;" +
                 "result.c = result.a + result.b; " +
                 "result;"
                 ));
-        chainService.registerNode("c",
+        ChainUtils.registerNode("node3",
                 new PolyglotChainNode(scriptName, "result.delete(\"d\");" +
                 "result.delete(\"e\");" +
                 "result;"
@@ -68,7 +60,7 @@ public class PolyglotChainServiceTest {
     @Test
     public void test1() {
         Dict dict = Dict.of("a", 1).set("b", 2).set("c", 3);
-        Dict result = Dict.of((Map<?, ?>) chainService.execute("1", new Object[]{dict}));
+        Dict result = Dict.of((Map<?, ?>) ChainUtils.execute(chainId, dict, Map.class));
         log.info("result: {}", result);
         assertTrue(ObjectUtils.equals(result.getInteger("a"), 2));
         assertTrue(ObjectUtils.equals(result.getInteger("b"), 3));
