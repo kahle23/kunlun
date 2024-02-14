@@ -1,7 +1,7 @@
 package artoria.data;
 
-import artoria.convert.ConversionUtils;
 import artoria.util.ArrayUtils;
+import artoria.util.ObjectUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -60,8 +60,7 @@ public class Dict extends LinkedHashMap<Object, Object> {
     public <T> T get(Object key, Class<T> clazz) {
         Object result = get(key);
         if (result == null) { return null; }
-        // TODO: 2023/10/04 do not use ConversionUtils
-        return ConversionUtils.convert(result, clazz);
+        return ObjectUtils.cast(result, clazz);
     }
 
     public <T> T get(Object key, Class<T> clazz, T defaultValue) {

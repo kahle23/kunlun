@@ -61,10 +61,4 @@ public class ActionUtils {
         return getActionProvider().execute(input, actionName, EMPTY_STRING, type);
     }
 
-    @Deprecated
-    public static <T> T execute(Object input, Type type) {
-
-        return getActionProvider().execute(input, EMPTY_STRING, EMPTY_STRING, type);
-    }
-
 }

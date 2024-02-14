@@ -1,6 +1,6 @@
 package artoria.renderer;
 
-import artoria.data.PairImpl;
+import artoria.data.tuple.PairImpl;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.renderer.support.SimpleTextRenderer;

@@ -2,10 +2,10 @@ package artoria.action.handler.http;
 
 import artoria.action.handler.AbstractScriptBasedInvokeHandler;
 import artoria.data.Dict;
-import artoria.data.KeyValue;
-import artoria.data.KeyValueImpl;
 import artoria.data.bean.BeanUtils;
 import artoria.data.json.JsonUtils;
+import artoria.data.tuple.KeyValue;
+import artoria.data.tuple.KeyValueImpl;
 import artoria.data.validation.support.ValidationConfig;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;

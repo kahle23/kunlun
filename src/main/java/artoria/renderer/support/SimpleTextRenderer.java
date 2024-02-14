@@ -1,7 +1,7 @@
 package artoria.renderer.support;
 
-import artoria.data.Pair;
 import artoria.data.bean.BeanUtils;
+import artoria.data.tuple.Pair;
 import artoria.exception.ExceptionUtils;
 import artoria.io.util.IOUtils;
 import artoria.util.*;

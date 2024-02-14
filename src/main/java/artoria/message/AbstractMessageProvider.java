@@ -4,14 +4,13 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 import artoria.util.MapUtils;
-import artoria.util.ObjectUtils;
-import artoria.util.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static artoria.util.ObjectUtils.cast;
 
 /**
  * The abstract message provider.
@@ -35,35 +34,9 @@ public abstract class AbstractMessageProvider implements MessageProvider {
                 new ConcurrentHashMap<String, MessageHandler>());
     }
 
-    protected MessageHandler getMessageHandlerInner(String handlerName, Object input) {
-        String name = null;
-        // TODO: 2023/5/5 The handler name is required in the future, no longer handle "class:"
-        if (StringUtils.isNotBlank(handlerName)) { name = handlerName; }
-        else {
-            // The input parameter should not be null.
-            if (input != null) {
-                if (input instanceof List) {
-                    List<?> messages = (List<?>) input;
-                    Class<?> prevType = null;
-                    for (Object message : messages) {
-                        Assert.notNull(message, "Parameter \"input\"'s elements all must not null. ");
-                        Class<?> nowType = message.getClass();
-                        if (prevType == null) { prevType = nowType; }
-                        Assert.isTrue(nowType.equals(prevType)
-                                , "Parameter \"input\"'s elements type all must be equal. ");
-                    }
-                    name = prevType != null ? "class:" + prevType.getName() : null;
-                }
-                else {
-                    // Other scenarios concatenate class names directly.
-                    name = "class:" + input.getClass().getName();
-                }
-            }
-        }
-//        Assert.notBlank(name,
-//                "The route calculated according to the arguments is blank. ");
-        Assert.notBlank(name, "Parameter \"handlerName\" must not blank. ");
-        MessageHandler messageHandler = messageHandlers.get(name);
+    protected MessageHandler getMessageHandlerInner(String handlerName) {
+        Assert.notBlank(handlerName, "Parameter \"handlerName\" must not blank. ");
+        MessageHandler messageHandler = messageHandlers.get(handlerName);
         Assert.notNull(messageHandler,
             "The corresponding message handler could not be found by name. ");
         return messageHandler;
@@ -120,8 +93,7 @@ public abstract class AbstractMessageProvider implements MessageProvider {
     public <T> T send(Object message, String handlerName, Type type) {
         Assert.notNull(message, "Parameter \"message\" must not null. ");
         Assert.notNull(type, "Parameter \"type\" must not null. ");
-        MessageHandler handler = getMessageHandlerInner(handlerName, message);
-        return ObjectUtils.cast(handler.send(message, type));
+        return cast(getMessageHandlerInner(handlerName).send(message, type));
     }
 
     @Override
@@ -129,24 +101,21 @@ public abstract class AbstractMessageProvider implements MessageProvider {
         Assert.notBlank(handlerName, "Parameter \"handlerName\" must not blank. ");
         Assert.notNull(condition, "Parameter \"condition\" must not null. ");
         Assert.notNull(type, "Parameter \"type\" must not null. ");
-        MessageHandler handler = getMessageHandlerInner(handlerName, null);
-        return ObjectUtils.cast(handler.receive(condition, type));
+        return cast(getMessageHandlerInner(handlerName).receive(condition, type));
     }
 
     @Override
     public Object subscribe(String handlerName, Object condition, Object messageListener) {
         Assert.notBlank(handlerName, "Parameter \"handlerName\" must not blank. ");
         Assert.notNull(messageListener, "Parameter \"messageListener\" must not null. ");
-        MessageHandler handler = getMessageHandlerInner(handlerName, null);
-        return handler.subscribe(condition, messageListener);
+        return getMessageHandlerInner(handlerName).subscribe(condition, messageListener);
     }
 
     @Override
     public Object operate(String handlerName, String operation, Object[] arguments) {
         Assert.notBlank(handlerName, "Parameter \"handlerName\" must not blank. ");
         Assert.notBlank(operation, "Parameter \"operation\" must not blank. ");
-        MessageHandler handler = getMessageHandlerInner(handlerName, null);
-        return handler.operate(operation, arguments);
+        return getMessageHandlerInner(handlerName).operate(operation, arguments);
     }
 
 }

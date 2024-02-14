@@ -1,7 +1,7 @@
 package artoria.io.file.support;
 
-import artoria.data.KeyValue;
-import artoria.data.Pair;
+import artoria.data.tuple.KeyValue;
+import artoria.data.tuple.Pair;
 import artoria.exception.ExceptionUtils;
 import artoria.io.FileBase;
 import artoria.io.FileEntity;

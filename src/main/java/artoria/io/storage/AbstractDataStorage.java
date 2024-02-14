@@ -1,6 +1,6 @@
 package artoria.io.storage;
 
-import artoria.data.KeyValueImpl;
+import artoria.data.tuple.KeyValueImpl;
 import artoria.io.DataStorage;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;

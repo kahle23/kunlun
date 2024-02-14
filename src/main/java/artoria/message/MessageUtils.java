@@ -6,7 +6,6 @@ import artoria.util.Assert;
 
 import java.lang.reflect.Type;
 
-import static artoria.common.Constants.EMPTY_STRING;
 import static artoria.util.ObjectUtils.cast;
 
 /**
@@ -47,12 +46,6 @@ public class MessageUtils {
         return getMessageProvider().getMessageHandler(handlerName);
     }
 
-    @Deprecated
-    public static <T> T send(Object message, Type type) {
-
-        return getMessageProvider().send(message, EMPTY_STRING, type);
-    }
-
     public static <T> T send(Object message, String handlerName, Type type) {
 
         return getMessageProvider().send(message, handlerName, type);
@@ -76,18 +69,6 @@ public class MessageUtils {
     public static Object operate(String handlerName, String operation, Object[] arguments) {
 
         return getMessageProvider().operate(handlerName, operation, arguments);
-    }
-
-    @Deprecated
-    public static <T> T operate(String operation, Object input, Type type) {
-
-        return operate(EMPTY_STRING, operation, input, type);
-    }
-
-    @Deprecated
-    public static Object operate(String operation, Object[] arguments) {
-
-        return getMessageProvider().operate(EMPTY_STRING, operation, arguments);
     }
 
 }

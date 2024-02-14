@@ -40,11 +40,4 @@ public class CollectionUtilsTest {
         log.info(String.valueOf(list));
     }
 
-    // TODO: 2023/7/12 can delete
-    /*@Test
-    public void testTakeFirstNotNullElement() {
-        User person = CollectionUtils.firstNotNullElement(list);
-        log.info(JSON.toJSONString(person, true));
-    }*/
-
 }

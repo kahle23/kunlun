@@ -72,20 +72,4 @@ public class CollectionUtils {
         return newList;
     }
 
-    /**
-     * Get java bean list first not null element.
-     * @param list A java bean list
-     * @param <T> Java bean type
-     * @return A not null java bean
-     */
-    // TODO: 2023/7/12 can delete
-    /*@Deprecated
-    public static <T> T firstNotNullElement(List<T> list) {
-        if (list == null) { return null; }
-        for (T bean : list) {
-            if (bean != null) { return bean; }
-        }
-        return null;
-    }*/
-
 }

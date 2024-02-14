@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.util.Map;
 
 public class DictTest {
-    private static Logger log = LoggerFactory.getLogger(DictTest.class);
+    private static final Logger log = LoggerFactory.getLogger(DictTest.class);
 
     @Test
     public void test1() {
@@ -26,7 +26,7 @@ public class DictTest {
 
     @Test
     public void test3() {
-        Dict dict = Dict.of("name", "Superman").set("age", "19");
+        Dict dict = Dict.of("name", "Superman").set("age", 19);
         String name = dict.getString("name");
         Integer age = dict.getInteger("age");
         log.info("name: {}, age: {}", name, age);
@@ -34,7 +34,7 @@ public class DictTest {
 
     @Test
     public void test4() {
-        Dict dict = Dict.of("data", Dict.of("k1", "v1")).set("count", "30");
+        Dict dict = Dict.of("data", Dict.of("k1", "v1")).set("count", 30);
         Map map = dict.get("data", Map.class);
         Integer count = dict.getInteger("count");
         log.info("data: {}, age: {}", map, count);

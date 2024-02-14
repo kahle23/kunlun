@@ -2,15 +2,14 @@ package artoria.action;
 
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
-import artoria.util.*;
+import artoria.util.Assert;
+import artoria.util.MapUtils;
+import artoria.util.ObjectUtils;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static artoria.common.Constants.ONE;
-import static artoria.common.Constants.TWO;
 
 /**
  * The abstract action tools provider.
@@ -34,21 +33,9 @@ public abstract class AbstractActionProvider implements ActionProvider {
                 new ConcurrentHashMap<String, ActionHandler>());
     }
 
-    protected ActionHandler getActionHandlerInner(String actionName, Object input) {
-        String name = null;
-        // TODO: 2023/5/5 The action name is required in the future, no longer handle "class:"
-        if (StringUtils.isNotBlank(actionName)) { name = actionName; }
-        else {
-            // The input parameter should not be null.
-            if (input != null) {
-                // Other scenarios concatenate class names directly.
-                name = "class:" + input.getClass().getName();
-            }
-        }
-//        Assert.notBlank(name,
-//                "The route calculated according to the arguments is blank. ");
+    protected ActionHandler getActionHandlerInner(String actionName) {
         Assert.notBlank(actionName, "Parameter \"actionName\" must not blank. ");
-        ActionHandler actionHandler = actionHandlers.get(name);
+        ActionHandler actionHandler = actionHandlers.get(actionName);
         Assert.notNull(actionHandler,
                 "The corresponding action handler could not be found by name. ");
         return actionHandler;
@@ -103,13 +90,8 @@ public abstract class AbstractActionProvider implements ActionProvider {
 
     @Override
     public Object execute(String actionName, Object[] arguments) {
-//        Assert.notBlank(actionName, "Parameter \"actionName\" must not blank. ");
         // Parameter "arguments" is usually: 0 strategy or operation, 1 input, 2 type
-        Object input = null;
-        if (ArrayUtils.isNotEmpty(arguments) && arguments.length >= TWO) {
-            input = arguments[ONE];
-        }
-        return getActionHandlerInner(actionName, input).execute(arguments);
+        return getActionHandlerInner(actionName).execute(arguments);
     }
 
     @Override

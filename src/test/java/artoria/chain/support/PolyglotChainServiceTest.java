@@ -62,9 +62,9 @@ public class PolyglotChainServiceTest {
         Dict dict = Dict.of("a", 1).set("b", 2).set("c", 3);
         Dict result = Dict.of((Map<?, ?>) ChainUtils.execute(chainId, dict, Map.class));
         log.info("result: {}", result);
-        assertTrue(ObjectUtils.equals(result.getInteger("a"), 2));
-        assertTrue(ObjectUtils.equals(result.getInteger("b"), 3));
-        assertTrue(ObjectUtils.equals(result.getInteger("c"), 5));
+        assertTrue(ObjectUtils.equals(result.getDouble("a"), 2d));
+        assertTrue(ObjectUtils.equals(result.getDouble("b"), 3d));
+        assertTrue(ObjectUtils.equals(result.getDouble("c"), 5d));
         assertNull(result.get("d"));
         assertNull(result.get("e"));
         assertTrue(ObjectUtils.equals(result.getInteger("f"), 3));

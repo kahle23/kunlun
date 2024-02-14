@@ -36,7 +36,6 @@ public class MessageUtilsTest {
         LogHandler logHandler = new LogHandler();
         MessageUtils.registerHandler(CONSOLE, consoleHandler);
         MessageUtils.registerHandler(LOG, logHandler);
-        MessageUtils.registerHandler("class:" + User.class.getName(), consoleHandler);
     }
 
     @Test
@@ -48,7 +47,6 @@ public class MessageUtilsTest {
     @Test
     public void test2() {
         User user = MockUtils.mock(User.class);
-        MessageUtils.send(user, Boolean.class);
         MessageUtils.send(user, LOG, Boolean.class);
     }
 

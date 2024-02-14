@@ -1,7 +1,7 @@
 package artoria.generator.project.support.java;
 
-import artoria.data.PairImpl;
 import artoria.data.bean.BeanUtils;
+import artoria.data.tuple.PairImpl;
 import artoria.exception.ExceptionUtils;
 import artoria.generator.project.ProjectConfig;
 import artoria.generator.project.ProjectGenerator;
