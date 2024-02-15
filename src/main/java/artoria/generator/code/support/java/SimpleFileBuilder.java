@@ -18,7 +18,7 @@ import java.io.*;
 import java.util.List;
 import java.util.Map;
 
-import static artoria.common.Constants.FULL_DATETIME_PATTERN;
+import static artoria.common.constant.TimePatterns.UTC_MS;
 
 public class SimpleFileBuilder extends AbstractFileBuilder {
     private static final Logger log = LoggerFactory.getLogger(SimpleFileBuilder.class);
@@ -51,7 +51,7 @@ public class SimpleFileBuilder extends AbstractFileBuilder {
         String templateContent = templateContent(context);
         // Create template filled model.
         Dict model = Dict.of(context.getAttributes(builderName));
-        model.set("buildTime", DateUtils.format(FULL_DATETIME_PATTERN));
+        model.set("buildTime", DateUtils.format(UTC_MS));
         model.set("table", tableInfo);
         // Print log.
         String tmpString = "Generator \"{}\": rendering the java code corresponding to table \"{}\". ";

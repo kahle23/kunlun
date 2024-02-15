@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static artoria.common.Constants.NEWLINE;
+import static artoria.common.constant.Symbols.NEWLINE;
 
 public class TextTest {
     private static Logger log = LoggerFactory.getLogger(TextTest.class);

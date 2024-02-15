@@ -1,6 +1,6 @@
 package artoria.data.validation.support;
 
-import artoria.common.Constants;
+import artoria.common.constant.Words;
 import artoria.data.validation.BooleanValidator;
 
 /**
@@ -16,7 +16,7 @@ public class IsFalseValidator implements BooleanValidator {
         }
         else if (target instanceof String) {
             String str = (String) target;
-            return Constants.FALSE_STR.equalsIgnoreCase(str);
+            return Words.FALSE.equalsIgnoreCase(str);
         }
         else { return false; }
     }

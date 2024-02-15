@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ZERO;
 
 /**
  * The simple http request.

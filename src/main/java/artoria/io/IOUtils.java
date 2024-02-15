@@ -4,8 +4,8 @@ import artoria.io.util.StringBuilderWriter;
 
 import java.io.*;
 
-import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Charsets.STR_DEFAULT_CHARSET;
+import static artoria.common.constant.Numbers.ZERO;
 
 /**
  * The io tools.
@@ -18,7 +18,7 @@ public class IOUtils {
 
     public static byte[] toByteArray(Reader input) throws IOException {
 
-        return IOUtils.toByteArray(input, DEFAULT_CHARSET_NAME);
+        return IOUtils.toByteArray(input, STR_DEFAULT_CHARSET);
     }
 
     public static byte[] toByteArray(Reader input, String charset) throws IOException {
@@ -36,7 +36,7 @@ public class IOUtils {
 
     public static String toString(InputStream input) throws IOException {
 
-        return IOUtils.toString(input, DEFAULT_CHARSET_NAME);
+        return IOUtils.toString(input, STR_DEFAULT_CHARSET);
     }
 
     public static String toString(InputStream input, String charset) throws IOException {

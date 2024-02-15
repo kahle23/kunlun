@@ -9,8 +9,8 @@ import org.junit.Test;
 import java.util.Map;
 import java.util.Set;
 
-import static artoria.common.Constants.ONE_HUNDRED;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ONE_HUNDRED;
+import static artoria.common.constant.Numbers.ZERO;
 
 public class ReferenceMapTest {
     private static Logger log = LoggerFactory.getLogger(ReferenceMapTest.class);

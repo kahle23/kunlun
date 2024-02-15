@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Map;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
 
 /**
  * The abstract message handler.

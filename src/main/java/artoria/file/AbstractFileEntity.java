@@ -6,7 +6,7 @@ import artoria.util.CloseUtils;
 
 import java.io.*;
 
-import static artoria.common.Constants.CLASSPATH;
+import static artoria.common.constant.Env.CLASSPATH;
 
 /**
  * Abstract file entity.

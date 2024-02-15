@@ -4,8 +4,8 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
-import static artoria.common.Constants.TWENTY;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.TWENTY;
+import static artoria.common.constant.Numbers.ZERO;
 
 public class SimpleClockTest {
     private static Logger log = LoggerFactory.getLogger(SimpleClockTest.class);

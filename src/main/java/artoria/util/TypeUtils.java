@@ -3,8 +3,8 @@ package artoria.util;
 import java.io.Serializable;
 import java.lang.reflect.*;
 
-import static artoria.common.Constants.ONE;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ONE;
+import static artoria.common.constant.Numbers.ZERO;
 
 /**
  * The type tools.

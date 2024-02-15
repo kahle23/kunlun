@@ -6,7 +6,7 @@ import artoria.util.Assert;
 
 import java.io.Serializable;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
 import static artoria.io.util.IOUtils.EOF;
 
 /**

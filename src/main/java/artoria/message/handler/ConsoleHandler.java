@@ -8,7 +8,8 @@ import artoria.util.*;
 import java.util.List;
 import java.util.Map;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.Symbols.*;
 
 /**
  * The handler of the message sent to the console.

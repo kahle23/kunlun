@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
 import static artoria.data.ReferenceType.SOFT;
 import static artoria.data.ReferenceType.WEAK;
 import static java.util.Collections.emptyMap;

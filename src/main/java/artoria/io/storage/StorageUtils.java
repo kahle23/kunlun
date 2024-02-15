@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static artoria.common.Constants.DEFAULT;
+import static artoria.common.constant.Words.DEFAULT;
 
 /**
  * The storage tools.

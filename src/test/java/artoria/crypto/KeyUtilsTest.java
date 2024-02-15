@@ -10,7 +10,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Arrays;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Algorithms.*;
 import static org.junit.Assert.assertArrayEquals;
 
 public class KeyUtilsTest {

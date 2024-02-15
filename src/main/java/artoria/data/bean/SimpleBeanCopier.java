@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ZERO;
 
 /**
  * The bean copier simple implement by jdk.

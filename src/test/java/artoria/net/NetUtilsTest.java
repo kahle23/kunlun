@@ -10,7 +10,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.List;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
 
 public class NetUtilsTest {
     private static final Logger log = LoggerFactory.getLogger(NetUtilsTest.class);

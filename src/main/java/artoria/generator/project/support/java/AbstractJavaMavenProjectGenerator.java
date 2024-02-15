@@ -13,8 +13,8 @@ import artoria.util.CloseUtils;
 import java.io.*;
 import java.util.Map;
 
-import static artoria.common.Constants.EMPTY_STRING;
-import static artoria.common.Constants.NEWLINE;
+import static artoria.common.constant.Symbols.EMPTY_STRING;
+import static artoria.common.constant.Symbols.NEWLINE;
 
 /**
  * The abstract java maven project generator.

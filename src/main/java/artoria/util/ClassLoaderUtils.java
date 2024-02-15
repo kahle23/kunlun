@@ -10,7 +10,9 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.ONE;
+import static artoria.common.constant.Symbols.BACKSLASH;
+import static artoria.common.constant.Symbols.SLASH;
 
 /**
  * The class loader tools.

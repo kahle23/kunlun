@@ -7,8 +7,8 @@ import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 
-import static artoria.common.Constants.ONE;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ONE;
+import static artoria.common.constant.Numbers.ZERO;
 
 /**
  * The random tools.

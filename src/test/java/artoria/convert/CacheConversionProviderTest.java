@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ZERO;
 import static artoria.util.ObjectUtils.cast;
 import static artoria.util.TypeUtils.parameterizedOf;
 

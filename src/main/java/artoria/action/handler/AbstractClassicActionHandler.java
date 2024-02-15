@@ -6,7 +6,7 @@ import artoria.util.ObjectUtils;
 
 import java.lang.reflect.Type;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
 
 /**
  * The abstract classic action handler.

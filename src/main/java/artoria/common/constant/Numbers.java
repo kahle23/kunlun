@@ -6,6 +6,9 @@ package artoria.common.constant;
  */
 public class Numbers {
 
+    public static final String STR_ZERO = "0";
+    public static final String STR_ONE = "1";
+
     public static final int MINUS_NINETY = -90;
     public static final int MINUS_EIGHTY = -80;
     public static final int MINUS_SEVENTY = -70;

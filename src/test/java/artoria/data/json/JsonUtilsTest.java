@@ -1,6 +1,6 @@
 package artoria.data.json;
 
-import artoria.common.Constants;
+import artoria.common.constant.Words;
 import artoria.data.json.support.AbstractJsonHandler;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static artoria.common.Constants.FIVE;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.FIVE;
+import static artoria.common.constant.Numbers.ZERO;
 
 public class JsonUtilsTest {
     private static final Logger log = LoggerFactory.getLogger(JsonUtilsTest.class);
@@ -31,7 +31,7 @@ public class JsonUtilsTest {
 
     @Before
     public void init() {
-        JsonUtils.registerHandler(Constants.DEFAULT, new AbstractJsonHandler() {
+        JsonUtils.registerHandler(Words.DEFAULT, new AbstractJsonHandler() {
             @Override
             public String toJsonString(Object object, Object... arguments) {
 

@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-import static artoria.common.Constants.EIGHT;
+import static artoria.common.constant.Numbers.EIGHT;
 
 /**
  * The java basic data type.

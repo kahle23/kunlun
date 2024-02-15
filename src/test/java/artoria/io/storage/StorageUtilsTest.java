@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.Collection;
 
-import static artoria.common.Constants.DEFAULT;
+import static artoria.common.constant.Words.DEFAULT;
 
 public class StorageUtilsTest {
     private static Logger log = LoggerFactory.getLogger(StorageUtilsTest.class);

@@ -12,7 +12,7 @@ import org.junit.Test;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ZERO;
 
 public class LockUtilsTest {
     private static Logger log = LoggerFactory.getLogger(LockUtilsTest.class);

@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ZERO;
 import static artoria.io.util.IOUtils.DEFAULT_BUFFER_SIZE;
 import static artoria.io.util.IOUtils.EOF;
 

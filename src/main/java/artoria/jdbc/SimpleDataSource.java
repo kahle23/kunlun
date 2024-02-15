@@ -21,7 +21,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
 
 /**
  * Simple data source.

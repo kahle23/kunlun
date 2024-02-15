@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static artoria.common.Constants.DEFAULT;
+import static artoria.common.constant.Words.DEFAULT;
 
 @Deprecated
 public class TemplateUtilsTest {

@@ -5,7 +5,9 @@ import artoria.util.Assert;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.ONE;
+import static artoria.common.constant.Numbers.ZERO;
+import static artoria.common.constant.Symbols.MINUS;
 
 /**
  * The simple thread factory.

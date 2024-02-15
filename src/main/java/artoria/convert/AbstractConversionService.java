@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
 import static artoria.util.ClassUtils.getWrapper;
 import static java.lang.Boolean.FALSE;
 

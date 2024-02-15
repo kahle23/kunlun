@@ -6,7 +6,9 @@ import artoria.util.ObjectUtils;
 
 import java.util.*;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.ONE;
+import static artoria.common.constant.Numbers.ZERO;
+import static artoria.common.constant.Symbols.*;
 
 /**
  * The bean map.

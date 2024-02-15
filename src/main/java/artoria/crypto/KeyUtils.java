@@ -15,8 +15,8 @@ import java.security.spec.X509EncodedKeySpec;
 
 import static artoria.codec.CodecUtils.BASE64;
 import static artoria.codec.CodecUtils.HEX;
-import static artoria.common.Constants.EMPTY_STRING;
-import static artoria.common.Constants.NULL;
+import static artoria.common.constant.Symbols.EMPTY_STRING;
+import static artoria.common.constant.Words.NULL;
 import static artoria.util.ObjectUtils.cast;
 
 /**

@@ -4,14 +4,14 @@ import artoria.util.Assert;
 
 import java.io.*;
 
-import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
+import static artoria.common.constant.Charsets.STR_DEFAULT_CHARSET;
 
 /**
  * Abstract text file.
  * @author Kahle
  */
 public abstract class TextFile extends BinaryFile {
-    private String charset = DEFAULT_CHARSET_NAME;
+    private String charset = STR_DEFAULT_CHARSET;
 
     public String getCharset() {
 

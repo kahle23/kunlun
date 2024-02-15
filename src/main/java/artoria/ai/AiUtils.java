@@ -7,7 +7,7 @@ import artoria.util.Assert;
 
 import java.lang.reflect.Type;
 
-import static artoria.common.Constants.EMPTY_STRING;
+import static artoria.common.constant.Symbols.EMPTY_STRING;
 
 /**
  * The artificial intelligence tools.

@@ -11,7 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.Symbols.NEWLINE;
 
 public class CsvTest {
     private static Logger log = LoggerFactory.getLogger(CsvTest.class);

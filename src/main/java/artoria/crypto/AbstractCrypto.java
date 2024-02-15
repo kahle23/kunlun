@@ -10,7 +10,7 @@ import java.security.SecureRandom;
 import java.security.cert.Certificate;
 import java.security.spec.AlgorithmParameterSpec;
 
-import static artoria.common.Constants.SLASH;
+import static artoria.common.constant.Symbols.SLASH;
 
 /**
  * Abstract implementation of encryption and decryption tools.

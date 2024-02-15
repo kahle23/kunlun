@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import static artoria.common.Constants.ONE;
+import static artoria.common.constant.Numbers.ONE;
 
 @Ignore
 public class JdbcDbHandlerTest {

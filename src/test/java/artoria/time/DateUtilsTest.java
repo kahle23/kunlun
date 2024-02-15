@@ -7,7 +7,8 @@ import org.junit.Test;
 import java.util.Calendar;
 import java.util.Date;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.TimePatterns.NORM_DATETIME;
 
 public class DateUtilsTest {
     private static Logger log = LoggerFactory.getLogger(DateUtilsTest.class);
@@ -52,7 +53,7 @@ public class DateUtilsTest {
         log.info("The method parse(Long), result: {}", DateUtils.parse(DateUtils.create().getTimeInMillis()));
         log.info("The method parse(String), result: {}", DateUtils.parse(DateUtils.create().toString()));
         log.info("The method parse(String, String), the pattern is \"yyyy-MM-dd HH:mm:ss SSS\", result: {}"
-                , DateUtils.format(DateUtils.parse(DateUtils.create().toString(), NORM_DATETIME_PATTERN)));
+                , DateUtils.format(DateUtils.parse(DateUtils.create().toString(), NORM_DATETIME)));
 
         log.info("");
     }

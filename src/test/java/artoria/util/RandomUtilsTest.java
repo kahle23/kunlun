@@ -4,7 +4,7 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
 
 public class RandomUtilsTest {
     private static Logger log = LoggerFactory.getLogger(RandomUtilsTest.class);

@@ -4,7 +4,10 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Charsets.STR_DEFAULT_CHARSET;
+import static artoria.common.constant.Env.*;
+import static artoria.common.constant.Symbols.*;
+import static artoria.common.constant.Words.GET;
 
 /**
  * The constants Test.
@@ -22,7 +25,7 @@ public class ConstantsTest {
         log.info(ROOT_PATH);
         log.info(CLASSPATH);
         log.info(HOST_NAME);
-        log.info(DEFAULT_CHARSET_NAME);
+        log.info(STR_DEFAULT_CHARSET);
         log.info(GET);
     }
 

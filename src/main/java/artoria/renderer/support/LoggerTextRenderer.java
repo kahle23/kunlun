@@ -3,7 +3,9 @@ package artoria.renderer.support;
 import artoria.util.ArrayUtils;
 import artoria.util.StringUtils;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.Symbols.LEFT_CURLY_BRACKET;
+import static artoria.common.constant.Symbols.RIGHT_CURLY_BRACKET;
 
 /**
  * The logger format text renderer.

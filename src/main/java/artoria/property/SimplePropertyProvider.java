@@ -1,6 +1,6 @@
 package artoria.property;
 
-import artoria.common.Constants;
+import artoria.common.constant.Words;
 import artoria.convert.ConversionUtils;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
@@ -26,7 +26,7 @@ public class SimplePropertyProvider implements PropertyProvider {
                                      Map<String, PropertySource> propertySources) {
         Assert.notNull(commonProperties, "Parameter \"commonProperties\" must not null. ");
         Assert.notNull(propertySources, "Parameter \"propertySources\" must not null. ");
-        this.defaultSourceName = Constants.DEFAULT;
+        this.defaultSourceName = Words.DEFAULT;
         this.commonProperties = commonProperties;
         this.propertySources = propertySources;
     }
@@ -34,7 +34,7 @@ public class SimplePropertyProvider implements PropertyProvider {
     public SimplePropertyProvider() {
         this(new ConcurrentHashMap<String, Object>(),
                 new ConcurrentHashMap<String, PropertySource>());
-        registerSource(new SimplePropertySource(Constants.DEFAULT));
+        registerSource(new SimplePropertySource(Words.DEFAULT));
     }
 
     private PropertySource getPropertySourceInner(String sourceName) {

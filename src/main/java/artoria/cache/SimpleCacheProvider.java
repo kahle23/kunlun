@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import static artoria.common.Constants.DEFAULT;
+import static artoria.common.constant.Words.DEFAULT;
 
 /**
  * The simple cache provider.

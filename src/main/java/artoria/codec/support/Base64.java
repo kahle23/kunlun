@@ -8,7 +8,9 @@ import artoria.util.StringUtils;
 import javax.xml.bind.DatatypeConverter;
 import java.io.Serializable;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.MINUS_ONE;
+import static artoria.common.constant.Numbers.ZERO;
+import static artoria.common.constant.Symbols.*;
 
 /**
  * The base64 encode and decode tools.

@@ -6,7 +6,7 @@ import artoria.util.Assert;
 
 import java.util.concurrent.TimeUnit;
 
-import static artoria.common.Constants.EMPTY_STRING;
+import static artoria.common.constant.Symbols.EMPTY_STRING;
 
 /**
  * The lock tools.

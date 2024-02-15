@@ -1,6 +1,7 @@
 package artoria.message;
 
-import artoria.common.Constants;
+import artoria.common.constant.Env;
+import artoria.common.constant.Words;
 import artoria.data.Dict;
 import artoria.data.json.JsonUtils;
 import artoria.data.json.support.AbstractJsonHandler;
@@ -18,7 +19,7 @@ public class MessageUtilsTest {
     private static final String LOG = "log";
 
     static {
-        JsonUtils.registerHandler(Constants.DEFAULT, new AbstractJsonHandler() {
+        JsonUtils.registerHandler(Words.DEFAULT, new AbstractJsonHandler() {
             @Override
             public String toJsonString(Object object, Object... arguments) {
 
@@ -30,7 +31,7 @@ public class MessageUtilsTest {
                 return JSON.parseObject(jsonString, type);
             }
         });
-        Dict dict = Dict.of("hostname", Constants.HOST_NAME);
+        Dict dict = Dict.of("hostname", Env.HOST_NAME);
         MessageUtils.getMessageProvider().registerCommonProperties(dict);
         ConsoleHandler consoleHandler = new ConsoleHandler();
         LogHandler logHandler = new LogHandler();

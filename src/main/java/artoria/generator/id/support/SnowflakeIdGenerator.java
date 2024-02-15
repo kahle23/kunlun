@@ -2,8 +2,8 @@ package artoria.generator.id.support;
 
 import artoria.time.SimpleClock;
 
-import static artoria.common.Constants.ONE;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ONE;
+import static artoria.common.constant.Numbers.ZERO;
 
 /**
  * The identifier generator based on snowflake id.

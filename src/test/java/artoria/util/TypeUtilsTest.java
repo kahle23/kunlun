@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.lang.reflect.GenericArrayType;
 
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ZERO;
 
 public class TypeUtilsTest {
     private static Logger log = LoggerFactory.getLogger(TypeUtilsTest.class);

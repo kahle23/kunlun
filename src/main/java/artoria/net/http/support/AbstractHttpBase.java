@@ -10,8 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static artoria.common.Constants.UTF_8;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Charsets.STR_UTF_8;
+import static artoria.common.constant.Numbers.ZERO;
 
 /**
  * The abstract base http information.
@@ -20,7 +20,7 @@ import static artoria.common.Constants.ZERO;
 public abstract class AbstractHttpBase implements HttpClient.HttpBase {
     private Map<String, List<String>> headers = new LinkedHashMap<String, List<String>>();
     private HttpMethod method;
-    private String charset = UTF_8;
+    private String charset = STR_UTF_8;
     private String url;
 
     @Override

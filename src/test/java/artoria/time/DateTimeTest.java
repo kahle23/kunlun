@@ -7,7 +7,8 @@ import org.junit.Test;
 import java.util.Calendar;
 import java.util.Date;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.TimePatterns.NORM_DATETIME;
 
 public class DateTimeTest {
     private static Logger log = LoggerFactory.getLogger(DateTimeTest.class);
@@ -68,7 +69,7 @@ public class DateTimeTest {
         log.info("The method create(Calendar), result: {}", DateUtils.create(Calendar.getInstance()));
         log.info("The method create(String), result: {}", DateUtils.create(DateUtils.create().toString()));
         log.info("The method create(String, String), the pattern is \"yyyy-MM-dd HH:mm:ss SSS\", result: {}"
-                , DateUtils.create(DateUtils.create().toString(), NORM_DATETIME_PATTERN));
+                , DateUtils.create(DateUtils.create().toString(), NORM_DATETIME));
         log.info("The method create(1990, 12, 12), result: {}", DateUtils.create(1990, TWELVE, TWELVE));
         log.info("The method create(1990, 12, 12, 12, 12, 12), result: {}"
                 , DateUtils.create(1990, TWELVE, TWELVE, TWELVE, TWELVE, TWELVE));

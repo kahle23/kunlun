@@ -14,7 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ZERO;
 import static artoria.io.util.IOUtils.EOF;
 
 public abstract class AbstractFileBuilder implements FileBuilder {

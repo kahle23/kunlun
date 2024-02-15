@@ -11,7 +11,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.*;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.Symbols.*;
 
 /**
  * Csv file.

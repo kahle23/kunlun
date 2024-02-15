@@ -10,8 +10,8 @@ import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import static artoria.common.Constants.TEN;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.TEN;
+import static artoria.common.constant.Numbers.ZERO;
 
 public class ClassUtilsTest {
     private static Logger log = LoggerFactory.getLogger(ClassUtilsTest.class);

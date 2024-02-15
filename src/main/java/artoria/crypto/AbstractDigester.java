@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 
-import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
+import static artoria.common.constant.Charsets.STR_DEFAULT_CHARSET;
 
 /**
  * Abstract digester.
@@ -18,7 +18,7 @@ import static artoria.common.Constants.DEFAULT_CHARSET_NAME;
  * @author Kahle
  */
 public abstract class AbstractDigester implements Digester {
-    private String charset = DEFAULT_CHARSET_NAME;
+    private String charset = STR_DEFAULT_CHARSET;
     private String algorithm;
 
     @Override

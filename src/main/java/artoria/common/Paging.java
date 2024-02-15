@@ -2,8 +2,8 @@ package artoria.common;
 
 import java.io.Serializable;
 
-import static artoria.common.Constants.ONE;
-import static artoria.common.Constants.TEN;
+import static artoria.common.constant.Numbers.ONE;
+import static artoria.common.constant.Numbers.TEN;
 
 /**
  * The simple paging info.

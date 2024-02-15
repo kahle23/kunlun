@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.TimePatterns.*;
 
 /**
  * The date formatter and parser simple implement by jdk.
@@ -42,26 +42,26 @@ public class SimpleDateProvider implements DateProvider {
 
     public SimpleDateProvider() {
 
-        this(NORM_DATETIME_PATTERN);
+        this(NORM_DATETIME);
     }
 
     public SimpleDateProvider(String defaultPattern) {
         Assert.notBlank(defaultPattern, "Parameter \"defaultPattern\" must not blank. ");
         register(this.defaultPattern = defaultPattern);
-        register(FULL_DATETIME_PATTERN);
-        register(NORM_DATETIME_MS_PATTERN);
-        register(NORM_DATETIME_PATTERN);
-        register(UTC_SIMPLE_MS_PATTERN);
-        register(UTC_MS_PATTERN);
         register("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-        register("yyyy-MM-dd'T'HH:mm:ss'Z'");
         register("yyyy-MM-dd'T'HH:mm:ssZ");
-        register("yyyy-MM-dd HH:mm:ss");
-        register("yyyy-MM-dd HH:mm");
-        register("yyyy-MM-dd");
-        register("yyyy/MM/dd HH:mm:ss");
-        register("yyyy/MM/dd HH:mm");
-        register("yyyy/MM/dd");
+        register(UTC_MS_NOZ);
+        register(UTC_MS);
+        register(UTC_NOZ);
+        register(UTC);
+        register(Y4MD2MI_HMS2CO_S3);
+        register(Y4MD2MI_HMS2CO);
+        register(Y4MD2MI_HM2CO);
+        register(Y4MD2MI);
+        register(Y4MD2SL_HMS2CO_S3);
+        register(Y4MD2SL_HMS2CO);
+        register(Y4MD2SL_HM2CO);
+        register(Y4MD2SL);
     }
 
     @Override

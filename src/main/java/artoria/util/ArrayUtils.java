@@ -1,7 +1,7 @@
 package artoria.util;
 
-import static artoria.common.Constants.ONE;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ONE;
+import static artoria.common.constant.Numbers.ZERO;
 
 /**
  * The array tools.

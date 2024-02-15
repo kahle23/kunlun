@@ -4,7 +4,7 @@ import artoria.action.AbstractActionHandler;
 import artoria.core.handler.OperatingSupportHandler;
 import artoria.util.Assert;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
 
 /**
  * The abstract operate action handler.

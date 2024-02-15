@@ -19,7 +19,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.FIVE;
+import static artoria.common.constant.Symbols.*;
 
 /**
  * The abstract http client.

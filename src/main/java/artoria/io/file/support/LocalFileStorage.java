@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static artoria.common.Constants.SLASH;
-import static artoria.common.Constants.UTF_8;
+import static artoria.common.constant.Charsets.STR_UTF_8;
+import static artoria.common.constant.Symbols.SLASH;
 
 /**
  * The local file storage.
@@ -39,7 +39,7 @@ public class LocalFileStorage extends AbstractDataStorage {
 
     public LocalFileStorage() {
 
-        this(UTF_8);
+        this(STR_UTF_8);
     }
 
     protected File convertToFile(Object key) {

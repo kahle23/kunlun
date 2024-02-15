@@ -15,7 +15,7 @@ import java.security.GeneralSecurityException;
 import java.security.spec.KeySpec;
 
 import static artoria.codec.CodecUtils.BASE64;
-import static artoria.common.Constants.DES;
+import static artoria.common.constant.Algorithms.DES;
 
 /**
  * DES/ECB/ZeroPadding(NoPadding)

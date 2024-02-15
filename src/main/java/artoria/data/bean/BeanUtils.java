@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static artoria.common.Constants.THIRTY;
+import static artoria.common.constant.Numbers.THIRTY;
 
 /**
  * The bean conversion tools.

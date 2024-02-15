@@ -11,7 +11,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 
 import static artoria.codec.CodecUtils.BASE64;
-import static artoria.common.Constants.RSA;
+import static artoria.common.constant.Algorithms.RSA;
 import static artoria.crypto.KeyType.PRIVATE_KEY;
 import static artoria.crypto.KeyType.PUBLIC_KEY;
 

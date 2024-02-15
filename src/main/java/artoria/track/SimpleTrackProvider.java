@@ -9,7 +9,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.Symbols.*;
 import static java.util.Collections.emptyList;
 
 /**

@@ -6,7 +6,7 @@ import artoria.logging.LoggerFactory;
 import artoria.renderer.TextRenderer;
 import org.junit.Test;
 
-import static artoria.common.Constants.DEFAULT;
+import static artoria.common.constant.Words.DEFAULT;
 import static org.junit.Assert.assertEquals;
 
 public class SimpleTextRendererTest {

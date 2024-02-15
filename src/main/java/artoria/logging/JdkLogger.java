@@ -4,7 +4,7 @@ import artoria.renderer.support.FormatTextRenderer;
 
 import java.util.logging.Level;
 
-import static artoria.common.Constants.THREE;
+import static artoria.common.constant.Numbers.THREE;
 
 /**
  * The jdk logger wrapper.

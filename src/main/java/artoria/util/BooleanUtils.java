@@ -1,6 +1,7 @@
 package artoria.util;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.Words.*;
 
 /**
  * The boolean tools.
@@ -44,10 +45,10 @@ public class BooleanUtils {
                         OFF.equalsIgnoreCase(boolString) ? Boolean.FALSE : null;
             }
             case FOUR: {
-                return TRUE_STR.equalsIgnoreCase(boolString) ? Boolean.TRUE : null;
+                return TRUE.equalsIgnoreCase(boolString) ? Boolean.TRUE : null;
             }
             case FIVE: {
-                return FALSE_STR.equalsIgnoreCase(boolString) ? Boolean.FALSE : null;
+                return FALSE.equalsIgnoreCase(boolString) ? Boolean.FALSE : null;
             }
             default: { return null; }
         }

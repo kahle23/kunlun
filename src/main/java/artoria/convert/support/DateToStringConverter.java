@@ -5,10 +5,10 @@ import artoria.util.Assert;
 
 import java.util.Date;
 
-import static artoria.common.Constants.DEFAULT_DATETIME_PATTERN;
+import static artoria.common.constant.TimePatterns.DEFAULT_DATETIME;
 
 public class DateToStringConverter extends AbstractClassConverter {
-    private String dateToStringPattern = DEFAULT_DATETIME_PATTERN;
+    private String dateToStringPattern = DEFAULT_DATETIME;
 
     public DateToStringConverter() {
 

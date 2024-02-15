@@ -11,7 +11,8 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.Symbols.*;
 
 /**
  * The simple jdk logger formatter.

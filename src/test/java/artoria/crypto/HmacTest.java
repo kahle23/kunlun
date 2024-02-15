@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.io.File;
 
 import static artoria.codec.CodecUtils.HEX;
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Algorithms.*;
 
 public class HmacTest {
     private static final Logger log = LoggerFactory.getLogger(HmacTest.class);

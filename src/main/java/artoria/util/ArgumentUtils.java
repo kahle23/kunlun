@@ -6,7 +6,9 @@ import artoria.data.tuple.TripleImpl;
 import java.util.HashMap;
 import java.util.Map;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.Symbols.DOUBLE_MINUS;
+import static artoria.common.constant.Symbols.EQUAL;
 
 /**
  * The arguments tool.

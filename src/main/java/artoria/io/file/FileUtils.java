@@ -11,7 +11,7 @@ import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.LinkedList;
 
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ZERO;
 
 /**
  * The file tools.

@@ -18,7 +18,9 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.ONE;
+import static artoria.common.constant.Numbers.ZERO;
+import static artoria.common.constant.Symbols.*;
 import static artoria.io.util.IOUtils.EOF;
 import static artoria.net.http.HttpMethod.HEAD;
 

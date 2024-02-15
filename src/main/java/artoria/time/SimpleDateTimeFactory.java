@@ -1,6 +1,6 @@
 package artoria.time;
 
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ZERO;
 
 public class SimpleDateTimeFactory implements DateTimeFactory {
 

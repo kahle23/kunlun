@@ -10,8 +10,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static artoria.common.Constants.MINUS_ONE;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.MINUS_ONE;
+import static artoria.common.constant.Numbers.ZERO;
 
 /**
  * The abstract value wrapper cache.

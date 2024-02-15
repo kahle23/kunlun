@@ -6,7 +6,8 @@ import artoria.util.StringUtils;
 import java.io.File;
 import java.net.URL;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.Symbols.*;
 
 /**
  * The filename and filepath tools.

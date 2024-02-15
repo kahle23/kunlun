@@ -3,7 +3,7 @@ package artoria.ai.support;
 import artoria.ai.AbstractAiHandler;
 import artoria.util.Assert;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
 
 /**
  * The abstract classic AI handler.

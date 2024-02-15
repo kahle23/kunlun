@@ -6,7 +6,7 @@ import artoria.util.Assert;
 
 import java.util.Date;
 
-import static artoria.common.Constants.ONE_THOUSAND;
+import static artoria.common.constant.Numbers.ONE_THOUSAND;
 
 public class NumberToDateConverter extends AbstractClassConverter {
     private Boolean unixTimestamp = false;

@@ -2,8 +2,8 @@ package artoria.generator.id.support;
 
 import java.util.UUID;
 
-import static artoria.common.Constants.EMPTY_STRING;
-import static artoria.common.Constants.MINUS;
+import static artoria.common.constant.Symbols.EMPTY_STRING;
+import static artoria.common.constant.Symbols.MINUS;
 
 /**
  * The simple identifier generator based on uuid.

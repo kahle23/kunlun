@@ -5,8 +5,8 @@ import artoria.util.Assert;
 
 import java.io.*;
 
-import static artoria.common.Constants.EMPTY_STRING;
-import static artoria.common.Constants.ZERO;
+import static artoria.common.constant.Numbers.ZERO;
+import static artoria.common.constant.Symbols.EMPTY_STRING;
 
 /**
  * Text file.

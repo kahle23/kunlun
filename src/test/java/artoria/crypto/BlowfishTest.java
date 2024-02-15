@@ -11,7 +11,7 @@ import javax.crypto.spec.IvParameterSpec;
 import java.security.GeneralSecurityException;
 
 import static artoria.codec.CodecUtils.BASE64;
-import static artoria.common.Constants.BLOWFISH;
+import static artoria.common.constant.Algorithms.BLOWFISH;
 
 /**
  * Blowfish/ECB/ZeroPadding(NoPadding)

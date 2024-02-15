@@ -14,7 +14,8 @@ import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.Words.DEFAULT;
 
 /**
  * The cache tools Test.

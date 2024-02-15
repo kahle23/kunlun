@@ -6,7 +6,9 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import java.security.GeneralSecurityException;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Algorithms.*;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.Symbols.SLASH;
 import static artoria.crypto.Padding.NO_PADDING;
 import static artoria.crypto.Padding.ZERO_PADDING;
 

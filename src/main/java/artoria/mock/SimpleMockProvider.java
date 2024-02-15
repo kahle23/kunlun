@@ -12,7 +12,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 import java.util.*;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
 
 public class SimpleMockProvider implements MockProvider {
     /**

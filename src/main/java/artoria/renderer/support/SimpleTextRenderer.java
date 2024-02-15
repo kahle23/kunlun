@@ -15,7 +15,9 @@ import java.text.ParseException;
 import java.util.Collections;
 import java.util.Map;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Charsets.STR_UTF_8;
+import static artoria.common.constant.Numbers.*;
+import static artoria.common.constant.Symbols.EMPTY_STRING;
 import static artoria.io.util.IOUtils.EOF;
 import static artoria.util.ObjectUtils.cast;
 
@@ -32,7 +34,7 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
         Assert.notBlank(path, "Parameter \"path\" must not blank. ");
         InputStream inputStream = ClassLoaderUtils.getResourceAsStream(path, getClass());
         Assert.notNull(inputStream, "Can not find template by \"" + path + "\" in classpath. ");
-        if (StringUtils.isBlank(encoding)) { encoding = DEFAULT_ENCODING_NAME; }
+        if (StringUtils.isBlank(encoding)) { encoding = STR_UTF_8; }
         Charset charset = Charset.forName(encoding);
         return new InputStreamReader(inputStream, charset);
     }

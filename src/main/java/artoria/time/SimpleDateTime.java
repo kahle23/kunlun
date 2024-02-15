@@ -5,7 +5,7 @@ import artoria.util.Assert;
 import java.util.Calendar;
 import java.util.Date;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.*;
 
 /**
  * The date time simple implement by jdk.

@@ -6,7 +6,9 @@ import org.junit.Test;
 
 import java.nio.charset.Charset;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Charsets.STR_UTF_8;
+import static artoria.common.constant.Numbers.MINUS_ONE;
+import static artoria.common.constant.Symbols.*;
 import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.*;
 
@@ -16,7 +18,7 @@ import static org.junit.Assert.*;
  */
 public class Base64Test {
     private static final Logger log = LoggerFactory.getLogger(Base64Test.class);
-    private static final Charset encoding = Charset.forName(UTF_8);
+    private static final Charset encoding = Charset.forName(STR_UTF_8);
     private final String data =
             "-->> 行路难！行路难！多歧路，今安在？ <<--\n" +
             "-->> 长风破浪会有时，直挂云帆济沧海。 <<--";

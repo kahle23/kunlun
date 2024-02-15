@@ -17,7 +17,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.THREE;
+import static artoria.common.constant.Numbers.ZERO;
+import static artoria.common.constant.Words.GET;
+import static artoria.common.constant.Words.SET;
 
 /**
  * The bean map simple implement by jdk.

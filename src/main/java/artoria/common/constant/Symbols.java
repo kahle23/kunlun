@@ -9,6 +9,10 @@ package artoria.common.constant;
  */
 public class Symbols {
 
+    public static final String PATH_SEPARATOR = System.getProperty("path.separator");
+    public static final String FILE_SEPARATOR = System.getProperty("file.separator");
+    public static final String NEWLINE = System.getProperty("line.separator");
+
     public static final String DOT = ".";
     public static final String PLUS = "+";
     public static final String MINUS = "-";

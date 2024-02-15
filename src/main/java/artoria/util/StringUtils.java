@@ -3,7 +3,9 @@ package artoria.util;
 import java.lang.reflect.Array;
 import java.util.Collection;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.ONE;
+import static artoria.common.constant.Numbers.ZERO;
+import static artoria.common.constant.Symbols.*;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 

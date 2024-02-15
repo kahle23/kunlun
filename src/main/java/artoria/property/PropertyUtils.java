@@ -1,12 +1,14 @@
 package artoria.property;
 
+import artoria.common.constant.Nulls;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 import java.util.Map;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.ZERO;
+import static artoria.common.constant.Symbols.EMPTY_STRING;
 
 /**
  * The property tools.
@@ -48,14 +50,14 @@ public class PropertyUtils {
 
     public static String getString(String name) {
 
-        return getProperty(EMPTY_STRING, name, String.class, NULL_STR);
+        return getProperty(EMPTY_STRING, name, String.class, Nulls.STR);
     }
 
     // There is no "getString(String name, String defaultValue)".
 
     public static String getString(String source, String name) {
 
-        return getProperty(source, name, String.class, NULL_STR);
+        return getProperty(source, name, String.class, Nulls.STR);
     }
 
     public static String getString(String source, String name, String defaultValue) {
@@ -155,7 +157,7 @@ public class PropertyUtils {
 
     public static Object getProperty(String name) {
 
-        return getProperty(EMPTY_STRING, name, NULL_OBJ);
+        return getProperty(EMPTY_STRING, name, Nulls.OBJ);
     }
 
     public static Object getProperty(String name, Object defaultValue) {
@@ -165,7 +167,7 @@ public class PropertyUtils {
 
     public static Object getProperty(String source, String name) {
 
-        return getProperty(source, name, NULL_OBJ);
+        return getProperty(source, name, Nulls.OBJ);
     }
 
     public static Object getProperty(String source, String name, Object defaultValue) {

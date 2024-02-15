@@ -5,7 +5,8 @@ import artoria.util.Assert;
 
 import javax.crypto.SecretKey;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Algorithms.*;
+import static artoria.common.constant.Numbers.*;
 
 /**
  * Universal encryption tools.

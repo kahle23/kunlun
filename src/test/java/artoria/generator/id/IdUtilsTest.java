@@ -5,7 +5,9 @@ import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import org.junit.Test;
 
-import static artoria.common.Constants.*;
+import static artoria.common.constant.Numbers.FIVE;
+import static artoria.common.constant.Numbers.ZERO;
+import static artoria.common.constant.Symbols.NEWLINE;
 
 /**
  * The id tools Test.
