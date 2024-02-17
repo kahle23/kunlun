@@ -1,19 +1,19 @@
-<h1 align="center">Artoria</h1>
-<p align="center"><b>Artoria 是一个基于门面模式的 Java 技术框架。</b></p>
+<h1 align="center">Kunlun</h1>
+<p align="center"><b>Kunlun 是一个基于门面模式的 Java 技术框架。</b></p>
 <p align="center"><b><a href="../../README.md">English</a> | 中文</b></p>
 
 # 简介
 
-Artoria 是一个基于门面模式的 Java 技术框架。它的设计思想是通过门面模式为使用者提供一个统一的接口去和其他模块交互。使用者不必了解其他模块的实现细节，并且使用者不会和具体的某种实现进行耦合，更利于扩展和维护。
+Kunlun 是一个基于门面模式的 Java 技术框架。它的设计思想是通过门面模式为使用者提供一个统一的接口去和其他模块交互。使用者不必了解其他模块的实现细节，并且使用者不会和具体的某种实现进行耦合，更利于扩展和维护。
 <br /><br /><br />
 
 # 功能图
 
-![Artoria 功能](../assets/artoria-functions-en.png)
+![Kunlun 功能](../assets/kunlun-functions-en.png)
 <br /><br /><br />
 
 # 功能列表
-下面会大致介绍一下各个工具的作用及场景。更详细的文档请查看（因为本项目属于“门面”，所以具体的实现类很少，更重要的是其接口和工具类）：https://github.com/kahle23/artoria-extend。<br /><br /><br />
+下面会大致介绍一下各个工具的作用及场景。更详细的文档请查看（因为本项目属于“门面”，所以具体的实现类很少，更重要的是其接口和工具类）：https://github.com/kahle23/kunlun-plus 。<br /><br /><br />
 
 ## Action Tools（Action 工具）
 什么是“Action”呢？其实任何一段程序都可以通过“fun(input) return output;”进行表达，类似于数学上的“f(x)”，在这里我将它定义为“Action”了，然后给予它一个名字。所以不管是极其复杂的逻辑，还是简单的逻辑，都可以通过“Action 名称 + 入参 + 接收出参的变量”进行调用。<br />

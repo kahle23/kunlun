@@ -1,20 +1,20 @@
-<h1 align="center">Artoria</h1>
-<p align="center"><b>Artoria is a Java technology framework based on the Facade pattern.</b></p>
+<h1 align="center">Kunlun</h1>
+<p align="center"><b>Kunlun is a Java technology framework based on the Facade pattern.</b></p>
 <p align="center"><b>English | <a href="documents/zh/README.md">中文</a></b></p>
 <p><b>(All the English in this document has been translated using AI, for better understanding, it can be switched to Chinese.)</b></p>
 
 # Introduction
 
-Artoria is a Java technology framework based on the Facade pattern. Its design philosophy is to provide users with a unified interface for interaction with other modules through the Facade pattern. Users do not need to understand the implementation details of other modules, and they will not be coupled with a specific implementation, which is more conducive to extension and maintenance.
+Kunlun is a Java technology framework based on the Facade pattern. Its design philosophy is to provide users with a unified interface for interaction with other modules through the Facade pattern. Users do not need to understand the implementation details of other modules, and they will not be coupled with a specific implementation, which is more conducive to extension and maintenance.
 <br /><br /><br />
 
 # Function Diagram
 
-![Function Diagram](documents/assets/artoria-functions-en.png)
+![Function Diagram](documents/assets/kunlun-functions-en.png)
 <br /><br /><br />
 
 # Function List
-Below, we will briefly introduce the functions and scenarios of various tools. For more detailed documentation, please refer to: https://github.com/kahle23/artoria-extend. (Since this project is considered a "Facade", there are fewer specific implementation classes; what's more important are its interfaces and utility classes). <br /><br /><br />
+Below, we will briefly introduce the functions and scenarios of various tools. For more detailed documentation, please refer to: https://github.com/kahle23/kunlun-plus. (Since this project is considered a "Facade", there are fewer specific implementation classes; what's more important are its interfaces and utility classes). <br /><br /><br />
 
 ## Action Tools
 What is an "Action"? In fact, any piece of program can be expressed as "fun(input) return output;", similar to the mathematical expression "f(x)". Here, I have defined it as "Action", and then given it a name. Therefore, whether it's extremely complex logic or simple logic, it can be invoked by "Action name + input parameters + variables that receive the output parameters". <br />
