@@ -56,14 +56,14 @@ public class ActionUtils {
         return getActionProvider().execute(actionName, arguments);
     }
 
-    public static <T> T execute(Object input, String actionName, String operation, Type type) {
+    public static <T> T execute(String actionName, Object input, String operation, Type type) {
 
-        return getActionProvider().execute(input, actionName, operation, type);
+        return getActionProvider().execute(actionName, input, operation, type);
     }
 
-    public static <T> T execute(Object input, String actionName, Type type) {
+    public static <T> T execute(String actionName, Object input, Type type) {
 
-        return getActionProvider().execute(input, actionName, EMPTY_STRING, type);
+        return getActionProvider().execute(actionName, input, EMPTY_STRING, type);
     }
 
 }

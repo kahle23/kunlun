@@ -89,6 +89,6 @@ public interface MessageProvider {
      * @param arguments The arguments for the operation to be performed
      * @return The result of the operation
      */
-    Object operate(String handlerName, String operation, Object[] arguments);
+    Object execute(String handlerName, String operation, Object[] arguments);
 
 }

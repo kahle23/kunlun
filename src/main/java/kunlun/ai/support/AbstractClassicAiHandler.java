@@ -6,9 +6,8 @@
 package kunlun.ai.support;
 
 import kunlun.ai.AbstractAiHandler;
-import kunlun.util.Assert;
-
-import static kunlun.common.constant.Numbers.*;
+import kunlun.data.tuple.Triple;
+import kunlun.util.ArgumentUtils;
 
 /**
  * The abstract classic AI handler.
@@ -18,20 +17,8 @@ public abstract class AbstractClassicAiHandler extends AbstractAiHandler {
 
     @Override
     public Object execute(Object[] arguments) {
-        // Check parameters.
-        Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");
-        Assert.isTrue(arguments.length >= THREE
-                , "The length of parameter \"arguments\" must be at least 3. ");
-        // Check return value type.
-        Assert.notNull(arguments[TWO], "Parameter \"arguments[2]\" must not null. ");
-        Assert.isInstanceOf(Class.class, arguments[TWO]
-            , "Parameter \"arguments[2]\" must instance of Class. ");
-        // Extract parameters.
-        String strategy = arguments[ZERO] != null ? String.valueOf(arguments[ZERO]) : null;
-        Class<?> clazz = (Class<?>) arguments[TWO];
-        Object input = arguments[ONE];
-        // Method call.
-        return execute(input, strategy, clazz);
+        Triple<Object, String, Class<?>> triple = ArgumentUtils.parseToObjStrCls(arguments);
+        return execute(triple.getLeft(), triple.getMiddle(), triple.getRight());
     }
 
     /**

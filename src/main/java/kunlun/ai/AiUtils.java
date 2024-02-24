@@ -62,6 +62,11 @@ public class AiUtils {
         return getAiProvider().getHandler(handlerName);
     }
 
+    public static Object execute(String handlerName, Object[] arguments) {
+
+        return getAiProvider().execute(handlerName, arguments);
+    }
+
     public static <T> T execute(String handlerName, Object input, String operation, Type type) {
 
         return getAiProvider().execute(handlerName, input, operation, type);
@@ -70,11 +75,6 @@ public class AiUtils {
     public static <T> T execute(String handlerName, Object input, Type type) {
 
         return getAiProvider().execute(handlerName, input, EMPTY_STRING, type);
-    }
-
-    public static Object execute(String handlerName, Object[] arguments) {
-
-        return getAiProvider().execute(handlerName, arguments);
     }
 
 }

@@ -117,10 +117,10 @@ public abstract class AbstractMessageProvider implements MessageProvider {
     }
 
     @Override
-    public Object operate(String handlerName, String operation, Object[] arguments) {
+    public Object execute(String handlerName, String operation, Object[] arguments) {
         Assert.notBlank(handlerName, "Parameter \"handlerName\" must not blank. ");
         Assert.notBlank(operation, "Parameter \"operation\" must not blank. ");
-        return getMessageHandlerInner(handlerName).operate(operation, arguments);
+        return getMessageHandlerInner(handlerName).execute(operation, arguments);
     }
 
 }

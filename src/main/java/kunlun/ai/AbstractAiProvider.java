@@ -96,14 +96,14 @@ public abstract class AbstractAiProvider implements AiProvider {
 
     @Override
     public Object execute(String handlerName, Object[] arguments) {
-        // Parameter "arguments" is usually: 0 strategy or scene, 1 input, 2 type
+        // Parameter "arguments" is usually: 0 strategy or operation, 1 input, 2 type
         return getHandlerInner(handlerName).execute(arguments);
     }
 
     @Override
     public <T> T execute(String handlerName, Object input, String operation, Type type) {
 
-        return ObjectUtils.cast(execute(handlerName, new Object[] {operation, input, type }));
+        return ObjectUtils.cast(execute(handlerName, new Object[] { operation, input, type }));
     }
 
 }

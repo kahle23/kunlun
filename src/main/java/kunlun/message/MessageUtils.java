@@ -66,14 +66,14 @@ public class MessageUtils {
         return getMessageProvider().subscribe(handlerName, condition, messageListener);
     }
 
-    public static <T> T operate(String handlerName, String operation, Object input, Type type) {
+    public static Object execute(String handlerName, String operation, Object[] arguments) {
 
-        return cast(operate(handlerName, operation, new Object[]{input, type}));
+        return getMessageProvider().execute(handlerName, operation, arguments);
     }
 
-    public static Object operate(String handlerName, String operation, Object[] arguments) {
+    public static <T> T execute(String handlerName, Object input, String operation, Type type) {
 
-        return getMessageProvider().operate(handlerName, operation, arguments);
+        return cast(execute(handlerName, operation, new Object[]{input, type}));
     }
 
 }

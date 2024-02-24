@@ -12,7 +12,7 @@ import kunlun.util.Assert;
  * The abstract dynamic invoke action handler.
  * @author Kahle
  */
-public abstract class AbstractInvokeActionHandler extends AbstractOperateActionHandler {
+public abstract class AbstractInvokeActionHandler extends AbstractStrategyActionHandler {
 
     /**
      * Build the context object from the parameters.
@@ -63,9 +63,9 @@ public abstract class AbstractInvokeActionHandler extends AbstractOperateActionH
     }
 
     @Override
-    public Object operate(Object input, String name, Class<?> clazz) {
+    public Object execute(Object input, String strategy, Class<?> clazz) {
         // Build context.
-        InvokeContext context = buildContext(input, name, clazz);
+        InvokeContext context = buildContext(input, strategy, clazz);
         Assert.state(context != null, "Build context failure! ");
         try {
             // Load config and set to context.

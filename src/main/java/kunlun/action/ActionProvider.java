@@ -65,13 +65,13 @@ public interface ActionProvider {
 
     /**
      * Execute a specific logic.
-     * @param input The input parameters to be handled
      * @param actionName The name of action
+     * @param input The input parameters to be handled
      * @param operation The name of the operation to be performed (strategy or operation or null)
      * @param type The type of the return value
      * @param <T> The generic type of the return value
      * @return The return value corresponding to the handler
      */
-    <T> T execute(Object input, String actionName, String operation, Type type);
+    <T> T execute(String actionName, Object input, String operation, Type type);
 
 }

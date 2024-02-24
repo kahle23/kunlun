@@ -5,14 +5,14 @@
 
 package kunlun.message.support;
 
+import kunlun.data.tuple.Pair;
 import kunlun.message.MessageHandler;
+import kunlun.util.ArgumentUtils;
 import kunlun.util.Assert;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Map;
-
-import static kunlun.common.constant.Numbers.*;
 
 /**
  * The abstract message handler.
@@ -75,7 +75,7 @@ public abstract class AbstractClassicMessageHandler implements MessageHandler {
     @Override
     public Object send(Object message, Type type) {
 
-        return operate(SEND, new Object[]{ message, type });
+        return execute(SEND, new Object[]{ message, type });
     }
 
     @Override
@@ -91,19 +91,10 @@ public abstract class AbstractClassicMessageHandler implements MessageHandler {
     }
 
     @Override
-    public Object operate(Object operation, Object[] arguments) {
+    public Object execute(Object operation, Object[] arguments) {
         Assert.notNull(operation, "Parameter \"operation\" must not null. ");
-        Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");
-        Assert.isTrue(arguments.length >= TWO
-                , "Parameter \"arguments\" length must >= 2. ");
-        Assert.notNull(arguments[ZERO], "Parameter \"arguments[0]\" must not null. ");
-        Assert.notNull(arguments[ONE], "Parameter \"arguments[1]\" must not null. ");
-        Assert.isInstanceOf(Class.class, arguments[ONE]
-                , "Parameter \"arguments[1]\" must instance of class. ");
-        Class<?> clazz = (Class<?>) arguments[ONE];
-        String name = String.valueOf(operation);
-        Object input = arguments[ZERO];
-        return operate(input, name, clazz);
+        Pair<Object, Class<?>> pair = ArgumentUtils.parseToObjCls(arguments);
+        return execute(pair.getLeft(), String.valueOf(operation), pair.getRight());
     }
 
     /**
@@ -114,6 +105,6 @@ public abstract class AbstractClassicMessageHandler implements MessageHandler {
      * @param clazz The return value class of the operation
      * @return The result of the operation or null
      */
-    public abstract Object operate(Object input, String name, Class<?> clazz);
+    public abstract Object execute(Object input, String name, Class<?> clazz);
 
 }

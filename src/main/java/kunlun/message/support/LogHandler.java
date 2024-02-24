@@ -20,12 +20,12 @@ public class LogHandler extends ConsoleHandler {
     private static final Logger log = LoggerFactory.getLogger(LogHandler.class);
 
     @Override
-    public Object operate(Object input, String name, Class<?> clazz) {
+    public Object execute(Object input, String name, Class<?> clazz) {
         if (SEND.equals(name)) {
             Assert.notNull(input, "Parameter \"input\" must not null. ");
             Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
             if (input instanceof List) {
-                return operate(input, "batchSend", clazz);
+                return execute(input, BATCH_SEND, clazz);
             }
             isSupport(new Class[]{Boolean.class}, clazz);
             log.info(convert(input, getCommonProperties()));
