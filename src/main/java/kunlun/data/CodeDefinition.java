@@ -15,6 +15,7 @@ import kunlun.core.Definition;
  * communication through a communication channel or storage in a storage medium.
  *
  * @see <a href="https://en.wikipedia.org/wiki/Code">Code</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Error_code">Error code</a>
  * @author Kahle
  */
 public interface CodeDefinition extends Definition {

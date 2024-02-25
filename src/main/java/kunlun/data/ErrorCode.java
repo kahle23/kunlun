@@ -10,6 +10,7 @@ package kunlun.data;
  * @see <a href="https://en.wikipedia.org/wiki/Error_code">Error code</a>
  * @author Kahle
  */
+@Deprecated
 public interface ErrorCode extends CodeDefinition {
 
     /**
