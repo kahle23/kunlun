@@ -10,6 +10,7 @@ import kunlun.logging.LoggerFactory;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * The array tools Test.
@@ -30,6 +31,20 @@ public class ArrayUtilsTest {
         Integer[] arr = new Integer[]{1, 2, 3, 4, 5};
         ArrayUtils.reverse(arr);
         log.info(Arrays.toString(arr));
+    }
+
+    @Test
+    public void toListTest1() {
+        int[] arr = new int[]{1, 2, 3, 4, 5};
+        List<Integer> list = ArrayUtils.toList(arr);
+        log.info("list {}, class {}", list, list.getClass());
+    }
+
+    @Test
+    public void toListTest2() {
+        Integer[] arr = new Integer[]{1, 2, 3, 4, 5};
+        List<Integer> list = ArrayUtils.toList(arr);
+        log.info("list {}, class {}", list, list.getClass());
     }
 
 }

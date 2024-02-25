@@ -49,18 +49,6 @@ public class CollectionUtils {
         }
     }
 
-    public static <E> void addAll(Collection<E> collection, Enumeration<E> enumeration) {
-        if (collection == null || enumeration == null) { return; }
-        while (enumeration.hasMoreElements()) {
-            collection.add(enumeration.nextElement());
-        }
-    }
-
-    public static <E> E getFirst(List<E> list) {
-        if (isEmpty(list)) { return null; }
-        return list.get(ZERO);
-    }
-
     public static <E> List<E> removeDuplicate(List<E> list) {
         Set<E> eSet = new HashSet<E>(list);
         return new ArrayList<E>(eSet);
@@ -75,6 +63,29 @@ public class CollectionUtils {
             }
         }
         return newList;
+    }
+
+    public static <E> E getFirst(List<E> list) {
+        if (isEmpty(list)) { return null; }
+        return list.get(ZERO);
+    }
+
+    public static <E> E getLast(List<E> list) {
+        if (isEmpty(list)) { return null; }
+        return list.get(list.size() - ONE);
+    }
+
+    public static <T> T[] toArray(Collection<T> collection, Class<?> componentType) {
+        if (collection == null) { return null; }
+        T[] array = ArrayUtils.newArray(componentType, ZERO);
+        return collection.toArray(array);
+    }
+
+    public static <E> void addAll(Collection<E> collection, Enumeration<E> enumeration) {
+        if (collection == null || enumeration == null) { return; }
+        while (enumeration.hasMoreElements()) {
+            collection.add(enumeration.nextElement());
+        }
     }
 
 }

@@ -5,6 +5,10 @@
 
 package kunlun.util;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import static kunlun.common.constant.Numbers.ONE;
 import static kunlun.common.constant.Numbers.ZERO;
 
@@ -78,12 +82,40 @@ public class ArrayUtils {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> T[] newArray(Class<?> componentType, int newSize) {
+        Assert.notNull(componentType, "Parameter \"componentType\" must not null. ");
+        return (T[]) Array.newInstance(componentType, newSize);
+    }
+
+    public static Object[] newArray(int newSize) {
+
+        return new Object[newSize];
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> List<T> toList(Object array) {
+        // Validate.
+        if (array == null) { return null; }
+        Class<?> arrayCls = array.getClass();
+        Assert.isTrue(arrayCls.isArray(), "Parameter \"array\" must is array. ");
+        // Convert.
+        List<T> result = new ArrayList<T>();
+        int length = Array.getLength(array);
+        for (int i = ZERO; i < length; i++) {
+            Object obj = Array.get(array, i);
+            result.add((T) obj);
+        }
+        return result;
+    }
+
     /**
      * Get java bean array first not null element.
      * @param arr A java bean array
      * @param <T> Java bean type
      * @return A not null java bean
      */
+    @Deprecated
     public static <T> T firstNotNullElement(T[] arr) {
         if (arr == null) { return null; }
         for (T bean : arr) {
