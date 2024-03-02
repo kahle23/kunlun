@@ -14,6 +14,7 @@ import static kunlun.common.constant.Numbers.TEN;
  * The simple paging info.
  * @author Kahle
  */
+@Deprecated
 public class Paging implements Serializable {
     private Integer pageNum;
     private Integer pageSize;

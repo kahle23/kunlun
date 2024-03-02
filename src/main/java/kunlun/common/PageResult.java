@@ -22,7 +22,7 @@ public class PageResult<T> extends Result<T> {
         super();
     }
 
-    public PageResult(T data) {
+    /*public PageResult(T data) {
 
         super(data);
     }
@@ -40,7 +40,7 @@ public class PageResult<T> extends Result<T> {
     public PageResult(Boolean success, String code, String message, T data) {
 
         super(success, code, message, data);
-    }
+    }*/
 
     public Integer getPageNum() {
 

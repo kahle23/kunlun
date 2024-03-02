@@ -15,11 +15,11 @@ import java.util.List;
  * @author Kahle
  */
 public class PageArrayList<E> extends ArrayList<E> {
-    private Integer pageCount;
-    private Integer pageSize;
+    private String  scrollId;
     private Integer pageNum;
-    private Long total;
-    private String scrollId;
+    private Integer pageSize;
+    private Integer pageCount;
+    private Long    total;
 
     public PageArrayList() {
 
@@ -41,6 +41,16 @@ public class PageArrayList<E> extends ArrayList<E> {
             this.setTotal(pl.getTotal());
             this.setScrollId(pl.getScrollId());
         }
+    }
+
+    public String getScrollId() {
+
+        return scrollId;
+    }
+
+    public void setScrollId(String scrollId) {
+
+        this.scrollId = scrollId;
     }
 
     public Integer getPageNum() {
@@ -81,16 +91,6 @@ public class PageArrayList<E> extends ArrayList<E> {
     public void setTotal(Long total) {
 
         this.total = total;
-    }
-
-    public String getScrollId() {
-
-        return scrollId;
-    }
-
-    public void setScrollId(String scrollId) {
-
-        this.scrollId = scrollId;
     }
 
     public List<E> getData() {
