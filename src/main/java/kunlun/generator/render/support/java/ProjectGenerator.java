@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.generator.project;
+package kunlun.generator.render.support.java;
 
 import kunlun.core.Context;
 import kunlun.generator.Generator;
@@ -20,6 +20,14 @@ public interface ProjectGenerator extends Generator {
      * @return The result of the project generation
      */
     Object generate(ProjectConfig projectConfig);
+
+    /**
+     * Provide the highest level of abstraction for project configuration.
+     * @author Kahle
+     */
+    interface ProjectConfig {
+
+    }
 
     /**
      * The context object at project generation time

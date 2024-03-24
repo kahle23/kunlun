@@ -3,13 +3,11 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.generator.project.support.java;
+package kunlun.generator.render.support.java;
 
 import kunlun.data.bean.BeanUtils;
 import kunlun.data.tuple.PairImpl;
 import kunlun.exception.ExceptionUtils;
-import kunlun.generator.project.ProjectConfig;
-import kunlun.generator.project.ProjectGenerator;
 import kunlun.renderer.TextRenderer;
 import kunlun.time.DateUtils;
 import kunlun.util.Assert;
