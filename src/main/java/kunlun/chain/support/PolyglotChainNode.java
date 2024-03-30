@@ -5,7 +5,7 @@
 
 package kunlun.chain.support;
 
-import kunlun.core.ChainNode;
+import kunlun.chain.ChainNode;
 import kunlun.data.bean.BeanUtils;
 import kunlun.polyglot.PolyglotUtils;
 import kunlun.util.Assert;

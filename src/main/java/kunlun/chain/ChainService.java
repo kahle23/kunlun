@@ -3,13 +3,13 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.core;
+package kunlun.chain;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
 
-import static kunlun.core.ChainNode.Config;
+import static kunlun.chain.ChainNode.Config;
 
 /**
  * The service interface that the process (chain) invokes.

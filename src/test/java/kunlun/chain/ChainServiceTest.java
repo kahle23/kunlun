@@ -6,7 +6,6 @@
 package kunlun.chain;
 
 import kunlun.chain.support.NodeConfigImpl;
-import kunlun.core.ChainNode;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.ObjectUtils;

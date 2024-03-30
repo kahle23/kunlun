@@ -5,8 +5,8 @@
 
 package kunlun.chain.support;
 
+import kunlun.chain.ChainNode;
 import kunlun.chain.ChainUtils;
-import kunlun.core.ChainNode;
 import kunlun.data.Dict;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;

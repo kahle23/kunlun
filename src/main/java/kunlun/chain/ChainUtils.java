@@ -6,8 +6,6 @@
 package kunlun.chain;
 
 import kunlun.chain.support.SimpleChainService;
-import kunlun.core.ChainNode;
-import kunlun.core.ChainService;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -15,7 +13,7 @@ import kunlun.util.Assert;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import static kunlun.core.ChainNode.Config;
+import static kunlun.chain.ChainNode.Config;
 import static kunlun.util.ObjectUtils.cast;
 
 /**

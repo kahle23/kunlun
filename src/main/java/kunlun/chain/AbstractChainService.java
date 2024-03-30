@@ -5,8 +5,6 @@
 
 package kunlun.chain;
 
-import kunlun.core.ChainNode;
-import kunlun.core.ChainService;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -20,7 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static kunlun.core.ChainNode.Config;
+import static kunlun.chain.ChainNode.Config;
 
 /**
  * The abstract chain service.

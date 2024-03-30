@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * The lock provider.
+ *
  * It is not necessary to unpack the manager name based on the lock name.
  * The caller should explicitly specify the lock manager name.
  * If no manager name is specified, the default lock manager is used.

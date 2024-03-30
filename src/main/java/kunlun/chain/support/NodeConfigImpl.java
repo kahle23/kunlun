@@ -5,7 +5,7 @@
 
 package kunlun.chain.support;
 
-import kunlun.core.ChainNode;
+import kunlun.chain.ChainNode;
 
 import java.io.Serializable;
 import java.util.Map;

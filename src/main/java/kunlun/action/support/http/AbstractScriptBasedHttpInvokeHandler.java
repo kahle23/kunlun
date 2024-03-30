@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static kunlun.common.constant.Numbers.*;
 import static kunlun.util.ObjectUtils.cast;
 
 /**
@@ -46,7 +47,7 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScrip
         HttpInvokeConfig config = (HttpInvokeConfig) context.getConfig();
         String  scriptEngine = config.getScriptEngine();
         Integer inputType = config.getInputType();
-        Assert.notNull(inputType, "inputType must not null! ");
+        Assert.notNull(inputType, "The input type must not null! ");
         // Create converted input object.
         ConvertedInput convertedInput = new ConvertedInput();
         context.setConvertedInput(convertedInput);
@@ -67,8 +68,9 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScrip
             convertedInput.setHeaders(collection);
         }
         // params
+        // input type: 0 unknown, 1 no content, 2 form-www, 3 form-data, 4 json
         convertedInput.setInputType(inputType);
-        if (inputType == 2 || inputType == 3) {
+        if (inputType == TWO || inputType == THREE) {
             List<?> parametersObj = (List<?>) eval(scriptEngine, config.getParameters(), context);
             if (!ObjectUtils.isEmpty(parametersObj)) {
                 Collection<KeyValue<String, Object>> collection =
@@ -77,7 +79,7 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScrip
             }
         }
         // body
-        if (inputType == 4) {
+        if (inputType == FOUR) {
             Object bodyObj = eval(scriptEngine, config.getBody(), context);
             if (bodyObj != null) {
                 convertedInput.setBody(
@@ -97,34 +99,34 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScrip
 
     @Override
     protected void convertOutput(InvokeContext context) {
-        // Get config and get renderer name.
+        // Get config and get script engine name.
         HttpInvokeConfig config = (HttpInvokeConfig) context.getConfig();
         Class<?> expectedClass = context.getExpectedClass();
         String   scriptEngine = config.getScriptEngine();
         Integer  outputType = config.getOutputType();
         String   output = config.getOutput();
-        Assert.notNull(outputType, "outputType must not null! ");
-        //
+        Assert.notNull(outputType, "The output type must not null! ");
+        // Handle converted output.
         RawOutput rawOutput = (RawOutput) context.getRawOutput();
-        if (outputType == 1) {
+        if (outputType == ONE) {
             context.setConvertedOutput(null);
         }
-        else if (outputType == 2) {
+        else if (outputType == TWO) {
             context.setConvertedOutput(rawOutput.getRawString());
         }
-        else if (outputType == 3) {
+        else if (outputType == THREE) {
             // RawObject must init in doInvoke.
             context.setConvertedOutput(rawOutput.getRawObject());
         }
         else {
-            throw new UnsupportedOperationException("outputType is unsupported! ");
+            throw new UnsupportedOperationException("The output type is unsupported! ");
         }
-        // render output
+        // Eval output conversion script.
         if (StringUtils.isNotBlank(output)) {
             Object outputObj = eval(scriptEngine, output, context);
             context.setConvertedOutput(outputObj);
         }
-        // object convert
+        // Convert converted output.
         if (!ClassUtils.isSimpleValueType(expectedClass)) {
             Object convertedOutput = context.getConvertedOutput();
             if (convertedOutput instanceof Collection) {

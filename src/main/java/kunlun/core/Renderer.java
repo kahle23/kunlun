@@ -7,6 +7,7 @@ package kunlun.core;
 
 /**
  * The renderer for handling bytes or strings.
+ *
  * @see <a href="https://en.wikipedia.org/wiki/Render">Render</a>
  * @see <a href="https://en.wikipedia.org/wiki/Template_processor">Template processor</a>
  * @see <a href="https://en.wikipedia.org/wiki/Rendering_(computer_graphics)">Rendering (computer graphics)</a>

@@ -29,7 +29,7 @@ public class DbUtils {
     }
 
     public static void setDbProvider(DbProvider dbProvider) {
-        Assert.notNull(dbProvider, "Parameter \"ocrProvider\" must not null. ");
+        Assert.notNull(dbProvider, "Parameter \"dbProvider\" must not null. ");
         log.info("Set database provider: {}", dbProvider.getClass().getName());
         DbUtils.dbProvider = dbProvider;
     }

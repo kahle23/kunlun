@@ -3,13 +3,13 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.core;
+package kunlun.chain;
 
 import java.util.Map;
 
 /**
  * This is a step or node in the business process,
- *  or this is a node in the responsibility chain.
+ *      or this is a node in the responsibility chain.
  * @author Kahle
  */
 public interface ChainNode {

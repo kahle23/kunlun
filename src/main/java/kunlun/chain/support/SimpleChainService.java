@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static kunlun.core.ChainNode.Config;
+import static kunlun.chain.ChainNode.Config;
 
 /**
  * The simple chain service.

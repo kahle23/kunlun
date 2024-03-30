@@ -17,11 +17,6 @@ import java.util.Map;
  */
 public class Dict extends LinkedHashMap<Object, Object> {
 
-    public static Dict of() {
-
-        return new Dict();
-    }
-
     public static Dict of(Object key, Object value) {
 
         return of().set(key, value);
@@ -35,6 +30,11 @@ public class Dict extends LinkedHashMap<Object, Object> {
     public static Dict of(Map<?, ?> map) {
 
         return of().set(map);
+    }
+
+    public static Dict of() {
+
+        return new Dict();
     }
 
     public Dict set(Object key, Object value) {
