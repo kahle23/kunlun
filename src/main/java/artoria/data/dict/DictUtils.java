@@ -60,4 +60,10 @@ public class DictUtils {
         return getDictProvider().findMultiple(dictQuery, type);
     }
 
+    @Deprecated
+    public static <T> List<T> findList(Object dictQuery, Type type) {
+
+        return getDictProvider().findMultiple(dictQuery, type);
+    }
+
 }

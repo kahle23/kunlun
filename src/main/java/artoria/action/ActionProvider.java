@@ -1,6 +1,7 @@
 package artoria.action;
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,5 +69,27 @@ public interface ActionProvider {
      * @return The return value corresponding to the handler
      */
     <T> T execute(Object input, String actionName, String operation, Type type);
+
+    /**
+     * Do the information query action.
+     * @param input The input parameters to be handled
+     * @param actionName The name of action
+     * @param clazz The class of the return value
+     * @param <T> The generic type of the return value
+     * @return The return value corresponding to the handler
+     */
+    @Deprecated
+    <T> T info(Object input, String actionName, Class<T> clazz);
+
+    /**
+     * Do the information search action.
+     * @param input The input parameters to be handled
+     * @param actionName The name of action
+     * @param clazz The class of the return value
+     * @param <T> The generic type of the return value
+     * @return The return value corresponding to the handler
+     */
+    @Deprecated
+    <T> List<T> search(Object input, String actionName, Class<T> clazz);
 
 }

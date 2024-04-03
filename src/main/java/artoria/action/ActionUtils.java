@@ -5,6 +5,7 @@ import artoria.logging.LoggerFactory;
 import artoria.util.Assert;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 import static artoria.common.constant.Symbols.EMPTY_STRING;
 
@@ -59,6 +60,30 @@ public class ActionUtils {
     public static <T> T execute(Object input, String actionName, Type type) {
 
         return getActionProvider().execute(input, actionName, EMPTY_STRING, type);
+    }
+
+    @Deprecated
+    public static <T> T info(Object input, String actionName, Class<T> clazz) {
+
+        return getActionProvider().info(input, actionName, clazz);
+    }
+
+    @Deprecated
+    public static <T> T info(Object input, Class<T> clazz) {
+
+        return getActionProvider().info(input, EMPTY_STRING, clazz);
+    }
+
+    @Deprecated
+    public static <T> List<T> search(Object input, String actionName, Class<T> clazz) {
+
+        return getActionProvider().search(input, actionName, clazz);
+    }
+
+    @Deprecated
+    public static <T> List<T> search(Object input, Class<T> clazz) {
+
+        return getActionProvider().search(input, EMPTY_STRING, clazz);
     }
 
 }

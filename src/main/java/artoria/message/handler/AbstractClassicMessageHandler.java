@@ -17,11 +17,31 @@ public abstract class AbstractClassicMessageHandler implements MessageHandler {
     /**
      * The standard operation name: send.
      */
+    @Deprecated
+    protected static final String OP_SEND = "send";
+    /**
+     * The standard operation name: batch send.
+     */
+    @Deprecated
+    protected static final String OP_BATCH_SEND = "batchSend";
+    /**
+     * The standard operation name: send.
+     */
     protected static final String SEND = "send";
     /**
      * The standard operation name: batch send.
      */
     protected static final String BATCH_SEND = "batchSend";
+    /**
+     * The standard operation name: info.
+     */
+    @Deprecated
+    protected static final String OP_INFO = "info";
+    /**
+     * The standard operation name: search.
+     */
+    @Deprecated
+    protected static final String OP_SEARCH = "search";
     /**
      * The standard operation name: find one.
      */
