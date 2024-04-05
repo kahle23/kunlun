@@ -5,8 +5,19 @@
 
 package kunlun.core;
 
+/**
+ * Provide the highest level of abstraction for loader.
+ *
+ * @author Kahle
+ */
 public interface Loader<Param, Result> {
 
+    /**
+     * Load the data based on parameters.
+     *
+     * @param param The parameters required for loading data
+     * @return The loaded data
+     */
     Result load(Param param);
 
 }
