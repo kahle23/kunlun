@@ -3,8 +3,9 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.support;
+package kunlun.action.support.script;
 
+import kunlun.action.support.AbstractInvokeActionHandler;
 import kunlun.data.bean.BeanUtils;
 import kunlun.data.validation.ValidatorUtils;
 import kunlun.data.validation.support.ValidationConfig;

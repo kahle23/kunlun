@@ -9,17 +9,20 @@ import java.util.Map;
 
 /**
  * This is a step or node in the business process,
- *      or this is a node in the responsibility chain.
+ *  or this is a node in the responsibility chain.
+ *
+ * It is primarily used in scenarios such as responsibility chains
+ *  and should not be targeted at workflows or approval processes.
+ *
  * @author Kahle
  */
 public interface ChainNode {
 
     /**
      * Execute the logic of this node.
-     * @param config The configuration of this node in a certain chain
      * @param context The context object when executing this chain
      */
-    void execute(Map<String, ?> config, Context context);
+    void execute(Context context);
 
     /**
      * The chain node configuration.
@@ -90,10 +93,24 @@ public interface ChainNode {
         void setResult(Object result);
 
         /**
+         * Get the configuration of the current node.
+         * @return The configuration of the current node
+         */
+        Map<String, ?> getConfig();
+
+        /**
+         * Set the configuration of the current node.
+         * @param config The configuration of the current node
+         */
+        void setConfig(Map<String, ?> config);
+
+        /**
          * Get the next node configuration id.
          * The node configuration is the real "node".
+         *
          * Regardless of how many candidate nodes there are,
          *  there will definitely be only one node that gets executed next.
+         *
          * @return The next node configuration id
          */
         String getNextConfigId();

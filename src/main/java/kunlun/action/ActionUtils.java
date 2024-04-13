@@ -66,4 +66,9 @@ public class ActionUtils {
         return getActionProvider().execute(actionName, input, EMPTY_STRING, type);
     }
 
+    public static <T> T execute(String actionName, Object input) {
+
+        return getActionProvider().execute(actionName, input, EMPTY_STRING, Object.class);
+    }
+
 }

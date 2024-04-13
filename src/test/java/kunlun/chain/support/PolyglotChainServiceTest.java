@@ -38,7 +38,7 @@ public class PolyglotChainServiceTest {
         ChainUtils.registerNode("node0",
                 new ChainNode() {
                     @Override
-                    public void execute(Map<String, ?> config, Context context) {
+                    public void execute(Context context) {
                         context.setResult(context.getArguments()[1]);
                     }
                 });
