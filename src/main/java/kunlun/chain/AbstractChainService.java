@@ -137,7 +137,9 @@ public abstract class AbstractChainService implements ChainService {
         while (now != null) {
             // Execute the chain node.
             ChainNode chainNode = getChainNode(now.getNodeName());
-            chainNode.execute(buildConfig(now), context);
+            context.setConfig(buildConfig(now));
+            chainNode.execute(context);
+            context.setConfig(null);
             // Get the next config id.
             String nextConfigId = context.getNextConfigId();
             if (StringUtils.isBlank(nextConfigId)) {
@@ -146,7 +148,7 @@ public abstract class AbstractChainService implements ChainService {
             if (StringUtils.isBlank(nextConfigId)) { break; }
             // Get the next config object.
             Config config = configMap.get(nextConfigId);
-            Assert.notNull(config, "next node config error! ");
+            Assert.notNull(config, "The next node config error! ");
             now = config;
         }
         return context.getResult();
@@ -166,6 +168,7 @@ public abstract class AbstractChainService implements ChainService {
         private String chainId;
         private Object[] arguments;
         private Object result;
+        private Map<String, ?> config;
         private String nextConfigId;
 
         public ContextImpl(String chainId, Object[] arguments) {
@@ -208,6 +211,18 @@ public abstract class AbstractChainService implements ChainService {
         public void setResult(Object result) {
 
             this.result = result;
+        }
+
+        @Override
+        public Map<String, ?> getConfig() {
+
+            return config;
+        }
+
+        @Override
+        public void setConfig(Map<String, ?> config) {
+
+            this.config = config;
         }
 
         @Override

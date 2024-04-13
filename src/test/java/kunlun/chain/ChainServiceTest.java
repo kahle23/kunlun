@@ -12,7 +12,6 @@ import kunlun.util.ObjectUtils;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
@@ -32,21 +31,21 @@ public class ChainServiceTest {
         ));
         ChainUtils.registerNode("node1", new ChainNode() {
             @Override
-            public void execute(Map<String, ?> config, Context context) {
+            public void execute(Context context) {
                 Object data = context.getResult() != null ? context.getResult() : context.getArguments()[1];
                 context.setResult((Integer) data + 1);
             }
         });
         ChainUtils.registerNode("node2", new ChainNode() {
             @Override
-            public void execute(Map<String, ?> config, Context context) {
+            public void execute(Context context) {
                 Object data = context.getResult() != null ? context.getResult() : context.getArguments()[1];
                 context.setResult((Integer) data + 2);
             }
         });
         ChainUtils.registerNode("node3", new ChainNode() {
             @Override
-            public void execute(Map<String, ?> config, Context context) {
+            public void execute(Context context) {
                 Object data = context.getResult() != null ? context.getResult() : context.getArguments()[1];
                 context.setResult((Integer) data + 3);
             }

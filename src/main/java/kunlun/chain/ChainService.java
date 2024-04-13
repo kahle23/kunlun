@@ -13,6 +13,10 @@ import static kunlun.chain.ChainNode.Config;
 
 /**
  * The service interface that the process (chain) invokes.
+ *
+ * It is primarily used in scenarios such as responsibility chains
+ *  and should not be targeted at workflows or approval processes.
+ *
  * @author Kahle
  */
 public interface ChainService {

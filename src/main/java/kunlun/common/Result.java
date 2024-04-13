@@ -40,6 +40,10 @@ public class Result<T> implements Serializable {
 
     public static void setDefaultSuccessCode(CodeDefinition defaultSuccessCode) {
         Assert.notNull(defaultSuccessCode, "Parameter \"defaultSuccessCode\" must not null. ");
+        Assert.notBlank(defaultSuccessCode.getDescription()
+                , "Parameter \"defaultSuccessCode.description\" must not blank. ");
+        Assert.notNull(defaultSuccessCode.getCode()
+                , "Parameter \"defaultSuccessCode.code\" must not null. ");
         log.debug("Set default success code: {}", defaultSuccessCode.getClass().getName());
         Result.defaultSuccessCode = defaultSuccessCode;
     }
@@ -55,6 +59,10 @@ public class Result<T> implements Serializable {
 
     public static void setDefaultFailureCode(CodeDefinition defaultFailureCode) {
         Assert.notNull(defaultFailureCode, "Parameter \"defaultFailureCode\" must not null. ");
+        Assert.notBlank(defaultFailureCode.getDescription()
+                , "Parameter \"defaultFailureCode.description\" must not blank. ");
+        Assert.notNull(defaultFailureCode.getCode()
+                , "Parameter \"defaultFailureCode.code\" must not null. ");
         log.debug("Set default failure code: {}", defaultFailureCode.getClass().getName());
         Result.defaultFailureCode = defaultFailureCode;
     }
@@ -154,6 +162,11 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> failure(CodeDefinition code, T data) {
 
         return new Result<T>(FALSE, code.getCode(), code.getDescription(), data);
+    }
+
+    public static <T> Result<T> failure(CodeDefinition code) {
+
+        return failure(code, null);
     }
 
 }

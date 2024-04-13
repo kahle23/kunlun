@@ -12,6 +12,10 @@ import kunlun.util.Assert;
 
 import java.util.Map;
 
+/**
+ * The polyglot chain node.
+ * @author Kahle
+ */
 public class PolyglotChainNode implements ChainNode {
     private final String scriptContent;
     private final String scriptName;
@@ -34,7 +38,7 @@ public class PolyglotChainNode implements ChainNode {
     }
 
     @Override
-    public void execute(Map<String, ?> config, Context context) {
+    public void execute(Context context) {
         // Polyglot call.
         Map<String, Object> contextMap = BeanUtils.beanToMap(context);
         Object eval = PolyglotUtils.eval(scriptName, scriptContent, contextMap);

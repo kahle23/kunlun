@@ -5,7 +5,7 @@
 
 package kunlun.action.support.jdbc;
 
-import kunlun.action.support.AbstractScriptBasedInvokeHandler;
+import kunlun.action.support.script.AbstractScriptBasedInvokeHandler;
 import kunlun.data.Dict;
 import kunlun.data.bean.BeanUtils;
 import kunlun.data.validation.support.ValidationConfig;

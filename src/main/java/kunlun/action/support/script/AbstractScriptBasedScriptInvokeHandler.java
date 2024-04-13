@@ -5,7 +5,6 @@
 
 package kunlun.action.support.script;
 
-import kunlun.action.support.AbstractScriptBasedInvokeHandler;
 import kunlun.data.validation.support.ValidationConfig;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;

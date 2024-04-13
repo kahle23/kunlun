@@ -5,7 +5,7 @@
 
 package kunlun.action.support.http;
 
-import kunlun.action.support.AbstractScriptBasedInvokeHandler;
+import kunlun.action.support.script.AbstractScriptBasedInvokeHandler;
 import kunlun.data.Dict;
 import kunlun.data.bean.BeanUtils;
 import kunlun.data.json.JsonUtils;
@@ -51,23 +51,23 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScrip
         // Create converted input object.
         ConvertedInput convertedInput = new ConvertedInput();
         context.setConvertedInput(convertedInput);
-        // charset and method
+        // Charset and method.
         String charset = config.getCharset();
         if (StringUtils.isNotBlank(charset)) {
             convertedInput.setCharset(charset);
         }
         convertedInput.setMethod(config.getMethod());
-        // url
+        // Url.
         Object eval = eval(scriptEngine, config.getUrl(), context);
         convertedInput.setUrl(String.valueOf(eval));
-        // headers
+        // Headers.
         List<?> headers = (List<?>) eval(scriptEngine, config.getHeaders(), context);
         if (!ObjectUtils.isEmpty(headers)) {
             Collection<KeyValue<String, String>> collection =
                     cast(BeanUtils.beanToBeanInList(headers, KeyValueImpl.class));
             convertedInput.setHeaders(collection);
         }
-        // params
+        // Params.
         // input type: 0 unknown, 1 no content, 2 form-www, 3 form-data, 4 json
         convertedInput.setInputType(inputType);
         if (inputType == TWO || inputType == THREE) {
@@ -78,7 +78,7 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScrip
                 convertedInput.setParameters(collection);
             }
         }
-        // body
+        // Body.
         if (inputType == FOUR) {
             Object bodyObj = eval(scriptEngine, config.getBody(), context);
             if (bodyObj != null) {

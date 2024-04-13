@@ -33,31 +33,60 @@ public abstract class AbstractInvokeActionHandler extends AbstractStrategyAction
      */
     protected abstract void loadConfig(InvokeContext context);
 
+    /**
+     * Validate the input.
+     * @param context The core context object
+     */
     protected void validateInput(InvokeContext context) {
 
     }
 
+    /**
+     * Convert the input.
+     * @param context The core context object
+     */
     protected void convertInput(InvokeContext context) {
 
         context.setConvertedInput(context.getRawInput());
     }
 
+    /**
+     * Do invoke.
+     * @param context The core context object
+     */
     protected abstract void doInvoke(InvokeContext context);
 
+    /**
+     * Validate the output.
+     * @param context The core context object
+     */
     protected void validateOutput(InvokeContext context) {
 
     }
 
+    /**
+     * Convert the output.
+     * @param context The core context object
+     */
     protected void convertOutput(InvokeContext context) {
 
         context.setConvertedOutput(context.getRawOutput());
     }
 
+    /**
+     * Get result.
+     * @param context The core context object
+     * @return The result
+     */
     protected Object getResult(InvokeContext context) {
 
         return context.getConvertedOutput();
     }
 
+    /**
+     * Record the log.
+     * @param context The core context object
+     */
     protected void recordLog(InvokeContext context) {
 
     }
