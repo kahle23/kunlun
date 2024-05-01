@@ -9,10 +9,10 @@ import com.alibaba.fastjson.JSON;
 import kunlun.cache.Cache;
 import kunlun.cache.CacheUtils;
 import kunlun.cache.support.SimpleCache;
+import kunlun.cache.support.SimpleCacheConfig;
 import kunlun.convert.support.CatToDogConverter;
 import kunlun.convert.support.ListBasicToListBasicConverter;
 import kunlun.convert.support.NumberToDateConverter;
-import kunlun.data.Dict;
 import kunlun.data.ReferenceType;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -35,15 +35,13 @@ import static kunlun.util.ObjectUtils.cast;
 import static kunlun.util.TypeUtils.parameterizedOf;
 
 public class CacheConversionProviderTest {
-    private static Logger log = LoggerFactory.getLogger(CacheConversionProviderTest.class);
-    private static ConversionService conversionProvider;
+    private static final Logger log = LoggerFactory.getLogger(CacheConversionProviderTest.class);
+    private static final ConversionService conversionProvider;
 
     static {
         String cacheName="test";
-        Dict cacheConfig = Dict.of("referenceType", ReferenceType.SOFT)
-                .set("timeToLive", 3L)
-                .set("timeToLiveUnit", TimeUnit.MINUTES);
-        Cache cache = new SimpleCache(cacheConfig);
+        Cache cache = new SimpleCache(
+                new SimpleCacheConfig(ReferenceType.SOFT, 3L, TimeUnit.MINUTES));
         CacheUtils.registerCache(cacheName, cache);
         conversionProvider = new CacheConversionService(new SimpleConversionService(), cacheName);
     }

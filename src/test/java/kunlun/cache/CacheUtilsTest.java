@@ -7,7 +7,7 @@ package kunlun.cache;
 
 import com.alibaba.fastjson.JSON;
 import kunlun.cache.support.SimpleCache;
-import kunlun.data.Dict;
+import kunlun.cache.support.SimpleCacheConfig;
 import kunlun.data.ReferenceType;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -36,7 +36,7 @@ public class CacheUtilsTest {
         SimpleCache cache = new SimpleCache();
         CacheUtils.registerCache(cacheName, cache);
         SimpleCache cache1 = new SimpleCache(
-                Dict.of("referenceType", ReferenceType.WEAK).set("capacity", 2L));
+                new SimpleCacheConfig(ReferenceType.WEAK, 2L));
         CacheUtils.registerCache(cacheName1, cache1);
         SimpleCache cache2 = new SimpleCache();
         CacheUtils.registerCache(cacheName2, cache2);
