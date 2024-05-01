@@ -5,9 +5,7 @@
 
 package kunlun.cache.support;
 
-import kunlun.data.Dict;
 import kunlun.data.ReferenceType;
-import kunlun.data.bean.BeanUtils;
 import kunlun.data.collect.ReferenceMap;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -95,20 +93,20 @@ public class SimpleCache extends AbstractValueWrapperCache {
 
     public SimpleCache() {
 
-        this(null);
+        this(new SimpleCacheConfig());
     }
 
-    public SimpleCache(Object cacheConfig) {
-        // Process the cache config.
-        Dict config = Dict.of(BeanUtils.beanToMap(cacheConfig));
+    public SimpleCache(SimpleCacheConfig cacheConfig) {
+        // Validate the cache config.
+        Assert.notNull(cacheConfig, "Parameter \"cacheConfig\" must not null. ");
         // Process the capacity and the full ratio.
-        Float fullRatio = config.getFloat("fullRatio");
-        Long capacity = config.getLong("capacity");
+        Float fullRatio = cacheConfig.getFullRatio();
+        Long capacity = cacheConfig.getCapacity();
         this.fullRatio = fullRatio == null || fullRatio < ZERO || fullRatio > ONE ? 0.95f : fullRatio;
         this.capacity = capacity == null || capacity < ZERO ? -1L : capacity;
         // Process the timeToLive and the timeToLiveUnit.
-        TimeUnit timeToLiveUnit = config.get("timeToLiveUnit", TimeUnit.class);
-        Long timeToLive = config.getLong("timeToLive");
+        TimeUnit timeToLiveUnit = cacheConfig.getTimeToLiveUnit();
+        Long timeToLive = cacheConfig.getTimeToLive();
         if (timeToLive != null) {
             Assert.notNull(timeToLiveUnit, "Parameter \"timeToLiveUnit\" must not null. ");
             Assert.isFalse(timeToLive == ZERO
@@ -117,8 +115,8 @@ public class SimpleCache extends AbstractValueWrapperCache {
         }
         else { this.timeToLive = -1L; }
         // Process the timeToIdle and the timeToIdleUnit.
-        TimeUnit timeToIdleUnit = config.get("timeToIdleUnit", TimeUnit.class);
-        Long timeToIdle = config.getLong("timeToIdle");
+        TimeUnit timeToIdleUnit = cacheConfig.getTimeToIdleUnit();
+        Long timeToIdle = cacheConfig.getTimeToIdle();
         if (timeToIdle != null) {
             Assert.notNull(timeToIdleUnit, "Parameter \"timeToIdleUnit\" must not null. ");
             Assert.isFalse(timeToIdle == ZERO
@@ -127,7 +125,7 @@ public class SimpleCache extends AbstractValueWrapperCache {
         }
         else { this.timeToIdle = -1L; }
         // Process the reference type (default weak).
-        ReferenceType referenceType = config.get("referenceType", ReferenceType.class);
+        ReferenceType referenceType = cacheConfig.getReferenceType();
         if (referenceType == null) { referenceType = ReferenceType.WEAK; }
         this.storage = buildStorage(referenceType);
     }
