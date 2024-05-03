@@ -15,9 +15,9 @@ import java.util.Map;
  * The dictionary is a mutable container model used to hold data with mapped relationships.
  * @author Kahle
  */
-public class Dict extends LinkedHashMap<Object, Object> {
+public class Dict extends LinkedHashMap<String, Object> {
 
-    public static Dict of(Object key, Object value) {
+    public static Dict of(String key, Object value) {
 
         return of().set(key, value);
     }
@@ -37,7 +37,7 @@ public class Dict extends LinkedHashMap<Object, Object> {
         return new Dict();
     }
 
-    public Dict set(Object key, Object value) {
+    public Dict set(String key, Object value) {
         put(key, value);
         return this;
     }
@@ -50,8 +50,10 @@ public class Dict extends LinkedHashMap<Object, Object> {
     }
 
     public Dict set(Map<?, ?> map) {
-        if (map != null) {
-            putAll(map);
+        if (map == null) { return this; }
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            Object key = entry.getKey();
+            put(key!=null?String.valueOf(key):null, entry.getValue());
         }
         return this;
     }
