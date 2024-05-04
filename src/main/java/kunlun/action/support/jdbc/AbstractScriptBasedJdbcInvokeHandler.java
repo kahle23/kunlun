@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * The abstract script based jdbc invoke action handler.
+ * The abstract script-based jdbc invoke action handler.
  * @author Kahle
  */
 public abstract class AbstractScriptBasedJdbcInvokeHandler extends AbstractScriptBasedInvokeHandler {

@@ -16,7 +16,7 @@ import kunlun.util.StringUtils;
 import java.util.Collection;
 
 /**
- * The abstract script based invoke action handler.
+ * The abstract script-based invoke action handler.
  * @author Kahle
  */
 public abstract class AbstractScriptBasedInvokeHandler extends AbstractInvokeActionHandler {

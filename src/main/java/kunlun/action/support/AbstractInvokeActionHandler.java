@@ -95,7 +95,7 @@ public abstract class AbstractInvokeActionHandler extends AbstractStrategyAction
     public Object execute(Object input, String strategy, Class<?> clazz) {
         // Build context.
         InvokeContext context = buildContext(input, strategy, clazz);
-        Assert.state(context != null, "Build context failure! ");
+        Assert.state(context != null, "Build the context failure! ");
         try {
             // Load config and set to context.
             loadConfig(context);

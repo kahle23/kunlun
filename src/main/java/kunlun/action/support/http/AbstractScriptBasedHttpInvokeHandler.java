@@ -28,7 +28,7 @@ import static kunlun.common.constant.Numbers.*;
 import static kunlun.util.ObjectUtils.cast;
 
 /**
- * The abstract script based http invoke action handler.
+ * The abstract script-based http invoke action handler.
  * @author Kahle
  */
 public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScriptBasedInvokeHandler {

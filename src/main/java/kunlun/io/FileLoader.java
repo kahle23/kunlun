@@ -11,7 +11,6 @@ import java.io.InputStream;
 
 /**
  * The file loader.
- *
  * @author Kahle
  */
 public interface FileLoader extends Loader<Object, InputStream> {

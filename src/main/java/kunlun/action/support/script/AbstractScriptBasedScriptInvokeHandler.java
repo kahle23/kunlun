@@ -12,7 +12,7 @@ import kunlun.logging.LoggerFactory;
 import java.util.Collection;
 
 /**
- * The abstract script based script invoke action handler.
+ * The abstract script-based script invoke action handler.
  * @author Kahle
  */
 public abstract class AbstractScriptBasedScriptInvokeHandler extends AbstractScriptBasedInvokeHandler {

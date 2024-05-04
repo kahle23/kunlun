@@ -16,7 +16,6 @@ import java.io.InputStream;
 
 /**
  * The simple file loader (support classpath).
- *
  * @author Kahle
  */
 public class SimpleFileLoader implements FileLoader {
