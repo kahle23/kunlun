@@ -30,20 +30,20 @@ public class SnowflakeIdGenerator extends AbstractIdGenerator implements LongIdG
     /**
      * The maximum supported machine id, and the result is 31.
      */
-    private static final long MAX_WORKER_ID = -1L ^ (-1L << WORKER_ID_BITS);
+    private static final long MAX_WORKER_ID = ~(-1L << WORKER_ID_BITS);
     /**
      * The maximum supported data center id, and the result is 31.
      */
-    private static final long MAX_DATA_CENTER_ID = -1L ^ (-1L << DATA_CENTER_ID_BITS);
+    private static final long MAX_DATA_CENTER_ID = ~(-1L << DATA_CENTER_ID_BITS);
     /**
-     * The number of bits of a sequence in a snow flake id.
+     * The number of bits of a sequence in a snowflake id.
      */
     private static final long SEQUENCE_BITS = 12L;
     /**
      * The mask of the generated sequence, and the result is 4095.
      * (0b111111111111 = 0xfff = 4095)
      */
-    private static final long SEQUENCE_MASK = -1L ^ (-1L << SEQUENCE_BITS);
+    private static final long SEQUENCE_MASK = ~(-1L << SEQUENCE_BITS);
     /**
      * The machine id moves 12 bits to the left.
      */
@@ -57,7 +57,7 @@ public class SnowflakeIdGenerator extends AbstractIdGenerator implements LongIdG
      */
     private static final long TIMESTAMP_LEFT_SHIFT = SEQUENCE_BITS + WORKER_ID_BITS + DATA_CENTER_ID_BITS;
     /**
-     * The timestamp when the snow flake id was last generated.
+     * The timestamp when the snowflake id was last generated.
      */
     private long lastTimestamp = -1L;
     /**
@@ -67,15 +67,15 @@ public class SnowflakeIdGenerator extends AbstractIdGenerator implements LongIdG
     /**
      * Data center id (0~31).
      */
-    private long dataCenterId;
+    private final long dataCenterId;
     /**
      * Work machine id (0~31).
      */
-    private long workerId;
+    private final long workerId;
     /**
      * The clock used to get the current timestamp.
      */
-    private SimpleClock clock;
+    private final SimpleClock clock;
 
     /**
      * No-parameter constructor method.

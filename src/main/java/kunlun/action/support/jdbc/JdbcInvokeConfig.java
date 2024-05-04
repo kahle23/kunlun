@@ -58,7 +58,7 @@ public class JdbcInvokeConfig implements Serializable {
     /**
      * The other configs.
      */
-    private Map<Object, Object> otherConfigs;
+    private Map<String, Object> otherConfigs;
 
     public String getScriptEngine() {
 
@@ -150,7 +150,7 @@ public class JdbcInvokeConfig implements Serializable {
         this.cacheConfig = cacheConfig;
     }
 
-    public Map<Object, Object> getOtherConfigs() {
+    public Map<String, Object> getOtherConfigs() {
 
         return otherConfigs;
     }
@@ -158,7 +158,7 @@ public class JdbcInvokeConfig implements Serializable {
     @SuppressWarnings("unchecked")
     public void setOtherConfigs(Map<?, ?> otherConfigs) {
 
-        this.otherConfigs = (Map<Object, Object>) otherConfigs;
+        this.otherConfigs = (Map<String, Object>) otherConfigs;
     }
 
 }

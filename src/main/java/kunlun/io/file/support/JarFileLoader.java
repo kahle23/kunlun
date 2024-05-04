@@ -28,7 +28,6 @@ import static kunlun.common.constant.Symbols.*;
 
 /**
  * The jar file loader.
- *
  * @author Kahle
  */
 public class JarFileLoader implements FileLoader {
