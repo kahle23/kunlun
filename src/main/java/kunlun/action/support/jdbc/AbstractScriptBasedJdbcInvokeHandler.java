@@ -5,7 +5,7 @@
 
 package kunlun.action.support.jdbc;
 
-import kunlun.action.support.script.AbstractScriptBasedInvokeHandler;
+import kunlun.action.support.AbstractInvokeActionHandler;
 import kunlun.data.Dict;
 import kunlun.data.bean.BeanUtils;
 import kunlun.data.validation.support.ValidationConfig;
@@ -13,6 +13,8 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.ClassUtils;
 import kunlun.util.StringUtils;
+import kunlun.util.handler.ScriptHandler;
+import kunlun.util.handler.support.ScriptHandlerImpl;
 
 import java.util.Collection;
 import java.util.Map;
@@ -21,14 +23,20 @@ import java.util.Map;
  * The abstract script-based jdbc invoke action handler.
  * @author Kahle
  */
-public abstract class AbstractScriptBasedJdbcInvokeHandler extends AbstractScriptBasedInvokeHandler {
+public abstract class AbstractScriptBasedJdbcInvokeHandler extends AbstractInvokeActionHandler {
     private static final Logger log = LoggerFactory.getLogger(AbstractScriptBasedJdbcInvokeHandler.class);
+    private final ScriptHandler scriptHandler = new ScriptHandlerImpl();
+
+    protected ScriptHandler getScriptHandler() {
+
+        return scriptHandler;
+    }
 
     @Override
     protected void validateInput(InvokeContext context) {
         JdbcInvokeConfig config = (JdbcInvokeConfig) context.getConfig();
         Collection<ValidationConfig> validations = config.getInputValidations();
-        validate(config.getScriptEngine(), context, validations);
+        getScriptHandler().validate(config.getScriptEngine(), validations, context);
     }
 
     @Override
@@ -39,7 +47,7 @@ public abstract class AbstractScriptBasedJdbcInvokeHandler extends AbstractScrip
         String inputScript = config.getInput();
         // Eval input script.
         if (StringUtils.isNotBlank(inputScript)) {
-            Object convertedInput = eval(scriptEngine, inputScript, context);
+            Object convertedInput = getScriptHandler().eval(scriptEngine, inputScript, context);
             context.setConvertedInput(convertedInput);
         }
         else { context.setConvertedInput(context.getRawInput()); }
@@ -50,7 +58,7 @@ public abstract class AbstractScriptBasedJdbcInvokeHandler extends AbstractScrip
     protected void validateOutput(InvokeContext context) {
         JdbcInvokeConfig config = (JdbcInvokeConfig) context.getConfig();
         Collection<ValidationConfig> validations = config.getOutputValidations();
-        validate(config.getScriptEngine(), context, validations);
+        getScriptHandler().validate(config.getScriptEngine(), validations, context);
     }
 
     @Override
@@ -62,7 +70,7 @@ public abstract class AbstractScriptBasedJdbcInvokeHandler extends AbstractScrip
         String   outputScript = config.getOutput();
         // Eval output script.
         if (StringUtils.isNotBlank(outputScript)) {
-            Object convertedOutput = eval(scriptEngine, outputScript, context);
+            Object convertedOutput = getScriptHandler().eval(scriptEngine, outputScript, context);
             context.setConvertedOutput(convertedOutput);
         }
         else { context.setConvertedOutput(context.getRawOutput()); }
