@@ -19,6 +19,7 @@ import java.util.Collection;
  * The abstract script-based invoke action handler.
  * @author Kahle
  */
+@Deprecated // todo can delete
 public abstract class AbstractScriptBasedInvokeHandler extends AbstractInvokeActionHandler {
 
     /**

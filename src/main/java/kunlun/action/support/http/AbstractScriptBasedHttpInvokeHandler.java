@@ -5,7 +5,7 @@
 
 package kunlun.action.support.http;
 
-import kunlun.action.support.script.AbstractScriptBasedInvokeHandler;
+import kunlun.action.support.AbstractInvokeActionHandler;
 import kunlun.data.Dict;
 import kunlun.data.bean.BeanUtils;
 import kunlun.data.json.JsonUtils;
@@ -18,6 +18,8 @@ import kunlun.util.Assert;
 import kunlun.util.ClassUtils;
 import kunlun.util.ObjectUtils;
 import kunlun.util.StringUtils;
+import kunlun.util.handler.ScriptHandler;
+import kunlun.util.handler.support.ScriptHandlerImpl;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -31,14 +33,20 @@ import static kunlun.util.ObjectUtils.cast;
  * The abstract script-based http invoke action handler.
  * @author Kahle
  */
-public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScriptBasedInvokeHandler {
+public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractInvokeActionHandler {
     private static final Logger log = LoggerFactory.getLogger(AbstractScriptBasedHttpInvokeHandler.class);
+    private final ScriptHandler scriptHandler = new ScriptHandlerImpl();
+
+    protected ScriptHandler getScriptHandler() {
+
+        return scriptHandler;
+    }
 
     @Override
     protected void validateInput(InvokeContext context) {
         HttpInvokeConfig config = (HttpInvokeConfig) context.getConfig();
         Collection<ValidationConfig> validations = config.getInputValidations();
-        validate(config.getScriptEngine(), context, validations);
+        getScriptHandler().validate(config.getScriptEngine(), validations, context);
     }
 
     @Override
@@ -58,10 +66,11 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScrip
         }
         convertedInput.setMethod(config.getMethod());
         // Url.
-        Object eval = eval(scriptEngine, config.getUrl(), context);
+        Object eval = getScriptHandler().eval(scriptEngine, config.getUrl(), context);
         convertedInput.setUrl(String.valueOf(eval));
         // Headers.
-        List<?> headers = (List<?>) eval(scriptEngine, config.getHeaders(), context);
+        List<?> headers = (List<?>)
+                getScriptHandler().eval(scriptEngine, config.getHeaders(), context);
         if (!ObjectUtils.isEmpty(headers)) {
             Collection<KeyValue<String, String>> collection =
                     cast(BeanUtils.beanToBeanInList(headers, KeyValueImpl.class));
@@ -71,7 +80,8 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScrip
         // input type: 0 unknown, 1 no content, 2 form-www, 3 form-data, 4 json
         convertedInput.setInputType(inputType);
         if (inputType == TWO || inputType == THREE) {
-            List<?> parametersObj = (List<?>) eval(scriptEngine, config.getParameters(), context);
+            List<?> parametersObj = (List<?>)
+                    getScriptHandler().eval(scriptEngine, config.getParameters(), context);
             if (!ObjectUtils.isEmpty(parametersObj)) {
                 Collection<KeyValue<String, Object>> collection =
                         cast(BeanUtils.beanToBeanInList(parametersObj, KeyValueImpl.class));
@@ -80,7 +90,7 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScrip
         }
         // Body.
         if (inputType == FOUR) {
-            Object bodyObj = eval(scriptEngine, config.getBody(), context);
+            Object bodyObj = getScriptHandler().eval(scriptEngine, config.getBody(), context);
             if (bodyObj != null) {
                 convertedInput.setBody(
                     bodyObj instanceof String ? bodyObj : JsonUtils.toJsonString(bodyObj)
@@ -94,7 +104,7 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScrip
     protected void validateOutput(InvokeContext context) {
         HttpInvokeConfig config = (HttpInvokeConfig) context.getConfig();
         Collection<ValidationConfig> validations = config.getOutputValidations();
-        validate(config.getScriptEngine(), context, validations);
+        getScriptHandler().validate(config.getScriptEngine(), validations, context);
     }
 
     @Override
@@ -123,7 +133,7 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractScrip
         }
         // Eval output conversion script.
         if (StringUtils.isNotBlank(output)) {
-            Object outputObj = eval(scriptEngine, output, context);
+            Object outputObj = getScriptHandler().eval(scriptEngine, output, context);
             context.setConvertedOutput(outputObj);
         }
         // Convert converted output.
