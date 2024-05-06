@@ -1,6 +1,6 @@
 package artoria.beans;
 
-import artoria.convert.ConversionProvider;
+import artoria.convert.ConversionService;
 import artoria.convert.ConversionUtils;
 import artoria.data.bean.BeanCopier;
 import artoria.data.bean.BeanMap;
@@ -51,12 +51,12 @@ public class BeanUtils {
 
     public static void copy(Object from, Object to) {
 
-        artoria.data.bean.BeanUtils.copy(from, to, ConversionUtils.getConversionProvider());
+        artoria.data.bean.BeanUtils.copy(from, to, ConversionUtils.getConversionService());
     }
 
-    public static void copy(Object from, Object to, ConversionProvider conversionProvider) {
+    public static void copy(Object from, Object to, ConversionService conversionService) {
 
-        artoria.data.bean.BeanUtils.copy(from, to, conversionProvider);
+        artoria.data.bean.BeanUtils.copy(from, to, conversionService);
     }
 
     public static <K, V> void copy(Object from, Map<K, V> to) {
@@ -69,9 +69,9 @@ public class BeanUtils {
         artoria.data.bean.BeanUtils.copy(from, to);
     }
 
-    public static <K, V> void copy(Map<K, V> from, Object to, ConversionProvider conversionProvider) {
+    public static <K, V> void copy(Map<K, V> from, Object to, ConversionService conversionService) {
 
-        artoria.data.bean.BeanUtils.copy(from, to, conversionProvider);
+        artoria.data.bean.BeanUtils.copy(from, to, conversionService);
     }
 
     public static <F, T> T beanToBean(F from, T to) {

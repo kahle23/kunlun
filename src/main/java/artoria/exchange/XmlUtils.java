@@ -23,12 +23,12 @@ public class XmlUtils {
 
     public static String toXmlString(Object object, Object... arguments) {
 
-        return getXmlProvider().toXmlString(object, arguments);
+        return artoria.data.xml.XmlUtils.toXmlString(object, arguments);
     }
 
     public static <T> T parseObject(String xmlString, Type type, Object... arguments) {
 
-        return getXmlProvider().parseObject(xmlString, type, arguments);
+        return artoria.data.xml.XmlUtils.parseObject(xmlString, type, arguments);
     }
 
 }
