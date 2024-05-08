@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.kahlkn</groupId>
     <artifactId>artoria</artifactId>
-    <version>1.0.0.20240116.beta</version>
+    <version>1.0.0.20240119.beta</version>
     <packaging>jar</packaging>
     <name>artoria</name>
     <url>https://github.com/kahle23/artoria</url>
