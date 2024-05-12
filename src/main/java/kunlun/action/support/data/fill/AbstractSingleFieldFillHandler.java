@@ -11,10 +11,10 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 import kunlun.util.CollectionUtils;
+import kunlun.util.IteratorUtils;
 import kunlun.util.MapUtils;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,24 +26,15 @@ public abstract class AbstractSingleFieldFillHandler
         extends AbstractStrategyActionHandler implements DataFillHandler {
     private static final Logger log = LoggerFactory.getLogger(AbstractSingleFieldFillHandler.class);
 
-    private String getFirst(Collection<String> coll) {
-        if (coll == null) { return null; }
-        Iterator<String> iterator = coll.iterator();
-        if (iterator.hasNext()) {
-            return iterator.next();
-        }
-        return null;
-    }
-
     @Override
     public void fill(FieldConfig cfg, Map<String, Map<Object, Object>> map, Collection<Map<Object, Object>> data) {
         // data validation.
         if (CollectionUtils.isEmpty(data)) { return; }
         if (MapUtils.isEmpty(map)) { return; }
         // get field config.
-        String queryField = getFirst(cfg.getQueryFields());
-        String fillField = getFirst(cfg.getFillFields());
-        String dataField = getFirst(cfg.getDataFields());
+        String queryField = IteratorUtils.getFirst(cfg.getQueryFields());
+        String fillField = IteratorUtils.getFirst(cfg.getFillFields());
+        String dataField = IteratorUtils.getFirst(cfg.getDataFields());
         // fill data.
         for (Map<Object, Object> dataMap : data) {
             Object value = dataMap.get(queryField);
@@ -76,7 +67,7 @@ public abstract class AbstractSingleFieldFillHandler
         Map<FieldConfig, Collection<Object>> queryFieldMap = new LinkedHashMap<FieldConfig, Collection<Object>>();
         for (Map<Object, Object> dataMap : dataList) {
             for (FieldConfig fieldConfig : fieldConfigs) {
-                Object value = dataMap.get(getFirst(fieldConfig.getQueryFields()));
+                Object value = dataMap.get(IteratorUtils.getFirst(fieldConfig.getQueryFields()));
                 if (value == null) { continue; }
                 Collection<Object> coll = queryFieldMap.get(fieldConfig);
                 if (coll == null) {
