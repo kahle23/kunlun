@@ -6,18 +6,16 @@
 package kunlun.action.support.jdbc;
 
 import kunlun.action.support.AbstractInvokeActionHandler;
-import kunlun.data.Dict;
-import kunlun.data.bean.BeanUtils;
+import kunlun.action.support.util.OutputPostConverter;
+import kunlun.core.function.BiFunction;
 import kunlun.data.validation.support.ValidationConfig;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.ClassUtils;
 import kunlun.util.StringUtils;
 import kunlun.util.handler.ScriptHandler;
 import kunlun.util.handler.support.ScriptHandlerImpl;
 
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * The abstract script-based jdbc invoke action handler.
@@ -25,11 +23,17 @@ import java.util.Map;
  */
 public abstract class AbstractScriptBasedJdbcInvokeHandler extends AbstractInvokeActionHandler {
     private static final Logger log = LoggerFactory.getLogger(AbstractScriptBasedJdbcInvokeHandler.class);
+    private final BiFunction<Object, Class<?>, Object> outputPostConverter = new OutputPostConverter();
     private final ScriptHandler scriptHandler = new ScriptHandlerImpl();
 
     protected ScriptHandler getScriptHandler() {
 
         return scriptHandler;
+    }
+
+    protected BiFunction<Object, Class<?>, Object> getOutputPostConverter() {
+
+        return outputPostConverter;
     }
 
     @Override
@@ -70,25 +74,12 @@ public abstract class AbstractScriptBasedJdbcInvokeHandler extends AbstractInvok
         String   outputScript = config.getOutput();
         // Eval output script.
         if (StringUtils.isNotBlank(outputScript)) {
-            Object convertedOutput = getScriptHandler().eval(scriptEngine, outputScript, context);
-            context.setConvertedOutput(convertedOutput);
+            context.setConvertedOutput(getScriptHandler().eval(scriptEngine, outputScript, context));
         }
         else { context.setConvertedOutput(context.getRawOutput()); }
         // Convert converted output.
         Object convertedOutput = context.getConvertedOutput();
-        if (!ClassUtils.isSimpleValueType(expectedClass)) {
-            if (convertedOutput instanceof Collection) {
-            }
-            else if (convertedOutput!=null&&convertedOutput.getClass().isArray()) {
-            }
-            else if (convertedOutput instanceof Map && Map.class.isAssignableFrom(expectedClass)) {
-                context.setConvertedOutput(Dict.of((Map<?, ?>) convertedOutput));
-            }
-            else if (convertedOutput != null && !expectedClass.isAssignableFrom(convertedOutput.getClass())) {
-                context.setConvertedOutput(BeanUtils.beanToBean(convertedOutput, expectedClass));
-            }
-            else { /* Do nothing. */ }
-        }
+        context.setConvertedOutput(getOutputPostConverter().apply(convertedOutput, expectedClass));
         // End.
     }
 
