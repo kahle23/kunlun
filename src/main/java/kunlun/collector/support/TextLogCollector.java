@@ -5,8 +5,8 @@
 
 package kunlun.collector.support;
 
+import kunlun.collector.AbstractCollector;
 import kunlun.common.constant.TimePatterns;
-import kunlun.core.Collector;
 import kunlun.time.DateUtils;
 import kunlun.util.Assert;
 
@@ -17,7 +17,7 @@ import static kunlun.common.constant.Symbols.NEWLINE;
  * The simple text log collector.
  * @author Kahle
  */
-public class TextLogCollector implements Collector {
+public class TextLogCollector extends AbstractCollector {
     private final StringBuilder content = new StringBuilder();
     private final String timePattern;
 
