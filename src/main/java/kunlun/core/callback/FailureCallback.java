@@ -9,6 +9,7 @@ package kunlun.core.callback;
  * The failure callback.
  * @author Kahle
  */
+@Deprecated
 public interface FailureCallback {
 
     /**

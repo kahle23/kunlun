@@ -7,14 +7,12 @@ package kunlun.core.function;
 
 /**
  * Represents a function that accepts one parameter and produces a result.
- *
  * @author Kahle
  */
 public interface Function<Param, Result> {
 
     /**
      * Applies this function to the given parameter.
-     *
      * @param param The function parameter
      * @return The function result
      */

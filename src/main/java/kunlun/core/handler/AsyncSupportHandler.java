@@ -6,8 +6,7 @@
 package kunlun.core.handler;
 
 import kunlun.core.Handler;
-import kunlun.core.callback.FailureCallback;
-import kunlun.core.callback.SuccessCallback;
+import kunlun.core.function.Consumer;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -56,8 +55,8 @@ public interface AsyncSupportHandler extends ContextSupportHandler, Handler {
      */
     class AsyncSupportContext implements HandlerContext {
         private Object[] arguments;
-        private SuccessCallback<Object> successCallback;
-        private FailureCallback failureCallback;
+        private Consumer<Throwable> failureCallback;
+        private Consumer<Object> successCallback;
         private ExecutorService threadPool;
         private Future<?> future;
         private Boolean finish;
@@ -114,26 +113,25 @@ public interface AsyncSupportHandler extends ContextSupportHandler, Handler {
             this.threadPool = threadPool;
         }
 
-        public FailureCallback getFailureCallback() {
+        public Consumer<Throwable> getFailureCallback() {
 
             return failureCallback;
         }
 
-        public void setFailureCallback(FailureCallback failureCallback) {
+        public void setFailureCallback(Consumer<Throwable> failureCallback) {
 
             this.failureCallback = failureCallback;
         }
 
-        public SuccessCallback<Object> getSuccessCallback() {
+        public Consumer<Object> getSuccessCallback() {
 
             return successCallback;
         }
 
-        public void setSuccessCallback(SuccessCallback<Object> successCallback) {
+        public void setSuccessCallback(Consumer<Object> successCallback) {
 
             this.successCallback = successCallback;
         }
-
     }
 
     /**
@@ -155,24 +153,23 @@ public interface AsyncSupportHandler extends ContextSupportHandler, Handler {
 
         @Override
         public Object call() throws Exception {
-            SuccessCallback<Object> successCallback = context.getSuccessCallback();
-            FailureCallback failureCallback = context.getFailureCallback();
+            Consumer<Throwable> failureCallback = context.getFailureCallback();
+            Consumer<Object> successCallback = context.getSuccessCallback();
             try {
                 Object execute = asyncSupportHandler.doExecute(context);
                 if (successCallback != null) {
-                    successCallback.onSuccess(execute);
+                    successCallback.accept(execute);
                 }
                 return execute;
             }
             catch (Exception e) {
                 log.error("The asynchronous execute error! ", e);
                 if (failureCallback != null) {
-                    failureCallback.onFailure(e);
+                    failureCallback.accept(e);
                 }
                 return null;
             }
         }
-
     }
 
 }

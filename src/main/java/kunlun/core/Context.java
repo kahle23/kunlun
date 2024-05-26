@@ -5,9 +5,18 @@
 
 package kunlun.core;
 
+import java.util.Map;
+
 /**
  * Provide the highest level of abstraction for context.
  * @author Kahle
  */
 public interface Context {
+
+    /**
+     * Get the runtime data (for data transfer among multiple "handlers").
+     * @return The runtime data
+     */
+//    Map<String, Object> getRuntimeData();
+
 }

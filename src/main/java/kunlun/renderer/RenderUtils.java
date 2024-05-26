@@ -6,7 +6,6 @@
 package kunlun.renderer;
 
 import kunlun.core.Renderer;
-import kunlun.data.ocr.OcrUtils;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -16,7 +15,7 @@ import kunlun.util.Assert;
  * @author Kahle
  */
 public class RenderUtils {
-    private static final Logger log = LoggerFactory.getLogger(OcrUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(RenderUtils.class);
     private static volatile RendererProvider rendererProvider;
 
     public static RendererProvider getRendererProvider() {

@@ -8,6 +8,9 @@ package kunlun.action.support;
 import kunlun.exception.ExceptionUtils;
 import kunlun.util.Assert;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * The abstract dynamic invoke action handler.
  * @author Kahle
@@ -210,6 +213,7 @@ public abstract class AbstractInvokeActionHandler extends AbstractStrategyAction
      * @author Kahle
      */
     public static class InvokeContextImpl implements InvokeContext {
+        private final Map<String, Object> runtimeData = new ConcurrentHashMap<String, Object>();
         private String invokeName;
         private Object rawInput;
         private Class<?> expectedClass;
@@ -227,6 +231,11 @@ public abstract class AbstractInvokeActionHandler extends AbstractStrategyAction
 
         public InvokeContextImpl() {
 
+        }
+
+        public Map<String, Object> getRuntimeData() {
+
+            return runtimeData;
         }
 
         @Override

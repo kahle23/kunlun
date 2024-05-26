@@ -10,6 +10,7 @@ package kunlun.core.callback;
  * @param <T> The type of successful result
  * @author Kahle
  */
+@Deprecated
 public interface SuccessCallback<T> {
 
     /**
