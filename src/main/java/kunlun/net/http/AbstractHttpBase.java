@@ -3,10 +3,8 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.net.http.support;
+package kunlun.net.http;
 
-import kunlun.net.http.HttpClient;
-import kunlun.net.http.HttpMethod;
 import kunlun.util.Assert;
 import kunlun.util.CollectionUtils;
 
@@ -16,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import static kunlun.common.constant.Charsets.STR_UTF_8;
-import static kunlun.common.constant.Numbers.ZERO;
 
 /**
  * The abstract base http information.
@@ -86,6 +83,22 @@ public abstract class AbstractHttpBase implements HttpClient.HttpBase {
         }
     }
 
+    public void setHeader(String name, String value) {
+        List<String> list = new ArrayList<String>();
+        if (value != null) { list.add(value); }
+        setHeader(name, list);
+    }
+
+    public void setHeader(String name, List<String> values) {
+        if (values == null) { values = new ArrayList<String>(); }
+        headers.put(name, values);
+    }
+
+    public void setHeaders(Map<String, List<String>> headers) {
+        Assert.notNull(headers, "Parameter \"headers\" must not null. ");
+        this.headers = headers;
+    }
+
     public void removeHeader(String name, String value) {
         if (!headers.containsKey(name)) { return; }
         List<String> list = headers.get(name);
@@ -116,19 +129,14 @@ public abstract class AbstractHttpBase implements HttpClient.HttpBase {
     }
 
     public String getFirstHeader(String name) {
-        List<String> list = headers.get(name);
-        return CollectionUtils.isNotEmpty(list) ? list.get(ZERO) : null;
+
+        return CollectionUtils.getFirst(headers.get(name));
     }
 
     @Override
     public Map<String, List<String>> getHeaders() {
 
         return headers;
-    }
-
-    public void setHeaders(Map<String, List<String>> headers) {
-        Assert.notNull(headers, "Parameter \"headers\" must not null. ");
-        this.headers = headers;
     }
 
 }

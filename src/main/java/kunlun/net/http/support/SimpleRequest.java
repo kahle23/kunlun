@@ -7,9 +7,11 @@ package kunlun.net.http.support;
 
 import kunlun.data.tuple.KeyValue;
 import kunlun.data.tuple.KeyValueImpl;
+import kunlun.net.http.AbstractHttpBase;
 import kunlun.net.http.HttpMethod;
 import kunlun.net.http.HttpRequest;
 import kunlun.util.Assert;
+import kunlun.util.MapUtils;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -26,21 +28,75 @@ import static kunlun.common.constant.Numbers.ZERO;
  * @author Kahle
  */
 public class SimpleRequest extends AbstractHttpBase implements HttpRequest {
-    private final Collection<KeyValue<String, Object>> parameters = new ArrayList<KeyValue<String, Object>>();
-    private Object body;
+
+    public static SimpleRequest of(HttpMethod method,
+                                   String url,
+                                   Map<String, ?> headers,
+                                   Map<String, ?> parameters,
+                                   Object body) {
+        SimpleRequest request = new SimpleRequest(method, url);
+        if (MapUtils.isNotEmpty(headers)) {
+            for (Map.Entry<String, ?> entry : headers.entrySet()) {
+                String value = entry.getValue() != null ? String.valueOf(entry.getValue()) : null;
+                request.addHeader(entry.getKey(), value);
+            }
+        }
+        if (MapUtils.isNotEmpty(parameters)) {
+            request.addParameters(parameters);
+        }
+        if (body != null) { request.setBody(body); }
+        return request;
+    }
+
+    public static SimpleRequest of(HttpMethod method, String url) {
+
+        return new SimpleRequest(method, url);
+    }
+
+    public static SimpleRequest of() {
+
+        return new SimpleRequest();
+    }
+
+
+    /**
+     * The network proxy information.
+     */
     private Proxy proxy;
     /**
-     * timeout value in milliseconds.
+     * The connect timeout in milliseconds.
+     */
+    private Integer connectTimeout = 19000;
+    /**
+     * The read timeout in milliseconds.
      */
     private Integer readTimeout = 19000;
     /**
-     * timeout value in milliseconds.
+     * Validate https certificate (default validate, false unsafe).
      */
-    private Integer connectTimeout = 19000;
+    private Boolean validateCertificate;
+    /**
+     * Whether to follow the redirect (default false).
+     */
+    private Boolean followRedirect;
+    /**
+     * Whether to ignore http errors (default true).
+     */
+    private Boolean ignoreHttpErrors;
+    /**
+     * The http response stream will be the original stream (default false).
+     */
+    private Boolean stream;
+    /**
+     * The http request parameters.
+     */
+    private final Collection<KeyValue<String, Object>> parameters = new ArrayList<KeyValue<String, Object>>();
+    /**
+     * The http request body.
+     */
+    private Object body;
 
-    public SimpleRequest(String url, HttpMethod method) {
-        Assert.notNull(method, "Parameter \"method\" must not null. ");
-        Assert.notBlank(url, "Parameter \"url\" must not blank. ");
+    public SimpleRequest(HttpMethod method, String url) {
         this.setMethod(method);
         this.setUrl(url);
     }
@@ -86,6 +142,46 @@ public class SimpleRequest extends AbstractHttpBase implements HttpRequest {
         Assert.notNull(readTimeout, "Parameter \"readTimeout\" must not null. ");
         Assert.isTrue(readTimeout > ZERO, "Parameter \"readTimeout\" must greater than 0. ");
         this.readTimeout = readTimeout;
+    }
+
+    public Boolean getValidateCertificate() {
+
+        return validateCertificate;
+    }
+
+    public void setValidateCertificate(Boolean validateCertificate) {
+        Assert.notNull(validateCertificate, "Parameter \"validateCertificate\" must not null. ");
+        this.validateCertificate = validateCertificate;
+    }
+
+    public Boolean getFollowRedirect() {
+
+        return followRedirect;
+    }
+
+    public void setFollowRedirect(Boolean followRedirect) {
+        Assert.notNull(followRedirect, "Parameter \"followRedirect\" must not null. ");
+        this.followRedirect = followRedirect;
+    }
+
+    public Boolean getIgnoreHttpErrors() {
+
+        return ignoreHttpErrors;
+    }
+
+    public void setIgnoreHttpErrors(Boolean ignoreHttpErrors) {
+        Assert.notNull(ignoreHttpErrors, "Parameter \"ignoreHttpErrors\" must not null. ");
+        this.ignoreHttpErrors = ignoreHttpErrors;
+    }
+
+    public Boolean getStream() {
+
+        return stream;
+    }
+
+    public void setStream(Boolean stream) {
+        Assert.notNull(stream, "Parameter \"stream\" must not null. ");
+        this.stream = stream;
     }
 
     public Object getParameter(String paramName) {

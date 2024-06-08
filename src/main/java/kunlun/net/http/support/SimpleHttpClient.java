@@ -5,22 +5,30 @@
 
 package kunlun.net.http.support;
 
-import kunlun.data.tuple.KeyValue;
 import kunlun.exception.ExceptionUtils;
 import kunlun.io.util.IOUtils;
+import kunlun.net.http.AbstractHttpClient;
 import kunlun.net.http.HttpMethod;
 import kunlun.net.http.HttpRequest;
 import kunlun.net.http.HttpResponse;
+import kunlun.util.Assert;
 import kunlun.util.CloseUtils;
 import kunlun.util.CollectionUtils;
 import kunlun.util.StringUtils;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import static kunlun.common.constant.Numbers.ONE;
@@ -29,117 +37,25 @@ import static kunlun.common.constant.Symbols.*;
 import static kunlun.io.util.IOUtils.EOF;
 import static kunlun.net.http.HttpMethod.HEAD;
 
+/**
+ * The http client based on jdk simple implementation.
+ * @author Kahle
+ */
 public class SimpleHttpClient extends AbstractHttpClient {
-    private static final char SLASH_CHAR = '/';
-    private static final String FORM_URL_ENCODED = "application/x-www-form-urlencoded";
-    private static final String MULTIPART_FORM_DATA = "multipart/form-data";
-    private static final String CONTENT_ENCODING = "Content-Encoding";
-    private static final String CONTENT_TYPE = "Content-Type";
-    private static final String BOUNDARY_EQUAL = "boundary=";
-    private static final String MALFORMED_HTTPS = "https:/";
-    private static final String MALFORMED_HTTP = "http:/";
-    private static final String CHARSET_EQUAL = "charset=";
-    private static final String SET_COOKIE = "Set-Cookie";
-    private static final String LOCATION = "Location";
-    private static final String COOKIE = "Cookie";
-    private static final String HTTPS = "https";
-    private static final String HTTP = "http";
-    private static final String GZIP = "gzip";
-    private static final int MALFORMED_HTTP_LENGTH = MALFORMED_HTTP.length();
-    private static final int MALFORMED_HTTPS_LENGTH = MALFORMED_HTTPS.length();
-    private static final int CHARSET_EQUAL_LENGTH = CHARSET_EQUAL.length();
-    private static final int BOUNDARY_LENGTH = 16;
-    private static final int HTTP_TEMP_REDIRECT = 307;
+    protected static final String FORM_URL_ENCODED = "application/x-www-form-urlencoded";
+    protected static final String MULTIPART_FORM_DATA = "multipart/form-data";
+    protected static final String HTTPS = "https";
+    protected static final String HTTP = "http";
+    protected static final String GZIP = "gzip";
 
-    private static String createCookiesString(HttpRequest request) {
-        /*Map<String, String> cookies = request.getCookies();
-        StringBuilder cookiesBuilder = new StringBuilder();
-        boolean first = true;
-        for (Map.Entry<String, String> cookie : cookies.entrySet()) {
-            if (!first) {
-                cookiesBuilder.append(SEMICOLON);
-                cookiesBuilder.append(BLANK_SPACE);
-            }
-            else {
-                first = false;
-            }
-            cookiesBuilder.append(cookie.getKey());
-            cookiesBuilder.append(EQUAL);
-            cookiesBuilder.append(cookie.getValue());
-        }
-        String cookiesString = cookiesBuilder.toString();
-        String charset = request.getCharset();
-        Charset forName = Charset.forName(charset);
-        byte[] cookiesStrBytes = cookiesString.getBytes(forName);
-        if (cookiesStrBytes.length != cookiesString.length()) {
-            // Spec says only ascii, no escaping / encoding defined.
-            // Validate on set? or escape somehow here?
-            throw new IllegalArgumentException("Cookies must only ascii! ");
-        }
-        return cookiesString;*/
-        return null;
-    }
-
-    private HttpURLConnection createConnection(SimpleRequest request) throws IOException {
-        // No need validate, because validate before invoke.
-        String urlStr = request.getUrl();
-        URL url = new URL(urlStr);
-        Proxy proxy = request.getProxy();
-        HttpURLConnection conn = (HttpURLConnection) (
-                proxy == null
-                        ? url.openConnection()
-                        : url.openConnection(proxy)
-        );
-        conn.setRequestMethod(request.getMethod().name());
-        // Don't rely on native redirection support.
-        // Because if native, maybe only redirect once.
-        conn.setInstanceFollowRedirects(false);
-        Integer connectTimeout = request.getConnectTimeout();
-        Integer readTimeout = request.getReadTimeout();
-        if (connectTimeout != null && connectTimeout >= ZERO) {
-            conn.setConnectTimeout(connectTimeout);
-        }
-        if (readTimeout != null && readTimeout >= ZERO) {
-            conn.setReadTimeout(readTimeout);
-        }
-        // Set SSL and trust hostname.
-        /*if (conn instanceof HttpsURLConnection
-                && !request.getValidateTLSCertificate()) {
-            HttpsURLConnection hsConn = (HttpsURLConnection) conn;
-            hsConn.setSSLSocketFactory(buildUnsafeSslSocketFactory());
-            hsConn.setHostnameVerifier(buildUnsafeHostnameVerifier());
-        }*/
-        // Set needs input or output.
-        HttpMethod method = request.getMethod();
-        conn.setRequestMethod(method.name());
-        if (hasBody(method)) {
-            conn.setDoOutput(true);
-        }
-        conn.setDoInput(true);
-        // Handle cookies.
-        /*Map<String, String> cookies = request.getCookies();
-        if (MapUtils.isNotEmpty(cookies)) {
-            String cookiesString = createCookiesString(request);
-            conn.addRequestProperty(COOKIE, cookiesString);
-        }*/
-        // Handle headers.
-        Map<String, List<String>> headers = request.getHeaders();
-        for (Map.Entry<String, List<String>> header : headers.entrySet()) {
-            List<String> val = header.getValue();
-            String key = header.getKey();
-            if (CollectionUtils.isEmpty(val)) { continue; }
-            for (String str : val) {
-                if (StringUtils.isBlank(str)) { continue; }
-                conn.addRequestProperty(key, str);
-            }
-        }
-        // Return.
-        return conn;
-    }
-
-    private Map<String, List<String>> createHeaders(HttpURLConnection connection) {
+    /**
+     * Obtains the headers from the URL connection.
+     * @param connection The URL connection
+     * @return The headers
+     */
+    protected Map<String, List<String>> obtainHeaders(URLConnection connection) {
         // The default sun impl of connection.getHeaderFields() returns header values out of order
-        final LinkedHashMap<String, List<String>> headers = new LinkedHashMap<String, List<String>>();
+        Map<String, List<String>> headers = new LinkedHashMap<String, List<String>>();
         int i = ZERO;
         while (true) {
             String val = connection.getHeaderField(i);
@@ -160,137 +76,116 @@ public class SimpleHttpClient extends AbstractHttpClient {
         return headers;
     }
 
-    private static URL encodeUrl(URL url) {
-        try {
-            // Odd way to encode urls, but it works!
-            final URI uri = new URI(url.toExternalForm());
-            return new URL(uri.toASCIIString());
-        }
-        catch (Exception e) {
-            return url;
-        }
-    }
-
-    private static URL createRedirectUrl(URL oldUrl, String redirectUrl) throws MalformedURLException {
-        if (StringUtils.isBlank(redirectUrl)) {
-            throw new MalformedURLException("Redirect url must not blank. ");
-        }
-        String lowerRedirectUrl = redirectUrl.toLowerCase();
-        // Fix broken Location: http:/temp/AAG_New/en/index.php
-        if (lowerRedirectUrl.startsWith(MALFORMED_HTTP) && redirectUrl.charAt(MALFORMED_HTTP_LENGTH) != SLASH_CHAR) {
-            redirectUrl = redirectUrl.substring(MALFORMED_HTTP_LENGTH);
-        }
-        // Fix broken Location: https:/temp/AAG_New/en/index.php
-        if (lowerRedirectUrl.startsWith(MALFORMED_HTTPS) && redirectUrl.charAt(MALFORMED_HTTPS_LENGTH) != SLASH_CHAR) {
-            redirectUrl = redirectUrl.substring(MALFORMED_HTTPS_LENGTH);
-        }
-        // Workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
-        if (redirectUrl.startsWith(QUESTION_MARK)) {
-            redirectUrl = oldUrl.getPath() + redirectUrl;
-        }
-        // Workaround: //example.com + ./foo = //example.com/./foo, not //example.com/foo
-        String oldUrlFile = oldUrl.getFile();
-        if (redirectUrl.startsWith(DOT) && !oldUrlFile.startsWith(SLASH)) {
-            oldUrl = new URL(oldUrl.getProtocol(), oldUrl.getHost(), oldUrl.getPort(), SLASH + oldUrlFile);
-        }
-        return new URL(oldUrl, redirectUrl);
-    }
-
-    private void updateRequestUrl(SimpleRequest request) throws IOException {
-        Collection<KeyValue<String, Object>> parameters = request.getParameters();
-        String charset = request.getCharset();
-        URL oldUrl = new URL(request.getUrl());
-        StringBuilder urlBuilder = new StringBuilder();
-        boolean first = true;
-        // Reconstitute the query, ready for appends.
-        urlBuilder.append(oldUrl.getProtocol())
-                .append("://")
-                // Includes host, port.
-                .append(oldUrl.getAuthority())
-                .append(oldUrl.getPath())
-                .append(QUESTION_MARK);
-        String oldUrlQuery = oldUrl.getQuery();
-        if (oldUrlQuery != null) {
-            urlBuilder.append(oldUrlQuery);
-            first = false;
-        }
-        for (KeyValue<String, Object> keyValue : parameters) {
-            Object value = keyValue.getValue();
-            if (needsMultipart(value)) {
-                throw new IOException("File not supported in URL query string. ");
-            }
-            if (first) {
-                first = false;
-            }
-            else {
-                urlBuilder.append(AMPERSAND);
-            }
-            String key = URLEncoder.encode(keyValue.getKey(), charset);
-            String val = value != null ? URLEncoder.encode(String.valueOf(value), charset) : EMPTY_STRING;
-            urlBuilder.append(key).append(EQUAL).append(val);
-        }
-        request.setUrl(urlBuilder.toString());
-        // Moved into url as get params.
-        request.clearParameters();
-    }
-
-    private String updateContentType(SimpleRequest request) {
-        String mimeBoundary = null, contentType;
+    /**
+     * Resets the http content type of the http request.
+     * @param request The http request
+     * @return The http mime boundary or null
+     */
+    protected String resetContentType(SimpleRequest request) {
+        char[] boundaryChars = "123456789abcdefghijkmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ".toCharArray();
+        String boundaryEqual = "boundary=", charsetEqual = "charset=", mimeBoundary = null, contentType;
+        int boundaryLength = 16;
         if (StringUtils.isNotBlank(contentType = request.getFirstHeader(CONTENT_TYPE))) {
             // If content type already set, try add charset or boundary if those aren't included.
             String lowerContentType = contentType.toLowerCase();
             boolean isMultipart = lowerContentType.startsWith(MULTIPART_FORM_DATA);
-            if (!isMultipart && !contentType.contains(CHARSET_EQUAL)) {
+            if (!isMultipart && !contentType.contains(charsetEqual)) {
                 if (!contentType.trim().endsWith(SEMICOLON)) {
                     contentType += SEMICOLON;
                 }
                 contentType += BLANK_SPACE;
-                contentType += CHARSET_EQUAL;
+                contentType += charsetEqual;
                 contentType += request.getCharset().toLowerCase();
-                request.addHeader(CONTENT_TYPE, contentType);
+                request.setHeader(CONTENT_TYPE, contentType);
             }
-            if (isMultipart && !lowerContentType.contains(BOUNDARY_EQUAL)) {
-                mimeBoundary = buildMimeBoundary(BOUNDARY_LENGTH);
+            if (isMultipart && !lowerContentType.contains(boundaryEqual)) {
+                mimeBoundary = buildMimeBoundary(boundaryChars, boundaryLength);
                 if (!contentType.trim().endsWith(SEMICOLON)) {
                     contentType += SEMICOLON;
                     contentType += BLANK_SPACE;
-                    contentType += CHARSET_EQUAL;
+                    contentType += charsetEqual;
                     contentType += mimeBoundary;
-                    request.addHeader(CONTENT_TYPE, contentType);
+                    request.setHeader(CONTENT_TYPE, contentType);
                 }
             }
         }
-        else if (needsMultipart(request.getParameters())) {
-            mimeBoundary = buildMimeBoundary(BOUNDARY_LENGTH);
-            request.addHeader(CONTENT_TYPE, MULTIPART_FORM_DATA + "; boundary=" + mimeBoundary);
+        else if (hasMultipart(request.getParameters())) {
+            mimeBoundary = buildMimeBoundary(boundaryChars, boundaryLength);
+            request.setHeader(CONTENT_TYPE, MULTIPART_FORM_DATA + "; boundary=" + mimeBoundary);
         }
         else {
-            request.addHeader(CONTENT_TYPE, FORM_URL_ENCODED + "; charset=" + request.getCharset());
+            request.setHeader(CONTENT_TYPE, FORM_URL_ENCODED + "; charset=" + request.getCharset());
         }
         return mimeBoundary;
     }
 
-    private void fillResponseCharset(SimpleResponse response) {
-        String contentTypeArray = response.getFirstHeader(CONTENT_TYPE);
-        if (StringUtils.isNotBlank(contentTypeArray)) {
-            String[] split = contentTypeArray.split(COMMA);
-            for (String contentType : split) {
-                if (StringUtils.isBlank(contentType)) { continue; }
-                contentType = contentType.trim().toLowerCase();
-                int begin = contentType.indexOf(CHARSET_EQUAL);
-                if (begin == EOF) { continue; }
-                int end = contentType.indexOf(SEMICOLON, begin);
-                end = end != EOF ? end : contentType.length();
-                begin = begin + CHARSET_EQUAL_LENGTH;
-                String charsetName = contentType.substring(begin, end).trim();
-                if (StringUtils.isBlank(charsetName)) { continue; }
-                response.setCharset(Charset.forName(charsetName).name());
-                return;
+    /**
+     * Create an http URL connection based on an http request.
+     * @param request The http request
+     * @return The http URL connection
+     * @throws IOException The network IO error
+     */
+    protected HttpURLConnection createConnection(SimpleRequest request) throws IOException {
+        // No need validate, because validate before invoke.
+        URL url = new URL(request.getUrl());
+        Proxy proxy = request.getProxy();
+        HttpURLConnection conn = (HttpURLConnection) (
+                proxy == null
+                        ? url.openConnection()
+                        : url.openConnection(proxy)
+        );
+        conn.setRequestMethod(request.getMethod().name());
+        // Don't rely on native redirection support.
+        // Because if native, maybe only redirect once.
+        conn.setInstanceFollowRedirects(false);
+        // Set timeout.
+        Integer connectTimeout = request.getConnectTimeout();
+        Integer readTimeout = request.getReadTimeout();
+        if (connectTimeout != null && connectTimeout >= ZERO) {
+            conn.setConnectTimeout(connectTimeout);
+        }
+        if (readTimeout != null && readTimeout >= ZERO) {
+            conn.setReadTimeout(readTimeout);
+        }
+        // Set SSL and trust hostname.
+        if (conn instanceof HttpsURLConnection
+                && request.getValidateCertificate() != null
+                && !request.getValidateCertificate()) {
+            HttpsURLConnection hsConn = (HttpsURLConnection) conn;
+            hsConn.setSSLSocketFactory(buildUnsafeSslSocketFactory());
+            hsConn.setHostnameVerifier(buildUnsafeHostnameVerifier());
+        }
+        // Set needs input or output.
+        if (hasBody(request.getMethod())) {
+            conn.setDoOutput(true);
+        }
+        conn.setDoInput(true);
+        // Handle cookies.
+        /*Map<String, String> cookies = request.getCookies();
+        if (MapUtils.isNotEmpty(cookies)) {
+            conn.addRequestProperty(COOKIE, buildCookiesString(cookies, request.getCharset()));
+        }*/
+        // Handle headers.
+        Map<String, List<String>> headers = request.getHeaders();
+        for (Map.Entry<String, List<String>> header : headers.entrySet()) {
+            List<String> val = header.getValue();
+            String key = header.getKey();
+            if (CollectionUtils.isEmpty(val)) { continue; }
+            for (String str : val) {
+                if (StringUtils.isBlank(str)) { continue; }
+                conn.addRequestProperty(key, str);
             }
         }
+        // Return.
+        return conn;
     }
 
-    private void fillResponseCookies(SimpleResponse response, List<String> cookies) {
+    /**
+     * Process the http response cookies.
+     * @param response The http response
+     * @param cookies The http response cookies
+     */
+    protected void processResponseCookies(SimpleResponse response, List<String> cookies) {
         for (String cookie : cookies) {
             if (cookie == null) { continue; }
             int beginIndex = cookie.indexOf(EQUAL);
@@ -309,14 +204,19 @@ public class SimpleHttpClient extends AbstractHttpClient {
         }
     }
 
-    private void fillResponseHeaders(SimpleResponse response, Map<String, List<String>> headers) {
+    /**
+     * Process the http response headers.
+     * @param response The http response
+     * @param headers The http response headers
+     */
+    protected void processResponseHeaders(SimpleResponse response, Map<String, List<String>> headers) {
         for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
             String name = entry.getKey();
             // Http/1.1 line
             if (name == null) { continue; }
             List<String> values = entry.getValue();
             if (SET_COOKIE.equalsIgnoreCase(name)) {
-                fillResponseCookies(response, values);
+                processResponseCookies(response, values);
                 continue;
             }
             // Combine same header names with comma: http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
@@ -337,105 +237,219 @@ public class SimpleHttpClient extends AbstractHttpClient {
         }
     }
 
-    private void setupFromConnection(SimpleResponse response, SimpleResponse previousResponse, HttpURLConnection connection) throws IOException {
-        response.setUrl(String.valueOf(connection.getURL()));
-        response.setMethod(HttpMethod.valueOf(connection.getRequestMethod()));
-        response.setStatusCode(connection.getResponseCode());
-        response.setStatusMessage(connection.getResponseMessage());
-
-        Map<String, List<String>> headers = createHeaders(connection);
-        fillResponseHeaders(response, headers);
-        fillResponseCharset(response);
-
-        // If from a redirect, map previous response cookies into this response
-        if (previousResponse == null) { return; }
-        /*Map<String, String> previousCookies = previousResponse.getCookies();
-        for (Map.Entry<String, String> prevCookie : previousCookies.entrySet()) {
-            if (response.containsCookie(prevCookie.getKey())) { continue; }
-            response.addCookie(prevCookie.getKey(), prevCookie.getValue());
-        }*/
-    }
-
-    private HttpResponse responseRedirect(SimpleResponse response, SimpleRequest request) throws IOException {
-        int status = response.getStatusCode();
-        // Http/1.1 temporary redirect, not in Java's set.
-        if (status != HTTP_TEMP_REDIRECT) {
-            // Always redirect with a get.
-            // Any data param from original req are dropped.
-            request.setMethod(HttpMethod.GET);
-            request.clearParameters();
-            request.setBody(null);
-            request.removeHeader(CONTENT_TYPE);
-        }
-        String location = response.getFirstHeader(LOCATION);
-        URL redirectUrl = createRedirectUrl(new URL(request.getUrl()), location);
-        request.setUrl(String.valueOf(encodeUrl(redirectUrl)));
-        // Add response cookies to request (for e.g. login posts).
-//        request.addCookies(response.getCookies());
-        return execute(request, response);
-    }
-
-    private void fillResponseBody(SimpleResponse response, SimpleRequest request, HttpURLConnection connection) throws IOException {
+    /**
+     * Process the http response body.
+     * @param r The http response
+     * @param c The http URL connection
+     * @param s Whether to enable streaming
+     * @throws IOException The network IO error
+     */
+    protected void processResponseBody(SimpleResponse r, HttpURLConnection c, Boolean s) throws IOException {
         // -1 means unknown, chunked.
-        if (connection.getContentLength() != ZERO && request.getMethod() != HEAD) {
+        if (c.getContentLength() != ZERO && r.getMethod() != HEAD) {
             // Sun throws an IO exception on 500 response with no content when trying to read body.
-            InputStream errorStream = connection.getErrorStream();
+            InputStream errorStream = c.getErrorStream();
             InputStream bodyStream =
-                    errorStream != null ? errorStream : connection.getInputStream();
-            if (response.containsHeader(CONTENT_ENCODING)
-                    && GZIP.equalsIgnoreCase(response.getFirstHeader(CONTENT_ENCODING))) {
+                    errorStream != null ? errorStream : c.getInputStream();
+            if (r.containsHeader(CONTENT_ENCODING)
+                    && GZIP.equalsIgnoreCase(r.getFirstHeader(CONTENT_ENCODING))) {
                 bodyStream = new GZIPInputStream(bodyStream);
             }
-            byte[] body = IOUtils.toByteArray(bodyStream);
-            response.setBodyStream(new ByteArrayInputStream(body));
+            if (s != null && s) {
+                r.setBodyStream(new ConnectionInputStream(c, bodyStream));
+            }
+            else {
+                byte[] body = IOUtils.toByteArray(bodyStream);
+                r.setBodyStream(new ByteArrayInputStream(body));
+            }
         }
     }
 
-    private HttpResponse execute(SimpleRequest request, SimpleResponse previousResponse) throws IOException {
-        validate(request);
-        HttpMethod method = request.getMethod();
-        boolean haveBody = hasBody(method);
+    /**
+     * Process the http response redirect.
+     * @param res The http response
+     * @param req The http request
+     * @return The http response after redirection
+     * @throws IOException The network IO error
+     */
+    protected HttpResponse processResponseRedirect(SimpleResponse res, SimpleRequest req) throws IOException {
+        // Http/1.1 temporary redirect, not in Java's set.
+        int httpTempRedirect = 307;
+        if (res.getStatusCode() != httpTempRedirect) {
+            // Always redirect with a get.
+            // Any data param from original req are dropped.
+            req.setMethod(HttpMethod.GET);
+            req.clearParameters();
+            req.setBody(null);
+            req.removeHeader(CONTENT_TYPE);
+        }
+        String location = res.getFirstHeader(LOCATION);
+        //Assert.notNull(location);
+        URL redirectUrl = buildRedirectUrl(new URL(req.getUrl()), location);
+        req.setUrl(String.valueOf(encodeUrl(redirectUrl)));
+        // Add response cookies to request (for e.g. login posts).
+        //req.addCookies(resp.getCookies());
+        return execute(req, res);
+    }
+
+    /**
+     * Build the http response based on the http URL connection.
+     * @param prevResp The previous http response
+     * @param c The http URL connection
+     * @return The built http response
+     * @throws IOException The network IO error
+     */
+    protected SimpleResponse buildResponse(SimpleResponse prevResp, HttpURLConnection c) throws IOException {
+        SimpleResponse resp = SimpleResponse.of(
+                HttpMethod.valueOf(c.getRequestMethod()), String.valueOf(c.getURL()));
+        resp.setStatusCode(c.getResponseCode());
+        resp.setStatusMessage(c.getResponseMessage());
+        processResponseHeaders(resp, obtainHeaders(c));
+        // Set charset
+        String contentType = resp.getFirstHeader(CONTENT_TYPE);
+        String charsetName = obtainCharset(contentType);
+        if (StringUtils.isNotBlank(charsetName)) {
+            resp.setCharset(Charset.forName(charsetName).name());
+        }
+        // If from a redirect, map previous response cookies into this response
+        if (prevResp == null) { return resp; }
+        /*Map<String, String> prevCookies = prevResp.getCookies();
+        for (Map.Entry<String, String> prevCookie : prevCookies.entrySet()) {
+            if (response.containsCookie(prevCookie.getKey())) { continue; }
+            resp.addCookie(prevCookie.getKey(), prevCookie.getValue());
+        }*/
+        return resp;
+    }
+
+    /**
+     * Execute http request and return a response.
+     * @param request The http request
+     * @param previousResponse The previous http response
+     * @return The http response
+     * @throws IOException The network IO error
+     */
+    protected HttpResponse execute(SimpleRequest request, SimpleResponse previousResponse) throws IOException {
+        // Validate request.
+        Assert.notNull(request, "Parameter \"request\" must not null. ");
+        Assert.notNull(request.getMethod(), "The request method must not null. ");
+        Assert.notBlank(request.getUrl(), "The request url must not blank. ");
+        // Handle has body.
+        boolean hasBody = hasBody(request.getMethod());
         String mimeBoundary = null;
-        if (!haveBody && CollectionUtils.isNotEmpty(request.getParameters())) {
-            updateRequestUrl(request);
+        if (!hasBody && CollectionUtils.isNotEmpty(request.getParameters())) {
+            // Moved into url as get params.
+            request.setUrl(buildRequestUrl(request.getUrl(), request.getCharset(), request.getParameters()));
+            request.clearParameters();
         }
-        else if (haveBody) {
-            mimeBoundary = updateContentType(request);
+        else if (hasBody) {
+            mimeBoundary = resetContentType(request);
         }
+        // Create connection.
         HttpURLConnection connection = createConnection(request);
-        SimpleResponse response;
         try {
             connection.connect();
+            // Write request data.
             if (connection.getDoOutput()) {
-                writeRequestData(request, connection.getOutputStream(), mimeBoundary);
+                writeRequest(request, connection.getOutputStream(), mimeBoundary);
             }
-            response = new SimpleResponse();
-            setupFromConnection(response, previousResponse, connection);
+            // Build response by connection.
+            SimpleResponse response = buildResponse(previousResponse, connection);
             // Redirect if there's a location header (from 3xx, or 201 etc).
-            /*if (response.containsHeader(LOCATION) && request.getFollowRedirect()) {
-                return responseRedirect(response, request);
-            }*/
-            /*int status = response.getStatusCode();
-            boolean isErrorStatus = status < 200 || status >= 400;
-            if (isErrorStatus && !request.getIgnoreHttpError()) {
-                String url = request.getUrl();
-                throw new IOException("HTTP error " + status + " fetching URL \"" + url.toString() + "\". ");
-            }*/
-            fillResponseBody(response, request, connection);
+            boolean redirect = request.getFollowRedirect() != null && request.getFollowRedirect();
+            if (response.containsHeader(LOCATION) && redirect) {
+                return processResponseRedirect(response, request);
+            }
+            // Http status code.
+            boolean isErrorStatus = response.getStatusCode() < 200 || response.getStatusCode() >= 400;
+            boolean ignoreErrors = request.getIgnoreHttpErrors() == null || request.getIgnoreHttpErrors();
+            if (isErrorStatus && !ignoreErrors) {
+                throw new IOException(String.format("HTTP error fetching URL. Status=%s, URL=[%s]"
+                        , response.getStatusCode(), request.getUrl()));
+            }
+            // Process response body.
+            processResponseBody(response, connection, request.getStream());
+            // End.
+            return response;
         }
         finally {
-            CloseUtils.closeQuietly(connection);
+            if (request.getStream() == null || !request.getStream()) {
+                CloseUtils.closeQuietly(connection);
+            }
         }
-        return response;
     }
 
     @Override
     public HttpResponse execute(HttpRequest request) {
         try {
             return execute((SimpleRequest) request, null);
+        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+    }
+
+    /**
+     * The input stream that contains an HttpURLConnection.
+     * @author Kahle
+     */
+    protected static class ConnectionInputStream extends InputStream {
+        private final HttpURLConnection connection;
+        private final InputStream inputStream;
+
+        public ConnectionInputStream(HttpURLConnection connection, InputStream inputStream) {
+            this.inputStream = inputStream;
+            this.connection = connection;
         }
-        catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+
+        @Override
+        public int read() throws IOException {
+
+            return inputStream.read();
+        }
+
+        @Override
+        public int read(byte[] b) throws IOException {
+
+            return inputStream.read(b);
+        }
+
+        @Override
+        public int read(byte[] b, int off, int len) throws IOException {
+
+            return inputStream.read(b, off, len);
+        }
+
+        @Override
+        public long skip(long n) throws IOException {
+
+            return inputStream.skip(n);
+        }
+
+        @Override
+        public int available() throws IOException {
+
+            return inputStream.available();
+        }
+
+        @Override
+        public void close() throws IOException {
+            try { inputStream.close(); }
+            finally { connection.disconnect(); }
+        }
+
+        @Override
+        public synchronized void mark(int readLimit) {
+
+            inputStream.mark(readLimit);
+        }
+
+        @Override
+        public synchronized void reset() throws IOException {
+
+            inputStream.reset();
+        }
+
+        @Override
+        public boolean markSupported() {
+
+            return inputStream.markSupported();
         }
     }
 

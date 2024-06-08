@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The http provider simple implement by jdk.
+ * The http provider based on jdk simple implementation.
  * @author Kahle
  */
 public class SimpleHttpProvider implements HttpProvider {

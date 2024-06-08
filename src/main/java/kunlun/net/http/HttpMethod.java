@@ -7,6 +7,7 @@ package kunlun.net.http;
 
 /**
  * The http method.
+ * @see <a href="https://en.wikipedia.org/wiki/HTTP#Request_methods">Http request methods</a>
  * @author Kahle
  */
 public enum HttpMethod {

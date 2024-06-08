@@ -7,7 +7,10 @@ package kunlun.net.http.support;
 
 import kunlun.exception.ExceptionUtils;
 import kunlun.io.util.IOUtils;
+import kunlun.net.http.AbstractHttpBase;
+import kunlun.net.http.HttpMethod;
 import kunlun.net.http.HttpResponse;
+import kunlun.util.CloseUtils;
 import kunlun.util.StringUtils;
 
 import java.io.IOException;
@@ -19,9 +22,26 @@ import java.nio.charset.Charset;
  * @author Kahle
  */
 public class SimpleResponse extends AbstractHttpBase implements HttpResponse {
+
+    public static SimpleResponse of(HttpMethod method, String url) {
+
+        return new SimpleResponse(method, url);
+    }
+
+    public static SimpleResponse of() {
+
+        return new SimpleResponse();
+    }
+
+
     private InputStream bodyStream;
     private String statusMessage;
     private int statusCode;
+
+    public SimpleResponse(HttpMethod method, String url) {
+        this.setMethod(method);
+        this.setUrl(url);
+    }
 
     public SimpleResponse() {
 
@@ -67,6 +87,9 @@ public class SimpleResponse extends AbstractHttpBase implements HttpResponse {
         }
         catch (IOException e) {
             throw ExceptionUtils.wrap(e);
+        }
+        finally {
+            CloseUtils.closeQuietly(bodyStream);
         }
     }
 
