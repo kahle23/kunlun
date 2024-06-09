@@ -79,6 +79,30 @@ public class ArgumentUtils {
     /**
      * Parsing the arguments array.
      * The arguments mean (most of the scenes):
+     *      0 strategy or operation or null
+     *      1 new arguments array
+     * @param arguments The arguments
+     * @return The result
+     */
+    public static Pair<Object, Object[]> parseToObjArr(Object[] arguments) {
+        // Check parameters.
+        Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");
+        Assert.isTrue(arguments.length >= ONE
+                , "The length of parameter \"arguments\" must be at least 1. ");
+        // Extract parameters.
+        int newLength = arguments.length - ONE;
+        Object[] newArgs = new Object[newLength];
+        if (newLength > ZERO) {
+            System.arraycopy(arguments, ONE, newArgs, ZERO, newLength);
+        }
+        Object strategy = arguments[ZERO];
+        // Method call.
+        return new PairImpl<Object, Object[]>(strategy, newArgs);
+    }
+
+    /**
+     * Parsing the arguments array.
+     * The arguments mean (most of the scenes):
      *      0 input object
      *      1 return value type
      * @param arguments The arguments

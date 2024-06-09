@@ -11,8 +11,6 @@ import kunlun.data.tuple.Pair;
 import kunlun.util.ArgumentUtils;
 import kunlun.util.Assert;
 
-import static kunlun.common.constant.Numbers.*;
-
 /**
  * The abstract strategy action handler.
  * @author Kahle
@@ -22,17 +20,8 @@ public abstract class AbstractStrategyActionHandler
 
     @Override
     public Object execute(Object[] arguments) {
-        // Check parameters.
-        Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");
-        Assert.isTrue(arguments.length >= THREE
-            , "The length of parameter \"arguments\" must be at least 3. ");
-        // Extract parameters.
-        int newLength = arguments.length - ONE;
-        Object[] newArgs = new Object[newLength];
-        System.arraycopy(arguments, ONE, newArgs, ZERO, newLength);
-        Object strategy = arguments[ZERO];
-        // Method call.
-        return execute(strategy, newArgs);
+        Pair<Object, Object[]> pair = ArgumentUtils.parseToObjArr(arguments);
+        return execute(pair.getLeft(), pair.getRight());
     }
 
     @Override
