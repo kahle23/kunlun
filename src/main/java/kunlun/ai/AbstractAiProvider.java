@@ -21,12 +21,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * The abstract artificial intelligence provider.
  * @author Kahle
  */
-public abstract class AbstractAiProvider implements AiProvider {
-    private static final Logger log = LoggerFactory.getLogger(AbstractAiProvider.class);
+public abstract class AbstractAIProvider implements AIProvider {
+    private static final Logger log = LoggerFactory.getLogger(AbstractAIProvider.class);
     protected final Map<String, ArtificialIntelligence> aiHandlers;
     protected final Map<String, Object> commonProperties;
 
-    protected AbstractAiProvider(Map<String, Object> commonProperties,
+    protected AbstractAIProvider(Map<String, Object> commonProperties,
                                  Map<String, ArtificialIntelligence> aiHandlers) {
         Assert.notNull(commonProperties, "Parameter \"commonProperties\" must not null. ");
         Assert.notNull(aiHandlers, "Parameter \"aiHandlers\" must not null. ");
@@ -34,7 +34,7 @@ public abstract class AbstractAiProvider implements AiProvider {
         this.aiHandlers = aiHandlers;
     }
 
-    public AbstractAiProvider() {
+    public AbstractAIProvider() {
         this(new ConcurrentHashMap<String, Object>(),
                 new ConcurrentHashMap<String, ArtificialIntelligence>());
     }
@@ -72,8 +72,8 @@ public abstract class AbstractAiProvider implements AiProvider {
         Assert.notNull(aiHandler, "Parameter \"aiHandler\" must not null. ");
         String className = aiHandler.getClass().getName();
         aiHandlers.put(handlerName, aiHandler);
-        if (aiHandler instanceof AbstractAiHandler) {
-            ((AbstractAiHandler) aiHandler).setCommonProperties(getCommonProperties());
+        if (aiHandler instanceof AbstractAIHandler) {
+            ((AbstractAIHandler) aiHandler).setCommonProperties(getCommonProperties());
         }
         log.info("Register the AI handler \"{}\" to \"{}\". ", className, handlerName);
     }

@@ -15,8 +15,8 @@ import org.junit.Test;
  * @author Kahle
  */
 @Ignore
-public class AiUtilsTest {
-    private static final Logger log = LoggerFactory.getLogger(AiUtilsTest.class);
+public class AIUtilsTest {
+    private static final Logger log = LoggerFactory.getLogger(AIUtilsTest.class);
 
     @Test
     public void test1() {

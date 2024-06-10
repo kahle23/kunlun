@@ -14,7 +14,7 @@ import java.util.Map;
  * The artificial intelligence provider.
  * @author Kahle
  */
-public interface AiProvider {
+public interface AIProvider {
 
     /**
      * Register common properties' information.

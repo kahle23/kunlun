@@ -10,18 +10,18 @@ import kunlun.core.ArtificialIntelligence;
 import java.util.Map;
 
 /**
- * The simple AI engine provider.
+ * The simple artificial intelligence provider.
  * @author Kahle
  */
-public class SimpleAiProvider extends AbstractAiProvider {
+public class SimpleAIProvider extends AbstractAIProvider {
 
-    protected SimpleAiProvider(Map<String, Object> commonProperties,
+    protected SimpleAIProvider(Map<String, Object> commonProperties,
                                Map<String, ArtificialIntelligence> aiEngines) {
 
         super(commonProperties, aiEngines);
     }
 
-    public SimpleAiProvider() {
+    public SimpleAIProvider() {
 
     }
 

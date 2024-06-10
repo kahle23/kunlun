@@ -28,53 +28,53 @@ import static kunlun.common.constant.Symbols.EMPTY_STRING;
  *
  * @author Kahle
  */
-public class AiUtils {
-    private static final Logger log = LoggerFactory.getLogger(AiUtils.class);
-    private static volatile AiProvider aiProvider;
+public class AIUtils {
+    private static final Logger log = LoggerFactory.getLogger(AIUtils.class);
+    private static volatile AIProvider aiProvider;
 
-    public static AiProvider getAiProvider() {
+    public static AIProvider getAIProvider() {
         if (aiProvider != null) { return aiProvider; }
-        synchronized (AiUtils.class) {
+        synchronized (AIUtils.class) {
             if (aiProvider != null) { return aiProvider; }
-            AiUtils.setAiProvider(new SimpleAiProvider());
+            AIUtils.setAIProvider(new SimpleAIProvider());
             return aiProvider;
         }
     }
 
-    public static void setAiProvider(AiProvider aiProvider) {
+    public static void setAIProvider(AIProvider aiProvider) {
         Assert.notNull(aiProvider, "Parameter \"aiProvider\" must not null. ");
         log.info("Set AI provider: {}", aiProvider.getClass().getName());
-        AiUtils.aiProvider = aiProvider;
+        AIUtils.aiProvider = aiProvider;
     }
 
     public static void registerHandler(String handlerName, ArtificialIntelligence aiHandler) {
 
-        getAiProvider().registerHandler(handlerName, aiHandler);
+        getAIProvider().registerHandler(handlerName, aiHandler);
     }
 
     public static void deregisterHandler(String handlerName) {
 
-        getAiProvider().deregisterHandler(handlerName);
+        getAIProvider().deregisterHandler(handlerName);
     }
 
     public static ArtificialIntelligence getHandler(String handlerName) {
 
-        return getAiProvider().getHandler(handlerName);
+        return getAIProvider().getHandler(handlerName);
     }
 
     public static Object execute(String handlerName, Object[] arguments) {
 
-        return getAiProvider().execute(handlerName, arguments);
+        return getAIProvider().execute(handlerName, arguments);
     }
 
     public static <T> T execute(String handlerName, Object input, String operation, Type type) {
 
-        return getAiProvider().execute(handlerName, input, operation, type);
+        return getAIProvider().execute(handlerName, input, operation, type);
     }
 
     public static <T> T execute(String handlerName, Object input, Type type) {
 
-        return getAiProvider().execute(handlerName, input, EMPTY_STRING, type);
+        return getAIProvider().execute(handlerName, input, EMPTY_STRING, type);
     }
 
 }
