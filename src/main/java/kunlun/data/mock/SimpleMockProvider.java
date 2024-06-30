@@ -5,6 +5,7 @@
 
 package kunlun.data.mock;
 
+import kunlun.data.mock.support.AbstractMockHandler;
 import kunlun.data.mock.support.SimpleMockHandler;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -79,8 +80,10 @@ public class SimpleMockProvider implements MockProvider {
         Assert.notNull(mockHandler, "Parameter \"mockHandler\" must not null. ");
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         String className = mockHandler.getClass().getName();
-        mockHandler.setCommonProperties(getCommonProperties());
         handlers.put(name, mockHandler);
+        if (mockHandler instanceof AbstractMockHandler) {
+            ((AbstractMockHandler) mockHandler).setCommonProperties(getCommonProperties());
+        }
         log.info("Register the mock handler \"{}\" to \"{}\". ", className, name);
     }
 

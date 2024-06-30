@@ -64,7 +64,7 @@ public class SimpleRequest extends AbstractHttpBase implements HttpRequest {
      */
     private Proxy proxy;
     /**
-     * The connect timeout in milliseconds.
+     * To connect timeout in milliseconds.
      */
     private Integer connectTimeout = 19000;
     /**

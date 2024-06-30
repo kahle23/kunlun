@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.thread;
+package kunlun.util.thread;
 
 import kunlun.exception.ExceptionUtils;
 import kunlun.util.Assert;

@@ -87,14 +87,14 @@ public abstract class AbstractHttpClient implements HttpClient {
         final SSLContext sslContext;
         try {
             sslContext = SSLContext.getInstance("SSL");
-            // sslContext = SSLContext.getInstance("TLS");
-            // sslContext = SSLContext.getInstance("TLS", "SunJSSE");
+            // sslContext = SSLContext.getInstance("TLS")
+            // sslContext = SSLContext.getInstance("TLS", "SunJSSE")
             sslContext.init(null, trustAllCerts, new SecureRandom());
         }
         catch (GeneralSecurityException e) {
             throw ExceptionUtils.wrap(e);
         }
-        // Create an ssl socket factory with our all-trusting manager.
+        // Create a ssl socket factory with our all-trusting manager.
         return sslContext.getSocketFactory();
     }
 

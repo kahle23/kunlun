@@ -78,8 +78,10 @@ public class SimpleProxyProvider implements ProxyProvider {
         Assert.notNull(proxyHandler, "Parameter \"proxyHandler\" must not null. ");
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         String className = proxyHandler.getClass().getName();
-        proxyHandler.setCommonProperties(getCommonProperties());
         handlers.put(name, proxyHandler);
+        if (proxyHandler instanceof AbstractProxyHandler) {
+            ((AbstractProxyHandler) proxyHandler).setCommonProperties(getCommonProperties());
+        }
         log.info("Register the proxy handler \"{}\" to \"{}\". ", className, name);
     }
 

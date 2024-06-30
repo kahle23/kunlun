@@ -86,7 +86,7 @@ public class SimpleHttpClient extends AbstractHttpClient {
         String boundaryEqual = "boundary=", charsetEqual = "charset=", mimeBoundary = null, contentType;
         int boundaryLength = 16;
         if (StringUtils.isNotBlank(contentType = request.getFirstHeader(CONTENT_TYPE))) {
-            // If content type already set, try add charset or boundary if those aren't included.
+            // If content type already set, try to add charset or boundary if those aren't included.
             String lowerContentType = contentType.toLowerCase();
             boolean isMultipart = lowerContentType.startsWith(MULTIPART_FORM_DATA);
             if (!isMultipart && !contentType.contains(charsetEqual)) {
@@ -120,7 +120,7 @@ public class SimpleHttpClient extends AbstractHttpClient {
     }
 
     /**
-     * Create an http URL connection based on an http request.
+     * Create a http URL connection based on a http request.
      * @param request The http request
      * @return The http URL connection
      * @throws IOException The network IO error
@@ -155,15 +155,15 @@ public class SimpleHttpClient extends AbstractHttpClient {
             hsConn.setSSLSocketFactory(buildUnsafeSslSocketFactory());
             hsConn.setHostnameVerifier(buildUnsafeHostnameVerifier());
         }
-        // Set needs input or output.
+        // Set needs to be input or output.
         if (hasBody(request.getMethod())) {
             conn.setDoOutput(true);
         }
         conn.setDoInput(true);
         // Handle cookies.
-        /*Map<String, String> cookies = request.getCookies();
+        /*Map<String, String> cookies = request.getCookies()
         if (MapUtils.isNotEmpty(cookies)) {
-            conn.addRequestProperty(COOKIE, buildCookiesString(cookies, request.getCharset()));
+            conn.addRequestProperty(COOKIE, buildCookiesString(cookies, request.getCharset()))
         }*/
         // Handle headers.
         Map<String, List<String>> headers = request.getHeaders();
@@ -196,10 +196,9 @@ public class SimpleHttpClient extends AbstractHttpClient {
             if (endIndex == EOF) { continue; }
             String cookieValue =
                     cookie.substring(beginIndex + ONE, endIndex).trim();
-            // Ignores path, date, domain, validateTLSCertificates et al. req'd?
             // Name not blank, value not null.
             /*if (StringUtils.isNotBlank(cookieName)) {
-                response.addCookie(cookieName, cookieValue);
+                response.addCookie(cookieName, cookieValue)
             }*/
         }
     }
@@ -284,11 +283,11 @@ public class SimpleHttpClient extends AbstractHttpClient {
             req.removeHeader(CONTENT_TYPE);
         }
         String location = res.getFirstHeader(LOCATION);
-        //Assert.notNull(location);
+        Assert.notBlank(location, "The http response header \"Location\" is blank. ");
         URL redirectUrl = buildRedirectUrl(new URL(req.getUrl()), location);
         req.setUrl(String.valueOf(encodeUrl(redirectUrl)));
         // Add response cookies to request (for e.g. login posts).
-        //req.addCookies(resp.getCookies());
+        //req.addCookies(resp.getCookies())
         return execute(req, res);
     }
 
@@ -313,10 +312,10 @@ public class SimpleHttpClient extends AbstractHttpClient {
         }
         // If from a redirect, map previous response cookies into this response
         if (prevResp == null) { return resp; }
-        /*Map<String, String> prevCookies = prevResp.getCookies();
+        /*Map<String, String> prevCookies = prevResp.getCookies()
         for (Map.Entry<String, String> prevCookie : prevCookies.entrySet()) {
             if (response.containsCookie(prevCookie.getKey())) { continue; }
-            resp.addCookie(prevCookie.getKey(), prevCookie.getValue());
+            resp.addCookie(prevCookie.getKey(), prevCookie.getValue())
         }*/
         return resp;
     }
@@ -354,7 +353,7 @@ public class SimpleHttpClient extends AbstractHttpClient {
             }
             // Build response by connection.
             SimpleResponse response = buildResponse(previousResponse, connection);
-            // Redirect if there's a location header (from 3xx, or 201 etc).
+            // Redirect if there's a location header (from 3xx, or 201 etc.).
             boolean redirect = request.getFollowRedirect() != null && request.getFollowRedirect();
             if (response.containsHeader(LOCATION) && redirect) {
                 return processResponseRedirect(response, request);
