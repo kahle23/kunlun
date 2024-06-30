@@ -7,9 +7,9 @@ package kunlun.convert;
 
 import com.alibaba.fastjson.JSON;
 import kunlun.convert.support.CatToDogConverter;
+import kunlun.data.mock.MockUtils;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.mock.MockUtils;
 import kunlun.test.pojo.entity.animal.Cat;
 import kunlun.test.pojo.entity.animal.Dog;
 import kunlun.time.DateUtils;

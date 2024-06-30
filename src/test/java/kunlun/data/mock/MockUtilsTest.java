@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.mock;
+package kunlun.data.mock;
 
 import com.alibaba.fastjson.JSON;
 import kunlun.test.pojo.entity.other.Book;

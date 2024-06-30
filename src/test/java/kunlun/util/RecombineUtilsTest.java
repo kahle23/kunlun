@@ -6,9 +6,9 @@
 package kunlun.util;
 
 import com.alibaba.fastjson.JSON;
+import kunlun.data.mock.MockUtils;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.mock.MockUtils;
 import kunlun.test.pojo.entity.system.User;
 import org.junit.Before;
 import org.junit.Test;

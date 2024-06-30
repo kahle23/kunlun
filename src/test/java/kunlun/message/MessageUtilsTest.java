@@ -11,9 +11,9 @@ import kunlun.common.constant.Words;
 import kunlun.data.Dict;
 import kunlun.data.json.JsonUtils;
 import kunlun.data.json.support.AbstractJsonHandler;
+import kunlun.data.mock.MockUtils;
 import kunlun.message.support.ConsoleHandler;
 import kunlun.message.support.LogHandler;
-import kunlun.mock.MockUtils;
 import kunlun.test.pojo.entity.system.User;
 import org.junit.Test;
 

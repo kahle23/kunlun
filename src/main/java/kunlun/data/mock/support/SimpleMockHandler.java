@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.mock;
+package kunlun.data.mock.support;
 
 import kunlun.convert.ConversionUtils;
 import kunlun.exception.ExceptionUtils;
@@ -19,18 +19,18 @@ import java.util.*;
 
 import static kunlun.common.constant.Numbers.*;
 
-public class SimpleMockProvider implements MockProvider {
+public class SimpleMockHandler extends AbstractMockHandler {
     /**
      * Between 0 and 'maxNestedCount'(include).
      */
     private Integer maxNestedCount;
 
-    public SimpleMockProvider() {
+    public SimpleMockHandler() {
 
         this(ONE);
     }
 
-    public SimpleMockProvider(Integer maxNestedCount) {
+    public SimpleMockHandler(Integer maxNestedCount) {
         Assert.notNull(maxNestedCount, "Parameter \"maxNestedCount\" must not null. ");
         this.maxNestedCount = maxNestedCount >= ZERO && maxNestedCount < FOUR ? maxNestedCount : ONE;
     }

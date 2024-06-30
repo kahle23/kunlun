@@ -6,7 +6,7 @@
 package kunlun.track;
 
 import kunlun.data.Dict;
-import kunlun.mock.MockUtils;
+import kunlun.data.mock.MockUtils;
 import kunlun.test.pojo.entity.system.User;
 import org.junit.Test;
 

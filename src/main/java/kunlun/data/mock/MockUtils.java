@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.mock;
+package kunlun.data.mock;
 
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -14,7 +14,7 @@ import java.lang.reflect.Type;
 import static kunlun.util.ObjectUtils.cast;
 
 /**
- * The mock tools.
+ * The data mock tools.
  * @author Kahle
  */
 public class MockUtils {
@@ -36,14 +36,49 @@ public class MockUtils {
         MockUtils.mockProvider = mockProvider;
     }
 
+    public static String getDefaultHandlerName() {
+
+        return getMockProvider().getDefaultHandlerName();
+    }
+
+    public static void setDefaultHandlerName(String defaultHandlerName) {
+
+        getMockProvider().setDefaultHandlerName(defaultHandlerName);
+    }
+
+    public static void registerHandler(String name, MockHandler mockHandler) {
+
+        getMockProvider().registerHandler(name, mockHandler);
+    }
+
+    public static void deregisterHandler(String name) {
+
+        getMockProvider().deregisterHandler(name);
+    }
+
+    public static MockHandler getMockHandler(String name) {
+
+        return getMockProvider().getMockHandler(name);
+    }
+
+    public static <T> T mock(String name, Class<T> clazz, Object... arguments) {
+
+        return cast(getMockHandler(name).mock(clazz, arguments));
+    }
+
+    public static <T> T mock(String name, Type type, Object... arguments) {
+
+        return cast(getMockHandler(name).mock(type, arguments));
+    }
+
     public static <T> T mock(Class<T> clazz, Object... arguments) {
 
-        return cast(getMockProvider().mock(clazz, arguments));
+        return mock(getDefaultHandlerName(), clazz, arguments);
     }
 
     public static <T> T mock(Type type, Object... arguments) {
 
-        return cast(getMockProvider().mock(type, arguments));
+        return mock(getDefaultHandlerName(), type, arguments);
     }
 
 }
