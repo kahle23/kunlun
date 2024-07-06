@@ -9,14 +9,14 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 
 /**
- * The reflection provider.
+ * The reflection service.
  * @author Kahle
  */
-public interface ReflectProvider {
+public interface ReflectService {
 
     /**
      * Make accessible.
-     * @param accessible A operated accessible object
+     * @param accessible An operated accessible object
      */
     void makeAccessible(AccessibleObject accessible);
 
