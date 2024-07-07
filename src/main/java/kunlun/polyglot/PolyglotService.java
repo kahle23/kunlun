@@ -6,10 +6,10 @@
 package kunlun.polyglot;
 
 /**
- * The polyglot execution provider.
+ * The polyglot execution service.
  * @author Kahle
  */
-public interface PolyglotProvider {
+public interface PolyglotService {
 
     /**
      * Executes the code.

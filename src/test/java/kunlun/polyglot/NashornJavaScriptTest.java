@@ -8,7 +8,7 @@ package kunlun.polyglot;
 import kunlun.data.Dict;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.polyglot.support.ScriptEngineProvider;
+import kunlun.polyglot.support.ScriptEngineService;
 import kunlun.util.ObjectUtils;
 import org.junit.Test;
 
@@ -117,8 +117,8 @@ public class NashornJavaScriptTest {
                 "}\n";
         script += "var a = 1, b = 2, c = 3;\n" +
                 "test(a, b, c) + test1(b, c);";
-        ScriptEngineProvider provider = (ScriptEngineProvider) PolyglotUtils.getPolyglotProvider();
-        CompiledScript compiledScript = provider.compile(name, script, null);
+        ScriptEngineService service = (ScriptEngineService) PolyglotUtils.getPolyglotService();
+        CompiledScript compiledScript = service.compile(name, script, null);
         Object result = compiledScript.eval(new SimpleBindings());
         log.info("result: {}", result);
         assertTrue(ObjectUtils.equals(result, 12D));

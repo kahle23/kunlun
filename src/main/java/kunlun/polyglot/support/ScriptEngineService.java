@@ -6,7 +6,7 @@
 package kunlun.polyglot.support;
 
 import kunlun.exception.ExceptionUtils;
-import kunlun.polyglot.PolyglotProvider;
+import kunlun.polyglot.PolyglotService;
 import kunlun.reflect.ReflectUtils;
 import kunlun.util.Assert;
 import kunlun.util.ObjectUtils;
@@ -20,17 +20,17 @@ import java.util.Map;
 import static kunlun.util.ObjectUtils.cast;
 
 /**
- * The simple polyglot provider base on "javax.script.ScriptEngineManager".
+ * The simple polyglot execution service base on "javax.script.ScriptEngineManager".
  * @see javax.script.Invocable
  * @see javax.script.Compilable
  * @see javax.script.CompiledScript
  * @author Kahle
  */
-public class ScriptEngineProvider implements PolyglotProvider {
+public class ScriptEngineService implements PolyglotService {
     private final ScriptEngineManager scriptEngineManager;
     private final Collection<ScriptEngineFactory> factories;
 
-    public ScriptEngineProvider(ScriptEngineManager scriptEngineManager) {
+    public ScriptEngineService(ScriptEngineManager scriptEngineManager) {
         Assert.notNull(scriptEngineManager, "Parameter \"scriptEngineManager\" must not null. ");
         this.scriptEngineManager = scriptEngineManager;
         try {
@@ -43,7 +43,7 @@ public class ScriptEngineProvider implements PolyglotProvider {
         }
     }
 
-    public ScriptEngineProvider() {
+    public ScriptEngineService() {
 
         this(new ScriptEngineManager());
     }
