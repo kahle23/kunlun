@@ -7,6 +7,7 @@ import kunlun.exception.ExceptionUtils;
 import kunlun.generator.render.AbstractRenderGenerator;
 import kunlun.io.FileLoader;
 import kunlun.io.util.FileUtils;
+import kunlun.io.util.FilenameUtils;
 import kunlun.io.util.StringBuilderWriter;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -17,6 +18,7 @@ import kunlun.util.CloseUtils;
 import java.io.*;
 import java.util.Map;
 
+import static kunlun.common.constant.Symbols.SLASH;
 import static kunlun.common.constant.TimePatterns.NORM_DATETIME;
 import static kunlun.common.constant.TimePatterns.Y4MD2MI;
 
@@ -95,7 +97,9 @@ public abstract class AbstractRenderFileGenerator extends AbstractRenderGenerato
         Assert.notBlank(fileSuffix, "Variable \"fileSuffix\" must not blank. ");
         Assert.notBlank(filename, "Variable \"filename\" must not blank. ");
         // Get output directory.
-        File outputFile = new File(outputPath, filename + withLeftDot(fileSuffix));
+        // Regarding the conversion of "/" and "\", it cannot rely on "File", it only takes effect on Windows.
+        File outputFile = new File(
+                FilenameUtils.normalize(outputPath + SLASH + filename + withLeftDot(fileSuffix)));
         mkdirs(outputFile.getParentFile());
         // Get template content.
         String templateContent = getTemplateContent(logCollector, fileLoader, config);

@@ -20,9 +20,9 @@ import static kunlun.common.constant.Symbols.*;
  */
 public class FilenameUtils {
     private static final Class<?> THIS_CLASS = FilenameUtils.class;
-    private static final char EXTENSION_SEPARATOR = '.';
-    private static final char WINDOWS_SEPARATOR = '\\';
-    private static final char UNIX_SEPARATOR = '/';
+    private static final String EXTENSION_SEPARATOR = ".";
+    private static final String WINDOWS_SEPARATOR = "\\";
+    private static final String UNIX_SEPARATOR = "/";
 
     /**
      * Get the root path of the current project.
@@ -154,6 +154,42 @@ public class FilenameUtils {
         URL res = clazz.getResource(EMPTY_STRING);
         File file = res != null ? new File(res.getFile()) : null;
         return file != null ? file.toString() : null;
+    }
+
+    /**
+     * Normalizes the path.
+     * (In Windows, "/" is automatically converted to "\". This may not be the case in other systems.)
+     * The input may contain separators in either Unix or Windows format.
+     * The output will contain separators in the format of the system.
+     * @param originalPath The original path to normalize
+     * @return The normalized original path, or null if invalid
+     */
+    public static String normalize(String originalPath) {
+
+        return normalize(originalPath, null);
+    }
+
+    /**
+     * Normalizes the path.
+     * (In Windows, "/" is automatically converted to "\". This may not be the case in other systems.)
+     * The input may contain separators in either Unix or Windows format.
+     * The output will contain separators in the format of the system.
+     * @param originalPath The original path to normalize
+     * @param unixSeparator If true is unix separator, false is windows, null is automatic
+     * @return The normalized original path, or null if invalid
+     */
+    public static String normalize(String originalPath, Boolean unixSeparator) {
+        if (StringUtils.isBlank(originalPath)) { return originalPath; }
+        String separator = unixSeparator == null
+                ? FILE_SEPARATOR : (unixSeparator ? UNIX_SEPARATOR : WINDOWS_SEPARATOR);
+        String replace = originalPath;
+        if (!SLASH.equals(separator)) {
+            replace = StringUtils.replace(replace, SLASH, separator);
+        }
+        if (!BACKSLASH.equals(separator)) {
+            replace = StringUtils.replace(replace, BACKSLASH, separator);
+        }
+        return replace;
     }
 
 }

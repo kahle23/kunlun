@@ -5,9 +5,15 @@
 
 package kunlun.io.util;
 
+import kunlun.common.constant.Symbols;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The filename tools Test.
@@ -43,6 +49,22 @@ public class FilenameUtilsTest {
     public void testPath() {
         log.info(FilenameUtils.getPackagePath(FilenameUtilsTest.class));
         log.info(FilenameUtils.getClassFilePath(FilenameUtilsTest.class));
+    }
+
+    @Test
+    public void testNormalize() throws IOException {
+        log.info("file separator: {}", Symbols.FILE_SEPARATOR);
+        List<String> list = Arrays.asList(
+                "C:\\windows/system/123.txt",
+                "\\test/windows/system\\123.txt",
+                "test\\a/b\\c/system"
+        );
+        for (String path : list) {
+            log.info("Test Path: {}", path);
+            log.info("File.getAbsolutePath: {}", new File(path).getAbsolutePath());
+            log.info("File.getCanonicalPath: {}", new File(path).getCanonicalPath());
+            log.info("FilenameUtils.normalize: {}", FilenameUtils.normalize(path));
+        }
     }
 
 }
