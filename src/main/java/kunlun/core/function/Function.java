@@ -7,7 +7,6 @@ package kunlun.core.function;
 
 /**
  * Represents a function that accepts one parameter and produces a result.
- *
  * @author Kahle
  */
 public interface Function<Param, Result> {

@@ -10,10 +10,10 @@ import kunlun.data.tuple.Triple;
 import kunlun.util.ArgumentUtils;
 
 /**
- * The abstract classic AI handler.
+ * The abstract strategy AI handler.
  * @author Kahle
  */
-public abstract class AbstractClassicAiHandler extends AbstractAiHandler {
+public abstract class AbstractStrategyAiHandler extends AbstractAiHandler {
 
     @Override
     public Object execute(Object[] arguments) {
@@ -22,12 +22,21 @@ public abstract class AbstractClassicAiHandler extends AbstractAiHandler {
     }
 
     /**
+     * Get the AI handler configuration according to the arguments.
+     * @param input The input parameters for inference calculations
+     * @param strategy The strategy or operation or null for AI handler execution
+     * @param clazz The class of the return value
+     * @return The AI handler configuration
+     */
+    protected abstract AbstractConfig getConfig(Object input, String strategy, Class<?> clazz);
+
+    /**
      * The artificial intelligence performs reasoning operations.
      * @param input The input parameters for inference calculations
-     * @param operation The strategy or operation or null for AI handler execution
+     * @param strategy The strategy or operation or null for AI handler execution
      * @param clazz The class of the return value
      * @return The result of the inference calculation
      */
-    public abstract Object execute(Object input, String operation, Class<?> clazz);
+    public abstract Object execute(Object input, String strategy, Class<?> clazz);
 
 }

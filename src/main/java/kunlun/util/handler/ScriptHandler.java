@@ -10,7 +10,7 @@ import kunlun.data.validation.support.ValidationConfig;
 import java.util.Collection;
 
 /**
- * The script processing tool (used for custom logic).
+ * The script processing tool.
  * @author Kahle
  */
 public interface ScriptHandler {
