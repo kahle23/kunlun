@@ -6,6 +6,7 @@
 package kunlun.db.jdbc.meta;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * The information about columns of a table structure in a database.
@@ -52,6 +53,10 @@ public class Column implements Serializable {
      * Whether the column is autoincrement (true or false or null, like "AUTO_INCREMENT").
      */
     private Boolean autoincrement;
+    /**
+     * The other attributes.
+     */
+    private Map<String, Object> attributes;
 
 
     public String getName() {
@@ -152,6 +157,16 @@ public class Column implements Serializable {
     public void setAutoincrement(Boolean autoincrement) {
 
         this.autoincrement = autoincrement;
+    }
+
+    public Map<String, Object> getAttributes() {
+
+        return attributes;
+    }
+
+    public void setAttributes(Map<String, Object> attributes) {
+
+        this.attributes = attributes;
     }
 
 }

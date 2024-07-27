@@ -9,6 +9,7 @@ import kunlun.common.constant.Nulls;
 import kunlun.core.Loader;
 import kunlun.core.function.Consumer;
 import kunlun.db.jdbc.meta.Column;
+import kunlun.db.jdbc.meta.Index;
 import kunlun.db.jdbc.meta.Table;
 import kunlun.exception.ExceptionUtils;
 import kunlun.util.Assert;
@@ -20,9 +21,9 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
 
-import static kunlun.common.constant.Numbers.*;
+import static kunlun.common.constant.Numbers.ONE;
+import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.common.constant.Symbols.COMMA;
-import static kunlun.common.constant.Symbols.SINGLE_QUOTE;
 import static kunlun.util.CollectionUtils.isNotEmpty;
 
 /**
@@ -103,6 +104,8 @@ public class JdbcTableLoader implements Loader<JdbcTableLoader.Config, List<Tabl
                 table.setName(tableName);
                 table.setComment(remarks);
                 table.setColumns(new ArrayList<Column>());
+                table.setIndexes(new ArrayList<Index>());
+                table.setAttributes(new LinkedHashMap<String, Object>());
                 tables.add(table);
                 fillColumns(dbMetaData, catalog, table);
             }
@@ -171,6 +174,7 @@ public class JdbcTableLoader implements Loader<JdbcTableLoader.Config, List<Tabl
         column.setComment(columnRs.getString(REMARKS));
         column.setPrimaryKey(primaryKeys.contains(columnName));
         column.setAutoincrement(autoincrement);
+        column.setAttributes(new LinkedHashMap<String, Object>());
         return column;
     }
 
@@ -300,57 +304,6 @@ public class JdbcTableLoader implements Loader<JdbcTableLoader.Config, List<Tabl
         public List<Table> getTables() {
 
             return tables;
-        }
-    }
-
-    /**
-     * The mysql table comment consumer.
-     * @author Kahle
-     */
-    public static class MysqlTableCommentConsumer implements Consumer<Context> {
-        @Override
-        public void accept(Context context) {
-            // Get parameters.
-            Connection connection = context.getConnection();
-            String catalog = context.getCatalog();
-            List<Table> tables = context.getTables();
-            // Build table name string.
-            StringBuilder builder = new StringBuilder(); boolean first = true;
-            for (Table table : tables) {
-                if (first) { first = false; } else { builder.append(COMMA); }
-                builder.append(SINGLE_QUOTE).append(table.getName()).append(SINGLE_QUOTE);
-            }
-            // Build the map of tables names tables objects.
-            Map<String, Table> tableMap = new LinkedHashMap<String, Table>();
-            for (Table table : tables) { tableMap.put(table.getName(), table); }
-            // Declare sql and other variables.
-            String sql = "SELECT `table_name`, `table_comment` FROM `information_schema`.`tables` " +
-                    "WHERE `table_schema` = '" + catalog + "' AND `table_name` in (" + builder + ");";
-            Statement statement = null;
-            ResultSet resultSet = null;
-            try {
-                // Execute the sql.
-                statement = connection.createStatement();
-                resultSet = statement.executeQuery(sql);
-                while (resultSet.next()) {
-                    // Get the table name and table comment.
-                    String tableComment = resultSet.getString(TWO);
-                    String tableName = resultSet.getString(ONE);
-                    // Fill the table comment.
-                    Table table = tableMap.get(tableName);
-                    if (table != null && StringUtils.isBlank(table.getComment())) {
-                        table.setComment(tableComment);
-                    }
-                }
-            }
-            catch (Exception e) {
-                throw ExceptionUtils.wrap(e);
-            }
-            finally {
-                CloseUtils.closeQuietly(resultSet);
-                CloseUtils.closeQuietly(statement);
-            }
-            // End.
         }
     }
 

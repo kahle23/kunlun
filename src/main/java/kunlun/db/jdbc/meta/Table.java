@@ -7,6 +7,7 @@ package kunlun.db.jdbc.meta;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The table structure information of the database.
@@ -29,6 +30,15 @@ public class Table implements Serializable {
      * The column information for a table structure.
      */
     private List<Column> columns;
+    /**
+     * The index information for a table structure.
+     */
+    private List<Index>  indexes;
+    /**
+     * The other attributes.
+     */
+    private Map<String, Object> attributes;
+
 
     public String getName() {
 
@@ -68,6 +78,26 @@ public class Table implements Serializable {
     public void setColumns(List<Column> columns) {
 
         this.columns = columns;
+    }
+
+    public List<Index> getIndexes() {
+
+        return indexes;
+    }
+
+    public void setIndexes(List<Index> indexes) {
+
+        this.indexes = indexes;
+    }
+
+    public Map<String, Object> getAttributes() {
+
+        return attributes;
+    }
+
+    public void setAttributes(Map<String, Object> attributes) {
+
+        this.attributes = attributes;
     }
 
 }
