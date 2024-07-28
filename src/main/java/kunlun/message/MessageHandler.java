@@ -5,7 +5,7 @@
 
 package kunlun.message;
 
-import kunlun.core.handler.StrategySupportHandler;
+import kunlun.core.handler.StrategySupportedHandler;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
  * The message handler used to send and query messages.
  * @author Kahle
  */
-public interface MessageHandler extends StrategySupportHandler {
+public interface MessageHandler extends StrategySupportedHandler {
 
     /**
      * Get the common properties of the settings.

@@ -11,7 +11,7 @@ import kunlun.core.Handler;
  * The property supported handler.
  * @author Kahle
  */
-public interface PropertySupportHandler extends Handler {
+public interface PropertySupportedHandler extends Handler {
 
     /**
      * Return whether the given property name is available.

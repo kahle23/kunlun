@@ -6,7 +6,7 @@
 package kunlun.ai.support;
 
 import kunlun.ai.AbstractAIHandler;
-import kunlun.core.handler.StrategySupportHandler;
+import kunlun.core.handler.StrategySupportedHandler;
 import kunlun.data.tuple.Pair;
 import kunlun.util.ArgumentUtils;
 import kunlun.util.Assert;
@@ -15,7 +15,7 @@ import kunlun.util.Assert;
  * The abstract strategy AI handler.
  * @author Kahle
  */
-public abstract class AbstractStrategyAIHandler extends AbstractAIHandler implements StrategySupportHandler {
+public abstract class AbstractStrategyAIHandler extends AbstractAIHandler implements StrategySupportedHandler {
 
     @Override
     public Object execute(Object[] arguments) {

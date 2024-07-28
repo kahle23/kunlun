@@ -25,7 +25,7 @@ import java.util.concurrent.Future;
  *
  * @author Kahle
  */
-public interface AsyncSupportHandler extends ContextSupportHandler, Handler {
+public interface AsyncSupportedHandler extends ContextSupportedHandler, Handler {
 
     /**
      * Build the asynchronous supported context from the arguments array.
@@ -140,14 +140,14 @@ public interface AsyncSupportHandler extends ContextSupportHandler, Handler {
      */
     class AsyncExecuteTask implements Callable<Object> {
         private static final Logger log = LoggerFactory.getLogger(AsyncExecuteTask.class);
-        private final AsyncSupportHandler asyncSupportHandler;
+        private final AsyncSupportedHandler asyncSupportedHandler;
         private final AsyncSupportContext context;
 
-        public AsyncExecuteTask(AsyncSupportHandler asyncSupportHandler,
+        public AsyncExecuteTask(AsyncSupportedHandler asyncSupportedHandler,
                                 AsyncSupportContext context) {
-            Assert.notNull(asyncSupportHandler, "Parameter \"asyncSupportHandler\" must not null. ");
+            Assert.notNull(asyncSupportedHandler, "Parameter \"asyncSupportedHandler\" must not null. ");
             Assert.notNull(context, "Parameter \"context\" must not null. ");
-            this.asyncSupportHandler = asyncSupportHandler;
+            this.asyncSupportedHandler = asyncSupportedHandler;
             this.context = context;
         }
 
@@ -156,7 +156,7 @@ public interface AsyncSupportHandler extends ContextSupportHandler, Handler {
             Consumer<Throwable> failureCallback = context.getFailureCallback();
             Consumer<Object> successCallback = context.getSuccessCallback();
             try {
-                Object execute = asyncSupportHandler.doExecute(context);
+                Object execute = asyncSupportedHandler.doExecute(context);
                 if (successCallback != null) {
                     successCallback.accept(execute);
                 }

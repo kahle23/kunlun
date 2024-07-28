@@ -6,11 +6,11 @@
 package kunlun.context.support;
 
 import kunlun.core.Context;
-import kunlun.core.handler.PropertySupportHandler;
+import kunlun.core.handler.PropertySupportedHandler;
 
 /**
  * The context interface with property functionality.
  * @author Kahle
  */
-public interface PropertyContext extends Context, PropertySupportHandler {
+public interface PropertyContext extends Context, PropertySupportedHandler {
 }

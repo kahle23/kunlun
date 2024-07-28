@@ -11,7 +11,7 @@ import kunlun.core.Handler;
  * The strategy supported handler.
  * @author Kahle
  */
-public interface StrategySupportHandler extends Handler {
+public interface StrategySupportedHandler extends Handler {
 
     /**
      * Perform a strategy and return the corresponding result.

@@ -6,7 +6,7 @@
 package kunlun.action.support;
 
 import kunlun.action.AbstractActionHandler;
-import kunlun.core.handler.StrategySupportHandler;
+import kunlun.core.handler.StrategySupportedHandler;
 import kunlun.data.tuple.Pair;
 import kunlun.util.ArgumentUtils;
 import kunlun.util.Assert;
@@ -16,7 +16,7 @@ import kunlun.util.Assert;
  * @author Kahle
  */
 public abstract class AbstractStrategyActionHandler
-        extends AbstractActionHandler implements StrategySupportHandler {
+        extends AbstractActionHandler implements StrategySupportedHandler {
 
     @Override
     public Object execute(Object[] arguments) {

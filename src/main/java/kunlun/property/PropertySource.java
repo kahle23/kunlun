@@ -5,7 +5,7 @@
 
 package kunlun.property;
 
-import kunlun.core.handler.PropertySupportHandler;
+import kunlun.core.handler.PropertySupportedHandler;
 
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  * The property source.
  * @author Kahle
  */
-public interface PropertySource extends PropertySupportHandler {
+public interface PropertySource extends PropertySupportedHandler {
 
     /**
      * Get the property source name.

@@ -12,7 +12,7 @@ import kunlun.core.Handler;
  * The context supported handler.
  * @author Kahle
  */
-public interface ContextSupportHandler extends Handler {
+public interface ContextSupportedHandler extends Handler {
 
     /**
      * Build the context object from the arguments array.
