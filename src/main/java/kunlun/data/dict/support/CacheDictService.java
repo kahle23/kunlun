@@ -3,69 +3,45 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.data.dict;
+package kunlun.data.dict.support;
 
 import kunlun.cache.CacheUtils;
+import kunlun.data.dict.AbstractDictService;
+import kunlun.data.dict.Dict;
+import kunlun.data.dict.DictService;
 import kunlun.util.Assert;
 
-import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The cache data dictionary provider.
+ * The cache data dictionary service.
  * @author Kahle
  */
-public class CacheDictProvider extends AbstractDictProvider {
-    private final DictProvider dictProvider;
+public class CacheDictService extends AbstractDictService {
+    private final DictService dictService;
     private final String   cacheName;
     private final Long     timeToLive;
     private final TimeUnit timeUnit;
 
-    public CacheDictProvider(DictProvider dictProvider, String cacheName) {
+    public CacheDictService(DictService dictService, String cacheName) {
 
-        this(dictProvider, cacheName, null, null);
+        this(dictService, cacheName, null, null);
     }
 
-    public CacheDictProvider(DictProvider dictProvider,
-                             String cacheName,
-                             Long timeToLive,
-                             TimeUnit timeUnit) {
-        super(Collections.<String, Object>emptyMap());
-        Assert.notNull(dictProvider, "Parameter \"dictProvider\" must not null. ");
+    public CacheDictService(DictService dictService,
+                            String cacheName,
+                            Long timeToLive,
+                            TimeUnit timeUnit) {
+        Assert.notNull(dictService, "Parameter \"dictService\" must not null. ");
         Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        this.dictProvider = dictProvider;
+        this.dictService = dictService;
         this.cacheName = cacheName;
         this.timeToLive = timeToLive;
         this.timeUnit = timeUnit;
     }
 
     @Override
-    public void registerCommonProperties(Map<?, ?> commonProperties) {
-
-        dictProvider.registerCommonProperties(commonProperties);
-    }
-
-    @Override
-    public void clearCommonProperties() {
-
-        dictProvider.clearCommonProperties();
-    }
-
-    @Override
-    public Map<String, Object> getCommonProperties() {
-
-        return dictProvider.getCommonProperties();
-    }
-
-    @Override
-    public void sync(Object strategy, Object data) {
-
-        dictProvider.sync(strategy, data);
-    }
-
     protected Dict getDict(String group, String name, String code, String value) {
         Assert.notBlank(group, "Parameter \"group\" must not blank. ");
         String key = String.format("%s:%s-%s-%s", group, name, code, value);
@@ -74,13 +50,13 @@ public class CacheDictProvider extends AbstractDictProvider {
         synchronized (key.intern()) {
             if ((val = (Dict) CacheUtils.get(cacheName, key)) != null) { return val; }
             if (name != null) {
-                val = dictProvider.getByName(group, name);
+                val = dictService.getByName(group, name);
             }
             else if (code != null) {
-                val = dictProvider.getByCode(group, code);
+                val = dictService.getByCode(group, code);
             }
             else {
-                val = dictProvider.getByValue(group, value);
+                val = dictService.getByValue(group, value);
             }
             if (val == null) { return null; }
             if (timeToLive != null && timeUnit != null) {
@@ -94,43 +70,37 @@ public class CacheDictProvider extends AbstractDictProvider {
     }
 
     @Override
-    public Dict getByName(String group, String name) {
+    public void sync(Object strategy, Object data) {
 
-        return getDict(group, name, null, null);
+        dictService.sync(strategy, data);
     }
 
     @Override
-    public Dict getByCode(String group, String code) {
+    public Dict getByCondition(DictQuery condition) {
 
-        return getDict(group, null, code, null);
+        return dictService.getByCondition(condition);
     }
 
     @Override
-    public Dict getByValue(String group, String value) {
+    public Collection<Dict> listByGroup(String group) {
 
-        return getDict(group, null, null, value);
+        return dictService.listByGroup(group);
     }
 
     @Override
-    public Dict findOne(Object dictQuery) {
+    public Collection<Dict> listByCondition(DictQuery condition) {
 
-        return dictProvider.findOne(dictQuery);
-    }
-
-    @Override
-    public <T> List<T> findMultiple(Object dictQuery, Type type) {
-
-        return dictProvider.findMultiple(dictQuery, type);
+        return dictService.listByCondition(condition);
     }
 
     /*@Override
-    public List<Dict> getListByGroup(String group) {
+    public List<Dict> listByGroup(String group) {
         Assert.notBlank(group, "Parameter \"group\" must not blank. ");
         Object val = CacheUtils.get(cacheName, group);
         if (val != null) { return cast(val); }
         synchronized (group.intern()) {
             if ((val = CacheUtils.get(cacheName, group)) != null) { return cast(val); }
-            val = dictProvider.getListByGroup(group);
+            val = dictService.getListByGroup(group);
             if (val == null) { return null; }
             if (timeToLive != null && timeUnit != null) {
                 CacheUtils.put(cacheName, group, val, timeToLive, timeUnit);

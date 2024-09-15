@@ -5,12 +5,14 @@
 
 package kunlun.data.dict;
 
+import kunlun.data.dict.support.SimpleDictService;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 
-import java.lang.reflect.Type;
-import java.util.List;
+import java.util.Collection;
+
+import static kunlun.data.dict.DictService.DictQuery;
 
 /**
  * The data dictionary tools.
@@ -18,51 +20,56 @@ import java.util.List;
  */
 public class DictUtils {
     private static final Logger log = LoggerFactory.getLogger(DictUtils.class);
-    private static volatile DictProvider dictProvider;
+    private static volatile DictService dictService;
 
-    public static DictProvider getDictProvider() {
-        if (dictProvider != null) { return dictProvider; }
+    public static DictService getDictService() {
+        if (dictService != null) { return dictService; }
         synchronized (DictUtils.class) {
-            if (dictProvider != null) { return dictProvider; }
-            DictUtils.setDictProvider(new SimpleDictProvider());
-            return dictProvider;
+            if (dictService != null) { return dictService; }
+            DictUtils.setDictService(new SimpleDictService());
+            return dictService;
         }
     }
 
-    public static void setDictProvider(DictProvider dictProvider) {
-        Assert.notNull(dictProvider, "Parameter \"dictProvider\" must not null. ");
-        log.info("Set dict provider: {}", dictProvider.getClass().getName());
-        DictUtils.dictProvider = dictProvider;
+    public static void setDictService(DictService dictService) {
+        Assert.notNull(dictService, "Parameter \"dictProvider\" must not null. ");
+        log.info("Set dict service: {}", dictService.getClass().getName());
+        DictUtils.dictService = dictService;
     }
 
     public static void sync(Object strategy, Object data) {
 
-        getDictProvider().sync(strategy, data);
+        getDictService().sync(strategy, data);
     }
 
     public static Dict getByName(String group, String name) {
 
-        return getDictProvider().getByName(group, name);
+        return getDictService().getByName(group, name);
     }
 
     public static Dict getByCode(String group, String code) {
 
-        return getDictProvider().getByCode(group, code);
+        return getDictService().getByCode(group, code);
     }
 
     public static Dict getByValue(String group, String value) {
 
-        return getDictProvider().getByValue(group, value);
+        return getDictService().getByValue(group, value);
     }
 
-    public static Dict findOne(Object dictQuery) {
+    public static Dict getByCondition(DictQuery condition) {
 
-        return getDictProvider().findOne(dictQuery);
+        return getDictService().getByCondition(condition);
     }
 
-    public static <T> List<T> findMultiple(Object dictQuery, Type type) {
+    public static Collection<Dict> listByGroup(String group) {
 
-        return getDictProvider().findMultiple(dictQuery, type);
+        return getDictService().listByGroup(group);
+    }
+
+    public static Collection<Dict> listByCondition(DictQuery condition) {
+
+        return getDictService().listByCondition(condition);
     }
 
 }

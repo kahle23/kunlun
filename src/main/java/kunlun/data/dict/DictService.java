@@ -5,32 +5,14 @@
 
 package kunlun.data.dict;
 
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
- * The data dictionary provider.
+ * The data dictionary service.
  * @author Kahle
  */
-public interface DictProvider {
-
-    /**
-     * Register common properties' information.
-     * @param commonProperties The common properties
-     */
-    void registerCommonProperties(Map<?, ?> commonProperties);
-
-    /**
-     * Clears common properties' information.
-     */
-    void clearCommonProperties();
-
-    /**
-     * Get common properties' information.
-     * @return The common properties
-     */
-    Map<String, Object> getCommonProperties();
+public interface DictService {
 
     /**
      * Synchronize dictionary data according to different strategies.
@@ -53,7 +35,7 @@ public interface DictProvider {
      * Get the dict object by the dictionary item name.
      * @param group The dictionary item group information
      * @param name The dictionary item name
-     * @return The dictionary object
+     * @return The dictionary item or null
      */
     Dict getByName(String group, String name);
 
@@ -61,7 +43,7 @@ public interface DictProvider {
      * Get the dict object by the dictionary item code.
      * @param group The dictionary item group information
      * @param code The dictionary item code
-     * @return The dictionary object
+     * @return The dictionary item or null
      */
     Dict getByCode(String group, String code);
 
@@ -69,24 +51,62 @@ public interface DictProvider {
      * Get the dict object by the dictionary item value.
      * @param group The dictionary item group information
      * @param value The dictionary item value
-     * @return The dictionary object
+     * @return The dictionary item or null
      */
     Dict getByValue(String group, String value);
 
     /**
      * Condition query a dictionary item (multiple items will error).
-     * @param dictQuery The dictionary query condition (multiple types may be supported)
+     * @param condition The dictionary query condition (multiple types may be supported)
      * @return The dictionary item or null
      */
-    Dict findOne(Object dictQuery);
+    Dict getByCondition(DictQuery condition);
+
+    /**
+     * Query the dictionary items list by item group information.
+     * @param group The dictionary item group information
+     * @return The list of dictionary items
+     */
+    Collection<Dict> listByGroup(String group);
 
     /**
      * Condition query the dictionary items list.
-     * @param dictQuery The dictionary query condition (multiple types may be supported)
-     * @param type The type of dictionary data
-     * @param <T> The generic type of dictionary data
+     * @param condition The dictionary query condition (multiple types may be supported)
      * @return The list of dictionary items
      */
-    <T> List<T> findMultiple(Object dictQuery, Type type);
+    Collection<Dict> listByCondition(DictQuery condition);
+
+
+    /**
+     * The data dictionary query condition.
+     * @author Kahle
+     */
+    interface DictQuery extends Serializable {
+
+        /**
+         * Get the group information of the dictionary item.
+         * @return The group information of the dictionary item
+         */
+        String getGroup();
+
+        /**
+         * Get the name of the dictionary item.
+         * @return The name of the dictionary item
+         */
+        String getName();
+
+        /**
+         * Get the code of the dictionary item.
+         * @return The code of the dictionary item
+         */
+        String getCode();
+
+        /**
+         * Get the value of the dictionary item.
+         * @return The value of the dictionary item
+         */
+        String getValue();
+
+    }
 
 }

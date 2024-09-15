@@ -5,12 +5,14 @@
 
 package kunlun.data.dict;
 
+import java.io.Serializable;
+
 /**
- * The data dictionary object.
+ * The data dictionary.
  * What is a data dictionary? A list that explains and describes specific information.
  * @author Kahle
  */
-public interface Dict {
+public interface Dict extends Serializable {
 
     /**
      * Get the group information of the dictionary item.
@@ -53,6 +55,6 @@ public interface Dict {
      * The extra data or incidental data (maybe it's extended data).
      * @return The extra data (most case is Map)
      */
-    Object getExtraData();
+    Object getProperties();
 
 }
