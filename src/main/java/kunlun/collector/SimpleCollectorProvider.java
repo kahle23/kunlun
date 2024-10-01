@@ -5,6 +5,7 @@
 
 package kunlun.collector;
 
+import kunlun.collector.support.SimpleEventCollector;
 import kunlun.core.Collector;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -32,7 +33,7 @@ public class SimpleCollectorProvider implements CollectorProvider {
         this.commonProperties = commonProperties;
         this.collectors = collectors;
         // Register the default collector.
-//        registerCollector(getDefaultCollectorName(), new SimpleTrackCollector());
+        registerCollector(getDefaultCollectorName(), new SimpleEventCollector());
     }
 
     public SimpleCollectorProvider() {
