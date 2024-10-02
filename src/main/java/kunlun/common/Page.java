@@ -5,23 +5,21 @@
 
 package kunlun.common;
 
-import java.util.LinkedHashMap;
+import java.io.Serializable;
 import java.util.List;
-
-import static kunlun.util.ObjectUtils.cast;
 
 /**
  * The unified paging data output object.
  * @param <T> The data type
  * @author Kahle
  */
-public class Page<T> extends LinkedHashMap<String, Object> {
-    private static final String SCROLL_ID = "scrollId";
-    private static final String PAGE_NUM  = "pageNum";
-    private static final String PAGE_SIZE  = "pageSize";
-    private static final String PAGE_COUNT = "pageCount";
-    private static final String TOTAL = "total";
-    private static final String DATA  = "data";
+public class Page<T> implements Serializable {
+    private String  scrollId;
+    private Integer pageNum;
+    private Integer pageSize;
+    private Integer pageCount;
+    private Long    total;
+    private List<T> data;
 
     public static <T> Page<T> of(Integer pageNum, Integer pageSize, Integer pageCount, Long total, List<T> data) {
         Page<T> page = new Page<T>();
@@ -49,62 +47,62 @@ public class Page<T> extends LinkedHashMap<String, Object> {
 
     public String getScrollId() {
 
-        return (String) get(SCROLL_ID);
+        return scrollId;
     }
 
     public void setScrollId(String scrollId) {
 
-        put(SCROLL_ID, scrollId);
+        this.scrollId = scrollId;
     }
 
     public Integer getPageNum() {
 
-        return (Integer) get(PAGE_NUM);
+        return pageNum;
     }
 
     public void setPageNum(Integer pageNum) {
 
-        put(PAGE_NUM, pageNum);
+        this.pageNum = pageNum;
     }
 
     public Integer getPageSize() {
 
-        return (Integer) get(PAGE_SIZE);
+        return pageSize;
     }
 
     public void setPageSize(Integer pageSize) {
 
-        put(PAGE_SIZE, pageSize);
+        this.pageSize = pageSize;
     }
 
     public Integer getPageCount() {
 
-        return (Integer) get(PAGE_COUNT);
+        return pageCount;
     }
 
     public void setPageCount(Integer pageCount) {
 
-        put(PAGE_COUNT, pageCount);
+        this.pageCount = pageCount;
     }
 
     public Long getTotal() {
 
-        return (Long) get(TOTAL);
+        return total;
     }
 
     public void setTotal(Long total) {
 
-        put(TOTAL, total);
+        this.total = total;
     }
 
     public List<T> getData() {
 
-        return cast(get(DATA));
+        return data;
     }
 
     public void setData(List<T> data) {
 
-        put(DATA, data);
+        this.data = data;
     }
 
 }
