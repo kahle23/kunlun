@@ -5,9 +5,8 @@
 
 package kunlun.crypto;
 
+import kunlun.codec.ByteCodec;
 import kunlun.codec.CodecUtils;
-import kunlun.core.Encoder;
-import kunlun.util.ArrayUtils;
 import kunlun.util.Assert;
 
 import javax.crypto.KeyGenerator;
@@ -20,9 +19,6 @@ import java.security.spec.X509EncodedKeySpec;
 
 import static kunlun.codec.CodecUtils.BASE64;
 import static kunlun.codec.CodecUtils.HEX;
-import static kunlun.common.constant.Symbols.EMPTY_STRING;
-import static kunlun.common.constant.Words.NULL;
-import static kunlun.util.ObjectUtils.cast;
 
 /**
  * Key tools.
@@ -30,17 +26,17 @@ import static kunlun.util.ObjectUtils.cast;
  */
 public class KeyUtils {
     private static final SecureRandom RANDOM = new SecureRandom();
-    private static Encoder<byte[]> base64Encoder = cast(CodecUtils.getEncoder(BASE64));
-    private static Encoder<byte[]> hexEncoder = cast(CodecUtils.getEncoder(HEX));
+    private static ByteCodec base64 = (ByteCodec) CodecUtils.getCodec(BASE64);
+    private static ByteCodec hex = (ByteCodec) CodecUtils.getCodec(HEX);
 
-    public static void setBase64Encoder(Encoder<byte[]> base64Encoder) {
-        Assert.notNull(base64Encoder, "Parameter \"base64Encoder\" must not null. ");
-        KeyUtils.base64Encoder = base64Encoder;
+    public static void setBase64Encoder(ByteCodec base64) {
+        Assert.notNull(base64, "Parameter \"base64\" must not null. ");
+        KeyUtils.base64 = base64;
     }
 
-    public static void setHexEncoder(Encoder<byte[]> hexEncoder) {
-        Assert.notNull(hexEncoder, "Parameter \"hexEncoder\" must not null. ");
-        KeyUtils.hexEncoder = hexEncoder;
+    public static void setHexEncoder(ByteCodec hex) {
+        Assert.notNull(hex, "Parameter \"hex\" must not null. ");
+        KeyUtils.hex = hex;
     }
 
     public static SecretKey parseSecretKey(String algorithm, byte[] keyBytes) {
@@ -126,24 +122,14 @@ public class KeyUtils {
         return generator.generateKeyPair();
     }
 
-    private static String toEncoderString(Encoder<byte[]> encoder, Key key) {
-        if (key == null) { return NULL; }
-        byte[] encoded = key.getEncoded();
-        if (ArrayUtils.isEmpty(encoded)) {
-            return EMPTY_STRING;
-        }
-        byte[] bytes = encoder.encode(encoded);
-        return new String(bytes);
-    }
-
     public static String toHexString(Key key) {
 
-        return KeyUtils.toEncoderString(hexEncoder, key);
+        return hex.encodeToString(key.getEncoded());
     }
 
     public static String toBase64String(Key key) {
 
-        return KeyUtils.toEncoderString(base64Encoder, key);
+        return base64.encodeToString(key.getEncoded());
     }
 
 }

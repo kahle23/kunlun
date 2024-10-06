@@ -9,6 +9,7 @@ package kunlun.core;
  * Provide the highest level of abstraction for decoder.
  * @author Kahle
  */
+@Deprecated
 public interface Decoder<T> {
 
     /**

@@ -5,15 +5,15 @@
 
 package kunlun.codec.support;
 
+import kunlun.codec.ByteCodec;
+import kunlun.codec.support.Base64.Cfg;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Test;
 
 import java.nio.charset.Charset;
 
-import static java.lang.Boolean.TRUE;
 import static kunlun.common.constant.Charsets.STR_UTF_8;
-import static kunlun.common.constant.Numbers.MINUS_ONE;
 import static kunlun.common.constant.Symbols.*;
 import static org.junit.Assert.*;
 
@@ -28,9 +28,7 @@ public class Base64Test {
             "-->> 行路难！行路难！多歧路，今安在？ <<--\n" +
             "-->> 长风破浪会有时，直挂云帆济沧海。 <<--";
     private final byte[] dataBytes = data.getBytes(encoding);
-    private final Base64 mimeBase64 = new Base64(TRUE, MINUS_ONE, null);
-    private final Base64 urlBase64 = new Base64(TRUE);
-    private final Base64 base64 = new Base64();
+    private final ByteCodec base64 = new Base64();
 
     @Test
     public void test1() {
@@ -46,13 +44,13 @@ public class Base64Test {
 
     @Test
     public void test2() {
-        String encode = urlBase64.encodeToString(dataBytes);
+        String encode = base64.encodeToString(Cfg.ofUrlSafe(), dataBytes);
         assertFalse(encode.contains(PLUS));
         assertFalse(encode.contains(SLASH));
         assertTrue(encode.contains(MINUS));
         assertTrue(encode.contains(UNDERLINE));
         log.info("Encode string: {}{}", NEWLINE, encode);
-        byte[] decode = urlBase64.decodeFromString(encode);
+        byte[] decode = base64.decodeFromString(Cfg.ofUrlSafe(), encode);
         String decodeStr = new String(decode, encoding);
         assertEquals(data, decodeStr);
         log.info("Decode string: {}{}", NEWLINE, decodeStr);
@@ -60,12 +58,12 @@ public class Base64Test {
 
     @Test
     public void test3() {
-        String encode = mimeBase64.encodeToString(dataBytes);
+        String encode = base64.encodeToString(Cfg.ofMime(), dataBytes);
         assertTrue(encode.contains(PLUS));
         assertTrue(encode.contains(SLASH));
         assertTrue(encode.contains("\r\n"));
         log.info("Encode string: {}{}", NEWLINE, encode);
-        byte[] decode = mimeBase64.decodeFromString(encode);
+        byte[] decode = base64.decodeFromString(Cfg.ofMime(), encode);
         String decodeStr = new String(decode, encoding);
         assertEquals(data, decodeStr);
         log.info("Decode string: {}{}", NEWLINE, decodeStr);

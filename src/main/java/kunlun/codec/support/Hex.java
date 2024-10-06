@@ -5,11 +5,8 @@
 
 package kunlun.codec.support;
 
-import kunlun.core.Decoder;
-import kunlun.core.Encoder;
+import kunlun.codec.ByteCodec;
 import kunlun.util.Assert;
-
-import java.io.Serializable;
 
 import static kunlun.common.constant.Numbers.*;
 
@@ -17,26 +14,31 @@ import static kunlun.common.constant.Numbers.*;
  * The hex encode and decode tools.
  * @author Kahle
  */
-public class Hex implements Encoder<byte[]>, Decoder<byte[]>, Serializable {
+public class Hex extends ByteCodec {
     protected static final byte[] LOWER_CASE_DIGITS =
             {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
     protected static final byte[] UPPER_CASE_DIGITS =
             {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     protected static final int HEX_01 = 0x01;
     protected static final int RADIX = 16;
-    protected final boolean upperCase;
+    private final Cfg config;
+
+    public Hex(Cfg config) {
+
+        this.config = config;
+    }
 
     public Hex() {
 
-        this(false);
+        this(Cfg.of());
     }
 
-    public Hex(boolean upperCase) {
+    public Cfg getConfig() {
 
-        this.upperCase = upperCase;
+        return config;
     }
 
-    protected byte[] getDigits() {
+    protected byte[] getDigits(boolean upperCase) {
 
         return upperCase ? UPPER_CASE_DIGITS : LOWER_CASE_DIGITS;
     }
@@ -52,20 +54,21 @@ public class Hex implements Encoder<byte[]>, Decoder<byte[]>, Serializable {
     }
 
     @Override
-    public byte[] encode(byte[] source) {
+    public byte[] encode(Config config, byte[] source) {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
+        Cfg cfg = config != null ? (Cfg) config : getConfig();
         int len = source.length;
         byte[] out = new byte[len << ONE];
         // Two characters form the hex value.
         for (int i = ZERO, j = ZERO; i < len; i++) {
-            out[j++] = getDigits()[(0xF0 & source[i]) >>> FOUR];
-            out[j++] = getDigits()[0x0F & source[i]];
+            out[j++] = getDigits(cfg.isUpperCase())[(0xF0 & source[i]) >>> FOUR];
+            out[j++] = getDigits(cfg.isUpperCase())[0x0F & source[i]];
         }
         return out;
     }
 
     @Override
-    public byte[] decode(byte[] source) {
+    public byte[] decode(Config config, byte[] source) {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         int len = source.length;
         if ((len & HEX_01) != ZERO) {
@@ -83,15 +86,28 @@ public class Hex implements Encoder<byte[]>, Decoder<byte[]>, Serializable {
         return out;
     }
 
-    public String encodeToString(byte[] source) {
-        byte[] encode = encode(source);
-        return new String(encode);
-    }
+    /**
+     * The configuration of the hex.
+     * @author Kahle
+     */
+    public static class Cfg implements Config {
 
-    public byte[] decodeFromString(String source) {
-        Assert.notNull(source, "Parameter \"source\" must not null. ");
-        byte[] sourceBytes = source.getBytes();
-        return decode(sourceBytes);
+        public static Cfg of() {
+
+            return new Cfg();
+        }
+
+        private boolean upperCase;
+
+        public boolean isUpperCase() {
+
+            return upperCase;
+        }
+
+        public Cfg setUpperCase(boolean upperCase) {
+            this.upperCase = upperCase;
+            return this;
+        }
     }
 
 }

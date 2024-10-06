@@ -5,6 +5,7 @@
 
 package kunlun.codec.support;
 
+import kunlun.codec.CharCodec;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Test;
@@ -15,7 +16,7 @@ import org.junit.Test;
  */
 public class UnicodeTest {
     private static final Logger log = LoggerFactory.getLogger(UnicodeTest.class);
-    private static final Unicode unicode = new Unicode();
+    private static final CharCodec unicode = new Unicode();
 
     @Test
     public void test1() {

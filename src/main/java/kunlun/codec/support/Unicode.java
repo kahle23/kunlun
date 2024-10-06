@@ -5,11 +5,8 @@
 
 package kunlun.codec.support;
 
-import kunlun.core.Decoder;
-import kunlun.core.Encoder;
+import kunlun.codec.CharCodec;
 import kunlun.util.Assert;
-
-import java.io.Serializable;
 
 import static kunlun.common.constant.Numbers.*;
 import static kunlun.io.util.IOUtils.EOF;
@@ -18,13 +15,13 @@ import static kunlun.io.util.IOUtils.EOF;
  * The unicode encode and decode tools.
  * @author Kahle
  */
-public class Unicode implements Encoder<String>, Decoder<String>, Serializable {
+public class Unicode extends CharCodec {
     private static final String BACKLASH_U = "\\u";
     private static final int UNICODE_LENGTH = 6;
     private static final int RADIX = 16;
 
     @Override
-    public String encode(String source) {
+    public String encode(Config config, String source) {
         Assert.notBlank(source, "Parameter \"source\" must not blank. ");
         StringBuilder unicode = new StringBuilder();
         char[] chars = source.toCharArray();
@@ -40,7 +37,7 @@ public class Unicode implements Encoder<String>, Decoder<String>, Serializable {
     }
 
     @Override
-    public String decode(String source) {
+    public String decode(Config config, String source) {
         Assert.notBlank(source, "Parameter \"source\" must not blank. ");
         int index, pos = ZERO;
         StringBuilder result = new StringBuilder();

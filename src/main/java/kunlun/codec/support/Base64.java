@@ -5,15 +5,13 @@
 
 package kunlun.codec.support;
 
-import kunlun.core.Decoder;
-import kunlun.core.Encoder;
-import kunlun.util.ArrayUtils;
+import kunlun.codec.ByteCodec;
+import kunlun.core.Codec;
+import kunlun.util.Assert;
 import kunlun.util.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
-import java.io.Serializable;
 
-import static kunlun.common.constant.Numbers.MINUS_ONE;
 import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.common.constant.Symbols.*;
 
@@ -21,90 +19,48 @@ import static kunlun.common.constant.Symbols.*;
  * The base64 encode and decode tools.
  * @author Kahle
  */
-public class Base64 implements Encoder<byte[]>, Decoder<byte[]>, Serializable {
-    /**
-     * Default MIME line separator.
-     */
-    protected static final byte[] DEFAULT_MIME_LINE_SEPARATOR = new byte[] {'\r', '\n'};
-    /**
-     * Default MIME line length.
-     */
-    protected static final int DEFAULT_MIME_LINE_LENGTH = 76;
-    /**
-     * The line separator when encoded to MIME.
-     */
-    private final byte[] lineSeparator;
-    /**
-     * The line length when encoded to MIME.
-     */
-    private final int lineLength;
-    /**
-     * Encoded to support MIME.
-     */
-    private final boolean mime;
-    /**
-     * Encoded as URL safe.
-     */
-    private final boolean urlSafe;
+public class Base64 extends ByteCodec {
+    private final Cfg config;
+
+    public Base64(Cfg cfg) {
+
+        this.config = cfg;
+    }
 
     public Base64() {
 
-        this(false, false, MINUS_ONE, null);
+        this(Cfg.of());
     }
 
-    public Base64(boolean urlSafe) {
+    public Cfg getConfig() {
 
-        this(urlSafe, false, MINUS_ONE, null);
-    }
-
-    public Base64(boolean mime, int lineLength, byte[] lineSeparator) {
-
-        this(false, mime, lineLength, lineSeparator);
-    }
-
-    protected Base64(boolean urlSafe, boolean mime, int lineLength, byte[] lineSeparator) {
-        this.lineSeparator = lineSeparator;
-        this.lineLength = lineLength;
-        this.mime = mime;
-        this.urlSafe = urlSafe;
-    }
-
-    public boolean isUrlSafe() {
-
-        return urlSafe;
-    }
-
-    public boolean isMime() {
-
-        return mime;
-    }
-
-    public int getLineLength() {
-
-        return lineLength;
-    }
-
-    public byte[] getLineSeparator() {
-
-        return lineSeparator;
+        return config;
     }
 
     @Override
-    public byte[] encode(byte[] source) {
-        if (ArrayUtils.isEmpty(source)) { return source; }
+    public byte[] encode(Codec.Config config, byte[] source) {
+        String encode = encodeToString(config, source);
+        return encode != null ? encode.getBytes() : null;
+    }
+
+    @Override
+    public byte[] decode(Codec.Config config, byte[] source) {
+
+        return decodeFromString(config, source != null ? new String(source) : null);
+    }
+
+    @Override
+    public String encodeToString(Codec.Config config, byte[] source) {
+        Assert.notNull(source, "Parameter \"source\" must not null. ");
+        Cfg cfg = config != null ? (Cfg) config : getConfig();
         String encode = DatatypeConverter.printBase64Binary(source);
-        if (isUrlSafe()) {
+        if (cfg.isUrlSafe()) {
             encode = StringUtils.replace(encode, PLUS, MINUS);
             encode = StringUtils.replace(encode, SLASH, UNDERLINE);
         }
-        else if (isMime()) {
-            byte[] lineSeparatorBytes = getLineSeparator();
-            String lineSeparator = new String(
-                    ArrayUtils.isNotEmpty(lineSeparatorBytes)
-                            ? lineSeparatorBytes : DEFAULT_MIME_LINE_SEPARATOR
-            );
-            int lineLength = getLineLength();
-            lineLength = lineLength > ZERO ? lineLength : DEFAULT_MIME_LINE_LENGTH;
+        else if (cfg.isMime()) {
+            String lineSeparator = cfg.getLineSeparator();
+            int lineLength = cfg.getLineLength();
             StringBuilder builder = new StringBuilder();
             int beginIndex = ZERO, endIndex = lineLength;
             int dataLength = encode.length();
@@ -119,28 +75,114 @@ public class Base64 implements Encoder<byte[]>, Decoder<byte[]>, Serializable {
             builderEnd -= lineSeparator.length();
             encode = builder.substring(ZERO, builderEnd);
         }
-        return encode.getBytes();
+        return encode;
     }
 
     @Override
-    public byte[] decode(byte[] source) {
-        if (ArrayUtils.isEmpty(source)) { return source; }
-        String decode = new String(source);
-        if (isUrlSafe()) {
-            decode = StringUtils.replace(decode, MINUS, PLUS);
-            decode = StringUtils.replace(decode, UNDERLINE, SLASH);
+    public byte[] decodeFromString(Codec.Config config, String source) {
+        Assert.notNull(source, "Parameter \"source\" must not null. ");
+        Cfg cfg = config != null ? (Cfg) config : getConfig();
+        if (cfg.isUrlSafe()) {
+            source = StringUtils.replace(source, MINUS, PLUS);
+            source = StringUtils.replace(source, UNDERLINE, SLASH);
         }
-        return DatatypeConverter.parseBase64Binary(decode);
+        return DatatypeConverter.parseBase64Binary(source);
     }
 
-    public String encodeToString(byte[] source) {
+    /**
+     * The configuration of the base64.
+     * @author Kahle
+     */
+    public static class Cfg implements Config {
 
-        return new String(encode(source));
-    }
+        public static Cfg ofMime(Integer lineLength, String lineSeparator) {
+            Cfg of = ofMime();
+            if (StringUtils.isNotEmpty(lineSeparator)) {
+                of.setLineSeparator(lineSeparator);
+            }
+            if (lineLength != null) {
+                of.setLineLength(lineLength);
+            }
+            return of;
+        }
 
-    public byte[] decodeFromString(String source) {
+        public static Cfg ofMime() {
 
-        return decode(source != null ? source.getBytes() : new byte[ZERO]);
+            return of().setMime(true);
+        }
+
+        public static Cfg ofUrlSafe() {
+
+            return of().setUrlSafe(true);
+        }
+
+        public static Cfg of() {
+
+            return new Cfg();
+        }
+
+        /**
+         * The line separator when encoded to MIME.
+         * The default MIME line separator is "\r\n".
+         */
+        private String lineSeparator = "\r\n";
+        /**
+         * The line length when encoded to MIME.
+         * The default MIME line length is 76.
+         */
+        private int lineLength = 76;
+        /**
+         * Encoded to support MIME.
+         */
+        private boolean mime = false;
+        /**
+         * Encoded as URL safe.
+         */
+        private boolean urlSafe = false;
+
+        public String getLineSeparator() {
+
+            return lineSeparator;
+        }
+
+        public Cfg setLineSeparator(String lineSeparator) {
+            if (lineSeparator != null) {
+                this.lineSeparator = lineSeparator;
+            }
+            return this;
+        }
+
+        public int getLineLength() {
+
+            return lineLength;
+        }
+
+        public Cfg setLineLength(int lineLength) {
+            if (lineLength > ZERO) {
+                this.lineLength = lineLength;
+            }
+            return this;
+        }
+
+        public boolean isMime() {
+
+            return mime;
+        }
+
+        public Cfg setMime(boolean mime) {
+            this.mime = mime;
+            return this;
+        }
+
+        public boolean isUrlSafe() {
+
+            return urlSafe;
+        }
+
+        public Cfg setUrlSafe(boolean urlSafe) {
+            this.urlSafe = urlSafe;
+            return this;
+        }
     }
 
 }

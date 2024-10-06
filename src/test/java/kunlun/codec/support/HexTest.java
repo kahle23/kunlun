@@ -5,6 +5,8 @@
 
 package kunlun.codec.support;
 
+import kunlun.codec.ByteCodec;
+import kunlun.codec.support.Hex.Cfg;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Test;
@@ -17,7 +19,7 @@ import java.util.Arrays;
  */
 public class HexTest {
     private static final Logger log = LoggerFactory.getLogger(HexTest.class);
-    private final Hex hex = new Hex(true);
+    private final ByteCodec hex = new Hex(Cfg.of().setUpperCase(true));
 
     @Test
     public void test1() {
