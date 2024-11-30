@@ -3,14 +3,16 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.crypto;
+package kunlun.crypto.util;
 
 import kunlun.codec.ByteCodec;
 import kunlun.codec.CodecUtils;
+import kunlun.exception.ExceptionUtils;
 import kunlun.util.Assert;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
@@ -44,18 +46,27 @@ public class KeyUtils {
         return new SecretKeySpec(keyBytes, algorithm);
     }
 
-    public static PublicKey parsePublicKey(String algorithm, byte[] keyBytes) throws GeneralSecurityException {
-        Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
-        X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory factory = KeyFactory.getInstance(algorithm);
-        return factory.generatePublic(x509EncodedKeySpec);
+    public static IvParameterSpec parseIv(byte[] ivBytes) {
+        Assert.notEmpty(ivBytes, "Parameter \"ivBytes\" must not empty. ");
+        return new IvParameterSpec(ivBytes);
     }
 
-    public static PrivateKey parsePrivateKey(String algorithm, byte[] keyBytes) throws GeneralSecurityException {
-        Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
-        PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory factory = KeyFactory.getInstance(algorithm);
-        return factory.generatePrivate(pkcs8EncodedKeySpec);
+    public static PublicKey parsePublicKey(String algorithm, byte[] keyBytes) {
+        try {
+            Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
+            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
+            KeyFactory factory = KeyFactory.getInstance(algorithm);
+            return factory.generatePublic(x509EncodedKeySpec);
+        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+    }
+
+    public static PrivateKey parsePrivateKey(String algorithm, byte[] keyBytes) {
+        try {
+            Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
+            PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(keyBytes);
+            KeyFactory factory = KeyFactory.getInstance(algorithm);
+            return factory.generatePrivate(pkcs8EncodedKeySpec);
+        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
     }
 
     public static SecretKey generateKey(String algorithm, int keySize) throws GeneralSecurityException {

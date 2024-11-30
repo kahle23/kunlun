@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.crypto;
+package kunlun.crypto.util;
 
 /**
  * Cipher Algorithm Padding.
@@ -63,7 +63,7 @@ public enum Padding {
 
     ;
 
-    private String name;
+    private final String name;
 
     Padding(String name) {
 

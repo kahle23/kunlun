@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.crypto;
+package kunlun.crypto.util;
 
 /**
  * Cipher Algorithm Modes.
@@ -54,7 +54,7 @@ public enum Mode {
 
     ;
 
-    private String name;
+    private final String name;
 
     Mode(String name) {
 

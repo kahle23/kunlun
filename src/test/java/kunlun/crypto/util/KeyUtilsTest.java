@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.crypto;
+package kunlun.crypto.util;
 
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
