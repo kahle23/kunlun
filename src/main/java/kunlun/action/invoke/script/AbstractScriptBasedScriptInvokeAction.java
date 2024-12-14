@@ -3,9 +3,9 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.support.script;
+package kunlun.action.invoke.script;
 
-import kunlun.action.support.AbstractInvokeActionHandler;
+import kunlun.action.invoke.AbstractInvokeAction;
 import kunlun.data.validation.support.ValidationConfig;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -15,11 +15,11 @@ import kunlun.util.handler.support.ScriptHandlerImpl;
 import java.util.Collection;
 
 /**
- * The abstract script-based script invoke action handler.
+ * The abstract script-based script invoke action.
  * @author Kahle
  */
-public abstract class AbstractScriptBasedScriptInvokeHandler extends AbstractInvokeActionHandler {
-    private static final Logger log = LoggerFactory.getLogger(AbstractScriptBasedScriptInvokeHandler.class);
+public abstract class AbstractScriptBasedScriptInvokeAction extends AbstractInvokeAction {
+    private static final Logger log = LoggerFactory.getLogger(AbstractScriptBasedScriptInvokeAction.class);
     private final ScriptHandler scriptHandler = new ScriptHandlerImpl();
 
     protected ScriptHandler getScriptHandler() {

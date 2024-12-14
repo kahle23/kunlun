@@ -3,11 +3,9 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.support.http;
+package kunlun.action.invoke.http;
 
-import kunlun.action.support.AbstractInvokeActionHandler;
-import kunlun.action.support.util.OutputPostConverter;
-import kunlun.core.function.BiFunction;
+import kunlun.action.invoke.AbstractInvokeAction;
 import kunlun.data.bean.BeanUtils;
 import kunlun.data.json.JsonUtils;
 import kunlun.data.tuple.KeyValue;
@@ -29,22 +27,16 @@ import static kunlun.common.constant.Numbers.*;
 import static kunlun.util.ObjectUtils.cast;
 
 /**
- * The abstract script-based http invoke action handler.
+ * The abstract script-based http invoke action.
  * @author Kahle
  */
-public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractInvokeActionHandler {
-    private static final Logger log = LoggerFactory.getLogger(AbstractScriptBasedHttpInvokeHandler.class);
-    private final BiFunction<Object, Class<?>, Object> outputPostConverter = new OutputPostConverter();
+public abstract class AbstractScriptBasedHttpInvokeAction extends AbstractInvokeAction {
+    private static final Logger log = LoggerFactory.getLogger(AbstractScriptBasedHttpInvokeAction.class);
     private final ScriptHandler scriptHandler = new ScriptHandlerImpl();
 
     protected ScriptHandler getScriptHandler() {
 
         return scriptHandler;
-    }
-
-    protected BiFunction<Object, Class<?>, Object> getOutputPostConverter() {
-
-        return outputPostConverter;
     }
 
     @Override
@@ -116,10 +108,9 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractInvok
     protected void convertOutput(InvokeContext context) {
         // Get config and get script engine name.
         HttpInvokeConfig config = (HttpInvokeConfig) context.getConfig();
-        Class<?> expectedClass = context.getExpectedClass();
-        String   scriptEngine = config.getScriptEngine();
-        Integer  outputType = config.getOutputType();
-        String   output = config.getOutput();
+        String  scriptEngine = config.getScriptEngine();
+        Integer outputType = config.getOutputType();
+        String  output = config.getOutput();
         Assert.notNull(outputType, "The output type must not null! ");
         // Handle converted output.
         RawOutput rawOutput = (RawOutput) context.getRawOutput();
@@ -141,9 +132,6 @@ public abstract class AbstractScriptBasedHttpInvokeHandler extends AbstractInvok
             Object outputObj = getScriptHandler().eval(scriptEngine, output, context);
             context.setConvertedOutput(outputObj);
         }
-        // Convert converted output.
-        Object convertedOutput = context.getConvertedOutput();
-        context.setConvertedOutput(getOutputPostConverter().apply(convertedOutput, expectedClass));
         // End.
     }
 

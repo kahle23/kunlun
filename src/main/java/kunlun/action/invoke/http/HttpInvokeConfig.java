@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.support.http;
+package kunlun.action.invoke.http;
 
 import kunlun.data.validation.support.ValidationConfig;
 

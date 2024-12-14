@@ -3,11 +3,9 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.support.jdbc;
+package kunlun.action.invoke.jdbc;
 
-import kunlun.action.support.AbstractInvokeActionHandler;
-import kunlun.action.support.util.OutputPostConverter;
-import kunlun.core.function.BiFunction;
+import kunlun.action.invoke.AbstractInvokeAction;
 import kunlun.data.validation.support.ValidationConfig;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -18,22 +16,16 @@ import kunlun.util.handler.support.ScriptHandlerImpl;
 import java.util.Collection;
 
 /**
- * The abstract script-based jdbc invoke action handler.
+ * The abstract script-based jdbc invoke action.
  * @author Kahle
  */
-public abstract class AbstractScriptBasedJdbcInvokeHandler extends AbstractInvokeActionHandler {
-    private static final Logger log = LoggerFactory.getLogger(AbstractScriptBasedJdbcInvokeHandler.class);
-    private final BiFunction<Object, Class<?>, Object> outputPostConverter = new OutputPostConverter();
+public abstract class AbstractScriptBasedJdbcInvokeAction extends AbstractInvokeAction {
+    private static final Logger log = LoggerFactory.getLogger(AbstractScriptBasedJdbcInvokeAction.class);
     private final ScriptHandler scriptHandler = new ScriptHandlerImpl();
 
     protected ScriptHandler getScriptHandler() {
 
         return scriptHandler;
-    }
-
-    protected BiFunction<Object, Class<?>, Object> getOutputPostConverter() {
-
-        return outputPostConverter;
     }
 
     @Override
@@ -69,17 +61,13 @@ public abstract class AbstractScriptBasedJdbcInvokeHandler extends AbstractInvok
     protected void convertOutput(InvokeContext context) {
         // Get config and get script engine name.
         JdbcInvokeConfig config = (JdbcInvokeConfig) context.getConfig();
-        Class<?> expectedClass = context.getExpectedClass();
-        String   scriptEngine = config.getScriptEngine();
-        String   outputScript = config.getOutput();
+        String scriptEngine = config.getScriptEngine();
+        String outputScript = config.getOutput();
         // Eval output script.
         if (StringUtils.isNotBlank(outputScript)) {
             context.setConvertedOutput(getScriptHandler().eval(scriptEngine, outputScript, context));
         }
         else { context.setConvertedOutput(context.getRawOutput()); }
-        // Convert converted output.
-        Object convertedOutput = context.getConvertedOutput();
-        context.setConvertedOutput(getOutputPostConverter().apply(convertedOutput, expectedClass));
         // End.
     }
 

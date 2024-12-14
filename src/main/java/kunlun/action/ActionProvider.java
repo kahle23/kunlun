@@ -5,6 +5,8 @@
 
 package kunlun.action;
 
+import kunlun.core.Action;
+
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -32,46 +34,68 @@ public interface ActionProvider {
     Map<String, Object> getCommonProperties();
 
     /**
-     * Register the action handler.
-     * @param actionName The action handler name
-     * @param actionHandler The action handler
+     * Register the action.
+     * @param actionName The action name
+     * @param action The action
      */
-    void registerHandler(String actionName, ActionHandler actionHandler);
+    void registerAction(String actionName, Action action);
 
     /**
-     * Deregister the action handler.
-     * @param actionName The action handler name
+     * Deregister the action.
+     * @param actionName The action name
      */
-    void deregisterHandler(String actionName);
+    void deregisterAction(String actionName);
 
     /**
-     * Get the action handler (the action name is fixed).
-     * @param actionName The action handler name
-     * @return The action handler
+     * Get the action (the action name is fixed).
+     * @param actionName The action name
+     * @return The action or null
      */
-    ActionHandler getActionHandler(String actionName);
+    Action getAction(String actionName);
+
+    /**
+     * Register the shortcut for action.
+     * @param inputType The type of the input parameter
+     * @param command The command that contain the action name and strategy
+     */
+    void registerShortcut(Type inputType, String command);
+
+    /**
+     * Deregister the shortcut for action.
+     * @param inputType The type of the input parameter
+     */
+    void deregisterShortcut(Type inputType);
+
+    /**
+     * Get the shortcut.
+     * @param inputType The type of the input parameter
+     * @return The command that contain the action name and strategy
+     */
+    String getShortcut(Type inputType);
 
     /**
      * Execute a specific logic.
+     *
      * The arguments mean (most of the scenes):
      *      0 strategy or operation or null,
      *      1 input object,
-     *      2 return value type
-     * @param actionName The name of action
+     *
+     * Strategy priority: command strategy > shortcut strategy > arguments strategy
+     *
+     * @param command The command that contain the action name and strategy
      * @param arguments The arguments to the execution of a specific logic
      * @return The execution result of a specific logic
      */
-    Object execute(String actionName, Object[] arguments);
+    Object execute(String command, Object[] arguments);
 
     /**
      * Execute a specific logic.
-     * @param actionName The name of action
-     * @param input The input parameters to be handled
-     * @param operation The name of the operation to be performed (strategy or operation or null)
-     * @param type The type of the return value
+     *
+     * @param command The command that contain the action name and strategy
+     * @param input The input parameter to be handled
      * @param <T> The generic type of the return value
-     * @return The return value corresponding to the handler
+     * @return The return value corresponding to the action
      */
-    <T> T execute(String actionName, Object input, String operation, Type type);
+    <T> T execute(String command, Object input);
 
 }

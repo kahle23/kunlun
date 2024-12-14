@@ -5,7 +5,7 @@
 
 package kunlun.action.support;
 
-import kunlun.action.AbstractActionHandler;
+import kunlun.action.AbstractAction;
 import kunlun.data.tuple.Triple;
 import kunlun.util.ArgumentUtils;
 import kunlun.util.Assert;
@@ -17,7 +17,8 @@ import java.lang.reflect.Type;
  * The abstract classic action handler.
  * @author Kahle
  */
-public abstract class AbstractClassicActionHandler extends AbstractActionHandler {
+@Deprecated
+public abstract class AbstractClassicAction extends AbstractAction {
 
     @Override
     public Object execute(Object[] arguments) {

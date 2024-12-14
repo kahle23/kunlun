@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.support.jdbc;
+package kunlun.action.invoke.jdbc;
 
 import kunlun.data.validation.support.ValidationConfig;
 

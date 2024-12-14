@@ -5,11 +5,8 @@
 
 package kunlun.action;
 
-import kunlun.action.support.AbstractClassicActionHandler;
-import kunlun.action.support.AbstractStrategyActionHandler;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.ObjectUtils;
 import org.junit.Test;
 
 /**
@@ -18,39 +15,35 @@ import org.junit.Test;
  */
 public class ActionUtilsTest {
     private static final Logger log = LoggerFactory.getLogger(ActionUtilsTest.class);
-    private static final String actionName1 = "Hello1";
     private static final String actionName = "Hello";
 
     static {
-        ActionUtils.registerHandler(actionName, new AbstractClassicActionHandler() {
+        ActionUtils.registerAction(actionName, new AbstractAction() {
             @Override
-            public <T> T execute(Object input, Class<T> clazz) {
+            public Object execute(String strategy, Object input, Object[] arguments) {
                 // \u000dSystem.out.println("Hello, World! ");
-                return ObjectUtils.cast("Hello, " + input + "！");
+                return "Hello, " + input + "！";
             }
         });
-//        ActionUtils.registerHandler("class:" + String.class.getName(),
-//                ActionUtils.getActionHandler(actionName));
-        ActionUtils.registerHandler(actionName1, new AbstractStrategyActionHandler() {
+        ActionUtils.registerAction("Hello1", new AbstractAction() {
             @Override
-            public Object execute(Object input, String strategy, Class<?> clazz) {
-                return ObjectUtils.cast("[" + strategy + "] Hello, " + input + "！");
+            public Object execute(String strategy, Object input, Object[] arguments) {
+                return "[" + strategy + "] Hello, " + input + "！";
             }
         });
     }
 
     @Test
     public void test1() {
-        System.out.println(ActionUtils.execute(actionName, "Action Tools", String.class));
-//        System.out.println(ActionUtils.execute("Action Tools", String.class));
-        System.out.println(ActionUtils.execute(actionName, new Object[]{null, "Action Tools 1", String.class}));
+        System.out.println(ActionUtils.execute(actionName, "Action Tools"));
+        System.out.println(ActionUtils.execute(actionName, new Object[]{null, "Action Tools 1"}));
     }
 
     @Test
     public void test2() {
-        Object execute = ActionUtils.execute(actionName1, "Action Tools", "fun1", String.class);
+        String execute = ActionUtils.execute("Hello1.fun1", "Action Tools");
         System.out.println(execute);
-        execute = ActionUtils.execute(actionName1, "Action Tools", "fun2", String.class);
+        execute = ActionUtils.execute("Hello1.fun2", "Action Tools");
         System.out.println(execute);
     }
 

@@ -33,6 +33,7 @@ public class ArgumentUtils {
      * @param arguments The arguments
      * @return The result
      */
+    @Deprecated
     public static Triple<Object, String, Type> parseToObjStrType(Object[] arguments) {
         // Verification arguments.
         Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");
@@ -55,10 +56,36 @@ public class ArgumentUtils {
      * The arguments mean (most of the scenes):
      *      0 strategy or operation or null
      *      1 input object
+     * @param arguments The arguments
+     * @return The result
+     */
+    public static Triple<String, Object, Object[]> parseToStrObjArr(Object[] arguments) {
+        // Verification arguments.
+        Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");
+        Assert.isTrue(arguments.length >= TWO
+                , "The length of parameter \"arguments\" must be at least 2. ");
+        // Extract parameters.
+        String strategy = arguments[ZERO] != null ? String.valueOf(arguments[ZERO]) : null;
+        Object input = arguments[ONE];
+        int newLength = arguments.length - TWO;
+        Object[] newArgs = new Object[newLength];
+        if (newLength > ZERO) {
+            System.arraycopy(arguments, TWO, newArgs, ZERO, newLength);
+        }
+        // Result.
+        return new TripleImpl<String, Object, Object[]>(strategy, input, newArgs);
+    }
+
+    /**
+     * Parsing the arguments array.
+     * The arguments mean (most of the scenes):
+     *      0 strategy or operation or null
+     *      1 input object
      *      2 return value type (Class)
      * @param arguments The arguments
      * @return The result
      */
+    @Deprecated
     public static Triple<Object, String, Class<?>> parseToObjStrCls(Object[] arguments) {
         // Verification arguments.
         Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");
@@ -84,6 +111,7 @@ public class ArgumentUtils {
      * @param arguments The arguments
      * @return The result
      */
+    @Deprecated
     public static Pair<Object, Object[]> parseToObjArr(Object[] arguments) {
         // Check parameters.
         Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");
@@ -108,6 +136,7 @@ public class ArgumentUtils {
      * @param arguments The arguments
      * @return The result
      */
+    @Deprecated
     public static Pair<Object, Class<?>> parseToObjCls(Object[] arguments) {
         // Verification arguments.
         Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");

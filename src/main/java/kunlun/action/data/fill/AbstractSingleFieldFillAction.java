@@ -3,31 +3,45 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.support.data.fill;
+package kunlun.action.data.fill;
 
-import kunlun.action.support.AbstractStrategyActionHandler;
+import kunlun.action.AbstractAction;
+import kunlun.convert.ConversionUtils;
 import kunlun.data.Array;
+import kunlun.data.bean.support.FieldBasedBeanMap;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.Assert;
-import kunlun.util.CollectionUtils;
-import kunlun.util.IteratorUtils;
-import kunlun.util.MapUtils;
+import kunlun.util.*;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
- * The abstract single field fill action handler.
+ * The abstract single field fill action.
  * @author Kahle
  */
-public abstract class AbstractSingleFieldFillHandler
-        extends AbstractStrategyActionHandler implements DataFillHandler {
-    private static final Logger log = LoggerFactory.getLogger(AbstractSingleFieldFillHandler.class);
+public abstract class AbstractSingleFieldFillAction extends AbstractAction implements DataFillAction {
+    private static final Logger log = LoggerFactory.getLogger(AbstractSingleFieldFillAction.class);
 
     @Override
-    public void fill(FieldConfig cfg, Map<String, Map<Object, Object>> map, Collection<Map<Object, Object>> data) {
+    public Collection<Map<String, Object>> convert(Object data) {
+        List<Map<String, Object>> dataList = new ArrayList<Map<String, Object>>();
+
+        if (!(data instanceof Collection)) {
+                dataList.add(data instanceof Map ? (Map<String, Object>) data
+                        : ObjectUtils.<Map<String, Object>>cast(new FieldBasedBeanMap(ConversionUtils.getConversionService(), data)));
+            return dataList;
+        }
+
+        for (Object datum : (Collection) data) {
+            if (datum == null) { continue; }
+                dataList.add(datum instanceof Map ? (Map<String, Object>) datum
+                        : ObjectUtils.<Map<String, Object>>cast(new FieldBasedBeanMap(ConversionUtils.getConversionService(), datum)));
+        }
+        return dataList;
+    }
+
+    @Override
+    public void fill(FieldConfig cfg, Map<String, Map<String, Object>> map, Collection<Map<String, Object>> data) {
         // data validation.
         if (CollectionUtils.isEmpty(data)) { return; }
         if (MapUtils.isEmpty(map)) { return; }
@@ -36,10 +50,10 @@ public abstract class AbstractSingleFieldFillHandler
         String fillField = IteratorUtils.getFirst(cfg.getFillFields());
         String dataField = IteratorUtils.getFirst(cfg.getDataFields());
         // fill data.
-        for (Map<Object, Object> dataMap : data) {
+        for (Map<String, Object> dataMap : data) {
             Object value = dataMap.get(queryField);
             if (value == null) { continue; }
-            Map<Object, Object> objMap = map.get(String.valueOf(value));
+            Map<String, Object> objMap = map.get(String.valueOf(value));
             if (objMap == null) { continue; }
             Object dataVal = objMap.get(dataField);
             if (dataVal == null) { continue; }
@@ -48,7 +62,7 @@ public abstract class AbstractSingleFieldFillHandler
     }
 
     @Override
-    public Object execute(Object input, String strategy, Class<?> clazz) {
+    public Object execute(String strategy, Object input, Object[] arguments) {
         // Validation.
         Assert.notNull(input, "Parameter \"input\" must not null. ");
         Assert.isInstanceOf(Config.class, input
@@ -61,11 +75,11 @@ public abstract class AbstractSingleFieldFillHandler
         if (data == null) { return null; }
         if (CollectionUtils.isEmpty(fieldConfigs)) { return null; }
         // Convert the data.
-        Collection<Map<Object, Object>> dataList = convert(data);
+        Collection<Map<String, Object>> dataList = convert(data);
         if (CollectionUtils.isEmpty(dataList)) { return null; }
         // Extract the data to be queried.
         Map<FieldConfig, Collection<Object>> queryFieldMap = new LinkedHashMap<FieldConfig, Collection<Object>>();
-        for (Map<Object, Object> dataMap : dataList) {
+        for (Map<String, Object> dataMap : dataList) {
             for (FieldConfig fieldConfig : fieldConfigs) {
                 Object value = dataMap.get(IteratorUtils.getFirst(fieldConfig.getQueryFields()));
                 if (value == null) { continue; }

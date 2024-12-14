@@ -5,7 +5,7 @@
 
 package kunlun.action.support;
 
-import kunlun.action.AbstractActionHandler;
+import kunlun.action.AbstractAction;
 import kunlun.core.handler.StrategySupportedHandler;
 import kunlun.data.tuple.Pair;
 import kunlun.util.ArgumentUtils;
@@ -15,8 +15,9 @@ import kunlun.util.Assert;
  * The abstract strategy action handler.
  * @author Kahle
  */
-public abstract class AbstractStrategyActionHandler
-        extends AbstractActionHandler implements StrategySupportedHandler {
+@Deprecated
+public abstract class AbstractStrategyAction
+        extends AbstractAction implements StrategySupportedHandler {
 
     @Override
     public Object execute(Object[] arguments) {

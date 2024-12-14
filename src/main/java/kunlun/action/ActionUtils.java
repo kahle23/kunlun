@@ -5,6 +5,7 @@
 
 package kunlun.action;
 
+import kunlun.core.Action;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -36,39 +37,44 @@ public class ActionUtils {
         ActionUtils.actionProvider = actionProvider;
     }
 
-    public static void registerHandler(String actionName, ActionHandler actionHandler) {
+    public static void registerAction(String actionName, Action action) {
 
-        getActionProvider().registerHandler(actionName, actionHandler);
+        getActionProvider().registerAction(actionName, action);
     }
 
-    public static void deregisterHandler(String actionName) {
+    public static void deregisterAction(String actionName) {
 
-        getActionProvider().deregisterHandler(actionName);
+        getActionProvider().deregisterAction(actionName);
     }
 
-    public static ActionHandler getActionHandler(String actionName) {
+    public static Action getAction(String actionName) {
 
-        return getActionProvider().getActionHandler(actionName);
+        return getActionProvider().getAction(actionName);
     }
 
-    public static Object execute(String actionName, Object[] arguments) {
+    public static void registerShortcut(Type inputType, String command) {
 
-        return getActionProvider().execute(actionName, arguments);
+        getActionProvider().registerShortcut(inputType, command);
     }
 
-    public static <T> T execute(String actionName, Object input, String operation, Type type) {
+    public static void deregisterShortcut(Type inputType) {
 
-        return getActionProvider().execute(actionName, input, operation, type);
+        getActionProvider().deregisterShortcut(inputType);
     }
 
-    public static <T> T execute(String actionName, Object input, Type type) {
+    public static Object execute(String command, Object[] arguments) {
 
-        return getActionProvider().execute(actionName, input, EMPTY_STRING, type);
+        return getActionProvider().execute(command, arguments);
     }
 
-    public static <T> T execute(String actionName, Object input) {
+    public static <T> T execute(String command, Object input) {
 
-        return getActionProvider().execute(actionName, input, EMPTY_STRING, Object.class);
+        return getActionProvider().execute(command, input);
+    }
+
+    public static <T> T execute(Object input) {
+
+        return getActionProvider().execute(EMPTY_STRING, input);
     }
 
 }

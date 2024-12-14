@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.support.script;
+package kunlun.action.invoke.script;
 
 import kunlun.data.validation.support.ValidationConfig;
 

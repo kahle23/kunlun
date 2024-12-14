@@ -3,8 +3,9 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.support;
+package kunlun.action.invoke;
 
+import kunlun.action.AbstractAction;
 import kunlun.exception.ExceptionUtils;
 import kunlun.util.Assert;
 
@@ -12,22 +13,20 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The abstract dynamic invoke action handler.
+ * The abstract dynamic invoke action.
  * @author Kahle
  */
-public abstract class AbstractInvokeActionHandler extends AbstractStrategyActionHandler {
+public abstract class AbstractInvokeAction extends AbstractAction {
 
     /**
      * Build the context object from the parameters.
+     * @param invokeName The invoked name
      * @param input The input object
-     * @param name The invoked name
-     * @param clazz The expected class
      * @return The core context object
      */
-    protected InvokeContext buildContext(Object input, String name, Class<?> clazz) {
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        return new InvokeContextImpl(input, name, clazz);
+    protected InvokeContext buildContext(String invokeName, Object input) {
+        Assert.notBlank(invokeName, "Parameter \"invokeName\" must not blank. ");
+        return new InvokeContextImpl(invokeName, input);
     }
 
     /**
@@ -69,6 +68,7 @@ public abstract class AbstractInvokeActionHandler extends AbstractStrategyAction
 
     /**
      * Convert the output.
+     * (The expected return value, in addition to simple value, collection, etc., is most likely map)
      * @param context The core context object
      */
     protected void convertOutput(InvokeContext context) {
@@ -95,9 +95,9 @@ public abstract class AbstractInvokeActionHandler extends AbstractStrategyAction
     }
 
     @Override
-    public Object execute(Object input, String strategy, Class<?> clazz) {
+    public Object execute(String strategy, Object input, Object[] arguments) {
         // Build context.
-        InvokeContext context = buildContext(input, strategy, clazz);
+        InvokeContext context = buildContext(strategy, input);
         Assert.state(context != null, "Build the context failure! ");
         try {
             // Load config and set to context.
@@ -135,18 +135,6 @@ public abstract class AbstractInvokeActionHandler extends AbstractStrategyAction
         String getInvokeName();
 
         /**
-         * Get the raw input data.
-         * @return The raw input data
-         */
-        Object getRawInput();
-
-        /**
-         * Get the expected class.
-         * @return The expected class
-         */
-        Class<?> getExpectedClass();
-
-        /**
          * Get the configuration data.
          * @return The configuration data
          */
@@ -157,6 +145,12 @@ public abstract class AbstractInvokeActionHandler extends AbstractStrategyAction
          * @param config The configuration data
          */
         void setConfig(Object config);
+
+        /**
+         * Get the raw input data.
+         * @return The raw input data
+         */
+        Object getRawInput();
 
         /**
          * Get the converted input data.
@@ -215,16 +209,14 @@ public abstract class AbstractInvokeActionHandler extends AbstractStrategyAction
     public static class InvokeContextImpl implements InvokeContext {
         private final Map<String, Object> runtimeData = new ConcurrentHashMap<String, Object>();
         private String invokeName;
-        private Object rawInput;
-        private Class<?> expectedClass;
         private Object config;
+        private Object rawInput;
         private Object convertedInput;
         private Object rawOutput;
         private Object convertedOutput;
         private Throwable error;
 
-        public InvokeContextImpl(Object rawInput, String invokeName, Class<?> expectedClass) {
-            this.expectedClass = expectedClass;
+        public InvokeContextImpl(String invokeName, Object rawInput) {
             this.invokeName = invokeName;
             this.rawInput = rawInput;
         }
@@ -250,28 +242,6 @@ public abstract class AbstractInvokeActionHandler extends AbstractStrategyAction
         }
 
         @Override
-        public Object getRawInput() {
-
-            return rawInput;
-        }
-
-        public void setRawInput(Object rawInput) {
-
-            this.rawInput = rawInput;
-        }
-
-        @Override
-        public Class<?> getExpectedClass() {
-
-            return expectedClass;
-        }
-
-        public void setExpectedClass(Class<?> expectedClass) {
-
-            this.expectedClass = expectedClass;
-        }
-
-        @Override
         public Object getConfig() {
 
             return config;
@@ -281,6 +251,17 @@ public abstract class AbstractInvokeActionHandler extends AbstractStrategyAction
         public void setConfig(Object config) {
 
             this.config = config;
+        }
+
+        @Override
+        public Object getRawInput() {
+
+            return rawInput;
+        }
+
+        public void setRawInput(Object rawInput) {
+
+            this.rawInput = rawInput;
         }
 
         @Override
@@ -330,7 +311,6 @@ public abstract class AbstractInvokeActionHandler extends AbstractStrategyAction
 
             this.error = th;
         }
-
     }
 
 }

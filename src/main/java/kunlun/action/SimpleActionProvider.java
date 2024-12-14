@@ -5,6 +5,9 @@
 
 package kunlun.action;
 
+import kunlun.core.Action;
+
+import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
@@ -14,9 +17,10 @@ import java.util.Map;
 public class SimpleActionProvider extends AbstractActionProvider {
 
     protected SimpleActionProvider(Map<String, Object> commonProperties,
-                                   Map<String, ActionHandler> actionHandlers) {
+                                   Map<String, Action> actions,
+                                   Map<Type,   String> shortcuts) {
 
-        super(commonProperties, actionHandlers);
+        super(commonProperties, actions, shortcuts);
     }
 
     public SimpleActionProvider() {
