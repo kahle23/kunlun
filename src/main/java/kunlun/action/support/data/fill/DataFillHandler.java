@@ -6,9 +6,13 @@
 package kunlun.action.support.data.fill;
 
 import kunlun.core.Handler;
+import kunlun.util.Assert;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+
+import static java.util.Collections.singletonList;
 
 /**
  * The data filling handler.
@@ -39,14 +43,14 @@ public interface DataFillHandler extends Handler {
      * @param coll The data to be queried
      * @return The data that was queried
      */
-    Map<String, Map<Object, Object>> acquire(FieldConfig cfg, Collection<?> coll);
+    Map<String, Map<String, Object>> acquire(FieldConfig cfg, Collection<?> coll);
 
     /**
      * Convert the data into the bean map collection.
      * @param data The data to be processed
      * @return The converted data
      */
-    Collection<Map<Object, Object>> convert(Object data);
+    Collection<Map<String, Object>> convert(Object data);
 
     /**
      * Performing data filling.
@@ -54,7 +58,7 @@ public interface DataFillHandler extends Handler {
      * @param map The data that was queried
      * @param data The data to be filled in
      */
-    void fill(FieldConfig cfg, Map<String, Map<Object, Object>> map, Collection<Map<Object, Object>> data);
+    void fill(FieldConfig cfg, Map<String, Map<String, Object>> map, Collection<Map<String, Object>> data);
 
     /**
      * The data filling configuration.
@@ -102,6 +106,60 @@ public interface DataFillHandler extends Handler {
          */
         Collection<String> getDataFields();
 
+    }
+
+    /**
+     * @author Kahle
+     */
+    class FieldConfigImpl implements FieldConfig {
+        private List<String> queryFields;
+        private List<String> fillFields;
+        private List<String> dataFields;
+
+        public FieldConfigImpl(List<String> queryFields, List<String> fillFields, List<String> dataFields) {
+            this.setQueryFields(queryFields);
+            this.setFillFields(fillFields);
+            this.setDataFields(dataFields);
+        }
+
+        public FieldConfigImpl(String queryField, String fillField, String dataField) {
+            this.setQueryFields(singletonList(queryField));
+            this.setFillFields(singletonList(fillField));
+            this.setDataFields(singletonList(dataField));
+        }
+
+        @Override
+        public List<String> getQueryFields() {
+
+            return queryFields;
+        }
+
+        public void setQueryFields(List<String> queryFields) {
+            Assert.notEmpty(queryFields, "Parameter \"queryFields\" must not empty. ");
+            this.queryFields = queryFields;
+        }
+
+        @Override
+        public List<String> getFillFields() {
+
+            return fillFields;
+        }
+
+        public void setFillFields(List<String> fillFields) {
+            Assert.notEmpty(fillFields, "Parameter \"fillFields\" must not empty. ");
+            this.fillFields = fillFields;
+        }
+
+        @Override
+        public List<String> getDataFields() {
+
+            return dataFields;
+        }
+
+        public void setDataFields(List<String> dataFields) {
+            Assert.notEmpty(dataFields, "Parameter \"dataFields\" must not empty. ");
+            this.dataFields = dataFields;
+        }
     }
 
 }

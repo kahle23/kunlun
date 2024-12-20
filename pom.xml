@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.kahle23</groupId>
     <artifactId>kunlun</artifactId>
-    <version>1.0.0.20240503.beta2</version>
+    <version>1.0.0.20240503.beta3</version>
     <packaging>jar</packaging>
     <name>kunlun</name>
     <url>https://github.com/kahle23/kunlun</url>
