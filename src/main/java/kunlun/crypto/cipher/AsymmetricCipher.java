@@ -13,7 +13,7 @@ import java.security.Key;
 import java.security.KeyPair;
 
 /**
- * Simple implementation of asymmetric encryption and decryption tools.
+ * The asymmetric encryption and decryption tools.
  * @author Kahle
  */
 public class AsymmetricCipher extends AbstractCipher {
@@ -28,12 +28,19 @@ public class AsymmetricCipher extends AbstractCipher {
         this(null);
     }
 
+    protected Cfg convert(Config config) {
+        Cfg cfg = config != null ? (Cfg) config : (Cfg) getConfig();
+        Assert.notNull(cfg, "Parameter \"config\" must not null. ");
+        Assert.notNull(cfg.getKey(), "Parameter \"config.key\" must not null. ");
+        return cfg;
+    }
+
     @Override
     public byte[] encrypt(Config config, byte[] data) {
+        Assert.notEmpty(data, "Parameter \"data\" must not empty. ");
+        Cfg cfg = convert(config);
+        Key key = cfg.getKeyType() ? cfg.getKey().getPublic() : cfg.getKey().getPrivate();
         try {
-            Cfg cfg = config != null ? (Cfg) config : (Cfg) getConfig();
-            Assert.notNull(cfg, "Parameter \"config\" must not null. ");
-            Key key = cfg.getKeyType() ? cfg.getKey().getPublic() : cfg.getKey().getPrivate();
             Cipher cipher = createCipher(cfg.getTransformation()
                     , Cipher.ENCRYPT_MODE, key, null, null);
             return cipher.doFinal(data);
@@ -42,10 +49,10 @@ public class AsymmetricCipher extends AbstractCipher {
 
     @Override
     public byte[] decrypt(Config config, byte[] data) {
+        Assert.notEmpty(data, "Parameter \"data\" must not empty. ");
+        Cfg cfg = convert(config);
+        Key key = cfg.getKeyType() ? cfg.getKey().getPublic() : cfg.getKey().getPrivate();
         try {
-            Cfg cfg = config != null ? (Cfg) config : (Cfg) getConfig();
-            Assert.notNull(cfg, "Parameter \"config\" must not null. ");
-            Key key = cfg.getKeyType() ? cfg.getKey().getPublic() : cfg.getKey().getPrivate();
             Cipher cipher = createCipher(cfg.getTransformation()
                     , Cipher.DECRYPT_MODE, key, null, null);
             return cipher.doFinal(data);
@@ -68,8 +75,13 @@ public class AsymmetricCipher extends AbstractCipher {
             return new Cfg(transformation);
         }
 
+        /**
+         * The key's data.
+         */
         private KeyPair key;
-        // true is PublicKey, false is PrivateKey
+        /**
+         * The public key is true, the private key is false.
+         */
         private boolean keyType = true;
 
         public Cfg(String transformation) {

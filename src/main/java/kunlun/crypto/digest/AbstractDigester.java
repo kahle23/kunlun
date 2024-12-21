@@ -19,8 +19,7 @@ import static kunlun.codec.CodecUtils.BASE64;
 import static kunlun.codec.CodecUtils.HEX;
 
 /**
- * Abstract digester.
- * @see Digester
+ * The abstract message digest tools.
  * @author Kahle
  */
 public abstract class AbstractDigester implements Digester {

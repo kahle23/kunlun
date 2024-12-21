@@ -10,6 +10,10 @@ import kunlun.util.Assert;
 
 import static kunlun.crypto.util.CustomUtils.*;
 
+/**
+ * The custom encryption and decryption tools.
+ * @author Kahle
+ */
 public class CustomCipher extends SymmetricCipher {
 
     @Override

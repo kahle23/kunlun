@@ -13,6 +13,10 @@ import static kunlun.common.constant.Algorithms.*;
 import static kunlun.common.constant.Numbers.*;
 import static kunlun.crypto.util.KeyUtils.parseSecretKey;
 
+/**
+ * The custom encryption and decryption and message digest tools.
+ * @author Kahle
+ */
 public class CustomUtils {
     public static final byte[] PI_KEY_64 = new byte[]{ 51,46,49,52,49,53,57,50,54,53,51,53,56,57,55,57
             ,51,50,51,56,52,54,50,54,52,51,51,56,51,50,55,57,53,48,50,56,56,52,49,57,55,49,54,57,51,57

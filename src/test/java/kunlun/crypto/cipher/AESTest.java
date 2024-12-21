@@ -22,10 +22,15 @@ import static kunlun.crypto.util.KeyUtils.parseIv;
 import static kunlun.crypto.util.KeyUtils.parseSecretKey;
 
 /**
- * AES/ECB/ZeroPadding(NoPadding)
- * AES/ECB/PKCS5Padding
- * AES/CBC/ZeroPadding(NoPadding)
- * AES/CBC/PKCS5Padding
+ * The AES encryption and decryption tools Test.
+ *
+ * Test transformation:
+ *  AES/ECB/ZeroPadding(NoPadding)
+ *  AES/ECB/PKCS5Padding
+ *  AES/CBC/ZeroPadding(NoPadding)
+ *  AES/CBC/PKCS5Padding
+ *
+ * @author Kahle
  */
 public class AESTest extends BouncyCastleSupport {
     private static final Logger log = LoggerFactory.getLogger(AESTest.class);

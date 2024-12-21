@@ -22,6 +22,10 @@ import java.security.spec.AlgorithmParameterSpec;
 import static kunlun.codec.CodecUtils.BASE64;
 import static kunlun.codec.CodecUtils.HEX;
 
+/**
+ * The abstract encryption and decryption tools.
+ * @author Kahle
+ */
 public abstract class AbstractCipher implements Cipher {
     private final Config config;
 
@@ -68,9 +72,9 @@ public abstract class AbstractCipher implements Cipher {
     }
 
     public String decryptToString(Config config, byte[] data, Charset charset) {
-        charset = charset != null ? charset : Charsets.UTF_8;
         byte[] decrypt = decrypt(config, data);
-        return new String(decrypt, charset);
+        charset = charset != null ? charset : Charsets.UTF_8;
+        return decrypt != null ? new String(decrypt, charset) : null;
     }
 
     public String decryptToString(Config config, byte[] data) {
@@ -114,13 +118,15 @@ public abstract class AbstractCipher implements Cipher {
     // ====
 
     /**
-     * Create "Cipher" object based on existing conditions.
-     * @param cipherMode Cipher mode (encrypt or decrypt)
+     * Create a java cipher object based on the input parameters.
+     * @param transformation The cipher transformation
+     * @param cipherMode The cipher mode (encrypt or decrypt)
      * @param key The key for encryption or decryption
-     * @return The "Cipher" object that was successfully created
-     * @throws GeneralSecurityException Some Java encryption and decryption exceptions
-     * @see javax.crypto.Cipher#ENCRYPT_MODE Encryption mode
-     * @see javax.crypto.Cipher#DECRYPT_MODE Decryption mode
+     * @param paramSpec The specification of cryptographic parameters
+     * @param random The strong random
+     * @see javax.crypto.Cipher#ENCRYPT_MODE The encryption mode
+     * @see javax.crypto.Cipher#DECRYPT_MODE The decryption mode
+     * @return The cipher object that has been successfully created and initialized
      */
     public static javax.crypto.Cipher createCipher(String transformation, int cipherMode,
                                                    java.security.Key key,

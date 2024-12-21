@@ -10,51 +10,53 @@ import java.io.OutputStream;
 
 /**
  * Provide the highest level of abstraction for cipher (encipher, decipher).
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Cipher">Cipher</a>
  * @author Kahle
  */
 public interface Cipher {
 
     /**
-     * Encrypt data.
-     * @param config The cipher config
-     * @param data The data
-     * @return The output
+     * Encrypt the input data.
+     * @param config The config of the encrypt
+     * @param data The data to be encrypted
+     * @return The result of encryption
      */
     byte[] encrypt(Config config, byte[] data);
 
     /**
-     * Decrypt data.
-     * @param config The cipher config
-     * @param data The data
-     * @return The output
+     * Decrypt the input data.
+     * @param config The config of the decrypt
+     * @param data The data to be decrypted
+     * @return The result of decryption
      */
     byte[] decrypt(Config config, byte[] data);
 
     /**
-     * Encrypt data.
-     * @param config The cipher config
-     * @param data The data
-     * @param out The output
+     * Encrypt the input data.
+     * @param config The config of the encrypt
+     * @param data The data to be encrypted
+     * @param out The encrypted data output
      */
     void encrypt(Config config, InputStream data, OutputStream out);
 
     /**
-     * Decrypt data.
-     * @param config The cipher config
-     * @param data The data
-     * @param out The output
+     * Decrypt the input data.
+     * @param config The config of the decrypt
+     * @param data The data to be decrypted
+     * @param out The decrypted data output
      */
     void decrypt(Config config, InputStream data, OutputStream out);
 
     /**
-     * The cipher config.
+     * The configuration of the cipher.
      * @author Kahle
      */
     interface Config {
 
         /**
-         * Get the transformation.
-         * @return The transformation
+         * Get the cipher transformation.
+         * @return The cipher transformation
          */
         String getTransformation();
 

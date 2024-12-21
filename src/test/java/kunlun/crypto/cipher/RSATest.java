@@ -19,10 +19,15 @@ import static kunlun.codec.CodecUtils.BASE64;
 import static kunlun.common.constant.Algorithms.RSA;
 
 /**
- * RSA/None/NoPadding
- * RSA/None/PKCS1Padding
- * RSA/ECB/NoPadding
- * RSA/ECB/PKCS1Padding
+ * The RSA encryption and decryption tools Test.
+ *
+ * Test transformation:
+ *  RSA/None/NoPadding
+ *  RSA/None/PKCS1Padding
+ *  RSA/ECB/NoPadding
+ *  RSA/ECB/PKCS1Padding
+ *
+ * @author Kahle
  */
 public class RSATest extends BouncyCastleSupport {
     private static final Logger log = LoggerFactory.getLogger(RSATest.class);

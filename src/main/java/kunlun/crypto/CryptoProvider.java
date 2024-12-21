@@ -15,32 +15,52 @@ import kunlun.crypto.digest.Hmac;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * The crypto tools provider.
+ * @author Kahle
+ */
 public interface CryptoProvider {
 
+    /**
+     * Get the symmetric cipher.
+     * @return The symmetric cipher
+     */
     SymmetricCipher getSymmetricCipher();
 
+    /**
+     * Get the asymmetric cipher.
+     * @return The asymmetric cipher
+     */
     AsymmetricCipher getAsymmetricCipher();
 
+    /**
+     * Get the hash.
+     * @return The hash.
+     */
     Hash getHash();
 
+    /**
+     * Get the hmac.
+     * @return The hmac.
+     */
     Hmac getHmac();
 
     /**
      * Register the cipher.
-     * @param transformation The transformation
-     * @param cipher The cipher
+     * @param transformation The cipher transformation
+     * @param cipher The cipher object
      */
     void registerCipher(String transformation, Cipher cipher);
 
     /**
      * Deregister the cipher.
-     * @param transformation The transformation
+     * @param transformation The cipher transformation
      */
     void deregisterCipher(String transformation);
 
     /**
      * Get the cipher.
-     * @param transformation The transformation
+     * @param transformation The cipher transformation
      * @return The cipher or null
      */
     Cipher getCipher(String transformation);
@@ -48,7 +68,7 @@ public interface CryptoProvider {
     /**
      * Register the digester.
      * @param algorithm The digest algorithm
-     * @param digester The digester
+     * @param digester The digester object
      */
     void registerDigester(String algorithm, Digester digester);
 
@@ -66,50 +86,50 @@ public interface CryptoProvider {
     Digester getDigester(String algorithm);
 
     /**
-     * Encrypt data.
-     * @param config The key
-     * @param data The data
-     * @return The output
+     * Encrypt the input data.
+     * @param config The config of the encrypt
+     * @param data The data to be encrypted
+     * @return The result of encryption
      */
     byte[] encrypt(Cipher.Config config, byte[] data);
 
     /**
-     * Decrypt data.
-     * @param config The key
-     * @param data The data
-     * @return The output
+     * Decrypt the input data.
+     * @param config The config of the decrypt
+     * @param data The data to be decrypted
+     * @return The result of decryption
      */
     byte[] decrypt(Cipher.Config config, byte[] data);
 
     /**
-     * Encrypt data.
-     * @param config The key
-     * @param data The data
-     * @param out The output
+     * Encrypt the input data.
+     * @param config The config of the encrypt
+     * @param data The data to be encrypted
+     * @param out The encrypted data output
      */
     void encrypt(Cipher.Config config, InputStream data, OutputStream out);
 
     /**
-     * Decrypt data.
-     * @param config The key
-     * @param data The data
-     * @param out The output
+     * Decrypt the input data.
+     * @param config The config of the decrypt
+     * @param data The data to be decrypted
+     * @param out The decrypted data output
      */
     void decrypt(Cipher.Config config, InputStream data, OutputStream out);
 
     /**
      * Perform digest operations on the data.
-     * @param config The digest config
-     * @param data Data to be digested
-     * @return Result after digest
+     * @param config The config of the digest
+     * @param data The data to be digested
+     * @return The result after digest
      */
     byte[] digest(Digester.Config config, byte[] data);
 
     /**
-     * Perform digest operations on the input stream.
-     * @param config The digest config
-     * @param data Input stream to be digested
-     * @return Result after digest
+     * Perform digest operations on the data.
+     * @param config The config of the digest
+     * @param data The data to be digested
+     * @return The result after digest
      */
     byte[] digest(Digester.Config config, InputStream data);
 

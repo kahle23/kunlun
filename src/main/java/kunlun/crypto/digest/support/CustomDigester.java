@@ -14,6 +14,10 @@ import java.io.InputStream;
 
 import static kunlun.crypto.util.CustomUtils.*;
 
+/**
+ * The custom message digest tools.
+ * @author Kahle
+ */
 public class CustomDigester extends Hash {
 
     @Override

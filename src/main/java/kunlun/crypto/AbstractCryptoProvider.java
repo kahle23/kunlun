@@ -25,6 +25,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static kunlun.common.constant.Words.DEFAULT;
 
+/**
+ * The abstract crypto tools provider.
+ * @author Kahle
+ */
 public abstract class AbstractCryptoProvider implements CryptoProvider {
     private static final Logger log = LoggerFactory.getLogger(AbstractCryptoProvider.class);
     protected final Map<String, Digester> digesters;

@@ -5,6 +5,7 @@
 
 package kunlun.crypto.util;
 
+import kunlun.codec.CodecUtils;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Test;
@@ -15,17 +16,23 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Arrays;
 
+import static kunlun.codec.CodecUtils.BASE64;
+import static kunlun.codec.CodecUtils.HEX;
 import static kunlun.common.constant.Algorithms.*;
 import static org.junit.Assert.assertArrayEquals;
 
+/**
+ * The crypto key tools Test.
+ * @author Kahle
+ */
 public class KeyUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(KeyUtilsTest.class);
+    private static final Logger log = LoggerFactory.getLogger(KeyUtilsTest.class);
 
     private void testGenerateKey(String algorithm, int keySize) throws Exception {
         SecretKey secretKey = KeyUtils.generateKey(algorithm, keySize);
         algorithm = secretKey.getAlgorithm();
         String format = secretKey.getFormat();
-        String content = KeyUtils.toHexString(secretKey);
+        String content = CodecUtils.encodeToString(HEX, secretKey.getEncoded());
         String message = "algorithm: {}, format: {}, key size: {}, content for hex: {}";
         log.info(message, algorithm, format, keySize, content);
     }
@@ -39,13 +46,13 @@ public class KeyUtilsTest {
         PublicKey publicKey = keyPair.getPublic();
         algorithm = publicKey.getAlgorithm();
         format = publicKey.getFormat();
-        content = KeyUtils.toBase64String(publicKey);
+        content = CodecUtils.encodeToString(BASE64, publicKey.getEncoded());
         log.info(publicKeyMessage, algorithm, format, keySize, content);
 
         PrivateKey privateKey = keyPair.getPrivate();
         algorithm = privateKey.getAlgorithm();
         format = privateKey.getFormat();
-        content = KeyUtils.toBase64String(privateKey);
+        content = CodecUtils.encodeToString(BASE64, privateKey.getEncoded());
         log.info(privateKeyMessage, algorithm, format, keySize, content);
     }
 
@@ -112,17 +119,17 @@ public class KeyUtilsTest {
     @Test
     public void testToHexString() throws Exception {
         SecretKey secretKey = KeyUtils.generateKey(AES, 128);
-        log.info("Hex string: {}", KeyUtils.toHexString(secretKey));
+        log.info("Hex string: {}", CodecUtils.encodeToString(HEX, secretKey.getEncoded()));
         secretKey = KeyUtils.generateKey(AES, 256);
-        log.info("Hex string: {}", KeyUtils.toHexString(secretKey));
+        log.info("Hex string: {}", CodecUtils.encodeToString(HEX, secretKey.getEncoded()));
     }
 
     @Test
     public void testToBase64String() throws Exception {
         SecretKey secretKey = KeyUtils.generateKey(AES, 128);
-        log.info("Base64 string: {}", KeyUtils.toBase64String(secretKey));
+        log.info("Base64 string: {}", CodecUtils.encodeToString(BASE64, secretKey.getEncoded()));
         secretKey = KeyUtils.generateKey(AES, 256);
-        log.info("Base64 string: {}", KeyUtils.toBase64String(secretKey));
+        log.info("Base64 string: {}", CodecUtils.encodeToString(BASE64, secretKey.getEncoded()));
     }
 
 }

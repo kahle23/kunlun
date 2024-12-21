@@ -16,8 +16,9 @@ import static kunlun.io.util.IOUtils.DEFAULT_BUFFER_SIZE;
 import static kunlun.io.util.IOUtils.EOF;
 
 /**
- * Hash tools, in JDK, support list:
- * MD2, MD5, SHA-1, SHA-256, SHA-384, SHA-512.
+ * The message digest tools.
+ * (Support list: MD2, MD5, SHA-1, SHA-256, SHA-384, SHA-512)
+ *
  * @see <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#MessageDigest">MessageDigest Algorithms</a>
  * @author Kahle
  */
@@ -48,7 +49,7 @@ public class Hash extends AbstractDigester {
     }
 
     /**
-     * The configuration of the Hash.
+     * The configuration of the hash.
      * @author Kahle
      */
     public static class Cfg extends AbstractConfig {

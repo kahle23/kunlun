@@ -8,36 +8,39 @@ package kunlun.core;
 import java.io.InputStream;
 
 /**
- * Provide a high level abstract digest tools.
+ * Provide the highest level of abstraction for digest tools.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/MD5">MD5</a>
+ * @see <a href="https://en.wikipedia.org/wiki/HMAC">HMAC</a>
  * @author Kahle
  */
 public interface Digester {
 
     /**
      * Perform digest operations on the data.
-     * @param config The digest config
-     * @param data Data to be digested
-     * @return Result after digest
+     * @param config The config of the digest
+     * @param data The data to be digested
+     * @return The result after digest
      */
     byte[] digest(Config config, byte[] data);
 
     /**
-     * Perform digest operations on the input stream.
-     * @param config The digest config
-     * @param data Input stream to be digested
-     * @return Result after digest
+     * Perform digest operations on the data.
+     * @param config The config of the digest
+     * @param data The data to be digested
+     * @return The result after digest
      */
     byte[] digest(Config config, InputStream data);
 
     /**
-     * The digest config.
+     * The configuration of the digest.
      * @author Kahle
      */
     interface Config {
 
         /**
-         * Get digest algorithm.
-         * @return Digest algorithm
+         * Get the digest algorithm.
+         * @return The digest algorithm
          */
         String getAlgorithm();
 

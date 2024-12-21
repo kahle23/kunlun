@@ -10,10 +10,14 @@ import kunlun.core.Digester;
 
 import java.util.Map;
 
+/**
+ * The simple crypto tools provider.
+ * @author Kahle
+ */
 public class SimpleCryptoProvider extends AbstractCryptoProvider {
 
     protected SimpleCryptoProvider(Map<String, Cipher> ciphers,
-                                Map<String, Digester> digesters) {
+                                   Map<String, Digester> digesters) {
 
         super(ciphers, digesters);
     }

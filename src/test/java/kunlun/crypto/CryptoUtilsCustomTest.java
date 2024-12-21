@@ -10,6 +10,10 @@ import java.io.IOException;
 
 import static kunlun.codec.CodecUtils.BASE64;
 
+/**
+ * The custom crypto tools Test.
+ * @author Kahle
+ */
 public class CryptoUtilsCustomTest {
     private static final Logger log = LoggerFactory.getLogger(CryptoUtilsCustomTest.class);
     private static final String data = "Hello, Java! ";

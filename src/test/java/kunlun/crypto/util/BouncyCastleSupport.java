@@ -8,6 +8,10 @@ package kunlun.crypto.util;
 import java.security.Provider;
 import java.security.Security;
 
+/**
+ * The bouncy castle support.
+ * @author Kahle
+ */
 public abstract class BouncyCastleSupport {
 
     static {

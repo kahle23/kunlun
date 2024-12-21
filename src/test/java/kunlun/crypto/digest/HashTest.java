@@ -13,6 +13,10 @@ import java.io.File;
 
 import static kunlun.common.constant.Algorithms.*;
 
+/**
+ * The message digest tools Test.
+ * @author Kahle
+ */
 public class HashTest {
     private static final Logger log = LoggerFactory.getLogger(HashTest.class);
     private static final File testFile = new File("src\\test\\resources\\test_read.txt");

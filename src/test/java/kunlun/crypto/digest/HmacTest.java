@@ -16,6 +16,10 @@ import java.security.Key;
 
 import static kunlun.common.constant.Algorithms.*;
 
+/**
+ * The hmac tools Test.
+ * @author Kahle
+ */
 public class HmacTest {
     private static final Logger log = LoggerFactory.getLogger(HmacTest.class);
     private static final File testFile = new File("src\\test\\resources\\test_read.txt");

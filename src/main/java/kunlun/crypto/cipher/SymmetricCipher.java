@@ -15,7 +15,7 @@ import java.security.Key;
 import static kunlun.common.constant.Numbers.*;
 
 /**
- * Simple implementation of symmetric encryption and decryption tools.
+ * The symmetric encryption and decryption tools.
  * @author Kahle
  */
 public class SymmetricCipher extends AbstractCipher {
@@ -31,7 +31,6 @@ public class SymmetricCipher extends AbstractCipher {
     }
 
     private byte[] fillZeroToNoPadding(String transformation, byte[] data) {
-        Assert.notEmpty(data, "Parameter \"data\" must not empty. ");
         int multiple;
         if (transformation.startsWith("AES/")) {
             multiple = SIXTEEN;
@@ -58,12 +57,19 @@ public class SymmetricCipher extends AbstractCipher {
         return cfg.getTransformation();
     }
 
+    protected Cfg convert(Config config) {
+        Cfg cfg = config != null ? (Cfg) config : (Cfg) getConfig();
+        Assert.notNull(cfg, "Parameter \"config\" must not null. ");
+        Assert.notNull(cfg.getKey(), "Parameter \"config.key\" must not null. ");
+        return cfg;
+    }
+
     @Override
     public byte[] encrypt(Config config, byte[] data) {
+        Assert.notEmpty(data, "Parameter \"data\" must not empty. ");
+        Cfg cfg = convert(config);
         try {
-            Cfg cfg = config != null ? (Cfg) config : (Cfg) getConfig();
-            Assert.notNull(cfg, "Parameter \"config\" must not null. ");
-            Assert.notNull(cfg.getKey(), "Parameter \"config.secretKey\" must not null. ");
+            // If ZeroPadding will throw NoSuchAlgorithmException.
             // NoSuchAlgorithmException: Cannot find any provider supporting AES/CBC/ZeroPadding
             if (cfg.getSupportZeroPadding() && cfg.getTransformation().endsWith("/ZeroPadding")) {
                 data = fillZeroToNoPadding(cfg.getTransformation(), data);
@@ -76,10 +82,9 @@ public class SymmetricCipher extends AbstractCipher {
 
     @Override
     public byte[] decrypt(Config config, byte[] data) {
+        Assert.notEmpty(data, "Parameter \"data\" must not empty. ");
+        Cfg cfg = convert(config);
         try {
-            Cfg cfg = config != null ? (Cfg) config : (Cfg) getConfig();
-            Assert.notNull(cfg, "Parameter \"config\" must not null. ");
-            Assert.notNull(cfg.getKey(), "Parameter \"config.secretKey\" must not null. ");
             Cipher cipher = createCipher(getTransformation(cfg)
                     , Cipher.DECRYPT_MODE, cfg.getKey(), cfg.getIv(), null);
             return cipher.doFinal(data);

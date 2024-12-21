@@ -22,10 +22,15 @@ import static kunlun.crypto.util.KeyUtils.parseIv;
 import static kunlun.crypto.util.KeyUtils.parseSecretKey;
 
 /**
- * Blowfish/ECB/ZeroPadding(NoPadding)
- * Blowfish/ECB/PKCS5Padding
- * Blowfish/CBC/ZeroPadding(NoPadding)
- * Blowfish/CBC/PKCS5Padding
+ * The Blowfish encryption and decryption tools Test.
+ *
+ * Test transformation:
+ *  Blowfish/ECB/ZeroPadding(NoPadding)
+ *  Blowfish/ECB/PKCS5Padding
+ *  Blowfish/CBC/ZeroPadding(NoPadding)
+ *  Blowfish/CBC/PKCS5Padding
+ *
+ * @author Kahle
  */
 public class BlowfishTest extends BouncyCastleSupport {
     private static final Logger log = LoggerFactory.getLogger(BlowfishTest.class);

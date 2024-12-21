@@ -17,8 +17,9 @@ import static kunlun.io.util.IOUtils.DEFAULT_BUFFER_SIZE;
 import static kunlun.io.util.IOUtils.EOF;
 
 /**
- * Hmac tools, in JDK, support list:
- * HMAC_MD5, HMAC_SHA1, HMAC_SHA256, HMAC_SHA384, HMAC_SHA512.
+ * The hmac tools.
+ * (Support list: HMAC_MD5, HMAC_SHA1, HMAC_SHA256, HMAC_SHA384, HMAC_SHA512)
+ *
  * @see <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Mac">Mac Algorithms</a>
  * @author Kahle
  */
@@ -55,7 +56,7 @@ public class Hmac extends AbstractDigester {
     }
 
     /**
-     * The configuration of the HMAC.
+     * The configuration of the hmac.
      * @author Kahle
      */
     public static class Cfg extends AbstractConfig {

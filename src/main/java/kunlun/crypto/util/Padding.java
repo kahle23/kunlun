@@ -6,7 +6,7 @@
 package kunlun.crypto.util;
 
 /**
- * Cipher Algorithm Padding.
+ * The cipher algorithm padding.
  * @see <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Cipher">Cipher (Encryption) Algorithms</a>
  * @author Kahle
  */

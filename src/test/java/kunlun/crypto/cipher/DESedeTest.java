@@ -22,10 +22,15 @@ import static kunlun.crypto.util.KeyUtils.parseIv;
 import static kunlun.crypto.util.KeyUtils.parseSecretKey;
 
 /**
- * DESede/ECB/ZeroPadding(NoPadding)
- * DESede/ECB/PKCS5Padding
- * DESede/CBC/ZeroPadding(NoPadding)
- * DESede/CBC/PKCS5Padding
+ * The DESede encryption and decryption tools Test.
+ *
+ * Test transformation:
+ *  DESede/ECB/ZeroPadding(NoPadding)
+ *  DESede/ECB/PKCS5Padding
+ *  DESede/CBC/ZeroPadding(NoPadding)
+ *  DESede/CBC/PKCS5Padding
+ *
+ * @author Kahle
  */
 public class DESedeTest extends BouncyCastleSupport {
     private static final Logger log = LoggerFactory.getLogger(DESedeTest.class);

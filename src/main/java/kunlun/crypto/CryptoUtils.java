@@ -23,6 +23,10 @@ import java.nio.charset.Charset;
 
 import static kunlun.common.constant.Words.DEFAULT;
 
+/**
+ * The crypto tools.
+ * @author Kahle
+ */
 public class CryptoUtils {
     private static final Logger log = LoggerFactory.getLogger(CryptoUtils.class);
     private static volatile CryptoProvider cryptoProvider;
