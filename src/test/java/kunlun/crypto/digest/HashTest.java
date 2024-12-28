@@ -37,12 +37,12 @@ public class HashTest {
     public void hashFile() throws Exception {
         log.info("Please insure file is exists. ");
         Assert.isTrue(testFile.exists(), "File are not find. ");
-        log.info(CodecUtils.encodeToString(HEX, md2.digest(testFile)));
-        log.info(CodecUtils.encodeToString(HEX, md5.digest(testFile)));
-        log.info(CodecUtils.encodeToString(HEX, sha1.digest(testFile)));
-        log.info(CodecUtils.encodeToString(HEX, sha256.digest(testFile)));
-        log.info(CodecUtils.encodeToString(HEX, sha384.digest(testFile)));
-        log.info(CodecUtils.encodeToString(HEX, sha512.digest(testFile)));
+        log.info(CodecUtils.encodeToHex(md2.digest(testFile)));
+        log.info(CodecUtils.encodeToHex(md5.digest(testFile)));
+        log.info(CodecUtils.encodeToHex(sha1.digest(testFile)));
+        log.info(CodecUtils.encodeToHex(sha256.digest(testFile)));
+        log.info(CodecUtils.encodeToHex(sha384.digest(testFile)));
+        log.info(CodecUtils.encodeToHex(sha512.digest(testFile)));
     }*/
 
 }

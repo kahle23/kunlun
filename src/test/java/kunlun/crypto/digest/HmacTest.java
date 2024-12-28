@@ -31,13 +31,13 @@ public class HmacTest {
     private Key hsha512Key;
 
     @Before
-    public void init() throws Exception {
-        hmd5Key = KeyUtils.generateKey(HMAC_MD5, 10);
-        hsha1Key = KeyUtils.generateKey(HMAC_SHA1, 10);
+    public void init() {
+        hmd5Key = KeyUtils.genKey(HMAC_MD5, 10);
+        hsha1Key = KeyUtils.genKey(HMAC_SHA1, 10);
         // Key length must be at least 40 bits
-        hsha256Key = KeyUtils.generateKey(HMAC_SHA256, 40);
-        hsha384Key = KeyUtils.generateKey(HMAC_SHA384, 40);
-        hsha512Key = KeyUtils.generateKey(HMAC_SHA512, 40);
+        hsha256Key = KeyUtils.genKey(HMAC_SHA256, 40);
+        hsha384Key = KeyUtils.genKey(HMAC_SHA384, 40);
+        hsha512Key = KeyUtils.genKey(HMAC_SHA512, 40);
     }
 
     @Test

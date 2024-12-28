@@ -8,8 +8,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static kunlun.codec.CodecUtils.BASE64;
-
 /**
  * The custom crypto tools Test.
  * @author Kahle
@@ -21,7 +19,7 @@ public class CryptoUtilsCustomTest {
     @Test
     public void test1() {
         byte[] encrypt = CryptoUtils.encrypt(data.getBytes());
-        log.info("Encrypt base64: {}", CodecUtils.encodeToString(BASE64, encrypt));
+        log.info("Encrypt base64: {}", CodecUtils.encodeToBase64(encrypt));
         log.info("Decrypt string: {}", CryptoUtils.decryptToString(encrypt));
     }
 
@@ -30,7 +28,7 @@ public class CryptoUtilsCustomTest {
         Text text = new Text();
         text.readFromClasspath("logging.properties");
         byte[] encrypt = CryptoUtils.encrypt(text.writeToByteArray());
-        log.info("Encrypt base64: {}", CodecUtils.encodeToString(BASE64, encrypt));
+        log.info("Encrypt base64: {}", CodecUtils.encodeToBase64(encrypt));
         log.info("Decrypt string: {}", CryptoUtils.decryptToString(encrypt));
     }
 

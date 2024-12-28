@@ -16,9 +16,8 @@ import javax.crypto.spec.IvParameterSpec;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static kunlun.codec.CodecUtils.BASE64;
 import static kunlun.common.constant.Algorithms.AES;
-import static kunlun.crypto.util.KeyUtils.parseIv;
+import static kunlun.crypto.util.KeyUtils.parseIvParamSpec;
 import static kunlun.crypto.util.KeyUtils.parseSecretKey;
 
 /**
@@ -39,10 +38,10 @@ public class AESTest extends BouncyCastleSupport {
     // Wrong keySize: must be equal to 128, 192 or 256 (convert length need divide 8)
     private static final SecretKey key = parseSecretKey(AES, "TeTestKeyTestKey".getBytes());
     // Wrong IV length: must be 16 bytes long
-    private static final IvParameterSpec iv = parseIv("TeTestIvTeTestIv".getBytes());
+    private static final IvParameterSpec iv = parseIvParamSpec("TeTestIvTeTestIv".getBytes());
 
     /*static {
-        SecretKey secretKey = KeyUtils.generateKey("AES", 128);
+        SecretKey secretKey = KeyUtils.genKey("AES", 128);
         key = secretKey.getEncoded();
     }*/
 
@@ -51,7 +50,7 @@ public class AESTest extends BouncyCastleSupport {
         SymmetricCipher.Cfg cfg = SymmetricCipher.Cfg.of(transformation, key);
         if (needIv) { cfg.setIv(iv); }
         byte[] bytes = cipher.encrypt(cfg, data);
-        log.info("Encrypt: {}", CodecUtils.encodeToString(BASE64, bytes));
+        log.info("Encrypt: {}", CodecUtils.encodeToBase64(bytes));
         log.info("Decrypt: {}", cipher.decryptToString(cfg, bytes));
         log.info("End test {}", transformation);
     }

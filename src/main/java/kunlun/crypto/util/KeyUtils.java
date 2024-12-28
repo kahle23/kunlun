@@ -19,94 +19,115 @@ import java.security.spec.X509EncodedKeySpec;
 
 /**
  * The crypto key tools.
+ *
+ * @see <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#KeyGenerator">
+ *     KeyGenerator Algorithms</a>
+ * @see <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">
+ *     KeyPairGenerator Algorithms</a>
  * @author Kahle
  */
 public class KeyUtils {
 
-    public static SecretKey parseSecretKey(String algorithm, byte[] keyBytes) {
-        Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
-        return new SecretKeySpec(keyBytes, algorithm);
-    }
-
-    public static IvParameterSpec parseIv(byte[] ivBytes) {
-        Assert.notEmpty(ivBytes, "Parameter \"ivBytes\" must not empty. ");
-        return new IvParameterSpec(ivBytes);
-    }
-
-    public static PublicKey parsePublicKey(String algorithm, byte[] keyBytes) {
-        try {
-            Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
-            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
-            KeyFactory factory = KeyFactory.getInstance(algorithm);
-            return factory.generatePublic(x509EncodedKeySpec);
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
-    }
-
     public static PrivateKey parsePrivateKey(String algorithm, byte[] keyBytes) {
+        Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
         try {
-            Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
             PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(keyBytes);
             KeyFactory factory = KeyFactory.getInstance(algorithm);
             return factory.generatePrivate(pkcs8EncodedKeySpec);
         } catch (Exception e) { throw ExceptionUtils.wrap(e); }
     }
 
-    // ====
-
-    private static final SecureRandom RANDOM = new SecureRandom();
-
-    public static SecretKey generateKey(String algorithm, int keySize) throws GeneralSecurityException {
-
-        return KeyUtils.generateKey(algorithm, keySize, RANDOM);
+    public static PublicKey  parsePublicKey(String algorithm, byte[] keyBytes) {
+        Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
+        try {
+            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
+            KeyFactory factory = KeyFactory.getInstance(algorithm);
+            return factory.generatePublic(x509EncodedKeySpec);
+        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
     }
 
-    public static SecretKey generateKey(String algorithm, AlgorithmParameterSpec params) throws GeneralSecurityException {
-
-        return KeyUtils.generateKey(algorithm, params, RANDOM);
+    public static SecretKey  parseSecretKey(String algorithm, byte[] keyBytes) {
+        Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
+        return new SecretKeySpec(keyBytes, algorithm);
     }
 
-    public static SecretKey generateKey(String algorithm, int keySize, SecureRandom random) throws GeneralSecurityException {
-        KeyGenerator generator = KeyGenerator.getInstance(algorithm);
-        generator.init(keySize, random != null ? random : RANDOM);
-        return generator.generateKey();
+    public static IvParameterSpec parseIvParamSpec(byte[] ivBytes) {
+        Assert.notEmpty(ivBytes, "Parameter \"ivBytes\" must not empty. ");
+        return new IvParameterSpec(ivBytes);
     }
 
-    /**
-     * Generate SecretKey. List of supported algorithms: AES, ARCFOUR, Blowfish, DES
-     *      , DESede, RC2, HmacMD5, HmacSHA1, HmacSHA256, HmacSHA384, HmacSHA512
-     * @see <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#KeyGenerator">KeyGenerator Algorithms</a>
-     */
-    public static SecretKey generateKey(String algorithm, AlgorithmParameterSpec params, SecureRandom random) throws GeneralSecurityException {
-        KeyGenerator generator = KeyGenerator.getInstance(algorithm);
-        generator.init(params, random != null ? random : RANDOM);
-        return generator.generateKey();
+    // ==== Generate the secret key ====
+    // Supported algorithms: AES, ARCFOUR, Blowfish, DES, DESede, RC2, HmacMD5, HmacSHA1, HmacSHA256, HmacSHA384, HmacSHA512.
+
+    public static SecretKey genKey(String algorithm, int keySize) {
+
+        return genKey(algorithm, keySize, null);
     }
 
-    public static KeyPair generateKeyPair(String algorithm, int keySize) throws GeneralSecurityException {
-
-        return KeyUtils.generateKeyPair(algorithm, keySize, RANDOM);
+    public static SecretKey genKey(String algorithm, int keySize, SecureRandom random) {
+        try {
+            KeyGenerator gen = KeyGenerator.getInstance(algorithm);
+            if (random != null) {
+                gen.init(keySize, random);
+            } else {
+                gen.init(keySize);
+            }
+            return gen.generateKey();
+        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
     }
 
-    public static KeyPair generateKeyPair(String algorithm, AlgorithmParameterSpec params) throws GeneralSecurityException {
+    public static SecretKey genKey(String algorithm, AlgorithmParameterSpec paramSpec) {
 
-        return KeyUtils.generateKeyPair(algorithm, params, RANDOM);
+        return genKey(algorithm, paramSpec, null);
     }
 
-    public static KeyPair generateKeyPair(String algorithm, int keySize, SecureRandom random) throws GeneralSecurityException {
-        KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithm);
-        generator.initialize(keySize, random != null ? random : RANDOM);
-        return generator.generateKeyPair();
+    public static SecretKey genKey(String algorithm, AlgorithmParameterSpec paramSpec, SecureRandom random) {
+        try {
+            KeyGenerator gen = KeyGenerator.getInstance(algorithm);
+            if (random != null) {
+                gen.init(paramSpec, random);
+            } else {
+                gen.init(paramSpec);
+            }
+            return gen.generateKey();
+        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
     }
 
-    /**
-     * Generate PublicKey and PrivateKey.
-     * List of supported algorithms: DiffieHellman, DSA, RSA, EC
-     * @see <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">KeyPairGenerator Algorithms</a>
-     */
-    public static KeyPair generateKeyPair(String algorithm, AlgorithmParameterSpec params, SecureRandom random) throws GeneralSecurityException {
-        KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithm);
-        generator.initialize(params, random != null ? random : RANDOM);
-        return generator.generateKeyPair();
+    // ==== Generate the public key and the private key ====
+    // Supported algorithms: DiffieHellman, DSA, RSA, EC.
+
+    public static KeyPair genKeyPair(String algorithm, int keySize) {
+
+        return genKeyPair(algorithm, keySize, null);
+    }
+
+    public static KeyPair genKeyPair(String algorithm, int keySize, SecureRandom random) {
+        try {
+            KeyPairGenerator gen = KeyPairGenerator.getInstance(algorithm);
+            if (random != null) {
+                gen.initialize(keySize, random);
+            } else {
+                gen.initialize(keySize);
+            }
+            return gen.generateKeyPair();
+        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+    }
+
+    public static KeyPair genKeyPair(String algorithm, AlgorithmParameterSpec paramSpec) {
+
+        return genKeyPair(algorithm, paramSpec, null);
+    }
+
+    public static KeyPair genKeyPair(String algorithm, AlgorithmParameterSpec paramSpec, SecureRandom random) {
+        try {
+            KeyPairGenerator gen = KeyPairGenerator.getInstance(algorithm);
+            if (random != null) {
+                gen.initialize(paramSpec, random);
+            } else {
+                gen.initialize(paramSpec);
+            }
+            return gen.generateKeyPair();
+        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
     }
 
 }

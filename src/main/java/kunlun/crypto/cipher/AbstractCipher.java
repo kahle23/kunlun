@@ -19,9 +19,6 @@ import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 
-import static kunlun.codec.CodecUtils.BASE64;
-import static kunlun.codec.CodecUtils.HEX;
-
 /**
  * The abstract encryption and decryption tools.
  * @author Kahle
@@ -63,12 +60,12 @@ public abstract class AbstractCipher implements Cipher {
 
     public String encryptToHex(Config config, byte[] data) {
 
-        return CodecUtils.encodeToString(HEX, encrypt(config, data));
+        return CodecUtils.encodeToHex(encrypt(config, data));
     }
 
     public String encryptToBase64(Config config, byte[] data) {
 
-        return CodecUtils.encodeToString(BASE64, encrypt(config, data));
+        return CodecUtils.encodeToBase64(encrypt(config, data));
     }
 
     public String decryptToString(Config config, byte[] data, Charset charset) {
@@ -97,7 +94,7 @@ public abstract class AbstractCipher implements Cipher {
 
     public String encryptToHex(Config config, String data, Charset charset) {
 
-        return CodecUtils.encodeToString(HEX, encrypt(config, data, charset));
+        return CodecUtils.encodeToHex(encrypt(config, data, charset));
     }
 
     public String encryptToHex(Config config, String data) {
@@ -107,7 +104,7 @@ public abstract class AbstractCipher implements Cipher {
 
     public String encryptToBase64(Config config, String data, Charset charset) {
 
-        return CodecUtils.encodeToString(BASE64, encrypt(config, data, charset));
+        return CodecUtils.encodeToBase64(encrypt(config, data, charset));
     }
 
     public String encryptToBase64(Config config, String data) {

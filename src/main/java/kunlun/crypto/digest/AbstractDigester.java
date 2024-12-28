@@ -15,9 +15,6 @@ import kunlun.util.Assert;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-import static kunlun.codec.CodecUtils.BASE64;
-import static kunlun.codec.CodecUtils.HEX;
-
 /**
  * The abstract message digest tools.
  * @author Kahle
@@ -36,22 +33,22 @@ public abstract class AbstractDigester implements Digester {
 
     public String digestToHex(Config config, byte[] data) {
 
-        return CodecUtils.encodeToString(HEX, digest(config, data));
+        return CodecUtils.encodeToHex(digest(config, data));
     }
 
     public String digestToBase64(Config config, byte[] data) {
 
-        return CodecUtils.encodeToString(BASE64, digest(config, data));
+        return CodecUtils.encodeToBase64(digest(config, data));
     }
 
     public String digestToHex(Config config, InputStream data) {
 
-        return CodecUtils.encodeToString(HEX, digest(config, data));
+        return CodecUtils.encodeToHex(digest(config, data));
     }
 
     public String digestToBase64(Config config, InputStream data) {
 
-        return CodecUtils.encodeToString(BASE64, digest(config, data));
+        return CodecUtils.encodeToBase64(digest(config, data));
     }
 
     // ====
@@ -69,7 +66,7 @@ public abstract class AbstractDigester implements Digester {
 
     public String digestToHex(Config config, String data, Charset charset) {
 
-        return CodecUtils.encodeToString(HEX, digest(config, data, charset));
+        return CodecUtils.encodeToHex(digest(config, data, charset));
     }
 
     public String digestToHex(Config config, String data) {
@@ -79,7 +76,7 @@ public abstract class AbstractDigester implements Digester {
 
     public String digestToBase64(Config config, String data, Charset charset) {
 
-        return CodecUtils.encodeToString(BASE64, digest(config, data, charset));
+        return CodecUtils.encodeToBase64(digest(config, data, charset));
     }
 
     public String digestToBase64(Config config, String data) {

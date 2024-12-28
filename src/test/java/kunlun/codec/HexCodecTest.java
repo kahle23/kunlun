@@ -11,8 +11,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static kunlun.codec.CodecUtils.HEX;
-
 /**
  * The hex codec tools Test.
  * @author Kahle
@@ -26,8 +24,8 @@ public class HexCodecTest {
         String dataWillDecode1 = "0C0236E00C1517E6BF20330BF947";
         log.info("byte array: {}", Arrays.toString(dataWillEncode1));
         log.info("string: {}", dataWillDecode1);
-        log.info(CodecUtils.encodeToString(HEX, dataWillEncode1));
-        log.info(Arrays.toString(CodecUtils.decodeFromString(HEX, dataWillDecode1)));
+        log.info(CodecUtils.encodeToHex(dataWillEncode1));
+        log.info(Arrays.toString(CodecUtils.decodeFromHex(dataWillDecode1)));
     }
 
     @Test
@@ -36,8 +34,8 @@ public class HexCodecTest {
         String dataWillDecode2 = "36E041F817BD2B22FC22C0382216";
         log.info("byte array: {}", Arrays.toString(dataWillEncode2));
         log.info("string: {}", dataWillDecode2);
-        log.info(CodecUtils.encodeToString(HEX, dataWillEncode2));
-        log.info(Arrays.toString(CodecUtils.decodeFromString(HEX, dataWillDecode2)));
+        log.info(CodecUtils.encodeToHex(dataWillEncode2));
+        log.info(Arrays.toString(CodecUtils.decodeFromHex(dataWillDecode2)));
     }
 
 }

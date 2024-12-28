@@ -12,8 +12,6 @@ import org.junit.Test;
 
 import java.io.Serializable;
 
-import static kunlun.codec.CodecUtils.HEX;
-
 /**
  * The simple serializer Test.
  * @author Kahle
@@ -27,7 +25,7 @@ public class SimpleSerializerTest implements Serializable {
         SimpleSerializerTest obj = new SimpleSerializerTest();
         log.info("{}", obj);
         byte[] bytes = serializer.serialize(obj);
-        String encode = CodecUtils.encodeToString(HEX, bytes);
+        String encode = CodecUtils.encodeToHex(bytes);
         log.info(encode);
 
         SimpleSerializerTest obj1 = (SimpleSerializerTest) serializer.deserialize(bytes);

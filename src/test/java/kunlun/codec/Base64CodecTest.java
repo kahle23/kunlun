@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import java.nio.charset.Charset;
 
-import static kunlun.codec.CodecUtils.BASE64;
 import static kunlun.common.constant.Charsets.STR_UTF_8;
 import static kunlun.common.constant.Symbols.*;
 import static org.junit.Assert.assertEquals;
@@ -31,11 +30,11 @@ public class Base64CodecTest {
 
     @Test
     public void test1() {
-        String encode = CodecUtils.encodeToString(BASE64, dataBytes);
+        String encode = CodecUtils.encodeToBase64(dataBytes);
         assertTrue(encode.contains(PLUS));
         assertTrue(encode.contains(SLASH));
         log.info("Encode string: {}{}", NEWLINE, encode);
-        byte[] decode = CodecUtils.decodeFromString(BASE64, encode);
+        byte[] decode = CodecUtils.decodeFromBase64(encode);
         String decodeStr = new String(decode, encoding);
         assertEquals(data, decodeStr);
         log.info("Decode string: {}{}", NEWLINE, decodeStr);

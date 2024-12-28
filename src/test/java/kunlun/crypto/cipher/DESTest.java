@@ -17,9 +17,8 @@ import javax.crypto.spec.IvParameterSpec;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static kunlun.codec.CodecUtils.BASE64;
 import static kunlun.common.constant.Algorithms.DES;
-import static kunlun.crypto.util.KeyUtils.parseIv;
+import static kunlun.crypto.util.KeyUtils.parseIvParamSpec;
 import static kunlun.crypto.util.KeyUtils.parseSecretKey;
 
 /**
@@ -40,10 +39,10 @@ public class DESTest extends BouncyCastleSupport {
     // Wrong keySize: must be equal to 56 (length is 8)
     private static final SecretKey key = parseSecretKey(DES, "TTestKey".getBytes());
     // Wrong IV length: must be 8 bytes long
-    private static final IvParameterSpec iv = parseIv("TeTestIv".getBytes());
+    private static final IvParameterSpec iv = parseIvParamSpec("TeTestIv".getBytes());
 
     /*static {
-        SecretKey secretKey = KeyUtils.generateKey("DES", 56);
+        SecretKey secretKey = KeyUtils.genKey("DES", 56);
         key = secretKey.getEncoded();
     }*/
 
@@ -52,7 +51,7 @@ public class DESTest extends BouncyCastleSupport {
         SymmetricCipher.Cfg cfg = SymmetricCipher.Cfg.of(transformation, key);
         if (needIv) { cfg.setIv(iv); }
         byte[] bytes = cipher.encrypt(cfg, data);
-        log.info("Encrypt: {}", CodecUtils.encodeToString(BASE64, bytes));
+        log.info("Encrypt: {}", CodecUtils.encodeToBase64(bytes));
         log.info("Decrypt: {}", cipher.decryptToString(cfg, bytes));
         log.info("End test {}", transformation);
     }

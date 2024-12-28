@@ -46,7 +46,7 @@ public class Binary extends BinaryFile {
 
     public String writeToHexString() {
 
-        return CodecUtils.encodeToString(CodecUtils.HEX, data);
+        return CodecUtils.encodeToHex(data);
     }
 
 }
