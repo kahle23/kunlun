@@ -29,6 +29,8 @@ public class Words {
     public static final String UNKNOWN = "unknown";
     public static final String TRUE = "true";
     public static final String FALSE = "false";
+    public static final String SEND = "send";
+    public static final String BATCH_SEND = "batchSend";
 
     private Words() {
 

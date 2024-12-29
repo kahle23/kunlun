@@ -10,6 +10,7 @@ package kunlun.core;
  * @see java.util.concurrent.Executor
  * @author Kahle
  */
+@Deprecated
 public interface Executor {
 
     /**

@@ -11,6 +11,7 @@ import kunlun.core.Handler;
  * The strategy supported handler.
  * @author Kahle
  */
+@Deprecated
 public interface StrategySupportedHandler extends Handler {
 
     /**

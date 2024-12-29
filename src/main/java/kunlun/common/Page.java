@@ -39,6 +39,12 @@ public class Page<T> implements Serializable {
         return page;
     }
 
+    public static <T> Page<T> of(List<T> data) {
+        Page<T> page = new Page<T>();
+        page.setData(data);
+        return page;
+    }
+
     public static <T> Page<T> of() {
 
         return new Page<T>();
