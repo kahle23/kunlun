@@ -5,32 +5,16 @@
 
 package kunlun.data.dict;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The data dictionary provider.
  * @author Kahle
  */
-public interface DictProvider {
-
-    /**
-     * Register common properties' information.
-     * @param commonProperties The common properties
-     */
-    void registerCommonProperties(Map<?, ?> commonProperties);
-
-    /**
-     * Clears common properties' information.
-     */
-    void clearCommonProperties();
-
-    /**
-     * Get common properties' information.
-     * @return The common properties
-     */
-    Map<String, Object> getCommonProperties();
+public interface DictService {
 
     /**
      * Synchronize dictionary data according to different strategies.
@@ -75,18 +59,32 @@ public interface DictProvider {
 
     /**
      * Condition query a dictionary item (multiple items will error).
-     * @param dictQuery The dictionary query condition (multiple types may be supported)
+     * @param condition The dictionary query condition (multiple types may be supported)
      * @return The dictionary item or null
      */
-    Dict findOne(Object dictQuery);
+    Dict getByCondition(DictQuery condition);
+
+    Collection<Dict> listByGroup(String group);
 
     /**
      * Condition query the dictionary items list.
-     * @param dictQuery The dictionary query condition (multiple types may be supported)
+     * @param condition The dictionary query condition (multiple types may be supported)
      * @param type The type of dictionary data
-     * @param <T> The generic type of dictionary data
      * @return The list of dictionary items
      */
-    <T> List<T> findMultiple(Object dictQuery, Type type);
+    Collection<Dict> listByCondition(DictQuery condition, Type type);
+
+
+    interface DictQuery extends Serializable {
+
+        String getGroup();
+
+        String getName();
+
+        String getCode();
+
+        String getValue();
+
+    }
 
 }

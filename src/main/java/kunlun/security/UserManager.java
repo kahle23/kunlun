@@ -68,6 +68,16 @@ public interface UserManager {
          */
         Boolean getEnabled();
 
+        Collection<? extends Role> getRoles();
+
+    }
+
+    interface Role extends Serializable {
+
+        String getName();
+
+        String getCode();
+
     }
 
 }

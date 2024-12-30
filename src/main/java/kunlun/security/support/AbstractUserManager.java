@@ -8,6 +8,7 @@ package kunlun.security.support;
 import kunlun.security.UserManager;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * The abstract user manager.
@@ -31,6 +32,7 @@ public abstract class AbstractUserManager implements UserManager {
         private String username;
         private String displayName;
         private Boolean enabled;
+        private List<Role> roles;
 
         @Override
         public Object getUserId() {
@@ -85,6 +87,15 @@ public abstract class AbstractUserManager implements UserManager {
         public void setEnabled(Boolean enabled) {
 
             this.enabled = enabled;
+        }
+
+        @Override
+        public List<Role> getRoles() {
+            return roles;
+        }
+
+        public void setRoles(List<Role> roles) {
+            this.roles = roles;
         }
     }
 

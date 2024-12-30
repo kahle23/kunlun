@@ -5,12 +5,14 @@
 
 package kunlun.data.dict;
 
+import java.io.Serializable;
+
 /**
  * The data dictionary object.
  * What is a data dictionary? A list that explains and describes specific information.
  * @author Kahle
  */
-public interface Dict {
+public interface Dict extends Serializable {
 
     /**
      * Get the group information of the dictionary item.
