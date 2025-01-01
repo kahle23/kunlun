@@ -7,9 +7,11 @@ package kunlun.security;
 
 import kunlun.bean.BeanHolder;
 import kunlun.core.AccessController;
+import kunlun.core.DataController;
 import kunlun.util.Assert;
 import kunlun.util.IteratorUtils;
 
+import java.util.Collection;
 import java.util.Map;
 
 import static kunlun.common.constant.Numbers.ONE;
@@ -31,6 +33,8 @@ public class SecurityUtils {
         Assert.notNull(context, "The security context is null. ");
         return context;
     }
+
+    // ====
 
     public static String getTraceId() {
 
@@ -84,6 +88,8 @@ public class SecurityUtils {
         getContext().putBaseData(userId, null, platform, null);
     }
 
+    // ====
+
     public static UserDetail getUserDetail() {
 
         return getContext().getUserDetail();
@@ -94,6 +100,31 @@ public class SecurityUtils {
         return (T) getContext().getUserDetail();
     }
 
+    public static Collection<String> getUserPermissions() {
+
+        return getContext().getUserPermissions();
+    }
+
+    public static Collection<String> getUserGroups() {
+
+        return getContext().getUserGroups(null);
+    }
+
+    public static Collection<String> getUserGroups(Object groupType) {
+
+        return getContext().getUserGroups(groupType);
+    }
+
+
+
+    // ====
+
+    public static boolean hasPermission(Object userId, Object userType, String permission) {
+
+        return getAccessController().hasPermission(userId, userType, permission);
+    }
+
+    // ====
 
     public static String buildToken(Token token) {
 
@@ -120,38 +151,37 @@ public class SecurityUtils {
         return getTokenManager().refreshToken(token);
     }
 
+    // ====
 
     public static UserDetail getUserDetail(Object userId, Object userType) {
 
         return getUserManager().getUserDetail(userId, userType);
     }
 
+    public static Collection<String> getUserPermissions(Object userId, Object userType) {
 
-    public static boolean hasRoleAnd(Object userId, Object userType, String... roles) {
-
-        return ((RbacAccessController) getAccessController()).hasRoleAnd(userId, userType, roles);
+        return getUserManager().getUserPermissions(userId, userType);
     }
 
-    public static boolean hasRoleOr(Object userId, Object userType, String... roles) {
+    public static Collection<String> getUserGroups(Object userId, Object userType, Object groupType) {
 
-        return ((RbacAccessController) getAccessController()).hasRoleOr(userId, userType, roles);
+        return getUserManager().getUserGroups(userId, userType, groupType);
     }
 
-    public static boolean hasPermissionAnd(Object userId, Object userType, Object operation, Object... resources) {
 
-        return getAccessController().hasPermissionAnd(userId, userType, operation, resources);
-    }
 
-    public static boolean hasPermissionOr(Object userId, Object userType, Object operation, Object... resources) {
-
-        return getAccessController().hasPermissionOr(userId, userType, operation, resources);
-    }
-
+    // ====
 
     public static AccessController getAccessController() {
         AccessController accessController = getContext().getAccessController();
         Assert.notNull(accessController, "The access controller is null. ");
         return accessController;
+    }
+
+    public static DataController getDataController() {
+        DataController dataController = getContext().getDataController();
+        Assert.notNull(dataController, "The data controller is null. ");
+        return dataController;
     }
 
     public static TokenManager getTokenManager() {

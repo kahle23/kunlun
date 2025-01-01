@@ -7,6 +7,9 @@ package kunlun.security;
 
 import kunlun.core.AccessController;
 import kunlun.core.Context;
+import kunlun.core.DataController;
+
+import java.util.Collection;
 
 import static kunlun.security.UserManager.UserDetail;
 
@@ -62,6 +65,8 @@ public interface SecurityContext extends Context {
      */
     void putBaseData(Object userId, Object userType, String platform, String tenantId);
 
+    // ====
+
     /**
      * Get the current user detail.
      * @return The current user detail
@@ -69,10 +74,31 @@ public interface SecurityContext extends Context {
     UserDetail getUserDetail();
 
     /**
+     * Get the current user's permission identifiers.
+     * @return The current user's permission identifiers
+     */
+    Collection<String> getUserPermissions();
+
+    /**
+     * Get the current user's groups list.
+     * @param groupType The user group type, such as department, region, etc
+     * @return The current user's groups list
+     */
+    Collection<String> getUserGroups(Object groupType);
+
+    // ====
+
+    /**
      * Get the held access controller.
      * @return The held access controller
      */
     AccessController getAccessController();
+
+    /**
+     * Get the held data controller.
+     * @return The held data controller
+     */
+    DataController getDataController();
 
     /**
      * Get the held token manager.
