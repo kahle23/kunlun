@@ -3,10 +3,9 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.collector.support;
+package kunlun.action.event;
 
-import kunlun.collector.AbstractCollector;
-import kunlun.collector.support.model.Event;
+import kunlun.action.AbstractAction;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.time.DateUtils;
@@ -17,11 +16,11 @@ import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.common.constant.Symbols.NEWLINE;
 
 /**
- * The simple event collector.
+ * The event collector.
  * @author Kahle
  */
-public class SimpleEventCollector extends AbstractCollector {
-    private static final Logger log = LoggerFactory.getLogger(SimpleEventCollector.class);
+public class EventCollector extends AbstractAction {
+    private static final Logger log = LoggerFactory.getLogger(EventCollector.class);
 
     /**
      * Process the event record to add extended fields.
@@ -62,13 +61,13 @@ public class SimpleEventCollector extends AbstractCollector {
     }
 
     @Override
-    public Object collect(Object data, Object... arguments) {
-        Assert.notNull(data, "Parameter \"data\" must not null. ");
-        Assert.isInstanceOf(Event.class, data
+    public Object execute(String strategy, Object input, Object[] arguments) {
+        Assert.notNull(input, "Parameter \"input\" must not null. ");
+        Assert.isInstanceOf(Event.class, input
                 , "Parameter \"data\" must instance of \"Event\". ");
         try {
             // Convert the event object.
-            Event event = (Event) data;
+            Event event = (Event) input;
             // Validate parameters, errors are not allowed to be thrown out.
             Assert.notBlank(event.getName(), "The event name cannot be blank. ");
             if (event.getTime() == null) {

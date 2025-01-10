@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.collector.support.model;
+package kunlun.action.event;
 
 import kunlun.core.Builder;
 import kunlun.data.Dict;
