@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.ai;
+package kunlun.action.ai;
 
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -15,8 +15,8 @@ import org.junit.Test;
  * @author Kahle
  */
 @Ignore
-public class AIUtilsTest {
-    private static final Logger log = LoggerFactory.getLogger(AIUtilsTest.class);
+public class AIActionTest {
+    private static final Logger log = LoggerFactory.getLogger(AIActionTest.class);
 
     @Test
     public void test1() {

@@ -3,9 +3,10 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.ai.support.model;
+package kunlun.action.ai.model;
 
 import kunlun.core.function.Consumer;
+import kunlun.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -328,7 +329,9 @@ public class ChatRequest implements Serializable {
             request.setStream(stream);
             request.setStreamConsumer(streamConsumer);
             request.setMessages(messages);
-            request.setTools(tools);
+            if (CollectionUtils.isNotEmpty(tools)) {
+                request.setTools(tools);
+            }
             request.setConfig(config);
             return request;
         }
