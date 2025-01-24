@@ -5,9 +5,12 @@
 
 package kunlun.generator.id;
 
+import kunlun.generator.id.support.SimpleIdGenerator;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
+
+import static kunlun.common.constant.Algorithms.UUID;
 
 /**
  * The identifier generation tools.
@@ -22,6 +25,8 @@ public class IdUtils {
         synchronized (IdUtils.class) {
             if (idProvider != null) { return idProvider; }
             IdUtils.setIdProvider(new SimpleIdProvider());
+            // Register the uuid generator.
+            registerGenerator(UUID, new SimpleIdGenerator());
             return idProvider;
         }
     }

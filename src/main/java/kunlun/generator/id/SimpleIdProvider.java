@@ -5,7 +5,6 @@
 
 package kunlun.generator.id;
 
-import kunlun.generator.id.support.SimpleIdGenerator;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -30,8 +29,6 @@ public class SimpleIdProvider implements IdProvider {
         Assert.notNull(idGenerators, "Parameter \"idGenerators\" must not null. ");
         this.commonProperties = commonProperties;
         this.idGenerators = idGenerators;
-        // Register the uuid generator.
-        registerGenerator("uuid", new SimpleIdGenerator());
     }
 
     public SimpleIdProvider() {
@@ -67,7 +64,7 @@ public class SimpleIdProvider implements IdProvider {
         String className = idGenerator.getClass().getName();
         idGenerator.setCommonProperties(getCommonProperties());
         idGenerators.put(name, idGenerator);
-        log.info("Register the id generator \"{}\" to \"{}\". ", className, name);
+        log.debug("Register the id generator \"{}\" to \"{}\". ", className, name);
     }
 
     @Override
@@ -76,7 +73,7 @@ public class SimpleIdProvider implements IdProvider {
         IdGenerator remove = idGenerators.remove(name);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the id generator \"{}\" from \"{}\". ", className, name);
+            log.debug("Deregister the id generator \"{}\" from \"{}\". ", className, name);
         }
     }
 

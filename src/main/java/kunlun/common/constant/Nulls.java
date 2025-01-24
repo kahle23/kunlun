@@ -13,6 +13,7 @@ public class Nulls {
 
     public static final Object OBJ = null;
     public static final String STR = null;
+    public static final Integer INT = null;
 
     private Nulls() {
 

@@ -11,17 +11,25 @@ package kunlun.common.constant;
  */
 public class Algorithms {
 
+    // ====
+
     public static final String MD2 = "MD2";
     public static final String MD5 = "MD5";
     public static final String SHA1 = "SHA-1";
     public static final String SHA256 = "SHA-256";
     public static final String SHA384 = "SHA-384";
     public static final String SHA512 = "SHA-512";
+
+    // ====
+
     public static final String HMAC_MD5 = "HmacMD5";
     public static final String HMAC_SHA1 = "HmacSHA1";
     public static final String HMAC_SHA256 = "HmacSHA256";
     public static final String HMAC_SHA384 = "HmacSHA384";
     public static final String HMAC_SHA512 = "HmacSHA512";
+
+    // ====
+
     public static final String AES = "AES";
     public static final String CCM = "CCM";
     public static final String DES = "DES";
@@ -38,6 +46,10 @@ public class Algorithms {
     public static final String DSA = "DSA";
     public static final String RSA = "RSA";
     public static final String DIFFIE_HELLMAN = "DiffieHellman";
+
+    // ====
+
+    public static final String UUID = "uuid";
 
     private Algorithms() {
 

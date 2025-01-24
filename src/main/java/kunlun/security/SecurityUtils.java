@@ -6,10 +6,11 @@
 package kunlun.security;
 
 import kunlun.bean.BeanHolder;
+import kunlun.common.constant.Nulls;
 import kunlun.core.AccessController;
 import kunlun.core.DataController;
 import kunlun.util.Assert;
-import kunlun.util.IteratorUtils;
+import kunlun.util.IterUtils;
 
 import java.util.Collection;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class SecurityUtils {
         Assert.notEmpty(beans, "Please set the security context first. ");
         boolean isOne = beans.size() == ONE;
         Assert.isTrue(isOne, "The security context is limited to one. ");
-        SecurityContext context = IteratorUtils.getFirst(beans.values());
+        SecurityContext context = IterUtils.getFirst(beans.values());
         Assert.notNull(context, "The security context is null. ");
         return context;
     }
@@ -105,9 +106,14 @@ public class SecurityUtils {
         return getContext().getUserPermissions();
     }
 
+    public static String getUserGroup() {
+
+        return IterUtils.getFirst(getContext().getUserGroups(Nulls.OBJ));
+    }
+
     public static Collection<String> getUserGroups() {
 
-        return getContext().getUserGroups(null);
+        return getContext().getUserGroups(Nulls.OBJ);
     }
 
     public static Collection<String> getUserGroups(Object groupType) {

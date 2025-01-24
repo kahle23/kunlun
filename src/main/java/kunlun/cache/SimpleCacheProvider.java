@@ -72,7 +72,7 @@ public class SimpleCacheProvider implements CacheProvider {
         Assert.notNull(cache, "Parameter \"cache\" must not null. ");
         String className = cache.getClass().getName();
         caches.put(cacheName, cache);
-        log.info("Register the cache \"{}\" to \"{}\". ", className, cacheName);
+        log.debug("Register the cache \"{}\" to \"{}\". ", className, cacheName);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class SimpleCacheProvider implements CacheProvider {
         Cache remove = caches.remove(cacheName);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the cache \"{}\" from \"{}\". ", className, cacheName);
+            log.debug("Deregister the cache \"{}\" from \"{}\". ", className, cacheName);
         }
     }
 
