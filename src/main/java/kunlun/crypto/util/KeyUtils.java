@@ -17,6 +17,8 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+import static kunlun.common.constant.Numbers.ZERO;
+
 /**
  * The crypto key tools.
  *
@@ -61,33 +63,42 @@ public class KeyUtils {
 
     public static SecretKey genKey(String algorithm, int keySize) {
 
-        return genKey(algorithm, keySize, null);
+        return genKey(algorithm, keySize, null, null);
     }
 
     public static SecretKey genKey(String algorithm, int keySize, SecureRandom random) {
-        try {
-            KeyGenerator gen = KeyGenerator.getInstance(algorithm);
-            if (random != null) {
-                gen.init(keySize, random);
-            } else {
-                gen.init(keySize);
-            }
-            return gen.generateKey();
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+
+        return genKey(algorithm, keySize, null, random);
     }
 
     public static SecretKey genKey(String algorithm, AlgorithmParameterSpec paramSpec) {
 
-        return genKey(algorithm, paramSpec, null);
+        return genKey(algorithm, null, paramSpec, null);
     }
 
     public static SecretKey genKey(String algorithm, AlgorithmParameterSpec paramSpec, SecureRandom random) {
+
+        return genKey(algorithm, null, paramSpec, random);
+    }
+
+    protected static SecretKey genKey(String algorithm,
+                                      Integer keySize,
+                                      AlgorithmParameterSpec paramSpec,
+                                      SecureRandom random) {
         try {
             KeyGenerator gen = KeyGenerator.getInstance(algorithm);
-            if (random != null) {
-                gen.init(paramSpec, random);
+            if (keySize != null && keySize > ZERO) {
+                if (random != null) {
+                    gen.init(keySize, random);
+                } else {
+                    gen.init(keySize);
+                }
             } else {
-                gen.init(paramSpec);
+                if (random != null) {
+                    gen.init(paramSpec, random);
+                } else {
+                    gen.init(paramSpec);
+                }
             }
             return gen.generateKey();
         } catch (Exception e) { throw ExceptionUtils.wrap(e); }
@@ -98,33 +109,42 @@ public class KeyUtils {
 
     public static KeyPair genKeyPair(String algorithm, int keySize) {
 
-        return genKeyPair(algorithm, keySize, null);
+        return genKeyPair(algorithm, keySize, null, null);
     }
 
     public static KeyPair genKeyPair(String algorithm, int keySize, SecureRandom random) {
-        try {
-            KeyPairGenerator gen = KeyPairGenerator.getInstance(algorithm);
-            if (random != null) {
-                gen.initialize(keySize, random);
-            } else {
-                gen.initialize(keySize);
-            }
-            return gen.generateKeyPair();
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+
+        return genKeyPair(algorithm, keySize, null, random);
     }
 
     public static KeyPair genKeyPair(String algorithm, AlgorithmParameterSpec paramSpec) {
 
-        return genKeyPair(algorithm, paramSpec, null);
+        return genKeyPair(algorithm, null, paramSpec, null);
     }
 
     public static KeyPair genKeyPair(String algorithm, AlgorithmParameterSpec paramSpec, SecureRandom random) {
+
+        return genKeyPair(algorithm, null, paramSpec, random);
+    }
+
+    protected static KeyPair genKeyPair(String algorithm,
+                                        Integer keySize,
+                                        AlgorithmParameterSpec paramSpec,
+                                        SecureRandom random) {
         try {
             KeyPairGenerator gen = KeyPairGenerator.getInstance(algorithm);
-            if (random != null) {
-                gen.initialize(paramSpec, random);
+            if (keySize != null && keySize > ZERO) {
+                if (random != null) {
+                    gen.initialize(keySize, random);
+                } else {
+                    gen.initialize(keySize);
+                }
             } else {
-                gen.initialize(paramSpec);
+                if (random != null) {
+                    gen.initialize(paramSpec, random);
+                } else {
+                    gen.initialize(paramSpec);
+                }
             }
             return gen.generateKeyPair();
         } catch (Exception e) { throw ExceptionUtils.wrap(e); }

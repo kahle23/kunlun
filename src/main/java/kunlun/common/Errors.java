@@ -5,85 +5,47 @@
 
 package kunlun.common;
 
-import kunlun.data.ErrorCode;
+import kunlun.data.CodeDefinition;
 
 /**
- * The built-in common error codes.
- *
- * Example: H419S129
- * H4: The platform identification or system identification
- * 19: The business identification
- * S : The type of error
- * 129: The error increment code
- *
- * Type of error
- * P: Parameter related errors
- * B: Business related errors
- * S: System related errors
- * N: Network related errors
- *
+ * The built-in error codes.
  * @author Kahle
  */
-public enum Errors implements ErrorCode {
-    /**
-     * Record not exist.
-     */
-    RECORD_NOT_EXIST(      "A011B101", "Record not exist."),
+public class Errors {
 
-    /**
-     * Parameter is required.
-     */
-    PARAMETER_IS_REQUIRED( "A011P101", "Parameter is required."),
-    /**
-     * Parameter format error.
-     */
-    PARAMETER_FORMAT_ERROR("A011P102", "Parameter format error."),
+    public static CodeDefinition badRequest = new SimpleCode(400, "Bad Request. ");
+    public static CodeDefinition unauthorized = new SimpleCode(401, "Unauthorized. ");
+    public static CodeDefinition forbidden = new SimpleCode(403, "Forbidden. ");
+    public static CodeDefinition notFound = new SimpleCode(404,"Not Found. ");
+    public static CodeDefinition internalServerError = new SimpleCode(500, "Internal Server Error. ");
+    public static CodeDefinition serviceUnavailable = new SimpleCode(503, "Service Unavailable. ");
 
-    /**
-     * Internal server error.
-     */
-    INTERNAL_SERVER_ERROR( "A011S101", "Internal server error."),
-    /**
-     * Internal server busy.
-     */
-    INTERNAL_SERVER_BUSY(  "A011S102", "Internal server busy."),
+    // ====
 
-    /**
-     * No login.
-     */
-    NO_LOGIN(              "A012S101", "No login."),
-    /**
-     * Invalid token
-     */
-    INVALID_TOKEN(         "A012S102", "Invalid token."),
-    /**
-     * Invalid user.
-     */
-    INVALID_USER(          "A012S103", "Invalid user."),
-    /**
-     * No permission.
-     */
-    NO_PERMISSION(         "A012S104", "No permission."),
-    ;
+    public static CodeDefinition paramIsRequired = new SimpleCode(400, "Parameter is required. ");
+    public static CodeDefinition paramFormatError = new SimpleCode(400, "Parameter format error. ");
 
-    private final String description;
-    private final String code;
+    // ====
 
-    Errors(String code, String description) {
-        this.description = description;
-        this.code = code;
-    }
+    public static CodeDefinition noLogin = new SimpleCode(401, "No login. ");
+    public static CodeDefinition invalidToken = new SimpleCode(401, "Invalid token. ");
+    public static CodeDefinition invalidUser = new SimpleCode(401, "Invalid user. ");
+    public static CodeDefinition noPermission = new SimpleCode(403, "No permission. ");
 
-    @Override
-    public String getCode() {
+    // ====
 
-        return code;
-    }
+    public static CodeDefinition recordIdNotNull = new SimpleCode(500, "Record id must not null. ");
+    public static CodeDefinition recordExist     = new SimpleCode(500, "Record already exist. ");
+    public static CodeDefinition recordNotExist  = new SimpleCode(500, "Record not exist. ");
+    public static CodeDefinition recordSaveFailure   = new SimpleCode(500, "Record save failure. ");
+    public static CodeDefinition recordUpdateFailure = new SimpleCode(500, "Record update failure. ");
+    public static CodeDefinition recordDeleteFailure = new SimpleCode(500, "Record delete failure. ");
 
-    @Override
-    public String getDescription() {
+    // ====
 
-        return description;
+    private Errors() {
+
+        throw new UnsupportedOperationException("Don't allow instantiation. ");
     }
 
 }

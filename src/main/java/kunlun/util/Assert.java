@@ -5,24 +5,25 @@
 
 package kunlun.util;
 
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Map;
-
-import static kunlun.common.constant.Numbers.TWO;
-import static kunlun.common.constant.Numbers.ZERO;
 
 /**
  * To assert, verify data state, if failure, will throw exception.
  * @author Kahle
  */
 public class Assert {
-    // "Parameter \"parameter\" must not blank. "
-    // "Variable \"variable\" must not null. "
+    // ====
 
     public static void state(boolean expression, String message) {
         if (!expression) {
             throw new IllegalStateException(message);
         }
+    }
+
+    public static void state(boolean expression) {
+
+        state(expression, "[Assertion failed] - This state invariant must be true. ");
     }
 
     public static void isFalse(boolean expression, String message) {
@@ -31,11 +32,23 @@ public class Assert {
         }
     }
 
+    public static void isFalse(boolean expression) {
+
+        isFalse(expression, "[Assertion failed] - This expression must be false. ");
+    }
+
     public static void isTrue(boolean expression, String message) {
         if (!expression) {
             throw new IllegalArgumentException(message);
         }
     }
+
+    public static void isTrue(boolean expression) {
+
+        isTrue(expression, "[Assertion failed] - This expression must be true. ");
+    }
+
+    // ====
 
     public static void isNull(Object object, String message) {
         if (object != null) {
@@ -43,11 +56,49 @@ public class Assert {
         }
     }
 
-    public static void notNull(Object object, String message) {
+    public static void isNull(Object object) {
+
+        isNull(object, "[Assertion failed] - The object argument must be null. ");
+    }
+
+    public static <T> T notNull(T object, String message) {
         if (object == null) {
             throw new IllegalArgumentException(message);
         }
+        return object;
     }
+
+    public static <T> T notNull(T object) {
+
+        return notNull(object, "[Assertion failed] - This argument is required; it must not be null. ");
+    }
+
+    // ====
+
+    public static <T> void isEmpty(T[] array, String message) {
+        if (ArrayUtils.isNotEmpty(array)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static <T> void isEmpty(T[] array) {
+
+        isEmpty(array, "[Assertion failed] - This array must empty. ");
+    }
+
+    public static <T> T[] notEmpty(T[] array, String message) {
+        if (ArrayUtils.isEmpty(array)) {
+            throw new IllegalArgumentException(message);
+        }
+        return array;
+    }
+
+    public static <T> T[] notEmpty(T[] array) {
+
+        return notEmpty(array, "[Assertion failed] - This array must not be empty: it must contain at least one element. ");
+    }
+
+    // ====
 
     public static void isEmpty(byte[] array, String message) {
         if (ArrayUtils.isNotEmpty(array)) {
@@ -55,35 +106,49 @@ public class Assert {
         }
     }
 
-    public static void notEmpty(byte[] array, String message) {
+    public static void isEmpty(byte[] array) {
+
+        isEmpty(array, "[Assertion failed] - This array must empty. ");
+    }
+
+    public static byte[] notEmpty(byte[] array, String message) {
         if (ArrayUtils.isEmpty(array)) {
             throw new IllegalArgumentException(message);
         }
+        return array;
     }
 
-    public static void isEmpty(Object[] array, String message) {
-        if (ArrayUtils.isNotEmpty(array)) {
+    public static byte[] notEmpty(byte[] array) {
+
+        return notEmpty(array, "[Assertion failed] - This array must not be empty: it must contain at least one element. ");
+    }
+
+    // ====
+
+    public static void isEmpty(Iterable<?> collection, String message) {
+        if (IterUtils.isNotEmpty(collection)) {
             throw new IllegalArgumentException(message);
         }
     }
 
-    public static void notEmpty(Object[] array, String message) {
-        if (ArrayUtils.isEmpty(array)) {
-            throw new IllegalArgumentException(message);
-        }
+    public static void isEmpty(Iterable<?> collection) {
+
+        isEmpty(collection, "[Assertion failed] - This collection must empty. ");
     }
 
-    public static void isEmpty(Collection<?> collection, String message) {
-        if (CollectionUtils.isNotEmpty(collection)) {
+    public static <E, T extends Iterable<E>> T notEmpty(T collection, String message) {
+        if (IterUtils.isEmpty(collection)) {
             throw new IllegalArgumentException(message);
         }
+        return collection;
     }
 
-    public static void notEmpty(Collection<?> collection, String message) {
-        if (CollectionUtils.isEmpty(collection)) {
-            throw new IllegalArgumentException(message);
-        }
+    public static <E, T extends Iterable<E>> T notEmpty(T collection) {
+
+        return notEmpty(collection, "[Assertion failed] - This collection must not be empty: it must contain at least one element. ");
     }
+
+    // ====
 
     public static void isEmpty(Map<?, ?> map, String message) {
         if (MapUtils.isNotEmpty(map)) {
@@ -91,66 +156,127 @@ public class Assert {
         }
     }
 
-    public static void notEmpty(Map<?, ?> map, String message) {
+    public static void isEmpty(Map<?, ?> map) {
+
+        isEmpty(map, "[Assertion failed] - This map must empty. ");
+    }
+
+    public static <K, V, T extends Map<K, V>> T notEmpty(T map, String message) {
         if (MapUtils.isEmpty(map)) {
             throw new IllegalArgumentException(message);
         }
+        return map;
     }
 
-    public static void isEmpty(String text, String message) {
+    public static <K, V, T extends Map<K, V>> T notEmpty(T map) {
+
+        return notEmpty(map, "[Assertion failed] - This map must not be empty: it must contain at least one entry. ");
+    }
+
+    // ====
+
+    public static void isEmpty(CharSequence text, String message) {
         if (StringUtils.isNotEmpty(text)) {
             throw new IllegalArgumentException(message);
         }
     }
 
-    public static void notEmpty(String text, String message) {
+    public static void isEmpty(CharSequence text) {
+
+        isEmpty(text, "[Assertion failed] - This string argument must no length: it must be null or empty. ");
+    }
+
+    public static <T extends CharSequence> T notEmpty(T text, String message) {
         if (StringUtils.isEmpty(text)) {
             throw new IllegalArgumentException(message);
         }
+        return text;
     }
 
-    public static void isBlank(String text, String message) {
+    public static <T extends CharSequence> T notEmpty(T text) {
+
+        return notEmpty(text, "[Assertion failed] - This string argument must have length: it must not be null or empty. ");
+    }
+
+    public static void isBlank(CharSequence text, String message) {
         if (StringUtils.isNotBlank(text)) {
             throw new IllegalArgumentException(message);
         }
     }
 
-    public static void notBlank(String text, String message) {
+    public static void isBlank(CharSequence text) {
+
+        isBlank(text, "[Assertion failed] - This string argument must no text: it must be null, empty, or blank. ");
+    }
+
+    public static <T extends CharSequence> T notBlank(T text, String message) {
         if (StringUtils.isBlank(text)) {
             throw new IllegalArgumentException(message);
         }
+        return text;
     }
 
-    public static void isContain(String textToSearch, String substring, String message) {
+    public static <T extends CharSequence> T notBlank(T text) {
+
+        return notBlank(text, "[Assertion failed] - This string argument must have text: it must not be null, empty, or blank. ");
+    }
+
+    // ====
+
+    public static <T extends CharSequence> T isContain(String textToSearch, T substring, String message) {
         if (!textToSearch.contains(substring)) {
             throw new IllegalArgumentException(message);
         }
+        return substring;
     }
 
-    public static void notContain(String textToSearch, String substring, String message) {
+    public static <T extends CharSequence> T isContain(String textToSearch, T substring) {
+
+        return isContain(textToSearch, substring, "[Assertion failed] - This string argument must contain the substring [" + substring + "]. ");
+    }
+
+    public static <T extends CharSequence> T notContain(String textToSearch, T substring, String message) {
         if (textToSearch.contains(substring)) {
+            throw new IllegalArgumentException(message);
+        }
+        return substring;
+    }
+
+    public static <T extends CharSequence> T notContain(String textToSearch, T substring) {
+
+        return notContain(textToSearch, substring, "[Assertion failed] - This string argument must not contain the substring [" + substring + "]. ");
+    }
+
+    // ====
+
+    public static <T> T isInstanceOf(Class<?> type, T obj, String message) {
+        notNull(type, "Type to check against must not be null. ");
+        if (!type.isInstance(obj)) {
+            throw new IllegalArgumentException(message);
+        }
+        return obj;
+    }
+
+    public static <T> T isInstanceOf(Class<?> type, T obj) {
+
+        return isInstanceOf(type, obj, "[Assertion failed] - This object [" + obj + "] is not instanceof [" + type + "]. ");
+    }
+
+    // ====
+
+    public static void isAssignable(Class<?> superType, Class<?> subType, String message) {
+        notNull(superType, "Type to check against must not be null. ");
+        if (subType == null || !superType.isAssignableFrom(subType)) {
             throw new IllegalArgumentException(message);
         }
     }
 
-    public static void isSupport(Class<?> targetClass, boolean assignable, Class<?>... supportClasses) {
-        Assert.notEmpty(supportClasses, "Parameter \"supportClasses\" must not empty. ");
-        if (ClassUtils.isSupport(supportClasses, assignable, targetClass)) { return; }
-        StringBuilder builder = new StringBuilder();
-        String separator = ", ", content = "is empty";
-        for (Class<?> supportClass : supportClasses) {
-        if (supportClass == null) { continue; }
-            builder.append(supportClass.getName()).append(separator);
-        }
-        int length = builder.length();
-        if (length >= TWO) {
-            content = builder.substring(ZERO, length - TWO);
-        }
-        String format = String.format(
-            "Parameter \"targetClass\" is not supported. (Only support %s)", content
-        );
-        throw new IllegalArgumentException(format);
+    public static void isAssignable(Class<?> superType, Class<?> subType) {
+
+        isAssignable(superType, subType, "[Assertion failed] - This [" + subType + "] is not assignable to [" + superType + "]. ");
     }
+
+    // ====
 
     public static void isSupport(Class<?>[] supportClasses, boolean assignable, Class<?> targetClass, String message) {
         if (!ClassUtils.isSupport(supportClasses, assignable, targetClass)) {
@@ -158,25 +284,12 @@ public class Assert {
         }
     }
 
-    public static void isAssignable(Class<?> superType, Class<?> subType, String message) {
-        if (subType == null || !superType.isAssignableFrom(subType)) {
-            throw new IllegalArgumentException(message);
-        }
+    public static void isSupport(Class<?> targetClass, boolean assignable, Class<?>... supportClasses) {
+
+        isSupport(supportClasses, assignable, targetClass, "[Assertion failed] - This [" + targetClass + "] is not support to [" + Arrays.toString(supportClasses) + "]. ");
     }
 
-    public static void isInstanceOf(Class<?> type, Object obj) {
-        if (type == null) { throw new NullPointerException(); }
-        String objName = obj != null ? obj.getClass().getName() : "null";
-        String format = String.format(
-                "The parameter of type \"%s\" must instance of \"%s\". ", objName, type.getName());
-        isInstanceOf(type, obj, format);
-    }
-
-    public static void isInstanceOf(Class<?> type, Object obj, String message) {
-        if (!type.isInstance(obj)) {
-            throw new IllegalArgumentException(message);
-        }
-    }
+    // ====
 
     public static void noNullElements(Object[] array, String message) {
         for (Object element : array) {
@@ -186,4 +299,5 @@ public class Assert {
         }
     }
 
+    // ====
 }
