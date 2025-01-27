@@ -6,7 +6,7 @@
 package kunlun.action;
 
 import kunlun.action.event.Event;
-import kunlun.action.event.EventCollector;
+import kunlun.action.event.support.SimpleEventCollector;
 import kunlun.core.Action;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -30,7 +30,7 @@ public class ActionUtils {
             if (actionProvider != null) { return actionProvider; }
             ActionUtils.setActionProvider(new SimpleActionProvider());
             String name = "event-collector";
-            registerAction(name, new EventCollector());
+            registerAction(name, new SimpleEventCollector());
             registerShortcut(Event.class, name);
             return actionProvider;
         }

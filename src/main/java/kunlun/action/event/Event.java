@@ -21,6 +21,10 @@ public class Event implements Builder {
      */
     public static final String OPERATION_LOG = "operation-log";
     /**
+     * The data change records (in most cases).
+     */
+    public static final String CHANGE_LOG = "change-log";
+    /**
      * The system's run logs (in most cases).
      */
     public static final String RUN_LOG = "run-log";
@@ -28,6 +32,11 @@ public class Event implements Builder {
     public static Event ofOperationLog() {
 
         return of(OPERATION_LOG);
+    }
+
+    public static Event ofChangeLog() {
+
+        return of(CHANGE_LOG);
     }
 
     public static Event ofRunLog() {
@@ -45,6 +54,7 @@ public class Event implements Builder {
         return new Event();
     }
 
+    // ====
 
     private Level  level = Level.INFO;
     private String name;
@@ -53,6 +63,8 @@ public class Event implements Builder {
     private Object userType;
     private String platform;
     private String tenantId;
+    private Object businessId;
+    private Object businessType;
     private StringBuilder message = new StringBuilder();
     private StringBuilder error   = new StringBuilder();
     private Dict data = Dict.of();
@@ -63,8 +75,7 @@ public class Event implements Builder {
     }
 
     public Event setLevel(Level level) {
-        Assert.notNull(level, "Parameter \"level\" must not null. ");
-        this.level = level;
+        this.level = Assert.notNull(level);
         return this;
     }
 
@@ -74,8 +85,7 @@ public class Event implements Builder {
     }
 
     public Event setName(String name) {
-        Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        this.name = name;
+        this.name = Assert.notBlank(name);
         return this;
     }
 
@@ -85,8 +95,7 @@ public class Event implements Builder {
     }
 
     public Event setTime(Long time) {
-        Assert.notNull(time, "Parameter \"time\" must not null. ");
-        this.time = time;
+        this.time = Assert.notNull(time);
         return this;
     }
 
@@ -96,8 +105,7 @@ public class Event implements Builder {
     }
 
     public Event setUserId(Object userId) {
-        Assert.notNull(userId, "Parameter \"userId\" must not null. ");
-        this.userId = userId;
+        this.userId = Assert.notNull(userId);
         return this;
     }
 
@@ -107,8 +115,7 @@ public class Event implements Builder {
     }
 
     public Event setUserType(Object userType) {
-        Assert.notNull(userType, "Parameter \"userType\" must not null. ");
-        this.userType = userType;
+        this.userType = Assert.notNull(userType);
         return this;
     }
 
@@ -118,8 +125,7 @@ public class Event implements Builder {
     }
 
     public Event setPlatform(String platform) {
-        Assert.notBlank(platform, "Parameter \"platform\" must not blank. ");
-        this.platform = platform;
+        this.platform = Assert.notBlank(platform);
         return this;
     }
 
@@ -129,8 +135,27 @@ public class Event implements Builder {
     }
 
     public Event setTenantId(String tenantId) {
-        Assert.notBlank(tenantId, "Parameter \"tenantId\" must not blank. ");
-        this.tenantId = tenantId;
+        this.tenantId = Assert.notBlank(tenantId);
+        return this;
+    }
+
+    public Object getBusinessId() {
+
+        return businessId;
+    }
+
+    public Event setBusinessId(Object businessId) {
+        this.businessId = Assert.notNull(businessId);
+        return this;
+    }
+
+    public Object getBusinessType() {
+
+        return businessType;
+    }
+
+    public Event setBusinessType(Object businessType) {
+        this.businessType = Assert.notNull(businessType);
         return this;
     }
 
@@ -140,8 +165,7 @@ public class Event implements Builder {
     }
 
     public Event setMessage(StringBuilder message) {
-        Assert.notNull(message, "Parameter \"message\" must not null. ");
-        this.message = message;
+        this.message = Assert.notNull(message);
         return this;
     }
 
@@ -151,7 +175,12 @@ public class Event implements Builder {
     }
 
     public Event appendMessage(String format, Object... args) {
-        this.message.append(String.format(format, args));
+        this.message.append(String.format(Assert.notBlank(format), args));
+        return this;
+    }
+
+    public Event appendMessage(Builder builder) {
+        this.message.append(Assert.notNull(builder).build());
         return this;
     }
 
@@ -161,8 +190,7 @@ public class Event implements Builder {
     }
 
     public Event setError(StringBuilder error) {
-        Assert.notNull(error, "Parameter \"error\" must not null. ");
-        this.error = error;
+        this.error = Assert.notNull(error);
         return this;
     }
 
@@ -177,8 +205,7 @@ public class Event implements Builder {
     }
 
     public Event setData(Dict data) {
-        Assert.notNull(data, "Parameter \"data\" must not null. ");
-        this.data = data;
+        this.data = Assert.notNull(data);
         return this;
     }
 
@@ -194,19 +221,22 @@ public class Event implements Builder {
 
     @Override
     public Dict build() {
-        Assert.notBlank(name, "Parameter \"code\" must not blank. ");
-        return Dict.of("level", level.getValue())
-                .set("name", name)
-                .set("time", time)
-                .set("userId", userId)
+        return Dict.of("level",  level.getValue())
+                .set("name",     Assert.notBlank(name))
+                .set("time",     time)
+                .set("userId",   userId)
                 .set("userType", userType)
                 .set("platform", platform)
                 .set("tenantId", tenantId)
+                .set("businessId",   businessId)
+                .set("businessType", businessType)
                 .set("message", message.toString())
-                .set("error", error.toString())
-                .set("data", data)
+                .set("error",   error.toString())
+                .set("data",    data)
         ;
     }
+
+    // ====
 
     /**
      * The event level.
