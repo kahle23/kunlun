@@ -6,7 +6,7 @@
 package kunlun.io.util;
 
 import kunlun.util.Assert;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 import java.io.File;
 import java.net.URL;
@@ -70,7 +70,7 @@ public class FilenameUtils {
         Assert.notBlank(parent, "Parameter \"parent\" must not blank. ");
         Assert.state(source.startsWith(parent)
                 , "Parameter \"source\" must start with parameter \"parent\". ");
-        return StringUtils.replace(source, parent, EMPTY_STRING);
+        return StrUtils.replace(source, parent, EMPTY_STRING);
     }
 
     /**
@@ -141,7 +141,7 @@ public class FilenameUtils {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Package p = clazz.getPackage();
         String pName = p != null ? p.getName() : null;
-        return pName != null ? StringUtils.replace(pName, DOT, SLASH) : null;
+        return pName != null ? StrUtils.replace(pName, DOT, SLASH) : null;
     }
 
     /**
@@ -179,15 +179,15 @@ public class FilenameUtils {
      * @return The normalized original path, or null if invalid
      */
     public static String normalize(String originalPath, Boolean unixSeparator) {
-        if (StringUtils.isBlank(originalPath)) { return originalPath; }
+        if (StrUtils.isBlank(originalPath)) { return originalPath; }
         String separator = unixSeparator == null
                 ? FILE_SEPARATOR : (unixSeparator ? UNIX_SEPARATOR : WINDOWS_SEPARATOR);
         String replace = originalPath;
         if (!SLASH.equals(separator)) {
-            replace = StringUtils.replace(replace, SLASH, separator);
+            replace = StrUtils.replace(replace, SLASH, separator);
         }
         if (!BACKSLASH.equals(separator)) {
-            replace = StringUtils.replace(replace, BACKSLASH, separator);
+            replace = StrUtils.replace(replace, BACKSLASH, separator);
         }
         return replace;
     }

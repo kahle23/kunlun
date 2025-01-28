@@ -9,7 +9,7 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 import kunlun.util.MapUtils;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -142,10 +142,10 @@ public abstract class AbstractChainService implements ChainService {
             context.setConfig(null);
             // Get the next config id.
             String nextConfigId = context.getNextConfigId();
-            if (StringUtils.isBlank(nextConfigId)) {
+            if (StrUtils.isBlank(nextConfigId)) {
                 nextConfigId = now.getNextConfigId();
             }
-            if (StringUtils.isBlank(nextConfigId)) { break; }
+            if (StrUtils.isBlank(nextConfigId)) { break; }
             // Get the next config object.
             Config config = configMap.get(nextConfigId);
             Assert.notNull(config, "The next node config error! ");

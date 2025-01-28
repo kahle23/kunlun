@@ -30,8 +30,8 @@ public class ConsoleHandler extends AbstractClassicMessageHandler {
             Object entryKey = entry.getKey();
             if (entryKey == null) { continue; }
             String propertyName = String.valueOf(entryKey);
-            if (StringUtils.isBlank(propertyName)) { continue; }
-            propertyName = StringUtils.capitalize(propertyName);
+            if (StrUtils.isBlank(propertyName)) { continue; }
+            propertyName = StrUtils.capitalize(propertyName);
             builder.append(propertyName).append(COLON);
             int length = TWENTY - propertyName.length() - ONE;
             if (length <= ZERO) { length = ONE; }
@@ -76,7 +76,7 @@ public class ConsoleHandler extends AbstractClassicMessageHandler {
             }
             isSupport(new Class[]{Boolean.class}, clazz);
             System.out.println(convert(input, getCommonProperties()));
-            return ObjectUtils.cast(Boolean.TRUE, clazz);
+            return ObjUtils.cast(Boolean.TRUE, clazz);
         }
         else if (BATCH_SEND.equals(name)) {
             Assert.isInstanceOf(List.class, input
@@ -88,7 +88,7 @@ public class ConsoleHandler extends AbstractClassicMessageHandler {
             for (Object message : messages) {
                 System.out.println(convert(message, getCommonProperties()));
             }
-            return ObjectUtils.cast(Boolean.TRUE, clazz);
+            return ObjUtils.cast(Boolean.TRUE, clazz);
         }
         else {
             throw new UnsupportedOperationException(

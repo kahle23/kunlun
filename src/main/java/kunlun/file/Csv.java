@@ -7,9 +7,9 @@ package kunlun.file;
 
 import kunlun.io.util.IOUtils;
 import kunlun.util.Assert;
-import kunlun.util.CollectionUtils;
+import kunlun.util.CollUtils;
 import kunlun.util.MapUtils;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -40,7 +40,7 @@ public class Csv extends TextFile implements Table {
     public void setLineSeparator(String lineSeparator) {
         Assert.notNull(lineSeparator
                 , "Parameter \"lineSeparator\" must not null. ");
-        lineSeparator = StringUtils.replace(lineSeparator, BLANK_SPACE, EMPTY_STRING);
+        lineSeparator = StrUtils.replace(lineSeparator, BLANK_SPACE, EMPTY_STRING);
         Assert.notEmpty(lineSeparator
                 , "Parameter \"lineSeparator\" cannot be blank space only. ");
         this.lineSeparator = lineSeparator;
@@ -78,7 +78,7 @@ public class Csv extends TextFile implements Table {
             boolean haveQuote = false;
             quoteIndex = text.indexOf(DOUBLE_QUOTE, fromIndex);
             if (quoteIndex != MINUS_ONE
-                    && StringUtils.isBlank(text.substring(fromIndex, quoteIndex))) {
+                    && StrUtils.isBlank(text.substring(fromIndex, quoteIndex))) {
                 haveQuote = true;
                 fromIndex = quoteIndex + ONE;
                 index = fromIndex;
@@ -104,7 +104,7 @@ public class Csv extends TextFile implements Table {
             lineIndex = text.indexOf(lineSeparator, fromIndex);
             if (!haveQuote && lineIndex < index) {
                 String tmpStr = text.substring(fromIndex, lineIndex);
-                if (StringUtils.isNotBlank(tmpStr)) { row.add(tmpStr); }
+                if (StrUtils.isNotBlank(tmpStr)) { row.add(tmpStr); }
                 fromIndex = lineIndex + lineSeparator.length();
                 content.add(row); row = new ArrayList<String>();
                 continue;
@@ -113,7 +113,7 @@ public class Csv extends TextFile implements Table {
             if (haveQuote) {
                 int tmpIndex = quoteIndex - fromIndex;
                 String tmpBegin = tmpStr.substring(ZERO, tmpIndex);
-                tmpBegin = StringUtils.replace(tmpBegin, "\"\"", DOUBLE_QUOTE);
+                tmpBegin = StrUtils.replace(tmpBegin, "\"\"", DOUBLE_QUOTE);
                 tmpStr = tmpBegin + tmpStr.substring(tmpIndex + ONE, tmpStr.length());
             }
             row.add(tmpStr);
@@ -125,7 +125,7 @@ public class Csv extends TextFile implements Table {
     @Override
     public void write(Writer writer) throws IOException {
         Assert.notNull(writer, "Parameter \"writer\" must not null. ");
-        if (CollectionUtils.isEmpty(content)) { return; }
+        if (CollUtils.isEmpty(content)) { return; }
         writer.write(toString());
     }
 
@@ -290,18 +290,18 @@ public class Csv extends TextFile implements Table {
     @Override
     public List<Map<String, Object>> toMapList() {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-        if (CollectionUtils.isEmpty(content)) { return result; }
+        if (CollUtils.isEmpty(content)) { return result; }
         boolean haveHeaders = MapUtils.isNotEmpty(headersMapping);
         List<String> propertyList = new ArrayList<String>();
         boolean isFirst = true;
         for (int i = columnStartNumber, cLen = content.size(); i < cLen; i++) {
             List<String> row = content.get(i);
-            if (CollectionUtils.isEmpty(row)) { continue; }
+            if (CollUtils.isEmpty(row)) { continue; }
             if (isFirst) {
                 for (String cell : row) {
-                    cell = StringUtils.isBlank(cell) ? EMPTY_STRING : cell;
+                    cell = StrUtils.isBlank(cell) ? EMPTY_STRING : cell;
                     String property = haveHeaders ? headersMapping.get(cell) : cell;
-                    property = StringUtils.isNotBlank(property) ? property : cell;
+                    property = StrUtils.isNotBlank(property) ? property : cell;
                     propertyList.add(property);
                 }
                 isFirst = false;
@@ -311,7 +311,7 @@ public class Csv extends TextFile implements Table {
             Map<String, Object> map = new HashMap<String, Object>(pLen);
             for (int j = rowStartNumber; j < pLen; j++) {
                 String cell = j < rowSize ? row.get(j) : null;
-                if (StringUtils.isBlank(cell)) { cell = null; }
+                if (StrUtils.isBlank(cell)) { cell = null; }
                 String key = propertyList.get(j);
                 map.put(key, cell);
             }
@@ -374,13 +374,13 @@ public class Csv extends TextFile implements Table {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        if (CollectionUtils.isEmpty(content)) {
+        if (CollUtils.isEmpty(content)) {
             return builder.toString();
         }
         for (List<String> row : content) {
             if (row == null) { continue; }
             for (String cell : row) {
-                if (StringUtils.isBlank(cell)) {
+                if (StrUtils.isBlank(cell)) {
                     builder.append(cell).append(cellSeparator);
                     continue;
                 }
@@ -388,7 +388,7 @@ public class Csv extends TextFile implements Table {
                 needQuote = needQuote || cell.contains(lineSeparator);
                 boolean containQuote = cell.contains(DOUBLE_QUOTE);
                 cell = needQuote && containQuote
-                        ? StringUtils.replace(cell, DOUBLE_QUOTE, "\"\"")
+                        ? StrUtils.replace(cell, DOUBLE_QUOTE, "\"\"")
                         : cell;
                 cell = needQuote
                         ? DOUBLE_QUOTE + cell + DOUBLE_QUOTE

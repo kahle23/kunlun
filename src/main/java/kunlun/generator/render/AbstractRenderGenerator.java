@@ -13,7 +13,7 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 import kunlun.util.CloseUtils;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,7 +52,7 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
                                         TemplateConfig config) {
         // Try get template content.
         String content = config.getTemplateContent();
-        if (StringUtils.isNotBlank(content)) { return content; }
+        if (StrUtils.isNotBlank(content)) { return content; }
         // Load template content by path.
         String templatePath = config.getTemplatePath();
         String charset = config.getTemplateCharset();
@@ -83,9 +83,9 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
                                     String startOverrideTag,
                                     String endOverrideTag) {
         Assert.notBlank(newContent, "Parameter \"newContent\" must not blank. ");
-        if (StringUtils.isBlank(startOverrideTag)) { return newContent; }
-        if (StringUtils.isBlank(endOverrideTag)) { return newContent; }
-        if (StringUtils.isBlank(oldContent)) { return newContent; }
+        if (StrUtils.isBlank(startOverrideTag)) { return newContent; }
+        if (StrUtils.isBlank(endOverrideTag)) { return newContent; }
+        if (StrUtils.isBlank(oldContent)) { return newContent; }
         // Variable definition.
         int oldIndex = ZERO, newIndex = ZERO, count = ZERO, tmpFromIndex;
         StringBuilder result = new StringBuilder(); String logStr;
@@ -163,7 +163,7 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
      * @return The processed string
      */
     protected String withLeftDot(String str) {
-        if (StringUtils.isBlank(str)) { return EMPTY_STRING; }
+        if (StrUtils.isBlank(str)) { return EMPTY_STRING; }
         if (str.startsWith(DOT)) { return str; }
         return DOT + str;
     }

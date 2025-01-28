@@ -7,9 +7,9 @@ package kunlun.data.collect;
 
 import kunlun.data.ReferenceType;
 import kunlun.util.Assert;
-import kunlun.util.CollectionUtils;
+import kunlun.util.CollUtils;
 import kunlun.util.MapUtils;
-import kunlun.util.ObjectUtils;
+import kunlun.util.ObjUtils;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
@@ -53,7 +53,7 @@ public class ReferenceMap<K, V> implements Map<K, V> {
 
     private void processQueue() {
         ValueCell<K, V> valueCell;
-        while ((valueCell = ObjectUtils.cast(queue.poll())) != null) {
+        while ((valueCell = ObjUtils.cast(queue.poll())) != null) {
             internalMap.remove(valueCell.getKey());
         }
     }
@@ -68,7 +68,7 @@ public class ReferenceMap<K, V> implements Map<K, V> {
         if (result == null) {
             // The wrapped value was garbage collected,
             // So remove this entry from the backing internalMap.
-            K keyCast = ObjectUtils.cast(key);
+            K keyCast = ObjUtils.cast(key);
             internalMap.remove(keyCast);
         }
         return result;
@@ -90,8 +90,8 @@ public class ReferenceMap<K, V> implements Map<K, V> {
     public boolean containsValue(Object value) {
         processQueue();
         Collection<V> values = values();
-        V valCast = ObjectUtils.cast(value);
-        boolean notEmpty = CollectionUtils.isNotEmpty(values);
+        V valCast = ObjUtils.cast(value);
+        boolean notEmpty = CollUtils.isNotEmpty(values);
         return notEmpty && values.contains(valCast);
     }
 
@@ -118,7 +118,7 @@ public class ReferenceMap<K, V> implements Map<K, V> {
         // Throw out garbage collected values first.
         processQueue();
         Collection<K> keys = internalMap.keySet();
-        if (CollectionUtils.isEmpty(keys)) {
+        if (CollUtils.isEmpty(keys)) {
             return Collections.emptyList();
         }
         Collection<V> values = new ArrayList<V>(keys.size());
@@ -167,7 +167,7 @@ public class ReferenceMap<K, V> implements Map<K, V> {
         // Throw out garbage collected values first.
         processQueue();
         Collection<K> keys = internalMap.keySet();
-        if (CollectionUtils.isEmpty(keys)) {
+        if (CollUtils.isEmpty(keys)) {
             return Collections.emptySet();
         }
         Map<K, V> kvPairs = new HashMap<K, V>(keys.size());

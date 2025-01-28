@@ -24,7 +24,7 @@ import static kunlun.common.constant.Charsets.STR_UTF_8;
 import static kunlun.common.constant.Numbers.*;
 import static kunlun.common.constant.Symbols.EMPTY_STRING;
 import static kunlun.io.util.IOUtils.EOF;
-import static kunlun.util.ObjectUtils.cast;
+import static kunlun.util.ObjUtils.cast;
 
 /**
  * The simple text template renderer based on JDK.
@@ -39,14 +39,14 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
         Assert.notBlank(path, "Parameter \"path\" must not blank. ");
         InputStream inputStream = ClassLoaderUtils.getResourceAsStream(path, getClass());
         Assert.notNull(inputStream, "Can not find template by \"" + path + "\" in classpath. ");
-        if (StringUtils.isBlank(encoding)) { encoding = STR_UTF_8; }
+        if (StrUtils.isBlank(encoding)) { encoding = STR_UTF_8; }
         Charset charset = Charset.forName(encoding);
         return new InputStreamReader(inputStream, charset);
     }
 
     protected String render(String template, Map<?, ?> data) throws ParseException {
         // Parameters check.
-        if (StringUtils.isBlank(template)) { return null; }
+        if (StrUtils.isBlank(template)) { return null; }
         if (MapUtils.isEmpty(data)) { return template; }
         // Variable declarations.
         StringBuilder result = new StringBuilder();

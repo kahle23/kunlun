@@ -8,7 +8,7 @@ package kunlun.data.validation;
 import kunlun.data.validation.support.IsNumericValidator;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.ObjectUtils;
+import kunlun.util.ObjUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -28,11 +28,11 @@ public class ValidatorUtilsTest {
 
         result = ValidatorUtils.validate(name, "888.666");
         log.info("{}", result);
-        assertTrue(ObjectUtils.equals(result, true));
+        assertTrue(ObjUtils.equals(result, true));
 
         result = ValidatorUtils.validate(name, "-888.666");
         log.info("{}", result);
-        assertTrue(ObjectUtils.equals(result, true));
+        assertTrue(ObjUtils.equals(result, true));
 
         result1 = ValidatorUtils.validateToBoolean(name, "+888.666");
         log.info("{}", result1);

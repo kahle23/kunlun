@@ -13,8 +13,8 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 import kunlun.util.MapUtils;
-import kunlun.util.ObjectUtils;
-import kunlun.util.StringUtils;
+import kunlun.util.ObjUtils;
+import kunlun.util.StrUtils;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -52,7 +52,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
     }
 
     protected Pair<String, String> parseCommand(String command) {
-        if (StringUtils.isBlank(command)) {
+        if (StrUtils.isBlank(command)) {
             return new PairImpl<String, String>(command, Nulls.STR);
         }
         int indexOf = command.indexOf(DOT);
@@ -151,7 +151,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
         // Process command in the shortcut.
         // When actionName is blank, strategy must also be blank.
         // (for example ".test" is not supported)
-        if (StringUtils.isBlank(actionName)) {
+        if (StrUtils.isBlank(actionName)) {
             Object input = arguments.length >= TWO ? arguments[ONE] : null;
             if (input != null) {
                 pair = parseCommand(getShortcut(input.getClass()));
@@ -160,7 +160,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
             }
         }
         // If the external strategy is not blank, replace the strategy in the arguments.
-        if (StringUtils.isNotBlank(strategy) && arguments.length >= ONE) {
+        if (StrUtils.isNotBlank(strategy) && arguments.length >= ONE) {
             arguments[ZERO] = strategy;
         }
         // Do execute.
@@ -170,7 +170,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
     @Override
     public <T> T execute(String command, Object input) {
 
-        return ObjectUtils.cast(execute(command, new Object[]{ null, input }));
+        return ObjUtils.cast(execute(command, new Object[]{ null, input }));
     }
 
 }

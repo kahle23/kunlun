@@ -8,7 +8,7 @@ package kunlun.codec.support;
 import kunlun.codec.ByteCodec;
 import kunlun.core.Codec;
 import kunlun.util.Assert;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -55,8 +55,8 @@ public class Base64 extends ByteCodec {
         Cfg cfg = config != null ? (Cfg) config : getConfig();
         String encode = DatatypeConverter.printBase64Binary(source);
         if (cfg.isUrlSafe()) {
-            encode = StringUtils.replace(encode, PLUS, MINUS);
-            encode = StringUtils.replace(encode, SLASH, UNDERLINE);
+            encode = StrUtils.replace(encode, PLUS, MINUS);
+            encode = StrUtils.replace(encode, SLASH, UNDERLINE);
         }
         else if (cfg.isMime()) {
             String lineSeparator = cfg.getLineSeparator();
@@ -83,8 +83,8 @@ public class Base64 extends ByteCodec {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         Cfg cfg = config != null ? (Cfg) config : getConfig();
         if (cfg.isUrlSafe()) {
-            source = StringUtils.replace(source, MINUS, PLUS);
-            source = StringUtils.replace(source, UNDERLINE, SLASH);
+            source = StrUtils.replace(source, MINUS, PLUS);
+            source = StrUtils.replace(source, UNDERLINE, SLASH);
         }
         return DatatypeConverter.parseBase64Binary(source);
     }
@@ -97,7 +97,7 @@ public class Base64 extends ByteCodec {
 
         public static Cfg ofMime(Integer lineLength, String lineSeparator) {
             Cfg of = ofMime();
-            if (StringUtils.isNotEmpty(lineSeparator)) {
+            if (StrUtils.isNotEmpty(lineSeparator)) {
                 of.setLineSeparator(lineSeparator);
             }
             if (lineLength != null) {

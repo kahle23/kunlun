@@ -5,7 +5,7 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 import kunlun.util.CloseUtils;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -126,7 +126,7 @@ public abstract class AbstractJdbcProvider implements JdbcProvider {
                 //columnLabels[i] = resMetaData.getColumnName(i + ONE)
                 columnLabels[i] = resMetaData.getColumnLabel(i + ONE);
                 if (toCamel) {
-                    columnLabels[i] = StringUtils.underlineToCamel(columnLabels[i]);
+                    columnLabels[i] = StrUtils.underlineToCamel(columnLabels[i]);
                 }
                 columnTypes[i] = resMetaData.getColumnType(i + ONE);
             }

@@ -9,7 +9,7 @@ import kunlun.util.Assert;
 
 import java.util.Map;
 
-import static kunlun.util.ObjectUtils.cast;
+import static kunlun.util.ObjUtils.cast;
 
 /**
  * The abstract property context.

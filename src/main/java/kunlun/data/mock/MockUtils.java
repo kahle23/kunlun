@@ -11,7 +11,7 @@ import kunlun.util.Assert;
 
 import java.lang.reflect.Type;
 
-import static kunlun.util.ObjectUtils.cast;
+import static kunlun.util.ObjUtils.cast;
 
 /**
  * The data mock tools.

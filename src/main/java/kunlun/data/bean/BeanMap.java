@@ -7,7 +7,7 @@ package kunlun.data.bean;
 
 import kunlun.convert.ConversionService;
 import kunlun.util.Assert;
-import kunlun.util.ObjectUtils;
+import kunlun.util.ObjUtils;
 
 import java.util.*;
 
@@ -163,7 +163,7 @@ public abstract class BeanMap implements Map<Object, Object>, Cloneable {
             }
             Object thisVal = get(key);
             Object otherVal = other.get(key);
-            if (!ObjectUtils.equals(thisVal, otherVal)) {
+            if (!ObjUtils.equals(thisVal, otherVal)) {
                 return false;
             }
         }

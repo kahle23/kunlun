@@ -6,7 +6,7 @@
 package kunlun.io.file;
 
 import kunlun.util.Assert;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 import java.io.File;
 import java.net.URL;
@@ -71,7 +71,7 @@ public class FilenameUtils {
         Assert.notBlank(parent, "Parameter \"parent\" must not blank. ");
         Assert.state(source.startsWith(parent)
                 , "Parameter \"source\" must start with parameter \"parent\". ");
-        return StringUtils.replace(source, parent, EMPTY_STRING);
+        return StrUtils.replace(source, parent, EMPTY_STRING);
     }
 
     /**
@@ -142,7 +142,7 @@ public class FilenameUtils {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
         Package p = clazz.getPackage();
         String pName = p != null ? p.getName() : null;
-        return pName != null ? StringUtils.replace(pName, DOT, SLASH) : null;
+        return pName != null ? StrUtils.replace(pName, DOT, SLASH) : null;
     }
 
     /**

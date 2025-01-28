@@ -7,7 +7,7 @@ package kunlun.util.thread;
 
 import kunlun.exception.ExceptionUtils;
 import kunlun.util.Assert;
-import kunlun.util.CollectionUtils;
+import kunlun.util.CollUtils;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -58,7 +58,7 @@ public class CombinedRunnable implements Runnable {
 
     @Override
     public void run() {
-        if (CollectionUtils.isEmpty(runnableList)) {
+        if (CollUtils.isEmpty(runnableList)) {
             return;
         }
         for (Runnable runnable : runnableList) {

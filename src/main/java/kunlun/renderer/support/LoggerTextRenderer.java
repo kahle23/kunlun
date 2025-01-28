@@ -6,7 +6,7 @@
 package kunlun.renderer.support;
 
 import kunlun.util.ArrayUtils;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 import static kunlun.common.constant.Numbers.*;
 import static kunlun.common.constant.Symbols.LEFT_CURLY_BRACKET;
@@ -24,7 +24,7 @@ public class LoggerTextRenderer extends AbstractFormatTextRenderer {
     @Override
     public String render(String template, Object[] arguments) {
         if (template == null) { return null; }
-        if (StringUtils.isBlank(template)) { return template; }
+        if (StrUtils.isBlank(template)) { return template; }
         if (ArrayUtils.isEmpty(arguments)) { return template; }
         StringBuilder result = new StringBuilder();
         int index, start = 0, count = 0, argsLen = arguments.length, escapeIndex;

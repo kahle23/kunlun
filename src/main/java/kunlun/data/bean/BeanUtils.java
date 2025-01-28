@@ -13,7 +13,7 @@ import kunlun.exception.ExceptionUtils;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.ObjectUtils;
+import kunlun.util.ObjUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,7 +84,7 @@ public class BeanUtils {
     public static <K, V> void copy(Object from, Map<K, V> to) {
         Assert.notNull(from, "Parameter \"from\" must not null. ");
         Assert.notNull(to, "Parameter \"to\" must not null. ");
-        Map<K, V> map = ObjectUtils.cast(
+        Map<K, V> map = ObjUtils.cast(
                 from instanceof Map ? from : createBeanMap(from)
         );
         to.putAll(map);
@@ -106,7 +106,7 @@ public class BeanUtils {
     public static <F, T> T beanToBean(F from, T to) {
         if (from == null) { return null; }
         if (from instanceof Map) {
-            Map<Object, Object> castMap = ObjectUtils.cast(from);
+            Map<Object, Object> castMap = ObjUtils.cast(from);
             BeanUtils.copy(castMap, to);
         }
         else {
@@ -120,7 +120,7 @@ public class BeanUtils {
         try {
             T to = toClass.newInstance();
             if (from instanceof Map) {
-                Map<Object, Object> castMap = ObjectUtils.cast(from);
+                Map<Object, Object> castMap = ObjUtils.cast(from);
                 BeanUtils.copy(castMap, to);
             }
             else {
@@ -135,7 +135,7 @@ public class BeanUtils {
 
     public static <F> Map<String, Object> beanToMap(F from) {
         if (from == null) { return null; }
-        if (from instanceof Map) { return ObjectUtils.cast(from); }
+        if (from instanceof Map) { return ObjUtils.cast(from); }
         Map<String, Object> result = new HashMap<String, Object>(THIRTY);
         BeanUtils.copy(from, result);
         return result;

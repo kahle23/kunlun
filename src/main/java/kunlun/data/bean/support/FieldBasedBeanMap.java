@@ -12,7 +12,7 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.reflect.ReflectUtils;
 import kunlun.util.Assert;
-import kunlun.util.ObjectUtils;
+import kunlun.util.ObjUtils;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -126,7 +126,7 @@ public class FieldBasedBeanMap extends BeanMap {
     @Override
     public Set<Object> keySet() {
         Set<String> keys = fieldMap.keySet();
-        return ObjectUtils.cast(Collections.unmodifiableSet(keys));
+        return ObjUtils.cast(Collections.unmodifiableSet(keys));
     }
 
 }

@@ -12,7 +12,7 @@ import kunlun.io.util.IOUtils;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.CloseUtils;
-import kunlun.util.CollectionUtils;
+import kunlun.util.CollUtils;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -60,7 +60,7 @@ public class LocalFileStorageTest {
     @Test
     public void test3() {
         Collection<FileBase> list = localFileStorage.list(".\\target");
-        if (CollectionUtils.isEmpty(list)) { return; }
+        if (CollUtils.isEmpty(list)) { return; }
         for (FileBase fileBase : list) {
             log.info("file: {}", JSON.toJSONString(fileBase));
         }

@@ -12,7 +12,7 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 import kunlun.util.CloseUtils;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -65,7 +65,7 @@ public class JarFileLoader implements FileLoader {
         Assert.notNull(param, "Parameter \"param\" must not null. ");
         String resource = String.valueOf(param);
         Assert.notBlank(resource, "Parameter \"param\" must not blank. ");
-        resource = StringUtils.replace(resource, BACKSLASH, SLASH);
+        resource = StrUtils.replace(resource, BACKSLASH, SLASH);
         // Get resource URL by resource name.
         // The example: “jar:file:/data/apps/demo-web.jar!/BOOT-INF/classes!/templates/controller.txt”
         URL resourceUrl = getClassLoader().getResource(resource);

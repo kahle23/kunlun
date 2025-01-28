@@ -48,7 +48,7 @@ public class ClassLoaderUtilsTest {
     @Test
     public void testLoadClass() throws ClassNotFoundException {
         Class<?> loadClass = ClassLoaderUtils
-                .loadClass("kunlun.util.CollectionUtils", getClass());
+                .loadClass("kunlun.util.CollUtils", getClass());
         log.info("loadClass: {}", loadClass);
         assertNotNull(loadClass);
     }

@@ -8,7 +8,7 @@ package kunlun.chain;
 import kunlun.chain.support.NodeConfigImpl;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.ObjectUtils;
+import kunlun.util.ObjUtils;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -56,7 +56,7 @@ public class ChainServiceTest {
     public void test1() {
         Number result = ChainUtils.execute(chainId, 1, Number.class);
         log.info("result: {}", result);
-        assertTrue(ObjectUtils.equals(result, 7));
+        assertTrue(ObjUtils.equals(result, 7));
     }
 
 }

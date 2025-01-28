@@ -7,7 +7,7 @@ package kunlun.convert.support;
 
 import kunlun.convert.ConversionService;
 import kunlun.time.DateUtils;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 import java.util.Date;
 
@@ -26,7 +26,7 @@ public class StringToDateConverter extends AbstractClassConverter {
     @Override
     protected Object convert(Object source, Class<?> sourceClass, Class<?> targetClass) {
         String srcStr = (String) source;
-        if (StringUtils.isNumeric(srcStr)) {
+        if (StrUtils.isNumeric(srcStr)) {
             Long parseLong = Long.parseLong(srcStr);
             // Maybe is unix timestamp
             // So hand on NumberConverter

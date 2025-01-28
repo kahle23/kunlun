@@ -11,7 +11,7 @@ import kunlun.exception.ExceptionUtils;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -104,7 +104,7 @@ public class SimpleDateProvider implements DateProvider {
 
     @Override
     public Date parse(String dateString) {
-        if (StringUtils.isBlank(dateString)) { return null; }
+        if (StrUtils.isBlank(dateString)) { return null; }
         for (String datePattern : datePatterns) {
             try {
                 return parse(dateString, datePattern);

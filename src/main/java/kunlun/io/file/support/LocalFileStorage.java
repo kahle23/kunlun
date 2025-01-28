@@ -16,7 +16,7 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 import kunlun.util.CloseUtils;
-import kunlun.util.ObjectUtils;
+import kunlun.util.ObjUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -134,7 +134,7 @@ public class LocalFileStorage extends AbstractDataStorage {
     @Override
     public Collection<FileBase> list(Object conditions) {
         Assert.notNull(conditions, "Parameter \"conditions\" must not null. ");
-        if (ObjectUtils.isEmpty(conditions)) { conditions = SLASH; }
+        if (ObjUtils.isEmpty(conditions)) { conditions = SLASH; }
         File file = new File(String.valueOf(conditions));
         File[] files = file.listFiles();
         if (files == null) { return null; }

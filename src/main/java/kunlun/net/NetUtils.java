@@ -11,7 +11,7 @@ import kunlun.logging.LoggerFactory;
 import kunlun.util.ArrayUtils;
 import kunlun.util.Assert;
 import kunlun.util.CloseUtils;
-import kunlun.util.CollectionUtils;
+import kunlun.util.CollUtils;
 
 import java.io.IOException;
 import java.net.*;
@@ -141,7 +141,7 @@ public class NetUtils {
             List<NetworkInterface> result = new ArrayList<NetworkInterface>();
             Enumeration<NetworkInterface> interfaces =
                     NetworkInterface.getNetworkInterfaces();
-            CollectionUtils.addAll(result, interfaces);
+            CollUtils.addAll(result, interfaces);
             return result;
         }
         catch (SocketException e) {
@@ -153,7 +153,7 @@ public class NetUtils {
         Assert.notNull(networkInterface, "Parameter \"networkInterface\" must not null. ");
         Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
         List<InetAddress> result = new ArrayList<InetAddress>();
-        CollectionUtils.addAll(result, addresses);
+        CollUtils.addAll(result, addresses);
         return result;
     }
 

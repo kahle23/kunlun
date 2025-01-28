@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static kunlun.common.constant.Numbers.ZERO;
-import static kunlun.util.ObjectUtils.cast;
+import static kunlun.util.ObjUtils.cast;
 import static kunlun.util.TypeUtils.parameterizedOf;
 
 public class CacheConversionProviderTest {

@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CollectionUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(CollectionUtilsTest.class);
+public class CollUtilsTest {
+    private static Logger log = LoggerFactory.getLogger(CollUtilsTest.class);
     private List<User> list = new ArrayList<User>();
 
     @Before
@@ -33,7 +33,7 @@ public class CollectionUtilsTest {
     public void removeDuplicateTest() {
         List<Integer> list = new ArrayList<Integer>();
         Collections.addAll(list, 1, 2, 1, 2, 1, 2, 3, 3, 5, 4);
-        CollectionUtils.removeDuplicate(list);
+        CollUtils.removeDuplicate(list);
         log.info(String.valueOf(list));
     }
 
@@ -41,7 +41,7 @@ public class CollectionUtilsTest {
     public void removeDuplicateWithOrderTest() {
         List<Integer> list = new ArrayList<Integer>();
         Collections.addAll(list, 1, 2, 1, 2, 1, 2, 3, 3, 5, 4);
-        CollectionUtils.removeDuplicateWithOrder(list);
+        CollUtils.removeDuplicateWithOrder(list);
         log.info(String.valueOf(list));
     }
 

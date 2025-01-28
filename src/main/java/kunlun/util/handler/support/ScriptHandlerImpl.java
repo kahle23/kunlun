@@ -9,8 +9,8 @@ import kunlun.data.bean.BeanUtils;
 import kunlun.data.validation.ValidatorUtils;
 import kunlun.data.validation.support.ValidationConfig;
 import kunlun.polyglot.PolyglotUtils;
-import kunlun.util.CollectionUtils;
-import kunlun.util.StringUtils;
+import kunlun.util.CollUtils;
+import kunlun.util.StrUtils;
 import kunlun.util.handler.ScriptHandler;
 
 import java.util.Collection;
@@ -23,19 +23,19 @@ public class ScriptHandlerImpl implements ScriptHandler {
 
     @Override
     public Object eval(String scriptName, String script, Object data) {
-        if (StringUtils.isBlank(script)) { return null; }
+        if (StrUtils.isBlank(script)) { return null; }
         return PolyglotUtils.eval(scriptName, script, BeanUtils.beanToMap(data));
     }
 
     @Override
     public void validate(String scriptName, Collection<ValidationConfig> configs, Object data) {
-        if (CollectionUtils.isEmpty(configs)) { return; }
+        if (CollUtils.isEmpty(configs)) { return; }
         data = BeanUtils.beanToMap(data);
         for (ValidationConfig config : configs) {
             String expression = config.getExpression();
             String validator = config.getValidator();
             String message = config.getMessage();
-            if (StringUtils.isBlank(expression)) { continue; }
+            if (StrUtils.isBlank(expression)) { continue; }
             Object eval = eval(scriptName, expression, data);
             boolean validate = ValidatorUtils.validateToBoolean(validator, eval);
             throwValidationException(validate, message);

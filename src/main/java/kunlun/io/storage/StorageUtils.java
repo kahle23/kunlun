@@ -12,7 +12,7 @@ import kunlun.io.storage.support.UndefinedStorage;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.ObjectUtils;
+import kunlun.util.ObjUtils;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -54,7 +54,7 @@ public class StorageUtils {
 
     public static <T extends Storage> T getStorage(String name, Class<T> type) {
 
-        return ObjectUtils.cast(getStorage(name), type);
+        return ObjUtils.cast(getStorage(name), type);
     }
 
     public static DataStorage getStorage(String name) {
@@ -76,7 +76,7 @@ public class StorageUtils {
 
     public static <T> T  get(String name, Object key, Class<T> type) {
 
-        return ObjectUtils.cast(getStorage(name).get(key), type);
+        return ObjUtils.cast(getStorage(name).get(key), type);
     }
 
     public static Object get(String name, Object key) {
@@ -116,7 +116,7 @@ public class StorageUtils {
 
     public static <T> Collection<T> list(String name, Object conditions, Class<T> type) {
 
-        return ObjectUtils.cast(getStorage(name).list(conditions));
+        return ObjUtils.cast(getStorage(name).list(conditions));
     }
 
 }

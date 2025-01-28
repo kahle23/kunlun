@@ -7,7 +7,7 @@ package kunlun.data.validation.support;
 
 import kunlun.data.validation.BooleanValidator;
 import kunlun.util.Assert;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 /**
  * The is numeric validator.
@@ -19,7 +19,7 @@ public class IsNumericValidator implements BooleanValidator {
     public Boolean validate(Object target) {
         Assert.isInstanceOf(String.class, target
                 , "The argument must be of type string. ");
-        return StringUtils.isNumeric((String) target);
+        return StrUtils.isNumeric((String) target);
     }
 
 }

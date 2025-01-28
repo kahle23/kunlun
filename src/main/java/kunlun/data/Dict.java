@@ -6,7 +6,7 @@
 package kunlun.data;
 
 import kunlun.util.ArrayUtils;
-import kunlun.util.ObjectUtils;
+import kunlun.util.ObjUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -67,7 +67,7 @@ public class Dict extends LinkedHashMap<String, Object> {
     public <T> T get(Object key, Class<T> clazz) {
         Object result = get(key);
         if (result == null) { return null; }
-        return ObjectUtils.cast(result, clazz);
+        return ObjUtils.cast(result, clazz);
     }
 
     public <T> T get(Object key, Class<T> clazz, T defaultValue) {

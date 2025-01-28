@@ -8,7 +8,7 @@ package kunlun.cache.support;
 import kunlun.cache.AbstractCache;
 import kunlun.exception.ExceptionUtils;
 import kunlun.util.Assert;
-import kunlun.util.ObjectUtils;
+import kunlun.util.ObjUtils;
 
 import java.util.Date;
 import java.util.concurrent.Callable;
@@ -77,13 +77,13 @@ public abstract class AbstractValueWrapperCache extends AbstractCache {
         Assert.notNull(callable, "Parameter \"callable\" must not null. ");
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         Object value = get(key);
-        if (value != null) { return ObjectUtils.cast(value); }
+        if (value != null) { return ObjUtils.cast(value); }
         synchronized (String.valueOf(key).intern()) {
             // Try to get again.
             ValueWrapper valueWrapper = getStorageValue(key);
             if (valueWrapper != null) {
                 value = valueWrapper.getValue();
-                return ObjectUtils.cast(value);
+                return ObjUtils.cast(value);
             }
             // Try to call.
             try {
@@ -97,7 +97,7 @@ public abstract class AbstractValueWrapperCache extends AbstractCache {
                 put(key, value);
             }
         }
-        return ObjectUtils.cast(value);
+        return ObjUtils.cast(value);
     }
 
     @Override

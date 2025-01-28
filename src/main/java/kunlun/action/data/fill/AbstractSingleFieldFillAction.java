@@ -28,14 +28,14 @@ public abstract class AbstractSingleFieldFillAction extends AbstractAction imple
 
         if (!(data instanceof Collection)) {
                 dataList.add(data instanceof Map ? (Map<String, Object>) data
-                        : ObjectUtils.<Map<String, Object>>cast(new FieldBasedBeanMap(ConversionUtils.getConversionService(), data)));
+                        : ObjUtils.<Map<String, Object>>cast(new FieldBasedBeanMap(ConversionUtils.getConversionService(), data)));
             return dataList;
         }
 
         for (Object datum : (Collection) data) {
             if (datum == null) { continue; }
                 dataList.add(datum instanceof Map ? (Map<String, Object>) datum
-                        : ObjectUtils.<Map<String, Object>>cast(new FieldBasedBeanMap(ConversionUtils.getConversionService(), datum)));
+                        : ObjUtils.<Map<String, Object>>cast(new FieldBasedBeanMap(ConversionUtils.getConversionService(), datum)));
         }
         return dataList;
     }
@@ -43,7 +43,7 @@ public abstract class AbstractSingleFieldFillAction extends AbstractAction imple
     @Override
     public void fill(FieldConfig cfg, Map<String, Map<String, Object>> map, Collection<Map<String, Object>> data) {
         // data validation.
-        if (CollectionUtils.isEmpty(data)) { return; }
+        if (CollUtils.isEmpty(data)) { return; }
         if (MapUtils.isEmpty(map)) { return; }
         // get field config.
         String queryField = IterUtils.getFirst(cfg.getQueryFields());
@@ -73,10 +73,10 @@ public abstract class AbstractSingleFieldFillAction extends AbstractAction imple
         Object data = config.getData();
         // If data is null or field configs is empty, logical end.
         if (data == null) { return null; }
-        if (CollectionUtils.isEmpty(fieldConfigs)) { return null; }
+        if (CollUtils.isEmpty(fieldConfigs)) { return null; }
         // Convert the data.
         Collection<Map<String, Object>> dataList = convert(data);
-        if (CollectionUtils.isEmpty(dataList)) { return null; }
+        if (CollUtils.isEmpty(dataList)) { return null; }
         // Extract the data to be queried.
         Map<FieldConfig, Collection<Object>> queryFieldMap = new LinkedHashMap<FieldConfig, Collection<Object>>();
         for (Map<String, Object> dataMap : dataList) {

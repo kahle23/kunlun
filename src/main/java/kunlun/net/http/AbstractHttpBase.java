@@ -6,7 +6,7 @@
 package kunlun.net.http;
 
 import kunlun.util.Assert;
-import kunlun.util.CollectionUtils;
+import kunlun.util.CollUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -71,7 +71,7 @@ public abstract class AbstractHttpBase implements HttpClient.HttpBase {
         if (list == null) {
             headers.put(name, list = new ArrayList<String>());
         }
-        if (CollectionUtils.isNotEmpty(values)) {
+        if (CollUtils.isNotEmpty(values)) {
             list.addAll(values);
         }
     }
@@ -102,7 +102,7 @@ public abstract class AbstractHttpBase implements HttpClient.HttpBase {
     public void removeHeader(String name, String value) {
         if (!headers.containsKey(name)) { return; }
         List<String> list = headers.get(name);
-        if (CollectionUtils.isEmpty(list)) {
+        if (CollUtils.isEmpty(list)) {
             headers.remove(name); return;
         }
         list.remove(value);
@@ -130,7 +130,7 @@ public abstract class AbstractHttpBase implements HttpClient.HttpBase {
 
     public String getFirstHeader(String name) {
 
-        return CollectionUtils.getFirst(headers.get(name));
+        return CollUtils.getFirst(headers.get(name));
     }
 
     @Override

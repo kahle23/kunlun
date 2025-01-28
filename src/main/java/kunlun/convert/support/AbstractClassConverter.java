@@ -8,7 +8,7 @@ package kunlun.convert.support;
 import kunlun.convert.ConversionService;
 import kunlun.util.Assert;
 import kunlun.util.ClassUtils;
-import kunlun.util.ObjectUtils;
+import kunlun.util.ObjUtils;
 
 import java.lang.reflect.Type;
 
@@ -37,7 +37,7 @@ public abstract class AbstractClassConverter extends AbstractGenericConverter {
         if (!(type instanceof Class)) {
             throw new IllegalArgumentException("Only 'Class' conversions are supported. ");
         }
-        return ObjectUtils.cast(type);
+        return ObjUtils.cast(type);
     }
 
     @Override

@@ -8,7 +8,7 @@ package kunlun.convert.support;
 import kunlun.convert.ConversionService;
 import kunlun.exception.ExceptionUtils;
 import kunlun.reflect.ReflectUtils;
-import kunlun.util.StringUtils;
+import kunlun.util.StrUtils;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -41,7 +41,7 @@ public class NumberToNumberConverter extends AbstractClassConverter {
         Class<?> clazz = source.getClass();
         String name = targetClass.getSimpleName();
         name = INTEGER.equals(name) ? INT : name;
-        name = StringUtils.uncapitalize(name);
+        name = StrUtils.uncapitalize(name);
         name = name + VALUE;
         try {
             Method method = ReflectUtils.getMethod(clazz, name);
