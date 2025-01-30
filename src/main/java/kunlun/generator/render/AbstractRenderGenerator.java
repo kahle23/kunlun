@@ -37,7 +37,7 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
 
     /**
      * Get the template content according to the template configuration and file loader.
-     *
+     * <p>
      * If the content in the template configuration is not blank, return directly.
      * If it is empty, load the template content according to the template path
      *      and set it in the template configuration.

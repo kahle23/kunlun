@@ -1,4 +1,4 @@
-package kunlun.action.ai.model;
+package kunlun.ai.model;
 
 import java.io.Serializable;
 

@@ -5,15 +5,13 @@
 
 package kunlun.core.handler;
 
-import kunlun.core.Handler;
-
 /**
  * The handler before the resource is accessed.
  * It is generally used for signature verification,
  *      data decryption, login authentication, and permission authentication, etc.
  * @author Kahle
  */
-public interface ResourceAccessPreHandler extends Handler {
+public interface ResourceAccessPreHandler {
 
     /**
      * Logical processing before a resource is accessed.

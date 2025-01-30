@@ -7,7 +7,7 @@ package kunlun.core;
 
 /**
  * Provide the highest level of abstraction for data controller.
- *
+ * <p>
  * Data Access Control (DAC) is a security mechanism in the field of computer security
  *      that restricts and controls user access to data, ensuring data security, integrity,
  *      and preventing unauthorized access and data leaks.

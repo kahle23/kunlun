@@ -9,7 +9,7 @@ import kunlun.core.Context;
 
 /**
  * Flag the current context object is based on ThreadLocal.
- *
+ * <p>
  * There are two problems with ThreadLocal.
  *      The first is how to clean up ThreadLocal.
  *      The second is how to pass it across threads.

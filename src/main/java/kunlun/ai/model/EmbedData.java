@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.ai.model;
+package kunlun.ai.model;
 
 import java.io.Serializable;
 import java.util.List;

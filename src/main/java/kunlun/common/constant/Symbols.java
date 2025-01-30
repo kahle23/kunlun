@@ -7,6 +7,7 @@ package kunlun.common.constant;
 
 /**
  * The common symbol constants.
+ *
  * @see <a href="https://en.wikipedia.org/wiki/Mathematical_Operators_(Unicode_block)">Mathematical Operators (Unicode block)</a>
  * @see <a href="https://en.wikipedia.org/wiki/General_Punctuation">General Punctuation</a>
  * @see <a href="https://en.wikipedia.org/wiki/Unicode_symbols">Unicode symbols</a>

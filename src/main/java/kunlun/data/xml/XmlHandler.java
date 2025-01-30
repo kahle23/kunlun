@@ -5,8 +5,6 @@
 
 package kunlun.data.xml;
 
-import kunlun.core.Handler;
-
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -14,7 +12,7 @@ import java.util.Map;
  * The xml conversion handler.
  * @author Kahle
  */
-public interface XmlHandler extends Handler {
+public interface XmlHandler {
 
     /**
      * Get the common properties of the settings.

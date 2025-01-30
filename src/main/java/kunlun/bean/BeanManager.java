@@ -10,15 +10,15 @@ import java.util.Map;
 /**
  * The bean manager. It's just a bean container.
  * It's just a container that makes it easy for the caller to get some beans.
- *
+ * <p>
  * It won't take on any factory related duties.
  * If you want to implement an IOC or DI container like the spring container,
  * You can have your "BeanFactory" or "BeanProvider" hold the "BeanManager".
- *
+ * <p>
  * Why implement this?
  * Because in some scenarios containers are a convenient way to do it.
  * IOC or DI are not needed in these scenarios because they are too heavy.
- *
+ * <p>
  * Because generic type erasure, and it's positioning are just container
  * (there is no need to store bean definitions), so just need "Class" instead of "Type".
  * The bean definitions are required only when building an instance, not after.

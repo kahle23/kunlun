@@ -5,13 +5,11 @@
 
 package kunlun.data.json;
 
-import kunlun.core.Feature;
-
 /**
  * The json format.
  * @author Kahle
  */
-public enum JsonFormat implements Feature {
+public enum JsonFormat {
 
     /**
      * The json pretty format.

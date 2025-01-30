@@ -7,12 +7,12 @@ package kunlun.core;
 
 /**
  * Provide the highest level of abstraction for access controller.
- *
+ * <p>
  * Access control, the decision to allow or prohibit "a user" from doing something.
  * Subject: The subject is the initiator of the request. It can be a user, a process, an application, or a device.
  * Object:  The object is the recipient of the request. It can be an API, a file, a database, etc.
  * Request: The request is an operation performed by a subject on an object, such as reading, writing, executing, etc.
- *
+ * <p>
  * Why not provide a way to get resources based on user id?
  * Because the "resources" associated with the user may be expressions, such as regular expressions.
  *

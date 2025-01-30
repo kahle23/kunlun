@@ -5,8 +5,6 @@
 
 package kunlun.data.json;
 
-import kunlun.core.Handler;
-
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -14,7 +12,7 @@ import java.util.Map;
  * The json conversion handler.
  * @author Kahle
  */
-public interface JsonHandler extends Handler {
+public interface JsonHandler {
 
     /**
      * Get the common properties of the settings.

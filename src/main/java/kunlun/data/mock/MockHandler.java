@@ -5,15 +5,13 @@
 
 package kunlun.data.mock;
 
-import kunlun.core.Handler;
-
 import java.lang.reflect.Type;
 
 /**
  * The data mock handler.
  * @author Kahle
  */
-public interface MockHandler extends Handler {
+public interface MockHandler {
 
     /**
      * Mock the data.

@@ -5,13 +5,11 @@
 
 package kunlun.core.handler;
 
-import kunlun.core.Handler;
-
 /**
  * The property supported handler.
  * @author Kahle
  */
-public interface PropertySupportedHandler extends Handler {
+public interface PropertySupportedHandler {
 
     /**
      * Return whether the given property name is available.

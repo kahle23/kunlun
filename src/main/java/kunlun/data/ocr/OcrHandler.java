@@ -5,15 +5,13 @@
 
 package kunlun.data.ocr;
 
-import kunlun.core.Handler;
-
 import java.util.Map;
 
 /**
  * The optical character recognition handler.
  * @author Kahle
  */
-public interface OcrHandler extends Handler {
+public interface OcrHandler {
 
     /**
      * Get the common properties of the settings.

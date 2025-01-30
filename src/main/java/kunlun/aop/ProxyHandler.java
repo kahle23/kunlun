@@ -5,13 +5,11 @@
 
 package kunlun.aop;
 
-import kunlun.core.Handler;
-
 /**
  * The proxy handler for generate proxy object.
  * @author Kahle
  */
-public interface ProxyHandler extends Handler {
+public interface ProxyHandler {
 
     /**
      * Get proxy object instance.

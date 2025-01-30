@@ -67,7 +67,7 @@ public class JarFileLoader implements FileLoader {
         Assert.notBlank(resource, "Parameter \"param\" must not blank. ");
         resource = StrUtils.replace(resource, BACKSLASH, SLASH);
         // Get resource URL by resource name.
-        // The example: “jar:file:/data/apps/demo-web.jar!/BOOT-INF/classes!/templates/controller.txt”
+        // The example: "jar:file:/data/apps/demo-web.jar!/BOOT-INF/classes!/templates/controller.txt"
         URL resourceUrl = getClassLoader().getResource(resource);
         Assert.notNull(resourceUrl, "Variable \"resourceUrl\" must not null. ");
         log.debug("The found url is: \"{}\". ", resourceUrl);
@@ -77,12 +77,12 @@ public class JarFileLoader implements FileLoader {
             String resourcePath = resourceUrl.getPath();
             int indexOf = resourcePath.indexOf(EXCLAMATION_MARK);
             // Get jar path and entry sub path.
-            // The jar path example: “/data/apps/demo-web.jar“.
-            // The entry sub path example: “BOOT-INF/classes!/templates/controller.txt“.
+            // The jar path example: "/data/apps/demo-web.jar".
+            // The entry sub path example: "BOOT-INF/classes!/templates/controller.txt".
             String jarPath = resourcePath.substring(FIVE, indexOf);
             String entrySubPath = resourcePath.substring(indexOf + TWO);
             // In "JarEntry", the entry sub path does not have the exclamation mark.
-            // The example: “BOOT-INF/classes/templates/controller.txt“.
+            // The example: "BOOT-INF/classes/templates/controller.txt".
             entrySubPath = entrySubPath.replaceAll(EXCLAMATION_MARK, EMPTY_STRING);
             log.debug("The jar path: \"{}\", the entry sub path: \"{}\". ", jarPath, entrySubPath);
             // Construct the "JarFile" object and load resources.

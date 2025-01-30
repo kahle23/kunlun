@@ -7,7 +7,7 @@ package kunlun.core;
 
 /**
  * Provide the highest level of abstraction for action.
- *
+ * <p>
  * What is action?
  * Representing a specific operation, action, or task used to perform a particular function.
  *
@@ -17,7 +17,7 @@ public interface Action {
 
     /**
      * Execute a specific logic.
-     *
+     * <p>
      * The arguments mean (most of the scenes):
      *      0 strategy or operation or null,
      *      1 input object,

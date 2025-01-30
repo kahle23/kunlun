@@ -16,11 +16,11 @@ public interface DictService {
 
     /**
      * Synchronize dictionary data according to different strategies.
-     *
+     * <p>
      * Mode 1:
      * Synchronize the list of dictionary items based on their group and code.
      * (item's group and code cannot be null)
-     *
+     * <p>
      * Mode 2:
      * Synchronize the list of dictionary items based on the dictionary item group information.
      * All dictionary items under this group must be provided (include: add, update, delete).

@@ -5,8 +5,6 @@
 
 package kunlun.db;
 
-import kunlun.core.Handler;
-
 import java.util.Map;
 
 /**
@@ -14,7 +12,7 @@ import java.util.Map;
  *      providing a unified interface for executing common database operations.
  * @author Kahle
  */
-public interface DbHandler extends Handler {
+public interface DbHandler {
 
     /**
      * Get the common properties of the settings.

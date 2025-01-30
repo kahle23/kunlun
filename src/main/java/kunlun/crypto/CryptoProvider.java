@@ -103,7 +103,7 @@ public interface CryptoProvider {
 
     /**
      * Encrypt the input data.
-     * @param config The config of the encrypt
+     * @param config The config of to encrypt
      * @param data The data to be encrypted
      * @param out The encrypted data output
      */

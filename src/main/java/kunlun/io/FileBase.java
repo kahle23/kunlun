@@ -5,13 +5,11 @@
 
 package kunlun.io;
 
-import kunlun.core.Resource;
-
 /**
  * The base information about the file.
  * @author Kahle
  */
-public interface FileBase extends Resource {
+public interface FileBase {
 
     /**
      * Get the file name.
