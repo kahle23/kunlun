@@ -5,19 +5,19 @@
 
 package kunlun.message;
 
-import kunlun.core.Listener;
+import kunlun.message.model.Message;
 
 /**
  * The message listener.
  * @author Kahle
  */
-public interface MessageListener extends Listener {
+public interface MessageListener {
 
     /**
-     * Processing received messages.
-     * @param data The received data
+     * Processing the received messages.
+     * @param message The received messages
      * @return The necessary return value or null
      */
-    Object onMessage(Object data);
+    Object onMessage(Message message);
 
 }

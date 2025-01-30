@@ -7,6 +7,9 @@ package kunlun.action;
 
 import kunlun.action.event.Event;
 import kunlun.action.event.support.SimpleEventCollector;
+import kunlun.message.model.Message;
+import kunlun.message.model.Subscribe;
+import kunlun.action.message.support.SimpleMessageHandler;
 import kunlun.core.Action;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -32,6 +35,10 @@ public class ActionUtils {
             String name = "event-collector";
             registerAction(name, new SimpleEventCollector());
             registerShortcut(Event.class, name);
+            name = "mq";
+            registerAction(name, new SimpleMessageHandler());
+            registerShortcut(Message.class,   name);
+            registerShortcut(Subscribe.class, name);
             return actionProvider;
         }
     }

@@ -5,51 +5,79 @@
 
 package kunlun.message;
 
-import kunlun.core.handler.StrategySupportedHandler;
+import kunlun.core.Strategy;
+import kunlun.message.model.Message;
+import kunlun.message.model.Result;
+import kunlun.message.model.Subscribe;
+import kunlun.util.Assert;
 
-import java.lang.reflect.Type;
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Map;
 
 /**
- * The message handler used to send and query messages.
+ * The message handler for producer-consumer models.
  * @author Kahle
  */
-public interface MessageHandler extends StrategySupportedHandler {
+public interface MessageHandler extends Strategy {
 
     /**
-     * Get the common properties of the settings.
-     * @return The common properties that is set
+     * Send the messages.
+     * @param messages The messages to be sent
+     * @return The result of send
      */
-    Map<Object, Object> getCommonProperties();
+    <T extends Message> Result send(Collection<T> messages);
 
     /**
-     * Set common properties for the message handler.
-     * @param properties The properties to be set
+     * Receive a message.
+     * @param condition The message receiving condition
+     * @return The received message or null
      */
-    void setCommonProperties(Map<?, ?> properties);
+    Message receive(Base condition);
 
     /**
-     * Send a message (from: most message sending scenarios).
-     * @param message The message to be sent
-     * @param type The type of the return value
-     * @return The result of operation
+     * Subscribe to a topic.
+     * @param subscribe The parameters when subscribing
+     * @return The subscription result or null
      */
-    Object send(Object message, Type type);
+    Result subscribe(Subscribe subscribe);
 
     /**
-     * Receive a message (from: amqp and delay message).
-     * @param condition Maybe is topic or topic + other parameters
-     * @param type The type of the return value
-     * @return The result received
+     * The message related base object.
+     * @author Kahle
      */
-    Object receive(Object condition, Type type);
+    abstract class Base implements Serializable {
+        private Map<String, Object> properties;
+        private String topic;
 
-    /**
-     * Subscribe to a topic (from: message queue).
-     * @param condition Maybe is topic or topic + "subExpression" or null
-     * @param messageListener The message listener (maybe the condition is also contained in the listener)
-     * @return The subscription result or null (most scenarios are null)
-     */
-    Object subscribe(Object condition, Object messageListener);
+        public Base(String topic, Map<String, Object> properties) {
+            this.properties = Assert.notNull(properties);
+            this.topic = Assert.notBlank(topic);
+        }
+
+        public Base() {
+
+        }
+
+        public String getTopic() {
+
+            return topic;
+        }
+
+        public void setTopic(String topic) {
+
+            this.topic = topic;
+        }
+
+        public Map<String, Object> getProperties() {
+
+            return properties;
+        }
+
+        public void setProperties(Map<String, Object> properties) {
+
+            this.properties = properties;
+        }
+    }
 
 }
