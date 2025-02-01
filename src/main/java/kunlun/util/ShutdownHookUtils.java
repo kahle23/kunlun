@@ -5,8 +5,8 @@
 
 package kunlun.util;
 
-import kunlun.util.thread.CombinedRunnable;
-import kunlun.util.thread.ExecutorServiceCleaner;
+import kunlun.util.concurrent.CombinedRunnable;
+import kunlun.util.concurrent.ExecutorServiceCleaner;
 
 import java.util.concurrent.ExecutorService;
 
