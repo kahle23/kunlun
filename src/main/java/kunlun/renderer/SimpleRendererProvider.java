@@ -6,15 +6,16 @@
 package kunlun.renderer;
 
 import kunlun.core.Renderer;
+import kunlun.core.function.Consumer;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.renderer.support.SimpleTextRenderer;
 import kunlun.util.Assert;
-import kunlun.util.MapUtils;
 
-import java.util.Collections;
+import java.io.ByteArrayOutputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static kunlun.core.Renderer.Tpl;
 
 /**
  * The simple renderer provider.
@@ -23,43 +24,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SimpleRendererProvider implements RendererProvider {
     private static final Logger log = LoggerFactory.getLogger(SimpleRendererProvider.class);
     protected final Map<String, Renderer> renderers;
-    protected final Map<String, Object> commonProperties;
     private String defaultRendererName = "default";
 
-    protected SimpleRendererProvider(Map<String, Object> commonProperties,
-                                     Map<String, Renderer> renderers) {
-        Assert.notNull(commonProperties, "Parameter \"commonProperties\" must not null. ");
-        Assert.notNull(renderers, "Parameter \"renderers\" must not null. ");
-        this.commonProperties = commonProperties;
-        this.renderers = renderers;
-        // Register the default renderer.
-        registerRenderer(getDefaultRendererName(), new SimpleTextRenderer());
+    protected SimpleRendererProvider(Map<String, Renderer> renderers) {
+
+        this.renderers = Assert.notNull(renderers);
     }
 
     public SimpleRendererProvider() {
-        this(new ConcurrentHashMap<String, Object>(),
-                new ConcurrentHashMap<String, Renderer>());
-    }
 
-    @Override
-    public void registerCommonProperties(Map<?, ?> commonProperties) {
-        if (MapUtils.isEmpty(commonProperties)) { return; }
-        for (Map.Entry<?, ?> entry : commonProperties.entrySet()) {
-            String keyStr = String.valueOf(entry.getKey());
-            this.commonProperties.put(keyStr, entry.getValue());
-        }
-    }
-
-    @Override
-    public void clearCommonProperties() {
-
-        this.commonProperties.clear();
-    }
-
-    @Override
-    public Map<String, Object> getCommonProperties() {
-
-        return Collections.unmodifiableMap(commonProperties);
+        this(new ConcurrentHashMap<String, Renderer>());
     }
 
     @Override
@@ -79,9 +53,6 @@ public class SimpleRendererProvider implements RendererProvider {
         Assert.notBlank(rendererName, "Parameter \"rendererName\" must not blank. ");
         Assert.notNull(renderer, "Parameter \"renderer\" must not null. ");
         String className = renderer.getClass().getName();
-        if (renderer instanceof AbstractRenderer) {
-            ((AbstractRenderer) renderer).setCommonProperties(getCommonProperties());
-        }
         renderers.put(rendererName, renderer);
         log.info("Register the renderer \"{}\" to \"{}\". ", className, rendererName);
     }
@@ -106,21 +77,34 @@ public class SimpleRendererProvider implements RendererProvider {
     }
 
     @Override
-    public void render(String rendererName, Object template, String name, Object data, Object output) {
+    public Consumer<Tpl> getTemplateLoader(String rendererName) {
 
-        getRenderer(rendererName).render(template, name, data, output);
+        return getRenderer(rendererName).getTemplateLoader();
     }
 
     @Override
-    public byte[] renderToBytes(String rendererName, Object template, String name, Object data) {
+    public void setTemplateLoader(String rendererName, Consumer<Tpl> loader) {
 
-        throw new UnsupportedOperationException();
+        getRenderer(rendererName).setTemplateLoader(loader);
     }
 
     @Override
-    public String renderToString(String rendererName, Object template, String name, Object data) {
+    public void render(String rendererName, Object template, Object data, Object output) {
 
-        return ((TextRenderer) getRenderer(rendererName)).renderToString(template, name, data);
+        getRenderer(rendererName).render(template, data, output);
+    }
+
+    @Override
+    public byte[] renderToBytes(String rendererName, Object template, Object data) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        render(rendererName, template, data, output);
+        return output.toByteArray();
+    }
+
+    @Override
+    public String renderToString(String rendererName, Object template, Object data) {
+
+        return ((TextRenderer) getRenderer(rendererName)).renderToString(template, data);
     }
 
 }

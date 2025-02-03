@@ -6,31 +6,15 @@
 package kunlun.renderer;
 
 import kunlun.core.Renderer;
+import kunlun.core.function.Consumer;
 
-import java.util.Map;
+import static kunlun.core.Renderer.Tpl;
 
 /**
  * The renderer provider.
  * @author Kahle
  */
 public interface RendererProvider {
-
-    /**
-     * Register common properties' information.
-     * @param commonProperties The common properties
-     */
-    void registerCommonProperties(Map<?, ?> commonProperties);
-
-    /**
-     * Clears common properties' information.
-     */
-    void clearCommonProperties();
-
-    /**
-     * Get common properties' information.
-     * @return The common properties
-     */
-    Map<String, Object> getCommonProperties();
 
     /**
      * Get the default renderer name.
@@ -67,33 +51,44 @@ public interface RendererProvider {
     Renderer getRenderer(String rendererName);
 
     /**
+     * Get the template loader.
+     * @param rendererName The renderer name
+     * @return The template loader
+     */
+    Consumer<Tpl> getTemplateLoader(String rendererName);
+
+    /**
+     * Set the template loader.
+     * @param rendererName The renderer name
+     * @param loader The template loader
+     */
+    void setTemplateLoader(String rendererName, Consumer<Tpl> loader);
+
+    /**
      * Render the data to the output through the template.
      * @param rendererName The renderer name
      * @param template The template (stream, reader, string, etc.) to be rendered
-     * @param name The template name (most scenarios used for log, nullable)
      * @param data The data to use in rendering input template
      * @param output The output stream or writer in which to render the output
      */
-    void render(String rendererName, Object template, String name, Object data, Object output);
+    void render(String rendererName, Object template, Object data, Object output);
 
     /**
      * Render the data into binary via template.
      * @param rendererName The renderer name
      * @param template The template (stream, reader, string, etc.) to be rendered
-     * @param name The template name (most scenarios used for log, nullable)
      * @param data The data to use in rendering input template
      * @return The rendered text results
      */
-    byte[] renderToBytes(String rendererName, Object template, String name, Object data);
+    byte[] renderToBytes(String rendererName, Object template, Object data);
 
     /**
      * Render the data into text via template.
      * @param rendererName The renderer name
      * @param template The template (stream, reader, string, etc.) to be rendered
-     * @param name The template name (most scenarios used for log, nullable)
      * @param data The data to use in rendering input template
      * @return The rendered text results
      */
-    String renderToString(String rendererName, Object template, String name, Object data);
+    String renderToString(String rendererName, Object template, Object data);
 
 }

@@ -5,7 +5,7 @@
 
 package kunlun.renderer;
 
-import kunlun.data.tuple.PairImpl;
+import kunlun.core.Renderer;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.renderer.support.SimpleTextRenderer;
@@ -40,32 +40,32 @@ public class TemplateUtils {
 
     public static void render(String name, String encoding, Object data, Writer output) {
 
-        getTemplateEngine().render(name, encoding, data, output);
+        getTemplateEngine().render(Renderer.Tpl.of(name, encoding), data, output);
     }
 
     public static void render(Object data, Writer output, String logTag, Reader reader) {
 
-        getTemplateEngine().render(reader, logTag, data, output);
+        getTemplateEngine().render(reader, data, output);
     }
 
     public static void render(Object data, Writer output, String logTag, String template) {
 
-        getTemplateEngine().render((Object) template, logTag, data, output);
+        getTemplateEngine().render((Object) template, data, output);
     }
 
     public static String renderToString(String name, String encoding, Object data) {
 
-        return getTemplateEngine().renderToString(new PairImpl<String, String>(name, encoding), name, data);
+        return getTemplateEngine().renderToString(Renderer.Tpl.of(name, encoding), data);
     }
 
     public static String renderToString(Object data, String logTag, Reader reader) {
 
-        return getTemplateEngine().renderToString(reader, logTag, data);
+        return getTemplateEngine().renderToString(reader, data);
     }
 
     public static String renderToString(Object data, String logTag, String template) {
 
-        return getTemplateEngine().renderToString(template, logTag, data);
+        return getTemplateEngine().renderToString(template, data);
     }
 
 }

@@ -6,9 +6,13 @@
 package kunlun.renderer;
 
 import kunlun.core.Renderer;
+import kunlun.core.function.Consumer;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
+import kunlun.renderer.support.SimpleTextRenderer;
 import kunlun.util.Assert;
+
+import static kunlun.core.Renderer.Tpl;
 
 /**
  * The render tools.
@@ -23,6 +27,8 @@ public class RenderUtils {
         synchronized (RenderUtils.class) {
             if (rendererProvider != null) { return rendererProvider; }
             RenderUtils.setRendererProvider(new SimpleRendererProvider());
+            // Register the default renderer.
+            registerRenderer(getDefaultRendererName(), new SimpleTextRenderer());
             return rendererProvider;
         }
     }
@@ -58,49 +64,44 @@ public class RenderUtils {
         return getRendererProvider().getRenderer(rendererName);
     }
 
-    public static void render(String renderer, Object template, String name, Object data, Object output) {
+    public static Consumer<Tpl> getTemplateLoader(String rendererName) {
 
-        getRendererProvider().render(renderer, template, name, data, output);
+        return getRenderer(rendererName).getTemplateLoader();
+    }
+
+    public static void setTemplateLoader(String rendererName, Consumer<Tpl> loader) {
+
+        getRenderer(rendererName).setTemplateLoader(loader);
     }
 
     public static void render(String renderer, Object template, Object data, Object output) {
 
-        getRendererProvider().render(renderer, template, null, data, output);
+        getRendererProvider().render(renderer, template, data, output);
     }
 
     public static void render(Object template, Object data, Object output) {
 
-        getRendererProvider().render(getDefaultRendererName(), template, null, data, output);
-    }
-
-    public static byte[] renderToBytes(String renderer, Object template, String name, Object data) {
-
-        return getRendererProvider().renderToBytes(renderer, template, name, data);
+        getRendererProvider().render(getDefaultRendererName(), template, data, output);
     }
 
     public static byte[] renderToBytes(String renderer, Object template, Object data) {
 
-        return getRendererProvider().renderToBytes(renderer, template, null, data);
+        return getRendererProvider().renderToBytes(renderer, template, data);
     }
 
     public static byte[] renderToBytes(Object template, Object data) {
 
-        return getRendererProvider().renderToBytes(getDefaultRendererName(), template, null, data);
-    }
-
-    public static String renderToString(String renderer, Object template, String name, Object data) {
-
-        return getRendererProvider().renderToString(renderer, template, name, data);
+        return getRendererProvider().renderToBytes(getDefaultRendererName(), template, data);
     }
 
     public static String renderToString(String renderer, Object template, Object data) {
 
-        return getRendererProvider().renderToString(renderer, template, null, data);
+        return getRendererProvider().renderToString(renderer, template, data);
     }
 
     public static String renderToString(Object template, Object data) {
 
-        return getRendererProvider().renderToString(getDefaultRendererName(), template, null, data);
+        return getRendererProvider().renderToString(getDefaultRendererName(), template, data);
     }
 
 }

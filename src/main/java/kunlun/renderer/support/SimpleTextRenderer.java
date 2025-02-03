@@ -6,7 +6,6 @@
 package kunlun.renderer.support;
 
 import kunlun.data.bean.BeanUtils;
-import kunlun.data.tuple.Pair;
 import kunlun.exception.ExceptionUtils;
 import kunlun.io.util.IOUtils;
 import kunlun.util.*;
@@ -24,7 +23,6 @@ import static kunlun.common.constant.Charsets.STR_UTF_8;
 import static kunlun.common.constant.Numbers.*;
 import static kunlun.common.constant.Symbols.EMPTY_STRING;
 import static kunlun.io.util.IOUtils.EOF;
-import static kunlun.util.ObjUtils.cast;
 
 /**
  * The simple text template renderer based on JDK.
@@ -35,13 +33,12 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
     private static final String RIGHT_PLACEHOLDER = "}";
     private static final char ESCAPE_SYMBOL = '\\';
 
-    protected Reader createClasspathReader(String path, String encoding) {
-        Assert.notBlank(path, "Parameter \"path\" must not blank. ");
-        InputStream inputStream = ClassLoaderUtils.getResourceAsStream(path, getClass());
-        Assert.notNull(inputStream, "Can not find template by \"" + path + "\" in classpath. ");
-        if (StrUtils.isBlank(encoding)) { encoding = STR_UTF_8; }
-        Charset charset = Charset.forName(encoding);
-        return new InputStreamReader(inputStream, charset);
+    protected void loadContent(Tpl tpl) {
+        if (tpl == null || !ObjUtils.isEmpty(tpl.getContent())) { return; }
+        if (StrUtils.isBlank(tpl.getCharset())) { tpl.setCharset(STR_UTF_8); }
+        Charset charset = Charset.forName(tpl.getCharset());
+        InputStream in = ClassLoaderUtils.getResourceAsStream(tpl.getName(), getClass());
+        tpl.setContent(new InputStreamReader(Assert.notNull(in), charset));
     }
 
     protected String render(String template, Map<?, ?> data) throws ParseException {
@@ -87,44 +84,35 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
     }
 
     @Override
-    public void render(Object template, String name, Object data, Object output) {
+    public void render(Object template, Object data, Object output) {
         // Parameters check and conversion.
-        Assert.isInstanceOf(Writer.class, output, "Parameter \"output\" must instance of Writer. ");
+        Writer writer = (Writer) Assert.isInstanceOf(Writer.class, output);
         if (template == null) { return; }
         Map<String, Object> dataMap = data != null
                 ? BeanUtils.beanToMap(data) : Collections.<String, Object>emptyMap();
-        Writer writer = (Writer) output;
-        // Get template content.
-        Reader templateReader = null;
-        String templateStr;
+        // Get template content and render.
+        Reader reader = null;
         try {
             if (template instanceof String) {
-                templateStr = (String) template;
-            }
-            else if (template instanceof Reader) {
-                templateReader = (Reader) template;
-                templateStr = IOUtils.toString(templateReader);
-            }
-            else if (template instanceof Pair) {
-                Pair<String, String> pair = cast(template);
-                String encoding = pair.getRight();
-                String path = pair.getLeft();
-                Reader reader = createClasspathReader(path, encoding);
-                templateReader = reader;
-                templateStr = IOUtils.toString(reader);
-            }
-            else {
-                throw new IllegalArgumentException();
-            }
-            // Do render.
-            String render = render(templateStr, dataMap);
-            writer.write(render);
-        }
-        catch (Exception e) {
+                writer.write(render((String) template, dataMap));
+            } else if (template instanceof Reader) {
+                String str = IOUtils.toString(reader = (Reader) template);
+                writer.write(render(str, dataMap));
+            } else if (template instanceof Tpl) {
+                Tpl tpl = (Tpl) template;
+                if (ObjUtils.isEmpty(tpl.getContent())
+                        && getTemplateLoader() != null) {
+                    getTemplateLoader().accept(tpl);
+                }
+                if (ObjUtils.isEmpty(tpl.getContent())) {
+                    loadContent(tpl);
+                }
+                render(tpl.getContent(), data, output);
+            } else { throw new IllegalArgumentException("Unsupported template type! "); }
+        } catch (Exception e) {
             throw ExceptionUtils.wrap(e);
-        }
-        finally {
-            CloseUtils.closeQuietly(templateReader);
+        } finally {
+            CloseUtils.closeQuietly(reader);
             CloseUtils.closeQuietly(writer);
         }
     }

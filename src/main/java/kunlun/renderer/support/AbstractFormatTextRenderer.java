@@ -5,8 +5,8 @@
 
 package kunlun.renderer.support;
 
+import kunlun.core.function.Consumer;
 import kunlun.exception.ExceptionUtils;
-import kunlun.renderer.AbstractRenderer;
 import kunlun.util.Assert;
 
 import java.io.IOException;
@@ -16,26 +16,31 @@ import java.io.Writer;
  * The abstract format text renderer.
  * @author Kahle
  */
-public abstract class AbstractFormatTextRenderer extends AbstractRenderer implements FormatTextRenderer {
+public abstract class AbstractFormatTextRenderer implements FormatTextRenderer {
 
     @Override
-    public void render(Object template, String name, Object data, Object output) {
-        Assert.isInstanceOf(String.class, template, "Parameter \"template\" must instance of String. ");
-        Assert.isInstanceOf(Writer.class, output, "Parameter \"output\" must instance of Writer. ");
-        Assert.isInstanceOf(Object[].class, data, "Parameter \"data\" must instance of Object[]. ");
-        Object[] arguments = (Object[]) data;
-        Writer writer = (Writer) output;
-        try {
-            String render = render((String) template, arguments);
-            writer.write(render);
-        }
-        catch (IOException e) {
-            throw ExceptionUtils.wrap(e);
-        }
+    public Consumer<Tpl> getTemplateLoader() {
+
+        return null;
     }
 
     @Override
-    public String renderToString(Object template, String name, Object data) {
+    public void setTemplateLoader(Consumer<Tpl> loader) {
+
+    }
+
+    @Override
+    public void render(Object template, Object data, Object output) {
+        Object[] arguments = (Object[]) Assert.isInstanceOf(Object[].class, data);
+        Writer writer = (Writer) Assert.isInstanceOf(Writer.class, output);
+        String tpl = (String) Assert.isInstanceOf(String.class, template);
+        try {
+            writer.write(render(tpl, arguments));
+        } catch (IOException e) { throw ExceptionUtils.wrap(e); }
+    }
+
+    @Override
+    public String renderToString(Object template, Object data) {
 
         return render((String) template, (Object[]) data);
     }

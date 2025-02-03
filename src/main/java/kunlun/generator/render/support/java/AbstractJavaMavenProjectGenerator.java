@@ -5,8 +5,8 @@
 
 package kunlun.generator.render.support.java;
 
+import kunlun.core.Renderer;
 import kunlun.data.bean.BeanUtils;
-import kunlun.data.tuple.PairImpl;
 import kunlun.exception.ExceptionUtils;
 import kunlun.renderer.TextRenderer;
 import kunlun.time.DateUtils;
@@ -108,7 +108,7 @@ public abstract class AbstractJavaMavenProjectGenerator implements ProjectGenera
             Map<String, Object> data = BeanUtils.beanToMap(projectContext);
             OutputStream out = new FileOutputStream(outputPath);
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(out));
-            textRenderer.render(new PairImpl<String, String>(templatePath, null), templatePath, data, bufferedWriter);
+            textRenderer.render(Renderer.Tpl.of(templatePath), data, bufferedWriter);
             bufferedWriter.flush();
         }
         catch (IOException e) {

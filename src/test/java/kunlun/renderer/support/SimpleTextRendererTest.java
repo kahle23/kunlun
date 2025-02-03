@@ -11,7 +11,6 @@ import kunlun.logging.LoggerFactory;
 import kunlun.renderer.TextRenderer;
 import org.junit.Test;
 
-import static kunlun.common.constant.Words.DEFAULT;
 import static org.junit.Assert.assertEquals;
 
 public class SimpleTextRendererTest {
@@ -21,22 +20,22 @@ public class SimpleTextRendererTest {
     @Test
     public void test1() {
         String render = renderer.renderToString("Hello, ${arg}!"
-                , null, Dict.of("arg", "World"));
+                , Dict.of("arg", "World"));
         log.info(render);
         assertEquals(render, "Hello, World!");
 
         render = renderer.renderToString("Hello, ${arg}! ${arg1}"
-                , null, Dict.of("arg", "World").set("arg1", "Hi"));
+                , Dict.of("arg", "World").set("arg1", "Hi"));
         log.info(render);
         assertEquals(render, "Hello, World! Hi");
 
         render = renderer.renderToString("Hello, \\${arg}, \\\\${arg1}, ${arg2}! "
-                , null, Dict.of("arg", "W1").set("arg1", "W2").set("arg2", "W3"));
+                , Dict.of("arg", "W1").set("arg1", "W2").set("arg2", "W3"));
         log.info(render);
         assertEquals(render, "Hello, ${arg}, \\\\W2, W3! ");
 
         render = renderer.renderToString("Hello, \\\\${arg}!"
-                , null, Dict.of("arg", "World"));
+                , Dict.of("arg", "World"));
         log.info(render);
         assertEquals(render, "Hello, \\\\World!");
     }
@@ -50,7 +49,7 @@ public class SimpleTextRendererTest {
         Dict data = Dict.of("param", "World")
 //                .set("param1", "Earth")
                 .set("param2", new Object());
-        log.info(renderer.renderToString(template, DEFAULT, data));
+        log.info(renderer.renderToString(template, data));
     }
 
     @Test
@@ -63,7 +62,7 @@ public class SimpleTextRendererTest {
                 "Hello, filler\\\\${param}filler${param}filler! \n";
         Dict data = Dict.of("param", "World")
                 .set("param1", "Earth");
-        log.info(renderer.renderToString(template, DEFAULT, data));
+        log.info(renderer.renderToString(template, data));
     }
 
 }

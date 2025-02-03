@@ -119,7 +119,7 @@ public abstract class AbstractRenderFileGenerator extends AbstractRenderGenerato
             log.info(logStr); logCollector.append(logStr);
             // Generated content.
             Writer builderWriter = new StringBuilderWriter();
-            renderer.render(templateContent, outputFile.getName(), model, builderWriter);
+            renderer.render(templateContent, model, builderWriter);
             String generation = builderWriter.toString();
             // Read file content.
             byte[] fileBytes = FileUtils.read(outputFile);
@@ -142,7 +142,7 @@ public abstract class AbstractRenderFileGenerator extends AbstractRenderGenerato
             try {
                 OutputStream output = new FileOutputStream(outputFile);
                 writer = new OutputStreamWriter(output, outputCharset);
-                renderer.render(templateContent, outputFile.getName(), model, writer);
+                renderer.render(templateContent, model, writer);
             }
             finally { CloseUtils.closeQuietly(writer); }
         }
