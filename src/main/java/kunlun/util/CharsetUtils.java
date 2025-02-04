@@ -5,7 +5,7 @@
 
 package kunlun.util;
 
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -77,7 +77,7 @@ public class CharsetUtils {
         StringReader reader = new StringReader(data);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(bos, newCharset);
-        IOUtils.copyLarge(reader, writer);
+        IoUtil.copy(reader, writer);
         writer.flush();
         byte[] bytes = bos.toByteArray();
         return new String(bytes, newCharset);
@@ -115,7 +115,7 @@ public class CharsetUtils {
         StringReader reader = new StringReader(dataStr);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(bos, newCharset);
-        IOUtils.copyLarge(reader, writer);
+        IoUtil.copy(reader, writer);
         writer.flush();
         return bos.toByteArray();
     }

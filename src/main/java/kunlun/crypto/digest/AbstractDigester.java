@@ -9,7 +9,7 @@ import kunlun.codec.CodecUtils;
 import kunlun.common.constant.Charsets;
 import kunlun.core.Digester;
 import kunlun.exception.ExceptionUtils;
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
 
 import java.io.InputStream;
@@ -25,7 +25,7 @@ public abstract class AbstractDigester implements Digester {
     public byte[] digest(Config config, InputStream data) {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         try {
-            return digest(config, IOUtils.toByteArray(data));
+            return digest(config, IoUtil.readBytes(data));
         } catch (Exception e) { throw ExceptionUtils.wrap(e); }
     }
 

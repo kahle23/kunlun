@@ -12,8 +12,8 @@ import kunlun.db.jdbc.meta.Column;
 import kunlun.db.jdbc.meta.Index;
 import kunlun.db.jdbc.meta.Table;
 import kunlun.exception.ExceptionUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
-import kunlun.util.CloseUtils;
 import kunlun.util.CollUtils;
 import kunlun.util.StrUtils;
 
@@ -75,7 +75,7 @@ public class JdbcTableLoader implements Loader<JdbcTableLoader.Config, List<Tabl
             return tables;
         }
         catch (Exception e) { throw ExceptionUtils.wrap(e); }
-        finally { CloseUtils.closeQuietly(connection); }
+        finally { IoUtil.closeIfPossible(connection); }
     }
 
     public List<Table> loadTables(Connection connection, String catalog
@@ -111,7 +111,7 @@ public class JdbcTableLoader implements Loader<JdbcTableLoader.Config, List<Tabl
             }
             return tables;
         }
-        finally { CloseUtils.closeQuietly(tableRs); }
+        finally { IoUtil.closeIfPossible(tableRs); }
     }
 
     protected void fillColumns(DatabaseMetaData dbMetaData, String catalog, Table table) throws SQLException {
@@ -128,7 +128,7 @@ public class JdbcTableLoader implements Loader<JdbcTableLoader.Config, List<Tabl
                 table.getColumns().add(buildColumn(columnRs, primaryKeyList));
             }
         }
-        finally { CloseUtils.closeQuietly(columnRs); }
+        finally { IoUtil.closeIfPossible(columnRs); }
     }
 
     protected String getPrimaryKeys(DatabaseMetaData dbMetaData, String catalog, String table) throws SQLException {
@@ -144,7 +144,7 @@ public class JdbcTableLoader implements Loader<JdbcTableLoader.Config, List<Tabl
             }
             return pkBuilder.toString();
         }
-        finally { CloseUtils.closeQuietly(pkResultSet); }
+        finally { IoUtil.closeIfPossible(pkResultSet); }
     }
 
     protected Column buildColumn(ResultSet columnRs, List<String> primaryKeys) throws SQLException {

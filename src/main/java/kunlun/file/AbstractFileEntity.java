@@ -5,9 +5,9 @@
 
 package kunlun.file;
 
+import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
 import kunlun.util.ClassLoaderUtils;
-import kunlun.util.CloseUtils;
 
 import java.io.*;
 
@@ -54,7 +54,7 @@ public abstract class AbstractFileEntity implements FileEntity {
             write(outputStream);
         }
         finally {
-            CloseUtils.closeQuietly(outputStream);
+            IoUtil.closeQuietly(outputStream);
         }
     }
 
@@ -70,7 +70,7 @@ public abstract class AbstractFileEntity implements FileEntity {
             return read(inputStream);
         }
         finally {
-            CloseUtils.closeQuietly(inputStream);
+            IoUtil.closeQuietly(inputStream);
         }
     }
 
@@ -92,7 +92,7 @@ public abstract class AbstractFileEntity implements FileEntity {
             return read(inputStream);
         }
         finally {
-            CloseUtils.closeQuietly(inputStream);
+            IoUtil.closeQuietly(inputStream);
         }
     }
 

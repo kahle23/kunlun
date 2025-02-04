@@ -1,10 +1,10 @@
 package kunlun.jdbc;
 
 import kunlun.exception.ExceptionUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.CloseUtils;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -65,7 +65,7 @@ public class SimpleJdbcProvider extends AbstractJdbcProvider {
     void closeConnection(Connection connection) throws SQLException {
         if (threadConnection.get() == null) {
             // Indicates that no transaction was executed.
-            CloseUtils.closeQuietly(connection);
+            IoUtil.closeIfPossible(connection);
         }
         // Ignore close if there is a transaction going on.
     }

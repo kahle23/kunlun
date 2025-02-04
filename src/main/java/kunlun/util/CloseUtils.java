@@ -21,9 +21,10 @@ import java.sql.Statement;
  * The close tools.
  * @author Kahle
  */
+@Deprecated
 public class CloseUtils {
 
-    public static void closeQuietly(Socket socket) {
+    /*public static void closeQuietly(Socket socket) {
         if (socket != null) {
             try {
                 socket.close();
@@ -32,9 +33,9 @@ public class CloseUtils {
                 // ignored
             }
         }
-    }
+    }*/
 
-    public static void closeQuietly(Selector selector) {
+    /*public static void closeQuietly(Selector selector) {
         if (selector != null) {
             try {
                 selector.close();
@@ -43,9 +44,9 @@ public class CloseUtils {
                 // ignored
             }
         }
-    }
+    }*/
 
-    public static void closeQuietly(ServerSocket serverSocket) {
+    /*public static void closeQuietly(ServerSocket serverSocket) {
         if (serverSocket != null) {
             try {
                 serverSocket.close();
@@ -54,7 +55,7 @@ public class CloseUtils {
                 // ignored
             }
         }
-    }
+    }*/
 
     public static void closeQuietly(Connection connection) {
         if (connection != null) {

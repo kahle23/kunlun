@@ -7,7 +7,7 @@ package kunlun.renderer.support;
 
 import kunlun.data.bean.BeanUtils;
 import kunlun.exception.ExceptionUtils;
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.util.*;
 
 import java.io.InputStream;
@@ -22,7 +22,7 @@ import java.util.Map;
 import static kunlun.common.constant.Charsets.STR_UTF_8;
 import static kunlun.common.constant.Numbers.*;
 import static kunlun.common.constant.Symbols.EMPTY_STRING;
-import static kunlun.io.util.IOUtils.EOF;
+import static kunlun.io.util.IoUtil.EOF;
 
 /**
  * The simple text template renderer based on JDK.
@@ -96,7 +96,7 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
             if (template instanceof String) {
                 writer.write(render((String) template, dataMap));
             } else if (template instanceof Reader) {
-                String str = IOUtils.toString(reader = (Reader) template);
+                String str = IoUtil.read(reader = (Reader) template);
                 writer.write(render(str, dataMap));
             } else if (template instanceof Tpl) {
                 Tpl tpl = (Tpl) template;
@@ -112,8 +112,7 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
         } catch (Exception e) {
             throw ExceptionUtils.wrap(e);
         } finally {
-            CloseUtils.closeQuietly(reader);
-            CloseUtils.closeQuietly(writer);
+            IoUtil.closeQuietly(reader, writer);
         }
     }
 

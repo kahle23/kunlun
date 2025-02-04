@@ -6,17 +6,15 @@
 package kunlun.generator.render;
 
 import kunlun.core.Renderer;
-import kunlun.exception.ExceptionUtils;
 import kunlun.io.FileLoader;
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.CloseUtils;
 import kunlun.util.StrUtils;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +24,7 @@ import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.common.constant.Symbols.DOT;
 import static kunlun.common.constant.Symbols.EMPTY_STRING;
 import static kunlun.common.constant.Words.SUCCESS;
-import static kunlun.io.util.IOUtils.EOF;
+import static kunlun.io.util.IoUtil.EOF;
 
 /**
  * The abstract renderer-based content generator.
@@ -56,15 +54,10 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
         // Load template content by path.
         String templatePath = config.getTemplatePath();
         String charset = config.getTemplateCharset();
-        InputStream in = null;
         // Do load.
-        try {
-            in = fileLoader.load(templatePath);
-            config.setTemplateContent(IOUtils.toString(in, charset));
-            return config.getTemplateContent();
-        }
-        catch (IOException e) { throw ExceptionUtils.wrap(e); }
-        finally { CloseUtils.closeQuietly(in); }
+        InputStream in = fileLoader.load(templatePath);
+        config.setTemplateContent(IoUtil.read(in, Charset.forName(charset)));
+        return config.getTemplateContent();
     }
 
     /**

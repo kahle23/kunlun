@@ -14,6 +14,7 @@ import static kunlun.common.constant.Numbers.ZERO;
  * The io tools.
  * @author Kahle
  */
+@Deprecated
 public class IOUtils {
     public static final int DEFAULT_BUFFER_SIZE = 8192;
     public static final int EOF = -1;

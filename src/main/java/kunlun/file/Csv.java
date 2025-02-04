@@ -5,7 +5,7 @@
 
 package kunlun.file;
 
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
 import kunlun.util.CollUtils;
 import kunlun.util.MapUtils;
@@ -66,7 +66,7 @@ public class Csv extends TextFile implements Table {
     public long read(Reader reader) throws IOException {
         Assert.notNull(reader, "Parameter \"reader\" must not null. ");
         content.clear();
-        String text = IOUtils.toString(reader);
+        String text = IoUtil.read(reader);
         if (!text.endsWith(lineSeparator)) {
             text = text + lineSeparator;
         }

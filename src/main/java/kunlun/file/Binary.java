@@ -6,7 +6,7 @@
 package kunlun.file;
 
 import kunlun.codec.CodecUtils;
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class Binary extends BinaryFile {
 
     @Override
     public long read(InputStream inputStream) throws IOException {
-        data = IOUtils.toByteArray(inputStream);
+        data = IoUtil.readBytes(inputStream);
         return data.length;
     }
 

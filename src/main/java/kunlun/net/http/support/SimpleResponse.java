@@ -5,15 +5,12 @@
 
 package kunlun.net.http.support;
 
-import kunlun.exception.ExceptionUtils;
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.net.http.AbstractHttpBase;
 import kunlun.net.http.HttpMethod;
 import kunlun.net.http.HttpResponse;
-import kunlun.util.CloseUtils;
 import kunlun.util.StrUtils;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
@@ -82,15 +79,7 @@ public class SimpleResponse extends AbstractHttpBase implements HttpResponse {
     @Override
     public byte[] getBodyAsBytes() {
         if (bodyStream == null) { return null; }
-        try {
-            return IOUtils.toByteArray(bodyStream);
-        }
-        catch (IOException e) {
-            throw ExceptionUtils.wrap(e);
-        }
-        finally {
-            CloseUtils.closeQuietly(bodyStream);
-        }
+        return IoUtil.readBytes(bodyStream);
     }
 
     @Override

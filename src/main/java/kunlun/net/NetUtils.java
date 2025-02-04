@@ -6,11 +6,11 @@
 package kunlun.net;
 
 import kunlun.exception.ExceptionUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.ArrayUtils;
 import kunlun.util.Assert;
-import kunlun.util.CloseUtils;
 import kunlun.util.CollUtils;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ import java.util.List;
 import static kunlun.common.constant.Numbers.ONE;
 import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.common.constant.Symbols.*;
-import static kunlun.io.util.IOUtils.EOF;
+import static kunlun.io.util.IoUtil.EOF;
 
 /**
  * The net tools.
@@ -81,7 +81,7 @@ public class NetUtils {
             throw ExceptionUtils.wrap(e);
         }
         finally {
-            CloseUtils.closeQuietly(socket);
+            IoUtil.closeQuietly(socket);
         }
     }
 

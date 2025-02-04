@@ -7,7 +7,7 @@ package kunlun.crypto.digest.support;
 
 import kunlun.crypto.digest.Hash;
 import kunlun.exception.ExceptionUtils;
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
 
 import java.io.InputStream;
@@ -32,7 +32,7 @@ public class CustomDigester extends Hash {
     public byte[] digest(Config config, InputStream data) {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         try {
-            return digest(config, IOUtils.toByteArray(data));
+            return digest(config, IoUtil.readBytes(data));
         } catch (Exception e) { throw ExceptionUtils.wrap(e); }
     }
 

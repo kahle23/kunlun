@@ -12,10 +12,10 @@ import kunlun.io.FileBase;
 import kunlun.io.FileEntity;
 import kunlun.io.storage.AbstractDataStorage;
 import kunlun.io.util.FileUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.CloseUtils;
 import kunlun.util.ObjUtils;
 
 import java.io.File;
@@ -121,7 +121,7 @@ public class LocalFileStorage extends AbstractDataStorage {
             throw ExceptionUtils.wrap(e);
         }
         finally {
-            CloseUtils.closeQuietly(inputStream);
+            IoUtil.closeQuietly(inputStream);
         }
     }
 

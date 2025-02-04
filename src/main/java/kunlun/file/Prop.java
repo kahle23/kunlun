@@ -6,7 +6,7 @@
 package kunlun.file;
 
 import kunlun.exception.ExceptionUtils;
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.io.util.StringBuilderWriter;
 import kunlun.util.Assert;
 import kunlun.util.MapUtils;
@@ -76,7 +76,7 @@ public class Prop extends TextFile {
     @Override
     public long read(Reader reader) throws IOException {
         Assert.notNull(reader, "Parameter \"reader\" must not null. ");
-        String data = IOUtils.toString(reader);
+        String data = IoUtil.read(reader);
         properties.load(new StringReader(data));
         return data.length();
     }

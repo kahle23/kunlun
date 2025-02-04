@@ -9,7 +9,7 @@ import kunlun.codec.CharCodec;
 import kunlun.util.Assert;
 
 import static kunlun.common.constant.Numbers.*;
-import static kunlun.io.util.IOUtils.EOF;
+import static kunlun.io.util.IoUtil.EOF;
 
 /**
  * The unicode encode and decode tools.

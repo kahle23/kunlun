@@ -5,6 +5,7 @@
 
 package kunlun.logging.support;
 
+import kunlun.io.util.IoUtil;
 import kunlun.logging.Level;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerProvider;
@@ -13,7 +14,6 @@ import kunlun.renderer.support.LoggerTextRenderer;
 import kunlun.util.ArrayUtils;
 import kunlun.util.Assert;
 import kunlun.util.ClassLoaderUtils;
-import kunlun.util.CloseUtils;
 
 import java.io.InputStream;
 import java.util.logging.Formatter;
@@ -59,7 +59,7 @@ public class JdkLoggerProvider implements LoggerProvider {
                 e.printStackTrace();
             }
             finally {
-                CloseUtils.closeQuietly(in);
+                IoUtil.closeQuietly(in);
             }
         }
         // Replace the Formatter that comes with the JDK.

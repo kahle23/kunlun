@@ -7,10 +7,10 @@ package kunlun.db.jdbc;
 
 import kunlun.db.AbstractDbHandler;
 import kunlun.exception.ExceptionUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.CloseUtils;
 import kunlun.util.StrUtils;
 
 import javax.sql.DataSource;
@@ -175,7 +175,7 @@ public abstract class AbstractJdbcDbHandler extends AbstractDbHandler implements
             throw ExceptionUtils.wrap(e);
         }
         finally {
-            CloseUtils.closeQuietly(prepStmt);
+            IoUtil.closeIfPossible(prepStmt);
             config.closeConnection(connection);
         }
     }
@@ -232,8 +232,7 @@ public abstract class AbstractJdbcDbHandler extends AbstractDbHandler implements
             throw ExceptionUtils.wrap(e);
         }
         finally {
-            CloseUtils.closeQuietly(resSet);
-            CloseUtils.closeQuietly(prepStmt);
+            IoUtil.closeIfPossible(resSet, prepStmt);
             config.closeConnection(connection);
         }
     }
@@ -277,7 +276,7 @@ public abstract class AbstractJdbcDbHandler extends AbstractDbHandler implements
         public void closeConnection(Connection connection) {
             if (getThreadLocalConnection() == null) {
                 // Indicates that no transaction was executed.
-                CloseUtils.closeQuietly(connection);
+                IoUtil.closeIfPossible(connection);
             }
             // Ignore close if there is a transaction going on.
         }

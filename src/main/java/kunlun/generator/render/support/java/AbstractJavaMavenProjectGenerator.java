@@ -8,10 +8,10 @@ package kunlun.generator.render.support.java;
 import kunlun.core.Renderer;
 import kunlun.data.bean.BeanUtils;
 import kunlun.exception.ExceptionUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.renderer.TextRenderer;
 import kunlun.time.DateUtils;
 import kunlun.util.Assert;
-import kunlun.util.CloseUtils;
 
 import java.io.*;
 import java.util.Map;
@@ -115,7 +115,7 @@ public abstract class AbstractJavaMavenProjectGenerator implements ProjectGenera
             throw ExceptionUtils.wrap(e);
         }
         finally {
-            CloseUtils.closeQuietly(bufferedWriter);
+            IoUtil.closeQuietly(bufferedWriter);
         }
     }
 

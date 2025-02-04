@@ -13,8 +13,8 @@ import java.io.InputStream;
 import java.security.Key;
 
 import static kunlun.common.constant.Numbers.ZERO;
-import static kunlun.io.util.IOUtils.DEFAULT_BUFFER_SIZE;
-import static kunlun.io.util.IOUtils.EOF;
+import static kunlun.io.util.IoUtil.DEFAULT_BUFFER_SIZE;
+import static kunlun.io.util.IoUtil.EOF;
 
 /**
  * The hmac tools.

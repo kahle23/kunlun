@@ -5,7 +5,7 @@
 
 package kunlun.file;
 
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
 
 import java.io.*;
@@ -31,7 +31,7 @@ public class Text extends TextFile {
     @Override
     public long read(Reader reader) throws IOException {
         Assert.notNull(reader, "Parameter \"reader\" must not null. ");
-        String read = IOUtils.toString(reader);
+        String read = IoUtil.read(reader);
         textBuilder.setLength(ZERO);
         textBuilder.append(read);
         return read.length();

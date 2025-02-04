@@ -5,7 +5,7 @@
 
 package kunlun.util;
 
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class CharsetUtilsTest {
         StringReader reader = new StringReader("世界，你好！");
         ByteArrayOutputStream o = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(o, "GB2312");
-        IOUtils.copyLarge(reader, writer);
+        IoUtil.copy(reader, writer);
         log.info(new String(o.toByteArray(), "GB2312"));
     }
 

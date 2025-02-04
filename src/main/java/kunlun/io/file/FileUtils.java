@@ -5,12 +5,11 @@
 
 package kunlun.io.file;
 
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.ArrayUtils;
 import kunlun.util.Assert;
-import kunlun.util.CloseUtils;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
@@ -36,14 +35,7 @@ public class FileUtils {
         Assert.notNull(destination, "Parameter \"destination\" must not null. ");
         Assert.state(destination.exists(), "Parameter \"destination\" must exists. ");
         Assert.state(destination.isFile(), "Parameter \"destination\" must be a file. ");
-        FileInputStream in = null;
-        try {
-            in = new FileInputStream(destination);
-            return IOUtils.toByteArray(in);
-        }
-        finally {
-            CloseUtils.closeQuietly(in);
-        }
+        return IoUtil.readBytes(new FileInputStream(destination));
     }
 
     public static long write(Object input, File destination) throws IOException {
@@ -72,7 +64,7 @@ public class FileUtils {
                 count = bytes.length;
             }
             else if (input instanceof InputStream) {
-                count = IOUtils.copyLarge((InputStream) input, out);
+                count = IoUtil.copy((InputStream) input, out);
             }
             else {
                 throw new UnsupportedOperationException(
@@ -82,7 +74,7 @@ public class FileUtils {
             return count;
         }
         finally {
-            CloseUtils.closeQuietly(out);
+            IoUtil.closeQuietly(out);
         }
     }
 
@@ -188,10 +180,7 @@ public class FileUtils {
             }
         }
         finally {
-            CloseUtils.closeQuietly(output);
-            CloseUtils.closeQuietly(fos);
-            CloseUtils.closeQuietly(input);
-            CloseUtils.closeQuietly(fis);
+            IoUtil.closeQuietly(output, fos, input, fis);
         }
         if (source.length() != destination.length()) {
             throw new IOException("Failed to copy full contents from \"" + source + "\" to \"" + destination + "\". ");

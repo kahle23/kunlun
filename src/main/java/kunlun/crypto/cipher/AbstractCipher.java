@@ -9,7 +9,7 @@ import kunlun.codec.CodecUtils;
 import kunlun.common.constant.Charsets;
 import kunlun.core.Cipher;
 import kunlun.exception.ExceptionUtils;
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
 
 import java.io.InputStream;
@@ -43,7 +43,7 @@ public abstract class AbstractCipher implements Cipher {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         Assert.notNull(out, "Parameter \"out\" must not null. ");
         try {
-            out.write(encrypt(config, IOUtils.toByteArray(data)));
+            out.write(encrypt(config, IoUtil.readBytes(data)));
         } catch (Exception e) { throw ExceptionUtils.wrap(e); }
     }
 
@@ -52,7 +52,7 @@ public abstract class AbstractCipher implements Cipher {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         Assert.notNull(out, "Parameter \"out\" must not null. ");
         try {
-            out.write(decrypt(config, IOUtils.toByteArray(data)));
+            out.write(decrypt(config, IoUtil.readBytes(data)));
         } catch (Exception e) { throw ExceptionUtils.wrap(e); }
     }
 

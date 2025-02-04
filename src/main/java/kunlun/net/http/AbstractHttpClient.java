@@ -7,7 +7,7 @@ package kunlun.net.http;
 
 import kunlun.data.tuple.KeyValue;
 import kunlun.exception.ExceptionUtils;
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.util.*;
 
 import javax.net.ssl.*;
@@ -26,7 +26,7 @@ import java.util.Map;
 
 import static kunlun.common.constant.Numbers.TEN;
 import static kunlun.common.constant.Symbols.*;
-import static kunlun.io.util.IOUtils.EOF;
+import static kunlun.io.util.IoUtil.EOF;
 
 /**
  * The abstract http client.
@@ -337,7 +337,7 @@ public abstract class AbstractHttpClient implements HttpClient {
                     w.write("\"\r\nContent-Type: application/octet-stream\r\n\r\n");
                     // flush
                     w.flush();
-                    IOUtils.copyLarge((in = new FileInputStream(file)), o);
+                    IoUtil.copy((in = new FileInputStream(file)), o);
                     o.flush();
                 }
                 else {
@@ -346,7 +346,7 @@ public abstract class AbstractHttpClient implements HttpClient {
                         w.write(String.valueOf(val));
                     }
                 }
-            } finally { CloseUtils.closeQuietly(in); }
+            } finally { IoUtil.closeQuietly(in); }
             // write new line
             w.write("\r\n");
         }
@@ -383,13 +383,13 @@ public abstract class AbstractHttpClient implements HttpClient {
             //else {
             //}
             if (reader != null) {
-                IOUtils.copyLarge(reader, w);
+                IoUtil.copy(reader, w);
             }
             else {
                 w.write(String.valueOf(body));
             }
             w.flush();
-        } finally { CloseUtils.closeQuietly(reader); }
+        } finally { IoUtil.closeQuietly(reader); }
     }
 
     /**
@@ -443,7 +443,7 @@ public abstract class AbstractHttpClient implements HttpClient {
                 // Regular form data (application/x-www-form-urlencoded).
                 writeFormData(writer, output, request);
             }
-        } finally { CloseUtils.closeQuietly(output); }
+        } finally { IoUtil.closeQuietly(output); }
     }
 
 }

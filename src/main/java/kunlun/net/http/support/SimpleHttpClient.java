@@ -6,13 +6,12 @@
 package kunlun.net.http.support;
 
 import kunlun.exception.ExceptionUtils;
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.net.http.AbstractHttpClient;
 import kunlun.net.http.HttpMethod;
 import kunlun.net.http.HttpRequest;
 import kunlun.net.http.HttpResponse;
 import kunlun.util.Assert;
-import kunlun.util.CloseUtils;
 import kunlun.util.CollUtils;
 import kunlun.util.StrUtils;
 
@@ -34,7 +33,7 @@ import java.util.zip.GZIPInputStream;
 import static kunlun.common.constant.Numbers.ONE;
 import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.common.constant.Symbols.*;
-import static kunlun.io.util.IOUtils.EOF;
+import static kunlun.io.util.IoUtil.EOF;
 import static kunlun.net.http.HttpMethod.HEAD;
 
 /**
@@ -258,7 +257,7 @@ public class SimpleHttpClient extends AbstractHttpClient {
                 r.setBodyStream(new ConnectionInputStream(c, bodyStream));
             }
             else {
-                byte[] body = IOUtils.toByteArray(bodyStream);
+                byte[] body = IoUtil.readBytes(bodyStream);
                 r.setBodyStream(new ByteArrayInputStream(body));
             }
         }
@@ -372,7 +371,7 @@ public class SimpleHttpClient extends AbstractHttpClient {
         }
         finally {
             if (request.getStream() == null || !request.getStream()) {
-                CloseUtils.closeQuietly(connection);
+                IoUtil.closeIfPossible(connection);
             }
         }
     }

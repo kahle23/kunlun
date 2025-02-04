@@ -1,10 +1,10 @@
 package kunlun.jdbc;
 
 import kunlun.data.bean.BeanUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.CloseUtils;
 import kunlun.util.StrUtils;
 
 import java.sql.*;
@@ -84,7 +84,7 @@ public abstract class AbstractJdbcProvider implements JdbcProvider {
             return prepStmt.executeUpdate();
         }
         finally {
-            CloseUtils.closeQuietly(prepStmt);
+            IoUtil.closeIfPossible(prepStmt);
             closeConnection(connection);
         }
     }
@@ -144,8 +144,7 @@ public abstract class AbstractJdbcProvider implements JdbcProvider {
             return result;
         }
         finally {
-            CloseUtils.closeQuietly(resSet);
-            CloseUtils.closeQuietly(prepStmt);
+            IoUtil.closeIfPossible(resSet, prepStmt);
             closeConnection(connection);
         }
     }

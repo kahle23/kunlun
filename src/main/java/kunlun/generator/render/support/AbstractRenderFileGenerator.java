@@ -7,12 +7,12 @@ import kunlun.generator.render.AbstractRenderGenerator;
 import kunlun.io.FileLoader;
 import kunlun.io.util.FileUtils;
 import kunlun.io.util.FilenameUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.io.util.StringBuilderWriter;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.time.DateUtils;
 import kunlun.util.Assert;
-import kunlun.util.CloseUtils;
 
 import java.io.*;
 import java.util.Map;
@@ -144,7 +144,7 @@ public abstract class AbstractRenderFileGenerator extends AbstractRenderGenerato
                 writer = new OutputStreamWriter(output, outputCharset);
                 renderer.render(templateContent, model, writer);
             }
-            finally { CloseUtils.closeQuietly(writer); }
+            finally { IoUtil.closeQuietly(writer); }
         }
     }
 

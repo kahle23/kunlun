@@ -5,7 +5,7 @@
 
 package kunlun.util;
 
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class ClassLoaderUtilsTest {
     }
 
     @Test
-    public void testGetResources() throws IOException {
+    public void testGetResources() {
         List<URL> urlList = ClassLoaderUtils
                 .getResources("LICENSE.txt", getClass());
         for (URL url : urlList) {
@@ -38,11 +38,11 @@ public class ClassLoaderUtilsTest {
     }
 
     @Test
-    public void testGetResourceAsStream() throws IOException {
+    public void testGetResourceAsStream() {
         InputStream in = ClassLoaderUtils
                 .getResourceAsStream("jdbc.properties", getClass());
         assertNotNull(in);
-        log.info(IOUtils.toString(in));
+        log.info(IoUtil.readUtf8(in));
     }
 
     @Test

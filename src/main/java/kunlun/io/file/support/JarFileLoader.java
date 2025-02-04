@@ -7,11 +7,10 @@ package kunlun.io.file.support;
 
 import kunlun.exception.ExceptionUtils;
 import kunlun.io.FileLoader;
-import kunlun.io.util.IOUtils;
+import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.CloseUtils;
 import kunlun.util.StrUtils;
 
 import java.io.ByteArrayInputStream;
@@ -92,12 +91,12 @@ public class JarFileLoader implements FileLoader {
                 while (entries.hasMoreElements()) {
                     JarEntry entry = entries.nextElement();
                     if (entry.getName().equals(entrySubPath) && !entry.isDirectory()) {
-                        byte[] bytes = IOUtils.toByteArray(jarFile.getInputStream(entry));
+                        byte[] bytes = IoUtil.readBytes(jarFile.getInputStream(entry));
                         return new ByteArrayInputStream(bytes);
                     }
                 }
                 return null;
-            } finally { CloseUtils.closeQuietly(jarFile); }
+            } finally { IoUtil.closeQuietly(jarFile); }
         }
         else { return classLoader.getResourceAsStream(resource); }
     }
