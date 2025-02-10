@@ -8,6 +8,8 @@ package kunlun.security;
 import kunlun.core.AccessController;
 import kunlun.core.Context;
 
+import java.util.Collection;
+
 import static kunlun.security.UserManager.UserDetail;
 
 /**
@@ -62,11 +64,17 @@ public interface SecurityContext extends Context {
      */
     void putBaseData(Object userId, Object userType, String platform, String tenantId);
 
+    // ====
+
     /**
      * Get the current user detail.
      * @return The current user detail
      */
     UserDetail getUserDetail();
+
+    Collection<String> getUserGroups(Object groupType);
+
+    // ====
 
     /**
      * Get the held access controller.
