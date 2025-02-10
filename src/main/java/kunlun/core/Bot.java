@@ -10,5 +10,6 @@ package kunlun.core;
  * @see <a href="https://en.wikipedia.org/wiki/Bot">Bot</a>
  * @author Kahle
  */
+@Deprecated
 public interface Bot {
 }

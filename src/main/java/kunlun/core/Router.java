@@ -9,6 +9,7 @@ package kunlun.core;
  * Provide the highest level of abstraction for router.
  * @author Kahle
  */
+@Deprecated
 public interface Router {
 
     /**
