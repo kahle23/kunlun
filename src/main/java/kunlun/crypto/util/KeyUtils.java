@@ -23,32 +23,32 @@ import java.security.spec.X509EncodedKeySpec;
  */
 public class KeyUtils {
 
-    public static SecretKey parseSecretKey(String algorithm, byte[] keyBytes) {
+    public static PrivateKey parsePrivateKey(String algorithm, byte[] keyBytes) {
         Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
-        return new SecretKeySpec(keyBytes, algorithm);
-    }
-
-    public static IvParameterSpec parseIv(byte[] ivBytes) {
-        Assert.notEmpty(ivBytes, "Parameter \"ivBytes\" must not empty. ");
-        return new IvParameterSpec(ivBytes);
-    }
-
-    public static PublicKey parsePublicKey(String algorithm, byte[] keyBytes) {
         try {
-            Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
+            PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(keyBytes);
+            KeyFactory factory = KeyFactory.getInstance(algorithm);
+            return factory.generatePrivate(pkcs8EncodedKeySpec);
+        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+    }
+
+    public static PublicKey  parsePublicKey(String algorithm, byte[] keyBytes) {
+        Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
+        try {
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
             KeyFactory factory = KeyFactory.getInstance(algorithm);
             return factory.generatePublic(x509EncodedKeySpec);
         } catch (Exception e) { throw ExceptionUtils.wrap(e); }
     }
 
-    public static PrivateKey parsePrivateKey(String algorithm, byte[] keyBytes) {
-        try {
-            Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
-            PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(keyBytes);
-            KeyFactory factory = KeyFactory.getInstance(algorithm);
-            return factory.generatePrivate(pkcs8EncodedKeySpec);
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+    public static SecretKey  parseSecretKey(String algorithm, byte[] keyBytes) {
+        Assert.notEmpty(keyBytes, "Parameter \"keyBytes\" must not empty. ");
+        return new SecretKeySpec(keyBytes, algorithm);
+    }
+
+    public static IvParameterSpec parseIvParamSpec(byte[] ivBytes) {
+        Assert.notEmpty(ivBytes, "Parameter \"ivBytes\" must not empty. ");
+        return new IvParameterSpec(ivBytes);
     }
 
     // ====

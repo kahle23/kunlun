@@ -103,7 +103,7 @@ public class CodecUtils {
 
 
 
-    // ----
+    // ====
 
     public static String encodeToString(String name, Codec.Config config, byte[] source) {
 
@@ -125,7 +125,7 @@ public class CodecUtils {
         return getCodecManager().decodeFromString(name, null, source);
     }
 
-    // ----
+    // ====
 
     public static String encode(String name, Codec.Config config, String source) {
 
@@ -145,6 +145,52 @@ public class CodecUtils {
     public static String decode(String name, String source) {
 
         return getCodecManager().decode(name, null, source);
+    }
+
+
+
+    // ====
+
+    public static String encodeToBase64(Codec.Config config, byte[] source) {
+
+        return getCodecManager().encodeToString(BASE64, config, source);
+    }
+
+    public static byte[] decodeFromBase64(Codec.Config config, String source) {
+
+        return getCodecManager().decodeFromString(BASE64, config, source);
+    }
+
+    public static String encodeToBase64(byte[] source) {
+
+        return getCodecManager().encodeToString(BASE64, null, source);
+    }
+
+    public static byte[] decodeFromBase64(String source) {
+
+        return getCodecManager().decodeFromString(BASE64, null, source);
+    }
+
+    // ====
+
+    public static String encodeToHex(Codec.Config config, byte[] source) {
+
+        return getCodecManager().encodeToString(HEX, config, source);
+    }
+
+    public static byte[] decodeFromHex(Codec.Config config, String source) {
+
+        return getCodecManager().decodeFromString(HEX, config, source);
+    }
+
+    public static String encodeToHex(byte[] source) {
+
+        return getCodecManager().encodeToString(HEX, null, source);
+    }
+
+    public static byte[] decodeFromHex(String source) {
+
+        return getCodecManager().decodeFromString(HEX, null, source);
     }
 
 }

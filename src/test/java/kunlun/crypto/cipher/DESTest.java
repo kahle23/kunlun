@@ -19,8 +19,7 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static kunlun.codec.CodecUtils.BASE64;
 import static kunlun.common.constant.Algorithms.DES;
-import static kunlun.crypto.util.KeyUtils.parseIv;
-import static kunlun.crypto.util.KeyUtils.parseSecretKey;
+import static kunlun.crypto.util.KeyUtils.*;
 
 /**
  * The DES encryption and decryption tools Test.
@@ -40,7 +39,7 @@ public class DESTest extends BouncyCastleSupport {
     // Wrong keySize: must be equal to 56 (length is 8)
     private static final SecretKey key = parseSecretKey(DES, "TTestKey".getBytes());
     // Wrong IV length: must be 8 bytes long
-    private static final IvParameterSpec iv = parseIv("TeTestIv".getBytes());
+    private static final IvParameterSpec iv = parseIvParamSpec("TeTestIv".getBytes());
 
     /*static {
         SecretKey secretKey = KeyUtils.generateKey("DES", 56);

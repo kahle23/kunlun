@@ -10,66 +10,51 @@ package kunlun.crypto.util;
  * @see <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Cipher">Cipher (Encryption) Algorithms</a>
  * @author Kahle
  */
-public enum Mode {
+public class Modes {
 
     /**
      * No mode.
      */
-    NONE("NONE"),
+    public static final String NONE = "NONE";
 
     /**
      * Cipher Block Chaining.
      */
-    CBC("CBC"),
+    public static final String CBC = "CBC";
 
     /**
      * Cipher Feedback.
      */
-    CFB("CFB"),
+    public static final String CFB = "CFB";
 
     /**
      * A simplification of OFB.
      */
-    CTR("CTR"),
+    public static final String CTR = "CTR";
 
     /**
      * Cipher Text Stealing.
      */
-    CTS("CTS"),
+    public static final String CTS = "CTS";
 
     /**
      * Electronic code book.
      */
-    ECB("ECB"),
+    public static final String ECB = "ECB";
 
     /**
      * Output Feedback.
      */
-    OFB("OFB"),
+    public static final String OFB = "OFB";
 
     /**
      * Propagating Cipher Block Chaining.
      */
-    PCBC("PCBC"),
+    public static final String PCBC = "PCBC";
 
-    ;
+    private Modes() {
 
-    private final String name;
-
-    Mode(String name) {
-
-        this.name = name;
-    }
-
-    public String getName() {
-
-        return this.name;
-    }
-
-    @Override
-    public String toString() {
-
-        return this.name;
+        throw new UnsupportedOperationException("Don't allow instantiation. ");
     }
 
 }

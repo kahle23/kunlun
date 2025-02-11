@@ -18,8 +18,7 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static kunlun.codec.CodecUtils.BASE64;
 import static kunlun.common.constant.Algorithms.AES;
-import static kunlun.crypto.util.KeyUtils.parseIv;
-import static kunlun.crypto.util.KeyUtils.parseSecretKey;
+import static kunlun.crypto.util.KeyUtils.*;
 
 /**
  * The Blowfish encryption and decryption tools Test.
@@ -39,7 +38,7 @@ public class BlowfishTest extends BouncyCastleSupport {
     // KeySize must be multiple of 8, and can only range from 32 to 448 (inclusive)
     private static final SecretKey key = parseSecretKey(AES, "TeTestKeyTestKey".getBytes());
     // Wrong IV length: must be 8 bytes long
-    private static final IvParameterSpec iv = parseIv("TeTestIv".getBytes());
+    private static final IvParameterSpec iv = parseIvParamSpec("TeTestIv".getBytes());
 
     /*static {
         SecretKey secretKey = KeyUtils.generateKey(BLOWFISH, 128);

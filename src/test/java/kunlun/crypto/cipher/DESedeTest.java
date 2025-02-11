@@ -18,8 +18,7 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static kunlun.codec.CodecUtils.BASE64;
 import static kunlun.common.constant.Algorithms.AES;
-import static kunlun.crypto.util.KeyUtils.parseIv;
-import static kunlun.crypto.util.KeyUtils.parseSecretKey;
+import static kunlun.crypto.util.KeyUtils.*;
 
 /**
  * The DESede encryption and decryption tools Test.
@@ -39,7 +38,7 @@ public class DESedeTest extends BouncyCastleSupport {
     // Wrong keySize: must be equal to 112 or 168
     private static final SecretKey key = parseSecretKey(AES, "TesTestKeyTestKeyTestKey".getBytes());
     // Wrong IV length: must be 8 bytes long
-    private static final IvParameterSpec iv = parseIv("TeTestIv".getBytes());
+    private static final IvParameterSpec iv = parseIvParamSpec("TeTestIv".getBytes());
 
     /*static {
         SecretKey secretKey = KeyUtils.generateKey(DESEDE, 168);
