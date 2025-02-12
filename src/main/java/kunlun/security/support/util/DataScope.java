@@ -4,11 +4,11 @@ public enum DataScope {
 
     ALL,
 
+    GROUP,
+
     SELF,
 
     NONE,
-
-    GROUP,
 
     CUSTOM,
 

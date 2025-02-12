@@ -14,13 +14,7 @@ import kunlun.security.RbacAccessController;
 public class EmptyRbacAccessController extends EmptyAccessController implements RbacAccessController {
 
     @Override
-    public boolean hasRoleAnd(Object userId, Object userType, String... roles) {
-
-        return true;
-    }
-
-    @Override
-    public boolean hasRoleOr(Object userId, Object userType, String... roles) {
+    public boolean hasRole(Object userId, Object userType, String role) {
 
         return true;
     }

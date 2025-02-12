@@ -7,6 +7,7 @@ package kunlun.security;
 
 import kunlun.core.AccessController;
 import kunlun.core.Context;
+import kunlun.core.DataController;
 
 import java.util.Collection;
 
@@ -81,6 +82,8 @@ public interface SecurityContext extends Context {
      * @return The held access controller
      */
     AccessController getAccessController();
+
+    DataController getDataController();
 
     /**
      * Get the held token manager.

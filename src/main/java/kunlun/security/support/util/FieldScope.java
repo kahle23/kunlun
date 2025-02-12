@@ -4,11 +4,11 @@ public enum FieldScope {
 
     ALL,
 
-    BASE,
+    ADVANCED,
 
     NORMAL,
 
-    ADVANCED,
+    BASE,
 
     NONE,
 

@@ -5,11 +5,11 @@ import kunlun.security.support.util.DataScope;
 import kunlun.security.support.util.FieldScope;
 
 public abstract class AbstractDataController implements DataController {
-
+    public static final String DATA_PERMISSION = "data_permission";
 
     public static class BaseRule implements Rule {
-        private FieldScope fieldScope;
         private DataScope  dataScope;
+        private FieldScope fieldScope;
 
         public BaseRule(DataScope dataScope) {
             this();

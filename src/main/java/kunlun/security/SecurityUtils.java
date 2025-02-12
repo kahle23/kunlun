@@ -7,6 +7,7 @@ package kunlun.security;
 
 import kunlun.bean.BeanHolder;
 import kunlun.core.AccessController;
+import kunlun.core.DataController;
 import kunlun.util.Assert;
 import kunlun.util.IteratorUtils;
 
@@ -151,24 +152,14 @@ public class SecurityUtils {
 
     // ====
 
-    public static boolean hasRoleAnd(Object userId, Object userType, String... roles) {
+    public static boolean hasPermission(Object userId, Object userType, String permission) {
 
-        return ((RbacAccessController) getAccessController()).hasRoleAnd(userId, userType, roles);
+        return getAccessController().hasPermission(userId, userType, permission);
     }
 
-    public static boolean hasRoleOr(Object userId, Object userType, String... roles) {
+    public static boolean hasRole(Object userId, Object userType, String role) {
 
-        return ((RbacAccessController) getAccessController()).hasRoleOr(userId, userType, roles);
-    }
-
-    public static boolean hasPermissionAnd(Object userId, Object userType, Object operation, Object... resources) {
-
-        return getAccessController().hasPermissionAnd(userId, userType, operation, resources);
-    }
-
-    public static boolean hasPermissionOr(Object userId, Object userType, Object operation, Object... resources) {
-
-        return getAccessController().hasPermissionOr(userId, userType, operation, resources);
+        return ((RbacAccessController) getAccessController()).hasRole(userId, userType, role);
     }
 
     // ====
@@ -177,6 +168,12 @@ public class SecurityUtils {
         AccessController accessController = getContext().getAccessController();
         Assert.notNull(accessController, "The access controller is null. ");
         return accessController;
+    }
+
+    public static DataController getDataController() {
+        DataController dataController = getContext().getDataController();
+        Assert.notNull(dataController, "The data controller is null. ");
+        return dataController;
     }
 
     public static TokenManager getTokenManager() {
