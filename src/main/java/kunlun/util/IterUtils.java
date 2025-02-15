@@ -40,7 +40,7 @@ public class IterUtils {
         if (iterable == null) { return null; }
         if (iterable instanceof List) {
             List<T> list = (List<T>) iterable;
-            return CollUtils.isEmpty(list) ? null: list.get(ZERO);
+            return CollUtil.isEmpty(list) ? null: list.get(ZERO);
         }
         return getFirst(iterable.iterator());
     }

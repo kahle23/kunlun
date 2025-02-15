@@ -12,8 +12,8 @@ import kunlun.net.http.HttpMethod;
 import kunlun.net.http.HttpRequest;
 import kunlun.net.http.HttpResponse;
 import kunlun.util.Assert;
-import kunlun.util.CollUtils;
-import kunlun.util.StrUtils;
+import kunlun.util.CollUtil;
+import kunlun.util.StrUtil;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.ByteArrayInputStream;
@@ -84,7 +84,7 @@ public class SimpleHttpClient extends AbstractHttpClient {
         char[] boundaryChars = "123456789abcdefghijkmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ".toCharArray();
         String boundaryEqual = "boundary=", charsetEqual = "charset=", mimeBoundary = null, contentType;
         int boundaryLength = 16;
-        if (StrUtils.isNotBlank(contentType = request.getFirstHeader(CONTENT_TYPE))) {
+        if (StrUtil.isNotBlank(contentType = request.getFirstHeader(CONTENT_TYPE))) {
             // If content type already set, try to add charset or boundary if those aren't included.
             String lowerContentType = contentType.toLowerCase();
             boolean isMultipart = lowerContentType.startsWith(MULTIPART_FORM_DATA);
@@ -169,9 +169,9 @@ public class SimpleHttpClient extends AbstractHttpClient {
         for (Map.Entry<String, List<String>> header : headers.entrySet()) {
             List<String> val = header.getValue();
             String key = header.getKey();
-            if (CollUtils.isEmpty(val)) { continue; }
+            if (CollUtil.isEmpty(val)) { continue; }
             for (String str : val) {
-                if (StrUtils.isBlank(str)) { continue; }
+                if (StrUtil.isBlank(str)) { continue; }
                 conn.addRequestProperty(key, str);
             }
         }
@@ -306,7 +306,7 @@ public class SimpleHttpClient extends AbstractHttpClient {
         // Set charset
         String contentType = resp.getFirstHeader(CONTENT_TYPE);
         String charsetName = obtainCharset(contentType);
-        if (StrUtils.isNotBlank(charsetName)) {
+        if (StrUtil.isNotBlank(charsetName)) {
             resp.setCharset(Charset.forName(charsetName).name());
         }
         // If from a redirect, map previous response cookies into this response
@@ -334,7 +334,7 @@ public class SimpleHttpClient extends AbstractHttpClient {
         // Handle has body.
         boolean hasBody = hasBody(request.getMethod());
         String mimeBoundary = null;
-        if (!hasBody && CollUtils.isNotEmpty(request.getParameters())) {
+        if (!hasBody && CollUtil.isNotEmpty(request.getParameters())) {
             // Moved into url as get params.
             request.setUrl(buildRequestUrl(request.getUrl(), request.getCharset(), request.getParameters()));
             request.clearParameters();

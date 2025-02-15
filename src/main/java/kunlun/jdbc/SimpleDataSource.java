@@ -5,7 +5,7 @@ import kunlun.aop.ProxyUtils;
 import kunlun.exception.ExceptionUtils;
 import kunlun.util.Assert;
 import kunlun.util.ClassLoaderUtils;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -112,7 +112,7 @@ public class SimpleDataSource implements DataSource {
                     "Parameter \"minPoolSize\" must less than or equal to \"maxPoolSize\". "
             );
         }
-        this.driverClass = StrUtils.isNotBlank(driverClass) ? driverClass : "com.mysql.jdbc.Driver";
+        this.driverClass = StrUtil.isNotBlank(driverClass) ? driverClass : "com.mysql.jdbc.Driver";
         this.jdbcUrl = jdbcUrl;
         this.user = user;
         this.password = password;

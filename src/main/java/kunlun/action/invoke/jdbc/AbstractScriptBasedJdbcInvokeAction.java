@@ -9,7 +9,7 @@ import kunlun.action.invoke.AbstractInvokeAction;
 import kunlun.data.validation.support.ValidationConfig;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 import kunlun.util.handler.ScriptHandler;
 import kunlun.util.handler.support.ScriptHandlerImpl;
 
@@ -42,7 +42,7 @@ public abstract class AbstractScriptBasedJdbcInvokeAction extends AbstractInvoke
         String scriptEngine = config.getScriptEngine();
         String inputScript = config.getInput();
         // Eval input script.
-        if (StrUtils.isNotBlank(inputScript)) {
+        if (StrUtil.isNotBlank(inputScript)) {
             Object convertedInput = getScriptHandler().eval(scriptEngine, inputScript, context);
             context.setConvertedInput(convertedInput);
         }
@@ -64,7 +64,7 @@ public abstract class AbstractScriptBasedJdbcInvokeAction extends AbstractInvoke
         String scriptEngine = config.getScriptEngine();
         String outputScript = config.getOutput();
         // Eval output script.
-        if (StrUtils.isNotBlank(outputScript)) {
+        if (StrUtil.isNotBlank(outputScript)) {
             context.setConvertedOutput(getScriptHandler().eval(scriptEngine, outputScript, context));
         }
         else { context.setConvertedOutput(context.getRawOutput()); }

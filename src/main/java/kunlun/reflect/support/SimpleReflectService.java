@@ -10,7 +10,7 @@ import kunlun.reflect.ReflectService;
 import kunlun.util.ArrayUtils;
 import kunlun.util.Assert;
 import kunlun.util.ClassUtils;
-import kunlun.util.ObjUtils;
+import kunlun.util.ObjUtil;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -89,7 +89,7 @@ public class SimpleReflectService implements ReflectService {
     @Override
     public <T> Constructor<T>[] getConstructors(Class<T> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        return ObjUtils.cast(clazz.getDeclaredConstructors());
+        return ObjUtil.cast(clazz.getDeclaredConstructors());
     }
 
     @Override
@@ -107,7 +107,7 @@ public class SimpleReflectService implements ReflectService {
             for (Constructor<?> ct : cts) {
                 Class<?>[] pTypes = ct.getParameterTypes();
                 boolean b = matchParameterTypes(pTypes, parameterTypes);
-                if (b) { return ObjUtils.cast(ct); }
+                if (b) { return ObjUtil.cast(ct); }
             }
             throw e;
         }

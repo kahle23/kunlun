@@ -10,7 +10,7 @@ import kunlun.db.jdbc.meta.Table;
 import kunlun.db.jdbc.support.JdbcTableLoader;
 import kunlun.exception.ExceptionUtils;
 import kunlun.io.util.IoUtil;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -60,7 +60,7 @@ public class MysqlTableCommentConsumer implements Consumer<JdbcTableLoader.Conte
                 String tableName = resultSet.getString(ONE);
                 // Fill the table comment.
                 Table table = tableMap.get(tableName);
-                if (table != null && StrUtils.isBlank(table.getComment())) {
+                if (table != null && StrUtil.isBlank(table.getComment())) {
                     table.setComment(tableComment);
                 }
             }

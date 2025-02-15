@@ -11,7 +11,7 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 import kunlun.util.MapUtils;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 
 import java.util.Collections;
 import java.util.Map;
@@ -102,7 +102,7 @@ public class SimplePropertyProvider implements PropertyProvider {
 
     @Override
     public PropertySource getPropertySource(String sourceName) {
-        if (StrUtils.isBlank(sourceName)) { sourceName = getDefaultSourceName(); }
+        if (StrUtil.isBlank(sourceName)) { sourceName = getDefaultSourceName(); }
         return propertySources.get(sourceName);
     }
 

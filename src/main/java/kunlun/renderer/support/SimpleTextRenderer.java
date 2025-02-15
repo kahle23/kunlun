@@ -34,8 +34,8 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
     private static final char ESCAPE_SYMBOL = '\\';
 
     protected void loadContent(Tpl tpl) {
-        if (tpl == null || !ObjUtils.isEmpty(tpl.getContent())) { return; }
-        if (StrUtils.isBlank(tpl.getCharset())) { tpl.setCharset(STR_UTF_8); }
+        if (tpl == null || !ObjUtil.isEmpty(tpl.getContent())) { return; }
+        if (StrUtil.isBlank(tpl.getCharset())) { tpl.setCharset(STR_UTF_8); }
         Charset charset = Charset.forName(tpl.getCharset());
         InputStream in = ClassLoaderUtils.getResourceAsStream(tpl.getName(), getClass());
         tpl.setContent(new InputStreamReader(Assert.notNull(in), charset));
@@ -43,7 +43,7 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
 
     protected String render(String template, Map<?, ?> data) throws ParseException {
         // Parameters check.
-        if (StrUtils.isBlank(template)) { return null; }
+        if (StrUtil.isBlank(template)) { return null; }
         if (MapUtils.isEmpty(data)) { return template; }
         // Variable declarations.
         StringBuilder result = new StringBuilder();
@@ -100,11 +100,11 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
                 writer.write(render(str, dataMap));
             } else if (template instanceof Tpl) {
                 Tpl tpl = (Tpl) template;
-                if (ObjUtils.isEmpty(tpl.getContent())
+                if (ObjUtil.isEmpty(tpl.getContent())
                         && getTemplateLoader() != null) {
                     getTemplateLoader().accept(tpl);
                 }
-                if (ObjUtils.isEmpty(tpl.getContent())) {
+                if (ObjUtil.isEmpty(tpl.getContent())) {
                     loadContent(tpl);
                 }
                 render(tpl.getContent(), data, output);

@@ -14,8 +14,8 @@ import kunlun.data.validation.support.ValidationConfig;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.ObjUtils;
-import kunlun.util.StrUtils;
+import kunlun.util.ObjUtil;
+import kunlun.util.StrUtil;
 import kunlun.util.handler.ScriptHandler;
 import kunlun.util.handler.support.ScriptHandlerImpl;
 
@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static kunlun.common.constant.Numbers.*;
-import static kunlun.util.ObjUtils.cast;
+import static kunlun.util.ObjUtil.cast;
 
 /**
  * The abstract script-based http invoke action.
@@ -58,7 +58,7 @@ public abstract class AbstractScriptBasedHttpInvokeAction extends AbstractInvoke
         context.setConvertedInput(convertedInput);
         // Charset and method.
         String charset = config.getCharset();
-        if (StrUtils.isNotBlank(charset)) {
+        if (StrUtil.isNotBlank(charset)) {
             convertedInput.setCharset(charset);
         }
         convertedInput.setMethod(config.getMethod());
@@ -68,7 +68,7 @@ public abstract class AbstractScriptBasedHttpInvokeAction extends AbstractInvoke
         // Headers.
         List<?> headers = (List<?>)
                 getScriptHandler().eval(scriptEngine, config.getHeaders(), context);
-        if (!ObjUtils.isEmpty(headers)) {
+        if (!ObjUtil.isEmpty(headers)) {
             Collection<KeyValue<String, String>> collection =
                     cast(BeanUtils.beanToBeanInList(headers, KeyValueImpl.class));
             convertedInput.setHeaders(collection);
@@ -79,7 +79,7 @@ public abstract class AbstractScriptBasedHttpInvokeAction extends AbstractInvoke
         if (inputType == TWO || inputType == THREE) {
             List<?> parametersObj = (List<?>)
                     getScriptHandler().eval(scriptEngine, config.getParameters(), context);
-            if (!ObjUtils.isEmpty(parametersObj)) {
+            if (!ObjUtil.isEmpty(parametersObj)) {
                 Collection<KeyValue<String, Object>> collection =
                         cast(BeanUtils.beanToBeanInList(parametersObj, KeyValueImpl.class));
                 convertedInput.setParameters(collection);
@@ -128,7 +128,7 @@ public abstract class AbstractScriptBasedHttpInvokeAction extends AbstractInvoke
             throw new UnsupportedOperationException("The output type is unsupported! ");
         }
         // Eval output conversion script.
-        if (StrUtils.isNotBlank(output)) {
+        if (StrUtil.isNotBlank(output)) {
             Object outputObj = getScriptHandler().eval(scriptEngine, output, context);
             context.setConvertedOutput(outputObj);
         }

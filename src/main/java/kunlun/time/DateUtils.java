@@ -8,7 +8,7 @@ package kunlun.time;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.ObjUtils;
+import kunlun.util.ObjUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -134,17 +134,17 @@ public class DateUtils {
 
     public static boolean equals(Date date1, Date date2) {
 
-        return ObjUtils.equals(date1, date2);
+        return ObjUtil.equals(date1, date2);
     }
 
     public static boolean equals(Calendar calendar1, Calendar calendar2) {
 
-        return ObjUtils.equals(calendar1, calendar2);
+        return ObjUtil.equals(calendar1, calendar2);
     }
 
     public static boolean equals(DateTime dateTime1, DateTime dateTime2) {
 
-        return ObjUtils.equals(dateTime1, dateTime2);
+        return ObjUtil.equals(dateTime1, dateTime2);
     }
 
     public static long getTimeInMillis() {

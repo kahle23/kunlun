@@ -11,7 +11,7 @@ import kunlun.io.FileEntity;
 import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.CollUtils;
+import kunlun.util.CollUtil;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -58,7 +58,7 @@ public class LocalFileStorageTest {
     @Test
     public void test3() {
         Collection<FileBase> list = localFileStorage.list(".\\target");
-        if (CollUtils.isEmpty(list)) { return; }
+        if (CollUtil.isEmpty(list)) { return; }
         for (FileBase fileBase : list) {
             log.info("file: {}", JSON.toJSONString(fileBase));
         }

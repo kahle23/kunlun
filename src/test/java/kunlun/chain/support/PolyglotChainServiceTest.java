@@ -10,7 +10,7 @@ import kunlun.chain.ChainUtils;
 import kunlun.data.Dict;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.ObjUtils;
+import kunlun.util.ObjUtil;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -67,12 +67,12 @@ public class PolyglotChainServiceTest {
         Dict dict = Dict.of("a", 1).set("b", 2).set("c", 3);
         Dict result = Dict.of((Map<?, ?>) ChainUtils.execute(chainId, dict, Map.class));
         log.info("result: {}", result);
-        assertTrue(ObjUtils.equals(result.getDouble("a"), 2d));
-        assertTrue(ObjUtils.equals(result.getDouble("b"), 3d));
-        assertTrue(ObjUtils.equals(result.getDouble("c"), 5d));
+        assertTrue(ObjUtil.equals(result.getDouble("a"), 2d));
+        assertTrue(ObjUtil.equals(result.getDouble("b"), 3d));
+        assertTrue(ObjUtil.equals(result.getDouble("c"), 5d));
         assertNull(result.get("d"));
         assertNull(result.get("e"));
-        assertTrue(ObjUtils.equals(result.getInteger("f"), 3));
+        assertTrue(ObjUtil.equals(result.getInteger("f"), 3));
     }
 
 }

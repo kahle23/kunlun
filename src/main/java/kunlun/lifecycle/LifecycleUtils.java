@@ -7,7 +7,7 @@ package kunlun.lifecycle;
 
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.CollUtils;
+import kunlun.util.CollUtil;
 
 import java.util.Collection;
 
@@ -28,7 +28,7 @@ public class LifecycleUtils {
     }
 
     public static void initialize(Collection<?> collection) throws LifecycleException {
-        if (CollUtils.isEmpty(collection)) {
+        if (CollUtil.isEmpty(collection)) {
             return;
         }
         for (Object obj : collection) {
@@ -53,7 +53,7 @@ public class LifecycleUtils {
     }
 
     public static void destroy(Collection<?> collection) {
-        if (CollUtils.isEmpty(collection)) {
+        if (CollUtil.isEmpty(collection)) {
             return;
         }
         for (Object obj : collection) {

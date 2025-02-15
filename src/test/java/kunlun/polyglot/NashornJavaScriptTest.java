@@ -9,7 +9,7 @@ import kunlun.data.Dict;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.polyglot.support.ScriptEngineService;
-import kunlun.util.ObjUtils;
+import kunlun.util.ObjUtil;
 import org.junit.Test;
 
 import javax.script.*;
@@ -35,7 +35,7 @@ public class NashornJavaScriptTest {
         Object result = PolyglotUtils.eval(name, script, data);
         log.info("result: {}", result);
         // Assert.
-        assertTrue("a = 2; b = 3; a + b should be 5.0", ObjUtils.equals(result, 5D));
+        assertTrue("a = 2; b = 3; a + b should be 5.0", ObjUtil.equals(result, 5D));
         assertSame("data must not updated", 1, data.get("a"));
         assertSame("data must not updated", 2, data.get("b"));
     }
@@ -46,7 +46,7 @@ public class NashornJavaScriptTest {
         Dict data = Dict.of("a", Dict.of("b", 4));
         Object result = PolyglotUtils.eval(name, script, data);
         log.info("result: {}", result);
-        assertTrue(ObjUtils.equals(result, 4));
+        assertTrue(ObjUtil.equals(result, 4));
     }
 
     @Test
@@ -73,12 +73,12 @@ public class NashornJavaScriptTest {
         script = "var a = 1; var b = 2; a + b + e;";
         result = PolyglotUtils.eval(name, script, context);
         log.info("result: {}", result);
-        assertTrue(ObjUtils.equals(result, 8D));
+        assertTrue(ObjUtil.equals(result, 8D));
 
         script = "var c = 3; var d = 4; c + d + e;";
         result = PolyglotUtils.eval(name, script, context);
         log.info("result: {}", result);
-        assertTrue(ObjUtils.equals(result, 12D));
+        assertTrue(ObjUtil.equals(result, 12D));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class NashornJavaScriptTest {
                 "}\n";
         Object result = PolyglotUtils.invoke(name, script, "test", 1, 2, 3);
         log.info("result: {}", result);
-        assertTrue(ObjUtils.equals(result, 6D));
+        assertTrue(ObjUtil.equals(result, 6D));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class NashornJavaScriptTest {
         Dict data = Dict.of();
         Object result = PolyglotUtils.eval(name, script, data);
         log.info("result: {}", result);
-        assertTrue(ObjUtils.equals(result, 12D));
+        assertTrue(ObjUtil.equals(result, 12D));
     }
 
     @Test
@@ -121,7 +121,7 @@ public class NashornJavaScriptTest {
         CompiledScript compiledScript = service.compile(name, script, null);
         Object result = compiledScript.eval(new SimpleBindings());
         log.info("result: {}", result);
-        assertTrue(ObjUtils.equals(result, 12D));
+        assertTrue(ObjUtil.equals(result, 12D));
     }
 
 }

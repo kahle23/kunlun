@@ -8,7 +8,7 @@ package kunlun.convert;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.ObjUtils;
+import kunlun.util.ObjUtil;
 
 import java.lang.reflect.Type;
 
@@ -63,7 +63,7 @@ public class ConversionUtils {
     public static <T> T convert(Object source, Class<T> targetType) {
         // Make sure that the target type can be converted successfully,
         // Otherwise, a cast exception will occur.
-        return ObjUtils.cast(convert(source, (Type) targetType), targetType);
+        return ObjUtil.cast(convert(source, (Type) targetType), targetType);
     }
 
 }

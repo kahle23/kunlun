@@ -14,8 +14,8 @@ import kunlun.db.jdbc.meta.Table;
 import kunlun.exception.ExceptionUtils;
 import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
-import kunlun.util.CollUtils;
-import kunlun.util.StrUtils;
+import kunlun.util.CollUtil;
+import kunlun.util.StrUtil;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -24,7 +24,7 @@ import java.util.*;
 import static kunlun.common.constant.Numbers.ONE;
 import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.common.constant.Symbols.COMMA;
-import static kunlun.util.CollUtils.isNotEmpty;
+import static kunlun.util.CollUtil.isNotEmpty;
 
 /**
  * The jdbc based table structure information loader.
@@ -67,7 +67,7 @@ public class JdbcTableLoader implements Loader<JdbcTableLoader.Config, List<Tabl
             List<Table> tables = loadTables(
                     connection, catalog, config.getReservedTables(), config.getExcludedTables());
             // Process the post consumers.
-            if (CollUtils.isNotEmpty(config.getPostConsumers())) {
+            if (CollUtil.isNotEmpty(config.getPostConsumers())) {
                 Context context = new Context(config, connection, catalog, tables);
                 for (Consumer<Context> c : config.getPostConsumers()) { c.accept(context); }
             }
@@ -156,10 +156,10 @@ public class JdbcTableLoader implements Loader<JdbcTableLoader.Config, List<Tabl
         String isAutoincrement = columnRs.getString(IS_AUTOINCREMENT);
         // Judge nullable and autoincrement.
         Boolean nullable = null, autoincrement = null;
-        if (StrUtils.isNotBlank(isNullable)) {
+        if (StrUtil.isNotBlank(isNullable)) {
             nullable = YES.equalsIgnoreCase(isNullable);
         }
-        if (StrUtils.isNotBlank(isAutoincrement)) {
+        if (StrUtil.isNotBlank(isAutoincrement)) {
             autoincrement = YES.equalsIgnoreCase(isAutoincrement);
         }
         // Create column object.

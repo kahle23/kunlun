@@ -14,7 +14,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 import static kunlun.chain.ChainNode.Config;
-import static kunlun.util.ObjUtils.cast;
+import static kunlun.util.ObjUtil.cast;
 
 /**
  * The chain service tools.

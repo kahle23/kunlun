@@ -6,7 +6,7 @@
 package kunlun.convert.support;
 
 import kunlun.convert.ConversionService;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 
 import java.math.BigDecimal;
 
@@ -28,7 +28,7 @@ public class StringToNumberConverter extends AbstractClassConverter {
         // If it is a blank string, it can indicate that the number is null.
         // However, if the target data type is of a non-wrapper type, a null pointer will be generated.
         // So the error caused by returning a blank string is more appropriate.
-        if (StrUtils.isBlank(numString)) { return source; }
+        if (StrUtil.isBlank(numString)) { return source; }
         numString = numString.trim();
         BigDecimal decimal = new BigDecimal(numString);
         return getConversionService().convert(decimal, targetClass);

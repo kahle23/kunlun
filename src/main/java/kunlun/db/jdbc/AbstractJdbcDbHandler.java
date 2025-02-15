@@ -11,7 +11,7 @@ import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -211,7 +211,7 @@ public abstract class AbstractJdbcDbHandler extends AbstractDbHandler implements
                 //columnLabels[i] = resMetaData.getColumnName(i + ONE)
                 columnLabels[i] = resMetaData.getColumnLabel(i + ONE);
                 if (toCamel) {
-                    columnLabels[i] = StrUtils.underlineToCamel(columnLabels[i]);
+                    columnLabels[i] = StrUtil.underlineToCamel(columnLabels[i]);
                 }
                 columnTypes[i] = resMetaData.getColumnType(i + ONE);
             }

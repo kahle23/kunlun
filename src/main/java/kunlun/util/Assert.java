@@ -176,7 +176,7 @@ public class Assert {
     // ====
 
     public static void isEmpty(CharSequence text, String message) {
-        if (StrUtils.isNotEmpty(text)) {
+        if (StrUtil.isNotEmpty(text)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -187,7 +187,7 @@ public class Assert {
     }
 
     public static <T extends CharSequence> T notEmpty(T text, String message) {
-        if (StrUtils.isEmpty(text)) {
+        if (StrUtil.isEmpty(text)) {
             throw new IllegalArgumentException(message);
         }
         return text;
@@ -199,7 +199,7 @@ public class Assert {
     }
 
     public static void isBlank(CharSequence text, String message) {
-        if (StrUtils.isNotBlank(text)) {
+        if (StrUtil.isNotBlank(text)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -210,7 +210,7 @@ public class Assert {
     }
 
     public static <T extends CharSequence> T notBlank(T text, String message) {
-        if (StrUtils.isBlank(text)) {
+        if (StrUtil.isBlank(text)) {
             throw new IllegalArgumentException(message);
         }
         return text;

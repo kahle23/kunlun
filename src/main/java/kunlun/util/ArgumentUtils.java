@@ -160,7 +160,7 @@ public class ArgumentUtils {
         for (String arg : arguments) {
             if (!arg.startsWith(DOUBLE_MINUS)) { continue; }
             arg = arg.substring(TWO);
-            if (StrUtils.isBlank(arg)) { continue; }
+            if (StrUtil.isBlank(arg)) { continue; }
             if (!arg.contains(EQUAL)) { continue; }
             int indexOf = arg.indexOf(EQUAL);
             String key = arg.substring(ZERO, indexOf);

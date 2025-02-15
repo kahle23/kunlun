@@ -9,7 +9,7 @@ import kunlun.lock.support.ReentrantLockManager;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -64,7 +64,7 @@ public class SimpleLockProvider implements LockProvider {
 
     @Override
     public LockManager getLockManager(String managerName) {
-        if (StrUtils.isBlank(managerName)) { managerName = defaultManagerName; }
+        if (StrUtil.isBlank(managerName)) { managerName = defaultManagerName; }
         LockManager lockManager = lockManagers.get(managerName);
         Assert.state(lockManager != null, "The lock manager does not exist. ");
         return lockManager;

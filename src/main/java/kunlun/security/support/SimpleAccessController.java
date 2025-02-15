@@ -7,7 +7,7 @@ package kunlun.security.support;
 
 import kunlun.core.AccessController;
 import kunlun.security.UserManager;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 
 import java.util.Collection;
 
@@ -37,7 +37,7 @@ public class SimpleAccessController implements AccessController {
     public boolean hasPermission(Object userId, Object userType, String permission) {
         // Is not turn on access permission or permission code is blank.
         if (getUserManager() == null) { return true; }
-        if (StrUtils.isBlank(permission)) { return true; }
+        if (StrUtil.isBlank(permission)) { return true; }
         // Get user permissions.
         Collection<String> permissions = getUserManager().getUserPermissions(userId, userType);
         // Is not turn on access permission.

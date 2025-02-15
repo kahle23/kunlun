@@ -6,7 +6,7 @@
 package kunlun.ai.model;
 
 import kunlun.core.function.Consumer;
-import kunlun.util.CollUtils;
+import kunlun.util.CollUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -329,7 +329,7 @@ public class ChatRequest implements Serializable {
             request.setStream(stream);
             request.setStreamConsumer(streamConsumer);
             request.setMessages(messages);
-            if (CollUtils.isNotEmpty(tools)) {
+            if (CollUtil.isNotEmpty(tools)) {
                 request.setTools(tools);
             }
             request.setConfig(config);

@@ -13,8 +13,8 @@ import kunlun.logging.LoggerFactory;
 import kunlun.reflect.ReflectUtils;
 import kunlun.util.ArrayUtils;
 import kunlun.util.Assert;
-import kunlun.util.ObjUtils;
-import kunlun.util.StrUtils;
+import kunlun.util.ObjUtil;
+import kunlun.util.StrUtil;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -102,7 +102,7 @@ public class SimpleBeanMap extends BeanMap {
         String keyString = String.valueOf(key);
         if (keyString.startsWith(GET)) {
             keyString = keyString.substring(THREE);
-            keyString = StrUtils.uncapitalize(keyString);
+            keyString = StrUtil.uncapitalize(keyString);
         }
         Method method = readMethodMap.get(keyString);
         if (method == null) { return null; }
@@ -126,7 +126,7 @@ public class SimpleBeanMap extends BeanMap {
         String keyString = String.valueOf(key);
         if (keyString.startsWith(SET)) {
             keyString = keyString.substring(THREE);
-            keyString = StrUtils.uncapitalize(keyString);
+            keyString = StrUtil.uncapitalize(keyString);
         }
         Method method = writeMethodMap.get(keyString);
         if (method == null) { return null; }
@@ -158,7 +158,7 @@ public class SimpleBeanMap extends BeanMap {
     @Override
     public Set<Object> keySet() {
         Set<String> keys = readMethodMap.keySet();
-        return ObjUtils.cast(Collections.unmodifiableSet(keys));
+        return ObjUtil.cast(Collections.unmodifiableSet(keys));
     }
 
 }

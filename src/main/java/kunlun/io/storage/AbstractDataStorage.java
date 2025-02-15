@@ -8,7 +8,7 @@ package kunlun.io.storage;
 import kunlun.data.tuple.KeyValueImpl;
 import kunlun.io.DataStorage;
 import kunlun.util.Assert;
-import kunlun.util.CollUtils;
+import kunlun.util.CollUtil;
 
 import java.io.*;
 import java.util.Collection;
@@ -76,14 +76,14 @@ public abstract class AbstractDataStorage implements DataStorage {
 
     @Override
     public Object putAll(Collection<?> data) {
-        if (CollUtils.isEmpty(data)) { return null; }
+        if (CollUtil.isEmpty(data)) { return null; }
         for (Object datum : data) { put(datum); }
         return null;
     }
 
     @Override
     public Object deleteAll(Collection<?> keys) {
-        if (CollUtils.isEmpty(keys)) { return null; }
+        if (CollUtil.isEmpty(keys)) { return null; }
         for (Object key : keys) { delete(key); }
         return null;
     }

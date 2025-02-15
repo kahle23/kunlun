@@ -15,7 +15,7 @@ import static kunlun.common.constant.Numbers.ZERO;
  * The object tools.
  * @author Kahle
  */
-public class ObjUtils {
+public class ObjUtil {
 
     public static boolean isNull(Object obj) {
 

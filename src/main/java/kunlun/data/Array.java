@@ -7,7 +7,7 @@ package kunlun.data;
 
 import kunlun.util.ArrayUtils;
 import kunlun.util.Assert;
-import kunlun.util.CollUtils;
+import kunlun.util.CollUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +43,7 @@ public class Array extends ArrayList<Object> {
     }
 
     public Array pushAll(Collection<?> collection) {
-        if (CollUtils.isNotEmpty(collection)) {
+        if (CollUtil.isNotEmpty(collection)) {
             Assert.isTrue(addAll(collection)
                     , "Append all the specified elements failure. ");
         }

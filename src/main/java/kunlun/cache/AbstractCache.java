@@ -8,9 +8,9 @@ package kunlun.cache;
 import kunlun.exception.ExceptionUtils;
 import kunlun.lock.LockUtils;
 import kunlun.util.Assert;
-import kunlun.util.CollUtils;
+import kunlun.util.CollUtil;
 import kunlun.util.MapUtils;
-import kunlun.util.ObjUtils;
+import kunlun.util.ObjUtil;
 
 import java.util.Collection;
 import java.util.Date;
@@ -62,13 +62,13 @@ public abstract class AbstractCache implements Cache {
         Assert.notNull(callable, "Parameter \"callable\" must not null. ");
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         Object value = get(key);
-        if (value != null) { return ObjUtils.cast(value); }
+        if (value != null) { return ObjUtil.cast(value); }
         String lockName = "lock-name:" + getClass().getName() + ":" + key;
         LockUtils.lock(getLockManager(), lockName);
         try {
             // Try to get again.
             value = get(key);
-            if (value != null) { return ObjUtils.cast(value); }
+            if (value != null) { return ObjUtil.cast(value); }
             // Try to call.
             try {
                 value = callable.call();
@@ -80,7 +80,7 @@ public abstract class AbstractCache implements Cache {
             if (value != null) {
                 put(key, value);
             }
-            return ObjUtils.cast(value);
+            return ObjUtil.cast(value);
         }
         finally {
             LockUtils.unlock(getLockManager(), lockName);
@@ -93,7 +93,7 @@ public abstract class AbstractCache implements Cache {
         Assert.notNull(key, "Parameter \"key\" must not null. ");
         Object value = get(key);
         if (value == null) { return null; }
-        return ObjUtils.cast(value, type);
+        return ObjUtil.cast(value, type);
     }
 
     @Override
@@ -149,7 +149,7 @@ public abstract class AbstractCache implements Cache {
 
     @Override
     public void removeAll(Collection<?> keys) {
-        if (CollUtils.isEmpty(keys)) { return; }
+        if (CollUtil.isEmpty(keys)) { return; }
         for (Object key : keys) {
             if (key == null) { continue; }
             remove(key);

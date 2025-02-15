@@ -7,7 +7,7 @@ package kunlun.util.concurrent;
 
 import kunlun.exception.ExceptionUtils;
 import kunlun.util.Assert;
-import kunlun.util.CollUtils;
+import kunlun.util.CollUtil;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -97,7 +97,7 @@ public class ExecutorServiceCleaner implements Runnable {
 
     @Override
     public void run() {
-        if (CollUtils.isEmpty(threadPoolList)) {
+        if (CollUtil.isEmpty(threadPoolList)) {
             return;
         }
         for (ExecutorService executorService : threadPoolList) {

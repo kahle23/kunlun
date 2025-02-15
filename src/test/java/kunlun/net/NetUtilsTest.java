@@ -7,7 +7,7 @@ package kunlun.net;
 
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.CollUtils;
+import kunlun.util.CollUtil;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -79,7 +79,7 @@ public class NetUtilsTest {
         List<NetworkInterface> interfaces = NetUtils.getNetworkInterfaces();
         for (NetworkInterface networkInterface : interfaces) {
             List<InetAddress> addresses = NetUtils.getInetAddresses(networkInterface);
-            if (CollUtils.isEmpty(addresses)) { continue; }
+            if (CollUtil.isEmpty(addresses)) { continue; }
             for (InetAddress address : addresses) {
                 log.info("{}", address.getHostAddress());
             }

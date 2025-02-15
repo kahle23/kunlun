@@ -73,7 +73,7 @@ public class ClassLoaderUtils {
     public static URL getResource(String resourceName, Class<?> callingClass) {
         Assert.notNull(resourceName
                 , "Parameter \"resourceName\" must not null. ");
-        resourceName = StrUtils.replace(resourceName, BACKSLASH, SLASH);
+        resourceName = StrUtil.replace(resourceName, BACKSLASH, SLASH);
         boolean startsSlash = resourceName.startsWith(SLASH);
         Thread currentThread = Thread.currentThread();
         ClassLoader classLoader =
@@ -121,7 +121,7 @@ public class ClassLoaderUtils {
     public static List<URL> getResources(String resourceName, Class<?> callingClass) {
         Assert.notNull(resourceName
                 , "Parameter \"resourceName\" must not null. ");
-        resourceName = StrUtils.replace(resourceName, BACKSLASH, SLASH);
+        resourceName = StrUtil.replace(resourceName, BACKSLASH, SLASH);
         boolean startsSlash = resourceName.startsWith(SLASH);
         Thread currentThread = Thread.currentThread();
         List<URL> result = new ArrayList<URL>();
@@ -129,7 +129,7 @@ public class ClassLoaderUtils {
                 currentThread.getContextClassLoader();
         Enumeration<URL> urls =
                 ClassLoaderUtils.getResources(classLoader, resourceName);
-        if (CollUtils.isEmpty(urls) && startsSlash) {
+        if (CollUtil.isEmpty(urls) && startsSlash) {
             // Certain ClassLoaders need it without the leading "/".
             String subStr = resourceName.substring(ONE);
             urls = ClassLoaderUtils.getResources(classLoader, subStr);
@@ -138,24 +138,24 @@ public class ClassLoaderUtils {
         if (classLoader == null) {
             classLoader = ClassLoader.getSystemClassLoader();
         }
-        if (CollUtils.isEmpty(urls)) {
+        if (CollUtil.isEmpty(urls)) {
             urls = ClassLoaderUtils.getResources(classLoader, resourceName);
         }
-        if (CollUtils.isEmpty(urls) && startsSlash) {
+        if (CollUtil.isEmpty(urls) && startsSlash) {
             // Certain ClassLoaders need it without the leading "/".
             String subStr = resourceName.substring(ONE);
             urls = ClassLoaderUtils.getResources(classLoader, subStr);
         }
-        if (CollUtils.isEmpty(urls)) {
+        if (CollUtil.isEmpty(urls)) {
             classLoader = callingClass.getClassLoader();
             urls = ClassLoaderUtils.getResources(classLoader, resourceName);
         }
-        if (CollUtils.isEmpty(urls)) {
+        if (CollUtil.isEmpty(urls)) {
             URL url = callingClass.getResource(resourceName);
             if (url != null) { result.add(url); }
         }
-        CollUtils.addAll(result, urls);
-        if (CollUtils.isEmpty(result) && !startsSlash) {
+        CollUtil.addAll(result, urls);
+        if (CollUtil.isEmpty(result) && !startsSlash) {
             resourceName = SLASH + resourceName;
             return ClassLoaderUtils.getResources(resourceName, callingClass);
         }

@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import static kunlun.common.constant.Numbers.ZERO;
-import static kunlun.util.ObjUtils.cast;
+import static kunlun.util.ObjUtil.cast;
 import static kunlun.util.TypeUtils.parameterizedOf;
 
 /**

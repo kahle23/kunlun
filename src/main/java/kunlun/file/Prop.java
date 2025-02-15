@@ -10,7 +10,7 @@ import kunlun.io.util.IoUtil;
 import kunlun.io.util.StringBuilderWriter;
 import kunlun.util.Assert;
 import kunlun.util.MapUtils;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 
 import java.io.*;
 import java.util.HashMap;
@@ -91,7 +91,7 @@ public class Prop extends TextFile {
         Map<String, Object> result =
                 new HashMap<String, Object>(properties.size());
         for (String name : properties.stringPropertyNames()) {
-            if (StrUtils.isBlank(name)) { continue; }
+            if (StrUtil.isBlank(name)) { continue; }
             String val = properties.getProperty(name);
             result.put(name, val);
         }

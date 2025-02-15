@@ -139,7 +139,7 @@ public abstract class AbstractHttpClient implements HttpClient {
      * @return The judgment result
      */
     protected boolean hasMultipart(Collection<KeyValue<String, Object>> parameters) {
-        if (CollUtils.isEmpty(parameters)) { return false; }
+        if (CollUtil.isEmpty(parameters)) { return false; }
         boolean multipart = false;
         for (KeyValue<String, Object> keyValue : parameters) {
             multipart = hasMultipart(keyValue.getValue());
@@ -176,7 +176,7 @@ public abstract class AbstractHttpClient implements HttpClient {
     protected String encodeMimeName(String mimeName) {
         // Encodes \" to %22
         if (mimeName == null) { return null; }
-        return StrUtils.replace(mimeName, DOUBLE_QUOTE, "%22");
+        return StrUtil.replace(mimeName, DOUBLE_QUOTE, "%22");
     }
 
     /**
@@ -185,7 +185,7 @@ public abstract class AbstractHttpClient implements HttpClient {
      * @return The http charset name or null
      */
     protected String obtainCharset(String contentType) {
-        if (StrUtils.isBlank(contentType)) { return null; }
+        if (StrUtil.isBlank(contentType)) { return null; }
         contentType = contentType.trim().toLowerCase();
         String charsetEqual = "charset=";
         int begin = contentType.indexOf(charsetEqual);
@@ -242,7 +242,7 @@ public abstract class AbstractHttpClient implements HttpClient {
      * @throws MalformedURLException The error related to URL format
      */
     protected URL buildRedirectUrl(URL oldUrl, String redirectUrl) throws MalformedURLException {
-        if (StrUtils.isBlank(redirectUrl)) {
+        if (StrUtil.isBlank(redirectUrl)) {
             throw new MalformedURLException("Redirect url must not blank. ");
         }
         String lowerRedirectUrl = redirectUrl.toLowerCase();
@@ -289,7 +289,7 @@ public abstract class AbstractHttpClient implements HttpClient {
                 .append(QUESTION_MARK);
         String oldUrlQuery = oldUrl.getQuery();
         boolean first = true;
-        if (StrUtils.isNotBlank(oldUrlQuery)) {
+        if (StrUtil.isNotBlank(oldUrlQuery)) {
             urlBuilder.append(oldUrlQuery);
             first = false;
         }
@@ -432,7 +432,7 @@ public abstract class AbstractHttpClient implements HttpClient {
         try {
             String charset = request.getCharset();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, charset));
-            if (StrUtils.isNotBlank(boundary)) {
+            if (StrUtil.isNotBlank(boundary)) {
                 // Boundary will be set if we're in multipart mode.
                 writeMultipart(writer, output, request, boundary);
             }

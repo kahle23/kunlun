@@ -9,7 +9,7 @@ import kunlun.io.util.IoUtil;
 import kunlun.net.http.AbstractHttpBase;
 import kunlun.net.http.HttpMethod;
 import kunlun.net.http.HttpResponse;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -91,7 +91,7 @@ public class SimpleResponse extends AbstractHttpBase implements HttpResponse {
     @Override
     public String getBodyAsString(String charset) {
         if (bodyStream == null) { return null; }
-        if (StrUtils.isBlank(charset)) { charset = getCharset(); }
+        if (StrUtil.isBlank(charset)) { charset = getCharset(); }
         return new String(getBodyAsBytes(), Charset.forName(charset));
     }
 

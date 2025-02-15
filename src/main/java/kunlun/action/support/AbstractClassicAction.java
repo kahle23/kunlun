@@ -9,7 +9,7 @@ import kunlun.action.AbstractAction;
 import kunlun.data.tuple.Triple;
 import kunlun.util.ArgumentUtils;
 import kunlun.util.Assert;
-import kunlun.util.ObjUtils;
+import kunlun.util.ObjUtil;
 
 import java.lang.reflect.Type;
 
@@ -35,7 +35,7 @@ public abstract class AbstractClassicAction extends AbstractAction {
      */
     public <T> T execute(Object input, Type type) {
         Assert.isInstanceOf(Class.class, type, "Parameter \"type\" must instance of class. ");
-        Class<T> clazz = ObjUtils.cast(type);
+        Class<T> clazz = ObjUtil.cast(type);
         return execute(input, clazz);
     }
 

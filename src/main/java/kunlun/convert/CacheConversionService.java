@@ -8,7 +8,7 @@ package kunlun.convert;
 import kunlun.cache.CacheUtils;
 import kunlun.convert.GenericConverter.ConvertiblePair;
 import kunlun.util.Assert;
-import kunlun.util.ObjUtils;
+import kunlun.util.ObjUtil;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -33,7 +33,7 @@ public class CacheConversionService extends AbstractConversionService {
     protected List<Class<?>> getClassHierarchy(Class<?> type) {
         Assert.notNull(type, "Parameter \"type\" must not null. ");
         String cacheKey = "cache_class_hierarchy[" + type + "]";
-        List<Class<?>> result = ObjUtils.cast(CacheUtils.get(cacheName, cacheKey));
+        List<Class<?>> result = ObjUtil.cast(CacheUtils.get(cacheName, cacheKey));
         if (result != null) { return result; }
         result = super.getClassHierarchy(type);
         if (result == null) { return null; }

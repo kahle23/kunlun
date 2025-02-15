@@ -18,12 +18,12 @@ import static kunlun.common.constant.Symbols.*;
  * The string tools.
  * @author Kahle
  */
-public class StrUtils {
+public class StrUtil {
     private static final char UNDERLINE = '_';
 
     public static boolean equals(String str1, String str2) {
 
-        return ObjUtils.equals(str1, str2);
+        return ObjUtil.equals(str1, str2);
     }
 
     public static boolean isEmpty(Object obj) {
@@ -38,11 +38,11 @@ public class StrUtils {
 
     public static boolean isBlank(CharSequence cs) {
 
-        return !StrUtils.isNotBlank(cs);
+        return !StrUtil.isNotBlank(cs);
     }
 
     public static boolean isNotBlank(CharSequence cs) {
-        if (StrUtils.isEmpty(cs)) { return false; }
+        if (StrUtil.isEmpty(cs)) { return false; }
         int strLen = cs.length();
         for (int i = ZERO; i < strLen; i++) {
             int codePoint = (int) cs.charAt(i);
@@ -53,7 +53,7 @@ public class StrUtils {
     }
 
     public static boolean isNumeric(String str) {
-        if (StrUtils.isBlank(str)) {
+        if (StrUtil.isBlank(str)) {
             return false;
         }
         boolean b = str.startsWith(MINUS)
@@ -70,7 +70,7 @@ public class StrUtils {
     }
 
     public static boolean containsWhitespace(String str) {
-        if (StrUtils.isEmpty(str)) {
+        if (StrUtil.isEmpty(str)) {
             return false;
         }
         int strLen = str.length();
@@ -83,7 +83,7 @@ public class StrUtils {
     }
 
     public static String trimWhitespace(String str) {
-        if (StrUtils.isEmpty(str)) { return str; }
+        if (StrUtil.isEmpty(str)) { return str; }
         StringBuilder sb = new StringBuilder(str);
         boolean isLoop;
         do {
@@ -102,7 +102,7 @@ public class StrUtils {
     }
 
     public static String trimAllWhitespace(String str) {
-        if (StrUtils.isEmpty(str)) { return str; }
+        if (StrUtil.isEmpty(str)) { return str; }
         int len = str.length();
         StringBuilder sb = new StringBuilder(str.length());
         for (int i = ZERO; i < len; i++) {
@@ -119,8 +119,8 @@ public class StrUtils {
     }
 
     public static String replace(String text, String searchString, String replacement) {
-        if (StrUtils.isEmpty(text)
-                || StrUtils.isEmpty(searchString)
+        if (StrUtil.isEmpty(text)
+                || StrUtil.isEmpty(searchString)
                 || replacement == null) {
             return text;
         }
@@ -209,12 +209,12 @@ public class StrUtils {
 
     public static String capitalize(String str) {
 
-        return StrUtils.changeFirstCharacterCase(str, TRUE);
+        return StrUtil.changeFirstCharacterCase(str, TRUE);
     }
 
     public static String uncapitalize(String str) {
 
-        return StrUtils.changeFirstCharacterCase(str, FALSE);
+        return StrUtil.changeFirstCharacterCase(str, FALSE);
     }
 
     private static String changeFirstCharacterCase(String str, boolean capitalize) {

@@ -7,7 +7,7 @@ package kunlun.bean.support;
 
 import kunlun.bean.BeanManager;
 import kunlun.util.Assert;
-import kunlun.util.ObjUtils;
+import kunlun.util.ObjUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,7 +62,7 @@ public class SimpleBeanManager implements BeanManager {
                     , "More than one bean of the given type was found. ");
             if (result == null && assignable) { result = obj; }
         }
-        return ObjUtils.cast(result);
+        return ObjUtil.cast(result);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class SimpleBeanManager implements BeanManager {
         if (bean == null) { return null; }
         Assert.isInstanceOf(type, bean
                 , "The bean is not of the input type. ");
-        return ObjUtils.cast(bean);
+        return ObjUtil.cast(bean);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class SimpleBeanManager implements BeanManager {
             Object value = entry.getValue();
             String key = entry.getKey();
             if (type.isAssignableFrom(value.getClass())) {
-                T cast = ObjUtils.cast(value);
+                T cast = ObjUtil.cast(value);
                 result.put(key, cast);
             }
         }

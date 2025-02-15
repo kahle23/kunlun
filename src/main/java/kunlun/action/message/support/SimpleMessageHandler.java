@@ -15,7 +15,7 @@ import kunlun.message.model.Result;
 import kunlun.util.Assert;
 import kunlun.util.ClassUtils;
 import kunlun.util.MapUtils;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 
 import java.util.Collection;
 import java.util.Map;
@@ -38,8 +38,8 @@ public class SimpleMessageHandler extends AbstractMessageHandler {
             Object entryKey = entry.getKey();
             if (entryKey == null) { continue; }
             String propertyName = String.valueOf(entryKey);
-            if (StrUtils.isBlank(propertyName)) { continue; }
-            propertyName = StrUtils.capitalize(propertyName);
+            if (StrUtil.isBlank(propertyName)) { continue; }
+            propertyName = StrUtil.capitalize(propertyName);
             builder.append(propertyName).append(COLON);
             int length = TWENTY - propertyName.length() - ONE;
             if (length <= ZERO) { length = ONE; }

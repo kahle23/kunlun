@@ -17,8 +17,8 @@ import static kunlun.common.constant.Numbers.ZERO;
  * The collection tools.
  * @author Kahle
  */
-public class CollUtils {
-    private static final Logger log = LoggerFactory.getLogger(CollUtils.class);
+public class CollUtil {
+    private static final Logger log = LoggerFactory.getLogger(CollUtil.class);
 
     public static <E> boolean isEmpty(Collection<E> collection) {
 

@@ -32,7 +32,7 @@ public class RecombineUtils {
      */
     public static <T> List<List<T>> listToListList(List<T> list, int groupSize) {
         List<List<T>> result = new ArrayList<List<T>>();
-        if (CollUtils.isEmpty(list)) { return result; }
+        if (CollUtil.isEmpty(list)) { return result; }
         Assert.state(groupSize != ZERO, "Parameter \"groupSize\" must not equal 0. ");
         int listSize = list.size();
         int count = listSize / groupSize;
@@ -63,14 +63,14 @@ public class RecombineUtils {
             Assert.notNull(propertyClass, "Parameter \"propertyClass\" must not null. ");
             // Handle parameters
             List<R> result = new ArrayList<R>();
-            if (CollUtils.isEmpty(list)) { return result; }
+            if (CollUtil.isEmpty(list)) { return result; }
             List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
             for (Map<String, Object> map : mapList) {
                 if (map == null) { continue; }
                 Object val = map.get(propertyName);
                 if (val == null) { continue; }
                 val = ConversionUtils.convert(val, propertyClass);
-                result.add(ObjUtils.cast(val, propertyClass));
+                result.add(ObjUtil.cast(val, propertyClass));
             }
             return result;
         }
@@ -92,7 +92,7 @@ public class RecombineUtils {
             Assert.notEmpty(propertyNames, "Parameter \"propertyNames\" must not empty. ");
             // Handle parameters
             Map<String, T> result = new HashMap<String, T>(list.size());
-            if (CollUtils.isEmpty(list)) { return result; }
+            if (CollUtil.isEmpty(list)) { return result; }
             List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
             StringBuilder keyBuilder = new StringBuilder();
             for (int i = ZERO, len = list.size(); i < len; i++) {
@@ -126,7 +126,7 @@ public class RecombineUtils {
             Assert.notEmpty(propertyNames, "Parameter \"propertyNames\" must not empty. ");
             // Handle parameters
             Map<String, List<T>> result = new HashMap<String, List<T>>(list.size());
-            if (CollUtils.isEmpty(list)) { return result; }
+            if (CollUtil.isEmpty(list)) { return result; }
             List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
             StringBuilder keyBuilder = new StringBuilder();
             for (int i = ZERO, len = list.size(); i < len; i++) {
@@ -168,7 +168,7 @@ public class RecombineUtils {
             Assert.notEmpty(keyProperties, "Parameter \"keyProperties\" must not empty. ");
             // Handle parameters
             Map<String, R> result = new HashMap<String, R>(list.size());
-            if (CollUtils.isEmpty(list)) { return result; }
+            if (CollUtil.isEmpty(list)) { return result; }
             List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
             StringBuilder keyBuilder = new StringBuilder();
             for (int i = ZERO, len = list.size(); i < len; i++) {
@@ -180,7 +180,7 @@ public class RecombineUtils {
                     Object val = map.get(keyProperty);
                     keyBuilder.append(val);
                 }
-                R val = ObjUtils.cast(map.get(valueProperty));
+                R val = ObjUtil.cast(map.get(valueProperty));
                 result.put(keyBuilder.toString(), val);
             }
             return result;

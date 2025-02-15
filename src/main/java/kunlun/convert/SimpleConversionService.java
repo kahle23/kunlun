@@ -9,7 +9,7 @@ import kunlun.convert.GenericConverter.ConvertiblePair;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.CollUtils;
+import kunlun.util.CollUtil;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -73,7 +73,7 @@ public class SimpleConversionService extends AbstractConversionService {
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
         log.info("Register converter: {}", converter.getClass().getName());
         Set<ConvertiblePair> convertibleTypes = converter.getConvertibleTypes();
-        if (CollUtils.isEmpty(convertibleTypes)) {
+        if (CollUtil.isEmpty(convertibleTypes)) {
             Assert.state(converter instanceof ConditionalConverter,
                     "Only conditional converters may return empty convertible types. ");
             globalConverters.add(converter); return;
@@ -92,7 +92,7 @@ public class SimpleConversionService extends AbstractConversionService {
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
         log.info("Deregister converter: {}", converter.getClass().getName());
         Set<ConvertiblePair> convertibleTypes = converter.getConvertibleTypes();
-        if (CollUtils.isEmpty(convertibleTypes)) {
+        if (CollUtil.isEmpty(convertibleTypes)) {
             Assert.state(converter instanceof ConditionalConverter,
                     "Only conditional converters may return empty convertible types. ");
             globalConverters.remove(converter); return;

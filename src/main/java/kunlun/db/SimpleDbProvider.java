@@ -9,7 +9,7 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 import kunlun.util.MapUtils;
-import kunlun.util.ObjUtils;
+import kunlun.util.ObjUtil;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -97,7 +97,7 @@ public class SimpleDbProvider implements DbProvider {
     @Override
     public <T> T execute(String handlerName, Object input, String operation, Type type) {
 
-        return ObjUtils.cast(execute(handlerName, new Object[] { operation, input, type }));
+        return ObjUtil.cast(execute(handlerName, new Object[] { operation, input, type }));
     }
 
 }

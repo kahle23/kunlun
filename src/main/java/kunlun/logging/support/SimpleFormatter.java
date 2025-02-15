@@ -6,7 +6,7 @@
 package kunlun.logging.support;
 
 import kunlun.exception.ExceptionUtils;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 import kunlun.util.ThreadUtils;
 
 import java.lang.management.ThreadInfo;
@@ -40,7 +40,7 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
     }
 
     private String coloring(String content, Integer beginColor, Integer endColor) {
-        if (StrUtils.isBlank(content) || !CAN_COLORING) { return content; }
+        if (StrUtil.isBlank(content) || !CAN_COLORING) { return content; }
         return "\033[" + beginColor + "m" + content + "\033[" + endColor + "m";
     }
 
@@ -78,7 +78,7 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
         int threadId = record.getThreadID();
         ThreadInfo threadInfo = ThreadUtils.getThreadInfo(threadId);
         String threadName = threadInfo != null ? threadInfo.getThreadName() : EMPTY_STRING;
-        threadName = StrUtils.isNotBlank(threadName) ? threadName : EMPTY_STRING;
+        threadName = StrUtil.isNotBlank(threadName) ? threadName : EMPTY_STRING;
         int length;
         if ((length = threadName.length()) > MAX_THREAD_LENGTH) {
             threadName = threadName.substring(length - MAX_THREAD_LENGTH, length);
@@ -90,8 +90,8 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
 
     private String printfSource(LogRecord record) {
         String source = record.getSourceClassName();
-        source = StrUtils.isBlank(source) ? record.getLoggerName() : source;
-        source = StrUtils.isBlank(source) ? EMPTY_STRING : source;
+        source = StrUtil.isBlank(source) ? record.getLoggerName() : source;
+        source = StrUtil.isBlank(source) ? EMPTY_STRING : source;
         int length;
         if (source.length() > MAX_SOURCE_LENGTH) {
             StringBuilder builder = new StringBuilder();
@@ -120,14 +120,14 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
 
     private String printfMessage(LogRecord record) {
         String message = record.getMessage();
-        return StrUtils.isNotBlank(message) ? message : EMPTY_STRING;
+        return StrUtil.isNotBlank(message) ? message : EMPTY_STRING;
     }
 
     private String printfThrowable(LogRecord record) {
         Throwable thrown = record.getThrown();
         if (thrown == null) { return null; }
         String result = ExceptionUtils.toString(thrown);
-        return StrUtils.isNotBlank(result) ? NEWLINE + result : null;
+        return StrUtil.isNotBlank(result) ? NEWLINE + result : null;
     }
 
     @Override

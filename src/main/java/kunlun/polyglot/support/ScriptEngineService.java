@@ -9,7 +9,7 @@ import kunlun.exception.ExceptionUtils;
 import kunlun.polyglot.PolyglotService;
 import kunlun.reflect.ReflectUtils;
 import kunlun.util.Assert;
-import kunlun.util.ObjUtils;
+import kunlun.util.ObjUtil;
 
 import javax.script.*;
 import java.io.Reader;
@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 
-import static kunlun.util.ObjUtils.cast;
+import static kunlun.util.ObjUtil.cast;
 
 /**
  * The simple polyglot execution service base on "javax.script.ScriptEngineManager".
@@ -144,7 +144,7 @@ public class ScriptEngineService implements PolyglotService {
         ScriptEngine engine = getEngine(name, config);
         // Convert Map to Bindings.
         if (data instanceof Map && !(data instanceof Bindings)) {
-            data = new SimpleBindings(ObjUtils.<Map<String, Object>>cast(data));
+            data = new SimpleBindings(ObjUtil.<Map<String, Object>>cast(data));
         }
         try {
             if (data instanceof Bindings) {

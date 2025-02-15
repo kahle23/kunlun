@@ -7,7 +7,7 @@ package kunlun.data.json.support;
 
 import kunlun.data.json.JsonHandler;
 import kunlun.util.Assert;
-import kunlun.util.StrUtils;
+import kunlun.util.StrUtil;
 
 import java.util.Collections;
 import java.util.Map;
@@ -42,13 +42,13 @@ public abstract class AbstractJsonHandler implements JsonHandler {
 
     @Override
     public boolean isJsonObject(String jsonString) {
-        if (StrUtils.isBlank(jsonString)) { return false; }
+        if (StrUtil.isBlank(jsonString)) { return false; }
         return isWrap(jsonString.trim(), '{', '}');
     }
 
     @Override
     public boolean isJsonArray(String jsonString) {
-        if (StrUtils.isBlank(jsonString)) { return false; }
+        if (StrUtil.isBlank(jsonString)) { return false; }
         return isWrap(jsonString.trim(), '[', ']');
     }
 
