@@ -23,27 +23,27 @@ public interface UserManager {
     UserDetail getUserDetail(Object userId, Object userType);
 
     /**
-     * Get the user roles. // todo
+     * Get the user's role identifiers.
      * @param userId The unique identification of the user
      * @param userType The user type (for example, toC user, toB user, or admin user)
-     * @return The user roles
+     * @return The user's role identifiers
      */
-    Collection<String> getUserRoles(Object userId, String userType);
+    Collection<String> getUserRoles(Object userId, Object userType);
 
     /**
-     * Get the user permissions. // todo
+     * Get the user's permission identifiers.
      * @param userId The unique identification of the user
      * @param userType The user type (for example, toC user, toB user, or admin user)
-     * @return The user permissions
+     * @return The user's permission identifiers
      */
-    Collection<String> getUserPermissions(Object userId, String userType);
+    Collection<String> getUserPermissions(Object userId, Object userType);
 
     /**
      * Gets a list of the groups to which the user belongs.
      * @param userId The unique identification of the user
      * @param userType The user type (for example, toC user, toB user, or admin user)
      * @param groupType The user group type, such as department, region, etc
-     * @return The groups list
+     * @return The list of the groups to which the user belongs
      */
     Collection<String> getUserGroups(Object userId, Object userType, Object groupType);
 

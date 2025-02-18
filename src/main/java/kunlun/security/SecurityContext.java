@@ -73,6 +73,23 @@ public interface SecurityContext extends Context {
      */
     UserDetail getUserDetail();
 
+    /**
+     * Get the current user's role identifiers.
+     * @return The current user's role identifiers
+     */
+    Collection<String> getUserRoles();
+
+    /**
+     * Get the current user's permission identifiers.
+     * @return The current user's permission identifiers
+     */
+    Collection<String> getUserPermissions();
+
+    /**
+     * Get the current user's groups list.
+     * @param groupType The user group type, such as department, region, etc
+     * @return The current user's groups list
+     */
     Collection<String> getUserGroups(Object groupType);
 
     // ====
@@ -83,6 +100,10 @@ public interface SecurityContext extends Context {
      */
     AccessController getAccessController();
 
+    /**
+     * Get the held data controller.
+     * @return The held data controller
+     */
     DataController getDataController();
 
     /**

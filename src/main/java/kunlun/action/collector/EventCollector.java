@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.collector.support;
+package kunlun.action.collector;
 
 import kunlun.action.AbstractAction;
 import kunlun.action.collector.model.Event;
@@ -17,11 +17,11 @@ import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.common.constant.Symbols.NEWLINE;
 
 /**
- * The simple event collector.
+ * The event collector.
  * @author Kahle
  */
-public class SimpleEventCollector extends AbstractAction {
-    private static final Logger log = LoggerFactory.getLogger(SimpleEventCollector.class);
+public class EventCollector extends AbstractAction {
+    private static final Logger log = LoggerFactory.getLogger(EventCollector.class);
 
     /**
      * Process the event record to add extended fields.

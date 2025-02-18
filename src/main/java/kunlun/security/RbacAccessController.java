@@ -24,7 +24,7 @@ import kunlun.core.AccessController;
 public interface RbacAccessController extends AccessController {
 
     /**
-     * Judge whether the user has multiple roles (and).
+     * Judge whether the user has role.
      * @param userId The unique identification of the user
      * @param userType The user type (can null) (for example, toC user, toB user, or admin user)
      * @param role The roles identifier to be judged

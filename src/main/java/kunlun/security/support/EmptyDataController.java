@@ -1,8 +1,15 @@
+/*
+ * Copyright (c) 2018. the original author or authors.
+ * Kunlun is licensed under the "LICENSE" file in the project's root directory.
+ */
+
 package kunlun.security.support;
 
-import kunlun.core.DataController;
-
-public class EmptyDataController implements DataController {
+/**
+ * The empty data controller.
+ * @author Kahle
+ */
+public class EmptyDataController extends AbstractDataController {
 
     @Override
     public <T extends Rule> T getRule(String permission, Object userId, Object userType) {

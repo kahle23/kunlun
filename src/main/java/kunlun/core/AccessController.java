@@ -23,7 +23,7 @@ package kunlun.core;
 public interface AccessController {
 
     /**
-     * Judge whether the user has multiple permissions (and).
+     * Judge whether the user has permission.
      * @param userId The unique identification of the user
      * @param userType The user type (can null) (for example, toC user, toB user, or admin user)
      * @param permission The permission identifier to be judged (such as "order_add")

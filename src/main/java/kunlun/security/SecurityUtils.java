@@ -100,6 +100,16 @@ public class SecurityUtils {
         return (T) getContext().getUserDetail();
     }
 
+    public static Collection<String> getUserRoles() {
+
+        return getContext().getUserRoles();
+    }
+
+    public static Collection<String> getUserPermissions() {
+
+        return getContext().getUserPermissions();
+    }
+
     public static Collection<String> getUserGroups() {
 
         return getContext().getUserGroups(null);
@@ -110,8 +120,21 @@ public class SecurityUtils {
         return getContext().getUserGroups(groupType);
     }
 
+
+
     // ====
 
+    public static boolean hasPermission(Object userId, Object userType, String permission) {
+
+        return getAccessController().hasPermission(userId, userType, permission);
+    }
+
+    public static boolean hasRole(Object userId, Object userType, String role) {
+
+        return ((RbacAccessController) getAccessController()).hasRole(userId, userType, role);
+    }
+
+    // ====
 
     public static String buildToken(Token token) {
 
@@ -145,22 +168,22 @@ public class SecurityUtils {
         return getUserManager().getUserDetail(userId, userType);
     }
 
+    public static Collection<String> getUserRoles(Object userId, Object userType) {
+
+        return getUserManager().getUserRoles(userId, userType);
+    }
+
+    public static Collection<String> getUserPermissions(Object userId, Object userType) {
+
+        return getUserManager().getUserPermissions(userId, userType);
+    }
+
     public static Collection<String> getUserGroups(Object userId, Object userType, Object groupType) {
 
         return getUserManager().getUserGroups(userId, userType, groupType);
     }
 
-    // ====
 
-    public static boolean hasPermission(Object userId, Object userType, String permission) {
-
-        return getAccessController().hasPermission(userId, userType, permission);
-    }
-
-    public static boolean hasRole(Object userId, Object userType, String role) {
-
-        return ((RbacAccessController) getAccessController()).hasRole(userId, userType, role);
-    }
 
     // ====
 

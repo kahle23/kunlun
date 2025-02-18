@@ -12,6 +12,7 @@ package kunlun.core;
  *
  * @author Kahle
  */
+@Deprecated
 public interface Collector {
 
     /**
@@ -20,7 +21,6 @@ public interface Collector {
      * @param arguments The other auxiliary arguments during collection
      * @return The collection operation result (maybe ignorable)
      */
-    @Deprecated
     Object collect(Object data, Object... arguments);
 
 }

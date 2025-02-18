@@ -1,16 +1,26 @@
+/*
+ * Copyright (c) 2018. the original author or authors.
+ * Kunlun is licensed under the "LICENSE" file in the project's root directory.
+ */
+
 package kunlun.security.support;
 
 import kunlun.core.DataController;
 import kunlun.security.support.util.DataScope;
 import kunlun.security.support.util.FieldScope;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * The abstract data controller.
+ * @author Kahle
+ */
 public abstract class AbstractDataController implements DataController {
-    public static final String DATA_PERMISSION = "data_permission";
+    public static final String CONTEXT_KEY = "data-permission-context";
 
-    public static class BaseRule implements Rule {
+    public static class BaseRule implements Rule, Serializable {
         private DataScope  dataScope;
         private FieldScope fieldScope;
 
