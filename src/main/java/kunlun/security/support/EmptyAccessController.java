@@ -14,13 +14,7 @@ import kunlun.core.AccessController;
 public class EmptyAccessController implements AccessController {
 
     @Override
-    public boolean hasPermissionAnd(Object subjectId, Object subjectType, Object operation, Object... resources) {
-
-        return true;
-    }
-
-    @Override
-    public boolean hasPermissionOr(Object subjectId, Object subjectType, Object operation, Object... resources) {
+    public boolean hasPermission(Object userId, Object userType, String permission) {
 
         return true;
     }

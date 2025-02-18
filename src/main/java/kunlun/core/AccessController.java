@@ -23,23 +23,12 @@ package kunlun.core;
 public interface AccessController {
 
     /**
-     * Judge whether the "user" has multiple resources (and).
-     * @param subjectId The unique identification of the "user"
-     * @param subjectType The "user" type (can null) (for example, toC user, toB user, or admin user)
-     * @param operation The operation name or the operation object (can null)
-     * @param resources The resources identifiers (or (resource + operation) objects) to be judged
+     * Judge whether the user has multiple permissions (and).
+     * @param userId The unique identification of the user
+     * @param userType The user type (can null) (for example, toC user, toB user, or admin user)
+     * @param permission The permission identifier to be judged (such as "order_add")
      * @return The result of judgment
      */
-    boolean hasPermissionAnd(Object subjectId, Object subjectType, Object operation, Object... resources);
-
-    /**
-     * Judge whether the "user" has multiple resources (or).
-     * @param subjectId The unique identification of the "user"
-     * @param subjectType The "user" type (can null) (for example, toC user, toB user, or admin user)
-     * @param operation The operation name or the operation object (can null)
-     * @param resources The resources identifiers (or (resource + operation) objects) to be judged
-     * @return The result of judgment
-     */
-    boolean hasPermissionOr(Object subjectId, Object subjectType, Object operation, Object... resources);
+    boolean hasPermission(Object userId, Object userType, String permission);
 
 }

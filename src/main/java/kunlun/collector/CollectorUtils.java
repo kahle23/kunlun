@@ -14,6 +14,7 @@ import kunlun.util.Assert;
  * The collector tools.
  * @author Kahle
  */
+@Deprecated
 public class CollectorUtils {
     private static final Logger log = LoggerFactory.getLogger(CollectorUtils.class);
     private static volatile CollectorProvider collectorProvider;

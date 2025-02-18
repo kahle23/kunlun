@@ -5,8 +5,6 @@
 
 package kunlun.generator.render;
 
-import kunlun.collector.support.TextLogCollector;
-import kunlun.core.Collector;
 import kunlun.core.Renderer;
 import kunlun.exception.ExceptionUtils;
 import kunlun.io.FileLoader;
@@ -49,7 +47,7 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
      * @param config The template configuration
      * @return The template content
      */
-    protected String getTemplateContent(Collector  logCollector,
+    protected String getTemplateContent(StringBuilder logCollector,
                                         FileLoader fileLoader,
                                         TemplateConfig config) {
         // Try get template content.
@@ -79,7 +77,7 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
      * @param endOverrideTag The end override tag
      * @return The replaced content
      */
-    protected String replaceContent(Collector logCollector,
+    protected String replaceContent(StringBuilder logCollector,
                                     String newContent,
                                     String oldContent,
                                     String startOverrideTag,
@@ -97,7 +95,7 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
             // If it didn't find it once.
             if (oldStart == EOF && count == ZERO) {
                 logStr = "Can not find start override tag in old content. ";
-                log.info(logStr); logCollector.collect(logStr);
+                log.info(logStr); logCollector.append(logStr);
                 return null;
             }
             // No start override tag found, indicating that processing is complete.
@@ -106,21 +104,21 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
                 if (oldEnd != EOF) {
                     logStr = String.format(
                             "The end override tag should not exist after index %s in old content. ", oldIndex);
-                    log.info(logStr); logCollector.collect(logStr);
+                    log.info(logStr); logCollector.append(logStr);
                     return null;
                 }
                 int newStart = newContent.indexOf(startOverrideTag, newIndex);
                 if (newStart != EOF) {
                     logStr = String.format(
                             "The start override tag should not exist after index %s in new content. ", newIndex);
-                    log.info(logStr); logCollector.collect(logStr);
+                    log.info(logStr); logCollector.append(logStr);
                     return null;
                 }
                 int newEnd = newContent.indexOf(endOverrideTag, newIndex);
                 if (newEnd != EOF) {
                     logStr = String.format(
                             "The end override tag should not exist after index %s in new content. ", newIndex);
-                    log.info(logStr); logCollector.collect(logStr);
+                    log.info(logStr); logCollector.append(logStr);
                     return null;
                 }
                 result.append(oldContent, oldIndex, oldContent.length());
@@ -131,14 +129,14 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
             int oldEnd = oldContent.indexOf(endOverrideTag, tmpFromIndex);
             if (oldEnd == EOF) {
                 logStr = "Can not find end override tag in old content. ";
-                log.info(logStr); logCollector.collect(logStr);
+                log.info(logStr); logCollector.append(logStr);
                 return null;
             }
             // Look for the start override tag in the new content.
             int newStart = newContent.indexOf(startOverrideTag, newIndex);
             if (newStart == EOF) {
                 logStr = "Can not find start override tag in new content. ";
-                log.info(logStr); logCollector.collect(logStr);
+                log.info(logStr); logCollector.append(logStr);
                 return null;
             }
             // Look for the end override tag in the new content.
@@ -146,7 +144,7 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
             int newEnd = newContent.indexOf(endOverrideTag, tmpFromIndex);
             if (newEnd == EOF) {
                 logStr = "Can not find end override tag in new content. ";
-                log.info(logStr); logCollector.collect(logStr);
+                log.info(logStr); logCollector.append(logStr);
                 return null;
             }
             // The assembly results.
@@ -233,7 +231,7 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
     public static class ContextImpl implements Context {
         private final Map<String, Map<String, Object>> attributesMap = new LinkedHashMap<String, Map<String, Object>>();
         private final Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        private final Collector logCollector = new TextLogCollector();
+        private final StringBuilder  logCollector = new StringBuilder();
         private List<TemplateConfig> templateConfigs;
         private List<String> resourceNames;
         private FileLoader fileLoader;
@@ -262,7 +260,7 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
         }
 
         @Override
-        public Collector getLogCollector() {
+        public StringBuilder getLogCollector() {
 
             return logCollector;
         }

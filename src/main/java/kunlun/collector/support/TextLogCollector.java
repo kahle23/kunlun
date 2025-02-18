@@ -17,6 +17,7 @@ import static kunlun.common.constant.Symbols.NEWLINE;
  * The simple text log collector.
  * @author Kahle
  */
+@Deprecated
 public class TextLogCollector extends AbstractCollector {
     private final StringBuilder content = new StringBuilder();
     private final String timePattern;

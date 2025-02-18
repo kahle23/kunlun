@@ -3,7 +3,7 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.collector.support.model;
+package kunlun.action.collector.model;
 
 import kunlun.core.Builder;
 import kunlun.data.Dict;
@@ -15,7 +15,6 @@ import java.util.Map;
  * The event record.
  * @author Kahle
  */
-@Deprecated
 public class Event implements Builder {
     /**
      * The user's operation records (in most cases).

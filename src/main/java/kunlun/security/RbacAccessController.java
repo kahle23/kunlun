@@ -24,21 +24,12 @@ import kunlun.core.AccessController;
 public interface RbacAccessController extends AccessController {
 
     /**
-     * Judge whether the "user" has multiple roles (and).
-     * @param userId The unique identification of the "user"
-     * @param userType The "user" type (for example, toC user, toB user, or admin user)
-     * @param roles The roles identifiers to be judged
+     * Judge whether the user has multiple roles (and).
+     * @param userId The unique identification of the user
+     * @param userType The user type (can null) (for example, toC user, toB user, or admin user)
+     * @param role The roles identifier to be judged
      * @return The result of judgment
      */
-    boolean hasRoleAnd(Object userId, Object userType, String... roles);
-
-    /**
-     * Judge whether the "user" has multiple roles (or).
-     * @param userId The unique identification of the "user"
-     * @param userType The "user" type (for example, toC user, toB user, or admin user)
-     * @param roles The roles identifiers to be judged
-     * @return The result of judgment
-     */
-    boolean hasRoleOr(Object userId, Object userType, String... roles);
+    boolean hasRole(Object userId, Object userType, String role);
 
 }

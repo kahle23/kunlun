@@ -5,7 +5,6 @@
 
 package kunlun.generator.render;
 
-import kunlun.core.Collector;
 import kunlun.core.Renderer;
 import kunlun.generator.Generator;
 import kunlun.io.FileLoader;
@@ -77,7 +76,7 @@ public interface RenderGenerator extends Generator {
          * Get the log collector.
          * @return The log collector
          */
-        Collector getLogCollector();
+        StringBuilder getLogCollector();
 
         /**
          * Get the names of resources to be rendered (like table names).

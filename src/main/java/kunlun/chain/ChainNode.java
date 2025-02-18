@@ -81,6 +81,24 @@ public interface ChainNode {
         Object[] getArguments();
 
         /**
+         * Get the raw input data.
+         * @return The raw input data
+         */
+        Object getRawInput();
+
+        /**
+         * Get the expected class.
+         * @return The expected class
+         */
+        Class<?> getExpectedClass();
+
+        /**
+         * Get the runtime data.
+         * @return The runtime data
+         */
+        Map<String, Object> getRuntimeData();
+
+        /**
          * Get the result of the chain executed this time.
          * @return The chain result
          */

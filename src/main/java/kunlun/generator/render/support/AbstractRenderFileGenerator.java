@@ -1,6 +1,5 @@
 package kunlun.generator.render.support;
 
-import kunlun.core.Collector;
 import kunlun.core.Renderer;
 import kunlun.data.Dict;
 import kunlun.exception.ExceptionUtils;
@@ -77,7 +76,7 @@ public abstract class AbstractRenderFileGenerator extends AbstractRenderGenerato
     private void doGenerateThrows(Context context, String resName, TemplateConfig config) throws IOException {
         // Get variables and validate.
         Map<String, Object> attributes = context.getAttributes(resName);
-        Collector  logCollector = context.getLogCollector();
+        StringBuilder logCollector = context.getLogCollector();
         FileLoader fileLoader = context.getFileLoader();
         Renderer   renderer = context.getRenderer();
         String templateName = config.getTemplateName();
@@ -111,13 +110,13 @@ public abstract class AbstractRenderFileGenerator extends AbstractRenderGenerato
         String logStr = String.format(
                 "Template name \"%s\": rendering the file corresponding to resource name \"%s\". "
                 , templateName, resName);
-        log.info(logStr); logCollector.collect(logStr);
+        log.info(logStr); logCollector.append(logStr);
         // Handle whether existing.
         if (outputFile.exists()) {
             if (skipExisted != null && skipExisted) { return; }
             logStr = String.format(
                     "The file \"%s\" already exists, it will be try replace. ", outputFile.getName());
-            log.info(logStr); logCollector.collect(logStr);
+            log.info(logStr); logCollector.append(logStr);
             // Generated content.
             Writer builderWriter = new StringBuilderWriter();
             renderer.render(templateContent, outputFile.getName(), model, builderWriter);
