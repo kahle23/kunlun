@@ -11,7 +11,7 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerProvider;
 import kunlun.renderer.support.FormatTextRenderer;
 import kunlun.renderer.support.LoggerTextRenderer;
-import kunlun.util.ArrayUtils;
+import kunlun.util.ArrayUtil;
 import kunlun.util.Assert;
 import kunlun.util.ClassLoaderUtils;
 
@@ -64,7 +64,7 @@ public class JdkLoggerProvider implements LoggerProvider {
         }
         // Replace the Formatter that comes with the JDK.
         Handler[] handlers = logger.getHandlers();
-        if (ArrayUtils.isEmpty(handlers)) { return; }
+        if (ArrayUtil.isEmpty(handlers)) { return; }
         SimpleFormatter formatter = new SimpleFormatter();
         for (Handler handler : handlers) {
             if (handler == null) { continue; }

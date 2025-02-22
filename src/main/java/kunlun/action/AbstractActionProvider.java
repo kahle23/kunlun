@@ -12,7 +12,7 @@ import kunlun.data.tuple.PairImpl;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.MapUtils;
+import kunlun.util.MapUtil;
 import kunlun.util.ObjUtil;
 import kunlun.util.StrUtil;
 
@@ -74,7 +74,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
 
     @Override
     public void registerCommonProperties(Map<?, ?> commonProperties) {
-        if (MapUtils.isEmpty(commonProperties)) { return; }
+        if (MapUtil.isEmpty(commonProperties)) { return; }
         for (Map.Entry<?, ?> entry : commonProperties.entrySet()) {
             String keyStr = String.valueOf(entry.getKey());
             this.commonProperties.put(keyStr, entry.getValue());

@@ -214,7 +214,7 @@ public abstract class AbstractHttpClient implements HttpClient {
      * @return The built http cookies string
      */
     protected String buildCookiesString(Map<String, ?> cookies, String charset) {
-        if (MapUtils.isEmpty(cookies)) { return EMPTY_STRING; }
+        if (MapUtil.isEmpty(cookies)) { return EMPTY_STRING; }
         StringBuilder cookiesBuilder = new StringBuilder();
         boolean first = true;
         for (Map.Entry<String, ?> cookie : cookies.entrySet()) {

@@ -16,7 +16,7 @@ import static kunlun.common.constant.Numbers.ZERO;
  * The array tools.
  * @author Kahle
  */
-public class ArrayUtils {
+public class ArrayUtil {
 
     public static boolean isEmpty(byte[] arr) {
 

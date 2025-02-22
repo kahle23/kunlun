@@ -44,7 +44,7 @@ public abstract class AbstractSingleFieldFillAction extends AbstractAction imple
     public void fill(FieldConfig cfg, Map<String, Map<String, Object>> map, Collection<Map<String, Object>> data) {
         // data validation.
         if (CollUtil.isEmpty(data)) { return; }
-        if (MapUtils.isEmpty(map)) { return; }
+        if (MapUtil.isEmpty(map)) { return; }
         // get field config.
         String queryField = IterUtils.getFirst(cfg.getQueryFields());
         String fillField = IterUtils.getFirst(cfg.getFillFields());

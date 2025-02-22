@@ -8,7 +8,7 @@ package kunlun.data.collect;
 import kunlun.data.ReferenceType;
 import kunlun.util.Assert;
 import kunlun.util.CollUtil;
-import kunlun.util.MapUtils;
+import kunlun.util.MapUtil;
 import kunlun.util.ObjUtil;
 
 import java.lang.ref.ReferenceQueue;
@@ -97,7 +97,7 @@ public class ReferenceMap<K, V> implements Map<K, V> {
 
     @Override
     public void putAll(Map<? extends K, ? extends V> map) {
-        if (MapUtils.isEmpty(map)) {
+        if (MapUtil.isEmpty(map)) {
             processQueue();
             return;
         }

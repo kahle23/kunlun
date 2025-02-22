@@ -76,7 +76,7 @@ public class Assert {
     // ====
 
     public static <T> void isEmpty(T[] array, String message) {
-        if (ArrayUtils.isNotEmpty(array)) {
+        if (ArrayUtil.isNotEmpty(array)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -87,7 +87,7 @@ public class Assert {
     }
 
     public static <T> T[] notEmpty(T[] array, String message) {
-        if (ArrayUtils.isEmpty(array)) {
+        if (ArrayUtil.isEmpty(array)) {
             throw new IllegalArgumentException(message);
         }
         return array;
@@ -101,7 +101,7 @@ public class Assert {
     // ====
 
     public static void isEmpty(byte[] array, String message) {
-        if (ArrayUtils.isNotEmpty(array)) {
+        if (ArrayUtil.isNotEmpty(array)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -112,7 +112,7 @@ public class Assert {
     }
 
     public static byte[] notEmpty(byte[] array, String message) {
-        if (ArrayUtils.isEmpty(array)) {
+        if (ArrayUtil.isEmpty(array)) {
             throw new IllegalArgumentException(message);
         }
         return array;
@@ -151,7 +151,7 @@ public class Assert {
     // ====
 
     public static void isEmpty(Map<?, ?> map, String message) {
-        if (MapUtils.isNotEmpty(map)) {
+        if (MapUtil.isNotEmpty(map)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -162,7 +162,7 @@ public class Assert {
     }
 
     public static <K, V, T extends Map<K, V>> T notEmpty(T map, String message) {
-        if (MapUtils.isEmpty(map)) {
+        if (MapUtil.isEmpty(map)) {
             throw new IllegalArgumentException(message);
         }
         return map;

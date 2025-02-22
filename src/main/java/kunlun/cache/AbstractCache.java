@@ -9,7 +9,7 @@ import kunlun.exception.ExceptionUtils;
 import kunlun.lock.LockUtils;
 import kunlun.util.Assert;
 import kunlun.util.CollUtil;
-import kunlun.util.MapUtils;
+import kunlun.util.MapUtil;
 import kunlun.util.ObjUtil;
 
 import java.util.Collection;
@@ -132,7 +132,7 @@ public abstract class AbstractCache implements Cache {
     @Override
     public void putAll(Map<?, ?> map) {
         Assert.notNull(map, "Parameter \"map\" must not null. ");
-        if (MapUtils.isEmpty(map)) { return; }
+        if (MapUtil.isEmpty(map)) { return; }
         for (Map.Entry<?, ?> entry : map.entrySet()) {
             put(entry.getKey(), entry.getValue());
         }

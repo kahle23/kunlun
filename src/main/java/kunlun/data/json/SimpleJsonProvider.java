@@ -9,7 +9,7 @@ import kunlun.data.json.support.SimpleJsonHandler;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.MapUtils;
+import kunlun.util.MapUtil;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -43,7 +43,7 @@ public class SimpleJsonProvider implements JsonProvider {
 
     @Override
     public void registerCommonProperties(Map<?, ?> commonProperties) {
-        if (MapUtils.isEmpty(commonProperties)) { return; }
+        if (MapUtil.isEmpty(commonProperties)) { return; }
         for (Map.Entry<?, ?> entry : commonProperties.entrySet()) {
             String keyStr = String.valueOf(entry.getKey());
             this.commonProperties.put(keyStr, entry.getValue());

@@ -8,7 +8,7 @@ package kunlun.chain;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.MapUtils;
+import kunlun.util.MapUtil;
 import kunlun.util.StrUtil;
 
 import java.lang.reflect.Type;
@@ -44,7 +44,7 @@ public abstract class AbstractChainService implements ChainService {
 
     @Override
     public void registerCommonProperties(Map<?, ?> commonProperties) {
-        if (MapUtils.isEmpty(commonProperties)) { return; }
+        if (MapUtil.isEmpty(commonProperties)) { return; }
         for (Map.Entry<?, ?> entry : commonProperties.entrySet()) {
             String keyStr = String.valueOf(entry.getKey());
             this.commonProperties.put(keyStr, entry.getValue());
@@ -109,7 +109,7 @@ public abstract class AbstractChainService implements ChainService {
      */
     protected Map<String, Object> buildConfig(Config nodeConfig) {
         Map<String, Object> map = new LinkedHashMap<String, Object>();
-        if (MapUtils.isNotEmpty(nodeConfig.getConfigContent())) {
+        if (MapUtil.isNotEmpty(nodeConfig.getConfigContent())) {
             map.putAll(nodeConfig.getConfigContent());
         }
         map.put("_id", nodeConfig.getId());

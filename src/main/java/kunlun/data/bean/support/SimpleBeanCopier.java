@@ -11,7 +11,7 @@ import kunlun.exception.ExceptionUtils;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.reflect.ReflectUtils;
-import kunlun.util.ArrayUtils;
+import kunlun.util.ArrayUtil;
 import kunlun.util.Assert;
 
 import java.beans.PropertyDescriptor;
@@ -63,7 +63,7 @@ public class SimpleBeanCopier implements BeanCopier {
             Method srcMth = entry.getValue();
             Class<?>[] types = destMth.getParameterTypes();
             try {
-                boolean haveType = ArrayUtils.isNotEmpty(types);
+                boolean haveType = ArrayUtil.isNotEmpty(types);
                 Object input = srcMth.invoke(from);
                 if (input == null && haveType
                         && types[ZERO].isPrimitive()) {

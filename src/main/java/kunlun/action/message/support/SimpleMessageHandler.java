@@ -14,7 +14,7 @@ import kunlun.message.model.Message;
 import kunlun.message.model.Result;
 import kunlun.util.Assert;
 import kunlun.util.ClassUtils;
-import kunlun.util.MapUtils;
+import kunlun.util.MapUtil;
 import kunlun.util.StrUtil;
 
 import java.util.Collection;
@@ -31,7 +31,7 @@ public class SimpleMessageHandler extends AbstractMessageHandler {
     private static final Logger log = LoggerFactory.getLogger(SimpleMessageHandler.class);
 
     protected void append(StringBuilder builder, Map<?, ?> map) {
-        if (MapUtils.isEmpty(map)) { return; }
+        if (MapUtil.isEmpty(map)) { return; }
         if (builder == null) { return; }
         for (Map.Entry<?, ?> entry : map.entrySet()) {
             Object entryValue = entry.getValue();

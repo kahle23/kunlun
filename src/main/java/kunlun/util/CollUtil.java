@@ -77,7 +77,7 @@ public class CollUtil {
 
     public static <T> T[] toArray(Collection<T> collection, Class<?> componentType) {
         if (collection == null) { return null; }
-        T[] array = ArrayUtils.newArray(componentType, ZERO);
+        T[] array = ArrayUtil.newArray(componentType, ZERO);
         return collection.toArray(array);
     }
 

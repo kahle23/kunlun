@@ -8,7 +8,7 @@ package kunlun.property;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.MapUtils;
+import kunlun.util.MapUtil;
 
 import java.util.Collections;
 import java.util.Map;
@@ -47,7 +47,7 @@ public abstract class AbstractPropertySource implements PropertySource {
 
     @Override
     public void setProperties(Map<?, ?> properties) {
-        if (MapUtils.isEmpty(properties)) { return; }
+        if (MapUtil.isEmpty(properties)) { return; }
         for (Map.Entry<?, ?> entry : properties.entrySet()) {
             setProperty(String.valueOf(entry.getKey()), entry.getValue());
         }

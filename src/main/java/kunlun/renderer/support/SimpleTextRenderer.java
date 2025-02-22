@@ -44,7 +44,7 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
     protected String render(String template, Map<?, ?> data) throws ParseException {
         // Parameters check.
         if (StrUtil.isBlank(template)) { return null; }
-        if (MapUtils.isEmpty(data)) { return template; }
+        if (MapUtil.isEmpty(data)) { return template; }
         // Variable declarations.
         StringBuilder result = new StringBuilder();
         int finish = template.length(), begin = ZERO, end = ZERO, escapeIndex;

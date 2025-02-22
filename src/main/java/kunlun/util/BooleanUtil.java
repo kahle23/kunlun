@@ -12,10 +12,10 @@ import static kunlun.common.constant.Words.*;
  * The boolean tools.
  * @author Kahle
  */
-public class BooleanUtils {
+public class BooleanUtil {
 
     public static boolean parseBoolean(Object boolObject) {
-        Boolean booleanObj = BooleanUtils.valueOf(boolObject);
+        Boolean booleanObj = BooleanUtil.valueOf(boolObject);
         return Boolean.TRUE.equals(booleanObj);
     }
 
@@ -25,7 +25,7 @@ public class BooleanUtils {
             return (Boolean) boolObject;
         }
         String boolStr = String.valueOf(boolObject);
-        return BooleanUtils.valueOf(boolStr);
+        return BooleanUtil.valueOf(boolStr);
     }
 
     public static Boolean valueOf(String boolString) {

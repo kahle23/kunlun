@@ -5,7 +5,7 @@
 
 package kunlun.data;
 
-import kunlun.util.ArrayUtils;
+import kunlun.util.ArrayUtil;
 import kunlun.util.ObjUtil;
 
 import java.util.LinkedHashMap;
@@ -59,7 +59,7 @@ public class Dict extends LinkedHashMap<String, Object> {
     }
 
     public Dict delete(Object... keys) {
-        if (ArrayUtils.isEmpty(keys)) { return this; }
+        if (ArrayUtil.isEmpty(keys)) { return this; }
         for (Object key : keys) { remove(key); }
         return this;
     }

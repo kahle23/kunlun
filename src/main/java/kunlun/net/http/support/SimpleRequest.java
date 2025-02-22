@@ -11,7 +11,7 @@ import kunlun.net.http.AbstractHttpBase;
 import kunlun.net.http.HttpMethod;
 import kunlun.net.http.HttpRequest;
 import kunlun.util.Assert;
-import kunlun.util.MapUtils;
+import kunlun.util.MapUtil;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -35,13 +35,13 @@ public class SimpleRequest extends AbstractHttpBase implements HttpRequest {
                                    Map<String, ?> parameters,
                                    Object body) {
         SimpleRequest request = new SimpleRequest(method, url);
-        if (MapUtils.isNotEmpty(headers)) {
+        if (MapUtil.isNotEmpty(headers)) {
             for (Map.Entry<String, ?> entry : headers.entrySet()) {
                 String value = entry.getValue() != null ? String.valueOf(entry.getValue()) : null;
                 request.addHeader(entry.getKey(), value);
             }
         }
-        if (MapUtils.isNotEmpty(parameters)) {
+        if (MapUtil.isNotEmpty(parameters)) {
             request.addParameters(parameters);
         }
         if (body != null) { request.setBody(body); }

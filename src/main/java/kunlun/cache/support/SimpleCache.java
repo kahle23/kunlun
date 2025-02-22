@@ -10,7 +10,7 @@ import kunlun.data.collect.ReferenceMap;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.MapUtils;
+import kunlun.util.MapUtil;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -229,7 +229,7 @@ public class SimpleCache extends AbstractValueWrapperCache {
 
     @Override
     public long prune() {
-        if (MapUtils.isEmpty(storage)) { return ZERO; }
+        if (MapUtil.isEmpty(storage)) { return ZERO; }
         long count = ZERO;
         for (Map.Entry<Object, ValueWrapper> entry : storage.entrySet()) {
             ValueWrapper valueWrapper = entry.getValue();
@@ -259,7 +259,7 @@ public class SimpleCache extends AbstractValueWrapperCache {
 
     @Override
     public Map<Object, Object> entries() {
-        if (MapUtils.isEmpty(storage)) { return emptyMap(); }
+        if (MapUtil.isEmpty(storage)) { return emptyMap(); }
         Map<Object, Object> result = new HashMap<Object, Object>(storage.size());
         for (Map.Entry<Object, ValueWrapper> entry : storage.entrySet()) {
             ValueWrapper val = entry.getValue();

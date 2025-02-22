@@ -156,7 +156,7 @@ public class ArgumentUtils {
 
     public static Map<String, String> parseToMap(String[] arguments) {
         Map<String, String> result = new HashMap<String, String>(arguments.length);
-        if (ArrayUtils.isEmpty(arguments)) { return result; }
+        if (ArrayUtil.isEmpty(arguments)) { return result; }
         for (String arg : arguments) {
             if (!arg.startsWith(DOUBLE_MINUS)) { continue; }
             arg = arg.substring(TWO);

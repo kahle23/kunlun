@@ -11,7 +11,7 @@ import java.util.Map;
  * The map tools.
  * @author Kahle
  */
-public class MapUtils {
+public class MapUtil {
 
     public static <K, V> boolean isEmpty(Map<K, V> map) {
 

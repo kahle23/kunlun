@@ -9,7 +9,7 @@ import kunlun.exception.ExceptionUtils;
 import kunlun.io.util.IoUtil;
 import kunlun.io.util.StringBuilderWriter;
 import kunlun.util.Assert;
-import kunlun.util.MapUtils;
+import kunlun.util.MapUtil;
 import kunlun.util.StrUtil;
 
 import java.io.*;
@@ -100,7 +100,7 @@ public class Prop extends TextFile {
 
     public void fromMap(Map<String, Object> map) {
         properties.clear();
-        if (MapUtils.isEmpty(map)) { return; }
+        if (MapUtil.isEmpty(map)) { return; }
         properties.putAll(map);
     }
 

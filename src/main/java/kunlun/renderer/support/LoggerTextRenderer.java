@@ -5,7 +5,7 @@
 
 package kunlun.renderer.support;
 
-import kunlun.util.ArrayUtils;
+import kunlun.util.ArrayUtil;
 import kunlun.util.StrUtil;
 
 import static kunlun.common.constant.Numbers.*;
@@ -25,7 +25,7 @@ public class LoggerTextRenderer extends AbstractFormatTextRenderer {
     public String render(String template, Object[] arguments) {
         if (template == null) { return null; }
         if (StrUtil.isBlank(template)) { return template; }
-        if (ArrayUtils.isEmpty(arguments)) { return template; }
+        if (ArrayUtil.isEmpty(arguments)) { return template; }
         StringBuilder result = new StringBuilder();
         int index, start = 0, count = 0, argsLen = arguments.length, escapeIndex;
         while ((index = template.indexOf(PLACEHOLDER, start)) != MINUS_ONE) {

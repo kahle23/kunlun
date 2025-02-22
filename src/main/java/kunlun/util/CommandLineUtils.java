@@ -21,7 +21,7 @@ public class CommandLineUtils {
 
     public static Map<String, String> parseParameters(String[] args) {
         Map<String, String> result = new HashMap<String, String>(args.length);
-        if (ArrayUtils.isEmpty(args)) { return result; }
+        if (ArrayUtil.isEmpty(args)) { return result; }
         for (String arg : args) {
             if (!arg.startsWith(DOUBLE_MINUS)) { continue; }
             arg = arg.substring(TWO);

@@ -7,7 +7,7 @@ package kunlun.reflect.support;
 
 import kunlun.exception.ExceptionUtils;
 import kunlun.reflect.ReflectService;
-import kunlun.util.ArrayUtils;
+import kunlun.util.ArrayUtil;
 import kunlun.util.Assert;
 import kunlun.util.ClassUtils;
 import kunlun.util.ObjUtil;
@@ -34,7 +34,7 @@ public class SimpleReflectService implements ReflectService {
     }
 
     protected Class<?>[] getParameterTypes(Object[] params) {
-        if (ArrayUtils.isEmpty(params)) { return new Class[ZERO]; }
+        if (ArrayUtil.isEmpty(params)) { return new Class[ZERO]; }
         Class<?>[] result = new Class[params.length];
         for (int i = ZERO; i < params.length; i++) {
             Object value = params[i];
@@ -295,7 +295,7 @@ public class SimpleReflectService implements ReflectService {
     public <T> T newInstance(Class<T> clazz, Object... args) throws NoSuchMethodException
             , IllegalAccessException, InvocationTargetException, InstantiationException {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        if (ArrayUtils.isEmpty(args)) { return clazz.newInstance(); }
+        if (ArrayUtil.isEmpty(args)) { return clazz.newInstance(); }
         Class<?>[] types = getParameterTypes(args);
         Constructor<T> constructor = getConstructor(clazz, types);
         makeAccessible(constructor);

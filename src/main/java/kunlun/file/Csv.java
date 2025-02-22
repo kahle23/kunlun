@@ -8,7 +8,7 @@ package kunlun.file;
 import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
 import kunlun.util.CollUtil;
-import kunlun.util.MapUtils;
+import kunlun.util.MapUtil;
 import kunlun.util.StrUtil;
 
 import java.io.IOException;
@@ -291,7 +291,7 @@ public class Csv extends TextFile implements Table {
     public List<Map<String, Object>> toMapList() {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         if (CollUtil.isEmpty(content)) { return result; }
-        boolean haveHeaders = MapUtils.isNotEmpty(headersMapping);
+        boolean haveHeaders = MapUtil.isNotEmpty(headersMapping);
         List<String> propertyList = new ArrayList<String>();
         boolean isFirst = true;
         for (int i = columnStartNumber, cLen = content.size(); i < cLen; i++) {
@@ -330,7 +330,7 @@ public class Csv extends TextFile implements Table {
                 headerList.add(EMPTY_STRING);
             }
         }
-        boolean haveHeaders = MapUtils.isNotEmpty(propertiesMapping);
+        boolean haveHeaders = MapUtil.isNotEmpty(propertiesMapping);
         if (haveHeaders) {
             headerList.addAll(propertiesMapping.values());
         }

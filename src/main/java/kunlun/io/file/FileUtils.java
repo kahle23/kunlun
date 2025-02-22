@@ -8,7 +8,7 @@ package kunlun.io.file;
 import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.ArrayUtils;
+import kunlun.util.ArrayUtil;
 import kunlun.util.Assert;
 
 import java.io.*;
@@ -105,7 +105,7 @@ public class FileUtils {
             File current = fileList.removeFirst();
             File[] files = current.listFiles();
             // Don't have sub file or subdirectory, try delete.
-            if (ArrayUtils.isEmpty(files)) {
+            if (ArrayUtil.isEmpty(files)) {
                 if (!current.delete()) {
                     log.info("Directory \"{}\" delete fail. ", current);
                 }
@@ -208,7 +208,7 @@ public class FileUtils {
         fileList.add(source);
         while (!fileList.isEmpty()) {
             File[] files = fileList.removeFirst().listFiles();
-            if (ArrayUtils.isEmpty(files)) { continue; }
+            if (ArrayUtil.isEmpty(files)) { continue; }
             for (File file : files) {
                 String subPath = FilenameUtils.subPath(file, source);
                 File destPath = new File(destination, subPath);

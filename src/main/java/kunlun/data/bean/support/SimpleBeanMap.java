@@ -11,7 +11,7 @@ import kunlun.exception.ExceptionUtils;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.reflect.ReflectUtils;
-import kunlun.util.ArrayUtils;
+import kunlun.util.ArrayUtil;
 import kunlun.util.Assert;
 import kunlun.util.ObjUtil;
 import kunlun.util.StrUtil;
@@ -132,7 +132,7 @@ public class SimpleBeanMap extends BeanMap {
         if (method == null) { return null; }
         Class<?>[] types = method.getParameterTypes();
         try {
-            boolean haveType = ArrayUtils.isNotEmpty(types);
+            boolean haveType = ArrayUtil.isNotEmpty(types);
             if (value == null && haveType
                     && types[ZERO].isPrimitive()) {
                 throw new NullPointerException();

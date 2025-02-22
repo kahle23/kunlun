@@ -9,7 +9,7 @@ import kunlun.exception.ExceptionUtils;
 import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.ArrayUtils;
+import kunlun.util.ArrayUtil;
 import kunlun.util.Assert;
 import kunlun.util.CollUtil;
 
@@ -123,7 +123,7 @@ public class NetUtils {
         catch (SocketException e) {
             throw ExceptionUtils.wrap(e);
         }
-        if (ArrayUtils.isEmpty(hardwareAddress)) {
+        if (ArrayUtil.isEmpty(hardwareAddress)) {
             return null;
         }
         int length = hardwareAddress.length;
