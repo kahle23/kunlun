@@ -10,7 +10,7 @@ import kunlun.message.MessageHandler;
 import kunlun.message.model.Message;
 import kunlun.message.model.Result;
 import kunlun.message.model.Subscribe;
-import kunlun.util.IterUtils;
+import kunlun.util.IterUtil;
 
 import java.util.Collection;
 
@@ -61,7 +61,7 @@ public abstract class AbstractMessageHandler extends AbstractAction implements M
             return subscribe((Subscribe) input);
         } else {
             if (input instanceof Collection &&
-                    (IterUtils.getFirst((Collection<?>) input) instanceof Message)) {
+                    (IterUtil.getFirst((Collection<?>) input) instanceof Message)) {
                 //noinspection unchecked
                 return send((Collection<Message>) input);
             } else if (input instanceof Message) {

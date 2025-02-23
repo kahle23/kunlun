@@ -11,42 +11,42 @@ import org.junit.Test;
 
 import static kunlun.common.constant.Numbers.*;
 
-public class RandomUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(RandomUtilsTest.class);
+public class RandomUtilTest {
+    private static Logger log = LoggerFactory.getLogger(RandomUtilTest.class);
 
     @Test
     public void testNextInt() {
         for (int i = ZERO; i < ONE_HUNDRED; i++) {
-            log.info("{}", RandomUtils.nextInt());
-            log.info("{}", RandomUtils.nextInt(ONE_HUNDRED));
+            log.info("{}", RandomUtil.nextInt());
+            log.info("{}", RandomUtil.nextInt(ONE_HUNDRED));
         }
     }
 
     @Test
     public void testNextLong() {
         for (int i = ZERO; i < TWENTY; i++) {
-            log.info("{}", RandomUtils.nextLong());
+            log.info("{}", RandomUtil.nextLong());
         }
     }
 
     @Test
     public void testNextFloat() {
         for (int i = ZERO; i < TWENTY; i++) {
-            log.info("{}", RandomUtils.nextFloat());
+            log.info("{}", RandomUtil.nextFloat());
         }
     }
 
     @Test
     public void testNextDouble() {
         for (int i = ZERO; i < TWENTY; i++) {
-            log.info("{}", RandomUtils.nextDouble());
+            log.info("{}", RandomUtil.nextDouble());
         }
     }
 
     @Test
     public void testNextBoolean() {
         for (int i = ZERO; i < TWENTY; i++) {
-            log.info("{}", RandomUtils.nextBoolean());
+            log.info("{}", RandomUtil.nextBoolean());
         }
     }
 

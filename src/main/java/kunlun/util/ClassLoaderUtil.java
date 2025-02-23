@@ -23,8 +23,8 @@ import static kunlun.common.constant.Symbols.SLASH;
  * The class loader tools.
  * @author Kahle
  */
-public class ClassLoaderUtils {
-    private static final Logger log = Logger.getLogger(ClassLoaderUtils.class.getName());
+public class ClassLoaderUtil {
+    private static final Logger log = Logger.getLogger(ClassLoaderUtil.class.getName());
 
     private static Enumeration<URL> getResources(ClassLoader classLoader, String resourceName) {
         if (classLoader == null) { return null; }
@@ -52,7 +52,7 @@ public class ClassLoaderUtils {
         }
         if (classLoader != null) { return classLoader; }
         // No thread context class loader -> use class loader of this class.
-        classLoader = ClassLoaderUtils.class.getClassLoader();
+        classLoader = ClassLoaderUtil.class.getClassLoader();
         if (classLoader != null) { return classLoader; }
         // getClassLoader() returning null indicates the bootstrap ClassLoader
         try {
@@ -84,7 +84,7 @@ public class ClassLoaderUtils {
             String subStr = resourceName.substring(ONE);
             url = classLoader.getResource(subStr);
         }
-        classLoader = ClassLoaderUtils.class.getClassLoader();
+        classLoader = ClassLoaderUtil.class.getClassLoader();
         if (classLoader == null) {
             classLoader = ClassLoader.getSystemClassLoader();
         }
@@ -106,7 +106,7 @@ public class ClassLoaderUtils {
         }
         if (url == null && !startsSlash) {
             resourceName = SLASH + resourceName;
-            return ClassLoaderUtils
+            return ClassLoaderUtil
                     .getResource(resourceName, callingClass);
         }
         return url;
@@ -128,27 +128,27 @@ public class ClassLoaderUtils {
         ClassLoader classLoader =
                 currentThread.getContextClassLoader();
         Enumeration<URL> urls =
-                ClassLoaderUtils.getResources(classLoader, resourceName);
+                ClassLoaderUtil.getResources(classLoader, resourceName);
         if (CollUtil.isEmpty(urls) && startsSlash) {
             // Certain ClassLoaders need it without the leading "/".
             String subStr = resourceName.substring(ONE);
-            urls = ClassLoaderUtils.getResources(classLoader, subStr);
+            urls = ClassLoaderUtil.getResources(classLoader, subStr);
         }
-        classLoader = ClassLoaderUtils.class.getClassLoader();
+        classLoader = ClassLoaderUtil.class.getClassLoader();
         if (classLoader == null) {
             classLoader = ClassLoader.getSystemClassLoader();
         }
         if (CollUtil.isEmpty(urls)) {
-            urls = ClassLoaderUtils.getResources(classLoader, resourceName);
+            urls = ClassLoaderUtil.getResources(classLoader, resourceName);
         }
         if (CollUtil.isEmpty(urls) && startsSlash) {
             // Certain ClassLoaders need it without the leading "/".
             String subStr = resourceName.substring(ONE);
-            urls = ClassLoaderUtils.getResources(classLoader, subStr);
+            urls = ClassLoaderUtil.getResources(classLoader, subStr);
         }
         if (CollUtil.isEmpty(urls)) {
             classLoader = callingClass.getClassLoader();
-            urls = ClassLoaderUtils.getResources(classLoader, resourceName);
+            urls = ClassLoaderUtil.getResources(classLoader, resourceName);
         }
         if (CollUtil.isEmpty(urls)) {
             URL url = callingClass.getResource(resourceName);
@@ -157,7 +157,7 @@ public class ClassLoaderUtils {
         CollUtil.addAll(result, urls);
         if (CollUtil.isEmpty(result) && !startsSlash) {
             resourceName = SLASH + resourceName;
-            return ClassLoaderUtils.getResources(resourceName, callingClass);
+            return ClassLoaderUtil.getResources(resourceName, callingClass);
         }
         return result;
     }
@@ -169,7 +169,7 @@ public class ClassLoaderUtils {
      * @return The stream of loaded resource
      */
     public static InputStream getResourceAsStream(String resourceName, Class<?> callingClass) {
-        URL url = ClassLoaderUtils.getResource(resourceName, callingClass);
+        URL url = ClassLoaderUtil.getResource(resourceName, callingClass);
         try {
             return url != null ? url.openStream() : null;
         }
@@ -201,7 +201,7 @@ public class ClassLoaderUtils {
             return Class.forName(className);
         }
         catch (ClassNotFoundException e) {
-            classLoader = ClassLoaderUtils.class.getClassLoader();
+            classLoader = ClassLoaderUtil.class.getClassLoader();
             try {
                 if (classLoader != null) {
                     return classLoader.loadClass(className);

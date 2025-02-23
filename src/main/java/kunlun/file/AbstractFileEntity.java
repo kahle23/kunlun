@@ -7,7 +7,7 @@ package kunlun.file;
 
 import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
-import kunlun.util.ClassLoaderUtils;
+import kunlun.util.ClassLoaderUtil;
 
 import java.io.*;
 
@@ -86,7 +86,7 @@ public abstract class AbstractFileEntity implements FileEntity {
         setName(subPathFile.getName());
         InputStream inputStream = null;
         try {
-            inputStream = ClassLoaderUtils.getResourceAsStream(subPath, getClass());
+            inputStream = ClassLoaderUtil.getResourceAsStream(subPath, getClass());
             Assert.notNull(inputStream
                     , "Parameter \"subPath\" not found in classpath. ");
             return read(inputStream);

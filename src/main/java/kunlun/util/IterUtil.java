@@ -14,7 +14,7 @@ import static kunlun.common.constant.Numbers.ZERO;
  * The iterable and iterator tools.
  * @author Kahle
  */
-public class IterUtils {
+public class IterUtil {
 
     public static boolean isEmpty(Iterable<?> iterable) {
 

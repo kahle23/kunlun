@@ -204,7 +204,7 @@ public abstract class AbstractHttpClient implements HttpClient {
      */
     protected String buildMimeBoundary(char[] charArray, int length) {
         Assert.isTrue(length > TEN, "Parameter \"length\" must greater than 10. ");
-        return "----WebKitFormBoundary" + RandomUtils.nextString(charArray, length);
+        return "----WebKitFormBoundary" + RandomUtil.nextString(charArray, length);
     }
 
     /**

@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.util.ObjUtil.cast;
-import static kunlun.util.TypeUtils.parameterizedOf;
+import static kunlun.util.TypeUtil.parameterizedOf;
 
 public class CacheConversionProviderTest {
     private static final Logger log = LoggerFactory.getLogger(CacheConversionProviderTest.class);

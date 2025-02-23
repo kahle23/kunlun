@@ -7,7 +7,7 @@ package kunlun.action;
 
 import kunlun.core.Action;
 import kunlun.data.tuple.Triple;
-import kunlun.util.ArgumentUtils;
+import kunlun.util.ArgumentUtil;
 
 /**
  * The abstract action.
@@ -17,7 +17,7 @@ public abstract class AbstractAction implements Action {
 
     @Override
     public Object execute(Object[] arguments) {
-        Triple<String, Object, Object[]> triple = ArgumentUtils.parseToStrObjArr(arguments);
+        Triple<String, Object, Object[]> triple = ArgumentUtil.parseToStrObjArr(arguments);
         return execute(triple.getLeft(), triple.getMiddle(), triple.getRight());
     }
 

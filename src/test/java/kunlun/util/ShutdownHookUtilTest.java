@@ -7,18 +7,18 @@ package kunlun.util;
 
 import org.junit.Test;
 
-public class ShutdownHookUtilsTest {
+public class ShutdownHookUtilTest {
 
     @Test
     public void test1() {
-        ShutdownHookUtils.addRunnable(new Runnable() {
+        ShutdownHookUtil.addRunnable(new Runnable() {
             @Override
             public void run() {
                 System.out.println(">> Shutdown Hook 1");
             }
         });
         System.out.println("test1");
-        ShutdownHookUtils.addRunnable(new Runnable() {
+        ShutdownHookUtil.addRunnable(new Runnable() {
             @Override
             public void run() {
                 System.out.println(">> Shutdown Hook 2");

@@ -8,7 +8,7 @@ package kunlun.io.file.support;
 import kunlun.exception.ExceptionUtils;
 import kunlun.io.FileLoader;
 import kunlun.util.Assert;
-import kunlun.util.ClassLoaderUtils;
+import kunlun.util.ClassLoaderUtil;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class SimpleFileLoader implements FileLoader {
         Assert.notNull(filePath, "Variable \"filePath\" must not blank. ");
         try {
             return filePath.startsWith(CLASSPATH) ?
-                    ClassLoaderUtils.getResourceAsStream(
+                    ClassLoaderUtil.getResourceAsStream(
                             filePath.substring(CLASSPATH.length()), this.getClass()
                     ) :
                     new FileInputStream(filePath);

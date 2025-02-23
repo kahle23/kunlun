@@ -16,14 +16,14 @@ import java.util.concurrent.ScheduledExecutorService;
  * The thread pool tools.
  * @author Kahle
  */
-public class ThreadPoolUtils {
+public class ThreadPoolUtil {
     private static volatile ThreadPoolWrapper wrapper;
 
     public static ThreadPoolWrapper getWrapper() {
         if (wrapper != null) { return wrapper; }
-        synchronized (ThreadPoolUtils.class) {
+        synchronized (ThreadPoolUtil.class) {
             if (wrapper != null) { return wrapper; }
-            ThreadPoolUtils.setWrapper(new ThreadPoolWrapper() {
+            ThreadPoolUtil.setWrapper(new ThreadPoolWrapper() {
                 @Override
                 public Executor wrap(Executor executor) { return executor; }
             });
@@ -33,7 +33,7 @@ public class ThreadPoolUtils {
 
     public static void setWrapper(ThreadPoolWrapper wrapper) {
 
-        ThreadPoolUtils.wrapper = Assert.notNull(wrapper);
+        ThreadPoolUtil.wrapper = Assert.notNull(wrapper);
     }
 
     public static ScheduledExecutorService wrap(ScheduledExecutorService executorService) {

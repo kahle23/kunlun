@@ -17,7 +17,7 @@ import static kunlun.common.constant.Numbers.ZERO;
  * The thread tools.
  * @author Kahle
  */
-public class ThreadUtils {
+public class ThreadUtil {
 
     public static void sleepQuietly(long millis) {
         Assert.isTrue(millis >= ZERO

@@ -7,7 +7,7 @@ package kunlun.action.support;
 
 import kunlun.action.AbstractAction;
 import kunlun.data.tuple.Triple;
-import kunlun.util.ArgumentUtils;
+import kunlun.util.ArgumentUtil;
 import kunlun.util.Assert;
 import kunlun.util.ObjUtil;
 
@@ -22,7 +22,7 @@ public abstract class AbstractClassicAction extends AbstractAction {
 
     @Override
     public Object execute(Object[] arguments) {
-        Triple<Object, String, Type> triple = ArgumentUtils.parseToObjStrType(arguments);
+        Triple<Object, String, Type> triple = ArgumentUtil.parseToObjStrType(arguments);
         return execute(triple.getLeft(), triple.getRight());
     }
 

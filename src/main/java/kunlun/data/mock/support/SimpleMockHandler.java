@@ -9,9 +9,9 @@ import kunlun.convert.ConversionUtils;
 import kunlun.exception.ExceptionUtils;
 import kunlun.reflect.ReflectUtils;
 import kunlun.util.Assert;
-import kunlun.util.ClassUtils;
-import kunlun.util.NumberUtils;
-import kunlun.util.RandomUtils;
+import kunlun.util.ClassUtil;
+import kunlun.util.NumberUtil;
+import kunlun.util.RandomUtil;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
@@ -68,25 +68,25 @@ public class SimpleMockHandler extends AbstractMockHandler {
     protected Object mockClassData(Class<?> attrType, String attrName
             , Object[] arguments, int nested, Class<?> originalType, Type... genericTypes) {
         Assert.notNull(attrType, "Parameter \"attrType\" must not null. ");
-        Class<?> wrapper = ClassUtils.getWrapper(attrType);
+        Class<?> wrapper = ClassUtil.getWrapper(attrType);
         if (Number.class.isAssignableFrom(wrapper)) {
-            double nextDouble = RandomUtils.nextDouble() * EIGHT_HUNDRED;
-            nextDouble = NumberUtils.round(nextDouble).doubleValue();
+            double nextDouble = RandomUtil.nextDouble() * EIGHT_HUNDRED;
+            nextDouble = NumberUtil.round(nextDouble).doubleValue();
             return ConversionUtils.convert(nextDouble, wrapper);
         }
         else if (Boolean.class.isAssignableFrom(wrapper)) {
-            return RandomUtils.nextBoolean();
+            return RandomUtil.nextBoolean();
         }
         else if (Character.class.isAssignableFrom(wrapper)) {
-            return RandomUtils.nextCharacter();
+            return RandomUtil.nextCharacter();
         }
         else if (Date.class.isAssignableFrom(wrapper)) {
             Date nowDate = new Date();
             return ConversionUtils.convert(nowDate, wrapper);
         }
         else if (String.class.isAssignableFrom(wrapper)) {
-            int size = RandomUtils.nextInt(EIGHT);
-            return RandomUtils.nextString(++size);
+            int size = RandomUtil.nextInt(EIGHT);
+            return RandomUtil.nextString(++size);
         }
         else if (Object.class.equals(wrapper)) {
             return new Object();
@@ -116,7 +116,7 @@ public class SimpleMockHandler extends AbstractMockHandler {
             // Multidimensional arrays are not supported.
             return null;
         }
-        int size = RandomUtils.nextInt(TEN);
+        int size = RandomUtil.nextInt(TEN);
         Class<?> componentClass = ((Class) attrType).getComponentType();
         Object result = Array.newInstance(componentClass, size);
         if (size == ZERO) { return result; }
@@ -134,14 +134,14 @@ public class SimpleMockHandler extends AbstractMockHandler {
         if (enums.length == 0) {
             throw new IllegalStateException("Enum length is zero. ");
         }
-        return enums[RandomUtils.nextInt(enums.length)];
+        return enums[RandomUtil.nextInt(enums.length)];
     }
 
     protected Object mockMapData(Class<?> attrType, String attrName
             , Object[] arguments, int nested, Class<?> originalType, Type... genericTypes) {
         Assert.notNull(attrType, "Parameter \"attrType\" must not null. ");
         if (nested > maxNestedCount - ONE) { return null; }
-        int size = RandomUtils.nextInt(TEN);
+        int size = RandomUtil.nextInt(TEN);
         Map<Object, Object> result;
         if (HashMap.class.isAssignableFrom(attrType)) {
             result = new HashMap<Object, Object>(size);
@@ -193,7 +193,7 @@ public class SimpleMockHandler extends AbstractMockHandler {
             , Object[] arguments, int nested, Class<?> originalType, Type... genericTypes) {
         Assert.notNull(attrType, "Parameter \"attrType\" must not null. ");
         if (nested > maxNestedCount - ONE) { return null; }
-        int size = RandomUtils.nextInt(TEN);
+        int size = RandomUtil.nextInt(TEN);
         Collection<Object> result;
         if (List.class.isAssignableFrom(attrType)) {
             result = new ArrayList<Object>(size);

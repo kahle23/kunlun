@@ -8,7 +8,7 @@ package kunlun.aop.support;
 import kunlun.aop.AbstractProxyHandler;
 import kunlun.aop.Interceptor;
 import kunlun.util.Assert;
-import kunlun.util.ClassLoaderUtils;
+import kunlun.util.ClassLoaderUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -19,7 +19,7 @@ import java.lang.reflect.Proxy;
  * @author Kahle
  */
 public class SimpleProxyHandler extends AbstractProxyHandler {
-    private static final ClassLoader CLASS_LOADER = ClassLoaderUtils.getDefaultClassLoader();
+    private static final ClassLoader CLASS_LOADER = ClassLoaderUtil.getDefaultClassLoader();
 
     private static class InvocationHandlerAdapter implements InvocationHandler {
         private final Interceptor interceptor;

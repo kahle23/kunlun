@@ -22,7 +22,7 @@ import static kunlun.common.constant.Symbols.EQUAL;
  * The arguments tool.
  * @author Kahle
  */
-public class ArgumentUtils {
+public class ArgumentUtil {
 
     /**
      * Parsing the arguments array.

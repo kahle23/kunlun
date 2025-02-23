@@ -46,9 +46,9 @@ public abstract class AbstractSingleFieldFillAction extends AbstractAction imple
         if (CollUtil.isEmpty(data)) { return; }
         if (MapUtil.isEmpty(map)) { return; }
         // get field config.
-        String queryField = IterUtils.getFirst(cfg.getQueryFields());
-        String fillField = IterUtils.getFirst(cfg.getFillFields());
-        String dataField = IterUtils.getFirst(cfg.getDataFields());
+        String queryField = IterUtil.getFirst(cfg.getQueryFields());
+        String fillField = IterUtil.getFirst(cfg.getFillFields());
+        String dataField = IterUtil.getFirst(cfg.getDataFields());
         // fill data.
         for (Map<String, Object> dataMap : data) {
             Object value = dataMap.get(queryField);
@@ -81,7 +81,7 @@ public abstract class AbstractSingleFieldFillAction extends AbstractAction imple
         Map<FieldConfig, Collection<Object>> queryFieldMap = new LinkedHashMap<FieldConfig, Collection<Object>>();
         for (Map<String, Object> dataMap : dataList) {
             for (FieldConfig fieldConfig : fieldConfigs) {
-                Object value = dataMap.get(IterUtils.getFirst(fieldConfig.getQueryFields()));
+                Object value = dataMap.get(IterUtil.getFirst(fieldConfig.getQueryFields()));
                 if (value == null) { continue; }
                 Collection<Object> coll = queryFieldMap.get(fieldConfig);
                 if (coll == null) {

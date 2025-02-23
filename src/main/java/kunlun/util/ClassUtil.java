@@ -16,7 +16,7 @@ import java.util.Locale;
  * The class tools.
  * @author Kahle
  */
-public class ClassUtils {
+public class ClassUtil {
 
     public static Class<?> getPrimitive(Class<?> type) {
 
@@ -30,17 +30,17 @@ public class ClassUtils {
 
     public static boolean isPresent(String className) {
 
-        return ClassUtils.isPresent(className, null);
+        return ClassUtil.isPresent(className, null);
     }
 
     public static boolean isPresent(String className, ClassLoader classLoader) {
 
-        return ClassUtils.isPresent(className, Boolean.FALSE, classLoader);
+        return ClassUtil.isPresent(className, Boolean.FALSE, classLoader);
     }
 
     public static boolean isPresent(String className, boolean initialize, ClassLoader classLoader) {
         Assert.notNull(className, "Parameter \"className\" must not null. ");
-        if (classLoader == null) { classLoader = ClassLoaderUtils.getDefaultClassLoader(); }
+        if (classLoader == null) { classLoader = ClassLoaderUtil.getDefaultClassLoader(); }
         try {
             Class.forName(className, initialize, classLoader);
             return true;

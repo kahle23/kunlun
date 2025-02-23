@@ -8,7 +8,7 @@ package kunlun.action.support;
 import kunlun.action.AbstractAction;
 import kunlun.core.handler.StrategySupportedHandler;
 import kunlun.data.tuple.Pair;
-import kunlun.util.ArgumentUtils;
+import kunlun.util.ArgumentUtil;
 import kunlun.util.Assert;
 
 /**
@@ -21,14 +21,14 @@ public abstract class AbstractStrategyAction
 
     @Override
     public Object execute(Object[] arguments) {
-        Pair<Object, Object[]> pair = ArgumentUtils.parseToObjArr(arguments);
+        Pair<Object, Object[]> pair = ArgumentUtil.parseToObjArr(arguments);
         return execute(pair.getLeft(), pair.getRight());
     }
 
     @Override
     public Object execute(Object strategy, Object[] arguments) {
         Assert.notNull(strategy, "Parameter \"strategy\" must not null. ");
-        Pair<Object, Class<?>> pair = ArgumentUtils.parseToObjCls(arguments);
+        Pair<Object, Class<?>> pair = ArgumentUtil.parseToObjCls(arguments);
         return execute(pair.getLeft(), String.valueOf(strategy), pair.getRight());
     }
 

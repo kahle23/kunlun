@@ -7,7 +7,7 @@ package kunlun.logging.support;
 
 import kunlun.exception.ExceptionUtils;
 import kunlun.util.StrUtil;
-import kunlun.util.ThreadUtils;
+import kunlun.util.ThreadUtil;
 
 import java.lang.management.ThreadInfo;
 import java.text.DateFormat;
@@ -76,7 +76,7 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
 
     private String printfThread(LogRecord record) {
         int threadId = record.getThreadID();
-        ThreadInfo threadInfo = ThreadUtils.getThreadInfo(threadId);
+        ThreadInfo threadInfo = ThreadUtil.getThreadInfo(threadId);
         String threadName = threadInfo != null ? threadInfo.getThreadName() : EMPTY_STRING;
         threadName = StrUtil.isNotBlank(threadName) ? threadName : EMPTY_STRING;
         int length;

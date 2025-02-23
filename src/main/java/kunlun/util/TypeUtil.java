@@ -15,14 +15,14 @@ import static kunlun.common.constant.Numbers.ZERO;
  * The type tools.
  * @author Kahle
  */
-public class TypeUtils {
+public class TypeUtil {
     private static final Type[] EMPTY_TYPE_ARRAY = new Type[]{};
 
     public static Type canonicalize(Type type) {
         if (type instanceof Class) {
             Class<?> clazz = (Class<?>) type;
             Class<?> componentClass = clazz.getComponentType();
-            Type componentType = TypeUtils.canonicalize(componentClass);
+            Type componentType = TypeUtil.canonicalize(componentClass);
             return clazz.isArray() ? new GenericArrayTypeImpl(componentType) : clazz;
         }
         else if (type instanceof ParameterizedType) {
@@ -113,7 +113,7 @@ public class TypeUtils {
                         lowerBounds[ZERO]
                         , "LowerBounds first element must not null. "
                 );
-                TypeUtils.notPrimitive(
+                TypeUtil.notPrimitive(
                         lowerBounds[ZERO]
                         , "LowerBounds first element must not primitive. "
                 );
@@ -121,7 +121,7 @@ public class TypeUtils {
                         upperBounds[ZERO] == Object.class
                         , "UpperBounds first element must be \"Object.class\". "
                 );
-                this.lowerBound = TypeUtils.canonicalize(lowerBounds[ZERO]);
+                this.lowerBound = TypeUtil.canonicalize(lowerBounds[ZERO]);
                 this.upperBound = Object.class;
             }
             else {
@@ -129,12 +129,12 @@ public class TypeUtils {
                         upperBounds[ZERO]
                         , "UpperBounds first element must not null. "
                 );
-                TypeUtils.notPrimitive(
+                TypeUtil.notPrimitive(
                         upperBounds[ZERO]
                         , "UpperBounds first element must not primitive. "
                 );
                 this.lowerBound = null;
-                this.upperBound = TypeUtils.canonicalize(upperBounds[ZERO]);
+                this.upperBound = TypeUtil.canonicalize(upperBounds[ZERO]);
             }
         }
 
@@ -160,7 +160,7 @@ public class TypeUtils {
                     componentType
                     , "Parameter \"componentType\" must not null. "
             );
-            this.componentType = TypeUtils.canonicalize(componentType);
+            this.componentType = TypeUtil.canonicalize(componentType);
         }
 
         @Override
@@ -190,14 +190,14 @@ public class TypeUtils {
                                 "when parameter \"rawType\" is instance of \"Class\". "
                 );
             }
-            this.ownerType = ownerType != null ? TypeUtils.canonicalize(ownerType) : null;
-            this.rawType = TypeUtils.canonicalize(rawType);
+            this.ownerType = ownerType != null ? TypeUtil.canonicalize(ownerType) : null;
+            this.rawType = TypeUtil.canonicalize(rawType);
             this.typeArguments = typeArguments.clone();
             for (int i = ZERO; i < this.typeArguments.length; i++) {
                 Type typeArgument = this.typeArguments[i];
                 Assert.notNull(typeArgument, "TypeArguments each element must not null. ");
-                TypeUtils.notPrimitive(typeArgument, "TypeArguments each element must not primitive. ");
-                this.typeArguments[i] = TypeUtils.canonicalize(typeArgument);
+                TypeUtil.notPrimitive(typeArgument, "TypeArguments each element must not primitive. ");
+                this.typeArguments[i] = TypeUtil.canonicalize(typeArgument);
             }
         }
 

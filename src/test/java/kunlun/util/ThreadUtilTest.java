@@ -14,14 +14,14 @@ import java.lang.management.ThreadInfo;
 
 import static kunlun.common.constant.Numbers.ONE;
 
-public class ThreadUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(ThreadUtilsTest.class);
+public class ThreadUtilTest {
+    private static Logger log = LoggerFactory.getLogger(ThreadUtilTest.class);
 
     @Test
     public void test() {
         // ThreadUtils.sleepQuietly(ONE_THOUSAND);
-        log.info(ThreadUtils.getThreadName());
-        ThreadInfo threadInfo = ThreadUtils.getThreadInfo(ONE);
+        log.info(ThreadUtil.getThreadName());
+        ThreadInfo threadInfo = ThreadUtil.getThreadInfo(ONE);
         log.info(JSON.toJSONString(threadInfo, true));
     }
 

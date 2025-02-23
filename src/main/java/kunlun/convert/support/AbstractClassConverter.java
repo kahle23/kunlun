@@ -7,7 +7,7 @@ package kunlun.convert.support;
 
 import kunlun.convert.ConversionService;
 import kunlun.util.Assert;
-import kunlun.util.ClassUtils;
+import kunlun.util.ClassUtil;
 import kunlun.util.ObjUtil;
 
 import java.lang.reflect.Type;
@@ -46,8 +46,8 @@ public abstract class AbstractClassConverter extends AbstractGenericConverter {
         Assert.notNull(source, "Parameter \"source\" must not null. ");
         Class<?> sourceClass = sourceType != null ? obtainClass(sourceType) : source.getClass();
         Class<?> targetClass = obtainClass(targetType);
-        sourceClass = ClassUtils.getWrapper(sourceClass);
-        targetClass = ClassUtils.getWrapper(targetClass);
+        sourceClass = ClassUtil.getWrapper(sourceClass);
+        targetClass = ClassUtil.getWrapper(targetClass);
         if (targetClass.isAssignableFrom(sourceClass)) {
             return source;
         }

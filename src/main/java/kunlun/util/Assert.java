@@ -126,7 +126,7 @@ public class Assert {
     // ====
 
     public static void isEmpty(Iterable<?> collection, String message) {
-        if (IterUtils.isNotEmpty(collection)) {
+        if (IterUtil.isNotEmpty(collection)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -137,7 +137,7 @@ public class Assert {
     }
 
     public static <E, T extends Iterable<E>> T notEmpty(T collection, String message) {
-        if (IterUtils.isEmpty(collection)) {
+        if (IterUtil.isEmpty(collection)) {
             throw new IllegalArgumentException(message);
         }
         return collection;
@@ -279,7 +279,7 @@ public class Assert {
     // ====
 
     public static void isSupport(Class<?>[] supportClasses, boolean assignable, Class<?> targetClass, String message) {
-        if (!ClassUtils.isSupport(supportClasses, assignable, targetClass)) {
+        if (!ClassUtil.isSupport(supportClasses, assignable, targetClass)) {
             throw new IllegalArgumentException(message);
         }
     }

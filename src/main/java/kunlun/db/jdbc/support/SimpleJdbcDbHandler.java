@@ -9,7 +9,7 @@ import kunlun.data.tuple.Triple;
 import kunlun.db.jdbc.*;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.ArgumentUtils;
+import kunlun.util.ArgumentUtil;
 import kunlun.util.Assert;
 
 import javax.sql.DataSource;
@@ -38,7 +38,7 @@ public class SimpleJdbcDbHandler extends AbstractJdbcDbHandler {
 
     @Override
     public Object execute(Object[] arguments) {
-        Triple<Object, String, Class<?>> triple = ArgumentUtils.parseToObjStrCls(arguments);
+        Triple<Object, String, Class<?>> triple = ArgumentUtil.parseToObjStrCls(arguments);
         String   operation = triple.getMiddle();
         Object   input = triple.getLeft();
         Class<?> type = triple.getRight();

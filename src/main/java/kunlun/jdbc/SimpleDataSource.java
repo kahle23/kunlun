@@ -4,7 +4,7 @@ import kunlun.aop.Interceptor;
 import kunlun.aop.ProxyUtils;
 import kunlun.exception.ExceptionUtils;
 import kunlun.util.Assert;
-import kunlun.util.ClassLoaderUtils;
+import kunlun.util.ClassLoaderUtil;
 import kunlun.util.StrUtil;
 
 import javax.sql.DataSource;
@@ -41,7 +41,7 @@ public class SimpleDataSource implements DataSource {
     private static Properties readProperties() {
         try {
             InputStream inputStream =
-                    ClassLoaderUtils.getResourceAsStream(DEFAULT_CONFIG_NAME, SimpleDataSource.class);
+                    ClassLoaderUtil.getResourceAsStream(DEFAULT_CONFIG_NAME, SimpleDataSource.class);
             Assert.notNull(inputStream,
                     "The file \"" + DEFAULT_CONFIG_NAME + "\" cannot be found in the classpath. "
             );

@@ -16,7 +16,7 @@ import static kunlun.common.constant.Numbers.ZERO;
  * The number tools.
  * @author Kahle
  */
-public class NumberUtils {
+public class NumberUtil {
     private static RoundingMode defaultRoundMode = RoundingMode.HALF_UP;
     private static String defaultPattern = "0.00";
     private static int defaultScale = 2;
@@ -53,17 +53,17 @@ public class NumberUtils {
 
     public static BigDecimal round(Object input) {
 
-        return NumberUtils.round(input, defaultScale, defaultRoundMode);
+        return NumberUtil.round(input, defaultScale, defaultRoundMode);
     }
 
     public static String format(Object input) {
 
-        return NumberUtils.format(input, defaultPattern);
+        return NumberUtil.format(input, defaultPattern);
     }
 
     public static BigDecimal round(Object input, int newScale) {
 
-        return NumberUtils.round(input, newScale, defaultRoundMode);
+        return NumberUtil.round(input, newScale, defaultRoundMode);
     }
 
     public static String format(Object input, String pattern) {

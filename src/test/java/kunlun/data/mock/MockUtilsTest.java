@@ -13,7 +13,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Map;
 
-import static kunlun.util.TypeUtils.parameterizedOf;
+import static kunlun.util.TypeUtil.parameterizedOf;
 
 public class MockUtilsTest {
 

@@ -13,7 +13,7 @@ import kunlun.renderer.support.FormatTextRenderer;
 import kunlun.renderer.support.LoggerTextRenderer;
 import kunlun.util.ArrayUtil;
 import kunlun.util.Assert;
-import kunlun.util.ClassLoaderUtils;
+import kunlun.util.ClassLoaderUtil;
 
 import java.io.InputStream;
 import java.util.logging.Formatter;
@@ -49,7 +49,7 @@ public class JdkLoggerProvider implements LoggerProvider {
 
     public JdkLoggerProvider(FormatTextRenderer textRenderer) {
         logger = java.util.logging.Logger.getLogger(ROOT_LOGGER_NAME);
-        InputStream in = ClassLoaderUtils
+        InputStream in = ClassLoaderUtil
                 .getResourceAsStream(LOGGER_CONFIG_FILENAME, this.getClass());
         if (in != null) {
             try {

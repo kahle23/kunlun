@@ -37,7 +37,7 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
         if (tpl == null || !ObjUtil.isEmpty(tpl.getContent())) { return; }
         if (StrUtil.isBlank(tpl.getCharset())) { tpl.setCharset(STR_UTF_8); }
         Charset charset = Charset.forName(tpl.getCharset());
-        InputStream in = ClassLoaderUtils.getResourceAsStream(tpl.getName(), getClass());
+        InputStream in = ClassLoaderUtil.getResourceAsStream(tpl.getName(), getClass());
         tpl.setContent(new InputStreamReader(Assert.notNull(in), charset));
     }
 

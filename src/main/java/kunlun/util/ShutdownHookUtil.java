@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
  * The shutdown hook tools.
  * @author Kahle
  */
-public class ShutdownHookUtils {
+public class ShutdownHookUtil {
     private static final ExecutorServiceCleaner EXECUTOR_SERVICE_CLEANER;
     private static final CombinedRunnable COMBINED_RUNNABLE;
 

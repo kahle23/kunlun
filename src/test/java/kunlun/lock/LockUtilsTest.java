@@ -8,7 +8,7 @@ package kunlun.lock;
 import kunlun.exception.ExceptionUtils;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.ThreadUtils;
+import kunlun.util.ThreadUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -42,12 +42,12 @@ public class LockUtilsTest {
 
     private void bizCalc() {
         num = num + 20;
-        ThreadUtils.sleepQuietly(50);
+        ThreadUtil.sleepQuietly(50);
         num = num - 40;
-        ThreadUtils.sleepQuietly(100);
+        ThreadUtil.sleepQuietly(100);
         num = num + 20;
         num = num + 10;
-        ThreadUtils.sleepQuietly(150);
+        ThreadUtil.sleepQuietly(150);
         num = num - 20;
         num = num + 10;
         num = num - 1;
@@ -74,7 +74,7 @@ public class LockUtilsTest {
                     finally {
                         log.info("<< {} unlock\n", threadName);
                         LockUtils.unlock(managerName, lockName);
-                        ThreadUtils.sleepQuietly(100);
+                        ThreadUtil.sleepQuietly(100);
                     }
                 }
                 log.info("{}: {}ms", threadName, System.currentTimeMillis() - millis);
@@ -83,7 +83,7 @@ public class LockUtilsTest {
         for (int i = 0; i < threadNum; i++) {
             threadPool.submit(runnable);
         }
-        ThreadUtils.sleepQuietly(1000);
+        ThreadUtil.sleepQuietly(1000);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class LockUtilsTest {
                     finally {
                         log.info("<< {} unlock\n", threadName);
                         LockUtils.unlock(managerName, lockName);
-                        ThreadUtils.sleepQuietly(100);
+                        ThreadUtil.sleepQuietly(100);
                     }
                 }
                 log.info("{}: {}ms", threadName, System.currentTimeMillis() - millis);
@@ -117,7 +117,7 @@ public class LockUtilsTest {
         for (int i = 0; i < threadNum; i++) {
             threadPool.submit(runnable);
         }
-        ThreadUtils.sleepQuietly(1000);
+        ThreadUtil.sleepQuietly(1000);
     }
 
     @Test
@@ -146,7 +146,7 @@ public class LockUtilsTest {
                     finally {
                         log.info("<< {} unlock\n", threadName);
                         lock.unlock();
-                        ThreadUtils.sleepQuietly(100);
+                        ThreadUtil.sleepQuietly(100);
                     }
                 }
                 log.info("{}: {}ms", threadName, System.currentTimeMillis() - millis);
@@ -155,7 +155,7 @@ public class LockUtilsTest {
         for (int i = 0; i < threadNum; i++) {
             threadPool.submit(runnable);
         }
-        ThreadUtils.sleepQuietly(1000);
+        ThreadUtil.sleepQuietly(1000);
     }
 
     @Test
@@ -184,7 +184,7 @@ public class LockUtilsTest {
         for (int i = 0; i < threadNum; i++) {
             threadPool.submit(runnable);
         }
-        ThreadUtils.sleepQuietly(1000);
+        ThreadUtil.sleepQuietly(1000);
     }
 
 }

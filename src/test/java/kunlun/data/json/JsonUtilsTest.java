@@ -12,7 +12,7 @@ import kunlun.data.mock.MockUtils;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.test.pojo.entity.system.User;
-import kunlun.util.TypeUtils;
+import kunlun.util.TypeUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -75,14 +75,14 @@ public class JsonUtilsTest {
     @Test
     public void test2() {
         List<User> list = JsonUtils.parseObject(jsonString1
-                , TypeUtils.parameterizedOf(List.class, User.class));
+                , TypeUtil.parameterizedOf(List.class, User.class));
         log.info(JsonUtils.toJsonString(list));
     }
 
     @Test
     public void test3() {
         Map<Long, User> map = JsonUtils.parseObject(jsonString2
-                , TypeUtils.parameterizedOf(Map.class, Long.class, User.class));
+                , TypeUtil.parameterizedOf(Map.class, Long.class, User.class));
         log.info(JsonUtils.toJsonString(map));
     }
 

@@ -21,7 +21,7 @@ import static kunlun.common.constant.Numbers.ZERO;
  * The data recombine tools.
  * @author Kahle
  */
-public class RecombineUtils {
+public class RecombineUtil {
 
     /**
      * A java bean list to divide into groups.

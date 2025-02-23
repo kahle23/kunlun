@@ -7,7 +7,7 @@ package kunlun.convert;
 
 import kunlun.convert.support.*;
 import kunlun.util.Assert;
-import kunlun.util.ClassUtils;
+import kunlun.util.ClassUtil;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
@@ -18,7 +18,7 @@ import java.util.Set;
 
 import static java.lang.Boolean.FALSE;
 import static kunlun.common.constant.Numbers.*;
-import static kunlun.util.ClassUtils.getWrapper;
+import static kunlun.util.ClassUtil.getWrapper;
 
 /**
  * The abstract conversion service.
@@ -100,8 +100,8 @@ public abstract class AbstractConversionService implements ConversionService {
     protected boolean assignable(Type sourceType, Type targetType) {
         if (sourceType == targetType) { return true; }
         if (sourceType instanceof Class && targetType instanceof Class) {
-            Class<?> sourceClass = ClassUtils.getWrapper((Class) sourceType);
-            Class<?> targetClass = ClassUtils.getWrapper((Class) targetType);
+            Class<?> sourceClass = ClassUtil.getWrapper((Class) sourceType);
+            Class<?> targetClass = ClassUtil.getWrapper((Class) targetType);
             return targetClass.isAssignableFrom(sourceClass);
         }
         return false;

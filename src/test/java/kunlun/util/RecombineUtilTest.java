@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class RecombineUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(RecombineUtilsTest.class);
+public class RecombineUtilTest {
+    private static Logger log = LoggerFactory.getLogger(RecombineUtilTest.class);
     private List<User> list = new ArrayList<User>();
 
     @Before
@@ -34,7 +34,7 @@ public class RecombineUtilsTest {
 
     @Test
     public void testListToListList() {
-        List<List<User>> lists = RecombineUtils.listToListList(list, 2);
+        List<List<User>> lists = RecombineUtil.listToListList(list, 2);
         for (List<User> people : lists) {
             log.info(JSON.toJSONString(people));
         }
@@ -42,25 +42,25 @@ public class RecombineUtilsTest {
 
     @Test
     public void testListToListProperty() {
-        List<String> list = RecombineUtils.listToListProperty(this.list, "name", String.class);
+        List<String> list = RecombineUtil.listToListProperty(this.list, "name", String.class);
         log.info(JSON.toJSONString(list, true));
     }
 
     @Test
     public void testListToMapBean() {
-        Map<String, User> map = RecombineUtils.listToMapBean(list, "name");
+        Map<String, User> map = RecombineUtil.listToMapBean(list, "name");
         log.info(JSON.toJSONString(map, true));
     }
 
     @Test
     public void testListToMapList() {
-        Map<String, List<User>> map = RecombineUtils.listToMapList(list, "name");
+        Map<String, List<User>> map = RecombineUtil.listToMapList(list, "name");
         log.info(JSON.toJSONString(map, true));
     }
 
     @Test
     public void testListToMapProperty() {
-        Map<String, Object> map = RecombineUtils.listToMapProperty(list, "age", "name");
+        Map<String, Object> map = RecombineUtil.listToMapProperty(list, "age", "name");
         log.info(JSON.toJSONString(map, true));
     }
 

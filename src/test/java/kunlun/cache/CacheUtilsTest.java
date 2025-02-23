@@ -13,7 +13,7 @@ import kunlun.data.mock.MockUtils;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.test.pojo.entity.other.Book;
-import kunlun.util.ThreadUtils;
+import kunlun.util.ThreadUtil;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -58,7 +58,7 @@ public class CacheUtilsTest {
             CacheUtils.expire(cacheName, i, timeToLive, TimeUnit.MILLISECONDS);
         }
         log.info("Size: {}", CacheUtils.size(cacheName));
-        ThreadUtils.sleepQuietly(timeToLive);
+        ThreadUtil.sleepQuietly(timeToLive);
         CacheUtils.prune(cacheName);
         log.info("Size: {}", CacheUtils.size(cacheName));
         for (int i = ZERO; i < TEN; i++) {
@@ -101,14 +101,14 @@ public class CacheUtilsTest {
             public void run() {
                 for (int i = 0; i < 1000000; i++) {
                     CacheUtils.put(cacheName2, i, i, 100, TimeUnit.MILLISECONDS);
-                    ThreadUtils.sleepQuietly(0);
+                    ThreadUtil.sleepQuietly(0);
                 }
             }
         }).start();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ThreadUtils.sleepQuietly(100);
+                ThreadUtil.sleepQuietly(100);
                 for (int i = 0; i < 1000000; i++) {
                     CacheUtils.get(cacheName2, i);
                 }

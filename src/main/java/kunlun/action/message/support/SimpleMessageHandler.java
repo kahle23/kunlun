@@ -13,7 +13,7 @@ import kunlun.logging.LoggerFactory;
 import kunlun.message.model.Message;
 import kunlun.message.model.Result;
 import kunlun.util.Assert;
-import kunlun.util.ClassUtils;
+import kunlun.util.ClassUtil;
 import kunlun.util.MapUtil;
 import kunlun.util.StrUtil;
 
@@ -46,7 +46,7 @@ public class SimpleMessageHandler extends AbstractMessageHandler {
             for (int i = ZERO; i < length; i++) {
                 builder.append(BLANK_SPACE);
             }
-            if (entryValue == null || ClassUtils.isSimpleValueType(entryValue.getClass())) {
+            if (entryValue == null || ClassUtil.isSimpleValueType(entryValue.getClass())) {
                 builder.append(entryValue).append(NEWLINE);
             }
             else {

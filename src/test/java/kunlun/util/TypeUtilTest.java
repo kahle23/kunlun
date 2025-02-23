@@ -14,13 +14,13 @@ import java.lang.reflect.GenericArrayType;
 
 import static kunlun.common.constant.Numbers.ZERO;
 
-public class TypeUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(TypeUtilsTest.class);
+public class TypeUtilTest {
+    private static Logger log = LoggerFactory.getLogger(TypeUtilTest.class);
 
     @Test
     public void test1() {
         User[] users = new User[ZERO];
-        GenericArrayType arrayType = TypeUtils.arrayOf(users.getClass());
+        GenericArrayType arrayType = TypeUtil.arrayOf(users.getClass());
         log.info("{}", arrayType);
     }
 

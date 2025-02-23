@@ -28,7 +28,7 @@ import java.util.List;
 
 import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.util.ObjUtil.cast;
-import static kunlun.util.TypeUtils.parameterizedOf;
+import static kunlun.util.TypeUtil.parameterizedOf;
 
 /**
  * The conversion provider Test.

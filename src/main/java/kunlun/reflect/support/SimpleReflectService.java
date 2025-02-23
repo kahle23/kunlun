@@ -9,7 +9,7 @@ import kunlun.exception.ExceptionUtils;
 import kunlun.reflect.ReflectService;
 import kunlun.util.ArrayUtil;
 import kunlun.util.Assert;
-import kunlun.util.ClassUtils;
+import kunlun.util.ClassUtil;
 import kunlun.util.ObjUtil;
 
 import java.beans.BeanInfo;
@@ -54,8 +54,8 @@ public class SimpleReflectService implements ReflectService {
         for (int i = ZERO; i < actualTypes.length; i++) {
             // Method has parameter, but input null, so continue.
             if (actualTypes[i] == null) { continue; }
-            Class<?> declared = ClassUtils.getWrapper(declaredTypes[i]);
-            Class<?> actual = ClassUtils.getWrapper(actualTypes[i]);
+            Class<?> declared = ClassUtil.getWrapper(declaredTypes[i]);
+            Class<?> actual = ClassUtil.getWrapper(actualTypes[i]);
             if (declared.isAssignableFrom(actual)) { continue; }
             return false;
         }

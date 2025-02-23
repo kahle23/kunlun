@@ -17,19 +17,19 @@ import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 
-public class ClassLoaderUtilsTest {
-    private static final Logger log = LoggerFactory.getLogger(ClassLoaderUtilsTest.class);
+public class ClassLoaderUtilTest {
+    private static final Logger log = LoggerFactory.getLogger(ClassLoaderUtilTest.class);
 
     @Test
     public void testGetResource() throws IOException {
-        URL resource = ClassLoaderUtils.getResource("LICENSE.txt", getClass());
+        URL resource = ClassLoaderUtil.getResource("LICENSE.txt", getClass());
         log.info("url: {}", resource);
         assertNotNull(resource);
     }
 
     @Test
     public void testGetResources() {
-        List<URL> urlList = ClassLoaderUtils
+        List<URL> urlList = ClassLoaderUtil
                 .getResources("LICENSE.txt", getClass());
         for (URL url : urlList) {
             log.info("url: {}", url);
@@ -39,7 +39,7 @@ public class ClassLoaderUtilsTest {
 
     @Test
     public void testGetResourceAsStream() {
-        InputStream in = ClassLoaderUtils
+        InputStream in = ClassLoaderUtil
                 .getResourceAsStream("jdbc.properties", getClass());
         assertNotNull(in);
         log.info(IoUtil.readUtf8(in));
@@ -47,7 +47,7 @@ public class ClassLoaderUtilsTest {
 
     @Test
     public void testLoadClass() throws ClassNotFoundException {
-        Class<?> loadClass = ClassLoaderUtils
+        Class<?> loadClass = ClassLoaderUtil
                 .loadClass("kunlun.util.CollUtil", getClass());
         log.info("loadClass: {}", loadClass);
         assertNotNull(loadClass);

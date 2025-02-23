@@ -19,18 +19,18 @@ import static kunlun.common.constant.Numbers.ZERO;
  * The random tools.
  * @author Kahle
  */
-public class RandomUtils {
+public class RandomUtil {
     private static final char[] DEFAULT_CHAR_ARRAY = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
     private static final Long TIME_INTERVAL = 6 * 60 * 60 * 1000L;
     private static volatile Long lastUpdatedTime = 0L;
-    private static final Logger log = LoggerFactory.getLogger(RandomUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(RandomUtil.class);
     private static Random random;
 
     private static Random getRandom() {
         if ((System.currentTimeMillis() - lastUpdatedTime) <= TIME_INTERVAL) {
             return random;
         }
-        synchronized (RandomUtils.class) {
+        synchronized (RandomUtil.class) {
             if ((System.currentTimeMillis() - lastUpdatedTime) <= TIME_INTERVAL) {
                 return random;
             }
@@ -48,7 +48,7 @@ public class RandomUtils {
      */
     public static <T> T[] confuse(T[] arr) {
         for (int i = arr.length - ONE; i > ONE; --i) {
-            int nextInt = RandomUtils.nextInt(i);
+            int nextInt = RandomUtil.nextInt(i);
             T tmp = arr[nextInt];
             arr[nextInt] = arr[i];
             arr[i] = tmp;
@@ -64,7 +64,7 @@ public class RandomUtils {
      */
     public static <T> List<T> confuse(List<T> list) {
         for (int i = list.size() - ONE; i > ONE; --i) {
-            int nextInt = RandomUtils.nextInt(i);
+            int nextInt = RandomUtil.nextInt(i);
             T tmp = list.get(nextInt);
             list.set(nextInt, list.get(i));
             list.set(i, tmp);
@@ -142,7 +142,7 @@ public class RandomUtils {
      * @return A random character
      */
     public static Character nextCharacter(char[] charArray) {
-        int index = RandomUtils.nextInt(charArray.length);
+        int index = RandomUtil.nextInt(charArray.length);
         return charArray[index];
     }
 
