@@ -5,7 +5,7 @@
 
 package kunlun.crypto.cipher;
 
-import kunlun.codec.CodecUtils;
+import kunlun.codec.CodecUtil;
 import kunlun.crypto.util.BouncyCastleSupport;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -17,8 +17,8 @@ import javax.crypto.spec.IvParameterSpec;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static kunlun.common.constant.Algorithms.AES;
-import static kunlun.crypto.util.KeyUtils.parseIvParamSpec;
-import static kunlun.crypto.util.KeyUtils.parseSecretKey;
+import static kunlun.crypto.util.KeyUtil.parseIvParamSpec;
+import static kunlun.crypto.util.KeyUtil.parseSecretKey;
 
 /**
  * The DESede encryption and decryption tools Test.
@@ -50,7 +50,7 @@ public class DESedeTest extends BouncyCastleSupport {
         SymmetricCipher.Cfg cfg = SymmetricCipher.Cfg.of(transformation, key);
         if (needIv) { cfg.setIv(iv); }
         byte[] bytes = cipher.encrypt(cfg, data);
-        log.info("Encrypt: {}", CodecUtils.encodeToBase64(bytes));
+        log.info("Encrypt: {}", CodecUtil.encodeToBase64(bytes));
         log.info("Decrypt: {}", cipher.decryptToString(cfg, bytes));
         log.info("End test {}", transformation);
     }

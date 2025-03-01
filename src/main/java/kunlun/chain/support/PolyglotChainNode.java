@@ -6,8 +6,8 @@
 package kunlun.chain.support;
 
 import kunlun.chain.ChainNode;
-import kunlun.data.bean.BeanUtils;
-import kunlun.polyglot.PolyglotUtils;
+import kunlun.data.bean.BeanUtil;
+import kunlun.polyglot.PolyglotUtil;
 import kunlun.util.Assert;
 
 import java.util.Map;
@@ -40,8 +40,8 @@ public class PolyglotChainNode implements ChainNode {
     @Override
     public void execute(Context context) {
         // Polyglot call.
-        Map<String, Object> contextMap = BeanUtils.beanToMap(context);
-        Object eval = PolyglotUtils.eval(scriptName, scriptContent, contextMap);
+        Map<String, Object> contextMap = BeanUtil.beanToMap(context);
+        Object eval = PolyglotUtil.eval(scriptName, scriptContent, contextMap);
         context.setResult(eval);
     }
 

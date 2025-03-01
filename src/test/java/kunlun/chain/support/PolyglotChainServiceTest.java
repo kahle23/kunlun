@@ -6,7 +6,7 @@
 package kunlun.chain.support;
 
 import kunlun.chain.ChainNode;
-import kunlun.chain.ChainUtils;
+import kunlun.chain.ChainUtil;
 import kunlun.data.Dict;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -28,34 +28,34 @@ public class PolyglotChainServiceTest {
     private static final String chainId = "1";
 
     static {
-        ChainUtils.addNodeConfigs(chainId, Arrays.asList(
+        ChainUtil.addNodeConfigs(chainId, Arrays.asList(
                 new NodeConfigImpl("0", "node0", "a"),
                 new NodeConfigImpl("a", "node1", "b"),
                 new NodeConfigImpl("b", "node2", "c"),
                 new NodeConfigImpl("c", "node3", null)
         ));
         String scriptName = "javascript";
-        ChainUtils.registerNode("node0",
+        ChainUtil.registerNode("node0",
                 new ChainNode() {
                     @Override
                     public void execute(Context context) {
                         context.setResult(context.getArguments()[1]);
                     }
                 });
-        ChainUtils.registerNode("node1",
+        ChainUtil.registerNode("node1",
                 new PolyglotChainNode(scriptName, "result.a = result.a + 1;\n" +
                 "result.b = result.b + 1;\n" +
                 "result.c = null;\n" +
                 "result;"
                 ));
-        ChainUtils.registerNode("node2",
+        ChainUtil.registerNode("node2",
                 new PolyglotChainNode(scriptName, "result.d = 1;" +
                 "result.e = 2;" +
                 "result.f = 3;" +
                 "result.c = result.a + result.b; " +
                 "result;"
                 ));
-        ChainUtils.registerNode("node3",
+        ChainUtil.registerNode("node3",
                 new PolyglotChainNode(scriptName, "result.delete(\"d\");" +
                 "result.delete(\"e\");" +
                 "result;"
@@ -65,7 +65,7 @@ public class PolyglotChainServiceTest {
     @Test
     public void test1() {
         Dict dict = Dict.of("a", 1).set("b", 2).set("c", 3);
-        Dict result = Dict.of((Map<?, ?>) ChainUtils.execute(chainId, dict, Map.class));
+        Dict result = Dict.of((Map<?, ?>) ChainUtil.execute(chainId, dict, Map.class));
         log.info("result: {}", result);
         assertTrue(ObjUtil.equals(result.getDouble("a"), 2d));
         assertTrue(ObjUtil.equals(result.getDouble("b"), 3d));

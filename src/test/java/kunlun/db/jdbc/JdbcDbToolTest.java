@@ -5,7 +5,7 @@
 
 package kunlun.db.jdbc;
 
-import kunlun.db.DbUtils;
+import kunlun.db.DbUtil;
 import kunlun.db.jdbc.support.SimpleDataSource;
 import kunlun.db.jdbc.support.SimpleJdbcDbHandler;
 import kunlun.logging.Logger;
@@ -35,7 +35,7 @@ public class JdbcDbToolTest {
                 "root",
                 "root"
         );
-        DbUtils.registerHandler(jdbc, new SimpleJdbcDbHandler(dataSource));
+        DbUtil.registerHandler(jdbc, new SimpleJdbcDbHandler(dataSource));
     }
 
     @Test
@@ -60,13 +60,13 @@ public class JdbcDbToolTest {
     public void executeInsert() {
         String sql = "insert into t_user values(?, ?, ?, ?, ?, ?)";
 
-        log.info("insert data {}", DbUtils.execute(jdbc, new JdbcUpdate(sql, new Object[]{
+        log.info("insert data {}", DbUtil.execute(jdbc, new JdbcUpdate(sql, new Object[]{
                 null, "zhangsan", "123456", "zhangsan@email.com", "", "" }), EXECUTE_UPDATE, Integer.class));
 
-        log.info("insert data {}", DbUtils.execute(jdbc, new JdbcUpdate(sql, new Object[]{
+        log.info("insert data {}", DbUtil.execute(jdbc, new JdbcUpdate(sql, new Object[]{
                 null, "lisi", "123456", "lisi@email.com", "", "" }), EXECUTE_UPDATE, Integer.class));
 
-        log.info("insert data {}", DbUtils.execute(jdbc, new JdbcUpdate(sql, new Object[]{
+        log.info("insert data {}", DbUtil.execute(jdbc, new JdbcUpdate(sql, new Object[]{
                 null, "wangwu", "123456", "wangwu@email.com", "", "" }), EXECUTE_UPDATE, Integer.class));
     }
 
@@ -74,19 +74,19 @@ public class JdbcDbToolTest {
     public void executeUpdate() {
         String sql = "update t_user set phone=?, remark=? where id=?;";
 
-        log.info("update data {}", DbUtils.execute(jdbc, new JdbcUpdate(
+        log.info("update data {}", DbUtil.execute(jdbc, new JdbcUpdate(
                 sql, new Object[]{ "1111", "zs", 1 }), EXECUTE_UPDATE, Integer.class));
 
-        log.info("update data {}", DbUtils.execute(jdbc, new JdbcUpdate(
+        log.info("update data {}", DbUtil.execute(jdbc, new JdbcUpdate(
                 sql, new Object[]{ "2222", "ls", 2 }), EXECUTE_UPDATE, Integer.class));
 
-        log.info("update data {}", DbUtils.execute(jdbc, new JdbcUpdate(
+        log.info("update data {}", DbUtil.execute(jdbc, new JdbcUpdate(
                 sql, new Object[]{ "3333", "ww", 3 }), EXECUTE_UPDATE, Integer.class));
     }
 
     @Test
     public void executeQuery() {
-        List<Map<String, Object>> list = DbUtils.execute(jdbc
+        List<Map<String, Object>> list = DbUtil.execute(jdbc
                 , new JdbcQuery("select * from t_user;"), EXECUTE_QUERY, List.class);
         for (Map<String, Object> map : list) {
             log.info("{}", map);
@@ -95,15 +95,15 @@ public class JdbcDbToolTest {
 
     @Test
     public void executeQuery1() {
-        List<Map<String, Object>> list = DbUtils.execute(jdbc, new JdbcQuery(
+        List<Map<String, Object>> list = DbUtil.execute(jdbc, new JdbcQuery(
                 "select * from t_user where id = 1;"), EXECUTE_QUERY, List.class);
         log.info("{}", list.get(0));
 
-        list = DbUtils.execute(jdbc, new JdbcQuery(
+        list = DbUtil.execute(jdbc, new JdbcQuery(
                 "select password from t_user where id = 1;"), EXECUTE_QUERY, List.class);
         log.info("{} >> {}", list.get(0), list.get(0).get("password"));
 
-        list = DbUtils.execute(jdbc, new JdbcQuery(
+        list = DbUtil.execute(jdbc, new JdbcQuery(
                 "select count(0) from t_user;"), EXECUTE_QUERY, List.class);
         log.info("{} >> {}", list.get(0), list.get(0).get("count(0)"));
     }
@@ -113,20 +113,20 @@ public class JdbcDbToolTest {
         // SQL info.
         final String sql = "insert into t_user values(?, ?, ?, ?, ?, ?)";
         // Do transaction.
-        boolean transaction = DbUtils.execute(jdbc, new JdbcTx(new JdbcAtom() {
+        boolean transaction = DbUtil.execute(jdbc, new JdbcTx(new JdbcAtom() {
             @Override
             public boolean run() throws SQLException {
                 // Do insert.
-                log.info("> insert data {}", DbUtils.execute(jdbc, new JdbcUpdate(sql, new Object[]{
+                log.info("> insert data {}", DbUtil.execute(jdbc, new JdbcUpdate(sql, new Object[]{
                         null, "zhaoliu", "123456", "zhaoliu@email.com", "", "" }), EXECUTE_UPDATE, Integer.class));
                 // Do transaction.
-                boolean transaction = DbUtils.execute(jdbc, new JdbcTx(new JdbcAtom() {
+                boolean transaction = DbUtil.execute(jdbc, new JdbcTx(new JdbcAtom() {
                     @Override
                     public boolean run() throws SQLException {
                         // Do insert.
                         JdbcUpdate jdbcUpdate = new JdbcUpdate(sql, new Object[]{
                                 null, "nestedTransaction", "123456", "nestedTransaction@email.com", "", ""});
-                        log.info(">> insert data {}", DbUtils.execute(jdbc, jdbcUpdate, EXECUTE_UPDATE, Integer.class));
+                        log.info(">> insert data {}", DbUtil.execute(jdbc, jdbcUpdate, EXECUTE_UPDATE, Integer.class));
                         // Mock exception.
                         if (true) { throw new RuntimeException("Test throw a exception. "); }
                         return true;
@@ -141,7 +141,7 @@ public class JdbcDbToolTest {
 
     @Test
     public void callback() {
-        Integer callback = DbUtils.execute(jdbc, new JdbcCallback<Integer>() {
+        Integer callback = DbUtil.execute(jdbc, new JdbcCallback<Integer>() {
             @Override
             public Integer call(Connection connection) throws SQLException {
                 PreparedStatement statement = connection.prepareStatement("select count(0) from t_user");

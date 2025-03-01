@@ -32,7 +32,7 @@ public class NashornJavaScriptTest {
                 "var c = a + b;\n" +
                 "c;";
         Dict data = Dict.of("a", 1).set("b", 2);
-        Object result = PolyglotUtils.eval(name, script, data);
+        Object result = PolyglotUtil.eval(name, script, data);
         log.info("result: {}", result);
         // Assert.
         assertTrue("a = 2; b = 3; a + b should be 5.0", ObjUtil.equals(result, 5D));
@@ -44,7 +44,7 @@ public class NashornJavaScriptTest {
     public void test2() {
         String script = "a.b";
         Dict data = Dict.of("a", Dict.of("b", 4));
-        Object result = PolyglotUtils.eval(name, script, data);
+        Object result = PolyglotUtil.eval(name, script, data);
         log.info("result: {}", result);
         assertTrue(ObjUtil.equals(result, 4));
     }
@@ -55,7 +55,7 @@ public class NashornJavaScriptTest {
                 "var time = System.currentTimeMillis();\n" +
                 "time;";
         Dict data = Dict.of();
-        Object result = PolyglotUtils.eval(name, script, data);
+        Object result = PolyglotUtil.eval(name, script, data);
         log.info("result: {}", result);
         assertNotNull(result);
     }
@@ -71,12 +71,12 @@ public class NashornJavaScriptTest {
         String script; Object result;
 
         script = "var a = 1; var b = 2; a + b + e;";
-        result = PolyglotUtils.eval(name, script, context);
+        result = PolyglotUtil.eval(name, script, context);
         log.info("result: {}", result);
         assertTrue(ObjUtil.equals(result, 8D));
 
         script = "var c = 3; var d = 4; c + d + e;";
-        result = PolyglotUtils.eval(name, script, context);
+        result = PolyglotUtil.eval(name, script, context);
         log.info("result: {}", result);
         assertTrue(ObjUtil.equals(result, 12D));
     }
@@ -86,7 +86,7 @@ public class NashornJavaScriptTest {
         String script = "function test(arg1, arg2, arg3) {\n" +
                 "return arg1 + arg2 + arg3;\n" +
                 "}\n";
-        Object result = PolyglotUtils.invoke(name, script, "test", 1, 2, 3);
+        Object result = PolyglotUtil.invoke(name, script, "test", 1, 2, 3);
         log.info("result: {}", result);
         assertTrue(ObjUtil.equals(result, 6D));
     }
@@ -102,7 +102,7 @@ public class NashornJavaScriptTest {
         script += "var a = 1, b = 2, c = 3;\n" +
                 "test(a, b, c) + test1(b, c);";
         Dict data = Dict.of();
-        Object result = PolyglotUtils.eval(name, script, data);
+        Object result = PolyglotUtil.eval(name, script, data);
         log.info("result: {}", result);
         assertTrue(ObjUtil.equals(result, 12D));
     }
@@ -117,7 +117,7 @@ public class NashornJavaScriptTest {
                 "}\n";
         script += "var a = 1, b = 2, c = 3;\n" +
                 "test(a, b, c) + test1(b, c);";
-        ScriptEngineService service = (ScriptEngineService) PolyglotUtils.getPolyglotService();
+        ScriptEngineService service = (ScriptEngineService) PolyglotUtil.getPolyglotService();
         CompiledScript compiledScript = service.compile(name, script, null);
         Object result = compiledScript.eval(new SimpleBindings());
         log.info("result: {}", result);

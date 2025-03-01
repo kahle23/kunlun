@@ -5,8 +5,8 @@
 
 package kunlun.cache;
 
-import kunlun.exception.ExceptionUtils;
-import kunlun.lock.LockUtils;
+import kunlun.exception.ExceptionUtil;
+import kunlun.lock.LockUtil;
 import kunlun.util.Assert;
 import kunlun.util.CollUtil;
 import kunlun.util.MapUtil;
@@ -64,7 +64,7 @@ public abstract class AbstractCache implements Cache {
         Object value = get(key);
         if (value != null) { return ObjUtil.cast(value); }
         String lockName = "lock-name:" + getClass().getName() + ":" + key;
-        LockUtils.lock(getLockManager(), lockName);
+        LockUtil.lock(getLockManager(), lockName);
         try {
             // Try to get again.
             value = get(key);
@@ -74,7 +74,7 @@ public abstract class AbstractCache implements Cache {
                 value = callable.call();
             }
             catch (Exception e) {
-                throw ExceptionUtils.wrap(e);
+                throw ExceptionUtil.wrap(e);
             }
             // Cache the result.
             if (value != null) {
@@ -83,7 +83,7 @@ public abstract class AbstractCache implements Cache {
             return ObjUtil.cast(value);
         }
         finally {
-            LockUtils.unlock(getLockManager(), lockName);
+            LockUtil.unlock(getLockManager(), lockName);
         }
     }
 

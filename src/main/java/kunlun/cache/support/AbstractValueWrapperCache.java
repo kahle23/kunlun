@@ -6,7 +6,7 @@
 package kunlun.cache.support;
 
 import kunlun.cache.AbstractCache;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.util.Assert;
 import kunlun.util.ObjUtil;
 
@@ -90,7 +90,7 @@ public abstract class AbstractValueWrapperCache extends AbstractCache {
                 value = callable.call();
             }
             catch (Exception e) {
-                throw ExceptionUtils.wrap(e);
+                throw ExceptionUtil.wrap(e);
             }
             // Cache the result.
             if (value != null) {

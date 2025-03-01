@@ -6,7 +6,7 @@
 package kunlun.net.http;
 
 import kunlun.data.tuple.KeyValue;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.util.*;
 
@@ -92,7 +92,7 @@ public abstract class AbstractHttpClient implements HttpClient {
             sslContext.init(null, trustAllCerts, new SecureRandom());
         }
         catch (GeneralSecurityException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
         // Create a ssl socket factory with our all-trusting manager.
         return sslContext.getSocketFactory();

@@ -7,10 +7,10 @@ package kunlun.data.bean.support;
 
 import kunlun.convert.ConversionService;
 import kunlun.data.bean.BeanMap;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.reflect.ReflectUtils;
+import kunlun.reflect.ReflectUtil;
 import kunlun.util.ArrayUtil;
 import kunlun.util.Assert;
 import kunlun.util.ObjUtil;
@@ -43,10 +43,10 @@ public class SimpleBeanMap extends BeanMap {
     static {
         try {
             String nameGetClass = "getClass";
-            METHOD_GET_CLASS = ReflectUtils.getMethod(Object.class, nameGetClass);
+            METHOD_GET_CLASS = ReflectUtil.getMethod(Object.class, nameGetClass);
         }
         catch (NoSuchMethodException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 
@@ -85,7 +85,7 @@ public class SimpleBeanMap extends BeanMap {
             return;
         }
         beanClass = bean.getClass();
-        PropertyDescriptor[] descriptors = ReflectUtils.getPropertyDescriptors(beanClass);
+        PropertyDescriptor[] descriptors = ReflectUtil.getPropertyDescriptors(beanClass);
         for (PropertyDescriptor descriptor : descriptors) {
             Method writeMethod = descriptor.getWriteMethod();
             Method readMethod = descriptor.getReadMethod();
@@ -115,7 +115,7 @@ public class SimpleBeanMap extends BeanMap {
                 return null;
             }
             else {
-                throw ExceptionUtils.wrap(e);
+                throw ExceptionUtil.wrap(e);
             }
         }
     }
@@ -150,7 +150,7 @@ public class SimpleBeanMap extends BeanMap {
                 return null;
             }
             else {
-                throw ExceptionUtils.wrap(e);
+                throw ExceptionUtil.wrap(e);
             }
         }
     }

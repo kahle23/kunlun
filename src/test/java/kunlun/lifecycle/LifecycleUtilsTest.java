@@ -5,7 +5,7 @@
 
 package kunlun.lifecycle;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class LifecycleUtilsTest {
             LifecycleUtils.initialize(bean);
         }
         catch (LifecycleException e) {
-            log.info(ExceptionUtils.toString(e));
+            log.info(ExceptionUtil.toString(e));
         }
     }
 

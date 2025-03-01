@@ -30,11 +30,11 @@ public class Base64CodecTest {
 
     @Test
     public void test1() {
-        String encode = CodecUtils.encodeToBase64(dataBytes);
+        String encode = CodecUtil.encodeToBase64(dataBytes);
         assertTrue(encode.contains(PLUS));
         assertTrue(encode.contains(SLASH));
         log.info("Encode string: {}{}", NEWLINE, encode);
-        byte[] decode = CodecUtils.decodeFromBase64(encode);
+        byte[] decode = CodecUtil.decodeFromBase64(encode);
         String decodeStr = new String(decode, encoding);
         assertEquals(data, decodeStr);
         log.info("Decode string: {}{}", NEWLINE, decodeStr);

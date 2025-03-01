@@ -5,7 +5,7 @@
 
 package kunlun.property;
 
-import kunlun.cache.CacheUtils;
+import kunlun.cache.CacheUtil;
 import kunlun.util.Assert;
 
 import java.util.Map;
@@ -78,24 +78,24 @@ public class CachePropertySource implements PropertySource {
     public Object setProperty(String name, Object value) {
         Assert.notNull(name, "Parameter \"name\" must not null. ");
         Object result = propertySource.setProperty(name, value);
-        CacheUtils.remove(cacheName, name);
+        CacheUtil.remove(cacheName, name);
         return result;
     }
 
     @Override
     public Object getProperty(String name) {
         Assert.notNull(name, "Parameter \"name\" must not null. ");
-        Object val = CacheUtils.get(cacheName, name);
+        Object val = CacheUtil.get(cacheName, name);
         if (val != null) { return val; }
         synchronized (name.intern()) {
-            if ((val = CacheUtils.get(cacheName, name)) != null) { return val; }
+            if ((val = CacheUtil.get(cacheName, name)) != null) { return val; }
             val = propertySource.getProperty(name);
             if (val == null) { return null; }
             if (timeToLive != null && timeUnit != null) {
-                CacheUtils.put(cacheName, name, val, timeToLive, timeUnit);
+                CacheUtil.put(cacheName, name, val, timeToLive, timeUnit);
             }
             else {
-                CacheUtils.put(cacheName, name, val);
+                CacheUtil.put(cacheName, name, val);
             }
         }
         return val;
@@ -105,7 +105,7 @@ public class CachePropertySource implements PropertySource {
     public Object removeProperty(String name) {
         Assert.notNull(name, "Parameter \"name\" must not null. ");
         Object result = propertySource.removeProperty(name);
-        CacheUtils.remove(cacheName, name);
+        CacheUtil.remove(cacheName, name);
         return result;
     }
 

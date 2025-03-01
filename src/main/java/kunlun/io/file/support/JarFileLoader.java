@@ -5,7 +5,7 @@
 
 package kunlun.io.file.support;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.FileLoader;
 import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
@@ -55,7 +55,7 @@ public class JarFileLoader implements FileLoader {
             return doLoad(param);
         }
         catch (IOException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 

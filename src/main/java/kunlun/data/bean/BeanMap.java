@@ -211,7 +211,7 @@ public abstract class BeanMap implements Map<Object, Object>, Cloneable {
         Object bean = getBean();
         if (bean == null) { return newMap; }
         Class<?> beanClass = bean.getClass();
-        Object clone = BeanUtils.beanToBean(bean, beanClass);
+        Object clone = BeanUtil.beanToBean(bean, beanClass);
         newMap.setBean(clone);
         return newMap;
     }

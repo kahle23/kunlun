@@ -5,7 +5,7 @@
 
 package kunlun.reflect.support;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.reflect.ReflectService;
 import kunlun.util.ArrayUtil;
 import kunlun.util.Assert;
@@ -288,7 +288,7 @@ public class SimpleReflectService implements ReflectService {
             BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
             PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
             return descriptors != null ? descriptors : new PropertyDescriptor[ZERO];
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     @Override

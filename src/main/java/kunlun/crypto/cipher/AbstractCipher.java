@@ -5,10 +5,10 @@
 
 package kunlun.crypto.cipher;
 
-import kunlun.codec.CodecUtils;
+import kunlun.codec.CodecUtil;
 import kunlun.common.constant.Charsets;
 import kunlun.core.Cipher;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
 
@@ -44,7 +44,7 @@ public abstract class AbstractCipher implements Cipher {
         Assert.notNull(out, "Parameter \"out\" must not null. ");
         try {
             out.write(encrypt(config, IoUtil.readBytes(data)));
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     @Override
@@ -53,19 +53,19 @@ public abstract class AbstractCipher implements Cipher {
         Assert.notNull(out, "Parameter \"out\" must not null. ");
         try {
             out.write(decrypt(config, IoUtil.readBytes(data)));
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     // ====
 
     public String encryptToHex(Config config, byte[] data) {
 
-        return CodecUtils.encodeToHex(encrypt(config, data));
+        return CodecUtil.encodeToHex(encrypt(config, data));
     }
 
     public String encryptToBase64(Config config, byte[] data) {
 
-        return CodecUtils.encodeToBase64(encrypt(config, data));
+        return CodecUtil.encodeToBase64(encrypt(config, data));
     }
 
     public String decryptToString(Config config, byte[] data, Charset charset) {
@@ -94,7 +94,7 @@ public abstract class AbstractCipher implements Cipher {
 
     public String encryptToHex(Config config, String data, Charset charset) {
 
-        return CodecUtils.encodeToHex(encrypt(config, data, charset));
+        return CodecUtil.encodeToHex(encrypt(config, data, charset));
     }
 
     public String encryptToHex(Config config, String data) {
@@ -104,7 +104,7 @@ public abstract class AbstractCipher implements Cipher {
 
     public String encryptToBase64(Config config, String data, Charset charset) {
 
-        return CodecUtils.encodeToBase64(encrypt(config, data, charset));
+        return CodecUtil.encodeToBase64(encrypt(config, data, charset));
     }
 
     public String encryptToBase64(Config config, String data) {

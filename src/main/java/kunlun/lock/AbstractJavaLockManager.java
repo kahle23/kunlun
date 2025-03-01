@@ -5,7 +5,7 @@
 
 package kunlun.lock;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.util.Assert;
 
 import java.util.Map;
@@ -84,7 +84,7 @@ public abstract class AbstractJavaLockManager implements LockManager {
             return getLock(lockName).tryLock(time, unit);
         }
         catch (InterruptedException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 

@@ -5,7 +5,7 @@
 
 package kunlun.io.file.support;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.FileLoader;
 import kunlun.util.Assert;
 import kunlun.util.ClassLoaderUtil;
@@ -33,7 +33,7 @@ public class SimpleFileLoader implements FileLoader {
                     ) :
                     new FileInputStream(filePath);
         }
-        catch (IOException e) { throw ExceptionUtils.wrap(e); }
+        catch (IOException e) { throw ExceptionUtil.wrap(e); }
     }
 
 }

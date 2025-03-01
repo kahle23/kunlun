@@ -5,7 +5,7 @@
 
 package kunlun.convert.support;
 
-import kunlun.time.DateUtils;
+import kunlun.time.DateUtil;
 import kunlun.util.Assert;
 
 import java.util.Date;
@@ -33,7 +33,7 @@ public class DateToStringConverter extends AbstractClassConverter {
     @Override
     protected Object convert(Object source, Class<?> sourceClass, Class<?> targetClass) {
         Date date = (Date) source;
-        return DateUtils.format(date, dateToStringPattern);
+        return DateUtil.format(date, dateToStringPattern);
     }
 
 }

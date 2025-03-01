@@ -5,7 +5,7 @@
 
 package kunlun.util;
 
-import kunlun.data.mock.MockUtils;
+import kunlun.data.mock.MockUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.test.pojo.entity.system.User;
@@ -23,10 +23,10 @@ public class CollUtilTest {
     @Before
     public void init() {
         list.add(null);
-        list.add(MockUtils.mock(User.class));
+        list.add(MockUtil.mock(User.class));
         list.add(null);
-        list.add(MockUtils.mock(User.class));
-        list.add(MockUtils.mock(User.class));
+        list.add(MockUtil.mock(User.class));
+        list.add(MockUtil.mock(User.class));
     }
 
     @Test

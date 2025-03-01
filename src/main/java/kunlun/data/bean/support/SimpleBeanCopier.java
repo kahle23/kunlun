@@ -7,10 +7,10 @@ package kunlun.data.bean.support;
 
 import kunlun.convert.ConversionService;
 import kunlun.data.bean.BeanCopier;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.reflect.ReflectUtils;
+import kunlun.reflect.ReflectUtil;
 import kunlun.util.ArrayUtil;
 import kunlun.util.Assert;
 
@@ -44,8 +44,8 @@ public class SimpleBeanCopier implements BeanCopier {
         Assert.notNull(from, "Parameter \"from\" must is not null. ");
         Assert.notNull(to, "Parameter \"to\" must is not null. ");
         boolean haveCvn = conversionService != null;
-        PropertyDescriptor[] fromDescriptors = ReflectUtils.getPropertyDescriptors(from.getClass());
-        PropertyDescriptor[] toDescriptors = ReflectUtils.getPropertyDescriptors(to.getClass());
+        PropertyDescriptor[] fromDescriptors = ReflectUtil.getPropertyDescriptors(from.getClass());
+        PropertyDescriptor[] toDescriptors = ReflectUtil.getPropertyDescriptors(to.getClass());
         Map<String, Method> fromMths = new HashMap<String, Method>(fromDescriptors.length);
         for (PropertyDescriptor fromDescriptor : fromDescriptors) {
             Method readMethod = fromDescriptor.getReadMethod();
@@ -79,7 +79,7 @@ public class SimpleBeanCopier implements BeanCopier {
                     log.debug("Execution \"copy\" error. ", e);
                 }
                 else {
-                    throw ExceptionUtils.wrap(e);
+                    throw ExceptionUtil.wrap(e);
                 }
             }
         }

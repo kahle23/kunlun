@@ -5,8 +5,8 @@
 
 package kunlun.action.event;
 
-import kunlun.action.ActionUtils;
-import kunlun.data.mock.MockUtils;
+import kunlun.action.ActionUtil;
+import kunlun.data.mock.MockUtil;
 import kunlun.test.pojo.entity.system.User;
 import org.junit.Test;
 
@@ -18,22 +18,22 @@ public class EventCollectorTest {
 
     @Test
     public void test1() {
-        ActionUtils.execute(Event.of("error:test1")
+        ActionUtil.execute(Event.of("error:test1")
                 .appendMessage("An error has occurred!"));
-        ActionUtils.execute(Event.of("info:test1")
+        ActionUtil.execute(Event.of("info:test1")
                 .appendMessage("Info message!"));
     }
 
     @Test
     public void test2() {
-        ActionUtils.execute(Event.of("info:test2")
+        ActionUtil.execute(Event.of("info:test2")
                 .appendMessage("Info message!")
-                .putData("user", MockUtils.mock(User.class)));
+                .putData("user", MockUtil.mock(User.class)));
     }
 
     @Test
     public void test3() {
-        ActionUtils.execute(Event.of("info:test3")
+        ActionUtil.execute(Event.of("info:test3")
                 .setLevel(Event.Level.ERROR)
                 .appendMessage("Hello, test3! "));
     }

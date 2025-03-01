@@ -5,7 +5,7 @@
 
 package kunlun.data.serialize.support;
 
-import kunlun.codec.CodecUtils;
+import kunlun.codec.CodecUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class SimpleSerializerTest implements Serializable {
         SimpleSerializerTest obj = new SimpleSerializerTest();
         log.info("{}", obj);
         byte[] bytes = serializer.serialize(obj);
-        String encode = CodecUtils.encodeToHex(bytes);
+        String encode = CodecUtil.encodeToHex(bytes);
         log.info(encode);
 
         SimpleSerializerTest obj1 = (SimpleSerializerTest) serializer.deserialize(bytes);

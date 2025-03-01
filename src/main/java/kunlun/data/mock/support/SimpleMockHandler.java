@@ -5,9 +5,9 @@
 
 package kunlun.data.mock.support;
 
-import kunlun.convert.ConversionUtils;
-import kunlun.exception.ExceptionUtils;
-import kunlun.reflect.ReflectUtils;
+import kunlun.convert.ConversionUtil;
+import kunlun.exception.ExceptionUtil;
+import kunlun.reflect.ReflectUtil;
 import kunlun.util.Assert;
 import kunlun.util.ClassUtil;
 import kunlun.util.NumberUtil;
@@ -37,7 +37,7 @@ public class SimpleMockHandler extends AbstractMockHandler {
 
     protected Map<String, Method> findWriteMethods(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        PropertyDescriptor[] descriptors = ReflectUtils.getPropertyDescriptors(clazz);
+        PropertyDescriptor[] descriptors = ReflectUtil.getPropertyDescriptors(clazz);
         Map<String, Method> methodMap = new HashMap<String, Method>(descriptors.length);
         for (PropertyDescriptor descriptor : descriptors) {
             Method writeMethod = descriptor.getWriteMethod();
@@ -72,7 +72,7 @@ public class SimpleMockHandler extends AbstractMockHandler {
         if (Number.class.isAssignableFrom(wrapper)) {
             double nextDouble = RandomUtil.nextDouble() * EIGHT_HUNDRED;
             nextDouble = NumberUtil.round(nextDouble).doubleValue();
-            return ConversionUtils.convert(nextDouble, wrapper);
+            return ConversionUtil.convert(nextDouble, wrapper);
         }
         else if (Boolean.class.isAssignableFrom(wrapper)) {
             return RandomUtil.nextBoolean();
@@ -82,7 +82,7 @@ public class SimpleMockHandler extends AbstractMockHandler {
         }
         else if (Date.class.isAssignableFrom(wrapper)) {
             Date nowDate = new Date();
-            return ConversionUtils.convert(nowDate, wrapper);
+            return ConversionUtil.convert(nowDate, wrapper);
         }
         else if (String.class.isAssignableFrom(wrapper)) {
             int size = RandomUtil.nextInt(EIGHT);
@@ -174,7 +174,7 @@ public class SimpleMockHandler extends AbstractMockHandler {
         if (nested == ZERO) { originalType = attrType; }
         Map<String, Method> methodMap = findWriteMethods(attrType);
         try {
-            Object bean = ReflectUtils.newInstance(attrType);
+            Object bean = ReflectUtil.newInstance(attrType);
             for (Map.Entry<String, Method> entry : methodMap.entrySet()) {
                 String attrNameKey = entry.getKey();
                 Method method = entry.getValue();
@@ -185,7 +185,7 @@ public class SimpleMockHandler extends AbstractMockHandler {
             return bean;
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 

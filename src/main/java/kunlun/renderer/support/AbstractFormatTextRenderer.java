@@ -6,7 +6,7 @@
 package kunlun.renderer.support;
 
 import kunlun.core.function.Consumer;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.util.Assert;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ public abstract class AbstractFormatTextRenderer implements FormatTextRenderer {
         String tpl = (String) Assert.isInstanceOf(String.class, template);
         try {
             writer.write(render(tpl, arguments));
-        } catch (IOException e) { throw ExceptionUtils.wrap(e); }
+        } catch (IOException e) { throw ExceptionUtil.wrap(e); }
     }
 
     @Override

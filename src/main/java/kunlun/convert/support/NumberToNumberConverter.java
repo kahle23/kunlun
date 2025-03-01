@@ -6,8 +6,8 @@
 package kunlun.convert.support;
 
 import kunlun.convert.ConversionService;
-import kunlun.exception.ExceptionUtils;
-import kunlun.reflect.ReflectUtils;
+import kunlun.exception.ExceptionUtil;
+import kunlun.reflect.ReflectUtil;
 import kunlun.util.StrUtil;
 
 import java.lang.reflect.Method;
@@ -44,11 +44,11 @@ public class NumberToNumberConverter extends AbstractClassConverter {
         name = StrUtil.uncapitalize(name);
         name = name + VALUE;
         try {
-            Method method = ReflectUtils.getMethod(clazz, name);
+            Method method = ReflectUtil.getMethod(clazz, name);
             return method.invoke(source);
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 

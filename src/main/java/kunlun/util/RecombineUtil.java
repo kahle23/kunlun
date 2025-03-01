@@ -5,9 +5,9 @@
 
 package kunlun.util;
 
-import kunlun.convert.ConversionUtils;
-import kunlun.data.bean.BeanUtils;
-import kunlun.exception.ExceptionUtils;
+import kunlun.convert.ConversionUtil;
+import kunlun.data.bean.BeanUtil;
+import kunlun.exception.ExceptionUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,18 +64,18 @@ public class RecombineUtil {
             // Handle parameters
             List<R> result = new ArrayList<R>();
             if (CollUtil.isEmpty(list)) { return result; }
-            List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
+            List<Map<String, Object>> mapList = BeanUtil.beanToMapInList(list);
             for (Map<String, Object> map : mapList) {
                 if (map == null) { continue; }
                 Object val = map.get(propertyName);
                 if (val == null) { continue; }
-                val = ConversionUtils.convert(val, propertyClass);
+                val = ConversionUtil.convert(val, propertyClass);
                 result.add(ObjUtil.cast(val, propertyClass));
             }
             return result;
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 
@@ -93,7 +93,7 @@ public class RecombineUtil {
             // Handle parameters
             Map<String, T> result = new HashMap<String, T>(list.size());
             if (CollUtil.isEmpty(list)) { return result; }
-            List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
+            List<Map<String, Object>> mapList = BeanUtil.beanToMapInList(list);
             StringBuilder keyBuilder = new StringBuilder();
             for (int i = ZERO, len = list.size(); i < len; i++) {
                 Map<String, Object> map = mapList.get(i);
@@ -109,7 +109,7 @@ public class RecombineUtil {
             return result;
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 
@@ -127,7 +127,7 @@ public class RecombineUtil {
             // Handle parameters
             Map<String, List<T>> result = new HashMap<String, List<T>>(list.size());
             if (CollUtil.isEmpty(list)) { return result; }
-            List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
+            List<Map<String, Object>> mapList = BeanUtil.beanToMapInList(list);
             StringBuilder keyBuilder = new StringBuilder();
             for (int i = ZERO, len = list.size(); i < len; i++) {
                 Map<String, Object> map = mapList.get(i);
@@ -149,7 +149,7 @@ public class RecombineUtil {
             return result;
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 
@@ -169,7 +169,7 @@ public class RecombineUtil {
             // Handle parameters
             Map<String, R> result = new HashMap<String, R>(list.size());
             if (CollUtil.isEmpty(list)) { return result; }
-            List<Map<String, Object>> mapList = BeanUtils.beanToMapInList(list);
+            List<Map<String, Object>> mapList = BeanUtil.beanToMapInList(list);
             StringBuilder keyBuilder = new StringBuilder();
             for (int i = ZERO, len = list.size(); i < len; i++) {
                 Map<String, Object> map = mapList.get(i);
@@ -186,7 +186,7 @@ public class RecombineUtil {
             return result;
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 

@@ -5,9 +5,9 @@
 
 package kunlun.crypto.cipher;
 
-import kunlun.codec.CodecUtils;
+import kunlun.codec.CodecUtil;
 import kunlun.crypto.util.BouncyCastleSupport;
-import kunlun.crypto.util.KeyUtils;
+import kunlun.crypto.util.KeyUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Test;
@@ -35,9 +35,9 @@ public class RSATest extends BouncyCastleSupport {
 
     static {
         // RSA keys must be at least 512 bits long
-        key = KeyUtils.genKeyPair(RSA, 2048);
-        log.info("Public key: {}", CodecUtils.encodeToBase64(key.getPublic().getEncoded()));
-        log.info("Private key: {}", CodecUtils.encodeToBase64(key.getPrivate().getEncoded()));
+        key = KeyUtil.genKeyPair(RSA, 2048);
+        log.info("Public key: {}", CodecUtil.encodeToBase64(key.getPublic().getEncoded()));
+        log.info("Private key: {}", CodecUtil.encodeToBase64(key.getPrivate().getEncoded()));
     }
 
     private void testEncryptAndDecrypt(String algorithm) {
@@ -45,12 +45,12 @@ public class RSATest extends BouncyCastleSupport {
         AsymmetricCipher.Cfg cfg = AsymmetricCipher.Cfg.of(algorithm, key);
 
         byte[] bytes = cipher.encrypt(cfg.usePublicKey(), data);
-        log.info("Encrypt public key: {}", CodecUtils.encodeToBase64(bytes));
+        log.info("Encrypt public key: {}", CodecUtil.encodeToBase64(bytes));
         log.info("Decrypt private key: {}", cipher.decryptToString(cfg.usePrivateKey(), bytes));
         //log.info("Decrypt public key: {}", cipher.decryptToString(bytes, PUBLIC_KEY));
 
         bytes = cipher.encrypt(cfg.usePrivateKey(), data);
-        log.info("Encrypt private key: {}", CodecUtils.encodeToBase64(bytes));
+        log.info("Encrypt private key: {}", CodecUtil.encodeToBase64(bytes));
         log.info("Decrypt public key: {}", cipher.decryptToString(cfg.usePublicKey(), bytes));
         //log.info("Decrypt private key: {}", cipher.decryptToString(bytes, PRIVATE_KEY));
 

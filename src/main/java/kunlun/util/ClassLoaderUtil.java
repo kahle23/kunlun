@@ -5,7 +5,7 @@
 
 package kunlun.util;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +32,7 @@ public class ClassLoaderUtil {
             return classLoader.getResources(resourceName);
         }
         catch (IOException e) {
-            log.fine(ExceptionUtils.toString(e));
+            log.fine(ExceptionUtil.toString(e));
         }
         return null;
     }
@@ -174,7 +174,7 @@ public class ClassLoaderUtil {
             return url != null ? url.openStream() : null;
         }
         catch (IOException e) {
-            log.severe(ExceptionUtils.toString(e));
+            log.severe(ExceptionUtil.toString(e));
         }
         return null;
     }
@@ -195,7 +195,7 @@ public class ClassLoaderUtil {
             }
         }
         catch (ClassNotFoundException e) {
-            log.fine(ExceptionUtils.toString(e));
+            log.fine(ExceptionUtil.toString(e));
         }
         try {
             return Class.forName(className);
@@ -214,7 +214,7 @@ public class ClassLoaderUtil {
                     return classLoader.loadClass(className);
                 }
             }
-            log.fine(ExceptionUtils.toString(e));
+            log.fine(ExceptionUtil.toString(e));
             throw e;
         }
     }

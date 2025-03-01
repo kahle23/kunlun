@@ -10,7 +10,7 @@ import kunlun.action.event.Event;
 import kunlun.action.event.EventCollector;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.time.DateUtils;
+import kunlun.time.DateUtil;
 import kunlun.util.Assert;
 
 import static kunlun.common.constant.Numbers.FIVE_HUNDRED;
@@ -37,7 +37,7 @@ public class SimpleEventCollector extends AbstractAction implements EventCollect
         String content = NEWLINE +
                 "---- Begin Event ----" + NEWLINE +
                 "Name:           " + event.getName() + NEWLINE +
-                "Time:           " + DateUtils.format(event.getTime()) + NEWLINE +
+                "Time:           " + DateUtil.format(event.getTime()) + NEWLINE +
                 "UserId:         " + event.getUserId() + NEWLINE +
                 "Message:        " + message + NEWLINE +
                 "Provider:       " + getClass().getName() + NEWLINE +

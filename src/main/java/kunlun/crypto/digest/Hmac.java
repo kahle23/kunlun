@@ -5,7 +5,7 @@
 
 package kunlun.crypto.digest;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.util.Assert;
 
 import javax.crypto.Mac;
@@ -35,7 +35,7 @@ public class Hmac extends AbstractDigester {
             Mac mac = Mac.getInstance(cfg.getAlgorithm());
             mac.init(cfg.getKey());
             return mac.doFinal(data);
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Hmac extends AbstractDigester {
                 mac.update(buffer, ZERO, len);
             }
             return mac.doFinal();
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     /**

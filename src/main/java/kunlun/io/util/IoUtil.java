@@ -6,7 +6,7 @@
 package kunlun.io.util;
 
 import kunlun.common.constant.Charsets;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.util.Assert;
 
 import java.io.*;
@@ -112,7 +112,7 @@ public class IoUtil {
         try {
             return new FileInputStream(file);
         } catch (IOException ioe) {
-            throw ExceptionUtils.wrap(ioe);
+            throw ExceptionUtil.wrap(ioe);
         }
     }
 
@@ -156,7 +156,7 @@ public class IoUtil {
             }
             writer.flush();
         } catch (IOException ioe) {
-            throw ExceptionUtils.wrap(ioe);
+            throw ExceptionUtil.wrap(ioe);
         } finally {
             if (isCloseOut) { IoUtil.closeQuietly(out); }
         }
@@ -176,7 +176,7 @@ public class IoUtil {
         try {
             out.write(content);
         } catch (IOException ioe) {
-            throw ExceptionUtils.wrap(ioe);
+            throw ExceptionUtil.wrap(ioe);
         } finally {
             if (isCloseOut) { IoUtil.closeQuietly(out); }
         }
@@ -235,7 +235,7 @@ public class IoUtil {
         try {
             return doCopy(reader, writer, buffer);
         } catch (IOException ioe) {
-            throw ExceptionUtils.wrap(ioe);
+            throw ExceptionUtil.wrap(ioe);
         }
     }
 
@@ -257,7 +257,7 @@ public class IoUtil {
         try {
             return doCopy(in, out, buffer);
         } catch (IOException ioe) {
-            throw ExceptionUtils.wrap(ioe);
+            throw ExceptionUtil.wrap(ioe);
         }
     }
 

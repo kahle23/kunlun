@@ -5,7 +5,7 @@
 
 package kunlun.crypto.digest;
 
-import kunlun.crypto.util.KeyUtils;
+import kunlun.crypto.util.KeyUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Before;
@@ -32,12 +32,12 @@ public class HmacTest {
 
     @Before
     public void init() {
-        hmd5Key = KeyUtils.genKey(HMAC_MD5, 10);
-        hsha1Key = KeyUtils.genKey(HMAC_SHA1, 10);
+        hmd5Key = KeyUtil.genKey(HMAC_MD5, 10);
+        hsha1Key = KeyUtil.genKey(HMAC_SHA1, 10);
         // Key length must be at least 40 bits
-        hsha256Key = KeyUtils.genKey(HMAC_SHA256, 40);
-        hsha384Key = KeyUtils.genKey(HMAC_SHA384, 40);
-        hsha512Key = KeyUtils.genKey(HMAC_SHA512, 40);
+        hsha256Key = KeyUtil.genKey(HMAC_SHA256, 40);
+        hsha384Key = KeyUtil.genKey(HMAC_SHA384, 40);
+        hsha512Key = KeyUtil.genKey(HMAC_SHA512, 40);
     }
 
     @Test

@@ -5,7 +5,7 @@
 
 package kunlun.file;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.io.util.StringBuilderWriter;
 import kunlun.util.Assert;
@@ -112,7 +112,7 @@ public class Prop extends TextFile {
             return writer.toString();
         }
         catch (IOException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 

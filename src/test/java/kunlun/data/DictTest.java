@@ -5,8 +5,8 @@
 
 package kunlun.data;
 
-import kunlun.data.bean.BeanUtils;
-import kunlun.data.mock.MockUtils;
+import kunlun.data.bean.BeanUtil;
+import kunlun.data.mock.MockUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.test.pojo.entity.system.User;
@@ -48,7 +48,7 @@ public class DictTest {
 
     @Test
     public void test5() {
-        Map<String, Object> map = BeanUtils.beanToMap(MockUtils.mock(User.class));
+        Map<String, Object> map = BeanUtil.beanToMap(MockUtil.mock(User.class));
         Dict dict = Dict.of("data", map).set("count", "30");
         log.info("{}", dict);
         Dict data = dict.getDict("data");

@@ -5,7 +5,7 @@
 
 package kunlun.crypto.cipher;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.util.Assert;
 
 import javax.crypto.Cipher;
@@ -77,7 +77,7 @@ public class SymmetricCipher extends AbstractCipher {
             Cipher cipher = createCipher(getTransformation(cfg)
                     , Cipher.ENCRYPT_MODE, cfg.getKey(), cfg.getIv(), null);
             return cipher.doFinal(data);
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     @Override
@@ -88,7 +88,7 @@ public class SymmetricCipher extends AbstractCipher {
             Cipher cipher = createCipher(getTransformation(cfg)
                     , Cipher.DECRYPT_MODE, cfg.getKey(), cfg.getIv(), null);
             return cipher.doFinal(data);
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     /**

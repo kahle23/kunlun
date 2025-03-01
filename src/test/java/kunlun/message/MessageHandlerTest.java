@@ -3,7 +3,7 @@ package kunlun.message;
 import com.alibaba.fastjson.JSON;
 import kunlun.action.message.support.SimpleMessageHandler;
 import kunlun.common.constant.Words;
-import kunlun.data.json.JsonUtils;
+import kunlun.data.json.JsonUtil;
 import kunlun.data.json.support.AbstractJsonHandler;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -20,7 +20,7 @@ public class MessageHandlerTest {
     private final MessageHandler messageHandler = new SimpleMessageHandler();
 
     static {
-        JsonUtils.registerHandler(Words.DEFAULT, new AbstractJsonHandler() {
+        JsonUtil.registerHandler(Words.DEFAULT, new AbstractJsonHandler() {
             @Override
             public String toJsonString(Object object, Object... arguments) {
 
@@ -38,7 +38,7 @@ public class MessageHandlerTest {
     public void test1() {
         Result result = messageHandler.send(
                 singletonList(new Message("test", "data")));
-        log.info(JsonUtils.toJsonString(result));
+        log.info(JsonUtil.toJsonString(result));
     }
 
 }

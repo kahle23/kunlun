@@ -6,7 +6,7 @@
 package kunlun.convert.support;
 
 import kunlun.convert.ConversionService;
-import kunlun.convert.ConversionUtils;
+import kunlun.convert.ConversionUtil;
 import kunlun.convert.GenericConverter;
 import kunlun.util.Assert;
 
@@ -69,37 +69,37 @@ public abstract class AbstractGenericConverter implements GenericConverter {
         @Override
         public void registerConverter(GenericConverter converter) {
 
-            ConversionUtils.registerConverter(converter);
+            ConversionUtil.registerConverter(converter);
         }
 
         @Override
         public void deregisterConverter(GenericConverter converter) {
 
-            ConversionUtils.deregisterConverter(converter);
+            ConversionUtil.deregisterConverter(converter);
         }
 
         @Override
         public GenericConverter getConverter(Type sourceType, Type targetType) {
-            ConversionService conversionService = ConversionUtils.getConversionService();
+            ConversionService conversionService = ConversionUtil.getConversionService();
             return conversionService.getConverter(sourceType, targetType);
         }
 
         @Override
         public boolean canConvert(Type sourceType, Type targetType) {
 
-            return ConversionUtils.canConvert(sourceType, targetType);
+            return ConversionUtil.canConvert(sourceType, targetType);
         }
 
         @Override
         public Object convert(Object source, Type targetType) {
 
-            return ConversionUtils.convert(source, targetType);
+            return ConversionUtil.convert(source, targetType);
         }
 
         @Override
         public Object convert(Object source, Type sourceType, Type targetType) {
 
-            return ConversionUtils.convert(source, sourceType, targetType);
+            return ConversionUtil.convert(source, sourceType, targetType);
         }
 
     }

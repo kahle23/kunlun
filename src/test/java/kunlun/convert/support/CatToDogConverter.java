@@ -6,7 +6,7 @@
 package kunlun.convert.support;
 
 import kunlun.convert.ConversionService;
-import kunlun.data.bean.BeanUtils;
+import kunlun.data.bean.BeanUtil;
 import kunlun.test.pojo.entity.animal.Cat;
 import kunlun.test.pojo.entity.animal.Dog;
 
@@ -20,7 +20,7 @@ public class CatToDogConverter extends AbstractClassConverter {
     @Override
     public Object convert(Object source, Class<?> sourceClass, Class<?> targetClass) {
         Cat cat = (Cat) source;
-        Dog dog = BeanUtils.beanToBean(cat, Dog.class);
+        Dog dog = BeanUtil.beanToBean(cat, Dog.class);
         dog.setBreed("Cat: " + cat.getBreed());
         dog.setSize("Cat");
         dog.setSound("Miaow");

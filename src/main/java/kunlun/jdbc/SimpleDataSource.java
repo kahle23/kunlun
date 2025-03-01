@@ -1,8 +1,8 @@
 package kunlun.jdbc;
 
 import kunlun.aop.Interceptor;
-import kunlun.aop.ProxyUtils;
-import kunlun.exception.ExceptionUtils;
+import kunlun.aop.ProxyUtil;
+import kunlun.exception.ExceptionUtil;
 import kunlun.util.Assert;
 import kunlun.util.ClassLoaderUtil;
 import kunlun.util.StrUtil;
@@ -50,7 +50,7 @@ public class SimpleDataSource implements DataSource {
             return properties;
         }
         catch (IOException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 
@@ -81,7 +81,7 @@ public class SimpleDataSource implements DataSource {
     private Connection createConnection() throws SQLException {
         Connection conn = DriverManager.getConnection(jdbcUrl, user, password);
         ConnectionInterceptor interceptor = new ConnectionInterceptor(queue, conn);
-        return (Connection) ProxyUtils.proxy(Connection.class, interceptor);
+        return (Connection) ProxyUtil.proxy(Connection.class, interceptor);
     }
 
     public SimpleDataSource() {
@@ -126,7 +126,7 @@ public class SimpleDataSource implements DataSource {
             }
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 

@@ -6,8 +6,8 @@
 package kunlun.action.invoke.http;
 
 import kunlun.action.invoke.AbstractInvokeAction;
-import kunlun.data.bean.BeanUtils;
-import kunlun.data.json.JsonUtils;
+import kunlun.data.bean.BeanUtil;
+import kunlun.data.json.JsonUtil;
 import kunlun.data.tuple.KeyValue;
 import kunlun.data.tuple.KeyValueImpl;
 import kunlun.data.validation.support.ValidationConfig;
@@ -70,7 +70,7 @@ public abstract class AbstractScriptBasedHttpInvokeAction extends AbstractInvoke
                 getScriptHandler().eval(scriptEngine, config.getHeaders(), context);
         if (!ObjUtil.isEmpty(headers)) {
             Collection<KeyValue<String, String>> collection =
-                    cast(BeanUtils.beanToBeanInList(headers, KeyValueImpl.class));
+                    cast(BeanUtil.beanToBeanInList(headers, KeyValueImpl.class));
             convertedInput.setHeaders(collection);
         }
         // Params.
@@ -81,7 +81,7 @@ public abstract class AbstractScriptBasedHttpInvokeAction extends AbstractInvoke
                     getScriptHandler().eval(scriptEngine, config.getParameters(), context);
             if (!ObjUtil.isEmpty(parametersObj)) {
                 Collection<KeyValue<String, Object>> collection =
-                        cast(BeanUtils.beanToBeanInList(parametersObj, KeyValueImpl.class));
+                        cast(BeanUtil.beanToBeanInList(parametersObj, KeyValueImpl.class));
                 convertedInput.setParameters(collection);
             }
         }
@@ -90,7 +90,7 @@ public abstract class AbstractScriptBasedHttpInvokeAction extends AbstractInvoke
             Object bodyObj = getScriptHandler().eval(scriptEngine, config.getBody(), context);
             if (bodyObj != null) {
                 convertedInput.setBody(
-                    bodyObj instanceof String ? bodyObj : JsonUtils.toJsonString(bodyObj)
+                    bodyObj instanceof String ? bodyObj : JsonUtil.toJsonString(bodyObj)
                 );
             }
         }

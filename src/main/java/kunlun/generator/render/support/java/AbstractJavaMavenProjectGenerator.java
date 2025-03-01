@@ -6,11 +6,11 @@
 package kunlun.generator.render.support.java;
 
 import kunlun.core.Renderer;
-import kunlun.data.bean.BeanUtils;
-import kunlun.exception.ExceptionUtils;
+import kunlun.data.bean.BeanUtil;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.renderer.TextRenderer;
-import kunlun.time.DateUtils;
+import kunlun.time.DateUtil;
 import kunlun.util.Assert;
 
 import java.io.*;
@@ -34,7 +34,7 @@ public abstract class AbstractJavaMavenProjectGenerator implements ProjectGenera
      */
     protected void log(ProjectContextImpl context, String format, Object... args) {
         context.getMessageBuilder()
-                .append(DateUtils.format())
+                .append(DateUtil.format())
                 .append(" ")
                 .append(String.format(format, args))
                 .append(NEWLINE);
@@ -105,14 +105,14 @@ public abstract class AbstractJavaMavenProjectGenerator implements ProjectGenera
         BufferedWriter bufferedWriter = null;
         try {
             TextRenderer textRenderer = getTextRenderer(projectContext);
-            Map<String, Object> data = BeanUtils.beanToMap(projectContext);
+            Map<String, Object> data = BeanUtil.beanToMap(projectContext);
             OutputStream out = new FileOutputStream(outputPath);
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(out));
             textRenderer.render(Renderer.Tpl.of(templatePath), data, bufferedWriter);
             bufferedWriter.flush();
         }
         catch (IOException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
         finally {
             IoUtil.closeQuietly(bufferedWriter);

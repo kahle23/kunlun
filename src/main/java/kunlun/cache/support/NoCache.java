@@ -6,7 +6,7 @@
 package kunlun.cache.support;
 
 import kunlun.cache.Cache;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 
 import java.util.Collection;
 import java.util.Date;
@@ -40,7 +40,7 @@ public class NoCache implements Cache {
             return callable.call();
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 

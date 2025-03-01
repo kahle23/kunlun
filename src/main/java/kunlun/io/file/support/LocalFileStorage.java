@@ -7,11 +7,11 @@ package kunlun.io.file.support;
 
 import kunlun.data.tuple.KeyValue;
 import kunlun.data.tuple.Pair;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.FileBase;
 import kunlun.io.FileEntity;
 import kunlun.io.storage.AbstractDataStorage;
-import kunlun.io.util.FileUtils;
+import kunlun.io.util.FileUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -82,7 +82,7 @@ public class LocalFileStorage extends AbstractDataStorage {
         InputStream inputStream;
         try { inputStream = new FileInputStream(file); }
         catch (FileNotFoundException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
         return new FileEntityImpl(name, path, inputStream);
     }
@@ -115,10 +115,10 @@ public class LocalFileStorage extends AbstractDataStorage {
             }
             Assert.notNull(inputStream, "Parameter \"inputStream\" must not null. ");
             Assert.notNull(path, "Parameter \"path\" must not null. ");
-            return FileUtils.write(inputStream, new File(path));
+            return FileUtil.write(inputStream, new File(path));
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
         finally {
             IoUtil.closeQuietly(inputStream);

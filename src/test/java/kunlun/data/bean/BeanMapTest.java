@@ -7,7 +7,7 @@ package kunlun.data.bean;
 
 import com.alibaba.fastjson.JSON;
 import kunlun.data.bean.support.SimpleBeanMap;
-import kunlun.data.mock.MockUtils;
+import kunlun.data.mock.MockUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.test.pojo.entity.system.User;
@@ -15,7 +15,7 @@ import org.junit.Test;
 
 public class BeanMapTest {
     private static Logger log = LoggerFactory.getLogger(BeanMapTest.class);
-    private User user = MockUtils.mock(User.class);
+    private User user = MockUtil.mock(User.class);
 
     @Test
     public void test1() {

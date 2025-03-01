@@ -5,10 +5,10 @@
 
 package kunlun.crypto.digest;
 
-import kunlun.codec.CodecUtils;
+import kunlun.codec.CodecUtil;
 import kunlun.common.constant.Charsets;
 import kunlun.core.Digester;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
 
@@ -26,29 +26,29 @@ public abstract class AbstractDigester implements Digester {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         try {
             return digest(config, IoUtil.readBytes(data));
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     // ====
 
     public String digestToHex(Config config, byte[] data) {
 
-        return CodecUtils.encodeToHex(digest(config, data));
+        return CodecUtil.encodeToHex(digest(config, data));
     }
 
     public String digestToBase64(Config config, byte[] data) {
 
-        return CodecUtils.encodeToBase64(digest(config, data));
+        return CodecUtil.encodeToBase64(digest(config, data));
     }
 
     public String digestToHex(Config config, InputStream data) {
 
-        return CodecUtils.encodeToHex(digest(config, data));
+        return CodecUtil.encodeToHex(digest(config, data));
     }
 
     public String digestToBase64(Config config, InputStream data) {
 
-        return CodecUtils.encodeToBase64(digest(config, data));
+        return CodecUtil.encodeToBase64(digest(config, data));
     }
 
     // ====
@@ -66,7 +66,7 @@ public abstract class AbstractDigester implements Digester {
 
     public String digestToHex(Config config, String data, Charset charset) {
 
-        return CodecUtils.encodeToHex(digest(config, data, charset));
+        return CodecUtil.encodeToHex(digest(config, data, charset));
     }
 
     public String digestToHex(Config config, String data) {
@@ -76,7 +76,7 @@ public abstract class AbstractDigester implements Digester {
 
     public String digestToBase64(Config config, String data, Charset charset) {
 
-        return CodecUtils.encodeToBase64(digest(config, data, charset));
+        return CodecUtil.encodeToBase64(digest(config, data, charset));
     }
 
     public String digestToBase64(Config config, String data) {

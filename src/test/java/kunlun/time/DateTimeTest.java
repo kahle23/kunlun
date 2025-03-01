@@ -22,7 +22,7 @@ public class DateTimeTest {
     public void testIfUnixTimestampUsingInteger() {
         log.info("");
         log.info("If unix timestamp using Integer. ");
-        DateTime dateTime = DateUtils.create(2038, ONE, TWENTY_THREE);
+        DateTime dateTime = DateUtil.create(2038, ONE, TWENTY_THREE);
         log.info("The time of unix timestamp is {}", dateTime);
         log.info("The unix timestamp is {}", dateTime.getTimeInSeconds());
         log.info("The Integer max is {}", Integer.MAX_VALUE);
@@ -31,12 +31,12 @@ public class DateTimeTest {
 
     @Test
     public void testDayOfAndWeekOf() {
-        DateTime dateTime = DateUtils.create();
+        DateTime dateTime = DateUtil.create();
 //        dateTime.addMonth(-1).addDay(-1);
 //        dateTime.addDayOfWeek(1);
 //        dateTime.setDayOfYear(365);
-        log.info(DateUtils.format(dateTime));
-        log.info(DateUtils.format(dateTime, "EEEE"));
+        log.info(DateUtil.format(dateTime));
+        log.info(DateUtil.format(dateTime, "EEEE"));
         log.info("Day Of Week: {}", dateTime.getDayOfWeek());
         log.info("Day Of Week In Month: {}", dateTime.getDayOfWeekInMonth());
         log.info("Week Of Month: {}", dateTime.getWeekOfMonth());
@@ -48,8 +48,8 @@ public class DateTimeTest {
     public void testEquals() {
         log.info("");
 
-        DateTime dateTime1 = DateUtils.create(1991, ELEVEN, TWELVE);
-        DateTime dateTime2 = DateUtils.create(1991, ELEVEN, TWELVE);
+        DateTime dateTime1 = DateUtil.create(1991, ELEVEN, TWELVE);
+        DateTime dateTime2 = DateUtil.create(1991, ELEVEN, TWELVE);
         log.info("dateUtils1 equals dateUtils2 is true ? result: {}", dateTime1.equals(dateTime2));
 
         log.info("");
@@ -59,7 +59,7 @@ public class DateTimeTest {
     public void testFormat() {
         log.info("");
 
-        log.info("The method toString(), result: {}", DateUtils.create().toString());
+        log.info("The method toString(), result: {}", DateUtil.create().toString());
 
         log.info("");
     }
@@ -68,18 +68,18 @@ public class DateTimeTest {
     public void testCreate() {
         log.info("");
 
-        log.info("The method create(), result: {}", DateUtils.create().toString());
-        log.info("The method create(Date), result: {}", DateUtils.create(new Date()).toString());
-        log.info("The method create(Long), result: {}", DateUtils.create(new Date().getTime()).toString());
-        log.info("The method create(Calendar), result: {}", DateUtils.create(Calendar.getInstance()));
-        log.info("The method create(String), result: {}", DateUtils.create(DateUtils.create().toString()));
+        log.info("The method create(), result: {}", DateUtil.create().toString());
+        log.info("The method create(Date), result: {}", DateUtil.create(new Date()).toString());
+        log.info("The method create(Long), result: {}", DateUtil.create(new Date().getTime()).toString());
+        log.info("The method create(Calendar), result: {}", DateUtil.create(Calendar.getInstance()));
+        log.info("The method create(String), result: {}", DateUtil.create(DateUtil.create().toString()));
         log.info("The method create(String, String), the pattern is \"yyyy-MM-dd HH:mm:ss SSS\", result: {}"
-                , DateUtils.create(DateUtils.create().toString(), NORM_DATETIME));
-        log.info("The method create(1990, 12, 12), result: {}", DateUtils.create(1990, TWELVE, TWELVE));
+                , DateUtil.create(DateUtil.create().toString(), NORM_DATETIME));
+        log.info("The method create(1990, 12, 12), result: {}", DateUtil.create(1990, TWELVE, TWELVE));
         log.info("The method create(1990, 12, 12, 12, 12, 12), result: {}"
-                , DateUtils.create(1990, TWELVE, TWELVE, TWELVE, TWELVE, TWELVE));
+                , DateUtil.create(1990, TWELVE, TWELVE, TWELVE, TWELVE, TWELVE));
         log.info("The method create(1990, 12, 12, 12, 12, 12, 12), result: {}"
-                , DateUtils.create(1990, TWELVE, TWELVE, TWELVE, TWELVE, TWELVE, TWELVE));
+                , DateUtil.create(1990, TWELVE, TWELVE, TWELVE, TWELVE, TWELVE, TWELVE));
         log.info("");
     }
 
@@ -87,8 +87,8 @@ public class DateTimeTest {
     public void testTimestamp() {
         log.info("");
 
-        log.info("The method create().getTimeInMillis(), result: {}", DateUtils.create().getTimeInMillis());
-        log.info("The method create().getTimeInSeconds(), result: {}", DateUtils.create().getTimeInSeconds());
+        log.info("The method create().getTimeInMillis(), result: {}", DateUtil.create().getTimeInMillis());
+        log.info("The method create().getTimeInSeconds(), result: {}", DateUtil.create().getTimeInSeconds());
 
         log.info("");
     }

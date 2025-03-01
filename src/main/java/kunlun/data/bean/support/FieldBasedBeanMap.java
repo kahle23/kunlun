@@ -7,10 +7,10 @@ package kunlun.data.bean.support;
 
 import kunlun.convert.ConversionService;
 import kunlun.data.bean.BeanMap;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.reflect.ReflectUtils;
+import kunlun.reflect.ReflectUtil;
 import kunlun.util.Assert;
 import kunlun.util.ObjUtil;
 
@@ -66,10 +66,10 @@ public class FieldBasedBeanMap extends BeanMap {
             return;
         }
         beanClass = bean.getClass();
-        Field[] declaredFields = ReflectUtils.getDeclaredFields(beanClass);
+        Field[] declaredFields = ReflectUtil.getDeclaredFields(beanClass);
         for (Field field : declaredFields) {
             if (field != null) {
-                ReflectUtils.makeAccessible(field);
+                ReflectUtil.makeAccessible(field);
                 fieldMap.put(field.getName(), field);
             }
         }
@@ -89,7 +89,7 @@ public class FieldBasedBeanMap extends BeanMap {
                 return null;
             }
             else {
-                throw ExceptionUtils.wrap(e);
+                throw ExceptionUtil.wrap(e);
             }
         }
     }
@@ -118,7 +118,7 @@ public class FieldBasedBeanMap extends BeanMap {
                 return null;
             }
             else {
-                throw ExceptionUtils.wrap(e);
+                throw ExceptionUtil.wrap(e);
             }
         }
     }

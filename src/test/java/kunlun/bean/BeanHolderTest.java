@@ -6,7 +6,7 @@
 package kunlun.bean;
 
 import com.alibaba.fastjson.JSON;
-import kunlun.data.mock.MockUtils;
+import kunlun.data.mock.MockUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.test.pojo.entity.animal.Cat;
@@ -24,8 +24,8 @@ public class BeanHolderTest {
 
     @Test
     public void test1() {
-        Dog dog = MockUtils.mock(Dog.class);
-        Cat cat = MockUtils.mock(Cat.class);
+        Dog dog = MockUtil.mock(Dog.class);
+        Cat cat = MockUtil.mock(Cat.class);
         log.info("dog is: {}", JSON.toJSONString(dog));
         log.info("cat is: {}", JSON.toJSONString(cat));
         BeanHolder.put("dog", dog);

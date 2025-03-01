@@ -5,8 +5,8 @@
 
 package kunlun.renderer.support;
 
-import kunlun.data.bean.BeanUtils;
-import kunlun.exception.ExceptionUtils;
+import kunlun.data.bean.BeanUtil;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.util.*;
 
@@ -89,7 +89,7 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
         Writer writer = (Writer) Assert.isInstanceOf(Writer.class, output);
         if (template == null) { return; }
         Map<String, Object> dataMap = data != null
-                ? BeanUtils.beanToMap(data) : Collections.<String, Object>emptyMap();
+                ? BeanUtil.beanToMap(data) : Collections.<String, Object>emptyMap();
         // Get template content and render.
         Reader reader = null;
         try {
@@ -110,7 +110,7 @@ public class SimpleTextRenderer extends AbstractTextRenderer {
                 render(tpl.getContent(), data, output);
             } else { throw new IllegalArgumentException("Unsupported template type! "); }
         } catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         } finally {
             IoUtil.closeQuietly(reader, writer);
         }

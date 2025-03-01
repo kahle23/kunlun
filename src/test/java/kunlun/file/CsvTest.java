@@ -5,8 +5,8 @@
 
 package kunlun.file;
 
-import kunlun.data.bean.BeanUtils;
-import kunlun.data.mock.MockUtils;
+import kunlun.data.bean.BeanUtil;
+import kunlun.data.mock.MockUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.test.pojo.entity.system.User;
@@ -29,10 +29,10 @@ public class CsvTest {
 
     static {
         for (int i = ZERO; i < TEN; i++) {
-            User user = MockUtils.mock(User.class);
+            User user = MockUtil.mock(User.class);
             beanList.add(user);
         }
-        mapList.addAll(BeanUtils.beanToMapInList(beanList));
+        mapList.addAll(BeanUtil.beanToMapInList(beanList));
         headerMappings.put("Uid", "uid");
         headerMappings.put("Name", "name");
         headerMappings.put("Age", "age");

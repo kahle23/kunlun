@@ -6,7 +6,7 @@
 package kunlun.action.invoke;
 
 import kunlun.action.AbstractAction;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.util.Assert;
 
 import java.util.Map;
@@ -117,7 +117,7 @@ public abstract class AbstractInvokeAction extends AbstractAction {
         }
         catch (Exception e) {
             context.setError(e);
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
         finally { recordLog(context); }
     }

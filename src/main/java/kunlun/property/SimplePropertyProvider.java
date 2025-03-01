@@ -6,7 +6,7 @@
 package kunlun.property;
 
 import kunlun.common.constant.Words;
-import kunlun.convert.ConversionUtils;
+import kunlun.convert.ConversionUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -119,7 +119,7 @@ public class SimplePropertyProvider implements PropertyProvider {
         Assert.notNull(targetType, "Parameter \"targetType\" must not null. ");
         Object value = getProperty(source, name, defaultValue);
         if (value == null) { return defaultValue; }
-        return ConversionUtils.convert(value, targetType);
+        return ConversionUtil.convert(value, targetType);
     }
 
     @Override

@@ -6,7 +6,7 @@
 package kunlun.db.jdbc;
 
 import kunlun.db.AbstractDbHandler;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -78,7 +78,7 @@ public abstract class AbstractJdbcDbHandler extends AbstractDbHandler implements
                 );
             }
             catch (Exception e) {
-                throw ExceptionUtils.wrap(e);
+                throw ExceptionUtil.wrap(e);
             }
         }
         // Normal transaction support.
@@ -103,7 +103,7 @@ public abstract class AbstractJdbcDbHandler extends AbstractDbHandler implements
         }
         catch (Exception e) {
             transactionCatch(config, connection);
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
         finally { transactionFinally(config, connection, autoCommit); }
     }
@@ -148,7 +148,7 @@ public abstract class AbstractJdbcDbHandler extends AbstractDbHandler implements
             return jdbcCallback.call(connection);
         }
         catch (SQLException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
         finally {
             config.closeConnection(connection);
@@ -172,7 +172,7 @@ public abstract class AbstractJdbcDbHandler extends AbstractDbHandler implements
             return prepStmt.executeUpdate();
         }
         catch (SQLException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
         finally {
             IoUtil.closeIfPossible(prepStmt);
@@ -229,7 +229,7 @@ public abstract class AbstractJdbcDbHandler extends AbstractDbHandler implements
             return result;
         }
         catch (SQLException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
         finally {
             IoUtil.closeIfPossible(resSet, prepStmt);

@@ -7,7 +7,7 @@ package kunlun.time;
 
 import kunlun.data.ReferenceType;
 import kunlun.data.collect.ReferenceMap;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -129,7 +129,7 @@ public class SimpleDateProvider implements DateProvider {
             return getDateFormat(pattern).parse(dateString);
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 

@@ -6,7 +6,7 @@
 package kunlun.codec;
 
 import kunlun.core.Codec;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
 
@@ -25,7 +25,7 @@ public abstract class AbstractCodec implements Codec {
         Assert.notNull(out, "Parameter \"out\" must not null. ");
         try {
             out.write(encode(config, IoUtil.readBytes(source)));
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     @Override
@@ -34,7 +34,7 @@ public abstract class AbstractCodec implements Codec {
         Assert.notNull(out, "Parameter \"out\" must not null. ");
         try {
             out.write(decode(config, IoUtil.readBytes(source)));
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     /**

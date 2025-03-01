@@ -6,13 +6,13 @@
 package kunlun.crypto.digest.support;
 
 import kunlun.crypto.digest.Hash;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
 
 import java.io.InputStream;
 
-import static kunlun.crypto.util.CustomUtils.*;
+import static kunlun.crypto.util.CustomUtil.*;
 
 /**
  * The custom message digest tools.
@@ -33,7 +33,7 @@ public class CustomDigester extends Hash {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         try {
             return digest(config, IoUtil.readBytes(data));
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
 }

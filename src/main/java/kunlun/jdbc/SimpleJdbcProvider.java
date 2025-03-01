@@ -1,6 +1,6 @@
 package kunlun.jdbc;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -108,7 +108,7 @@ public class SimpleJdbcProvider extends AbstractJdbcProvider {
         }
         catch (Exception e) {
             rollbackTransaction(connection);
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
         finally {
             closeTransaction(connection, autoCommit);

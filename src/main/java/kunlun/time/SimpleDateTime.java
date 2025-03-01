@@ -327,7 +327,7 @@ public class SimpleDateTime implements DateTime {
         if (o instanceof SimpleDateTime) {
             Calendar cal = getCalendar();
             Calendar cal1 = ((SimpleDateTime) o).getCalendar();
-            return DateUtils.equals(cal, cal1);
+            return DateUtil.equals(cal, cal1);
         }
         return false;
     }
@@ -335,7 +335,7 @@ public class SimpleDateTime implements DateTime {
     @Override
     public String toString() {
         Date date = getDate();
-        return DateUtils.format(date);
+        return DateUtil.format(date);
     }
 
 }

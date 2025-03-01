@@ -6,8 +6,8 @@
 package kunlun.action.message.support;
 
 import kunlun.action.message.AbstractMessageHandler;
-import kunlun.data.bean.BeanUtils;
-import kunlun.data.json.JsonUtils;
+import kunlun.data.bean.BeanUtil;
+import kunlun.data.json.JsonUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.message.model.Message;
@@ -50,7 +50,7 @@ public class SimpleMessageHandler extends AbstractMessageHandler {
                 builder.append(entryValue).append(NEWLINE);
             }
             else {
-                builder.append(JsonUtils.toJsonString(entryValue)).append(NEWLINE);
+                builder.append(JsonUtil.toJsonString(entryValue)).append(NEWLINE);
             }
         }
     }
@@ -61,7 +61,7 @@ public class SimpleMessageHandler extends AbstractMessageHandler {
         // Begin building message.
         builder.append("Provider:           ").append(getClass().getName()).append(NEWLINE);
         // Fill the builder with message.
-        append(builder, BeanUtils.beanToMap(message));
+        append(builder, BeanUtil.beanToMap(message));
         // End building message
         builder.append("---- End Message ----").append(NEWLINE);
         return builder.toString();

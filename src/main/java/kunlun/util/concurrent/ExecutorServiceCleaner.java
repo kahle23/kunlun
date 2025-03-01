@@ -5,7 +5,7 @@
 
 package kunlun.util.concurrent;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.util.Assert;
 import kunlun.util.CollUtil;
 
@@ -117,7 +117,7 @@ public class ExecutorServiceCleaner implements Runnable {
                     e.printStackTrace();
                 }
                 else {
-                    throw ExceptionUtils.wrap(e);
+                    throw ExceptionUtil.wrap(e);
                 }
             }
         }

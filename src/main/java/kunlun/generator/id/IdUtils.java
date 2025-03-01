@@ -5,36 +5,25 @@
 
 package kunlun.generator.id;
 
-import kunlun.generator.id.support.SimpleIdGenerator;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.Assert;
-
-import static kunlun.common.constant.Algorithms.UUID;
 
 /**
  * The identifier generation tools.
  * @author Kahle
  */
+@Deprecated
 public class IdUtils {
     private static final Logger log = LoggerFactory.getLogger(IdUtils.class);
-    private static volatile IdProvider idProvider;
 
     public static IdProvider getIdProvider() {
-        if (idProvider != null) { return idProvider; }
-        synchronized (IdUtils.class) {
-            if (idProvider != null) { return idProvider; }
-            IdUtils.setIdProvider(new SimpleIdProvider());
-            // Register the uuid generator.
-            registerGenerator(UUID, new SimpleIdGenerator());
-            return idProvider;
-        }
+
+        return IdUtil.getIdProvider();
     }
 
     public static void setIdProvider(IdProvider idProvider) {
-        Assert.notNull(idProvider, "Parameter \"idProvider\" must not null. ");
-        log.info("Set id provider: {}", idProvider.getClass().getName());
-        IdUtils.idProvider = idProvider;
+
+        IdUtil.setIdProvider(idProvider);
     }
 
     public static void registerGenerator(String name, IdGenerator idGenerator) {

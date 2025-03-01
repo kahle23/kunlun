@@ -5,7 +5,7 @@
 
 package kunlun.crypto.digest;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.util.Assert;
 
 import java.io.InputStream;
@@ -31,7 +31,7 @@ public class Hash extends AbstractDigester {
         try {
             MessageDigest md = MessageDigest.getInstance(config.getAlgorithm());
             return md.digest(data);
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     @Override
@@ -45,7 +45,7 @@ public class Hash extends AbstractDigester {
                 md.update(buffer, ZERO, len);
             }
             return md.digest();
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     /**

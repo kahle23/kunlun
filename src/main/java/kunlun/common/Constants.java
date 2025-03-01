@@ -5,8 +5,8 @@
 
 package kunlun.common;
 
-import kunlun.io.util.FilenameUtils;
-import kunlun.net.NetUtils;
+import kunlun.io.util.FilenameUtil;
+import kunlun.net.NetUtil;
 
 import java.nio.charset.Charset;
 
@@ -23,9 +23,9 @@ public class Constants {
     public static final String NEWLINE = System.getProperty("line.separator");
 
     public static final String COMPUTER_NAME = System.getenv("ComputerName");
-    public static final String HOST_NAME = NetUtils.getHostName();
-    public static final String ROOT_PATH = FilenameUtils.getRootPath();
-    public static final String CLASSPATH = FilenameUtils.getClasspath();
+    public static final String HOST_NAME = NetUtil.getHostName();
+    public static final String ROOT_PATH = FilenameUtil.getRootPath();
+    public static final String CLASSPATH = FilenameUtil.getClasspath();
 
     public static final String NORM_DATETIME_MS_PATTERN = "yyyy-MM-dd HH:mm:ss SSS";
     public static final String NORM_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";

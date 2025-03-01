@@ -11,7 +11,7 @@ import kunlun.core.function.Consumer;
 import kunlun.db.jdbc.meta.Column;
 import kunlun.db.jdbc.meta.Index;
 import kunlun.db.jdbc.meta.Table;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.util.Assert;
 import kunlun.util.CollUtil;
@@ -74,7 +74,7 @@ public class JdbcTableLoader implements Loader<JdbcTableLoader.Config, List<Tabl
             // Finish.
             return tables;
         }
-        catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        catch (Exception e) { throw ExceptionUtil.wrap(e); }
         finally { IoUtil.closeIfPossible(connection); }
     }
 

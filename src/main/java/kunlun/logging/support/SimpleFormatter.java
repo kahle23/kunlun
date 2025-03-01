@@ -5,7 +5,7 @@
 
 package kunlun.logging.support;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.util.StrUtil;
 import kunlun.util.ThreadUtil;
 
@@ -126,7 +126,7 @@ public class SimpleFormatter extends java.util.logging.SimpleFormatter {
     private String printfThrowable(LogRecord record) {
         Throwable thrown = record.getThrown();
         if (thrown == null) { return null; }
-        String result = ExceptionUtils.toString(thrown);
+        String result = ExceptionUtil.toString(thrown);
         return StrUtil.isNotBlank(result) ? NEWLINE + result : null;
     }
 

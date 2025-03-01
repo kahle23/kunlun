@@ -1,6 +1,6 @@
 package kunlun.jdbc;
 
-import kunlun.data.bean.BeanUtils;
+import kunlun.data.bean.BeanUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -92,7 +92,7 @@ public abstract class AbstractJdbcProvider implements JdbcProvider {
     @Override
     public <T> List<T> executeQuery(String sql, Class<T> clazz, Object... params) throws SQLException {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        return BeanUtils.beanToBeanInList(executeQuery(sql, params), clazz);
+        return BeanUtil.beanToBeanInList(executeQuery(sql, params), clazz);
     }
 
     @Override

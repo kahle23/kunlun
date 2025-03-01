@@ -5,7 +5,7 @@
 
 package kunlun.data.dict.support;
 
-import kunlun.cache.CacheUtils;
+import kunlun.cache.CacheUtil;
 import kunlun.data.dict.AbstractDictService;
 import kunlun.data.dict.Dict;
 import kunlun.data.dict.DictService;
@@ -45,10 +45,10 @@ public class CacheDictService extends AbstractDictService {
     protected Dict getDict(String group, String name, String code, String value) {
         Assert.notBlank(group, "Parameter \"group\" must not blank. ");
         String key = String.format("%s:%s-%s-%s", group, name, code, value);
-        Dict val = (Dict) CacheUtils.get(cacheName, key);
+        Dict val = (Dict) CacheUtil.get(cacheName, key);
         if (val != null) { return val; }
         synchronized (key.intern()) {
-            if ((val = (Dict) CacheUtils.get(cacheName, key)) != null) { return val; }
+            if ((val = (Dict) CacheUtil.get(cacheName, key)) != null) { return val; }
             if (name != null) {
                 val = dictService.getByName(group, name);
             }
@@ -60,10 +60,10 @@ public class CacheDictService extends AbstractDictService {
             }
             if (val == null) { return null; }
             if (timeToLive != null && timeUnit != null) {
-                CacheUtils.put(cacheName, key, val, timeToLive, timeUnit);
+                CacheUtil.put(cacheName, key, val, timeToLive, timeUnit);
             }
             else {
-                CacheUtils.put(cacheName, key, val);
+                CacheUtil.put(cacheName, key, val);
             }
         }
         return val;

@@ -5,7 +5,7 @@
 
 package kunlun.convert;
 
-import kunlun.cache.CacheUtils;
+import kunlun.cache.CacheUtil;
 import kunlun.convert.GenericConverter.ConvertiblePair;
 import kunlun.util.Assert;
 import kunlun.util.ObjUtil;
@@ -33,11 +33,11 @@ public class CacheConversionService extends AbstractConversionService {
     protected List<Class<?>> getClassHierarchy(Class<?> type) {
         Assert.notNull(type, "Parameter \"type\" must not null. ");
         String cacheKey = "cache_class_hierarchy[" + type + "]";
-        List<Class<?>> result = ObjUtil.cast(CacheUtils.get(cacheName, cacheKey));
+        List<Class<?>> result = ObjUtil.cast(CacheUtil.get(cacheName, cacheKey));
         if (result != null) { return result; }
         result = super.getClassHierarchy(type);
         if (result == null) { return null; }
-        CacheUtils.put(cacheName, cacheKey, result);
+        CacheUtil.put(cacheName, cacheKey, result);
         return result;
     }
 
@@ -52,7 +52,7 @@ public class CacheConversionService extends AbstractConversionService {
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
         conversionService.deregisterConverter(converter);
         if (converter instanceof ConditionalConverter) {
-            CacheUtils.clear(cacheName); return;
+            CacheUtil.clear(cacheName); return;
         }
         Set<ConvertiblePair> convertibleTypes = converter.getConvertibleTypes();
         Assert.notEmpty(convertibleTypes,
@@ -61,7 +61,7 @@ public class CacheConversionService extends AbstractConversionService {
             Class<?> sourceType = convertibleType.getSourceType();
             Class<?> targetType = convertibleType.getTargetType();
             ConverterCacheKey cacheKey = new ConverterCacheKey(sourceType, targetType);
-            CacheUtils.remove(cacheName, cacheKey);
+            CacheUtil.remove(cacheName, cacheKey);
         }
     }
 
@@ -70,11 +70,11 @@ public class CacheConversionService extends AbstractConversionService {
         Assert.notNull(sourceType, "Parameter \"sourceType\" must not null. ");
         Assert.notNull(targetType, "Parameter \"targetType\" must not null. ");
         ConverterCacheKey cacheKey = new ConverterCacheKey(sourceType, targetType);
-        GenericConverter converter = CacheUtils.get(cacheName, cacheKey, GenericConverter.class);
+        GenericConverter converter = CacheUtil.get(cacheName, cacheKey, GenericConverter.class);
         if (converter != null) { return converter; }
         converter = conversionService.getConverter(sourceType, targetType);
         if (converter == null) { return null; }
-        CacheUtils.put(cacheName, cacheKey, converter);
+        CacheUtil.put(cacheName, cacheKey, converter);
         return converter;
     }
 

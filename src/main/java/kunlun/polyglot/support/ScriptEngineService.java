@@ -5,9 +5,9 @@
 
 package kunlun.polyglot.support;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.polyglot.PolyglotService;
-import kunlun.reflect.ReflectUtils;
+import kunlun.reflect.ReflectUtil;
 import kunlun.util.Assert;
 import kunlun.util.ObjUtil;
 
@@ -34,12 +34,12 @@ public class ScriptEngineService implements PolyglotService {
         Assert.notNull(scriptEngineManager, "Parameter \"scriptEngineManager\" must not null. ");
         this.scriptEngineManager = scriptEngineManager;
         try {
-            Field field = ReflectUtils.getField(ScriptEngineManager.class, "engineSpis");
-            ReflectUtils.makeAccessible(field);
+            Field field = ReflectUtil.getField(ScriptEngineManager.class, "engineSpis");
+            ReflectUtil.makeAccessible(field);
             this.factories = cast(field.get(scriptEngineManager));
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 
@@ -130,7 +130,7 @@ public class ScriptEngineService implements PolyglotService {
             }
         }
         catch (ScriptException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 
@@ -167,7 +167,7 @@ public class ScriptEngineService implements PolyglotService {
             }
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 
@@ -190,7 +190,7 @@ public class ScriptEngineService implements PolyglotService {
             }
         }
         catch (ScriptException e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
         // Convert result to invocable.
         Invocable invocable;
@@ -208,7 +208,7 @@ public class ScriptEngineService implements PolyglotService {
             return invocable.invokeFunction(function, arguments);
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 

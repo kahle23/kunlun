@@ -8,7 +8,7 @@ package kunlun.db.jdbc.support.function;
 import kunlun.core.function.Consumer;
 import kunlun.db.jdbc.meta.Table;
 import kunlun.db.jdbc.support.JdbcTableLoader;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.util.StrUtil;
 
@@ -66,7 +66,7 @@ public class MysqlTableCommentConsumer implements Consumer<JdbcTableLoader.Conte
             }
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
         finally {
             IoUtil.closeIfPossible(resultSet, statement);

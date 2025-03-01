@@ -5,7 +5,7 @@
 
 package kunlun.net.http.support;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.net.http.AbstractHttpClient;
 import kunlun.net.http.HttpMethod;
@@ -380,7 +380,7 @@ public class SimpleHttpClient extends AbstractHttpClient {
     public HttpResponse execute(HttpRequest request) {
         try {
             return execute((SimpleRequest) request, null);
-        } catch (Exception e) { throw ExceptionUtils.wrap(e); }
+        } catch (Exception e) { throw ExceptionUtil.wrap(e); }
     }
 
     /**

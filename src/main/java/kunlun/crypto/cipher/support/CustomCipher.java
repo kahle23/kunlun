@@ -8,7 +8,7 @@ package kunlun.crypto.cipher.support;
 import kunlun.crypto.cipher.SymmetricCipher;
 import kunlun.util.Assert;
 
-import static kunlun.crypto.util.CustomUtils.*;
+import static kunlun.crypto.util.CustomUtil.*;
 
 /**
  * The custom encryption and decryption tools.

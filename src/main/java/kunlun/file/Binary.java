@@ -5,7 +5,7 @@
 
 package kunlun.file;
 
-import kunlun.codec.CodecUtils;
+import kunlun.codec.CodecUtil;
 import kunlun.io.util.IoUtil;
 
 import java.io.ByteArrayInputStream;
@@ -46,7 +46,7 @@ public class Binary extends BinaryFile {
 
     public String writeToHexString() {
 
-        return CodecUtils.encodeToHex(data);
+        return CodecUtil.encodeToHex(data);
     }
 
 }

@@ -5,7 +5,7 @@
 
 package kunlun.util;
 
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
@@ -26,7 +26,7 @@ public class ThreadUtil {
             Thread.sleep(millis);
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 

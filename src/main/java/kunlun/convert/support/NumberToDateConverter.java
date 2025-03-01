@@ -6,7 +6,7 @@
 package kunlun.convert.support;
 
 import kunlun.convert.ConversionService;
-import kunlun.time.DateUtils;
+import kunlun.time.DateUtil;
 import kunlun.util.Assert;
 
 import java.util.Date;
@@ -41,7 +41,7 @@ public class NumberToDateConverter extends AbstractClassConverter {
         Number number = (Number) source;
         long lg = number.longValue();
         lg = unixTimestamp ? lg * ONE_THOUSAND : lg;
-        Date date = DateUtils.parse(lg);
+        Date date = DateUtil.parse(lg);
         // Maybe target is sql date or timestamp
         return getConversionService().convert(date, targetClass);
     }

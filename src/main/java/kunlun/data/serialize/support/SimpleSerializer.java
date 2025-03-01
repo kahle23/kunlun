@@ -6,7 +6,7 @@
 package kunlun.data.serialize.support;
 
 import kunlun.core.Serializer;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.util.Assert;
 
 import java.io.*;
@@ -31,7 +31,7 @@ public class SimpleSerializer implements Serializer {
             return outputStream.toByteArray();
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 
@@ -46,7 +46,7 @@ public class SimpleSerializer implements Serializer {
             return ois.readObject();
         }
         catch (Exception e) {
-            throw ExceptionUtils.wrap(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 

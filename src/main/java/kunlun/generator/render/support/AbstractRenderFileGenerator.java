@@ -2,16 +2,16 @@ package kunlun.generator.render.support;
 
 import kunlun.core.Renderer;
 import kunlun.data.Dict;
-import kunlun.exception.ExceptionUtils;
+import kunlun.exception.ExceptionUtil;
 import kunlun.generator.render.AbstractRenderGenerator;
 import kunlun.io.FileLoader;
-import kunlun.io.util.FileUtils;
-import kunlun.io.util.FilenameUtils;
+import kunlun.io.util.FileUtil;
+import kunlun.io.util.FilenameUtil;
 import kunlun.io.util.IoUtil;
 import kunlun.io.util.StringBuilderWriter;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.time.DateUtils;
+import kunlun.time.DateUtil;
 import kunlun.util.Assert;
 
 import java.io.*;
@@ -98,14 +98,14 @@ public abstract class AbstractRenderFileGenerator extends AbstractRenderGenerato
         // Get output directory.
         // Regarding the conversion of "/" and "\", it cannot rely on "File", it only takes effect on Windows.
         File outputFile = new File(
-                FilenameUtils.normalize(outputPath + SLASH + filename + withLeftDot(fileSuffix)));
+                FilenameUtil.normalize(outputPath + SLASH + filename + withLeftDot(fileSuffix)));
         mkdirs(outputFile.getParentFile());
         // Get template content.
         String templateContent = getTemplateContent(logCollector, fileLoader, config);
         // Create template filled model.
         Dict model = Dict.of(attributes);
-        model.set("generationTime", DateUtils.format(NORM_DATETIME));
-        model.set("nowDate", DateUtils.format(Y4MD2MI));
+        model.set("generationTime", DateUtil.format(NORM_DATETIME));
+        model.set("nowDate", DateUtil.format(Y4MD2MI));
         // Print log.
         String logStr = String.format(
                 "Template name \"%s\": rendering the file corresponding to resource name \"%s\". "
@@ -122,7 +122,7 @@ public abstract class AbstractRenderFileGenerator extends AbstractRenderGenerato
             renderer.render(templateContent, model, builderWriter);
             String generation = builderWriter.toString();
             // Read file content.
-            byte[] fileBytes = FileUtils.read(outputFile);
+            byte[] fileBytes = FileUtil.read(outputFile);
             String fileContent = new String(fileBytes, outputCharset);
             // Do replace.
             String outputStr = replaceContent(
@@ -130,7 +130,7 @@ public abstract class AbstractRenderFileGenerator extends AbstractRenderGenerato
             // Write to file.
             if (outputStr == null) { return; }
             byte[] outputBytes = outputStr.getBytes(outputCharset);
-            FileUtils.write(outputBytes, outputFile);
+            FileUtil.write(outputBytes, outputFile);
         }
         else {
             // Try to create new file.
@@ -151,7 +151,7 @@ public abstract class AbstractRenderFileGenerator extends AbstractRenderGenerato
     @Override
     protected void doGenerate(Context context, String resourceName, TemplateConfig config) {
         try { doGenerateThrows(context, resourceName, config); }
-        catch (IOException e) { throw ExceptionUtils.wrap(e); }
+        catch (IOException e) { throw ExceptionUtil.wrap(e); }
     }
 
 }
