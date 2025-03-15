@@ -5,16 +5,15 @@
 
 package kunlun.data.geo;
 
-import kunlun.core.Coordinate;
-
 import java.math.BigDecimal;
 
 /**
  * The geographic coordinate.
+ * @see <a href="https://en.wikipedia.org/wiki/Coordinate_system">Coordinate system</a>
  * @see <a href="https://en.wikipedia.org/wiki/Geographic_coordinate_system">Geographic coordinate system</a>
  * @author Kahle
  */
-public interface GeoCoordinate extends Coordinate {
+public interface GeoCoordinate {
 
     /**
      * The longitude of longitude and latitude.

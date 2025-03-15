@@ -38,30 +38,29 @@ public interface JdbcDbHandler extends DbHandler {
 
     /**
      * transaction
-     * @param jdbcTx
-     * @return
+     * @param jdbcTx jdbcTx
+     * @return return
      */
     Boolean transaction(JdbcTx jdbcTx);
 
     /**
      * callback
-     * @param jdbcCallback
-     * @param <T>
-     * @return
+     * @param jdbcCallback jdbcCallback
+     * @return return
      */
     <T>  T  callback(JdbcCallback<T> jdbcCallback);
 
     /**
      * executeUpdate
-     * @param jdbcUpdate
-     * @return
+     * @param jdbcUpdate jdbcUpdate
+     * @return return
      */
     Integer executeUpdate(JdbcUpdate jdbcUpdate);
 
     /**
      * executeQuery
-     * @param jdbcQuery
-     * @return
+     * @param jdbcQuery jdbcQuery
+     * @return return
      */
     List<Map<String, Object>> executeQuery(JdbcQuery jdbcQuery);
 

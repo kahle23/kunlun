@@ -11,6 +11,7 @@ import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 
 import static kunlun.common.constant.Algorithms.UUID;
+import static kunlun.convert.ConversionUtil.convert;
 
 /**
  * The identifier generation tools.
@@ -59,12 +60,12 @@ public class IdUtil {
 
     public static String nextString(String name, Object... arguments) {
 
-        return (String) getIdProvider().next(name, arguments);
+        return convert(getIdProvider().next(name, arguments), String.class);
     }
 
     public static Long nextLong(String name, Object... arguments) {
 
-        return (Long) getIdProvider().next(name, arguments);
+        return convert(getIdProvider().next(name, arguments), Long.class);
     }
 
 }

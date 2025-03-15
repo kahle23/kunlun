@@ -10,5 +10,6 @@ package kunlun.core;
  * @see <a href="https://en.wikipedia.org/wiki/Coordinate_system">Coordinate system</a>
  * @author Kahle
  */
+@Deprecated
 public interface Coordinate {
 }

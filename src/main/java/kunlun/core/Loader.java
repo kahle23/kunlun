@@ -10,6 +10,7 @@ package kunlun.core;
  *
  * @author Kahle
  */
+@Deprecated
 public interface Loader<Param, Result> {
 
     /**

@@ -18,5 +18,6 @@ package kunlun.core;
  * @see <a href="https://en.wikipedia.org/wiki/Feature-oriented_programming">Feature-oriented programming</a>
  * @author Kahle
  */
+@Deprecated
 public interface Feature {
 }

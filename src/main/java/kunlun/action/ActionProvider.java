@@ -75,11 +75,11 @@ public interface ActionProvider {
 
     /**
      * Execute a specific logic.
-     *
+     * <p>
      * The arguments mean (most of the scenes):
      *      0 strategy or operation or null,
      *      1 input object,
-     *
+     * <p>
      * Strategy priority: command strategy > shortcut strategy > arguments strategy
      *
      * @param command The command that contain the action name and strategy

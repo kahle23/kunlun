@@ -28,32 +28,32 @@ public class IdUtils {
 
     public static void registerGenerator(String name, IdGenerator idGenerator) {
 
-        getIdProvider().registerGenerator(name, idGenerator);
+        IdUtil.registerGenerator(name, idGenerator);
     }
 
     public static void deregisterGenerator(String name) {
 
-        getIdProvider().deregisterGenerator(name);
+        IdUtil.deregisterGenerator(name);
     }
 
     public static IdGenerator getIdGenerator(String name) {
 
-        return getIdProvider().getIdGenerator(name);
+        return IdUtil.getIdGenerator(name);
     }
 
     public static Object next(String name, Object... arguments) {
 
-        return getIdProvider().next(name, arguments);
+        return IdUtil.next(name, arguments);
     }
 
     public static String nextString(String name, Object... arguments) {
 
-        return (String) getIdProvider().next(name, arguments);
+        return IdUtil.nextString(name, arguments);
     }
 
     public static Long nextLong(String name, Object... arguments) {
 
-        return (Long) getIdProvider().next(name, arguments);
+        return IdUtil.nextLong(name, arguments);
     }
 
 }

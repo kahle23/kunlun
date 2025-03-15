@@ -13,5 +13,6 @@ package kunlun.core;
  * @see <a href="https://en.wikipedia.org/wiki/Resource#Computer_resources">Computer resources</a>
  * @author Kahle
  */
+@Deprecated
 public interface Resource {
 }

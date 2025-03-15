@@ -11,5 +11,6 @@ package kunlun.core;
  *
  * @author Kahle
  */
+@Deprecated
 public interface Handler {
 }

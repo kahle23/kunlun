@@ -9,5 +9,6 @@ package kunlun.core;
  * Provide the highest level of abstraction for listener.
  * @author Kahle
  */
+@Deprecated
 public interface Listener {
 }
