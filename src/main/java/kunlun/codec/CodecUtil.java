@@ -42,7 +42,7 @@ public class CodecUtil {
 
     public static void setCodecManager(CodecManager codecManager) {
         Assert.notNull(codecManager, "Parameter \"codecManager\" must not null. ");
-        log.info("Set codec manager: {}", codecManager.getClass().getName());
+        log.debug("Set codec manager: {}", codecManager.getClass().getName());
         CodecUtil.codecManager = codecManager;
     }
 

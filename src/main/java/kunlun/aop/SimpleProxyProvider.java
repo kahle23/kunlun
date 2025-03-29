@@ -82,7 +82,7 @@ public class SimpleProxyProvider implements ProxyProvider {
         if (proxyHandler instanceof AbstractProxyHandler) {
             ((AbstractProxyHandler) proxyHandler).setCommonProperties(getCommonProperties());
         }
-        log.info("Register the proxy handler \"{}\" to \"{}\". ", className, name);
+        log.debug("Register the proxy handler \"{}\" to \"{}\". ", className, name);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class SimpleProxyProvider implements ProxyProvider {
         ProxyHandler remove = handlers.remove(name);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the proxy handler \"{}\" from \"{}\". ", className, name);
+            log.debug("Deregister the proxy handler \"{}\" from \"{}\". ", className, name);
         }
     }
 

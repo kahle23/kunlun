@@ -49,7 +49,7 @@ public class SimpleLockProvider implements LockProvider {
         Assert.notNull(lockManager, "Parameter \"lockManager\" must not null. ");
         String className = lockManager.getClass().getName();
         lockManagers.put(managerName, lockManager);
-        log.info("Register the lock manager \"{}\" to \"{}\". ", className, managerName);
+        log.debug("Register the lock manager \"{}\" to \"{}\". ", className, managerName);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class SimpleLockProvider implements LockProvider {
         LockManager remove = lockManagers.remove(managerName);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the lock manager \"{}\" from \"{}\". ", className, managerName);
+            log.debug("Deregister the lock manager \"{}\" from \"{}\". ", className, managerName);
         }
     }
 

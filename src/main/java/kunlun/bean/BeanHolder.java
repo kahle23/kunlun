@@ -31,7 +31,7 @@ public class BeanHolder {
 
     public static void setBeanManager(BeanManager beanManager) {
         Assert.notNull(beanManager, "Parameter \"beanManager\" must not null. ");
-        log.info("Set bean manager: {}", beanManager.getClass().getName());
+        log.debug("Set bean manager: {}", beanManager.getClass().getName());
         BeanHolder.beanManager = beanManager;
     }
 

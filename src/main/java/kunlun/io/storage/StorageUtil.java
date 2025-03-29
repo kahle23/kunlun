@@ -33,7 +33,7 @@ public class StorageUtil {
         Assert.notNull(storage, "Parameter \"storage\" must not null. ");
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         String storageClassName = storage.getClass().getName();
-        log.info("Register \"{}\" to \"{}\". ", storageClassName, name);
+        log.debug("Register \"{}\" to \"{}\". ", storageClassName, name);
         STORAGE_MAP.put(name, storage);
     }
 
@@ -42,7 +42,7 @@ public class StorageUtil {
         DataStorage remove = STORAGE_MAP.remove(storageName);
         if (remove != null) {
             String removeClassName = remove.getClass().getName();
-            log.info("Deregister \"{}\" to \"{}\". ", removeClassName, storageName);
+            log.debug("Deregister \"{}\" to \"{}\". ", removeClassName, storageName);
         }
         return remove;
     }

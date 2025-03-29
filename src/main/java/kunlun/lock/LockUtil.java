@@ -32,7 +32,7 @@ public class LockUtil {
 
     public static void setLockProvider(LockProvider lockProvider) {
         Assert.notNull(lockProvider, "Parameter \"lockProvider\" must not null. ");
-        log.info("Set lock provider: {}", lockProvider.getClass().getName());
+        log.debug("Set lock provider: {}", lockProvider.getClass().getName());
         LockUtil.lockProvider = lockProvider;
     }
 

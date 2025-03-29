@@ -28,7 +28,7 @@ public class ValidatorUtil {
 
     public static void setValidatorProvider(ValidatorProvider validatorProvider) {
         Assert.notNull(validatorProvider, "Parameter \"validatorProvider\" must not null. ");
-        log.info("Set validator provider: {}", validatorProvider.getClass().getName());
+        log.debug("Set validator provider: {}", validatorProvider.getClass().getName());
         ValidatorUtil.validatorProvider = validatorProvider;
     }
 

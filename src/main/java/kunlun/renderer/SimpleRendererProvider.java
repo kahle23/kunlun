@@ -54,7 +54,7 @@ public class SimpleRendererProvider implements RendererProvider {
         Assert.notNull(renderer, "Parameter \"renderer\" must not null. ");
         String className = renderer.getClass().getName();
         renderers.put(rendererName, renderer);
-        log.info("Register the renderer \"{}\" to \"{}\". ", className, rendererName);
+        log.debug("Register the renderer \"{}\" to \"{}\". ", className, rendererName);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SimpleRendererProvider implements RendererProvider {
         Renderer remove = renderers.remove(rendererName);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the renderer \"{}\" from \"{}\". ", className, rendererName);
+            log.debug("Deregister the renderer \"{}\" from \"{}\". ", className, rendererName);
         }
     }
 

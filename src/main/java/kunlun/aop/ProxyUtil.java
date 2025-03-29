@@ -28,7 +28,7 @@ public class ProxyUtil {
 
     public static void setProxyProvider(ProxyProvider proxyProvider) {
         Assert.notNull(proxyProvider, "Parameter \"proxyProvider\" must not null. ");
-        log.info("Set proxy provider: {}", proxyProvider.getClass().getName());
+        log.debug("Set proxy provider: {}", proxyProvider.getClass().getName());
         ProxyUtil.proxyProvider = proxyProvider;
     }
 

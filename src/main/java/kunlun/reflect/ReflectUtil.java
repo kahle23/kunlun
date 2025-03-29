@@ -32,7 +32,7 @@ public class ReflectUtil {
 
     public static void setReflectService(ReflectService reflectService) {
         Assert.notNull(reflectService, "Parameter \"reflectService\" must not null. ");
-        log.info("Set reflect service: {}", reflectService.getClass().getName());
+        log.debug("Set reflect service: {}", reflectService.getClass().getName());
         ReflectUtil.reflectService = reflectService;
     }
 

@@ -34,7 +34,7 @@ public class IdUtil {
 
     public static void setIdProvider(IdProvider idProvider) {
         Assert.notNull(idProvider, "Parameter \"idProvider\" must not null. ");
-        log.info("Set id provider: {}", idProvider.getClass().getName());
+        log.debug("Set id provider: {}", idProvider.getClass().getName());
         IdUtil.idProvider = idProvider;
     }
 

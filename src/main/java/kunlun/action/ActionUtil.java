@@ -45,7 +45,7 @@ public class ActionUtil {
 
     public static void setActionProvider(ActionProvider actionProvider) {
         Assert.notNull(actionProvider, "Parameter \"actionProvider\" must not null. ");
-        log.info("Set action provider: {}", actionProvider.getClass().getName());
+        log.debug("Set action provider: {}", actionProvider.getClass().getName());
         ActionUtil.actionProvider = actionProvider;
     }
 

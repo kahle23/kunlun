@@ -46,7 +46,7 @@ public class LoggerFactory {
             entry.getValue().setLogger(logger);
         }
         Logger logger = LoggerFactory.getLogger(LoggerFactory.class);
-        logger.info("Set logger provider: {}", loggerProvider.getClass().getName());
+        logger.debug("Set logger provider: {}", loggerProvider.getClass().getName());
     }
 
     /**

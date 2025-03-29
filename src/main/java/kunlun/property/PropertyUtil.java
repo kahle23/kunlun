@@ -34,7 +34,7 @@ public class PropertyUtil {
 
     public static void setPropertyProvider(PropertyProvider propertyProvider) {
         Assert.notNull(propertyProvider, "Parameter \"propertyProvider\" must not null. ");
-        log.info("Set property provider: {}", propertyProvider.getClass().getName());
+        log.debug("Set property provider: {}", propertyProvider.getClass().getName());
         PropertyUtil.propertyProvider = propertyProvider;
     }
 

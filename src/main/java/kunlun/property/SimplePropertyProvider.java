@@ -87,7 +87,7 @@ public class SimplePropertyProvider implements PropertyProvider {
         String className = propertySource.getClass().getName();
         propertySources.put(sourceName, propertySource);
         propertySource.setCommonProperties(getCommonProperties());
-        log.info("Register the property source \"{}\" to \"{}\". ", className, sourceName);
+        log.debug("Register the property source \"{}\" to \"{}\". ", className, sourceName);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class SimplePropertyProvider implements PropertyProvider {
         PropertySource remove = propertySources.remove(sourceName);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the property source \"{}\" from \"{}\". ", className, sourceName);
+            log.debug("Deregister the property source \"{}\" from \"{}\". ", className, sourceName);
         }
     }
 

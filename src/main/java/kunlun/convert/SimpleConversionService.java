@@ -71,7 +71,7 @@ public class SimpleConversionService extends AbstractConversionService {
     @Override
     public void registerConverter(GenericConverter converter) {
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
-        log.info("Register converter: {}", converter.getClass().getName());
+        log.debug("Register converter: {}", converter.getClass().getName());
         Set<ConvertiblePair> convertibleTypes = converter.getConvertibleTypes();
         if (CollUtil.isEmpty(convertibleTypes)) {
             Assert.state(converter instanceof ConditionalConverter,
@@ -90,7 +90,7 @@ public class SimpleConversionService extends AbstractConversionService {
     @Override
     public void deregisterConverter(GenericConverter converter) {
         Assert.notNull(converter, "Parameter \"converter\" must not null. ");
-        log.info("Deregister converter: {}", converter.getClass().getName());
+        log.debug("Deregister converter: {}", converter.getClass().getName());
         Set<ConvertiblePair> convertibleTypes = converter.getConvertibleTypes();
         if (CollUtil.isEmpty(convertibleTypes)) {
             Assert.state(converter instanceof ConditionalConverter,

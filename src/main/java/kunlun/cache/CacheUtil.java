@@ -34,7 +34,7 @@ public class CacheUtil {
 
     public static void setCacheProvider(CacheProvider cacheProvider) {
         Assert.notNull(cacheProvider, "Parameter \"cacheProvider\" must not null. ");
-        log.info("Set cache provider: {}", cacheProvider.getClass().getName());
+        log.debug("Set cache provider: {}", cacheProvider.getClass().getName());
         CacheUtil.cacheProvider = cacheProvider;
     }
 

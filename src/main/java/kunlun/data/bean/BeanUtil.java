@@ -42,7 +42,7 @@ public class BeanUtil {
 
     public static void setBeanMapFactory(BeanMapFactory beanMapFactory) {
         Assert.notNull(beanMapFactory, "Parameter \"beanMapFactory\" must not null. ");
-        log.info("Set bean map factory: {}", beanMapFactory.getClass().getName());
+        log.debug("Set bean map factory: {}", beanMapFactory.getClass().getName());
         BeanUtil.beanMapFactory = beanMapFactory;
     }
 
@@ -57,7 +57,7 @@ public class BeanUtil {
 
     public static void setBeanCopier(BeanCopier beanCopier) {
         Assert.notNull(beanCopier, "Parameter \"beanCopier\" must not null. ");
-        log.info("Set bean copier: {}", beanCopier.getClass().getName());
+        log.debug("Set bean copier: {}", beanCopier.getClass().getName());
         BeanUtil.beanCopier = beanCopier;
     }
 

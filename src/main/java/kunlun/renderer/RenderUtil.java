@@ -35,7 +35,7 @@ public class RenderUtil {
 
     public static void setRendererProvider(RendererProvider rendererProvider) {
         Assert.notNull(rendererProvider, "Parameter \"rendererProvider\" must not null. ");
-        log.info("Set renderer provider: {}", rendererProvider.getClass().getName());
+        log.debug("Set renderer provider: {}", rendererProvider.getClass().getName());
         RenderUtil.rendererProvider = rendererProvider;
     }
 

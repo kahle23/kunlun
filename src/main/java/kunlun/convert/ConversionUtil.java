@@ -31,7 +31,7 @@ public class ConversionUtil {
 
     public static void setConversionService(ConversionService conversionService) {
         Assert.notNull(conversionService, "Parameter \"conversionService\" must not null. ");
-        log.info("Set type conversion service: {}", conversionService.getClass().getName());
+        log.debug("Set type conversion service: {}", conversionService.getClass().getName());
         ConversionUtil.conversionService = conversionService;
     }
 

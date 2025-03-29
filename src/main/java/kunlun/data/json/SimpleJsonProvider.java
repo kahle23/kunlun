@@ -81,7 +81,7 @@ public class SimpleJsonProvider implements JsonProvider {
         String className = jsonHandler.getClass().getName();
         jsonHandler.setCommonProperties(getCommonProperties());
         handlers.put(name, jsonHandler);
-        log.info("Register the json handler \"{}\" to \"{}\". ", className, name);
+        log.debug("Register the json handler \"{}\" to \"{}\". ", className, name);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class SimpleJsonProvider implements JsonProvider {
         JsonHandler remove = handlers.remove(name);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the json handler \"{}\" from \"{}\". ", className, name);
+            log.debug("Deregister the json handler \"{}\" from \"{}\". ", className, name);
         }
     }
 

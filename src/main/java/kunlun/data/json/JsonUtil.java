@@ -30,7 +30,7 @@ public class JsonUtil {
 
     public static void setJsonProvider(JsonProvider jsonProvider) {
         Assert.notNull(jsonProvider, "Parameter \"jsonProvider\" must not null. ");
-        log.info("Set json provider: {}", jsonProvider.getClass().getName());
+        log.debug("Set json provider: {}", jsonProvider.getClass().getName());
         JsonUtil.jsonProvider = jsonProvider;
     }
 
