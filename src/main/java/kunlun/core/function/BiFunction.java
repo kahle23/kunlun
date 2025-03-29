@@ -14,6 +14,7 @@ public interface BiFunction<Param1, Param2, Result> {
 
     /**
      * Applies this function to the given arguments.
+     *
      * @param param1 The first function argument
      * @param param2 The second function argument
      * @return The function result

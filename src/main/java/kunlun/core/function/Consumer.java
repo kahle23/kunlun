@@ -13,6 +13,7 @@ public interface Consumer<Param> {
 
     /**
      * Performs this operation on the given argument.
+     *
      * @param param The input argument
      */
     void accept(Param param);

@@ -13,6 +13,7 @@ public interface Function<Param, Result> {
 
     /**
      * Applies this function to the given parameter.
+     *
      * @param param The function parameter
      * @return The function result
      */
