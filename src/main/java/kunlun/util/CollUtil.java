@@ -65,9 +65,9 @@ public class CollUtil {
         return newList;
     }
 
-    public static <E> E getFirst(List<E> list) {
-        if (isEmpty(list)) { return null; }
-        return list.get(ZERO);
+    public static <E> E getFirst(Iterable<E> iterable) {
+
+        return IterUtil.getFirst(iterable);
     }
 
     public static <E> E getLast(List<E> list) {

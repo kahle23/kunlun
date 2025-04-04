@@ -26,14 +26,14 @@ public class StrUtil {
         return ObjUtil.equals(str1, str2);
     }
 
-    public static boolean isEmpty(Object obj) {
+    public static boolean isEmpty(CharSequence cs) {
 
-        return obj == null || EMPTY_STRING.equals(obj);
+        return cs == null || cs.length() == ZERO;
     }
 
-    public static boolean isNotEmpty(Object obj) {
+    public static boolean isNotEmpty(CharSequence cs) {
 
-        return obj != null && !EMPTY_STRING.equals(obj);
+        return !isEmpty(cs);
     }
 
     public static boolean isBlank(CharSequence cs) {

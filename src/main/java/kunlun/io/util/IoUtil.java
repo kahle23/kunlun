@@ -28,7 +28,7 @@ public class IoUtil {
     public static final int EOF = -1;
 
 
-    // region ----- to reader / writer
+    // region ======== to reader / writer ========
 
     public static BufferedReader toUtf8Reader(InputStream in) {
 
@@ -62,10 +62,10 @@ public class IoUtil {
         return new BufferedWriter(writer);
     }
 
-    // endregion ----- to reader / writer
+    // endregion ======== to reader / writer ========
 
 
-    // region ----- to stream / buffered
+    // region ======== to stream / buffered ========
 
     public static BufferedWriter toBuffered(Writer writer) {
         Assert.notNull(writer);
@@ -136,10 +136,10 @@ public class IoUtil {
         return new ByteArrayInputStream(content);
     }
 
-    // endregion ----- to stream / buffered
+    // endregion ======== to stream / buffered ========
 
 
-    // region ----- write
+    // region ======== write ========
 
     public static void writeUtf8(OutputStream out, boolean isCloseOut, CharSequence... contents) {
 
@@ -182,10 +182,10 @@ public class IoUtil {
         }
     }
 
-    // endregion ----- write
+    // endregion ======== write ========
 
 
-    // region ----- read
+    // region ======== read ========
 
     public static String readUtf8(InputStream in) {
 
@@ -221,10 +221,10 @@ public class IoUtil {
         } finally { if (isClose) { closeQuietly(in); } }
     }
 
-    // endregion ----- read
+    // endregion ======== read ========
 
 
-    // region ----- copy
+    // region ======== copy ========
 
     public static long copy(Reader reader, Writer writer) {
 
@@ -270,10 +270,10 @@ public class IoUtil {
         return count;
     }
 
-    // endregion ----- copy
+    // endregion ======== copy ========
 
 
-    // region ----- close
+    // region ======== close ========
 
     public static void closeQuietly(Closeable... closeables) {
         for (Closeable closeable : closeables) {
@@ -327,6 +327,6 @@ public class IoUtil {
         }
     }
 
-    // endregion ----- close
+    // endregion ======== close ========
 
 }

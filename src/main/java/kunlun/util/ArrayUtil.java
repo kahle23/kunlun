@@ -18,6 +18,26 @@ import static kunlun.common.constant.Numbers.ZERO;
  */
 public class ArrayUtil {
 
+    public static boolean isArray(Object obj) {
+
+        return obj != null && obj.getClass().isArray();
+    }
+
+    public static boolean isEmpty(Object obj) {
+        if (obj != null) {
+            if (isArray(obj)) {
+                return Array.getLength(obj) == ZERO;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isNotEmpty(Object obj) {
+
+        return !isEmpty(obj);
+    }
+
     public static boolean isEmpty(byte[] arr) {
 
         return arr == null || arr.length == ZERO;

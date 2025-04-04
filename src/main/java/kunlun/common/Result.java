@@ -5,19 +5,17 @@
 
 package kunlun.common;
 
+import kunlun.common.constant.Nil;
 import kunlun.data.CodeDefinition;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
-import kunlun.util.Assert;
 
 import java.io.Serializable;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static kunlun.common.constant.Numbers.FIVE_HUNDRED;
-import static kunlun.common.constant.Numbers.TWO_HUNDRED;
-import static kunlun.common.constant.Words.FAILURE;
-import static kunlun.common.constant.Words.SUCCESS;
+import static kunlun.util.Assert.notBlank;
+import static kunlun.util.Assert.notNull;
 
 /**
  * The uniform result output object.
@@ -33,16 +31,15 @@ public class Result<T> implements Serializable {
         if (defaultSuccessCode != null) { return defaultSuccessCode; }
         synchronized (Result.class) {
             if (defaultSuccessCode != null) { return defaultSuccessCode; }
-            Result.setDefaultSuccessCode(new SimpleCode(TWO_HUNDRED, SUCCESS));
+            Result.setDefaultSuccessCode(Errors.ok);
             return defaultSuccessCode;
         }
     }
 
     public static void setDefaultSuccessCode(CodeDefinition defaultSuccessCode) {
-        Assert.notNull(defaultSuccessCode, "Parameter \"defaultSuccessCode\" must not null. ");
-        Assert.notBlank(defaultSuccessCode.getDescription()
+        notBlank(notNull(defaultSuccessCode).getDescription()
                 , "Parameter \"defaultSuccessCode.description\" must not blank. ");
-        Assert.notNull(defaultSuccessCode.getCode()
+        notNull(defaultSuccessCode.getCode()
                 , "Parameter \"defaultSuccessCode.code\" must not null. ");
         log.debug("Set default success code: {}", defaultSuccessCode.getClass().getName());
         Result.defaultSuccessCode = defaultSuccessCode;
@@ -52,16 +49,15 @@ public class Result<T> implements Serializable {
         if (defaultFailureCode != null) { return defaultFailureCode; }
         synchronized (Result.class) {
             if (defaultFailureCode != null) { return defaultFailureCode; }
-            Result.setDefaultFailureCode(new SimpleCode(FIVE_HUNDRED, FAILURE));
+            Result.setDefaultFailureCode(Errors.internalServerError);
             return defaultFailureCode;
         }
     }
 
     public static void setDefaultFailureCode(CodeDefinition defaultFailureCode) {
-        Assert.notNull(defaultFailureCode, "Parameter \"defaultFailureCode\" must not null. ");
-        Assert.notBlank(defaultFailureCode.getDescription()
+        notBlank(notNull(defaultFailureCode).getDescription()
                 , "Parameter \"defaultFailureCode.description\" must not blank. ");
-        Assert.notNull(defaultFailureCode.getCode()
+        notNull(defaultFailureCode.getCode()
                 , "Parameter \"defaultFailureCode.code\" must not null. ");
         log.debug("Set default failure code: {}", defaultFailureCode.getClass().getName());
         Result.defaultFailureCode = defaultFailureCode;
@@ -144,14 +140,14 @@ public class Result<T> implements Serializable {
         return new Result<T>(TRUE, code.getCode(), code.getDescription(), data);
     }
 
-    public static <T> Result<T> failure(String message, T data) {
+    public static <T> Result<T> failure(Object code, String message) {
 
-        return new Result<T>(FALSE, getDefaultFailureCode().getCode(), message, data);
+        return new Result<T>(FALSE, code, message, Nil.<T>g());
     }
 
     public static <T> Result<T> failure(String message) {
 
-        return failure(message, null);
+        return failure(getDefaultFailureCode().getCode(), message);
     }
 
     public static <T> Result<T> failure() {
@@ -159,14 +155,9 @@ public class Result<T> implements Serializable {
         return failure(getDefaultFailureCode().getDescription());
     }
 
-    public static <T> Result<T> failure(CodeDefinition code, T data) {
-
-        return new Result<T>(FALSE, code.getCode(), code.getDescription(), data);
-    }
-
     public static <T> Result<T> failure(CodeDefinition code) {
 
-        return failure(code, null);
+        return failure(code.getCode(), code.getDescription());
     }
 
 }

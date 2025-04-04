@@ -5,11 +5,8 @@
 
 package kunlun.util;
 
-import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
-
-import static kunlun.common.constant.Numbers.ZERO;
 
 /**
  * The object tools.
@@ -33,24 +30,27 @@ public class ObjUtil {
     }
 
     public static boolean isEmpty(Object obj) {
-        if (obj == null) {
-            return true;
-        }
-        if (obj.getClass().isArray()) {
-            return Array.getLength(obj) == ZERO;
-        }
+        if (obj == null) { return true; }
         if (obj instanceof CharSequence) {
-            return ((CharSequence) obj).length() == ZERO;
+            return StrUtil.isEmpty((CharSequence) obj);
         }
         if (obj instanceof Collection) {
-            //noinspection rawtypes
-            return ((Collection) obj).isEmpty();
+            //noinspection unchecked,rawtypes
+            return CollUtil.isEmpty((Collection) obj);
         }
         if (obj instanceof Map) {
-            //noinspection rawtypes
-            return ((Map) obj).isEmpty();
+            //noinspection unchecked,rawtypes
+            return MapUtil.isEmpty((Map) obj);
+        }
+        if (ArrayUtil.isArray(obj)) {
+            return ArrayUtil.isEmpty(obj);
         }
         return false;
+    }
+
+    public static boolean isNotEmpty(Object obj) {
+
+        return !isEmpty(obj);
     }
 
     public static boolean equals(Object obj1, Object obj2) {

@@ -5,6 +5,8 @@
 
 package kunlun.common;
 
+import kunlun.data.Dict;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class Page<T> implements Serializable {
     private Integer pageCount;
     private Long    total;
     private List<T> data;
+    private Dict    others = Dict.of();
 
     public static <T> Page<T> of(Integer pageNum, Integer pageSize, Integer pageCount, Long total, List<T> data) {
         Page<T> page = new Page<T>();
@@ -109,6 +112,16 @@ public class Page<T> implements Serializable {
     public void setData(List<T> data) {
 
         this.data = data;
+    }
+
+    public Dict getOthers() {
+
+        return others;
+    }
+
+    public void setOthers(Dict others) {
+
+        this.others = others;
     }
 
 }

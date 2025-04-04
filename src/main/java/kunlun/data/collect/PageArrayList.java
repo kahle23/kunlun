@@ -5,6 +5,8 @@
 
 package kunlun.data.collect;
 
+import kunlun.data.Dict;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,6 +22,7 @@ public class PageArrayList<E> extends ArrayList<E> {
     private Integer pageSize;
     private Integer pageCount;
     private Long    total;
+    private Dict    others = Dict.of();
 
     public PageArrayList() {
 
@@ -35,11 +38,12 @@ public class PageArrayList<E> extends ArrayList<E> {
         if (c instanceof PageArrayList) {
             @SuppressWarnings("rawtypes")
             PageArrayList pl = (PageArrayList) c;
+            this.setScrollId(pl.getScrollId());
             this.setPageNum(pl.getPageNum());
             this.setPageSize(pl.getPageSize());
             this.setPageCount(pl.getPageCount());
             this.setTotal(pl.getTotal());
-            this.setScrollId(pl.getScrollId());
+            this.setOthers(pl.getOthers());
         }
     }
 
@@ -98,14 +102,25 @@ public class PageArrayList<E> extends ArrayList<E> {
         return this;
     }
 
+    public Dict getOthers() {
+
+        return others;
+    }
+
+    public void setOthers(Dict others) {
+
+        this.others = others;
+    }
+
     @Override
     public String toString() {
         return "PageArrayList{" +
-                "pageCount=" + pageCount +
-                ", pageSize=" + pageSize +
+                "scrollId='" + scrollId + '\'' +
                 ", pageNum=" + pageNum +
+                ", pageSize=" + pageSize +
+                ", pageCount=" + pageCount +
                 ", total=" + total +
-                ", scrollId='" + scrollId + '\'' +
+                ", others=" + others +
                 "} " + super.toString();
     }
 

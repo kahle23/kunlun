@@ -5,6 +5,7 @@
 
 package kunlun.util;
 
+import kunlun.common.constant.Nil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.test.pojo.entity.system.User;
@@ -22,7 +23,7 @@ public class AssertTest {
     @Test
     public void testNotNull() {
         try {
-            Assert.notNull(null, null);
+            Assert.notNull(Nil.OBJ, Nil.STR);
         }
         catch (Exception e) {
             log.error(e.getMessage(), e);

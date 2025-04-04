@@ -13,6 +13,7 @@ public class Words {
 
     public static final String ON = "on";
     public static final String NO = "no";
+    public static final String OK = "ok";
     public static final String YES = "yes";
     public static final String OFF = "off";
     public static final String GET = "get";

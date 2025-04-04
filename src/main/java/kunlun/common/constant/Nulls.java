@@ -9,6 +9,7 @@ package kunlun.common.constant;
  * The common null constants.
  * @author Kahle
  */
+@Deprecated
 public class Nulls {
 
     public static final Object OBJ = null;

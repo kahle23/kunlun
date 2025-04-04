@@ -13,6 +13,7 @@ import kunlun.data.CodeDefinition;
  */
 public class Errors {
 
+    public static CodeDefinition ok = new SimpleCode(200, "OK. ");
     public static CodeDefinition badRequest = new SimpleCode(400, "Bad Request. ");
     public static CodeDefinition unauthorized = new SimpleCode(401, "Unauthorized. ");
     public static CodeDefinition forbidden = new SimpleCode(403, "Forbidden. ");

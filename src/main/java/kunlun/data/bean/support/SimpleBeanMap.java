@@ -41,13 +41,8 @@ public class SimpleBeanMap extends BeanMap {
     private Class<?> beanClass;
 
     static {
-        try {
-            String nameGetClass = "getClass";
-            METHOD_GET_CLASS = ReflectUtil.getMethod(Object.class, nameGetClass);
-        }
-        catch (NoSuchMethodException e) {
-            throw ExceptionUtil.wrap(e);
-        }
+        String nameGetClass = "getClass";
+        METHOD_GET_CLASS = ReflectUtil.getMethod(Object.class, nameGetClass);
     }
 
     public SimpleBeanMap() {
