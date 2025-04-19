@@ -59,6 +59,7 @@ public class ArgumentUtil {
      * @param arguments The arguments
      * @return The result
      */
+    @Deprecated
     public static Triple<String, Object, Object[]> parseToStrObjArr(Object[] arguments) {
         // Verification arguments.
         Assert.notNull(arguments, "Parameter \"arguments\" must not null. ");

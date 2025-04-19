@@ -14,6 +14,7 @@ import kunlun.logging.LoggerFactory;
 import kunlun.message.model.Message;
 import kunlun.message.model.Subscribe;
 import kunlun.util.Assert;
+import kunlun.util.ObjUtil;
 
 import java.lang.reflect.Type;
 
@@ -25,13 +26,13 @@ import static kunlun.common.constant.Symbols.EMPTY_STRING;
  */
 public class ActionUtil {
     private static final Logger log = LoggerFactory.getLogger(ActionUtil.class);
-    private static volatile ActionProvider actionProvider;
+    private static volatile ActionManager actionManager;
 
-    public static ActionProvider getActionProvider() {
-        if (actionProvider != null) { return actionProvider; }
+    public static ActionManager getActionManager() {
+        if (actionManager != null) { return actionManager; }
         synchronized (ActionUtil.class) {
-            if (actionProvider != null) { return actionProvider; }
-            ActionUtil.setActionProvider(new SimpleActionProvider());
+            if (actionManager != null) { return actionManager; }
+            ActionUtil.setActionManager(new SimpleActionManager());
             String name = "event-collector";
             registerAction(name, new SimpleEventCollector());
             registerShortcut(Event.class, name);
@@ -39,54 +40,54 @@ public class ActionUtil {
             registerAction(name, new SimpleMessageHandler());
             registerShortcut(Message.class,   name);
             registerShortcut(Subscribe.class, name);
-            return actionProvider;
+            return actionManager;
         }
     }
 
-    public static void setActionProvider(ActionProvider actionProvider) {
-        Assert.notNull(actionProvider, "Parameter \"actionProvider\" must not null. ");
-        log.debug("Set action provider: {}", actionProvider.getClass().getName());
-        ActionUtil.actionProvider = actionProvider;
+    public static void setActionManager(ActionManager actionManager) {
+        Assert.notNull(actionManager, "Parameter \"actionManager\" must not null. ");
+        log.debug("Set action provider: {}", actionManager.getClass().getName());
+        ActionUtil.actionManager = actionManager;
     }
 
     public static void registerAction(String actionName, Action action) {
 
-        getActionProvider().registerAction(actionName, action);
+        getActionManager().registerAction(actionName, action);
     }
 
     public static void deregisterAction(String actionName) {
 
-        getActionProvider().deregisterAction(actionName);
+        getActionManager().deregisterAction(actionName);
     }
 
     public static Action getAction(String actionName) {
 
-        return getActionProvider().getAction(actionName);
+        return getActionManager().getAction(actionName);
     }
 
     public static void registerShortcut(Type inputType, String command) {
 
-        getActionProvider().registerShortcut(inputType, command);
+        getActionManager().registerShortcut(inputType, command);
     }
 
     public static void deregisterShortcut(Type inputType) {
 
-        getActionProvider().deregisterShortcut(inputType);
+        getActionManager().deregisterShortcut(inputType);
     }
 
-    public static Object execute(String command, Object[] arguments) {
+    public static Object rawExecute(String command, Object input, Object[] arguments) {
 
-        return getActionProvider().execute(command, arguments);
+        return getActionManager().execute(command, input, arguments);
     }
 
-    public static <T> T execute(String command, Object input) {
+    public static <T> T execute(String command, Object input, Object... arguments) {
 
-        return getActionProvider().execute(command, input);
+        return ObjUtil.cast(getActionManager().execute(command, input, arguments));
     }
 
     public static <T> T execute(Object input) {
 
-        return getActionProvider().execute(EMPTY_STRING, input);
+        return execute(EMPTY_STRING, input);
     }
 
 }

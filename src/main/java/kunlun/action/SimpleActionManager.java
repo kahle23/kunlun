@@ -5,7 +5,7 @@
 
 package kunlun.action;
 
-import kunlun.common.constant.Nulls;
+import kunlun.common.constant.Nil;
 import kunlun.core.Action;
 import kunlun.data.tuple.Pair;
 import kunlun.data.tuple.PairImpl;
@@ -13,7 +13,6 @@ import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 import kunlun.util.MapUtil;
-import kunlun.util.ObjUtil;
 import kunlun.util.StrUtil;
 
 import java.lang.reflect.Type;
@@ -21,22 +20,23 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static kunlun.common.constant.Numbers.*;
+import static kunlun.common.constant.Numbers.ONE;
+import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.common.constant.Symbols.DOT;
 
 /**
- * The abstract action tools provider.
+ * The simple action manager.
  * @author Kahle
  */
-public abstract class AbstractActionProvider implements ActionProvider {
-    private static final Logger log = LoggerFactory.getLogger(AbstractActionProvider.class);
+public class SimpleActionManager implements ActionManager {
+    private static final Logger log = LoggerFactory.getLogger(SimpleActionManager.class);
     protected final Map<String, Object> commonProperties;
     protected final Map<String, Action> actions;
     protected final Map<Type, String> shortcuts;
 
-    protected AbstractActionProvider(Map<String, Object> commonProperties,
-                                     Map<String, Action> actions,
-                                     Map<Type,   String> shortcuts) {
+    protected SimpleActionManager(Map<String, Object> commonProperties,
+                                  Map<String, Action> actions,
+                                  Map<Type,   String> shortcuts) {
         Assert.notNull(commonProperties, "Parameter \"commonProperties\" must not null. ");
         Assert.notNull(actions, "Parameter \"actions\" must not null. ");
         Assert.notNull(shortcuts, "Parameter \"shortcuts\" must not null. ");
@@ -45,7 +45,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
         this.actions = actions;
     }
 
-    public AbstractActionProvider() {
+    public SimpleActionManager() {
         this(new ConcurrentHashMap<String, Object>(),
                 new ConcurrentHashMap<String, Action>(),
                 new ConcurrentHashMap<Type, String>());
@@ -53,11 +53,11 @@ public abstract class AbstractActionProvider implements ActionProvider {
 
     protected Pair<String, String> parseCommand(String command) {
         if (StrUtil.isBlank(command)) {
-            return new PairImpl<String, String>(command, Nulls.STR);
+            return new PairImpl<String, String>(command, Nil.STR);
         }
         int indexOf = command.indexOf(DOT);
         if (indexOf <= ZERO) {
-            return new PairImpl<String, String>(command, Nulls.STR);
+            return new PairImpl<String, String>(command, Nil.STR);
         }
         String actionName = command.substring(ZERO, indexOf);
         String strategy = command.substring(indexOf + ONE);
@@ -142,8 +142,10 @@ public abstract class AbstractActionProvider implements ActionProvider {
     }
 
     @Override
-    public Object execute(String command, Object[] arguments) {
+    public Object execute(String command, Object input, Object[] arguments) {
         // Parameter "arguments" is usually: 0 strategy or operation, 1 input
+        // arguments no strategy and no input
+
         // Strategy priority: command strategy > shortcut strategy > arguments strategy
         Pair<String, String> pair = parseCommand(command);
         String actionName = pair.getLeft();
@@ -152,7 +154,7 @@ public abstract class AbstractActionProvider implements ActionProvider {
         // When actionName is blank, strategy must also be blank.
         // (for example ".test" is not supported)
         if (StrUtil.isBlank(actionName)) {
-            Object input = arguments.length >= TWO ? arguments[ONE] : null;
+//            Object input = arguments.length >= TWO ? arguments[ONE] : null;
             if (input != null) {
                 pair = parseCommand(getShortcut(input.getClass()));
                 actionName = pair.getLeft();
@@ -160,17 +162,17 @@ public abstract class AbstractActionProvider implements ActionProvider {
             }
         }
         // If the external strategy is not blank, replace the strategy in the arguments.
-        if (StrUtil.isNotBlank(strategy) && arguments.length >= ONE) {
-            arguments[ZERO] = strategy;
-        }
+//        if (StrUtil.isNotBlank(strategy) && arguments.length >= ONE) {
+//            arguments[ZERO] = strategy;
+//        }
         // Do execute.
-        return getActionOrThrow(actionName).execute(arguments);
+        return getActionOrThrow(actionName).execute(strategy, input, arguments);
     }
 
-    @Override
+    /*@Override
     public <T> T execute(String command, Object input) {
 
         return ObjUtil.cast(execute(command, new Object[]{ null, input }));
-    }
+    }*/
 
 }

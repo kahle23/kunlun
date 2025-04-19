@@ -14,7 +14,7 @@ import java.util.Map;
  * The action tools provider.
  * @author Kahle
  */
-public interface ActionProvider {
+public interface ActionManager {
 
     /**
      * Register common properties' information.
@@ -86,7 +86,7 @@ public interface ActionProvider {
      * @param arguments The arguments to the execution of a specific logic
      * @return The execution result of a specific logic
      */
-    Object execute(String command, Object[] arguments);
+    Object execute(String command, Object input, Object[] arguments);
 
     /**
      * Execute a specific logic.
@@ -96,6 +96,6 @@ public interface ActionProvider {
      * @param <T> The generic type of the return value
      * @return The return value corresponding to the action
      */
-    <T> T execute(String command, Object input);
+//    <T> T execute(String command, Object input);
 
 }

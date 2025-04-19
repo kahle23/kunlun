@@ -13,9 +13,10 @@ import kunlun.util.ArgumentUtil;
  * The abstract action.
  * @author Kahle
  */
+@Deprecated
 public abstract class AbstractAction implements Action {
 
-    @Override
+//    @Override
     public Object execute(Object[] arguments) {
         Triple<String, Object, Object[]> triple = ArgumentUtil.parseToStrObjArr(arguments);
         return execute(triple.getLeft(), triple.getMiddle(), triple.getRight());

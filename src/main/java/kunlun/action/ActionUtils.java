@@ -11,8 +11,6 @@ import kunlun.logging.LoggerFactory;
 
 import java.lang.reflect.Type;
 
-import static kunlun.common.constant.Symbols.EMPTY_STRING;
-
 /**
  * The action tools.
  * @author Kahle
@@ -21,14 +19,14 @@ import static kunlun.common.constant.Symbols.EMPTY_STRING;
 public class ActionUtils {
     private static final Logger log = LoggerFactory.getLogger(ActionUtils.class);
 
-    public static ActionProvider getActionProvider() {
+    public static ActionManager getActionProvider() {
 
-        return ActionUtil.getActionProvider();
+        return ActionUtil.getActionManager();
     }
 
-    public static void setActionProvider(ActionProvider actionProvider) {
+    public static void setActionProvider(ActionManager actionProvider) {
 
-        ActionUtil.setActionProvider(actionProvider);
+        ActionUtil.setActionManager(actionProvider);
     }
 
     public static void registerAction(String actionName, Action action) {
@@ -56,19 +54,19 @@ public class ActionUtils {
         getActionProvider().deregisterShortcut(inputType);
     }
 
-    public static Object execute(String command, Object[] arguments) {
-
-        return getActionProvider().execute(command, arguments);
-    }
+//    public static Object execute(String command, Object[] arguments) {
+//
+//        return getActionProvider().execute(command, arguments);
+//    }
 
     public static <T> T execute(String command, Object input) {
 
-        return getActionProvider().execute(command, input);
+        return ActionUtil.execute(command, input);
     }
 
     public static <T> T execute(Object input) {
 
-        return getActionProvider().execute(EMPTY_STRING, input);
+        return ActionUtil.execute(input);
     }
 
 }

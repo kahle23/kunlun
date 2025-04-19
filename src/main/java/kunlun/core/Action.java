@@ -13,18 +13,18 @@ package kunlun.core;
  *
  * @author Kahle
  */
-public interface Action {
+public interface Action extends Strategy {
 
-    /**
-     * Execute a specific logic.
-     * <p>
-     * The arguments mean (most of the scenes):
-     *      0 strategy or operation or null,
-     *      1 input object,
-     *
-     * @param arguments The arguments to the execution of a specific logic
-     * @return The execution result of a specific logic
-     */
-    Object execute(Object[] arguments);
+//    /**
+//     * Execute a specific logic.
+//     * <p>
+//     * The arguments mean (most of the scenes):
+//     *      0 strategy or operation or null,
+//     *      1 input object,
+//     *
+//     * @param arguments The arguments to the execution of a specific logic
+//     * @return The execution result of a specific logic
+//     */
+//    Object execute(Object[] arguments);
 
 }
