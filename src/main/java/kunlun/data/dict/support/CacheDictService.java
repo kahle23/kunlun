@@ -5,13 +5,15 @@
 
 package kunlun.data.dict.support;
 
-import kunlun.cache.CacheUtil;
+import kunlun.cache.Cache;
+import kunlun.common.Page;
 import kunlun.data.dict.AbstractDictService;
 import kunlun.data.dict.Dict;
+import kunlun.data.dict.DictQuery;
 import kunlun.data.dict.DictService;
 import kunlun.util.Assert;
+import kunlun.util.StrUtil;
 
-import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,96 +22,49 @@ import java.util.concurrent.TimeUnit;
  */
 public class CacheDictService extends AbstractDictService {
     private final DictService dictService;
-    private final String   cacheName;
+    private final Cache    cache;
     private final Long     timeToLive;
     private final TimeUnit timeUnit;
 
-    public CacheDictService(DictService dictService, String cacheName) {
+    public CacheDictService(DictService dictService, Cache cache) {
 
-        this(dictService, cacheName, null, null);
+        this(dictService, cache, null, null);
     }
 
     public CacheDictService(DictService dictService,
-                            String cacheName,
+                            Cache cache,
                             Long timeToLive,
                             TimeUnit timeUnit) {
-        Assert.notNull(dictService, "Parameter \"dictService\" must not null. ");
-        Assert.notBlank(cacheName, "Parameter \"cacheName\" must not blank. ");
-        this.dictService = dictService;
-        this.cacheName = cacheName;
+        this.dictService = Assert.notNull(dictService);
+        this.cache = Assert.notNull(cache);
         this.timeToLive = timeToLive;
         this.timeUnit = timeUnit;
     }
 
     @Override
-    protected Dict getDict(String group, String name, String code, String value) {
-        Assert.notBlank(group, "Parameter \"group\" must not blank. ");
-        String key = String.format("%s:%s-%s-%s", group, name, code, value);
-        Dict val = (Dict) CacheUtil.get(cacheName, key);
+    public Page<Dict> listByCondition(boolean paged, DictQuery condition) {
+        Assert.notNull(condition, "Parameter \"condition\" must not null. ");
+        if (paged || StrUtil.isBlank(condition.getGroupCode())) {
+            return dictService.listByCondition(paged, condition);
+        }
+        String key = String.format("%s-%s:%s-%s-%s", condition.getNamespace(), condition.getGroupCode()
+                , condition.getName(), condition.getCode(), condition.getValue());
+        //noinspection unchecked
+        Page<Dict> val = (Page<Dict>) cache.get(key);
         if (val != null) { return val; }
         synchronized (key.intern()) {
-            if ((val = (Dict) CacheUtil.get(cacheName, key)) != null) { return val; }
-            if (name != null) {
-                val = dictService.getByName(group, name);
-            }
-            else if (code != null) {
-                val = dictService.getByCode(group, code);
-            }
-            else {
-                val = dictService.getByValue(group, value);
-            }
+            //noinspection unchecked
+            if ((val = (Page<Dict>) cache.get(key)) != null) { return val; }
+            val = dictService.listByCondition(paged, condition);
             if (val == null) { return null; }
             if (timeToLive != null && timeUnit != null) {
-                CacheUtil.put(cacheName, key, val, timeToLive, timeUnit);
+                cache.put(key, val, timeToLive, timeUnit);
             }
             else {
-                CacheUtil.put(cacheName, key, val);
+                cache.put(key, val);
             }
         }
         return val;
     }
-
-    @Override
-    public void sync(Object strategy, Object data) {
-
-        dictService.sync(strategy, data);
-    }
-
-    @Override
-    public Dict getByCondition(DictQuery condition) {
-
-        return dictService.getByCondition(condition);
-    }
-
-    @Override
-    public Collection<Dict> listByGroup(String group) {
-
-        return dictService.listByGroup(group);
-    }
-
-    @Override
-    public Collection<Dict> listByCondition(DictQuery condition) {
-
-        return dictService.listByCondition(condition);
-    }
-
-    /*@Override
-    public List<Dict> listByGroup(String group) {
-        Assert.notBlank(group, "Parameter \"group\" must not blank. ");
-        Object val = CacheUtils.get(cacheName, group);
-        if (val != null) { return cast(val); }
-        synchronized (group.intern()) {
-            if ((val = CacheUtils.get(cacheName, group)) != null) { return cast(val); }
-            val = dictService.getListByGroup(group);
-            if (val == null) { return null; }
-            if (timeToLive != null && timeUnit != null) {
-                CacheUtils.put(cacheName, group, val, timeToLive, timeUnit);
-            }
-            else {
-                CacheUtils.put(cacheName, group, val);
-            }
-        }
-        return cast(val);
-    }*/
 
 }

@@ -6,6 +6,7 @@
 package kunlun.data.dict;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * The data dictionary.
@@ -15,10 +16,22 @@ import java.io.Serializable;
 public interface Dict extends Serializable {
 
     /**
-     * Get the group information of the dictionary item.
-     * @return The group information of the dictionary item
+     * Get the namespace of the dictionary item.
+     * @return The namespace of the dictionary item
      */
-    String getGroup();
+    String getNamespace();
+
+    /**
+     * Get the group name of the dictionary item.
+     * @return The group name of the dictionary item
+     */
+    String getGroupName();
+
+    /**
+     * Get the group code of the dictionary item.
+     * @return The group code of the dictionary item
+     */
+    String getGroupCode();
 
     /**
      * Get the name of the dictionary item.
@@ -53,8 +66,8 @@ public interface Dict extends Serializable {
     /**
      * Get the extra data of the dictionary item.
      * The extra data or incidental data (maybe it's extended data).
-     * @return The extra data (most case is Map)
+     * @return The extra data
      */
-    Object getProperties();
+    Map<String, Object> getProperties();
 
 }

@@ -5,14 +5,16 @@
 
 package kunlun.data.dict;
 
+import kunlun.common.Page;
+import kunlun.common.constant.Nil;
 import kunlun.data.dict.support.SimpleDictService;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
 
 import java.util.Collection;
-
-import static kunlun.data.dict.DictService.DictQuery;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The data dictionary tools.
@@ -21,6 +23,8 @@ import static kunlun.data.dict.DictService.DictQuery;
 public class DictUtil {
     private static final Logger log = LoggerFactory.getLogger(DictUtil.class);
     private static volatile DictService dictService;
+
+    // region ======== get / set service ========
 
     public static DictService getDictService() {
         if (dictService != null) { return dictService; }
@@ -32,29 +36,48 @@ public class DictUtil {
     }
 
     public static void setDictService(DictService dictService) {
-        Assert.notNull(dictService, "Parameter \"dictProvider\" must not null. ");
-        log.info("Set dict service: {}", dictService.getClass().getName());
+        Assert.notNull(dictService, "Parameter \"dictService\" must not null. ");
+        log.debug("Set dict service: {}", dictService.getClass().getName());
         DictUtil.dictService = dictService;
     }
+    // endregion ======== get / set service ========
 
-    public static void sync(Object strategy, Object data) {
 
-        getDictService().sync(strategy, data);
+    // region ======== service methods ========
+
+    public static String getDefaultNamespace() {
+
+        return getDictService().getDefaultNamespace();
     }
 
-    public static Dict getByName(String group, String name) {
+    public static void setDefaultNamespace(String defaultNamespace) {
 
-        return getDictService().getByName(group, name);
+        getDictService().setDefaultNamespace(defaultNamespace);
     }
 
-    public static Dict getByCode(String group, String code) {
+    public static void syncByGroup(Collection<Dict> data) {
 
-        return getDictService().getByCode(group, code);
+        getDictService().syncByGroup(data);
     }
 
-    public static Dict getByValue(String group, String value) {
+    public static void syncByCode(Collection<Dict> data) {
 
-        return getDictService().getByValue(group, value);
+        getDictService().syncByCode(data);
+    }
+
+    public static Dict getByName(String namespace, String groupCode, String name) {
+
+        return getDictService().getByName(namespace, groupCode, name);
+    }
+
+    public static Dict getByCode(String namespace, String groupCode, String code) {
+
+        return getDictService().getByCode(namespace, groupCode, code);
+    }
+
+    public static Dict getByValue(String namespace, String groupCode, String value) {
+
+        return getDictService().getByValue(namespace, groupCode, value);
     }
 
     public static Dict getByCondition(DictQuery condition) {
@@ -62,14 +85,49 @@ public class DictUtil {
         return getDictService().getByCondition(condition);
     }
 
-    public static Collection<Dict> listByGroup(String group) {
+    public static List<Dict> listByGroup(String namespace, String groupCode) {
 
-        return getDictService().listByGroup(group);
+        return getDictService().listByGroup(namespace, groupCode);
     }
 
-    public static Collection<Dict> listByCondition(DictQuery condition) {
+    public static Map<String, Dict> mapByGroup(String namespace, String groupCode) {
 
-        return getDictService().listByCondition(condition);
+        return getDictService().mapByGroup(namespace, groupCode);
     }
+
+    public static Page<Dict> listByCondition(boolean paged, DictQuery condition) {
+
+        return getDictService().listByCondition(paged, condition);
+    }
+    // endregion ======== service methods ========
+
+
+    // region ======== extended methods ========
+
+    public static Dict getByName(String groupCode, String name) {
+
+        return getByName(Nil.STR, groupCode, name);
+    }
+
+    public static Dict getByCode(String groupCode, String code) {
+
+        return getByCode(Nil.STR, groupCode, code);
+    }
+
+    public static Dict getByValue(String groupCode, String value) {
+
+        return getByValue(Nil.STR, groupCode, value);
+    }
+
+    public static List<Dict> listByGroup(String groupCode) {
+
+        return listByGroup(Nil.STR, groupCode);
+    }
+
+    public static Map<String, Dict> mapByGroup(String groupCode) {
+
+        return mapByGroup(Nil.STR, groupCode);
+    }
+    // endregion ======== extended methods ========
 
 }

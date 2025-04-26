@@ -5,8 +5,11 @@
 
 package kunlun.data.dict;
 
-import java.io.Serializable;
+import kunlun.common.Page;
+
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The data dictionary service.
@@ -14,99 +17,100 @@ import java.util.Collection;
  */
 public interface DictService {
 
+    // region ======== the namespace ========
     /**
-     * Synchronize dictionary data according to different strategies.
-     * <p>
-     * Mode 1:
-     * Synchronize the list of dictionary items based on their group and code.
-     * (item's group and code cannot be null)
-     * <p>
-     * Mode 2:
-     * Synchronize the list of dictionary items based on the dictionary item group information.
-     * All dictionary items under this group must be provided (include: add, update, delete).
-     * (item's code cannot be null)
-     *
-     * @param strategy The data synchronization strategy
-     * @param data The dictionary data to be synchronized
+     * Get the default namespace.
+     * @return The default namespace
      */
-    void sync(Object strategy, Object data);
+    String getDefaultNamespace();
 
     /**
+     * Set the default namespace.
+     * @param defaultNamespace The default namespace
+     */
+    void setDefaultNamespace(String defaultNamespace);
+    // endregion ======== the namespace ========
+
+
+    // region ======== dictionary sync ========
+    /**
+     * Synchronize the list of dictionary items based on the dictionary group code.
+     * All dictionary items under this group code must be provided (include: add, update, delete).
+     * (item's code cannot be null)
+     * @param data The dictionary data to be synchronized
+     */
+    void syncByGroup(Collection<Dict> data);
+
+    /**
+     * Synchronize the list of dictionary items based on their group code and item code (or id).
+     * (item's scope and group and code cannot be null)
+     * @param data The dictionary data to be synchronized
+     */
+    void syncByCode(Collection<Dict> data);
+    // endregion ======== dictionary sync ========
+
+
+    // region ======== get single dictionary ========
+    /**
      * Get the dict object by the dictionary item name.
-     * @param group The dictionary item group information
+     * @param namespace The dictionary namespace
+     * @param groupCode The dictionary group code
      * @param name The dictionary item name
      * @return The dictionary item or null
      */
-    Dict getByName(String group, String name);
+    Dict getByName(String namespace, String groupCode, String name);
 
     /**
      * Get the dict object by the dictionary item code.
-     * @param group The dictionary item group information
+     * @param namespace The dictionary namespace
+     * @param groupCode The dictionary group code
      * @param code The dictionary item code
      * @return The dictionary item or null
      */
-    Dict getByCode(String group, String code);
+    Dict getByCode(String namespace, String groupCode, String code);
 
     /**
      * Get the dict object by the dictionary item value.
-     * @param group The dictionary item group information
+     * @param namespace The dictionary namespace
+     * @param groupCode The dictionary group code
      * @param value The dictionary item value
      * @return The dictionary item or null
      */
-    Dict getByValue(String group, String value);
+    Dict getByValue(String namespace, String groupCode, String value);
 
     /**
      * Condition query a dictionary item (multiple items will error).
-     * @param condition The dictionary query condition (multiple types may be supported)
+     * @param condition The dictionary query condition
      * @return The dictionary item or null
      */
     Dict getByCondition(DictQuery condition);
+    // endregion ======== get single dictionary ========
 
+
+    // region ======== get multiple dictionaries ========
     /**
-     * Query the dictionary items list by item group information.
-     * @param group The dictionary item group information
+     * Query the dictionary items list by item group code.
+     * @param namespace The dictionary namespace
+     * @param groupCode The dictionary group code
      * @return The list of dictionary items
      */
-    Collection<Dict> listByGroup(String group);
+    List<Dict> listByGroup(String namespace, String groupCode);
 
     /**
-     * Condition query the dictionary items list.
-     * @param condition The dictionary query condition (multiple types may be supported)
-     * @return The list of dictionary items
+     * Query the dictionary items map by item group code.
+     * @param namespace The dictionary namespace
+     * @param groupCode The dictionary group code
+     * @return The map of dictionary items
      */
-    Collection<Dict> listByCondition(DictQuery condition);
-
+    Map<String, Dict> mapByGroup(String namespace, String groupCode);
 
     /**
-     * The data dictionary query condition.
-     * @author Kahle
+     * Condition query the dictionary items list or page.
+     * @param paged Determine whether pagination is required
+     * @param condition The dictionary query condition
+     * @return The list or page of dictionary items
      */
-    interface DictQuery extends Serializable {
-
-        /**
-         * Get the group information of the dictionary item.
-         * @return The group information of the dictionary item
-         */
-        String getGroup();
-
-        /**
-         * Get the name of the dictionary item.
-         * @return The name of the dictionary item
-         */
-        String getName();
-
-        /**
-         * Get the code of the dictionary item.
-         * @return The code of the dictionary item
-         */
-        String getCode();
-
-        /**
-         * Get the value of the dictionary item.
-         * @return The value of the dictionary item
-         */
-        String getValue();
-
-    }
+    Page<Dict> listByCondition(boolean paged, DictQuery condition);
+    // endregion ======== get multiple dictionaries ========
 
 }

@@ -5,10 +5,10 @@
 
 package kunlun.data.dict.support;
 
+import kunlun.common.Page;
 import kunlun.data.dict.AbstractDictService;
 import kunlun.data.dict.Dict;
-
-import java.util.Collection;
+import kunlun.data.dict.DictQuery;
 
 /**
  * The simple data dictionary service.
@@ -17,19 +17,7 @@ import java.util.Collection;
 public class SimpleDictService extends AbstractDictService {
 
     @Override
-    protected Dict getDict(String group, String name, String code, String value) {
-
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Collection<Dict> listByGroup(String group) {
-
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Collection<Dict> listByCondition(DictQuery condition) {
+    public Page<Dict> listByCondition(boolean paged, DictQuery condition) {
 
         throw new UnsupportedOperationException();
     }
