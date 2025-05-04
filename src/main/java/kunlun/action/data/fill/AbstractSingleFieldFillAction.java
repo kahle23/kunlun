@@ -19,6 +19,7 @@ import java.util.*;
  * The abstract single field fill action.
  * @author Kahle
  */
+@Deprecated
 public abstract class AbstractSingleFieldFillAction extends AbstractAction implements DataFillAction {
     private static final Logger log = LoggerFactory.getLogger(AbstractSingleFieldFillAction.class);
 

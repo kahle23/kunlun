@@ -5,7 +5,6 @@
 
 package kunlun.action.ai;
 
-import kunlun.action.AbstractAction;
 import kunlun.core.Action;
 import kunlun.core.ArtificialIntelligence;
 
@@ -15,7 +14,7 @@ import java.io.Serializable;
  * The abstract AI action.
  * @author Kahle
  */
-public abstract class AbstractAIAction extends AbstractAction implements ArtificialIntelligence, Action {
+public abstract class AbstractAIAction implements ArtificialIntelligence, Action {
 
     /**
      * The abstract AI handler configuration.

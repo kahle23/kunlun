@@ -5,7 +5,7 @@
 
 package kunlun.action.message;
 
-import kunlun.action.AbstractAction;
+import kunlun.core.Action;
 import kunlun.message.MessageHandler;
 import kunlun.message.model.Message;
 import kunlun.message.model.Result;
@@ -20,7 +20,7 @@ import static java.util.Collections.singletonList;
  * The abstract message handler.
  * @author Kahle
  */
-public abstract class AbstractMessageHandler extends AbstractAction implements MessageHandler {
+public abstract class AbstractMessageHandler implements MessageHandler, Action {
     /**
      * The standard operation name: subscribe.
      */

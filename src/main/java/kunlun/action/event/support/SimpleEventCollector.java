@@ -5,9 +5,9 @@
 
 package kunlun.action.event.support;
 
-import kunlun.action.AbstractAction;
 import kunlun.action.event.Event;
 import kunlun.action.event.EventCollector;
+import kunlun.core.Action;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.time.DateUtil;
@@ -21,7 +21,7 @@ import static kunlun.common.constant.Symbols.NEWLINE;
  * The simple event collector.
  * @author Kahle
  */
-public class SimpleEventCollector extends AbstractAction implements EventCollector {
+public class SimpleEventCollector implements EventCollector, Action {
     private static final Logger log = LoggerFactory.getLogger(SimpleEventCollector.class);
 
     /**

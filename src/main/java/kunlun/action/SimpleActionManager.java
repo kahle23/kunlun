@@ -12,11 +12,9 @@ import kunlun.data.tuple.PairImpl;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
-import kunlun.util.MapUtil;
 import kunlun.util.StrUtil;
 
 import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,25 +28,19 @@ import static kunlun.common.constant.Symbols.DOT;
  */
 public class SimpleActionManager implements ActionManager {
     private static final Logger log = LoggerFactory.getLogger(SimpleActionManager.class);
-    protected final Map<String, Object> commonProperties;
     protected final Map<String, Action> actions;
     protected final Map<Type, String> shortcuts;
 
-    protected SimpleActionManager(Map<String, Object> commonProperties,
-                                  Map<String, Action> actions,
-                                  Map<Type,   String> shortcuts) {
-        Assert.notNull(commonProperties, "Parameter \"commonProperties\" must not null. ");
-        Assert.notNull(actions, "Parameter \"actions\" must not null. ");
+    protected SimpleActionManager(Map<String, Action> actions, Map<Type, String> shortcuts) {
         Assert.notNull(shortcuts, "Parameter \"shortcuts\" must not null. ");
-        this.commonProperties = commonProperties;
+        Assert.notNull(actions, "Parameter \"actions\" must not null. ");
         this.shortcuts = shortcuts;
         this.actions = actions;
     }
 
     public SimpleActionManager() {
-        this(new ConcurrentHashMap<String, Object>(),
-                new ConcurrentHashMap<String, Action>(),
-                new ConcurrentHashMap<Type, String>());
+
+        this(new ConcurrentHashMap<String, Action>(), new ConcurrentHashMap<Type, String>());
     }
 
     protected Pair<String, String> parseCommand(String command) {
@@ -70,27 +62,6 @@ public class SimpleActionManager implements ActionManager {
         Assert.notNull(action
                 , "The corresponding action handler could not be found by name. ");
         return action;
-    }
-
-    @Override
-    public void registerCommonProperties(Map<?, ?> commonProperties) {
-        if (MapUtil.isEmpty(commonProperties)) { return; }
-        for (Map.Entry<?, ?> entry : commonProperties.entrySet()) {
-            String keyStr = String.valueOf(entry.getKey());
-            this.commonProperties.put(keyStr, entry.getValue());
-        }
-    }
-
-    @Override
-    public void clearCommonProperties() {
-
-        this.commonProperties.clear();
-    }
-
-    @Override
-    public Map<String, Object> getCommonProperties() {
-
-        return Collections.unmodifiableMap(commonProperties);
     }
 
     @Override
@@ -143,36 +114,20 @@ public class SimpleActionManager implements ActionManager {
 
     @Override
     public Object execute(String command, Object input, Object[] arguments) {
-        // Parameter "arguments" is usually: 0 strategy or operation, 1 input
-        // arguments no strategy and no input
-
-        // Strategy priority: command strategy > shortcut strategy > arguments strategy
+        // Strategy priority: command strategy > shortcut strategy
         Pair<String, String> pair = parseCommand(command);
         String actionName = pair.getLeft();
         String strategy = pair.getRight();
         // Process command in the shortcut.
         // When actionName is blank, strategy must also be blank.
         // (for example ".test" is not supported)
-        if (StrUtil.isBlank(actionName)) {
-//            Object input = arguments.length >= TWO ? arguments[ONE] : null;
-            if (input != null) {
-                pair = parseCommand(getShortcut(input.getClass()));
-                actionName = pair.getLeft();
-                strategy = pair.getRight();
-            }
+        if (StrUtil.isBlank(actionName) && input != null) {
+            pair = parseCommand(getShortcut(input.getClass()));
+            actionName = pair.getLeft();
+            strategy = pair.getRight();
         }
-        // If the external strategy is not blank, replace the strategy in the arguments.
-//        if (StrUtil.isNotBlank(strategy) && arguments.length >= ONE) {
-//            arguments[ZERO] = strategy;
-//        }
         // Do execute.
         return getActionOrThrow(actionName).execute(strategy, input, arguments);
     }
-
-    /*@Override
-    public <T> T execute(String command, Object input) {
-
-        return ObjUtil.cast(execute(command, new Object[]{ null, input }));
-    }*/
 
 }

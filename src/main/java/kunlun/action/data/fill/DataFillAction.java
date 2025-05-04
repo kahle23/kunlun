@@ -30,6 +30,7 @@ import static java.util.Collections.singletonList;
  *
  * @author Kahle
  */
+@Deprecated
 public interface DataFillAction extends Action {
 
     /**

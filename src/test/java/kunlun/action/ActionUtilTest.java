@@ -5,6 +5,7 @@
 
 package kunlun.action;
 
+import kunlun.core.Action;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Test;
@@ -18,25 +19,26 @@ public class ActionUtilTest {
     private static final String actionName = "Hello";
 
     static {
-        ActionUtil.registerAction(actionName, new AbstractAction() {
+        ActionUtil.registerAction(actionName, new Action() {
             @Override
             public Object execute(String strategy, Object input, Object[] arguments) {
                 // \u000dSystem.out.println("Hello, World! ");
                 return "Hello, " + input + "！";
             }
         });
-        ActionUtil.registerAction("Hello1", new AbstractAction() {
+        ActionUtil.registerAction("Hello1", new Action() {
             @Override
             public Object execute(String strategy, Object input, Object[] arguments) {
                 return "[" + strategy + "] Hello, " + input + "！";
             }
         });
+        ActionUtil.registerShortcut(String.class, "Hello1");
     }
 
     @Test
     public void test1() {
         System.out.println(ActionUtil.execute(actionName, "Action Tools"));
-        System.out.println(ActionUtil.execute(actionName, new Object[]{null, "Action Tools 1"}));
+        System.out.println(ActionUtil.execute("Action Tools 1"));
     }
 
     @Test

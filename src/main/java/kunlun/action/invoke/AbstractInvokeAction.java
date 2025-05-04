@@ -5,7 +5,7 @@
 
 package kunlun.action.invoke;
 
-import kunlun.action.AbstractAction;
+import kunlun.core.Action;
 import kunlun.exception.ExceptionUtil;
 import kunlun.util.Assert;
 
@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * The abstract dynamic invoke action.
  * @author Kahle
  */
-public abstract class AbstractInvokeAction extends AbstractAction {
+public abstract class AbstractInvokeAction implements Action {
 
     /**
      * Build the context object from the parameters.

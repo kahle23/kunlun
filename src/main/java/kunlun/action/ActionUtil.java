@@ -8,6 +8,7 @@ package kunlun.action;
 import kunlun.action.event.Event;
 import kunlun.action.event.support.SimpleEventCollector;
 import kunlun.action.message.support.SimpleMessageHandler;
+import kunlun.common.constant.Nil;
 import kunlun.core.Action;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -18,8 +19,6 @@ import kunlun.util.ObjUtil;
 
 import java.lang.reflect.Type;
 
-import static kunlun.common.constant.Symbols.EMPTY_STRING;
-
 /**
  * The action tools.
  * @author Kahle
@@ -28,25 +27,29 @@ public class ActionUtil {
     private static final Logger log = LoggerFactory.getLogger(ActionUtil.class);
     private static volatile ActionManager actionManager;
 
+    protected static ActionManager init(ActionManager mgr) {
+        String name = "event-collector";
+        mgr.registerAction(name, new SimpleEventCollector());
+        mgr.registerShortcut(Event.class, name);
+        name = "mq";
+        mgr.registerAction(name, new SimpleMessageHandler());
+        mgr.registerShortcut(Message.class,   name);
+        mgr.registerShortcut(Subscribe.class, name);
+        return mgr;
+    }
+
     public static ActionManager getActionManager() {
         if (actionManager != null) { return actionManager; }
         synchronized (ActionUtil.class) {
             if (actionManager != null) { return actionManager; }
-            ActionUtil.setActionManager(new SimpleActionManager());
-            String name = "event-collector";
-            registerAction(name, new SimpleEventCollector());
-            registerShortcut(Event.class, name);
-            name = "mq";
-            registerAction(name, new SimpleMessageHandler());
-            registerShortcut(Message.class,   name);
-            registerShortcut(Subscribe.class, name);
+            ActionUtil.setActionManager(init(new SimpleActionManager()));
             return actionManager;
         }
     }
 
     public static void setActionManager(ActionManager actionManager) {
         Assert.notNull(actionManager, "Parameter \"actionManager\" must not null. ");
-        log.debug("Set action provider: {}", actionManager.getClass().getName());
+        log.debug("Set action manager: {}", actionManager.getClass().getName());
         ActionUtil.actionManager = actionManager;
     }
 
@@ -87,7 +90,7 @@ public class ActionUtil {
 
     public static <T> T execute(Object input) {
 
-        return execute(EMPTY_STRING, input);
+        return execute(Nil.STR, input);
     }
 
 }
