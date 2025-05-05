@@ -3,7 +3,9 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.property;
+package kunlun.data.property.support;
+
+import kunlun.data.property.AbstractPropertySource;
 
 import java.util.Map;
 
@@ -13,17 +15,6 @@ import java.util.Map;
  */
 public abstract class BaseReadOnlyPropertySource extends AbstractPropertySource {
 
-    public BaseReadOnlyPropertySource(String name) {
-
-        super(name);
-    }
-
-    @Override
-    public void setProperties(Map<?, ?> properties) {
-
-        throw new UnsupportedOperationException();
-    }
-
     @Override
     public Object setProperty(String name, Object value) {
 
@@ -32,6 +23,12 @@ public abstract class BaseReadOnlyPropertySource extends AbstractPropertySource 
 
     @Override
     public Object removeProperty(String name) {
+
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setProperties(Map<?, ?> properties) {
 
         throw new UnsupportedOperationException();
     }

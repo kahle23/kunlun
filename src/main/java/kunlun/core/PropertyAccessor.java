@@ -3,14 +3,15 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.core.handler;
+package kunlun.core;
+
+import java.util.Set;
 
 /**
- * The property supported handler.
+ * The property accessor.
  * @author Kahle
  */
-@Deprecated
-public interface PropertySupportedHandler {
+public interface PropertyAccessor {
 
     /**
      * Return whether the given property name is available.
@@ -18,6 +19,13 @@ public interface PropertySupportedHandler {
      * @return The available or not
      */
     boolean containsProperty(String name);
+
+    /**
+     * Return the property value associated with the given name.
+     * @param name The property name
+     * @return The property value
+     */
+    Object getProperty(String name);
 
     /**
      * Set the property name and property value.
@@ -28,17 +36,16 @@ public interface PropertySupportedHandler {
     Object setProperty(String name, Object value);
 
     /**
-     * Return the property value associated with the given name.
-     * @param name The property name
-     * @return The property value
-     */
-    Object getProperty(String name);
-
-    /**
      * Remove the property value based on the property name.
      * @param name The property name
      * @return The property value or null
      */
     Object removeProperty(String name);
+
+    /**
+     * Return the set of all property names in this property accessor.
+     * @return The set of all property names in this property accessor
+     */
+    Set<String> getPropertyNames();
 
 }

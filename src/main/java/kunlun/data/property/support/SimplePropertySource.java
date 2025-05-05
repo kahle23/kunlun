@@ -3,12 +3,14 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.property;
+package kunlun.data.property.support;
 
+import kunlun.data.property.AbstractPropertySource;
 import kunlun.util.Assert;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -18,27 +20,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SimplePropertySource extends AbstractPropertySource {
     private final Map<String, Object> properties;
 
-    public SimplePropertySource(String name, Map<String, Object> properties) {
-        super(name);
+    public SimplePropertySource(Map<String, Object> properties) {
         Assert.notNull(properties, "Parameter \"properties\" must not null. ");
         this.properties = properties;
     }
 
-    public SimplePropertySource(String name) {
+    public SimplePropertySource() {
 
-        this(name, new ConcurrentHashMap<String, Object>());
-    }
-
-    @Override
-    public Map<String, Object> getProperties() {
-
-        return Collections.unmodifiableMap(properties);
-    }
-
-    @Override
-    public Object setProperty(String name, Object value) {
-
-        return properties.put(name, value);
+        this(new ConcurrentHashMap<String, Object>());
     }
 
     @Override
@@ -48,9 +37,27 @@ public class SimplePropertySource extends AbstractPropertySource {
     }
 
     @Override
+    public Object setProperty(String name, Object value) {
+
+        return properties.put(name, value);
+    }
+
+    @Override
     public Object removeProperty(String name) {
 
         return properties.remove(name);
+    }
+
+    @Override
+    public Set<String> getPropertyNames() {
+
+        return Collections.unmodifiableSet(properties.keySet());
+    }
+
+    @Override
+    public Map<String, Object> getProperties() {
+
+        return Collections.unmodifiableMap(properties);
     }
 
 }
