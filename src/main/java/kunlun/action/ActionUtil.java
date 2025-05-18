@@ -8,6 +8,7 @@ package kunlun.action;
 import kunlun.action.event.Event;
 import kunlun.action.event.support.SimpleEventCollector;
 import kunlun.action.message.support.SimpleMessageHandler;
+import kunlun.action.tool.MimeTypeAction;
 import kunlun.common.constant.Nil;
 import kunlun.core.Action;
 import kunlun.logging.Logger;
@@ -35,6 +36,8 @@ public class ActionUtil {
         mgr.registerAction(name, new SimpleMessageHandler());
         mgr.registerShortcut(Message.class,   name);
         mgr.registerShortcut(Subscribe.class, name);
+        name = "mime-type";
+        mgr.registerAction(name, new MimeTypeAction());
         return mgr;
     }
 
