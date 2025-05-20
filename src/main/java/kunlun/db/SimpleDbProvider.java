@@ -66,7 +66,7 @@ public class SimpleDbProvider implements DbProvider {
         String className = dbHandler.getClass().getName();
         dbHandler.setCommonProperties(getCommonProperties());
         handlers.put(handlerName, dbHandler);
-        log.info("Register the database handler \"{}\" to \"{}\". ", className, handlerName);
+        log.debug("Register the database handler \"{}\" to \"{}\". ", className, handlerName);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class SimpleDbProvider implements DbProvider {
         DbHandler remove = handlers.remove(handlerName);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the database handler \"{}\" from \"{}\". ", className, handlerName);
+            log.debug("Deregister the database handler \"{}\" from \"{}\". ", className, handlerName);
         }
     }
 

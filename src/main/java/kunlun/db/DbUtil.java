@@ -30,7 +30,7 @@ public class DbUtil {
 
     public static void setDbProvider(DbProvider dbProvider) {
         Assert.notNull(dbProvider, "Parameter \"dbProvider\" must not null. ");
-        log.info("Set database provider: {}", dbProvider.getClass().getName());
+        log.debug("Set database provider: {}", dbProvider.getClass().getName());
         DbUtil.dbProvider = dbProvider;
     }
 

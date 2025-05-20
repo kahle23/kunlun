@@ -7,6 +7,7 @@ package kunlun.data.dict.support;
 
 import kunlun.cache.Cache;
 import kunlun.common.Page;
+import kunlun.common.constant.Nil;
 import kunlun.data.dict.AbstractDictService;
 import kunlun.data.dict.Dict;
 import kunlun.data.dict.DictQuery;
@@ -28,7 +29,7 @@ public class CacheDictService extends AbstractDictService {
 
     public CacheDictService(DictService dictService, Cache cache) {
 
-        this(dictService, cache, null, null);
+        this(dictService, cache, Nil.INT3, Nil.<TimeUnit>g());
     }
 
     public CacheDictService(DictService dictService,

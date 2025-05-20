@@ -32,8 +32,6 @@ public class SimpleXmlProvider implements XmlProvider {
         Assert.notNull(handlers, "Parameter \"handlers\" must not null. ");
         this.commonProperties = commonProperties;
         this.handlers = handlers;
-        // Register the default handler.
-        registerHandler(getDefaultHandlerName(), new SimpleXmlHandler());
     }
 
     public SimpleXmlProvider() {
@@ -81,7 +79,7 @@ public class SimpleXmlProvider implements XmlProvider {
         String className = xmlHandler.getClass().getName();
         xmlHandler.setCommonProperties(getCommonProperties());
         handlers.put(name, xmlHandler);
-        log.info("Register the xml handler \"{}\" to \"{}\". ", className, name);
+        log.debug("Register the xml handler \"{}\" to \"{}\". ", className, name);
     }
 
     @Override
@@ -90,7 +88,7 @@ public class SimpleXmlProvider implements XmlProvider {
         XmlHandler remove = handlers.remove(name);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the xml handler \"{}\" from \"{}\". ", className, name);
+            log.debug("Deregister the xml handler \"{}\" from \"{}\". ", className, name);
         }
     }
 

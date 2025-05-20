@@ -5,7 +5,6 @@
 
 package kunlun.data.json;
 
-import kunlun.data.json.support.SimpleJsonHandler;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -32,8 +31,6 @@ public class SimpleJsonProvider implements JsonProvider {
         Assert.notNull(handlers, "Parameter \"handlers\" must not null. ");
         this.commonProperties = commonProperties;
         this.handlers = handlers;
-        // Register the default handler.
-        registerHandler(getDefaultHandlerName(), new SimpleJsonHandler());
     }
 
     public SimpleJsonProvider() {

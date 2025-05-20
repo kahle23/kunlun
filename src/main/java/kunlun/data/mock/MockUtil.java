@@ -5,6 +5,7 @@
 
 package kunlun.data.mock;
 
+import kunlun.data.mock.support.SimpleMockHandler;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -26,13 +27,15 @@ public class MockUtil {
         synchronized (MockUtil.class) {
             if (mockProvider != null) { return mockProvider; }
             setMockProvider(new SimpleMockProvider());
+            // Register the default handler.
+            registerHandler(getDefaultHandlerName(), new SimpleMockHandler());
             return mockProvider;
         }
     }
 
     public static void setMockProvider(MockProvider mockProvider) {
         Assert.notNull(mockProvider, "Parameter \"mockProvider\" must not null. ");
-        log.info("Set mock provider: {}", mockProvider.getClass().getName());
+        log.debug("Set mock provider: {}", mockProvider.getClass().getName());
         MockUtil.mockProvider = mockProvider;
     }
 

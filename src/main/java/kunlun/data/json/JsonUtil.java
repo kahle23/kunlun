@@ -5,6 +5,7 @@
 
 package kunlun.data.json;
 
+import kunlun.data.json.support.SimpleJsonHandler;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -24,6 +25,8 @@ public class JsonUtil {
         synchronized (JsonUtil.class) {
             if (jsonProvider != null) { return jsonProvider; }
             JsonUtil.setJsonProvider(new SimpleJsonProvider());
+            // Register the default handler.
+            registerHandler(getDefaultHandlerName(), new SimpleJsonHandler());
             return jsonProvider;
         }
     }

@@ -36,8 +36,6 @@ public class SimpleCacheProvider implements CacheProvider {
         Assert.notNull(caches, "Parameter \"caches\" must not null. ");
         this.commonProperties = commonProperties;
         this.caches = caches;
-        // Register the default cache.
-        registerCache(DEFAULT, new SimpleCache());
     }
 
     public SimpleCacheProvider() {

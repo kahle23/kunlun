@@ -40,7 +40,7 @@ public class DictUtil {
         log.debug("Set dict service: {}", dictService.getClass().getName());
         DictUtil.dictService = dictService;
     }
-    // endregion ======== get / set service ========
+    // endregion
 
 
     // region ======== service methods ========
@@ -99,7 +99,7 @@ public class DictUtil {
 
         return getDictService().listByCondition(paged, condition);
     }
-    // endregion ======== service methods ========
+    // endregion
 
 
     // region ======== extended methods ========
@@ -128,6 +128,6 @@ public class DictUtil {
 
         return mapByGroup(Nil.STR, groupCode);
     }
-    // endregion ======== extended methods ========
+    // endregion
 
 }

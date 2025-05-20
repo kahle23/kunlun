@@ -33,8 +33,6 @@ public class SimpleMockProvider implements MockProvider {
         Assert.notNull(handlers, "Parameter \"handlers\" must not null. ");
         this.commonProperties = commonProperties;
         this.handlers = handlers;
-        // Register the default handler.
-        registerHandler(getDefaultHandlerName(), new SimpleMockHandler());
     }
 
     public SimpleMockProvider() {
@@ -84,7 +82,7 @@ public class SimpleMockProvider implements MockProvider {
         if (mockHandler instanceof AbstractMockHandler) {
             ((AbstractMockHandler) mockHandler).setCommonProperties(getCommonProperties());
         }
-        log.info("Register the mock handler \"{}\" to \"{}\". ", className, name);
+        log.debug("Register the mock handler \"{}\" to \"{}\". ", className, name);
     }
 
     @Override
@@ -93,7 +91,7 @@ public class SimpleMockProvider implements MockProvider {
         MockHandler remove = handlers.remove(name);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.info("Deregister the mock handler \"{}\" from \"{}\". ", className, name);
+            log.debug("Deregister the mock handler \"{}\" from \"{}\". ", className, name);
         }
     }
 

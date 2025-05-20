@@ -19,6 +19,8 @@ public class Words {
     public static final String GET = "get";
     public static final String SET = "set";
     public static final String API = "api";
+    public static final String RAW = "raw";
+    public static final String RAW1 = "_raw";
     public static final String PAGE = "page";
     public static final String ROOT = "root";
     public static final String NULL = "null";

@@ -5,6 +5,7 @@
 
 package kunlun.cache;
 
+import kunlun.cache.support.SimpleCache;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -14,6 +15,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
+import static kunlun.common.constant.Words.DEFAULT;
 
 /**
  * The cache tools.
@@ -28,6 +31,8 @@ public class CacheUtil {
         synchronized (CacheUtil.class) {
             if (cacheProvider != null) { return cacheProvider; }
             CacheUtil.setCacheProvider(new SimpleCacheProvider());
+            // Register the default cache.
+            registerCache(DEFAULT, new SimpleCache());
             return cacheProvider;
         }
     }

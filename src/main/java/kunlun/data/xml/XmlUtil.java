@@ -5,6 +5,7 @@
 
 package kunlun.data.xml;
 
+import kunlun.data.xml.support.SimpleXmlHandler;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -24,13 +25,15 @@ public class XmlUtil {
         synchronized (XmlUtil.class) {
             if (xmlProvider != null) { return xmlProvider; }
             XmlUtil.setXmlProvider(new SimpleXmlProvider());
+            // Register the default handler.
+            registerHandler(getDefaultHandlerName(), new SimpleXmlHandler());
             return xmlProvider;
         }
     }
 
     public static void setXmlProvider(XmlProvider xmlProvider) {
         Assert.notNull(xmlProvider, "Parameter \"xmlProvider\" must not null. ");
-        log.info("Set xml provider: {}", xmlProvider.getClass().getName());
+        log.debug("Set xml provider: {}", xmlProvider.getClass().getName());
         XmlUtil.xmlProvider = xmlProvider;
     }
 

@@ -6,10 +6,9 @@
 package kunlun.security;
 
 import kunlun.bean.BeanHolder;
-import kunlun.common.constant.Nulls;
+import kunlun.common.constant.Nil;
 import kunlun.core.AccessController;
 import kunlun.core.DataController;
-import kunlun.util.Assert;
 import kunlun.util.IterUtil;
 
 import java.util.Collection;
@@ -18,6 +17,7 @@ import java.util.Map;
 import static kunlun.common.constant.Numbers.ONE;
 import static kunlun.security.TokenManager.Token;
 import static kunlun.security.UserManager.UserDetail;
+import static kunlun.util.Assert.*;
 
 /**
  * The security tools.
@@ -25,17 +25,16 @@ import static kunlun.security.UserManager.UserDetail;
  */
 public class SecurityUtil {
 
+    // region ======== base methods ========
+
     public static SecurityContext getContext() {
         Map<String, SecurityContext> beans = BeanHolder.getBeans(SecurityContext.class);
-        Assert.notEmpty(beans, "Please set the security context first. ");
+        notEmpty(beans, "Please set the security context first. ");
         boolean isOne = beans.size() == ONE;
-        Assert.isTrue(isOne, "The security context is limited to one. ");
+        isTrue(isOne, "The security context is limited to one. ");
         SecurityContext context = IterUtil.getFirst(beans.values());
-        Assert.notNull(context, "The security context is null. ");
-        return context;
+        return notNull(context, "The security context is null. ");
     }
-
-    // ====
 
     public static String getTraceId() {
 
@@ -88,8 +87,10 @@ public class SecurityUtil {
 
         getContext().putBaseData(userId, null, platform, null);
     }
+    // endregion
 
-    // ====
+
+    // region ======== user related methods ========
 
     public static UserDetail getUserDetail() {
 
@@ -120,17 +121,19 @@ public class SecurityUtil {
 
         return getContext().getUserGroups(groupType);
     }
+    // endregion
 
 
-
-    // ====
+    // region ======== access controller ========
 
     public static boolean hasPermission(Object userId, Object userType, String permission) {
 
         return getAccessController().hasPermission(userId, userType, permission);
     }
+    // endregion
 
-    // ====
+
+    // region ======== token manager ========
 
     public static String buildToken(Token token) {
 
@@ -156,8 +159,10 @@ public class SecurityUtil {
 
         return getTokenManager().refreshToken(token);
     }
+    // endregion
 
-    // ====
+
+    // region ======== user manager ========
 
     public static UserDetail getUserDetail(Object userId, Object userType) {
 
@@ -173,33 +178,30 @@ public class SecurityUtil {
 
         return getUserManager().getUserGroups(userId, userType, groupType);
     }
+    // endregion
 
 
-
-    // ====
+    // region ======== core components ========
 
     public static AccessController getAccessController() {
         AccessController accessController = getContext().getAccessController();
-        Assert.notNull(accessController, "The access controller is null. ");
-        return accessController;
+        return notNull(accessController, "The access controller is null. ");
     }
 
     public static DataController getDataController() {
         DataController dataController = getContext().getDataController();
-        Assert.notNull(dataController, "The data controller is null. ");
-        return dataController;
+        return notNull(dataController, "The data controller is null. ");
     }
 
     public static TokenManager getTokenManager() {
         TokenManager tokenManager = getContext().getTokenManager();
-        Assert.notNull(tokenManager, "The token manager is null. ");
-        return tokenManager;
+        return notNull(tokenManager, "The token manager is null. ");
     }
 
     public static UserManager getUserManager() {
         UserManager userManager = getContext().getUserManager();
-        Assert.notNull(userManager, "The user manager is null. ");
-        return userManager;
+        return notNull(userManager, "The user manager is null. ");
     }
+    // endregion
 
 }

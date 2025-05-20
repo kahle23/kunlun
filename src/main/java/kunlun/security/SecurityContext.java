@@ -20,6 +20,7 @@ import static kunlun.security.UserManager.UserDetail;
  */
 public interface SecurityContext extends Context {
 
+    // region ======== base methods ========
     /**
      * Get the current trace id.
      * @return The current trace id
@@ -64,9 +65,10 @@ public interface SecurityContext extends Context {
      * @param tenantId The current tenant id
      */
     void putBaseData(Object userId, Object userType, String platform, String tenantId);
+    // endregion
 
-    // ====
 
+    // region ======== user related methods ========
     /**
      * Get the current user detail.
      * @return The current user detail
@@ -85,9 +87,10 @@ public interface SecurityContext extends Context {
      * @return The current user's groups list
      */
     Collection<String> getUserGroups(Object groupType);
+    // endregion
 
-    // ====
 
+    // region ======== core components ========
     /**
      * Get the held access controller.
      * @return The held access controller
@@ -111,5 +114,6 @@ public interface SecurityContext extends Context {
      * @return The held user manager
      */
     UserManager getUserManager();
+    // endregion
 
 }

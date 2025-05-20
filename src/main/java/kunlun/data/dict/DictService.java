@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public interface DictService {
 
-    // region ======== the namespace ========
+    // region ======== the default namespace ========
     /**
      * Get the default namespace.
      * @return The default namespace
@@ -29,7 +29,7 @@ public interface DictService {
      * @param defaultNamespace The default namespace
      */
     void setDefaultNamespace(String defaultNamespace);
-    // endregion ======== the namespace ========
+    // endregion
 
 
     // region ======== dictionary sync ========
@@ -47,7 +47,7 @@ public interface DictService {
      * @param data The dictionary data to be synchronized
      */
     void syncByCode(Collection<Dict> data);
-    // endregion ======== dictionary sync ========
+    // endregion
 
 
     // region ======== get single dictionary ========
@@ -84,7 +84,7 @@ public interface DictService {
      * @return The dictionary item or null
      */
     Dict getByCondition(DictQuery condition);
-    // endregion ======== get single dictionary ========
+    // endregion
 
 
     // region ======== get multiple dictionaries ========
@@ -111,6 +111,6 @@ public interface DictService {
      * @return The list or page of dictionary items
      */
     Page<Dict> listByCondition(boolean paged, DictQuery condition);
-    // endregion ======== get multiple dictionaries ========
+    // endregion
 
 }
