@@ -6,10 +6,10 @@
 package kunlun.action.message;
 
 import kunlun.core.Action;
-import kunlun.message.MessageHandler;
+import kunlun.message.MessageBus;
 import kunlun.message.model.Message;
-import kunlun.message.model.Result;
 import kunlun.message.model.Subscribe;
+import kunlun.message.model.SubscribeRt;
 import kunlun.util.IterUtil;
 
 import java.util.Collection;
@@ -20,7 +20,7 @@ import static java.util.Collections.singletonList;
  * The abstract message handler.
  * @author Kahle
  */
-public abstract class AbstractMessageHandler implements MessageHandler, Action {
+public abstract class AbstractMessageBus implements MessageBus, Action {
     /**
      * The standard operation name: subscribe.
      */
@@ -41,7 +41,7 @@ public abstract class AbstractMessageHandler implements MessageHandler, Action {
     }
 
     @Override
-    public Result subscribe(Subscribe subscribe) {
+    public SubscribeRt subscribe(Subscribe subscribe) {
 
         throw new UnsupportedOperationException("This method is not supported! ");
     }

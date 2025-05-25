@@ -7,8 +7,8 @@ package kunlun.action;
 
 import kunlun.action.event.Event;
 import kunlun.action.event.support.SimpleEventCollector;
-import kunlun.action.message.support.SimpleMessageHandler;
 import kunlun.action.tool.MimeTypeAction;
+import kunlun.action.message.support.SimpleMessageBus;
 import kunlun.common.constant.Nil;
 import kunlun.core.Action;
 import kunlun.logging.Logger;
@@ -32,8 +32,8 @@ public class ActionUtil {
         String name = "event-collector";
         mgr.registerAction(name, new SimpleEventCollector());
         mgr.registerShortcut(Event.class, name);
-        name = "mq";
-        mgr.registerAction(name, new SimpleMessageHandler());
+        name = "internal-bus";
+        mgr.registerAction(name, new SimpleMessageBus());
         mgr.registerShortcut(Message.class,   name);
         mgr.registerShortcut(Subscribe.class, name);
         name = "mime-type";

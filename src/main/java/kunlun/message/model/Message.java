@@ -5,7 +5,7 @@
 
 package kunlun.message.model;
 
-import kunlun.message.MessageHandler;
+import kunlun.message.MessageBus;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -14,7 +14,8 @@ import java.util.Map;
  * The common message object.
  * @author Kahle
  */
-public class Message extends MessageHandler.Base {
+public class Message extends MessageBus.Base {
+    private String id;
     private Object body;
 
     public Message(String topic, Object body, Map<String, Object> properties) {
@@ -35,6 +36,16 @@ public class Message extends MessageHandler.Base {
     public Message() {
 
         this.setProperties(new LinkedHashMap<String, Object>());
+    }
+
+    public String getId() {
+
+        return id;
+    }
+
+    public void setId(String id) {
+
+        this.id = id;
     }
 
     public Object getBody() {

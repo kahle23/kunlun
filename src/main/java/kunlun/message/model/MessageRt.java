@@ -12,15 +12,15 @@ import java.util.Map;
  * The message related result object.
  * @author Kahle
  */
-public class Result implements Serializable {
+public class MessageRt implements Serializable {
     private Map<String, Object> others;
 
-    public Result(Map<String, Object> others) {
+    public MessageRt(Map<String, Object> others) {
 
         this.others = others;
     }
 
-    public Result() {
+    public MessageRt() {
 
     }
 

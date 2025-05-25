@@ -7,8 +7,9 @@ package kunlun.message;
 
 import kunlun.core.Strategy;
 import kunlun.message.model.Message;
-import kunlun.message.model.Result;
+import kunlun.message.model.MessageRt;
 import kunlun.message.model.Subscribe;
+import kunlun.message.model.SubscribeRt;
 import kunlun.util.Assert;
 
 import java.io.Serializable;
@@ -19,14 +20,14 @@ import java.util.Map;
  * The message handler for producer-consumer models.
  * @author Kahle
  */
-public interface MessageHandler extends Strategy {
+public interface MessageBus extends Strategy {
 
     /**
      * Send the messages.
      * @param messages The messages to be sent
      * @return The result of send
      */
-    <T extends Message> Result send(Collection<T> messages);
+    <T extends Message> MessageRt send(Collection<T> messages);
 
     /**
      * Receive a message.
@@ -40,7 +41,7 @@ public interface MessageHandler extends Strategy {
      * @param subscribe The parameters when subscribing
      * @return The subscription result or null
      */
-    Result subscribe(Subscribe subscribe);
+    SubscribeRt subscribe(Subscribe subscribe);
 
     /**
      * The message related base object.

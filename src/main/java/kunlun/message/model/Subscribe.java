@@ -6,7 +6,7 @@
 package kunlun.message.model;
 
 import kunlun.data.Dict;
-import kunlun.message.MessageHandler;
+import kunlun.message.MessageBus;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,7 +15,7 @@ import java.util.Map;
  * The message subscription parameters.
  * @author Kahle
  */
-public class Subscribe extends MessageHandler.Base {
+public class Subscribe extends MessageBus.Base {
     private String subExpression;
     private Object messageListener;
 

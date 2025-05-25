@@ -109,12 +109,12 @@ public class SecurityUtil {
 
     public static String getUserGroup() {
 
-        return IterUtil.getFirst(getContext().getUserGroups(Nulls.OBJ));
+        return IterUtil.getFirst(getContext().getUserGroups(Nil.OBJ));
     }
 
     public static Collection<String> getUserGroups() {
 
-        return getContext().getUserGroups(Nulls.OBJ);
+        return getContext().getUserGroups(Nil.OBJ);
     }
 
     public static Collection<String> getUserGroups(Object groupType) {
