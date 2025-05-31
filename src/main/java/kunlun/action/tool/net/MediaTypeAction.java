@@ -1,4 +1,4 @@
-package kunlun.action.tool;
+package kunlun.action.tool.net;
 
 import kunlun.core.Action;
 import kunlun.util.StrUtil;
@@ -10,7 +10,7 @@ import java.net.URLConnection;
  * The mime type action.
  * @author Kahle
  */
-public class MimeTypeAction implements Action {
+public class MediaTypeAction implements Action {
     public static final String DEFAULT_TYPE = "application/octet-stream";
 
     /*protected String getMimeType(Path file) {
