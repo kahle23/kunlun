@@ -7,7 +7,6 @@ package kunlun.data.dict;
 
 import kunlun.common.Page;
 import kunlun.common.constant.Symbols;
-import kunlun.util.Assert;
 import kunlun.util.CollUtil;
 
 import java.util.Collection;
@@ -16,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.lang.Boolean.FALSE;
+import static kunlun.util.Assert.notBlank;
 import static kunlun.util.Assert.notNull;
 
 /**
@@ -34,60 +34,60 @@ public abstract class AbstractDictService implements DictService {
     @Override
     public void setDefaultNamespace(String defaultNamespace) {
 
-        this.defaultNamespace = Assert.notBlank(defaultNamespace);
+        this.defaultNamespace = notBlank(defaultNamespace);
     }
 
     @Override
-    public void syncByGroup(Collection<Dict> data) {
+    public void syncByGroup(Collection<DataDict> data) {
 
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void syncByCode(Collection<Dict> data) {
+    public void syncByCode(Collection<DataDict> data) {
 
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Dict getByName(String namespace, String groupCode, String name) {
+    public DataDict getByName(String namespace, String groupCode, String name) {
         DictQuery condition = new DictQuery(namespace, notNull(groupCode));
         condition.setName(notNull(name));
         return getByCondition(condition);
     }
 
     @Override
-    public Dict getByCode(String namespace, String groupCode, String code) {
+    public DataDict getByCode(String namespace, String groupCode, String code) {
         DictQuery condition = new DictQuery(namespace, notNull(groupCode));
         condition.setCode(notNull(code));
         return getByCondition(condition);
     }
 
     @Override
-    public Dict getByValue(String namespace, String groupCode, String value) {
+    public DataDict getByValue(String namespace, String groupCode, String value) {
         DictQuery condition = new DictQuery(namespace, notNull(groupCode));
         condition.setValue(notNull(value));
         return getByCondition(condition);
     }
 
     @Override
-    public Dict getByCondition(DictQuery condition) {
-        Page<Dict> page = listByCondition(FALSE, notNull(condition));
+    public DataDict getByCondition(DictQuery condition) {
+        Page<DataDict> page = listByCondition(FALSE, notNull(condition));
         return CollUtil.getFirst(page.getData());
     }
 
     @Override
-    public List<Dict> listByGroup(String namespace, String groupCode) {
-        Page<Dict> page = listByCondition(FALSE, new DictQuery(namespace, notNull(groupCode)));
+    public List<DataDict> listByGroup(String namespace, String groupCode) {
+        Page<DataDict> page = listByCondition(FALSE, new DictQuery(namespace, notNull(groupCode)));
         return page.getData();
     }
 
     @Override
-    public Map<String, Dict> mapByGroup(String namespace, String groupCode) {
-        Map<String, Dict> result = new LinkedHashMap<String, Dict>();
-        for (Dict dict : listByGroup(namespace, groupCode)) {
-            if (dict == null) { continue; }
-            result.put(dict.getValue(), dict);
+    public Map<String, DataDict> mapByGroup(String namespace, String groupCode) {
+        Map<String, DataDict> result = new LinkedHashMap<String, DataDict>();
+        for (DataDict dataDict : listByGroup(namespace, groupCode)) {
+            if (dataDict == null) { continue; }
+            result.put(dataDict.getValue(), dataDict);
         }
         return result;
     }

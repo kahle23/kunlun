@@ -13,7 +13,7 @@ import java.util.Map;
  * What is a data dictionary? A list that explains and describes specific information.
  * @author Kahle
  */
-public interface Dict extends Serializable {
+public interface DataDict extends Serializable {
 
     /**
      * Get the namespace of the dictionary item.

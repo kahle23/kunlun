@@ -55,47 +55,47 @@ public class DictUtil {
         getDictService().setDefaultNamespace(defaultNamespace);
     }
 
-    public static void syncByGroup(Collection<Dict> data) {
+    public static void syncByGroup(Collection<DataDict> data) {
 
         getDictService().syncByGroup(data);
     }
 
-    public static void syncByCode(Collection<Dict> data) {
+    public static void syncByCode(Collection<DataDict> data) {
 
         getDictService().syncByCode(data);
     }
 
-    public static Dict getByName(String namespace, String groupCode, String name) {
+    public static DataDict getByName(String namespace, String groupCode, String name) {
 
         return getDictService().getByName(namespace, groupCode, name);
     }
 
-    public static Dict getByCode(String namespace, String groupCode, String code) {
+    public static DataDict getByCode(String namespace, String groupCode, String code) {
 
         return getDictService().getByCode(namespace, groupCode, code);
     }
 
-    public static Dict getByValue(String namespace, String groupCode, String value) {
+    public static DataDict getByValue(String namespace, String groupCode, String value) {
 
         return getDictService().getByValue(namespace, groupCode, value);
     }
 
-    public static Dict getByCondition(DictQuery condition) {
+    public static DataDict getByCondition(DictQuery condition) {
 
         return getDictService().getByCondition(condition);
     }
 
-    public static List<Dict> listByGroup(String namespace, String groupCode) {
+    public static List<DataDict> listByGroup(String namespace, String groupCode) {
 
         return getDictService().listByGroup(namespace, groupCode);
     }
 
-    public static Map<String, Dict> mapByGroup(String namespace, String groupCode) {
+    public static Map<String, DataDict> mapByGroup(String namespace, String groupCode) {
 
         return getDictService().mapByGroup(namespace, groupCode);
     }
 
-    public static Page<Dict> listByCondition(boolean paged, DictQuery condition) {
+    public static Page<DataDict> listByCondition(boolean paged, DictQuery condition) {
 
         return getDictService().listByCondition(paged, condition);
     }
@@ -104,27 +104,27 @@ public class DictUtil {
 
     // region ======== extended methods ========
 
-    public static Dict getByName(String groupCode, String name) {
+    public static DataDict getByName(String groupCode, String name) {
 
         return getByName(Nil.STR, groupCode, name);
     }
 
-    public static Dict getByCode(String groupCode, String code) {
+    public static DataDict getByCode(String groupCode, String code) {
 
         return getByCode(Nil.STR, groupCode, code);
     }
 
-    public static Dict getByValue(String groupCode, String value) {
+    public static DataDict getByValue(String groupCode, String value) {
 
         return getByValue(Nil.STR, groupCode, value);
     }
 
-    public static List<Dict> listByGroup(String groupCode) {
+    public static List<DataDict> listByGroup(String groupCode) {
 
         return listByGroup(Nil.STR, groupCode);
     }
 
-    public static Map<String, Dict> mapByGroup(String groupCode) {
+    public static Map<String, DataDict> mapByGroup(String groupCode) {
 
         return mapByGroup(Nil.STR, groupCode);
     }

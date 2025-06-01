@@ -7,7 +7,7 @@ package kunlun.data.dict.support;
 
 import kunlun.common.Page;
 import kunlun.data.dict.AbstractDictService;
-import kunlun.data.dict.Dict;
+import kunlun.data.dict.DataDict;
 import kunlun.data.dict.DictQuery;
 
 /**
@@ -17,7 +17,7 @@ import kunlun.data.dict.DictQuery;
 public class SimpleDictService extends AbstractDictService {
 
     @Override
-    public Page<Dict> listByCondition(boolean paged, DictQuery condition) {
+    public Page<DataDict> listByCondition(boolean paged, DictQuery condition) {
 
         throw new UnsupportedOperationException();
     }

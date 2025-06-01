@@ -39,14 +39,14 @@ public interface DictService {
      * (item's code cannot be null)
      * @param data The dictionary data to be synchronized
      */
-    void syncByGroup(Collection<Dict> data);
+    void syncByGroup(Collection<DataDict> data);
 
     /**
      * Synchronize the list of dictionary items based on their group code and item code (or id).
      * (item's scope and group and code cannot be null)
      * @param data The dictionary data to be synchronized
      */
-    void syncByCode(Collection<Dict> data);
+    void syncByCode(Collection<DataDict> data);
     // endregion
 
 
@@ -58,7 +58,7 @@ public interface DictService {
      * @param name The dictionary item name
      * @return The dictionary item or null
      */
-    Dict getByName(String namespace, String groupCode, String name);
+    DataDict getByName(String namespace, String groupCode, String name);
 
     /**
      * Get the dict object by the dictionary item code.
@@ -67,7 +67,7 @@ public interface DictService {
      * @param code The dictionary item code
      * @return The dictionary item or null
      */
-    Dict getByCode(String namespace, String groupCode, String code);
+    DataDict getByCode(String namespace, String groupCode, String code);
 
     /**
      * Get the dict object by the dictionary item value.
@@ -76,14 +76,14 @@ public interface DictService {
      * @param value The dictionary item value
      * @return The dictionary item or null
      */
-    Dict getByValue(String namespace, String groupCode, String value);
+    DataDict getByValue(String namespace, String groupCode, String value);
 
     /**
      * Condition query a dictionary item (multiple items will error).
      * @param condition The dictionary query condition
      * @return The dictionary item or null
      */
-    Dict getByCondition(DictQuery condition);
+    DataDict getByCondition(DictQuery condition);
     // endregion
 
 
@@ -94,7 +94,7 @@ public interface DictService {
      * @param groupCode The dictionary group code
      * @return The list of dictionary items
      */
-    List<Dict> listByGroup(String namespace, String groupCode);
+    List<DataDict> listByGroup(String namespace, String groupCode);
 
     /**
      * Query the dictionary items map by item group code.
@@ -102,7 +102,7 @@ public interface DictService {
      * @param groupCode The dictionary group code
      * @return The map of dictionary items
      */
-    Map<String, Dict> mapByGroup(String namespace, String groupCode);
+    Map<String, DataDict> mapByGroup(String namespace, String groupCode);
 
     /**
      * Condition query the dictionary items list or page.
@@ -110,7 +110,7 @@ public interface DictService {
      * @param condition The dictionary query condition
      * @return The list or page of dictionary items
      */
-    Page<Dict> listByCondition(boolean paged, DictQuery condition);
+    Page<DataDict> listByCondition(boolean paged, DictQuery condition);
     // endregion
 
 }

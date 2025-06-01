@@ -9,7 +9,7 @@ import kunlun.cache.Cache;
 import kunlun.common.Page;
 import kunlun.common.constant.Nil;
 import kunlun.data.dict.AbstractDictService;
-import kunlun.data.dict.Dict;
+import kunlun.data.dict.DataDict;
 import kunlun.data.dict.DictQuery;
 import kunlun.data.dict.DictService;
 import kunlun.util.Assert;
@@ -51,11 +51,11 @@ public class CacheDictService extends AbstractDictService {
         String key = String.format("%s-%s:%s-%s-%s", condition.getNamespace(), condition.getGroupCode()
                 , condition.getName(), condition.getCode(), condition.getValue());
         //noinspection unchecked
-        Page<Dict> val = (Page<Dict>) cache.get(key);
+        Page<DataDict> val = (Page<DataDict>) cache.get(key);
         if (val != null) { return val; }
         synchronized (key.intern()) {
             //noinspection unchecked
-            if ((val = (Page<Dict>) cache.get(key)) != null) { return val; }
+            if ((val = (Page<DataDict>) cache.get(key)) != null) { return val; }
             val = dictService.listByCondition(paged, condition);
             if (val == null) { return null; }
             if (timeToLive != null && timeUnit != null) {
