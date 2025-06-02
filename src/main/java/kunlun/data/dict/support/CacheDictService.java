@@ -15,6 +15,7 @@ import kunlun.data.dict.DictService;
 import kunlun.util.Assert;
 import kunlun.util.StrUtil;
 
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,7 +44,19 @@ public class CacheDictService extends AbstractDictService {
     }
 
     @Override
-    public Page<Dict> listByCondition(boolean paged, DictQuery condition) {
+    public void syncByGroup(Collection<DataDict> data) {
+
+        dictService.syncByGroup(data);
+    }
+
+    @Override
+    public void syncByCode(Collection<DataDict> data) {
+
+        dictService.syncByCode(data);
+    }
+
+    @Override
+    public Page<DataDict> listByCondition(boolean paged, DictQuery condition) {
         Assert.notNull(condition, "Parameter \"condition\" must not null. ");
         if (paged || StrUtil.isBlank(condition.getGroupCode())) {
             return dictService.listByCondition(paged, condition);
