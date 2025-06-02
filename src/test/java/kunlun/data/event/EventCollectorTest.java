@@ -3,9 +3,10 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.event;
+package kunlun.data.event;
 
 import kunlun.action.ActionUtil;
+import kunlun.data.Event;
 import kunlun.data.mock.MockUtil;
 import kunlun.test.pojo.entity.system.User;
 import org.junit.Test;

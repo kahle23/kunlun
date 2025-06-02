@@ -3,19 +3,20 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.event;
+package kunlun.data;
 
 import kunlun.core.Builder;
-import kunlun.data.Dict;
-import kunlun.util.Assert;
 
 import java.util.Map;
+
+import static kunlun.util.Assert.notNull;
 
 /**
  * The event record.
  * @author Kahle
  */
 public class Event implements Builder {
+    // region ======== The constants ========
     /**
      * The user's operation records (in most cases).
      */
@@ -28,6 +29,10 @@ public class Event implements Builder {
      * The system's run logs (in most cases).
      */
     public static final String RUN_LOG = "run-log";
+    // endregion
+
+
+    // region ======== The static methods ========
 
     public static Event ofOperationLog() {
 
@@ -53,8 +58,10 @@ public class Event implements Builder {
 
         return new Event();
     }
+    // endregion
 
-    // ====
+
+    // region ======== The event object ========
 
     private Level  level = Level.INFO;
     private String name;
@@ -65,6 +72,7 @@ public class Event implements Builder {
     private String tenantId;
     private Object businessId;
     private Object businessType;
+    private String module;
     private StringBuilder message = new StringBuilder();
     private StringBuilder error   = new StringBuilder();
     private Dict data = Dict.of();
@@ -75,7 +83,7 @@ public class Event implements Builder {
     }
 
     public Event setLevel(Level level) {
-        this.level = Assert.notNull(level);
+        this.level = notNull(level);
         return this;
     }
 
@@ -85,7 +93,7 @@ public class Event implements Builder {
     }
 
     public Event setName(String name) {
-        this.name = Assert.notBlank(name);
+        this.name = name;
         return this;
     }
 
@@ -95,7 +103,7 @@ public class Event implements Builder {
     }
 
     public Event setTime(Long time) {
-        this.time = Assert.notNull(time);
+        this.time = time;
         return this;
     }
 
@@ -105,7 +113,7 @@ public class Event implements Builder {
     }
 
     public Event setUserId(Object userId) {
-        this.userId = Assert.notNull(userId);
+        this.userId = userId;
         return this;
     }
 
@@ -115,7 +123,7 @@ public class Event implements Builder {
     }
 
     public Event setUserType(Object userType) {
-        this.userType = Assert.notNull(userType);
+        this.userType = userType;
         return this;
     }
 
@@ -125,7 +133,7 @@ public class Event implements Builder {
     }
 
     public Event setPlatform(String platform) {
-        this.platform = Assert.notBlank(platform);
+        this.platform = platform;
         return this;
     }
 
@@ -135,7 +143,7 @@ public class Event implements Builder {
     }
 
     public Event setTenantId(String tenantId) {
-        this.tenantId = Assert.notBlank(tenantId);
+        this.tenantId = tenantId;
         return this;
     }
 
@@ -145,7 +153,7 @@ public class Event implements Builder {
     }
 
     public Event setBusinessId(Object businessId) {
-        this.businessId = Assert.notNull(businessId);
+        this.businessId = businessId;
         return this;
     }
 
@@ -155,7 +163,17 @@ public class Event implements Builder {
     }
 
     public Event setBusinessType(Object businessType) {
-        this.businessType = Assert.notNull(businessType);
+        this.businessType = businessType;
+        return this;
+    }
+
+    public String getModule() {
+
+        return module;
+    }
+
+    public Event setModule(String module) {
+        this.module = module;
         return this;
     }
 
@@ -165,7 +183,7 @@ public class Event implements Builder {
     }
 
     public Event setMessage(StringBuilder message) {
-        this.message = Assert.notNull(message);
+        this.message = notNull(message);
         return this;
     }
 
@@ -175,12 +193,12 @@ public class Event implements Builder {
     }
 
     public Event appendMessage(String format, Object... args) {
-        this.message.append(String.format(Assert.notBlank(format), args));
+        this.message.append(String.format(format, args));
         return this;
     }
 
     public Event appendMessage(Builder builder) {
-        this.message.append(Assert.notNull(builder).build());
+        this.message.append(builder.build());
         return this;
     }
 
@@ -190,7 +208,7 @@ public class Event implements Builder {
     }
 
     public Event setError(StringBuilder error) {
-        this.error = Assert.notNull(error);
+        this.error = notNull(error);
         return this;
     }
 
@@ -205,7 +223,7 @@ public class Event implements Builder {
     }
 
     public Event setData(Dict data) {
-        this.data = Assert.notNull(data);
+        this.data = notNull(data);
         return this;
     }
 
@@ -222,7 +240,7 @@ public class Event implements Builder {
     @Override
     public Dict build() {
         return Dict.of("level",  level.getValue())
-                .set("name",     Assert.notBlank(name))
+                .set("name",     name)
                 .set("time",     time)
                 .set("userId",   userId)
                 .set("userType", userType)
@@ -230,14 +248,16 @@ public class Event implements Builder {
                 .set("tenantId", tenantId)
                 .set("businessId",   businessId)
                 .set("businessType", businessType)
+                .set("module",  module)
                 .set("message", message.toString())
                 .set("error",   error.toString())
                 .set("data",    data)
         ;
     }
+    // endregion
 
-    // ====
 
+    // region ======== The event level ========
     /**
      * The event level.
      * @author Kahle
@@ -287,5 +307,6 @@ public class Event implements Builder {
             return null;
         }
     }
+    // endregion
 
 }
