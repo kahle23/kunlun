@@ -130,4 +130,30 @@ public class DictUtil {
     }
     // endregion
 
+
+    // region ======== extended methods 1 ========
+
+    public static String getValueByName(String namespace, String groupCode, String name) {
+        DataDict dataDict = getByName(namespace, groupCode, name);
+        if (dataDict == null) { return null; }
+        return dataDict.getValue();
+    }
+
+    public static String getValueByName(String groupCode, String name) {
+
+        return getValueByName(Nil.STR, groupCode, name);
+    }
+
+    public static String getNameByValue(String namespace, String groupCode, String value) {
+        DataDict dataDict = getByValue(namespace, groupCode, value);
+        if (dataDict == null) { return null; }
+        return dataDict.getName();
+    }
+
+    public static String getNameByValue(String groupCode, String value) {
+
+        return getNameByValue(Nil.STR, groupCode, value);
+    }
+    // endregion
+
 }
