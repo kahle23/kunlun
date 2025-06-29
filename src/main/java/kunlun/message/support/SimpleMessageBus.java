@@ -3,9 +3,10 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.action.message.support;
+package kunlun.message.support;
 
 import kunlun.action.message.AbstractMessageBus;
+import kunlun.data.Dict;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.message.MessageListener;
@@ -43,16 +44,17 @@ public class SimpleMessageBus extends AbstractMessageBus {
 
     @Override
     public <T extends Message> MessageRt send(Collection<T> messages) {
+        List<Object> onMessages = new ArrayList<Object>();
         for (Message message : notEmpty(messages)) {
             String topic = notNull(message).getTopic();
             List<MessageListener> list = listeners.get(topic);
             state(isNotEmpty(list), "Please register the message listener first! ");
             for (MessageListener listener : list) {
                 // Do not handle the exception, as it is executed synchronously.
-                listener.onMessage(message);
+                onMessages.add(listener.onMessage(message));
             }
         }
-        return new MessageRt();
+        return new MessageRt(Dict.of("onMessages", onMessages));
     }
 
     @Override

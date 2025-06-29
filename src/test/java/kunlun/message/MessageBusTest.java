@@ -1,7 +1,7 @@
 package kunlun.message;
 
 import com.alibaba.fastjson.JSON;
-import kunlun.action.message.support.SimpleMessageBus;
+import kunlun.message.support.SimpleMessageBus;
 import kunlun.common.constant.Words;
 import kunlun.data.json.JsonUtil;
 import kunlun.data.json.support.AbstractJsonHandler;

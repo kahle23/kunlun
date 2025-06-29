@@ -38,6 +38,15 @@ public class ExceptionUtilTest {
         }
     }
 
+    @Test
+    public void test3() {
+        try {
+            this.throwError1();
+        } catch (Error e) {
+            log.info(e.getMessage(), e);
+        }
+    }
+
     private void throwException1() {
         try {
             throw new UncheckedException("throwException1 >> UncheckedException");
@@ -52,6 +61,14 @@ public class ExceptionUtilTest {
             throw new IOException("throwException2 >> IOException");
         }
         catch (Exception e) {
+            throw ExceptionUtil.wrap(e);
+        }
+    }
+
+    private void throwError1() {
+        try {
+            throw new Error("throwError1 >> Error");
+        } catch (Error e) {
             throw ExceptionUtil.wrap(e);
         }
     }

@@ -10,11 +10,13 @@ import kunlun.message.model.Message;
 import kunlun.message.model.MessageRt;
 import kunlun.message.model.Subscribe;
 import kunlun.message.model.SubscribeRt;
-import kunlun.util.Assert;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
+
+import static kunlun.util.Assert.notBlank;
+import static kunlun.util.Assert.notNull;
 
 /**
  * The message handler for producer-consumer models.
@@ -52,8 +54,8 @@ public interface MessageBus extends Strategy {
         private String topic;
 
         public Base(String topic, Map<String, Object> properties) {
-            this.properties = Assert.notNull(properties);
-            this.topic = Assert.notBlank(topic);
+            this.properties = notNull(properties);
+            this.topic = notBlank(topic);
         }
 
         public Base() {
@@ -77,7 +79,7 @@ public interface MessageBus extends Strategy {
 
         public void setProperties(Map<String, Object> properties) {
 
-            this.properties = properties;
+            this.properties = notNull(properties);
         }
     }
 
