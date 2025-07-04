@@ -28,7 +28,7 @@ public interface UserManager {
      * @param userType The user type (for example, toC user, toB user, or admin user)
      * @return The user's permission identifiers
      */
-    Collection<String> getUserPermissions(Object userId, Object userType);
+    Collection<String> getPermissions(Object userId, Object userType);
 
     /**
      * Gets a list of the groups to which the user belongs.

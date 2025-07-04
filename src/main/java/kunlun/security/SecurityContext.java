@@ -79,7 +79,7 @@ public interface SecurityContext extends Context {
      * Get the current user's permission identifiers.
      * @return The current user's permission identifiers
      */
-    Collection<String> getUserPermissions();
+    Collection<String> getPermissions();
 
     /**
      * Get the current user's groups list.

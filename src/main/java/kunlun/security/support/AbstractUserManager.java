@@ -16,7 +16,7 @@ import java.util.Collection;
 public abstract class AbstractUserManager implements UserManager {
 
     @Override
-    public Collection<String> getUserPermissions(Object userId, Object userType) {
+    public Collection<String> getPermissions(Object userId, Object userType) {
 
         return null;
     }

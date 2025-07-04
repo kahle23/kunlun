@@ -39,7 +39,7 @@ public class SimpleAccessController implements AccessController {
         if (getUserManager() == null) { return true; }
         if (StrUtil.isBlank(permission)) { return true; }
         // Get user permissions.
-        Collection<String> permissions = getUserManager().getUserPermissions(userId, userType);
+        Collection<String> permissions = getUserManager().getPermissions(userId, userType);
         // Is not turn on access permission.
         if (permissions == null) { return true; }
         // Judge access permission.

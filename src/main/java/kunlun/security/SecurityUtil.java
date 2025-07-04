@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import static kunlun.common.constant.Numbers.ONE;
+import static kunlun.convert.ConversionUtil.convert;
 import static kunlun.security.TokenManager.Token;
 import static kunlun.security.UserManager.UserDetail;
 import static kunlun.util.Assert.*;
@@ -97,24 +98,19 @@ public class SecurityUtil {
         return getContext().getUserDetail();
     }
 
-    public static <T> T getUserDetail(Class<T> clazz) {
+    public static <T extends UserDetail> T getUserDetail(Class<T> clazz) {
         //noinspection unchecked
         return (T) getContext().getUserDetail();
     }
 
-    public static Collection<String> getUserPermissions() {
+    public static Collection<String> getPermissions() {
 
-        return getContext().getUserPermissions();
+        return getContext().getPermissions();
     }
 
-    public static String getUserGroup() {
-
-        return IterUtil.getFirst(getContext().getUserGroups(Nil.OBJ));
-    }
-
-    public static Collection<String> getUserGroups() {
-
-        return getContext().getUserGroups(Nil.OBJ);
+    public static <T> T getUserGroup(Class<T> clazz) {
+        isTrue(String.class.equals(clazz) || Long.class.equals(clazz));
+        return convert(IterUtil.getFirst(getUserGroups(Nil.OBJ)), clazz);
     }
 
     public static Collection<String> getUserGroups(Object groupType) {
@@ -169,9 +165,9 @@ public class SecurityUtil {
         return getUserManager().getUserDetail(userId, userType);
     }
 
-    public static Collection<String> getUserPermissions(Object userId, Object userType) {
+    public static Collection<String> getPermissions(Object userId, Object userType) {
 
-        return getUserManager().getUserPermissions(userId, userType);
+        return getUserManager().getPermissions(userId, userType);
     }
 
     public static Collection<String> getUserGroups(Object userId, Object userType, Object groupType) {
