@@ -6,8 +6,9 @@
 package kunlun.io.file.support;
 
 import com.alibaba.fastjson.JSON;
+import kunlun.common.constant.Nil;
 import kunlun.io.FileBase;
-import kunlun.io.FileEntity;
+import kunlun.io.FileObject;
 import kunlun.io.util.IoUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -26,9 +27,9 @@ public class LocalFileStorageTest {
 
     @Test
     public void test1() {
-        FileEntityImpl fileEntity = new FileEntityImpl(testPath);
-        fileEntity.setInputStream(new ByteArrayInputStream("Hello, world! ".getBytes()));
-        Object put = localFileStorage.put(fileEntity);
+        FileObject fileObject = new FileObject(Nil.STR, testPath);
+        fileObject.setContent(new ByteArrayInputStream("Hello, world! ".getBytes()));
+        Object put = localFileStorage.put(fileObject);
         log.info("put: {}", put);
         put = localFileStorage.put(testPath, "Hello, Hello, world! ");
         log.info("put: {}", put);
@@ -37,17 +38,17 @@ public class LocalFileStorageTest {
     @Test
     public void test2() throws IOException {
         // Put file.
-        FileEntityImpl filePut = new FileEntityImpl(testPath);
-        filePut.setInputStream(new ByteArrayInputStream("Hello, world! ".getBytes()));
+        FileObject filePut = new FileObject(Nil.STR, testPath);
+        filePut.setContent(new ByteArrayInputStream("Hello, world! ".getBytes()));
         Object put = localFileStorage.put(filePut);
         log.info("put: {}", put);
         // Get file and exist file.
         boolean exist = localFileStorage.exist(testPath);
-        FileEntity fileGet = localFileStorage.get(testPath);
-        InputStream inputStream = fileGet.getInputStream();
+        FileObject fileGet = localFileStorage.get(testPath);
+        InputStream inputStream = fileGet.getContent();
         String content = IoUtil.readUtf8(inputStream);
         String name = fileGet.getName();
-        String path = fileGet.getPath();
+        String path = fileGet.getAddr();
         log.info("exist: {}, name: {}, path: {}, content: {}", exist, name, path, content);
         // Delete file and exist file.
         Boolean delete = localFileStorage.delete(testPath);

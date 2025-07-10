@@ -7,7 +7,7 @@ package kunlun.io.storage;
 
 import com.alibaba.fastjson.JSON;
 import kunlun.io.FileBase;
-import kunlun.io.FileEntity;
+import kunlun.io.FileObject;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Ignore;
@@ -25,7 +25,7 @@ public class StorageUtilTest {
     @Test
     public void test1() {
         StorageUtil.put(DEFAULT, TEST_KEY, "Hello, world! ");
-        log.info(JSON.toJSONString(StorageUtil.get(DEFAULT, TEST_KEY, FileEntity.class)));
+        log.info(JSON.toJSONString(StorageUtil.get(DEFAULT, TEST_KEY, FileObject.class)));
     }
 
     @Test

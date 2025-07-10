@@ -9,7 +9,7 @@ import kunlun.data.tuple.KeyValue;
 import kunlun.data.tuple.Pair;
 import kunlun.exception.ExceptionUtil;
 import kunlun.io.FileBase;
-import kunlun.io.FileEntity;
+import kunlun.io.FileObject;
 import kunlun.io.storage.AbstractDataStorage;
 import kunlun.io.util.FileUtil;
 import kunlun.io.util.IoUtil;
@@ -57,9 +57,9 @@ public class LocalFileStorage extends AbstractDataStorage {
             return (File) key;
         }
         else if (key instanceof FileBase) {
-            String path = ((FileBase) key).getPath();
-            Assert.notBlank(path, "Parameter \"path\" must not null. ");
-            return new File(path);
+            String addr = ((FileBase) key).getAddr();
+            Assert.notBlank(addr, "Parameter \"addr\" must not null. ");
+            return new File(addr);
         }
         else {
             throw new IllegalArgumentException("Parameter \"key\" is not supported. ");
@@ -73,49 +73,47 @@ public class LocalFileStorage extends AbstractDataStorage {
     }
 
     @Override
-    public FileEntity get(Object key) {
+    public FileObject get(Object key) {
         File file = convertToFile(key);
         if (!file.exists()) { return null; }
         Assert.isTrue(file.isFile(), "Parameter \"key\" must correspond to a file. ");
-        String name = file.getName();
-        String path = file.getPath();
-        InputStream inputStream;
-        try { inputStream = new FileInputStream(file); }
+        FileObject fileObject = new FileObject(file.getName(), file.getPath());
+        try { fileObject.setContent(new FileInputStream(file)); }
         catch (FileNotFoundException e) {
             throw ExceptionUtil.wrap(e);
         }
-        return new FileEntityImpl(name, path, inputStream);
+        return fileObject;
     }
 
     @Override
     public Object put(Object data) {
         Assert.notNull(data, "Parameter \"data\" must not null. ");
         InputStream inputStream = null;
-        String path;
+        String addr;
         try {
-            if (data instanceof FileEntity) {
-                FileEntity fileEntity = (FileEntity) data;
-                inputStream = fileEntity.getInputStream();
-                path = fileEntity.getPath();
+            if (data instanceof FileObject) {
+                FileObject fileObject = (FileObject) data;
+                inputStream = fileObject.getContent();
+                addr = fileObject.getAddr();
             }
             else if (data instanceof KeyValue) {
                 @SuppressWarnings("rawtypes")
                 KeyValue keyValue = (KeyValue) data;
                 inputStream = convertToStream(keyValue.getValue(), charset);
-                path = keyValue.getKey() != null ? String.valueOf(keyValue.getKey()) : null;
+                addr = keyValue.getKey() != null ? String.valueOf(keyValue.getKey()) : null;
             }
             else if (data instanceof Pair) {
                 @SuppressWarnings("rawtypes")
                 Pair pair = (Pair) data;
                 inputStream = convertToStream(pair.getRight(), charset);
-                path = pair.getLeft() != null ? String.valueOf(pair.getLeft()) : null;
+                addr = pair.getLeft() != null ? String.valueOf(pair.getLeft()) : null;
             }
             else {
                 throw new IllegalArgumentException("Parameter \"data\" is not supported. ");
             }
             Assert.notNull(inputStream, "Parameter \"inputStream\" must not null. ");
-            Assert.notNull(path, "Parameter \"path\" must not null. ");
-            return FileUtil.write(inputStream, new File(path));
+            Assert.notNull(addr, "Parameter \"path\" must not null. ");
+            return FileUtil.writeFromStream(inputStream, new File(addr));
         }
         catch (Exception e) {
             throw ExceptionUtil.wrap(e);
@@ -141,7 +139,7 @@ public class LocalFileStorage extends AbstractDataStorage {
         List<FileBase> list = new ArrayList<FileBase>();
         for (File filePath : files) {
             if (filePath == null) { continue; }
-            list.add(new FileBaseImpl(filePath.getName(), filePath.getPath()));
+            list.add(new FileBase(filePath.getName(), filePath.getPath()));
         }
         return list;
     }

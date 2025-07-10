@@ -5,28 +5,43 @@
 
 package kunlun.io;
 
+import java.io.Serializable;
+
 /**
  * The base information about the file.
  * @author Kahle
  */
-public interface FileBase {
+public class FileBase implements Serializable {
+    private String name;
+    private String addr;
 
-    /**
-     * Get the file name.
-     * @return The file name
-     */
-    String getName();
+    public FileBase(String name, String addr) {
+        this.name = name;
+        this.addr = addr;
+    }
 
-    /**
-     * Get the file path.
-     * @return The file path
-     */
-    String getPath();
+    public FileBase() {
 
-    /**
-     * Get the file charset (nullable).
-     * @return The file charset (nullable)
-     */
-    String getCharset();
+    }
+
+    public String getName() {
+
+        return name;
+    }
+
+    public void setName(String name) {
+
+        this.name = name;
+    }
+
+    public String getAddr() {
+
+        return addr;
+    }
+
+    public void setAddr(String addr) {
+
+        this.addr = addr;
+    }
 
 }
