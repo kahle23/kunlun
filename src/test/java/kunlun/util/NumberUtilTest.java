@@ -43,4 +43,18 @@ public class NumberUtilTest {
         log.info(NumberUtil.format(new BigDecimal("689.012003"), "0.000"));
     }
 
+    @Test
+    public void test3() {
+        NumberUtil.getFormatProcessor().setDefaultThreshold(new BigDecimal("0.01"));
+        NumberUtil.getRoundProcessor().setDefaultThreshold(new BigDecimal("0.01"));
+        log.info(NumberUtil.format(123456.000003d, ",##0.00"));
+        log.info(NumberUtil.format(1.234003d, ",##0.00"));
+        log.info(NumberUtil.format(0.234003d, ",##0.00"));
+        log.info(NumberUtil.format(0.00003d, ",##0.00"));
+        log.info(NumberUtil.format(null, ",##0.00"));
+        log.info("{}", NumberUtil.round(0.000003d, 2));
+        log.info("{}", NumberUtil.round(1.234003d, 2));
+        log.info("{}", NumberUtil.round(null, 2));
+    }
+
 }
