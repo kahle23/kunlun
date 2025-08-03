@@ -5,14 +5,13 @@
 
 package kunlun.data.fill.classic;
 
-import kunlun.core.function.Function;
 import kunlun.data.fill.DataFiller;
+import kunlun.data.fill.DataSupplier;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.data.fill.classic.ClassicFiller.FieldCfg;
@@ -25,21 +24,21 @@ import static kunlun.util.Assert.notNull;
  */
 public class DataCfg implements DataFiller.DataConfig, Serializable {
 
-    public static DataCfg of(Function<Collection<?>, Map<String, Map<String, Object>>> dataSupplier) {
+    public static DataCfg of(DataSupplier dataSupplier) {
 
         return new DataCfg(dataSupplier);
     }
 
-    private final Function<Collection<?>, Map<String, Map<String, Object>>> dataSupplier;
     private Collection<FieldCfg> fieldConfigs = new ArrayList<FieldCfg>();
+    private final DataSupplier dataSupplier;
 
-    public DataCfg(Function<Collection<?>, Map<String, Map<String, Object>>> dataSupplier) {
+    public DataCfg(DataSupplier dataSupplier) {
 
         this.dataSupplier = notNull(dataSupplier);
     }
 
     @Override
-    public Function<Collection<?>, Map<String, Map<String, Object>>> getDataSupplier() {
+    public DataSupplier getDataSupplier() {
 
         return dataSupplier;
     }

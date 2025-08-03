@@ -5,15 +5,18 @@
 
 package kunlun.data.fill;
 
-import kunlun.core.function.Function;
-
 import java.util.Collection;
 
 import static kunlun.data.fill.DataFiller.FillConfig;
 
 /**
- * The abstract definition of the data filler.
- * @author Kahle
+ * 数据填充器的抽象定义.
+ * <p>
+ * [数据填充器] <- [填充配置] <- [多个数据配置] + [被填充的数据]
+ * <p>
+ * [数据配置] <- [一个数据提供者] + [多个字段配置]
+ *
+ * @author Zerox
  */
 public interface DataFiller<C extends FillConfig> {
 
@@ -26,7 +29,7 @@ public interface DataFiller<C extends FillConfig> {
 
     /**
      * The fill configuration of the data filler.
-     * @author Kahle
+     * @author Zerox
      */
     interface FillConfig {
 
@@ -44,10 +47,9 @@ public interface DataFiller<C extends FillConfig> {
 
     }
 
-
     /**
      * The data configuration of the data filler.
-     * @author Kahle
+     * @author Zerox
      */
     interface DataConfig {
 
@@ -55,7 +57,7 @@ public interface DataFiller<C extends FillConfig> {
          * Get the data supplier (query the map or others based on the input collection).
          * @return The data supplier
          */
-        Function<Collection<?>, ?> getDataSupplier();
+        DataSupplier getDataSupplier();
 
         /**
          * Get the field configurations.
@@ -65,10 +67,9 @@ public interface DataFiller<C extends FillConfig> {
 
     }
 
-
     /**
      * The field configuration of the data filler.
-     * @author Kahle
+     * @author Zerox
      */
     interface FieldConfig {
 

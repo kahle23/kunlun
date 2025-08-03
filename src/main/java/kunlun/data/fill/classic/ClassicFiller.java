@@ -71,7 +71,7 @@ public class ClassicFiller implements DataFiller<FillCfg> {
             Collection<Object> conditions = entry.getValue();
             DataCfg dataConfig = entry.getKey();
             // Fill data.
-            doFill(dataConfig, data, dataConfig.getDataSupplier().apply(conditions));
+            doFill(dataConfig, data, dataConfig.getDataSupplier().acquire(conditions));
         }
     }
 
