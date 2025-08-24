@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * The identifier provider.
- * @author Kahle
+ * @author Zerox
  */
 public interface IdProvider {
 
@@ -51,10 +51,18 @@ public interface IdProvider {
     IdGenerator getIdGenerator(String name);
 
     /**
-     * Generate the next identifier based on the generator name.
-     * @param name The id generator name
-     * @param arguments The arguments at generation time
-     * @return The next identifier
+     * 根据 ID 生成器的名称预览将要生成的ID.
+     * @param name ID 生成器的名称
+     * @param arguments ID 生成时的参数
+     * @return 要预览的 ID
+     */
+    Object preview(String name, Object... arguments);
+
+    /**
+     * 根据 ID 生成器的名称生成下一个 ID.
+     * @param name ID 生成器的名称
+     * @param arguments ID 生成时的参数
+     * @return 生成的 ID
      */
     Object next(String name, Object... arguments);
 

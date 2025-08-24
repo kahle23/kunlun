@@ -3,7 +3,9 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.generator.id.support;
+package kunlun.generator.id.support.uuid;
+
+import kunlun.generator.id.support.StringIdGenerator;
 
 import java.util.UUID;
 
@@ -11,18 +13,18 @@ import static kunlun.common.constant.Symbols.EMPTY_STRING;
 import static kunlun.common.constant.Symbols.MINUS;
 
 /**
- * The simple identifier generator based on uuid.
- * @author Kahle
+ * UUID 生成器.
+ * @author Zerox
  */
-public class SimpleIdGenerator extends AbstractIdGenerator implements StringIdGenerator {
+public class UUIDGenerator extends StringIdGenerator {
     private final boolean isSimple;
 
-    public SimpleIdGenerator() {
+    public UUIDGenerator() {
 
         this(true);
     }
 
-    public SimpleIdGenerator(boolean isSimple) {
+    public UUIDGenerator(boolean isSimple) {
 
         this.isSimple = isSimple;
     }

@@ -3,18 +3,19 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.generator.id.support;
+package kunlun.generator.id.support.snowflake;
 
+import kunlun.generator.id.support.LongIdGenerator;
 import kunlun.time.SimpleClock;
 
 import static kunlun.common.constant.Numbers.ONE;
 import static kunlun.common.constant.Numbers.ZERO;
 
 /**
- * The identifier generator based on snowflake id.
- * @author Kahle
+ * 雪花 ID 生成器.
+ * @author Zerox
  */
-public class SnowflakeIdGenerator extends AbstractIdGenerator implements LongIdGenerator {
+public class SnowflakeIdGenerator extends LongIdGenerator {
     /**
      * The offset of the timestamp (2018-06-06T06:06:06.666).
      */

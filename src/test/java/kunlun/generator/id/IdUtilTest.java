@@ -5,7 +5,7 @@
 
 package kunlun.generator.id;
 
-import kunlun.generator.id.support.SnowflakeIdGenerator;
+import kunlun.generator.id.support.snowflake.SnowflakeIdGenerator;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import org.junit.Test;

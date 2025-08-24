@@ -5,20 +5,32 @@
 
 package kunlun.generator.id.support;
 
-import kunlun.generator.id.IdGenerator;
+import static kunlun.util.Assert.renderMessage;
 
 /**
- * The identifier generator of type string.
- * @author Kahle
+ * 抽象的字符串 ID 生成器.
+ * @author Zerox
  */
-public interface StringIdGenerator extends IdGenerator {
+public abstract class StringIdGenerator extends AbstractIdGenerator {
 
     /**
-     * Generate the next identifier of type string.
-     * @param arguments The arguments at generation time
-     * @return The next identifier of type string
+     * 预览将要生成的字符串 ID.
+     * @param arguments ID 生成时的参数
+     * @return 要预览的字符串 ID
      */
     @Override
-    String next(Object... arguments);
+    public String preview(Object... arguments) {
+        throw new UnsupportedOperationException(renderMessage(
+                "In \"%s\", the method \"preview\" is not supported! ", getClass().getName()
+        ));
+    }
+
+    /**
+     * 生成下一个字符串 ID.
+     * @param arguments ID 生成时的参数
+     * @return 生成的字符串 ID
+     */
+    @Override
+    public abstract String next(Object... arguments);
 
 }

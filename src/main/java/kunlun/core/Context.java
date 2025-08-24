@@ -13,10 +13,40 @@ import java.util.Map;
  */
 public interface Context {
 
+//    /**
+//     * Get the runtime data (for data transfer among multiple "handlers").
+//     * getRuntimeData
+//     * @return The runtime data
+//     */
+//    Map<String, Object> getStorage();
+
+    interface Ct extends Context {
+
+        /**
+         * 获取上下文存储器
+         * @return 上下文存储器
+         */
+        Map<String, Object> getStorage();
+
+    }
+
     /**
-     * Get the runtime data (for data transfer among multiple "handlers").
-     * @return The runtime data
+     * 抽象的上下文对象.
+     * @author Zerox
      */
-//    Map<String, Object> getRuntimeData();
+    abstract class Act implements Context.Ct {
+        private final Map<String, Object> storage;
+
+        protected Act(Map<String, Object> storage) {
+
+            this.storage = storage;
+        }
+
+        @Override
+        public Map<String, Object> getStorage() {
+
+            return storage;
+        }
+    }
 
 }

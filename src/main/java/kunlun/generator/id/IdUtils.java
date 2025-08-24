@@ -10,7 +10,7 @@ import kunlun.logging.LoggerFactory;
 
 /**
  * The identifier generation tools.
- * @author Kahle
+ * @author Zerox
  */
 @Deprecated
 public class IdUtils {

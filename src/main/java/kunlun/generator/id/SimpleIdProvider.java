@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The simple identifier provider.
- * @author Kahle
+ * @author Zerox
  */
 public class SimpleIdProvider implements IdProvider {
     private static final Logger log = LoggerFactory.getLogger(SimpleIdProvider.class);
@@ -81,6 +81,14 @@ public class SimpleIdProvider implements IdProvider {
     public IdGenerator getIdGenerator(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         return idGenerators.get(name);
+    }
+
+    @Override
+    public Object preview(String name, Object... arguments) {
+        IdGenerator generator = getIdGenerator(name);
+        Assert.notNull(generator
+                , "The corresponding id generator could not be found by name. ");
+        return generator.preview(arguments);
     }
 
     @Override
