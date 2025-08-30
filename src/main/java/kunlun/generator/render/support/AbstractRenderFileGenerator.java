@@ -15,6 +15,7 @@ import kunlun.time.DateUtil;
 import kunlun.util.Assert;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import static kunlun.common.constant.Symbols.SLASH;
@@ -122,15 +123,14 @@ public abstract class AbstractRenderFileGenerator extends AbstractRenderGenerato
             renderer.render(templateContent, model, builderWriter);
             String generation = builderWriter.toString();
             // Read file content.
-            byte[] fileBytes = FileUtil.read(outputFile);
-            String fileContent = new String(fileBytes, outputCharset);
+            String fileContent = FileUtil.readString(outputFile, Charset.forName(outputCharset));
             // Do replace.
             String outputStr = replaceContent(
                     logCollector, generation, fileContent, startOverrideTag, endOverrideTag);
             // Write to file.
             if (outputStr == null) { return; }
             byte[] outputBytes = outputStr.getBytes(outputCharset);
-            FileUtil.write(outputBytes, outputFile);
+            FileUtil.writeBytes(outputBytes, outputFile);
         }
         else {
             // Try to create new file.

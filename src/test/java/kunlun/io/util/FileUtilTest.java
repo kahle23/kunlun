@@ -10,10 +10,8 @@ import kunlun.logging.LoggerFactory;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 @Ignore
 public class FileUtilTest {
@@ -39,12 +37,9 @@ public class FileUtilTest {
     }
 
     @Test
-    public void testWrite() throws IOException {
+    public void testWrite() {
         File destination = new File("e:\\test.txt");
-        byte[] data = "Hello, World! ".getBytes();
-        InputStream in = new ByteArrayInputStream(data);
-        FileUtil.write(in, destination);
-//        FileUtils.write(data, destination);
+        FileUtil.writeUtf8String("Hello, World! ", destination);
     }
 
     @Test
