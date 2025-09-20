@@ -58,12 +58,14 @@ public class ObjUtil {
         return obj1 == null ? obj2 == null : obj1.equals(obj2);
     }
 
+    @Deprecated
     @SuppressWarnings("unchecked")
     public static <T> T cast(Object object) {
 
         return (T) object;
     }
 
+    @Deprecated
     @SuppressWarnings("unchecked")
     public static <T> T cast(Object object, Class<T> clazz) {
 
