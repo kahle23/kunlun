@@ -15,15 +15,38 @@ import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.common.constant.Symbols.*;
 
 /**
- * The string tools.
- * @author Kahle
+ * 字符串相关工具类.
+ * @author Zerox
  */
 public class StrUtil {
     private static final char UNDERLINE = '_';
 
-    public static boolean equals(String str1, String str2) {
 
-        return ObjUtil.equals(str1, str2);
+    // region ======== equals ========
+
+    public static boolean equalsIgnoreCase(CharSequence str1, CharSequence str2) {
+
+        return equals(str1, str2, true);
+    }
+
+    public static boolean equals(CharSequence str1, CharSequence str2) {
+
+        return equals(str1, str2, false);
+    }
+
+    public static boolean equals(CharSequence str1, CharSequence str2, boolean ignoreCase) {
+        if (str1 == null) { return str2 == null; }
+        if (str2 == null) { return false; }
+        if (ignoreCase) {
+            return str1.toString().equalsIgnoreCase(str2.toString());
+        } else {
+            return str1.toString().contentEquals(str2);
+        }
+    }
+
+    // endregion
+
+
     }
 
     public static boolean isEmpty(CharSequence cs) {

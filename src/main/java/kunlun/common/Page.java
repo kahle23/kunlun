@@ -11,18 +11,14 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * The unified paging data output object.
- * @param <T> The data type
- * @author Kahle
+ * 统一的分页数据输出对象.
+ * @param <T> 分页数据的类型
+ * @author Zerox
  */
 public class Page<T> implements Serializable {
-    private String  scrollId;
-    private Integer pageNum;
-    private Integer pageSize;
-    private Integer pageCount;
-    private Long    total;
-    private List<T> data;
-    private Dict    others = Dict.of();
+
+
+    // region ======== 分页数据对象静态构建方法 ========
 
     public static <T> Page<T> of(Integer pageNum, Integer pageSize, Integer pageCount, Long total, List<T> data) {
         Page<T> page = new Page<T>();
@@ -52,7 +48,43 @@ public class Page<T> implements Serializable {
 
         return new Page<T>();
     }
+    // endregion
 
+
+    // region ======== 分页数据对象属性和方法 ========
+    /**
+     * 滚动 ID
+     */
+    private String  scrollId;
+    /**
+     * 页码
+     */
+    private Integer pageNum;
+    /**
+     * 每页条数
+     */
+    private Integer pageSize;
+    /**
+     * 页数
+     */
+    private Integer pageCount;
+    /**
+     * 总条数
+     */
+    private Long    total;
+    /**
+     * 分页数据
+     */
+    private List<T> data;
+    /**
+     * 其他扩展数据
+     */
+    private Dict    others;
+
+    public Page() {
+
+        this.others = Dict.of();
+    }
 
     public String getScrollId() {
 
@@ -123,5 +155,88 @@ public class Page<T> implements Serializable {
 
         this.others = others;
     }
+    // endregion
+
+
+    // region ======== 分页查询对象抽象类 ========
+    /**
+     * 分页相关查询对象.
+     * @author Zerox
+     */
+    public static abstract class Query implements Serializable {
+        /**
+         * 是否分页
+         */
+        private boolean paged = true;
+        /**
+         * 滚动 ID
+         */
+        private String  scrollId;
+        /**
+         * 滚动分页的排序（默认为：false 倒序，true 为升序）<br />
+         * （注意：滚动分页除了基于滚动ID的条件进行排序外，不能有别的排序条件）<br />
+         * （当非滚动排序时，此字段为空，由此可以作为是否增加额外排序字段的控制器）<br />
+         */
+        private Boolean scrollByAsc;
+        /**
+         * 页码
+         */
+        private Integer pageNum;
+        /**
+         * 每页条数
+         */
+        private Integer pageSize;
+
+        public boolean isPaged() {
+
+            return paged;
+        }
+
+        public void setPaged(boolean paged) {
+
+            this.paged = paged;
+        }
+
+        public String getScrollId() {
+
+            return scrollId;
+        }
+
+        public void setScrollId(String scrollId) {
+
+            this.scrollId = scrollId;
+        }
+
+        public Boolean getScrollByAsc() {
+
+            return scrollByAsc;
+        }
+
+        public void setScrollByAsc(Boolean scrollByAsc) {
+
+            this.scrollByAsc = scrollByAsc;
+        }
+
+        public Integer getPageNum() {
+
+            return pageNum;
+        }
+
+        public void setPageNum(Integer pageNum) {
+
+            this.pageNum = pageNum;
+        }
+
+        public Integer getPageSize() {
+
+            return pageSize;
+        }
+
+        public void setPageSize(Integer pageSize) {
+
+            this.pageSize = pageSize;
+        }
+    }
+    // endregion
 
 }
