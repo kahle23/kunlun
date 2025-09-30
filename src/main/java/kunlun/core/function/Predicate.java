@@ -7,7 +7,7 @@ package kunlun.core.function;
 
 /**
  * Represents a predicate (boolean-valued function) of one argument.
- * @author Kahle
+ * @author Zerox
  */
 public interface Predicate<Param> {
 
@@ -18,5 +18,14 @@ public interface Predicate<Param> {
      * @return True if the input argument matches the predicate, otherwise false
      */
     boolean test(Param param);
+
+    /**
+     * 空的 Predicate.
+     * @author Zerox
+     */
+    class Empty<Param> implements Predicate<Param> {
+        @Override
+        public boolean test(Param param) { return false; }
+    }
 
 }

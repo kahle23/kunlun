@@ -7,7 +7,7 @@ package kunlun.core.function;
 
 /**
  * Represents a function that accepts one parameter and produces a result.
- * @author Kahle
+ * @author Zerox
  */
 public interface Function<Param, Result> {
 
@@ -18,5 +18,14 @@ public interface Function<Param, Result> {
      * @return The function result
      */
     Result apply(Param param);
+
+    /**
+     * 空的 Function.
+     * @author Zerox
+     */
+    class Empty<Param, Result> implements Function<Param, Result> {
+        @Override
+        public Result apply(Param param) { return null; }
+    }
 
 }

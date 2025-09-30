@@ -7,7 +7,7 @@ package kunlun.core.function;
 
 /**
  * Represents a predicate (boolean-valued function) of two arguments.
- * @author Kahle
+ * @author Zerox
  */
 public interface BiPredicate<Param1, Param2> {
 
@@ -19,5 +19,14 @@ public interface BiPredicate<Param1, Param2> {
      * @return True if the input arguments match the predicate, otherwise false
      */
     boolean test(Param1 param1, Param2 param2);
+
+    /**
+     * 空的 BiPredicate.
+     * @author Zerox
+     */
+    class Empty<Param1, Param2> implements BiPredicate<Param1, Param2> {
+        @Override
+        public boolean test(Param1 param1, Param2 param2) { return false; }
+    }
 
 }

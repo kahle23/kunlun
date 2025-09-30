@@ -7,7 +7,7 @@ package kunlun.core.function;
 
 /**
  * Represents an operation that accepts a single input argument and returns no result.
- * @author Kahle
+ * @author Zerox
  */
 public interface Consumer<Param> {
 
@@ -17,5 +17,14 @@ public interface Consumer<Param> {
      * @param param The input argument
      */
     void accept(Param param);
+
+    /**
+     * 空的 Consumer.
+     * @author Zerox
+     */
+    class Empty<Param> implements Consumer<Param> {
+        @Override
+        public void accept(Param param) { }
+    }
 
 }
