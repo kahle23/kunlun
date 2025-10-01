@@ -5,6 +5,7 @@
 
 package kunlun.security.support;
 
+import kunlun.core.Context.AbstractContext;
 import kunlun.core.DataController;
 import kunlun.security.support.util.DataScope;
 
@@ -51,7 +52,7 @@ public abstract class AbstractDataController implements DataController {
      * The context of the data permission processing logic.
      * @author Kahle
      */
-    public static class Context implements kunlun.core.Context {
+    public static class Context extends AbstractContext {
         private String permission;
         private Object userId;
         private Object userType;

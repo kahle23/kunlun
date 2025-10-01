@@ -5,6 +5,7 @@
 
 package kunlun.core.handler;
 
+import kunlun.core.Context.AbstractContext;
 import kunlun.core.Handler;
 import kunlun.core.function.Consumer;
 import kunlun.logging.Logger;
@@ -53,7 +54,7 @@ public interface AsyncSupportedHandler extends ContextSupportedHandler, Handler 
      * The asynchronous supported context.
      * @author Kahle
      */
-    class AsyncSupportContext implements HandlerContext {
+    class AsyncSupportContext extends AbstractContext implements HandlerContext {
         private Object[] arguments;
         private Consumer<Throwable> failureCallback;
         private Consumer<Object> successCallback;

@@ -5,6 +5,7 @@
 
 package kunlun.chain;
 
+import kunlun.core.Context.AbstractContext;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -164,7 +165,7 @@ public abstract class AbstractChainService implements ChainService {
      * The inner chain context.
      * @author Kahle
      */
-    protected static class ContextImpl implements ChainNode.Context {
+    protected static class ContextImpl extends AbstractContext implements ChainNode.Context {
         private String chainId;
         private Object[] arguments;
         private Object result;

@@ -6,6 +6,7 @@
 package kunlun.db.jdbc.support;
 
 import kunlun.common.constant.Nulls;
+import kunlun.core.Context.AbstractContext;
 import kunlun.core.Loader;
 import kunlun.core.function.Consumer;
 import kunlun.db.jdbc.meta.Column;
@@ -273,7 +274,7 @@ public class JdbcTableLoader implements Loader<JdbcTableLoader.Config, List<Tabl
      * The context of the post-consumers for table structure information loader.
      * @author Kahle
      */
-    public static class Context implements kunlun.core.Context {
+    public static class Context extends AbstractContext {
         private final Config config;
         private final Connection connection;
         private final String catalog;

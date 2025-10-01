@@ -47,7 +47,6 @@ public class StrUtil {
     // endregion
 
 
-    }
 
     public static boolean isEmpty(CharSequence cs) {
 

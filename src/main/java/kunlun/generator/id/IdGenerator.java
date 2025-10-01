@@ -47,7 +47,7 @@ public interface IdGenerator extends Generator {
      * ID 生成器的上下文接口.
      * @author Zerox
      */
-    interface Context extends kunlun.core.Context.Ct {
+    interface Context extends kunlun.core.Context {
 
         /**
          * 获取 ID 生成时的参数.

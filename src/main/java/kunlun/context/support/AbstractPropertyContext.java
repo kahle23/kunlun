@@ -17,6 +17,12 @@ import static kunlun.util.ObjUtil.cast;
  */
 public abstract class AbstractPropertyContext implements PropertyContext {
 
+    @Override
+    public Map<String, Object> getStorage() {
+
+        return getBucket();
+    }
+
     /**
      * Get an operable storage object.
      * @return The storage object

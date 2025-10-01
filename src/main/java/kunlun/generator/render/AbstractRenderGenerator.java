@@ -5,6 +5,7 @@
 
 package kunlun.generator.render;
 
+import kunlun.core.Context.AbstractContext;
 import kunlun.core.Renderer;
 import kunlun.io.FileLoader;
 import kunlun.io.util.IoUtil;
@@ -221,7 +222,7 @@ public abstract class AbstractRenderGenerator implements RenderGenerator {
      * The simple implementation of the context object for content generator.
      * @author Kahle
      */
-    public static class ContextImpl implements Context {
+    public static class ContextImpl extends AbstractContext implements Context {
         private final Map<String, Map<String, Object>> attributesMap = new LinkedHashMap<String, Map<String, Object>>();
         private final Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         private final StringBuilder  logCollector = new StringBuilder();

@@ -5,6 +5,7 @@
 
 package kunlun.generator.render.support.java;
 
+import kunlun.core.Context.AbstractContext;
 import kunlun.core.Renderer;
 import kunlun.data.bean.BeanUtil;
 import kunlun.exception.ExceptionUtil;
@@ -204,7 +205,7 @@ public abstract class AbstractJavaMavenProjectGenerator implements ProjectGenera
 
     protected abstract ProjectContextImpl createContext(ProjectConfig projectConfig);
 
-    protected static class ProjectContextImpl implements ProjectContext {
+    protected static class ProjectContextImpl extends AbstractContext implements ProjectContext {
         private String name;
         private String description;
         private String basePackageName;
