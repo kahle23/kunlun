@@ -7,7 +7,7 @@ package kunlun.core.function;
 
 /**
  * Represents a predicate (boolean-valued function) of one argument.
- * @author Zerox
+ * @author Kahle
  */
 public interface Predicate<Param> {
 
@@ -21,7 +21,7 @@ public interface Predicate<Param> {
 
     /**
      * 空的 Predicate.
-     * @author Zerox
+     * @author Kahle
      */
     class Empty<Param> implements Predicate<Param> {
         @Override

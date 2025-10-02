@@ -14,7 +14,7 @@ import static kunlun.common.constant.Symbols.MINUS;
 
 /**
  * UUID 生成器.
- * @author Zerox
+ * @author Kahle
  */
 public class UUIDGenerator extends StringIdGenerator {
     private final boolean isSimple;

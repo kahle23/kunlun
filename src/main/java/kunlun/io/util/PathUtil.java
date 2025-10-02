@@ -16,8 +16,8 @@ import static kunlun.common.constant.Symbols.SLASH;
 import static kunlun.util.Assert.notNull;
 
 /**
- * 路径工具类.
- * @author Zerox
+ * 路径相关工具类.<br />
+ * @author Kahle
  */
 public class PathUtil {
     private static final Logger log = LoggerFactory.getLogger(PathUtil.class);
@@ -51,12 +51,10 @@ public class PathUtil {
     // endregion
 
 
-
-
     // region ======== 路径相关内部类 ========
     /**
-     * 简单的（默认的）路径生成器.
-     * @author Zerox
+     * 简单的（默认的）路径生成器.<br />
+     * @author Kahle
      */
     public static class PathGeneratorImpl implements PathGenerator {
         private final String defaultFolderName;

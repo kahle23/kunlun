@@ -16,7 +16,7 @@ import static kunlun.data.fill.DataFiller.FillConfig;
  * <p>
  * [数据配置] <- [一个数据提供者] + [多个字段配置]
  *
- * @author Zerox
+ * @author Kahle
  */
 public interface DataFiller<C extends FillConfig> {
 
@@ -29,7 +29,7 @@ public interface DataFiller<C extends FillConfig> {
 
     /**
      * The fill configuration of the data filler.
-     * @author Zerox
+     * @author Kahle
      */
     interface FillConfig {
 
@@ -49,7 +49,7 @@ public interface DataFiller<C extends FillConfig> {
 
     /**
      * The data configuration of the data filler.
-     * @author Zerox
+     * @author Kahle
      */
     interface DataConfig {
 
@@ -69,7 +69,7 @@ public interface DataFiller<C extends FillConfig> {
 
     /**
      * The field configuration of the data filler.
-     * @author Zerox
+     * @author Kahle
      */
     interface FieldConfig {
 

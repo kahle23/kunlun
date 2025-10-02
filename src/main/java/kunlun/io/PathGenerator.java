@@ -9,7 +9,7 @@ import kunlun.generator.Generator;
 
 /**
  * 路径生成器的抽象接口.
- * @author Zerox
+ * @author Kahle
  */
 public interface PathGenerator extends Generator {
 

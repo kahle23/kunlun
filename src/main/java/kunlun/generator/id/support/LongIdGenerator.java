@@ -9,7 +9,7 @@ import static kunlun.util.Assert.renderMessage;
 
 /**
  * 抽象的数字 ID 生成器.
- * @author Zerox
+ * @author Kahle
  */
 public abstract class LongIdGenerator extends AbstractIdGenerator {
 

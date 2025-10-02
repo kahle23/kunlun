@@ -13,8 +13,6 @@ import kunlun.util.CollUtil;
 import java.io.*;
 import java.util.Collection;
 
-import static kunlun.common.constant.Numbers.*;
-
 /**
  * The abstract data storage.
  * @author Kahle
@@ -38,21 +36,6 @@ public abstract class AbstractDataStorage implements DataStorage {
         else {
             throw new IllegalArgumentException("Parameter \"value\" is not supported. ");
         }
-    }
-
-    @Override
-    public Object execute(Object[] arguments) {
-        String methodName = String.valueOf(arguments[ZERO]);
-        Object input = arguments[ONE];
-        Object type = arguments[TWO];
-        if ("exist".equals(methodName)) { return exist(input); }
-        if ("get".equals(methodName)) { return get(input); }
-        if ("put".equals(methodName)) { return put(input); }
-        if ("putAll".equals(methodName)) { return putAll((Collection<?>) input); }
-        if ("delete".equals(methodName)) { return delete(input); }
-        if ("deleteAll".equals(methodName)) { return deleteAll((Collection<?>) input); }
-        if ("list".equals(methodName)) { return list(input); }
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -86,6 +69,18 @@ public abstract class AbstractDataStorage implements DataStorage {
         if (CollUtil.isEmpty(keys)) { return null; }
         for (Object key : keys) { delete(key); }
         return null;
+    }
+
+    @Override
+    public Object execute(String strategy, Object input, Object[] arguments) {
+        if ("exist".equals(strategy)) { return exist(input); }
+        if ("get".equals(strategy)) { return get(input); }
+        if ("put".equals(strategy)) { return put(input); }
+        if ("putAll".equals(strategy)) { return putAll((Collection<?>) input); }
+        if ("delete".equals(strategy)) { return delete(input); }
+        if ("deleteAll".equals(strategy)) { return deleteAll((Collection<?>) input); }
+        if ("list".equals(strategy)) { return list(input); }
+        throw new UnsupportedOperationException();
     }
 
 }

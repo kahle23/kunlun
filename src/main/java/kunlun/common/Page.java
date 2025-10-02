@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 统一的分页数据输出对象.
  * @param <T> 分页数据的类型
- * @author Zerox
+ * @author Kahle
  */
 public class Page<T> implements Serializable {
 
@@ -161,7 +161,7 @@ public class Page<T> implements Serializable {
     // region ======== 分页查询对象抽象类 ========
     /**
      * 分页相关查询对象.
-     * @author Zerox
+     * @author Kahle
      */
     public static abstract class Query implements Serializable {
         /**

@@ -8,7 +8,7 @@ package kunlun.core.function;
 /**
  * Represents a function that accepts two arguments and produces a result.
  * @see kunlun.core.function.Function
- * @author Zerox
+ * @author Kahle
  */
 public interface BiFunction<Param1, Param2, Result> {
 
@@ -23,7 +23,7 @@ public interface BiFunction<Param1, Param2, Result> {
 
     /**
      * 空的 BiFunction.
-     * @author Zerox
+     * @author Kahle
      */
     class Empty<Param1, Param2, Result> implements BiFunction<Param1, Param2, Result> {
         @Override

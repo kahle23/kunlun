@@ -15,7 +15,7 @@ import static kunlun.convert.ConversionUtil.convert;
 
 /**
  * The identifier generation tools.
- * @author Zerox
+ * @author Kahle
  */
 public class IdUtil {
     private static final Logger log = LoggerFactory.getLogger(IdUtil.class);

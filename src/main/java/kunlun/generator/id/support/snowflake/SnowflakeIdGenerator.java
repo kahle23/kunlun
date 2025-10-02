@@ -13,7 +13,7 @@ import static kunlun.common.constant.Numbers.ZERO;
 
 /**
  * 雪花 ID 生成器.
- * @author Zerox
+ * @author Kahle
  */
 public class SnowflakeIdGenerator extends LongIdGenerator {
     /**

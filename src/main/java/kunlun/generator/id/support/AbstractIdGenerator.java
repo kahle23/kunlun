@@ -16,7 +16,7 @@ import static kunlun.util.Assert.renderMessage;
 
 /**
  * 抽象的 ID 生成器（定义了一些常用方法）.
- * @author Zerox
+ * @author Kahle
  */
 public abstract class AbstractIdGenerator implements IdGenerator {
     protected static final String TIME_STRING_KEY = "time-string";
@@ -88,7 +88,7 @@ public abstract class AbstractIdGenerator implements IdGenerator {
 
     /**
      * ID 生成器的上下文实现类.
-     * @author Zerox
+     * @author Kahle
      */
     public static class ContextImpl implements Context {
         private final Map<String, Object> storage;

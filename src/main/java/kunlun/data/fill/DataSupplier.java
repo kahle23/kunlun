@@ -7,7 +7,7 @@ import java.util.Map;
  * 数据填充器 所需要的 数据提供者.
  *
  * @see DataFiller
- * @author Zerox
+ * @author Kahle
  */
 public interface DataSupplier {
 

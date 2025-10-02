@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * The identifier provider.
- * @author Zerox
+ * @author Kahle
  */
 public interface IdProvider {
 

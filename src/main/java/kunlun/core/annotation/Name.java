@@ -11,7 +11,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Name.
+ * 给“组件”进行命名的注解.<br />
  * @author Kahle
  */
 @Target(ElementType.TYPE)
@@ -19,8 +19,8 @@ import java.lang.annotation.Target;
 public @interface Name {
 
     /**
-     * Name value.
-     * @return The name value
+     * “组件”的名称.<br />
+     * @return “组件”的名称
      */
     String value();
 

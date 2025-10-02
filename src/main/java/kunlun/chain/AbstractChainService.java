@@ -6,8 +6,10 @@
 package kunlun.chain;
 
 import kunlun.core.Context.AbstractContext;
+import kunlun.data.tuple.Triple;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
+import kunlun.util.ArgumentUtil;
 import kunlun.util.Assert;
 import kunlun.util.MapUtil;
 import kunlun.util.StrUtil;
@@ -99,8 +101,11 @@ public abstract class AbstractChainService implements ChainService {
      * @return The context object
      */
     protected ContextImpl buildContext(String chainId, Object[] arguments) {
-
-        return new ContextImpl(chainId, arguments);
+        Triple<Object, String, Class<?>> triple = ArgumentUtil.parseToObjStrCls(arguments);
+        ContextImpl context = new ContextImpl(chainId, arguments);
+        context.setRawInput(triple.getLeft());
+        context.setExpectedClass(triple.getRight());
+        return context;
     }
 
     /**
@@ -168,6 +173,8 @@ public abstract class AbstractChainService implements ChainService {
     protected static class ContextImpl extends AbstractContext implements ChainNode.Context {
         private String chainId;
         private Object[] arguments;
+        private Object rawInput;
+        private Class<?> expectedClass;
         private Object result;
         private Map<String, ?> config;
         private String nextConfigId;
@@ -200,6 +207,28 @@ public abstract class AbstractChainService implements ChainService {
         public void setArguments(Object[] arguments) {
 
             this.arguments = arguments;
+        }
+
+        @Override
+        public Object getRawInput() {
+
+            return rawInput;
+        }
+
+        public void setRawInput(Object rawInput) {
+
+            this.rawInput = rawInput;
+        }
+
+        @Override
+        public Class<?> getExpectedClass() {
+
+            return expectedClass;
+        }
+
+        public void setExpectedClass(Class<?> expectedClass) {
+
+            this.expectedClass = expectedClass;
         }
 
         @Override

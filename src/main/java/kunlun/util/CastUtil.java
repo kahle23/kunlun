@@ -8,13 +8,13 @@ package kunlun.util;
 import static kunlun.util.Assert.notNull;
 
 /**
- * 转换工具类.
- * @author Zerox
+ * 转换相关工具类.<br />
+ * @author Kahle
  */
 public class CastUtil {
 
     /**
-     * 将指定的对象强制转换为返回值泛型类型.
+     * 将指定的对象强制转换为返回值泛型类型.<br />
      * @param value 传入的对象
      * @return 预期的结果
      */
@@ -24,15 +24,8 @@ public class CastUtil {
         return (T) value;
     }
 
-    @Deprecated
-    @SuppressWarnings("unchecked")
-    public static <T> T cast(Object object, Class<T> clazz) {
-
-        return (T) object;
-    }
-
     /**
-     * 将指定的对象转换为指定的类型，基于 Class.cast 方法.
+     * 将指定的对象转换为指定的类型，基于 Class.cast 方法.<br />
      * @param targetType 指定的类型
      * @param value 指定的对象
      * @return 转换后的结果

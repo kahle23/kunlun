@@ -7,6 +7,10 @@ package kunlun.common;
 
 import kunlun.data.CodeDefinition;
 
+/**
+ * 简单的编码对象类.<br />
+ * @author Kahle
+ */
 public class SimpleCode implements CodeDefinition {
     private String description;
     private Object code;

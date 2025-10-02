@@ -6,23 +6,34 @@
 package kunlun.core;
 
 /**
- * Provide the highest level of abstraction for storage.
+ * 为存储器提供最高层次的抽象.<br />
+ *      该接口设计更倾向于对象存储和 Map.<br />
  *
  * @see <a href="https://en.wikipedia.org/wiki/Computer_data_storage">Computer data storage</a>
  * @see <a href="https://en.wikipedia.org/wiki/Data_storage">Data storage</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Object_storage">Object storage</a>
  * @author Kahle
  */
-public interface Storage {
+public interface Storage extends Strategy {
 
     /**
-     * Perform storage related operations.
-     * The arguments mean (most of the scenes):
-     *      0 strategy or operation or null,
-     *      1 input object,
-     *      2 return value type
-     * @param arguments The arguments required for the operation
-     * @return The result of the operation
+     * The high-level abstraction of data to be stored.
+     * @author Kahle
      */
-    Object execute(Object[] arguments);
+    interface Data {
+
+        /**
+         * Get the object key.
+         * @return The object key
+         */
+        String getObjectKey();
+
+        /**
+         * Get the object content.
+         * @return The object content
+         */
+        Object getObjectContent();
+
+    }
 
 }

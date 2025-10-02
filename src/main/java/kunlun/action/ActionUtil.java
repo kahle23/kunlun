@@ -6,7 +6,7 @@
 package kunlun.action;
 
 import kunlun.action.event.support.SimpleEventCollector;
-import kunlun.action.tool.net.MediaTypeAction;
+import kunlun.action.util.net.MediaTypeAction;
 import kunlun.common.constant.Nil;
 import kunlun.core.Action;
 import kunlun.data.Event;

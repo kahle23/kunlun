@@ -18,7 +18,7 @@ import static kunlun.util.Assert.*;
 
 /**
  * The number tools.
- * @author Zerox
+ * @author Kahle
  */
 public class NumberUtil {
     private static volatile FormatProcessor formatProcessor;
@@ -172,7 +172,7 @@ public class NumberUtil {
     // region ======== 接口声明 ========
     /**
      * 数字格式化处理器
-     * @author Zerox
+     * @author Kahle
      */
     public interface FormatProcessor {
 
@@ -194,7 +194,7 @@ public class NumberUtil {
 
     /**
      * 数字保留小数位处理器
-     * @author Zerox
+     * @author Kahle
      */
     public interface RoundProcessor {
 
@@ -219,7 +219,7 @@ public class NumberUtil {
     // region ======== 接口的实现类 ========
     /**
      * 简单的数字格式化处理器
-     * @author Zerox
+     * @author Kahle
      */
     public static class FormatProcessorImpl implements FormatProcessor {
         private RoundingMode defaultRoundingMode = RoundingMode.HALF_UP;
@@ -290,7 +290,7 @@ public class NumberUtil {
 
     /**
      * 简单的数字保留小数位处理器
-     * @author Zerox
+     * @author Kahle
      */
     public static class RoundProcessorImpl implements RoundProcessor {
         private RoundingMode defaultRoundingMode = RoundingMode.HALF_UP;

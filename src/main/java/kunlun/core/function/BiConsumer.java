@@ -8,7 +8,7 @@ package kunlun.core.function;
 /**
  * Represents an operation that accepts two input arguments and returns no result.
  * @see kunlun.core.function.Consumer
- * @author Zerox
+ * @author Kahle
  */
 public interface BiConsumer<Param1, Param2> {
 
@@ -22,7 +22,7 @@ public interface BiConsumer<Param1, Param2> {
 
     /**
      * 空的 BiConsumer.
-     * @author Zerox
+     * @author Kahle
      */
     class Empty<Param1, Param2> implements BiConsumer<Param1, Param2> {
         @Override

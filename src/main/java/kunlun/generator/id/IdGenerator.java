@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * ID 生成器的接口.
- * @author Zerox
+ * @author Kahle
  */
 public interface IdGenerator extends Generator {
 
@@ -45,7 +45,7 @@ public interface IdGenerator extends Generator {
 
     /**
      * ID 生成器的上下文接口.
-     * @author Zerox
+     * @author Kahle
      */
     interface Context extends kunlun.core.Context {
 

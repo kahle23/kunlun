@@ -13,6 +13,8 @@ import kunlun.core.Definition;
  * In communications and information processing, code is a system of rules to convert information (such as
  * a letter, word, sound, image, or gesture) into another form, sometimes shortened or secret, for
  * communication through a communication channel or storage in a storage medium.
+ * <p>
+ * For enumerations, the required "getName" can be implemented through a sub-interface.
  *
  * @see <a href="https://en.wikipedia.org/wiki/Code">Code</a>
  * @see <a href="https://en.wikipedia.org/wiki/Error_code">Error code</a>

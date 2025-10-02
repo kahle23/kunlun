@@ -1,4 +1,4 @@
-package kunlun.action.tool.net;
+package kunlun.action.util.net;
 
 import kunlun.core.Action;
 import kunlun.util.StrUtil;

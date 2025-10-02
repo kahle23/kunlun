@@ -13,7 +13,7 @@ import java.net.URL;
 
 /**
  * URL（Uniform Resource Locator）相关工具类.
- * @author Zerox
+ * @author Kahle
  */
 public class UrlUtil {
 

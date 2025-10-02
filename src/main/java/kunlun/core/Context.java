@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * 为上下文提供最高层次的抽象.<br />
- * @author Zerox
+ * @author Kahle
  */
 public interface Context {
 
@@ -23,7 +23,7 @@ public interface Context {
 
     /**
      * 抽象的上下文对象.<br />
-     * @author Zerox
+     * @author Kahle
      */
     abstract class AbstractContext implements Context {
         private final Map<String, Object> storage;

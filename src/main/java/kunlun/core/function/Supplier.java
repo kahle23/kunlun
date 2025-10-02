@@ -7,7 +7,7 @@ package kunlun.core.function;
 
 /**
  * Represents a supplier of results.
- * @author Zerox
+ * @author Kahle
  */
 public interface Supplier<Result> {
 
@@ -19,7 +19,7 @@ public interface Supplier<Result> {
 
     /**
      * 空的 Supplier.
-     * @author Zerox
+     * @author Kahle
      */
     class Empty<Result> implements Supplier<Result> {
         @Override

@@ -15,8 +15,8 @@ import static kunlun.common.constant.Numbers.ZERO;
 import static kunlun.common.constant.Symbols.*;
 
 /**
- * 字符串相关工具类.
- * @author Zerox
+ * 字符串相关工具类.<br />
+ * @author Kahle
  */
 public class StrUtil {
     private static final char UNDERLINE = '_';
@@ -47,6 +47,9 @@ public class StrUtil {
     // endregion
 
 
+//    public static boolean startWith(CharSequence str, CharSequence prefix, boolean ignoreCase, boolean ignoreEquals) {
+//        return false;
+//    }
 
     public static boolean isEmpty(CharSequence cs) {
 
@@ -80,6 +83,10 @@ public class StrUtil {
         }
         boolean b = str.startsWith(MINUS)
                 || str.startsWith(PLUS);
+        // 针对只有 '+' 或 '-' 的情况
+        if (b && str.length() == ONE) {
+            return false;
+        }
         int start = b ? ONE : ZERO;
         boolean firstDot = false;
         for (int i = str.length() - ONE; i >= start; i--) {

@@ -6,17 +6,17 @@
 package kunlun.core;
 
 /**
- * Provide the highest level of abstraction for strategy.
+ * 为策略提供最高层次的抽象.<br />
  * @author Kahle
  */
 public interface Strategy {
 
     /**
-     * The logic of executing specific strategies.
-     * @param strategy The name of strategy
-     * @param input The primary input parameter to the strategy
-     * @param arguments The others related arguments or empty
-     * @return The result of the strategy or null
+     * 执行指定策略的逻辑.<br />
+     * @param strategy  策略名称
+     * @param input     策略执行时的主要输入对象
+     * @param arguments 策略执行时的其他相关参数
+     * @return 策略执行后返回的结果或者 Null
      */
     Object execute(String strategy, Object input, Object[] arguments);
 

@@ -6,7 +6,7 @@
 package kunlun.generator;
 
 /**
- * Provide the highest level of abstraction for generator.
+ * 为生成器提供最高层次的抽象.<br />
  * @author Kahle
  */
 public interface Generator {

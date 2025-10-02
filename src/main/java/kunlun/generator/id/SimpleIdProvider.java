@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The simple identifier provider.
- * @author Zerox
+ * @author Kahle
  */
 public class SimpleIdProvider implements IdProvider {
     private static final Logger log = LoggerFactory.getLogger(SimpleIdProvider.class);
