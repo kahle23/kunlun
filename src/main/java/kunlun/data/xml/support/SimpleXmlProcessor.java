@@ -8,10 +8,10 @@ package kunlun.data.xml.support;
 import java.lang.reflect.Type;
 
 /**
- * The xml conversion handler based on jdk simple implementation.
+ * The xml conversion processor based on jdk simple implementation.
  * @author Kahle
  */
-public class SimpleXmlHandler extends AbstractXmlHandler {
+public class SimpleXmlProcessor extends AbstractXmlProcessor {
 
     @Override
     public String toXmlString(Object object, Object... arguments) {

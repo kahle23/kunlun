@@ -5,7 +5,7 @@
 
 package kunlun.data.xml;
 
-import kunlun.data.xml.support.SimpleXmlHandler;
+import kunlun.data.xml.support.SimpleXmlProcessor;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -26,7 +26,7 @@ public class XmlUtil {
             if (xmlProvider != null) { return xmlProvider; }
             XmlUtil.setXmlProvider(new SimpleXmlProvider());
             // Register the default handler.
-            registerHandler(getDefaultHandlerName(), new SimpleXmlHandler());
+            registerProcessor(getDefaultProcessorName(), new SimpleXmlProcessor());
             return xmlProvider;
         }
     }
@@ -37,34 +37,34 @@ public class XmlUtil {
         XmlUtil.xmlProvider = xmlProvider;
     }
 
-    public static String getDefaultHandlerName() {
+    public static String getDefaultProcessorName() {
 
-        return getXmlProvider().getDefaultHandlerName();
+        return getXmlProvider().getDefaultProcessorName();
     }
 
-    public static void setDefaultHandlerName(String defaultHandlerName) {
+    public static void setDefaultProcessorName(String defaultProcessorName) {
 
-        getXmlProvider().setDefaultHandlerName(defaultHandlerName);
+        getXmlProvider().setDefaultProcessorName(defaultProcessorName);
     }
 
-    public static void registerHandler(String name, XmlHandler xmlHandler) {
+    public static void registerProcessor(String name, XmlProcessor xmlHandler) {
 
-        getXmlProvider().registerHandler(name, xmlHandler);
+        getXmlProvider().registerProcessor(name, xmlHandler);
     }
 
-    public static void deregisterHandler(String name) {
+    public static void deregisterProcessor(String name) {
 
-        getXmlProvider().deregisterHandler(name);
+        getXmlProvider().deregisterProcessor(name);
     }
 
-    public static XmlHandler getXmlHandler(String name) {
+    public static XmlProcessor getXmlProcessor(String name) {
 
-        return getXmlProvider().getXmlHandler(name);
+        return getXmlProvider().getXmlProcessor(name);
     }
 
     public static String toXmlString(Object object, Object... arguments) {
 
-        return getXmlProvider().toXmlString(getDefaultHandlerName(), object, arguments);
+        return getXmlProvider().toXmlString(getDefaultProcessorName(), object, arguments);
     }
 
     public static String toXmlString(String name, Object object, Object... arguments) {
@@ -74,7 +74,7 @@ public class XmlUtil {
 
     public static <T> T parseObject(String xmlString, Type type, Object... arguments) {
 
-        return getXmlProvider().parseObject(getDefaultHandlerName(), xmlString, type, arguments);
+        return getXmlProvider().parseObject(getDefaultProcessorName(), xmlString, type, arguments);
     }
 
     public static <T> T parseObject(String name, String xmlString, Type type, Object... arguments) {

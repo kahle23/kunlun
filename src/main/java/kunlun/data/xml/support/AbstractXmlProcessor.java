@@ -5,17 +5,17 @@
 
 package kunlun.data.xml.support;
 
-import kunlun.data.xml.XmlHandler;
+import kunlun.data.xml.XmlProcessor;
 import kunlun.util.Assert;
 
 import java.util.Collections;
 import java.util.Map;
 
 /**
- * The abstract xml conversion handler.
+ * The abstract xml conversion processor.
  * @author Kahle
  */
-public abstract class AbstractXmlHandler implements XmlHandler {
+public abstract class AbstractXmlProcessor implements XmlProcessor {
     private Map<Object, Object> commonProperties = Collections.emptyMap();
 
     @Override

@@ -9,10 +9,10 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
- * The xml conversion handler.
+ * The xml conversion processor.
  * @author Kahle
  */
-public interface XmlHandler {
+public interface XmlProcessor {
 
     /**
      * Get the common properties of the settings.

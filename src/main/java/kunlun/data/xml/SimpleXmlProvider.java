@@ -5,7 +5,6 @@
 
 package kunlun.data.xml;
 
-import kunlun.data.xml.support.SimpleXmlHandler;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -22,21 +21,21 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SimpleXmlProvider implements XmlProvider {
     private static final Logger log = LoggerFactory.getLogger(SimpleXmlProvider.class);
-    protected final Map<String, XmlHandler> handlers;
+    protected final Map<String, XmlProcessor> processors;
     protected final Map<String, Object> commonProperties;
-    private String defaultHandlerName = "default";
+    private String defaultProcessorName = "default";
 
     protected SimpleXmlProvider(Map<String, Object> commonProperties,
-                                Map<String, XmlHandler> handlers) {
+                                Map<String, XmlProcessor> processors) {
         Assert.notNull(commonProperties, "Parameter \"commonProperties\" must not null. ");
-        Assert.notNull(handlers, "Parameter \"handlers\" must not null. ");
+        Assert.notNull(processors, "Parameter \"processors\" must not null. ");
         this.commonProperties = commonProperties;
-        this.handlers = handlers;
+        this.processors = processors;
     }
 
     public SimpleXmlProvider() {
         this(new ConcurrentHashMap<String, Object>(),
-                new ConcurrentHashMap<String, XmlHandler>());
+                new ConcurrentHashMap<String, XmlProcessor>());
     }
 
     @Override
@@ -61,56 +60,56 @@ public class SimpleXmlProvider implements XmlProvider {
     }
 
     @Override
-    public String getDefaultHandlerName() {
+    public String getDefaultProcessorName() {
 
-        return defaultHandlerName;
+        return defaultProcessorName;
     }
 
     @Override
-    public void setDefaultHandlerName(String defaultHandlerName) {
-        Assert.notBlank(defaultHandlerName, "Parameter \"defaultHandlerName\" must not blank. ");
-        this.defaultHandlerName = defaultHandlerName;
+    public void setDefaultProcessorName(String defaultProcessorName) {
+        Assert.notBlank(defaultProcessorName, "Parameter \"defaultProcessorName\" must not blank. ");
+        this.defaultProcessorName = defaultProcessorName;
     }
 
     @Override
-    public void registerHandler(String name, XmlHandler xmlHandler) {
-        Assert.notNull(xmlHandler, "Parameter \"xmlHandler\" must not null. ");
+    public void registerProcessor(String name, XmlProcessor xmlProcessor) {
+        Assert.notNull(xmlProcessor, "Parameter \"xmlProcessor\" must not null. ");
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        String className = xmlHandler.getClass().getName();
-        xmlHandler.setCommonProperties(getCommonProperties());
-        handlers.put(name, xmlHandler);
-        log.debug("Register the xml handler \"{}\" to \"{}\". ", className, name);
+        String className = xmlProcessor.getClass().getName();
+        xmlProcessor.setCommonProperties(getCommonProperties());
+        processors.put(name, xmlProcessor);
+        log.debug("Register the xml processor \"{}\" to \"{}\". ", className, name);
     }
 
     @Override
-    public void deregisterHandler(String name) {
+    public void deregisterProcessor(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        XmlHandler remove = handlers.remove(name);
+        XmlProcessor remove = processors.remove(name);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.debug("Deregister the xml handler \"{}\" from \"{}\". ", className, name);
+            log.debug("Deregister the xml processor \"{}\" from \"{}\". ", className, name);
         }
     }
 
     @Override
-    public XmlHandler getXmlHandler(String name) {
+    public XmlProcessor getXmlProcessor(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        XmlHandler xmlHandler = handlers.get(name);
-        Assert.notNull(xmlHandler
-                , "The corresponding xml handler could not be found by name. ");
-        return xmlHandler;
+        XmlProcessor xmlProcessor = processors.get(name);
+        Assert.notNull(xmlProcessor
+                , "The corresponding xml processor could not be found by name. ");
+        return xmlProcessor;
     }
 
     @Override
     public String toXmlString(String name, Object object, Object... arguments) {
 
-        return getXmlHandler(name).toXmlString(object, arguments);
+        return getXmlProcessor(name).toXmlString(object, arguments);
     }
 
     @Override
     public <T> T parseObject(String name, String xmlString, Type type, Object... arguments) {
 
-        return getXmlHandler(name).parseObject(xmlString, type, arguments);
+        return getXmlProcessor(name).parseObject(xmlString, type, arguments);
     }
 
 }
