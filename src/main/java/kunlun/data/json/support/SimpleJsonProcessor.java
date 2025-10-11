@@ -8,10 +8,10 @@ package kunlun.data.json.support;
 import java.lang.reflect.Type;
 
 /**
- * The json conversion handler based on jdk simple implementation.
+ * The json conversion processor based on jdk simple implementation.
  * @author Kahle
  */
-public class SimpleJsonHandler extends AbstractJsonHandler {
+public class SimpleJsonProcessor extends AbstractJsonProcessor {
 
     @Override
     public String toJsonString(Object object, Object... arguments) {

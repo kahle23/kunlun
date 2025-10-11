@@ -7,7 +7,7 @@ package kunlun.data.json;
 
 import com.alibaba.fastjson.JSON;
 import kunlun.common.constant.Words;
-import kunlun.data.json.support.AbstractJsonHandler;
+import kunlun.data.json.support.AbstractJsonProcessor;
 import kunlun.data.mock.MockUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
@@ -36,7 +36,7 @@ public class JsonUtilTest {
 
     @Before
     public void init() {
-        JsonUtil.registerHandler(Words.DEFAULT, new AbstractJsonHandler() {
+        JsonUtil.registerProcessor(Words.DEFAULT, new AbstractJsonProcessor() {
             @Override
             public String toJsonString(Object object, Object... arguments) {
 

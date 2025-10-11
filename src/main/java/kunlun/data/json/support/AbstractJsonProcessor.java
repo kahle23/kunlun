@@ -5,7 +5,7 @@
 
 package kunlun.data.json.support;
 
-import kunlun.data.json.JsonHandler;
+import kunlun.data.json.JsonProcessor;
 import kunlun.util.Assert;
 import kunlun.util.StrUtil;
 
@@ -16,10 +16,10 @@ import static kunlun.common.constant.Numbers.ONE;
 import static kunlun.common.constant.Numbers.ZERO;
 
 /**
- * The abstract json conversion handler.
+ * The abstract json conversion processor.
  * @author Kahle
  */
-public abstract class AbstractJsonHandler implements JsonHandler {
+public abstract class AbstractJsonProcessor implements JsonProcessor {
     private Map<Object, Object> commonProperties = Collections.emptyMap();
 
     protected boolean isWrap(CharSequence sequence, char prefixChar, char suffixChar) {

@@ -9,10 +9,10 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 /**
- * The json conversion handler.
+ * The json conversion processor.
  * @author Kahle
  */
-public interface JsonHandler {
+public interface JsonProcessor {
 
     /**
      * Get the common properties of the settings.

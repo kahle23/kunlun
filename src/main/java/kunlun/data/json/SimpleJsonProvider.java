@@ -21,21 +21,21 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SimpleJsonProvider implements JsonProvider {
     private static final Logger log = LoggerFactory.getLogger(SimpleJsonProvider.class);
-    protected final Map<String, JsonHandler> handlers;
+    protected final Map<String, JsonProcessor> processors;
     protected final Map<String, Object> commonProperties;
-    private String defaultHandlerName = "default";
+    private String defaultProcessorName = "default";
 
     protected SimpleJsonProvider(Map<String, Object> commonProperties,
-                                 Map<String, JsonHandler> handlers) {
+                                 Map<String, JsonProcessor> processors) {
         Assert.notNull(commonProperties, "Parameter \"commonProperties\" must not null. ");
-        Assert.notNull(handlers, "Parameter \"handlers\" must not null. ");
+        Assert.notNull(processors, "Parameter \"processors\" must not null. ");
         this.commonProperties = commonProperties;
-        this.handlers = handlers;
+        this.processors = processors;
     }
 
     public SimpleJsonProvider() {
         this(new ConcurrentHashMap<String, Object>(),
-                new ConcurrentHashMap<String, JsonHandler>());
+                new ConcurrentHashMap<String, JsonProcessor>());
     }
 
     @Override
@@ -60,68 +60,68 @@ public class SimpleJsonProvider implements JsonProvider {
     }
 
     @Override
-    public String getDefaultHandlerName() {
+    public String getDefaultProcessorName() {
 
-        return defaultHandlerName;
+        return defaultProcessorName;
     }
 
     @Override
-    public void setDefaultHandlerName(String defaultHandlerName) {
-        Assert.notBlank(defaultHandlerName, "Parameter \"defaultHandlerName\" must not blank. ");
-        this.defaultHandlerName = defaultHandlerName;
+    public void setDefaultProcessorName(String defaultProcessorName) {
+        Assert.notBlank(defaultProcessorName, "Parameter \"defaultProcessorName\" must not blank. ");
+        this.defaultProcessorName = defaultProcessorName;
     }
 
     @Override
-    public void registerHandler(String name, JsonHandler jsonHandler) {
-        Assert.notNull(jsonHandler, "Parameter \"jsonHandler\" must not null. ");
+    public void registerProcessor(String name, JsonProcessor jsonProcessor) {
+        Assert.notNull(jsonProcessor, "Parameter \"jsonProcessor\" must not null. ");
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        String className = jsonHandler.getClass().getName();
-        jsonHandler.setCommonProperties(getCommonProperties());
-        handlers.put(name, jsonHandler);
-        log.debug("Register the json handler \"{}\" to \"{}\". ", className, name);
+        String className = jsonProcessor.getClass().getName();
+        jsonProcessor.setCommonProperties(getCommonProperties());
+        processors.put(name, jsonProcessor);
+        log.debug("Register the json processor \"{}\" to \"{}\". ", className, name);
     }
 
     @Override
-    public void deregisterHandler(String name) {
+    public void deregisterProcessor(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        JsonHandler remove = handlers.remove(name);
+        JsonProcessor remove = processors.remove(name);
         if (remove != null) {
             String className = remove.getClass().getName();
-            log.debug("Deregister the json handler \"{}\" from \"{}\". ", className, name);
+            log.debug("Deregister the json processor \"{}\" from \"{}\". ", className, name);
         }
     }
 
     @Override
-    public JsonHandler getJsonHandler(String name) {
+    public JsonProcessor getJsonProcessor(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        JsonHandler jsonHandler = handlers.get(name);
-        Assert.notNull(jsonHandler
-                , "The corresponding json handler could not be found by name. ");
-        return jsonHandler;
+        JsonProcessor jsonProcessor = processors.get(name);
+        Assert.notNull(jsonProcessor
+                , "The corresponding json processor could not be found by name. ");
+        return jsonProcessor;
     }
 
     @Override
     public boolean isJsonObject(String name, String jsonString) {
 
-        return getJsonHandler(name).isJsonObject(jsonString);
+        return getJsonProcessor(name).isJsonObject(jsonString);
     }
 
     @Override
     public boolean isJsonArray(String name, String jsonString) {
 
-        return getJsonHandler(name).isJsonArray(jsonString);
+        return getJsonProcessor(name).isJsonArray(jsonString);
     }
 
     @Override
     public String toJsonString(String name, Object object, Object... arguments) {
 
-        return getJsonHandler(name).toJsonString(object, arguments);
+        return getJsonProcessor(name).toJsonString(object, arguments);
     }
 
     @Override
     public <T> T parseObject(String name, String jsonString, Type type, Object... arguments) {
 
-        return getJsonHandler(name).parseObject(jsonString, type, arguments);
+        return getJsonProcessor(name).parseObject(jsonString, type, arguments);
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * The json conversion provider.
- * (If you want to use provider directly, you must know which handlers are registered.)
+ * (If you want to use provider directly, you must know which processors are registered.)
  * @author Kahle
  */
 public interface JsonProvider {
@@ -33,42 +33,42 @@ public interface JsonProvider {
     Map<String, Object> getCommonProperties();
 
     /**
-     * Get the default handler name.
-     * @return The default handler name
+     * Get the default processor name.
+     * @return The default processor name
      */
-    String getDefaultHandlerName();
+    String getDefaultProcessorName();
 
     /**
-     * Set the default handler name.
+     * Set the default processor name.
      * Depending on the implementation class, this method may throw an error
-     *  (i.e. it does not allow the modification of the default handler name).
-     * @param defaultHandlerName The default handler name
+     *  (i.e. it does not allow the modification of the default processor name).
+     * @param defaultProcessorName The default processor name
      */
-    void setDefaultHandlerName(String defaultHandlerName);
+    void setDefaultProcessorName(String defaultProcessorName);
 
     /**
-     * Register the json handler.
-     * @param name The json handler name
-     * @param jsonHandler The json handler
+     * Register the json processor.
+     * @param name The json processor name
+     * @param jsonProcessor The json processor
      */
-    void registerHandler(String name, JsonHandler jsonHandler);
+    void registerProcessor(String name, JsonProcessor jsonProcessor);
 
     /**
-     * Deregister the json handler.
-     * @param name The json handler name
+     * Deregister the json processor.
+     * @param name The json processor name
      */
-    void deregisterHandler(String name);
+    void deregisterProcessor(String name);
 
     /**
-     * Get the json handler by name.
-     * @param name The json handler name
-     * @return The json handler
+     * Get the json processor by name.
+     * @param name The json processor name
+     * @return The json processor
      */
-    JsonHandler getJsonHandler(String name);
+    JsonProcessor getJsonProcessor(String name);
 
     /**
      * Determine whether the string is a json object.
-     * @param name The json handler name
+     * @param name The json processor name
      * @param jsonString The json string
      * @return Json object or not
      */
@@ -76,7 +76,7 @@ public interface JsonProvider {
 
     /**
      * Determine whether the string is a json array.
-     * @param name The json handler name
+     * @param name The json processor name
      * @param jsonString The json string
      * @return Json array or not
      */
@@ -84,7 +84,7 @@ public interface JsonProvider {
 
     /**
      * Serialize java object to json string.
-     * @param name The json handler name
+     * @param name The json processor name
      * @param object The java object
      * @param arguments The arguments (maybe is configuration or feature)
      * @return The json string
@@ -93,7 +93,7 @@ public interface JsonProvider {
 
     /**
      * Parse json string to java object.
-     * @param name The json handler name
+     * @param name The json processor name
      * @param jsonString The json string
      * @param type The java object type
      * @param arguments The arguments (maybe is configuration or feature)

@@ -5,7 +5,7 @@
 
 package kunlun.data.json;
 
-import kunlun.data.json.support.SimpleJsonHandler;
+import kunlun.data.json.support.SimpleJsonProcessor;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -25,8 +25,8 @@ public class JsonUtil {
         synchronized (JsonUtil.class) {
             if (jsonProvider != null) { return jsonProvider; }
             JsonUtil.setJsonProvider(new SimpleJsonProvider());
-            // Register the default handler.
-            registerHandler(getDefaultHandlerName(), new SimpleJsonHandler());
+            // Register the default processor.
+            registerProcessor(getDefaultProcessorName(), new SimpleJsonProcessor());
             return jsonProvider;
         }
     }
@@ -37,34 +37,34 @@ public class JsonUtil {
         JsonUtil.jsonProvider = jsonProvider;
     }
 
-    public static String getDefaultHandlerName() {
+    public static String getDefaultProcessorName() {
 
-        return getJsonProvider().getDefaultHandlerName();
+        return getJsonProvider().getDefaultProcessorName();
     }
 
-    public static void setDefaultHandlerName(String defaultHandlerName) {
+    public static void setDefaultProcessorName(String defaultProcessorName) {
 
-        getJsonProvider().setDefaultHandlerName(defaultHandlerName);
+        getJsonProvider().setDefaultProcessorName(defaultProcessorName);
     }
 
-    public static void registerHandler(String name, JsonHandler jsonHandler) {
+    public static void registerProcessor(String name, JsonProcessor jsonProcessor) {
 
-        getJsonProvider().registerHandler(name, jsonHandler);
+        getJsonProvider().registerProcessor(name, jsonProcessor);
     }
 
-    public static void deregisterHandler(String name) {
+    public static void deregisterProcessor(String name) {
 
-        getJsonProvider().deregisterHandler(name);
+        getJsonProvider().deregisterProcessor(name);
     }
 
-    public static JsonHandler getJsonHandler(String name) {
+    public static JsonProcessor getJsonProcessor(String name) {
 
-        return getJsonProvider().getJsonHandler(name);
+        return getJsonProvider().getJsonProcessor(name);
     }
 
     public static boolean isJsonObject(String jsonString) {
 
-        return getJsonProvider().isJsonObject(getDefaultHandlerName(), jsonString);
+        return getJsonProvider().isJsonObject(getDefaultProcessorName(), jsonString);
     }
 
     public static boolean isJsonObject(String name, String jsonString) {
@@ -74,7 +74,7 @@ public class JsonUtil {
 
     public static boolean isJsonArray(String jsonString) {
 
-        return getJsonProvider().isJsonArray(getDefaultHandlerName(), jsonString);
+        return getJsonProvider().isJsonArray(getDefaultProcessorName(), jsonString);
     }
 
     public static boolean isJsonArray(String name, String jsonString) {
@@ -84,7 +84,7 @@ public class JsonUtil {
 
     public static String toJsonString(Object object, Object... arguments) {
 
-        return getJsonProvider().toJsonString(getDefaultHandlerName(), object, arguments);
+        return getJsonProvider().toJsonString(getDefaultProcessorName(), object, arguments);
     }
 
     public static String toJsonString(String name, Object object, Object... arguments) {
@@ -94,7 +94,7 @@ public class JsonUtil {
 
     public static <T> T parseObject(String jsonString, Type type, Object... arguments) {
 
-        return getJsonProvider().parseObject(getDefaultHandlerName(), jsonString, type, arguments);
+        return getJsonProvider().parseObject(getDefaultProcessorName(), jsonString, type, arguments);
     }
 
     public static <T> T parseObject(String name, String jsonString, Type type, Object... arguments) {

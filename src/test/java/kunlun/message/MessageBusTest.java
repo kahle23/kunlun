@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import kunlun.message.support.SimpleMessageBus;
 import kunlun.common.constant.Words;
 import kunlun.data.json.JsonUtil;
-import kunlun.data.json.support.AbstractJsonHandler;
+import kunlun.data.json.support.AbstractJsonProcessor;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.message.model.Message;
@@ -21,7 +21,7 @@ public class MessageBusTest {
     private static final MessageBus bus = new SimpleMessageBus();
 
     static {
-        JsonUtil.registerHandler(Words.DEFAULT, new AbstractJsonHandler() {
+        JsonUtil.registerProcessor(Words.DEFAULT, new AbstractJsonProcessor() {
             @Override
             public String toJsonString(Object object, Object... arguments) {
 
