@@ -5,7 +5,7 @@
 
 package kunlun.data.mock;
 
-import kunlun.data.mock.support.SimpleMockHandler;
+import kunlun.data.mock.support.SimpleMockGenerator;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -28,7 +28,7 @@ public class MockUtil {
             if (mockProvider != null) { return mockProvider; }
             setMockProvider(new SimpleMockProvider());
             // Register the default handler.
-            registerHandler(getDefaultHandlerName(), new SimpleMockHandler());
+            registerHandler(getDefaultHandlerName(), new SimpleMockGenerator());
             return mockProvider;
         }
     }
@@ -49,19 +49,19 @@ public class MockUtil {
         getMockProvider().setDefaultHandlerName(defaultHandlerName);
     }
 
-    public static void registerHandler(String name, MockHandler mockHandler) {
+    public static void registerHandler(String name, MockGenerator mockHandler) {
 
-        getMockProvider().registerHandler(name, mockHandler);
+        getMockProvider().registerGenerator(name, mockHandler);
     }
 
     public static void deregisterHandler(String name) {
 
-        getMockProvider().deregisterHandler(name);
+        getMockProvider().deregisterGenerator(name);
     }
 
-    public static MockHandler getMockHandler(String name) {
+    public static MockGenerator getMockHandler(String name) {
 
-        return getMockProvider().getMockHandler(name);
+        return getMockProvider().getMockGenerator(name);
     }
 
     public static <T> T mock(String name, Class<T> clazz, Object... arguments) {

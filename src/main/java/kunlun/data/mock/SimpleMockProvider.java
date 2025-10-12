@@ -5,8 +5,7 @@
 
 package kunlun.data.mock;
 
-import kunlun.data.mock.support.AbstractMockHandler;
-import kunlun.data.mock.support.SimpleMockHandler;
+import kunlun.data.mock.support.AbstractMockGenerator;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.Assert;
@@ -23,12 +22,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SimpleMockProvider implements MockProvider {
     private static final Logger log = LoggerFactory.getLogger(SimpleMockProvider.class);
-    protected final Map<String, MockHandler> handlers;
+    protected final Map<String, MockGenerator> handlers;
     protected final Map<String, Object> commonProperties;
     private String defaultHandlerName = "default";
 
     protected SimpleMockProvider(Map<String, Object> commonProperties,
-                                 Map<String, MockHandler> handlers) {
+                                 Map<String, MockGenerator> handlers) {
         Assert.notNull(commonProperties, "Parameter \"commonProperties\" must not null. ");
         Assert.notNull(handlers, "Parameter \"handlers\" must not null. ");
         this.commonProperties = commonProperties;
@@ -37,7 +36,7 @@ public class SimpleMockProvider implements MockProvider {
 
     public SimpleMockProvider() {
         this(new ConcurrentHashMap<String, Object>(),
-                new ConcurrentHashMap<String, MockHandler>());
+                new ConcurrentHashMap<String, MockGenerator>());
     }
 
     @Override
@@ -74,21 +73,21 @@ public class SimpleMockProvider implements MockProvider {
     }
 
     @Override
-    public void registerHandler(String name, MockHandler mockHandler) {
+    public void registerGenerator(String name, MockGenerator mockHandler) {
         Assert.notNull(mockHandler, "Parameter \"mockHandler\" must not null. ");
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         String className = mockHandler.getClass().getName();
         handlers.put(name, mockHandler);
-        if (mockHandler instanceof AbstractMockHandler) {
-            ((AbstractMockHandler) mockHandler).setCommonProperties(getCommonProperties());
+        if (mockHandler instanceof AbstractMockGenerator) {
+            ((AbstractMockGenerator) mockHandler).setCommonProperties(getCommonProperties());
         }
         log.debug("Register the mock handler \"{}\" to \"{}\". ", className, name);
     }
 
     @Override
-    public void deregisterHandler(String name) {
+    public void deregisterGenerator(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        MockHandler remove = handlers.remove(name);
+        MockGenerator remove = handlers.remove(name);
         if (remove != null) {
             String className = remove.getClass().getName();
             log.debug("Deregister the mock handler \"{}\" from \"{}\". ", className, name);
@@ -96,9 +95,9 @@ public class SimpleMockProvider implements MockProvider {
     }
 
     @Override
-    public MockHandler getMockHandler(String name) {
+    public MockGenerator getMockGenerator(String name) {
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
-        MockHandler mockHandler = handlers.get(name);
+        MockGenerator mockHandler = handlers.get(name);
         Assert.notNull(mockHandler
                 , "The corresponding mock handler could not be found by name. ");
         return mockHandler;
@@ -107,7 +106,7 @@ public class SimpleMockProvider implements MockProvider {
     @Override
     public Object mock(String name, Type type, Object... arguments) {
 
-        return getMockHandler(name).mock(type, arguments);
+        return getMockGenerator(name).mock(type, arguments);
     }
 
 }

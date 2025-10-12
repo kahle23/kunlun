@@ -32,42 +32,42 @@ public interface MockProvider {
     Map<String, Object> getCommonProperties();
 
     /**
-     * Get the default handler name.
-     * @return The default handler name
+     * Get the default generator name.
+     * @return The default generator name
      */
     String getDefaultHandlerName();
 
     /**
-     * Set the default handler name.
+     * Set the default generator name.
      * Depending on the implementation class, this method may throw an error
-     *  (i.e. it does not allow the modification of the default handler name).
-     * @param defaultHandlerName The default handler name
+     *  (i.e. it does not allow the modification of the default generator name).
+     * @param defaultHandlerName The default generator name
      */
     void setDefaultHandlerName(String defaultHandlerName);
 
     /**
-     * Register the mock handler.
-     * @param name The mock handler name
-     * @param mockHandler The mock handler
+     * Register the mock generator.
+     * @param name The mock generator name
+     * @param mockGenerator The mock generator
      */
-    void registerHandler(String name, MockHandler mockHandler);
+    void registerGenerator(String name, MockGenerator mockGenerator);
 
     /**
-     * Deregister the mock handler.
-     * @param name The mock handler name
+     * Deregister the mock generator.
+     * @param name The mock generator name
      */
-    void deregisterHandler(String name);
+    void deregisterGenerator(String name);
 
     /**
-     * Get the mock handler by name.
-     * @param name The mock handler name
-     * @return The mock handler
+     * Get the mock generator by name.
+     * @param name The mock generator name
+     * @return The mock generator
      */
-    MockHandler getMockHandler(String name);
+    MockGenerator getMockGenerator(String name);
 
     /**
      * Mock the data.
-     * @param name The mock handler name
+     * @param name The mock generator name
      * @param type The type of the mock data
      * @param arguments The arguments (maybe is configuration or feature)
      * @return The mock data

@@ -19,18 +19,18 @@ import java.util.*;
 
 import static kunlun.common.constant.Numbers.*;
 
-public class SimpleMockHandler extends AbstractMockHandler {
+public class SimpleMockGenerator extends AbstractMockGenerator {
     /**
      * Between 0 and 'maxNestedCount'(include).
      */
     private Integer maxNestedCount;
 
-    public SimpleMockHandler() {
+    public SimpleMockGenerator() {
 
         this(ONE);
     }
 
-    public SimpleMockHandler(Integer maxNestedCount) {
+    public SimpleMockGenerator(Integer maxNestedCount) {
         Assert.notNull(maxNestedCount, "Parameter \"maxNestedCount\" must not null. ");
         this.maxNestedCount = maxNestedCount >= ZERO && maxNestedCount < FOUR ? maxNestedCount : ONE;
     }

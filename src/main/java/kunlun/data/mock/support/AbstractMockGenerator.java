@@ -5,17 +5,17 @@
 
 package kunlun.data.mock.support;
 
-import kunlun.data.mock.MockHandler;
+import kunlun.data.mock.MockGenerator;
 import kunlun.util.Assert;
 
 import java.util.Collections;
 import java.util.Map;
 
 /**
- * The abstract data mock handler.
+ * The abstract data mock generator.
  * @author Kahle
  */
-public abstract class AbstractMockHandler implements MockHandler {
+public abstract class AbstractMockGenerator implements MockGenerator {
     private Map<Object, Object> commonProperties = Collections.emptyMap();
 
     public Map<Object, Object> getCommonProperties() {

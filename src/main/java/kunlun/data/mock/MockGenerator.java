@@ -8,10 +8,10 @@ package kunlun.data.mock;
 import java.lang.reflect.Type;
 
 /**
- * The data mock handler.
+ * The data mock generator.
  * @author Kahle
  */
-public interface MockHandler {
+public interface MockGenerator {
 
     /**
      * Mock the data.
