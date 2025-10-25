@@ -16,8 +16,6 @@ import java.util.Map;
 
 import static kunlun.common.constant.Numbers.ONE;
 import static kunlun.convert.ConversionUtil.convert;
-import static kunlun.security.TokenManager.Token;
-import static kunlun.security.UserManager.UserDetail;
 import static kunlun.util.Assert.*;
 
 /**
@@ -162,17 +160,17 @@ public class SecurityUtil {
 
     public static UserDetail getUserDetail(Object userId, Object userType) {
 
-        return getUserManager().getUserDetail(userId, userType);
+        return getUserService().getUserDetail(userId, userType);
     }
 
     public static Collection<String> getPermissions(Object userId, Object userType) {
 
-        return getUserManager().getPermissions(userId, userType);
+        return getUserService().getPermissions(userId, userType);
     }
 
     public static Collection<String> getUserGroups(Object userId, Object userType, Object groupType) {
 
-        return getUserManager().getUserGroups(userId, userType, groupType);
+        return getUserService().getUserGroups(userId, userType, groupType);
     }
     // endregion
 
@@ -194,9 +192,9 @@ public class SecurityUtil {
         return notNull(tokenManager, "The token manager is null. ");
     }
 
-    public static UserManager getUserManager() {
-        UserManager userManager = getContext().getUserManager();
-        return notNull(userManager, "The user manager is null. ");
+    public static UserService getUserService() {
+        UserService userService = getContext().getUserService();
+        return notNull(userService, "The user service is null. ");
     }
     // endregion
 

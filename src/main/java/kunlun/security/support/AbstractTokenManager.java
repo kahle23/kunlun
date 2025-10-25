@@ -5,6 +5,7 @@
 
 package kunlun.security.support;
 
+import kunlun.security.Token;
 import kunlun.security.TokenManager;
 
 /**

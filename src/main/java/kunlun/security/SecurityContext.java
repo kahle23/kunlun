@@ -11,8 +11,6 @@ import kunlun.core.DataController;
 
 import java.util.Collection;
 
-import static kunlun.security.UserManager.UserDetail;
-
 /**
  * The security context.
  * (Providing functions such as logged-in user information retrieval and permission verification)
@@ -110,10 +108,10 @@ public interface SecurityContext extends Context {
     TokenManager getTokenManager();
 
     /**
-     * Get the held user manager.
-     * @return The held user manager
+     * Get the held user service.
+     * @return The held user service
      */
-    UserManager getUserManager();
+    UserService getUserService();
     // endregion
 
 }

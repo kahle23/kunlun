@@ -5,14 +5,13 @@
 
 package kunlun.security;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * The user manager.
+ * The user service.
  * @author Kahle
  */
-public interface UserManager {
+public interface UserService {
 
     /**
      * Get the user detail based on user id.
@@ -40,42 +39,49 @@ public interface UserManager {
     Collection<String> getUserGroups(Object userId, Object userType, Object groupType);
 
 
-    /**
-     * The interface for the definition of user detail.
-     * @author Kahle
-     */
-    interface UserDetail extends Serializable {
+    Collection<UserDetail> getUserDetails(Collection<?> userIds, Object userType);
 
-        /**
-         * Get the user id.
-         * @return The user id
-         */
-        Object getUserId();
 
-        /**
-         * Get the user type.
-         * @return The user type
-         */
-        Object getUserType();
+    Collection<UserGroup> getUserGroups(Collection<?> groupIds, Object groupType);
 
-        /**
-         * Get the username.
-         * @return The username
-         */
-        String getUsername();
 
-        /**
-         * Get the user display name.
-         * @return The user display name
-         */
-        String getDisplayName();
 
-        /**
-         * Indicates whether the user is enabled or disabled.
-         * @return True if the user is enabled, false otherwise
-         */
-        Boolean getEnabled();
-
-    }
+//    /**
+//     * The interface for the definition of user detail.
+//     * @author Kahle
+//     */
+//    interface UserDetail extends Serializable {
+//
+//        /**
+//         * Get the user id.
+//         * @return The user id
+//         */
+//        Object getUserId();
+//
+//        /**
+//         * Get the user type.
+//         * @return The user type
+//         */
+//        Object getType();
+//
+//        /**
+//         * Get the username.
+//         * @return The username
+//         */
+//        String getUsername();
+//
+//        /**
+//         * Get the user display name.
+//         * @return The user display name
+//         */
+//        String getDisplayName();
+//
+//        /**
+//         * Indicates whether the user is enabled or disabled.
+//         * @return True if the user is enabled, false otherwise
+//         */
+//        Boolean getEnabled();
+//
+//    }
 
 }

@@ -5,8 +5,6 @@
 
 package kunlun.security;
 
-import java.io.Serializable;
-
 /**
  * The token manager.
  * @author Kahle
@@ -58,30 +56,30 @@ public interface TokenManager {
     Object refreshToken(String token);
 
 
-    /**
-     * The interface for the definition of token data.
-     * @author Kahle
-     */
-    interface Token extends Serializable {
-
-        /**
-         * Get the token value.
-         * @return The token value
-         */
-        String getValue();
-
-        /**
-         * Get the user id.
-         * @return The user id
-         */
-        Object getUserId();
-
-        /**
-         * Get the user type.
-         * @return The user type
-         */
-        Object getUserType();
-
-    }
+//    /**
+//     * The interface for the definition of token data.
+//     * @author Kahle
+//     */
+//    interface Token extends Serializable {
+//
+//        /**
+//         * Get the token value.
+//         * @return The token value
+//         */
+//        String getValue();
+//
+//        /**
+//         * Get the user id.
+//         * @return The user id
+//         */
+//        Object getUserId();
+//
+//        /**
+//         * Get the user type.
+//         * @return The user type
+//         */
+//        Object getUserType();
+//
+//    }
 
 }

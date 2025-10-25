@@ -5,15 +5,17 @@
 
 package kunlun.security.support;
 
-import kunlun.security.UserManager;
+import kunlun.security.UserDetail;
+import kunlun.security.UserGroup;
+import kunlun.security.UserService;
 
 import java.util.Collection;
 
 /**
- * The abstract user manager.
+ * The abstract user service.
  * @author Kahle
  */
-public abstract class AbstractUserManager implements UserManager {
+public abstract class AbstractUserService implements UserService {
 
     @Override
     public Collection<String> getPermissions(Object userId, Object userType) {
@@ -27,48 +29,60 @@ public abstract class AbstractUserManager implements UserManager {
         return null;
     }
 
+    @Override
+    public Collection<UserDetail> getUserDetails(Collection<?> userIds, Object userType) {
+
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Collection<UserGroup> getUserGroups(Collection<?> groupIds, Object groupType) {
+
+        throw new UnsupportedOperationException();
+    }
+
     /**
-     * The simple implementation class for UserDetail.
+     * The simple implementation class for user detail.
      * @author Kahle
      */
     public static class UserImpl implements UserDetail {
-        private Object userId;
-        private Object userType;
-        private String username;
+        private Object id;
+        private Object type;
+        private String account;
         private String displayName;
         private Boolean enabled;
 
         @Override
-        public Object getUserId() {
+        public Object getId() {
 
-            return userId;
+            return id;
         }
 
-        public void setUserId(Object userId) {
+        public void setId(Object id) {
 
-            this.userId = userId;
-        }
-
-        @Override
-        public Object getUserType() {
-
-            return userType;
-        }
-
-        public void setUserType(Object userType) {
-
-            this.userType = userType;
+            this.id = id;
         }
 
         @Override
-        public String getUsername() {
+        public Object getType() {
 
-            return username;
+            return type;
         }
 
-        public void setUsername(String username) {
+        public void setType(Object type) {
 
-            this.username = username;
+            this.type = type;
+        }
+
+        @Override
+        public String getAccount() {
+
+            return account;
+        }
+
+        public void setAccount(String account) {
+
+            this.account = account;
         }
 
         @Override

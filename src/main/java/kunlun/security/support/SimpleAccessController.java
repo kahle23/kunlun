@@ -6,7 +6,7 @@
 package kunlun.security.support;
 
 import kunlun.core.AccessController;
-import kunlun.security.UserManager;
+import kunlun.security.UserService;
 import kunlun.util.StrUtil;
 
 import java.util.Collection;
@@ -16,11 +16,11 @@ import java.util.Collection;
  * @author Kahle
  */
 public class SimpleAccessController implements AccessController {
-    private final UserManager userManager;
+    private final UserService userService;
 
-    public SimpleAccessController(UserManager userManager) {
+    public SimpleAccessController(UserService userService) {
 
-        this.userManager = userManager;
+        this.userService = userService;
     }
 
     public SimpleAccessController() {
@@ -28,18 +28,18 @@ public class SimpleAccessController implements AccessController {
         this(null);
     }
 
-    public UserManager getUserManager() {
+    public UserService getUserService() {
 
-        return userManager;
+        return userService;
     }
 
     @Override
     public boolean hasPermission(Object userId, Object userType, String permission) {
         // Is not turn on access permission or permission code is blank.
-        if (getUserManager() == null) { return true; }
+        if (getUserService() == null) { return true; }
         if (StrUtil.isBlank(permission)) { return true; }
         // Get user permissions.
-        Collection<String> permissions = getUserManager().getPermissions(userId, userType);
+        Collection<String> permissions = getUserService().getPermissions(userId, userType);
         // Is not turn on access permission.
         if (permissions == null) { return true; }
         // Judge access permission.
