@@ -5,21 +5,45 @@
 
 package kunlun.common;
 
-import java.io.Serializable;
+import kunlun.common.constant.Nil;
+import kunlun.data.Dict;
 
-import static kunlun.common.constant.Numbers.ONE;
-import static kunlun.common.constant.Numbers.TEN;
+import java.io.Serializable;
 
 /**
  * The simple paging info.
  * @author Kahle
  */
-@Deprecated
 public class Paging implements Serializable {
+
+    // region ======== 静态构建方法 ========
+
+    public static Paging of(Integer pageNum, Integer pageSize, Dict pageParams) {
+        Paging paging = new Paging();
+        paging.setPageNum(pageNum);
+        paging.setPageSize(pageSize);
+        paging.setPageParams(pageParams);
+        return paging;
+    }
+
+    public static Paging of(Integer pageNum, Integer pageSize) {
+
+        return of(pageNum, pageSize, Nil.<Dict>g());
+    }
+
+    public static Paging of() {
+
+        return new Paging();
+    }
+    // endregion
+
+
     private Integer pageNum;
     private Integer pageSize;
+    private Dict    pageParams;
 
-    public Paging() {
+
+    /*public Paging() {
 
         this(ONE, TEN);
     }
@@ -27,7 +51,7 @@ public class Paging implements Serializable {
     public Paging(Integer pageNum, Integer pageSize) {
         this.pageSize = pageSize;
         this.pageNum = pageNum;
-    }
+    }*/
 
     public Integer getPageNum() {
 
@@ -49,11 +73,22 @@ public class Paging implements Serializable {
         this.pageSize = pageSize;
     }
 
+    public Dict getPageParams() {
+
+        return pageParams;
+    }
+
+    public void setPageParams(Dict pageParams) {
+
+        this.pageParams = pageParams;
+    }
+
     @Override
     public String toString() {
         return "Paging{" +
                 "pageNum=" + pageNum +
                 ", pageSize=" + pageSize +
+                ", pageParams=" + pageParams +
                 '}';
     }
 

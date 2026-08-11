@@ -3,31 +3,20 @@
  * Kunlun is licensed under the "LICENSE" file in the project's root directory.
  */
 
-package kunlun.data;
-
-import kunlun.data.map.FmMap;
+package kunlun.data.map;
 
 import java.util.Map;
 
 /**
- * The ability to convert to and from map.
- * @see FmMap
- * @see kunlun.data.map.ToMap
+ * FromMap.
  * @author Kahle
  */
-@Deprecated
-public interface Mappable {
+public interface FmMap {
 
     /**
      * The ability to convert back from map.
      * @param map The map to be read
      */
     void fromMap(Map<?, ?> map);
-
-    /**
-     * The ability to convert to map.
-     * @return The map that has been converted
-     */
-    Map<Object, Object> toMap();
 
 }
