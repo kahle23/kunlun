@@ -42,7 +42,7 @@ public class SimpleBeanMap extends BeanMap {
 
     static {
         String nameGetClass = "getClass";
-        METHOD_GET_CLASS = ReflectUtil.getMethod(Object.class, nameGetClass);
+        METHOD_GET_CLASS = ReflectUtil.getMethodOrThrow(Object.class, nameGetClass);
     }
 
     public SimpleBeanMap() {
@@ -102,7 +102,7 @@ public class SimpleBeanMap extends BeanMap {
         Method method = readMethodMap.get(keyString);
         if (method == null) { return null; }
         try {
-            return method.invoke(bean);
+            return ReflectUtil.invoke(bean, method);
         }
         catch (Exception e) {
             if (ignoreException) {
@@ -137,7 +137,7 @@ public class SimpleBeanMap extends BeanMap {
             }
             // The always return null.
             // If you want not null, must invoke getter first.
-            return method.invoke(bean, value);
+            return ReflectUtil.invoke(bean, method, value);
         }
         catch (Exception e) {
             if (ignoreException) {

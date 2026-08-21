@@ -64,7 +64,7 @@ public class SimpleBeanCopier implements BeanCopier {
             Class<?>[] types = destMth.getParameterTypes();
             try {
                 boolean haveType = ArrayUtil.isNotEmpty(types);
-                Object input = srcMth.invoke(from);
+                Object input = ReflectUtil.invoke(from, srcMth);
                 if (input == null && haveType
                         && types[ZERO].isPrimitive()) {
                     throw new NullPointerException();
@@ -72,7 +72,7 @@ public class SimpleBeanCopier implements BeanCopier {
                 if (haveCvn && haveType) {
                     input = conversionService.convert(input, types[ZERO]);
                 }
-                destMth.invoke(to, input);
+                ReflectUtil.invoke(to, destMth, input);
             }
             catch (Exception e) {
                 if (ignoreException) {

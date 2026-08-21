@@ -9,9 +9,9 @@ import kunlun.convert.ConversionService;
 import kunlun.convert.ConversionUtil;
 import kunlun.data.bean.support.SimpleBeanCopier;
 import kunlun.data.bean.support.SimpleBeanMapFactory;
-import kunlun.exception.ExceptionUtil;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
+import kunlun.reflect.ReflectUtil;
 import kunlun.util.Assert;
 import kunlun.util.ObjUtil;
 
@@ -117,20 +117,15 @@ public class BeanUtil {
 
     public static <F, T> T beanToBean(F from, Class<T> toClass) {
         if (from == null) { return null; }
-        try {
-            T to = toClass.newInstance();
-            if (from instanceof Map) {
-                Map<Object, Object> castMap = ObjUtil.cast(from);
-                copy(castMap, to);
-            }
-            else {
-                copy(from, to);
-            }
-            return to;
+        T to = ReflectUtil.newInstance(toClass);
+        if (from instanceof Map) {
+            Map<Object, Object> castMap = ObjUtil.cast(from);
+            copy(castMap, to);
         }
-        catch (Exception e) {
-            throw ExceptionUtil.wrap(e);
+        else {
+            copy(from, to);
         }
+        return to;
     }
 
     public static <F> Map<String, Object> beanToMap(F from) {

@@ -42,8 +42,8 @@ public class SerialNumberFillerImpl implements SerialNumberFiller {
             try {
                 Field field = ReflectUtil.getField(datum.getClass(), fieldName);
                 if (field == null) { continue; }
-                ReflectUtil.makeAccessible(field);
-                field.set(datum, ConversionUtil.convert(pageIndexBasedIndex, field.getType()));
+                ReflectUtil.setFieldValue(datum, field
+                        , ConversionUtil.convert(pageIndexBasedIndex, field.getType()));
             } catch (Exception e) {
 //                log.error("Fill serial number failure! ", e);
             }

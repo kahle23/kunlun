@@ -69,7 +69,6 @@ public class FieldBasedBeanMap extends BeanMap {
         Field[] declaredFields = ReflectUtil.getDeclaredFields(beanClass);
         for (Field field : declaredFields) {
             if (field != null) {
-                ReflectUtil.makeAccessible(field);
                 fieldMap.put(field.getName(), field);
             }
         }
@@ -81,7 +80,7 @@ public class FieldBasedBeanMap extends BeanMap {
         Field field = fieldMap.get(String.valueOf(key));
         if (field == null) { return null; }
         try {
-            return field.get(bean);
+            return ReflectUtil.getFieldValue(bean, field);
         }
         catch (Exception e) {
             if (ignoreException) {
@@ -107,7 +106,7 @@ public class FieldBasedBeanMap extends BeanMap {
             if (getConversionService() != null) {
                 value = getConversionService().convert(value, type);
             }
-            field.set(bean, value);
+            ReflectUtil.setFieldValue(bean, field, value);
             // The always return null.
             // If you want not null, must invoke getter first.
             return null;

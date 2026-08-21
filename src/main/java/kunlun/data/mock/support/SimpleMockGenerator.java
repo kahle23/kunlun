@@ -180,7 +180,7 @@ public class SimpleMockGenerator extends AbstractMockGenerator {
                 Method method = entry.getValue();
                 Type valueType = method.getGenericParameterTypes()[ZERO];
                 Object value = mockAnyData(valueType, attrNameKey, arguments, nested, originalType);
-                if (value != null) { method.invoke(bean, value); }
+                if (value != null) { ReflectUtil.invoke(bean, method, value); }
             }
             return bean;
         }

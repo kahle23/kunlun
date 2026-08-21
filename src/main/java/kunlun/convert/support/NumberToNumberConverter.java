@@ -6,11 +6,9 @@
 package kunlun.convert.support;
 
 import kunlun.convert.ConversionService;
-import kunlun.exception.ExceptionUtil;
 import kunlun.reflect.ReflectUtil;
 import kunlun.util.StrUtil;
 
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -43,13 +41,7 @@ public class NumberToNumberConverter extends AbstractClassConverter {
         name = INTEGER.equals(name) ? INT : name;
         name = StrUtil.uncapitalize(name);
         name = name + VALUE;
-        try {
-            Method method = ReflectUtil.getMethod(clazz, name);
-            return method.invoke(source);
-        }
-        catch (Exception e) {
-            throw ExceptionUtil.wrap(e);
-        }
+        return ReflectUtil.invoke(source, name);
     }
 
 }

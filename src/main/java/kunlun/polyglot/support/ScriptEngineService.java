@@ -13,11 +13,9 @@ import kunlun.util.ObjUtil;
 
 import javax.script.*;
 import java.io.Reader;
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 
-import static kunlun.util.ObjUtil.cast;
 
 /**
  * The simple polyglot execution service base on "javax.script.ScriptEngineManager".
@@ -33,14 +31,7 @@ public class ScriptEngineService implements PolyglotService {
     public ScriptEngineService(ScriptEngineManager scriptEngineManager) {
         Assert.notNull(scriptEngineManager, "Parameter \"scriptEngineManager\" must not null. ");
         this.scriptEngineManager = scriptEngineManager;
-        try {
-            Field field = ReflectUtil.getField(ScriptEngineManager.class, "engineSpis");
-            ReflectUtil.makeAccessible(field);
-            this.factories = cast(field.get(scriptEngineManager));
-        }
-        catch (Exception e) {
-            throw ExceptionUtil.wrap(e);
-        }
+        this.factories = ReflectUtil.getFieldValue(scriptEngineManager, "engineSpis");
     }
 
     public ScriptEngineService() {
