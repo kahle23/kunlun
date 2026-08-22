@@ -127,6 +127,12 @@ public class ReflectUtilTest {
         catch (UncheckedException e) {
             assertTrue(e.getCause() instanceof NoSuchFieldException);
         }
+        // hasField 与 getField 的命中/未命中语义一致（含父类 private 不可见、接口常量）
+        assertTrue(ReflectUtil.hasField(Child.class, "childName"));
+        assertTrue(ReflectUtil.hasField(Child.class, "parentProtected"));
+        assertTrue(ReflectUtil.hasField(Child.class, "CONST"));
+        assertFalse(ReflectUtil.hasField(Child.class, "parentPrivate"));
+        assertFalse(ReflectUtil.hasField(Child.class, "nope"));
     }
 
     @Test

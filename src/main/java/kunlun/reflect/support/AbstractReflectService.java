@@ -62,6 +62,12 @@ public abstract class AbstractReflectService implements ReflectService {
     // region ======== 字段 ========
 
     @Override
+    public boolean hasField(Class<?> clazz, String fieldName) {
+
+        return getField(clazz, fieldName) != null;
+    }
+
+    @Override
     public Field getFieldOrThrow(Class<?> clazz, String fieldName) {
         Field field = getField(clazz, fieldName);
         if (field == null) { throw buildFieldNotFoundException(clazz, fieldName); }

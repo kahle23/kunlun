@@ -53,6 +53,15 @@ public interface ReflectService {
     Field[] getAllFields(Class<?> clazz);
 
     /**
+     * 判断指定类中是否存在指定名称的字段（沿父类链向上查找）。
+     *
+     * @param clazz     待访问的类
+     * @param fieldName 字段名
+     * @return 存在返回 {@code true}
+     */
+    boolean hasField(Class<?> clazz, String fieldName);
+
+    /**
      * 按字段名获取指定类中匹配的字段（沿父类链向上查找），未找到返回 {@code null}。
      *
      * @param clazz     待访问的类

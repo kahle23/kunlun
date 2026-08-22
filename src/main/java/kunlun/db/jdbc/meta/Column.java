@@ -9,52 +9,52 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * The information about columns of a table structure in a database.
+ * 数据库表结构中的列元数据，数据来源于 JDBC 的 DatabaseMetaData#getColumns 结果集.
  * @author Kahle
  */
 public class Column implements Serializable {
     /**
-     * The column name of the table structure.
+     * 列名（JDBC：COLUMN_NAME）
      */
     private String name;
     /**
-     * The order of the table columns.
+     * 列在表中的序号位置
      */
     private Integer order;
     /**
-     * The column type of the table structure (like "varchar").
+     * 列的数据库类型名，如 VARCHAR（JDBC：TYPE_NAME）
      */
     private String type;
     /**
-     * The size of the table structure column (like 100 in "varchar(100)").
+     * 列长度，如 VARCHAR(100) 中的 100（JDBC：COLUMN_SIZE）
      */
     private Integer size;
     /**
-     * The decimal digits of the table structure column (like 2 in "decimal(11,2)").
+     * 小数位数，如 DECIMAL(11,2) 中的 2（JDBC：DECIMAL_DIGITS）
      */
     private Integer decimalDigits;
     /**
-     * Whether the column can be null (true or false or null, like "NOT NULL").
+     * 是否允许为 NULL；未知时为 null（JDBC：IS_NULLABLE）
      */
     private Boolean nullable;
     /**
-     * The default value for the column (like "DEFAULT '0'").
+     * 列的默认值表达式（JDBC：COLUMN_DEF）
      */
     private String defaultValue;
     /**
-     * The comment for column of the table structure.
+     * 列注释（JDBC：REMARKS）
      */
     private String comment;
     /**
-     * Whether the column is the primary key (true or false or null, like "PRIMARY KEY (`id`)").
+     * 是否为主键列
      */
     private Boolean primaryKey;
     /**
-     * Whether the column is autoincrement (true or false or null, like "AUTO_INCREMENT").
+     * 是否自增（JDBC：IS_AUTOINCREMENT）
      */
     private Boolean autoincrement;
     /**
-     * The other attributes.
+     * 其他由驱动扩展、未在上述字段中体现的属性
      */
     private Map<String, Object> attributes;
 

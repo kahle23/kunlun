@@ -72,6 +72,11 @@ public class ReflectUtil {
         return getReflectService().getAllFields(clazz);
     }
 
+    public static boolean hasField(Class<?> clazz, String fieldName) {
+
+        return getReflectService().hasField(clazz, fieldName);
+    }
+
     public static Field getField(Class<?> clazz, String fieldName) {
 
         return getReflectService().getField(clazz, fieldName);

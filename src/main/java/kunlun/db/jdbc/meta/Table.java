@@ -10,32 +10,32 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The table structure information of the database.
+ * 数据库表结构信息，包含表名、注释、主键、列与索引.
  * @author Kahle
  */
 public class Table implements Serializable {
     /**
-     * The table name.
+     * 表名（JDBC：TABLE_NAME）
      */
     private String name;
     /**
-     * The comment on the table structure.
+     * 表注释（JDBC：REMARKS）
      */
     private String comment;
     /**
-     * The table primary keys (if is composite primary key, use "," separate).
+     * 主键列名；联合主键时以英文逗号分隔
      */
     private String primaryKeys;
     /**
-     * The column information for a table structure.
+     * 表的列信息
      */
     private List<Column> columns;
     /**
-     * The index information for a table structure.
+     * 表的索引信息
      */
     private List<Index>  indexes;
     /**
-     * The other attributes.
+     * 其他由驱动扩展、未在上述字段中体现的属性
      */
     private Map<String, Object> attributes;
 

@@ -16,6 +16,10 @@ public interface PagingProcessor {
 
     void setDefaultPageSize(Integer defaultPageSize);
 
+    Integer getMaxPageSize();
+
+    void setMaxPageSize(Integer maxPageSize);
+
     Object process(Paging paging);
 
 }

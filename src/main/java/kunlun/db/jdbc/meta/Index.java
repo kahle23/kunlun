@@ -8,36 +8,36 @@ package kunlun.db.jdbc.meta;
 import java.util.Map;
 
 /**
- * The information about indexes of a table structure in a database.
+ * 数据库表结构中的索引元数据，数据来源于 JDBC 的 DatabaseMetaData#getIndexInfo 结果集.
  * @author Kahle
  */
 public class Index {
     /**
-     * The index name of the table (INDEX_NAME).
+     * 索引名（JDBC：INDEX_NAME）
      */
     private String name;
     /**
-     * The index type of the table (TYPE).
+     * 索引类型（JDBC：TYPE）
      */
     private String type;
     /**
-     * Whether this is a unique index (NON_UNIQUE).
+     * 是否为非唯一索引，即允许重复值；为 true 表示非唯一（JDBC：NON_UNIQUE）
      */
     private Boolean nonUnique;
     /**
-     * The table name (TABLE_NAME).
+     * 索引所属的表名（JDBC：TABLE_NAME）
      */
     private String tableName;
     /**
-     * The column name of the index (COLUMN_NAME).
+     * 被索引的列名（JDBC：COLUMN_NAME）
      */
     private String columnName;
     /**
-     * The ordinal position of column name (ORDINAL_POSITION).
+     * 列在该索引中的序号位置（JDBC：ORDINAL_POSITION）
      */
     private String ordinalPosition;
     /**
-     * The other attributes.
+     * 其他由驱动扩展、未在上述字段中体现的属性
      */
     private Map<String, Object> attributes;
 

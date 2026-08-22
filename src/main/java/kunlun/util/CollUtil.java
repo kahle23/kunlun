@@ -8,6 +8,7 @@ package kunlun.util;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static kunlun.common.constant.Numbers.ONE;
@@ -79,6 +80,20 @@ public class CollUtil {
         if (collection == null) { return null; }
         T[] array = ArrayUtil.newArray(componentType, ZERO);
         return collection.toArray(array);
+    }
+
+    public static Collection<?> toCollection(Object value) {
+        if (value == null) { return Collections.emptyList(); }
+        if (value instanceof Collection) { return (Collection<?>) value; }
+        if (value.getClass().isArray()) {
+            int len = Array.getLength(value);
+            List<Object> list = new ArrayList<Object>(len);
+            for (int i = ZERO; i < len; i++) {
+                list.add(Array.get(value, i));
+            }
+            return list;
+        }
+        return Collections.singletonList(value);
     }
 
     public static <E> void addAll(Collection<E> collection, Enumeration<E> enumeration) {

@@ -17,9 +17,9 @@ import java.util.List;
 import static kunlun.util.Assert.notNull;
 
 public class PageUtil {
-    private static SerialNumberFiller serialNumberFiller;
-    private static PagingProcessor pagingProcessor;
-    private static PageResultProcessor pageResultProcessor;
+    private static volatile SerialNumberFiller serialNumberFiller;
+    private static volatile PagingProcessor pagingProcessor;
+    private static volatile PageResultProcessor pageResultProcessor;
 
     public static SerialNumberFiller getSerialNumberFiller() {
         if (serialNumberFiller != null) { return serialNumberFiller; }
@@ -105,6 +105,15 @@ public class PageUtil {
         getPagingProcessor().setDefaultPageSize(defaultPageSize);
     }
 
+    public static Integer getMaxPageSize() {
+
+        return getPagingProcessor().getMaxPageSize();
+    }
+
+    public static void setMaxPageSize(Integer maxPageSize) {
+
+        getPagingProcessor().setMaxPageSize(maxPageSize);
+    }
 
     public static Object startPage(Integer pageNum, Integer pageSize) {
 
