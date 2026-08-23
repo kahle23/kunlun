@@ -6,33 +6,68 @@
 package kunlun.data;
 
 import kunlun.core.Builder;
+import kunlun.exception.ExceptionUtil;
 
 import java.util.Map;
 
 import static kunlun.util.Assert.notNull;
 
 /**
- * The event record.
+ * 事件记录，参照 <b>Windows 事件查看器</b> 中的一条记录设计 ——
+ * 不可变、追加式的审计/诊断记录，回答<i>「发生了什么」</i>，面向运维与审计人员。
+ * <p>
+ * <h3>定位</h3>
+ * <ul>
+ *   <li><b>用途：</b>记录已发生的事实（用户操作、数据变动、系统运行），供长期归档与事后回溯。</li>
+ *   <li><b>受众：</b>运维 / 审计人员，而非终端用户。</li>
+ *   <li><b>生命周期：</b>一次写入、长期保留，不可消除。</li>
+ *   <li><b>不是用户通知：</b>{@code Event} 没有接收人、没有标题/图标、没有已读/未读状态。
+ *       面向用户的消息归属 {@link kunlun.notification.model.Notification}；
+ *       {@code Event} 可以<i>触发</i>一条通知（由订阅型消费者完成，类似 Windows
+ *       任务计划程序订阅事件），但二者是不同的载体，不得合并。</li>
+ * </ul>
+ *
+ * <h3>字段映射（参照 Windows 事件查看器）</h3>
+ * <table>
+ *   <tr><th>概念</th><th>Event 字段</th></tr>
+ *   <tr><td>事件类型</td><td>{@code name}（{@link #OPERATION_LOG}/{@link #CHANGE_LOG}/{@link #RUN_LOG}）</td></tr>
+ *   <tr><td>事件 ID</td><td>{@code id}</td></tr>
+ *   <tr><td>级别 (Verbose/Information/Warning/Error/Critical)</td><td>{@link Level}（TRACE/DEBUG/INFO/WARN/ERROR）</td></tr>
+ *   <tr><td>来源 / 提供程序</td><td>{@code module}</td></tr>
+ *   <tr><td>用户 / 计算机 / 时间</td><td>{@code userId} / {@code platform} / {@code time}</td></tr>
+ *   <tr><td>描述</td><td>{@code message}</td></tr>
+ *   <tr><td>业务关联（非 Windows 概念）</td><td>{@code businessType} / {@code businessId}</td></tr>
+ * </table>
+ *
+ * <p>事件经由 {@link kunlun.data.event.EventCollector} 流转，其消费者可包括
+ * 日志写入器（默认）以及可选的通知转发器。所有此类载体均通过 {@code Action} 总线统一调度。
+ *
  * @author Kahle
+ * @see kunlun.notification.model.Notification
+ * @see kunlun.data.event.EventCollector
  */
 public class Event implements Builder {
-    // region ======== The constants ========
+    // region ======== 常量 ========
     /**
-     * The user's operation records (in most cases).
+     * 用户操作记录（多数场景）。
      */
     public static final String OPERATION_LOG = "operation-log";
     /**
-     * The data change records (in most cases).
+     * 数据变更记录（多数场景）。
      */
     public static final String CHANGE_LOG = "change-log";
     /**
-     * The system's run logs (in most cases).
+     * 系统运行日志（多数场景）。
      */
     public static final String RUN_LOG = "run-log";
+    /**
+     * 任意事件类型（通配符，仅用于消费者注册，不作为事件的真实类型）。
+     */
+    public static final String ANY = "*";
     // endregion
 
 
-    // region ======== The static methods ========
+    // region ======== 静态方法 ========
 
     public static Event ofOperationLog() {
 
@@ -61,10 +96,11 @@ public class Event implements Builder {
     // endregion
 
 
-    // region ======== The event object ========
+    // region ======== 事件字段 ========
 
     private Level  level = Level.INFO;
     private String name;
+    private Object id;
     private Long   time;
     private Object userId;
     private Object userType;
@@ -94,6 +130,16 @@ public class Event implements Builder {
 
     public Event setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public Object getId() {
+
+        return id;
+    }
+
+    public Event setId(Object id) {
+        this.id = id;
         return this;
     }
 
@@ -217,6 +263,17 @@ public class Event implements Builder {
         return this;
     }
 
+    /**
+     * 追加错误信息，写入 Throwable 的完整堆栈（区别于 {@link #appendError(Object)} 只写入 {@code toString()}）。
+     *
+     * @param error 待追加的异常对象
+     * @return 当前事件记录
+     */
+    public Event appendError(Throwable error) {
+        this.error.append(ExceptionUtil.toString(error));
+        return this;
+    }
+
     public Dict getData() {
 
         return data;
@@ -241,6 +298,7 @@ public class Event implements Builder {
     public Dict build() {
         return Dict.of("level",  level.getValue())
                 .set("name",     name)
+                .set("id",       id)
                 .set("time",     time)
                 .set("userId",   userId)
                 .set("userType", userType)
@@ -257,30 +315,31 @@ public class Event implements Builder {
     // endregion
 
 
-    // region ======== The event level ========
+    // region ======== 事件级别 ========
     /**
-     * The event level.
+     * 事件级别。
+     *
      * @author Kahle
      */
     public enum Level {
         /**
-         * The trace level.
+         * 跟踪级别。
          */
         TRACE(1),
         /**
-         * The debug level.
+         * 调试级别。
          */
         DEBUG(2),
         /**
-         * The info level.
+         * 信息级别。
          */
         INFO(3),
         /**
-         * The warning level.
+         * 警告级别。
          */
         WARN(4),
         /**
-         * The error level.
+         * 错误级别。
          */
         ERROR(5),
         ;

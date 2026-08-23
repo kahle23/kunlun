@@ -39,4 +39,11 @@ public class EventCollectorTest {
                 .appendMessage("Hello, test3! "));
     }
 
+    @Test
+    public void test4() {
+        // shortcut 路由：Action 总线入口投递的事件仍须送达 event-collector
+        ActionUtil.execute(Event.of("info:test4")
+                .appendMessage("Compat shell event!"));
+    }
+
 }
