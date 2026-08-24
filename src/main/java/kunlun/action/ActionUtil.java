@@ -5,16 +5,18 @@
 
 package kunlun.action;
 
-import kunlun.action.event.support.SimpleEventCollector;
+import kunlun.action.notification.support.SimpleNotificationService;
 import kunlun.action.util.net.MediaTypeAction;
 import kunlun.common.constant.Nil;
 import kunlun.core.Action;
 import kunlun.data.Event;
+import kunlun.action.event.support.SimpleEventCollector;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.message.model.Message;
 import kunlun.message.model.Subscribe;
 import kunlun.message.support.SimpleMessageBus;
+import kunlun.notification.model.Notification;
 import kunlun.util.Assert;
 import kunlun.util.CastUtil;
 
@@ -38,6 +40,9 @@ public class ActionUtil {
         mgr.registerShortcut(Subscribe.class, name);
         name = "media-type";
         mgr.registerAction(name, new MediaTypeAction());
+        name = "notification-service";
+        mgr.registerAction(name, new SimpleNotificationService());
+        mgr.registerShortcut(Notification.class, name);
         return mgr;
     }
 

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.kahle23</groupId>
     <artifactId>kunlun</artifactId>
-    <version>1.0.27_1</version>
+    <version>1.0.28</version>
     <packaging>jar</packaging>
     <name>kunlun</name>
     <url>https://github.com/kahle23/kunlun</url>
@@ -38,19 +38,19 @@
         <developerConnection>https://github.com/kahle23</developerConnection>
     </scm>
 
-    <!--<distributionManagement>
+    <distributionManagement>
 
         <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <id>2001028-snapshot-E0xwVE</id>
+            <url>https://packages.aliyun.com/5ea4822bf89c9700014a5d6b/maven/2001028-snapshot-e0xwve</url>
         </snapshotRepository>
 
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/releases</url>
+            <id>2001028-release-VFcx3p</id>
+            <url>https://packages.aliyun.com/5ea4822bf89c9700014a5d6b/maven/2001028-release-vfcx3p</url>
         </repository>
 
-    </distributionManagement>-->
+    </distributionManagement>
 
     <dependencies>
 

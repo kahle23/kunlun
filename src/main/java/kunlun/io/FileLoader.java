@@ -13,5 +13,6 @@ import java.io.InputStream;
  * The file loader.
  * @author Kahle
  */
+// todo update to Function
 public interface FileLoader extends Loader<Object, InputStream> {
 }
