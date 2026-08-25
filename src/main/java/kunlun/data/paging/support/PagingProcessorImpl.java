@@ -22,7 +22,7 @@ public class PagingProcessorImpl implements PagingProcessor {
 
     @Override
     public void setDefaultPageSize(Integer defaultPageSize) {
-        Assert.notNull(defaultPageNum, "Parameter \"defaultPageNum\" must not null. ");
+        Assert.notNull(defaultPageSize, "Parameter \"defaultPageSize\" must not null. ");
         this.defaultPageSize = defaultPageSize;
     }
 
@@ -34,7 +34,7 @@ public class PagingProcessorImpl implements PagingProcessor {
 
     @Override
     public void setDefaultPageNum(Integer defaultPageNum) {
-        Assert.notNull(defaultPageSize, "Parameter \"defaultPageSize\" must not null. ");
+        Assert.notNull(defaultPageNum, "Parameter \"defaultPageNum\" must not null. ");
         this.defaultPageNum = defaultPageNum;
     }
 

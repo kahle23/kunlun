@@ -42,6 +42,6 @@
  * <p>默认预挂 {@code SimpleEventCollector}（默认收集器名：补全时间 + 本地桥接分发消费者）与
  * {@code LogEventConsumer}（任意类型打印事件摘要），可与其他收集器 / 消费者自由组合。
  *
- * <p>子包：{@code support}（默认提供者、日志消费者与批量优先收集器基类实现）。
+ * <p>子包：{@code support}（默认提供者与日志消费者）。
  */
 package kunlun.event;

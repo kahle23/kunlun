@@ -5,7 +5,6 @@
 
 package kunlun.action;
 
-import kunlun.action.notification.support.SimpleNotificationService;
 import kunlun.action.util.net.MediaTypeAction;
 import kunlun.common.constant.Nil;
 import kunlun.core.Action;
@@ -16,7 +15,6 @@ import kunlun.logging.LoggerFactory;
 import kunlun.message.model.Message;
 import kunlun.message.model.Subscribe;
 import kunlun.message.support.SimpleMessageBus;
-import kunlun.notification.model.Notification;
 import kunlun.util.Assert;
 import kunlun.util.CastUtil;
 
@@ -40,9 +38,6 @@ public class ActionUtil {
         mgr.registerShortcut(Subscribe.class, name);
         name = "media-type";
         mgr.registerAction(name, new MediaTypeAction());
-        name = "notification-service";
-        mgr.registerAction(name, new SimpleNotificationService());
-        mgr.registerShortcut(Notification.class, name);
         return mgr;
     }
 
@@ -94,7 +89,7 @@ public class ActionUtil {
     /**
      * 执行指定逻辑，返回类型由调用处的赋值目标推断得出（无赋值目标时为 Object），
      * 实际是按 T 强转，类型不符会抛 ClassCastException；
-     * 若输入实现了 {@link Action.Input}，建议改用带类型声明的重载，由输入类型直接推断返回类型.
+     * 若输入实现了 {@link kunlun.core.Action.Input}，建议改用带类型声明的重载，由输入类型直接推断返回类型.
      *
      * @param command 包含 action 名称与策略的命令
      * @param input 执行指定逻辑时的主要输入对象
@@ -122,7 +117,7 @@ public class ActionUtil {
     /**
      * 执行指定逻辑，返回类型由输入参数的类型推断得出.<br />
      * <p>
-     * 输入必须实现 {@link Action.Input} 以声明其返回类型 R（当输入以 raw 方式使用时，R 为 Object）.
+     * 输入必须实现 {@link kunlun.core.Action.Input} 以声明其返回类型 R（当输入以 raw 方式使用时，R 为 Object）.
      *
      * @param command 包含 action 名称与策略的命令
      * @param arguments 执行指定逻辑时的其他相关参数

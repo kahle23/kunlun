@@ -16,18 +16,18 @@ import java.util.List;
  * 事件提供者 —— 事件子系统的管理器抽象：同时管理<b>收集器</b>与<b>消费者</b>两张注册表，
  * 并提供两类相互独立的投递入口：{@link #collect(String, Collection)}（路由收集器）与
  * {@link #consume(Collection)}（分发消费者）。单条便捷入口由静态门面
- * {@link EventUtil} 基于批量方法包装，本接口只保留批量 API。
+ * {@link kunlun.event.EventUtil} 基于批量方法包装，本接口只保留批量 API。
  *
  * <h3>三维度模型</h3>
  * <ul>
- *   <li>事件（{@link Event}）按<b>类型</b>划分：操作日志 / 变更日志 / 运行日志等
+ *   <li>事件（{@link kunlun.data.Event}）按<b>类型</b>划分：操作日志 / 变更日志 / 运行日志等
  *       （类型词汇即事件的 {@code name}）。</li>
  *   <li>收集器（{@link kunlun.data.event.EventCollector}）按<b>实现</b>划分：如日志收集器、MQ 收集器、
  *       MySQL 收集器，各自是一条完整的加工-落地管线，按实现名注册；
  *       大部分场景注册到 {@link #DEFAULT_COLLECTOR_NAME} 即可。</li>
- *   <li>消费者（{@link EventConsumer}）按<b>事件类型</b>挂载：挂载时由注册处指定类型，
+ *   <li>消费者（{@link kunlun.event.EventConsumer}）按<b>事件类型</b>挂载：挂载时由注册处指定类型，
  *       同一类型可挂多个消费者、同一消费者也可挂到多个类型，逐一分发，
- *       {@link Event#ANY} 通配任意类型。</li>
+ *       {@link kunlun.data.Event#ANY} 通配任意类型。</li>
  * </ul>
  *
  * <h3>投递语义（collect 与 consume 相互独立）</h3>
@@ -96,7 +96,7 @@ public interface EventProvider {
      * 按事件类型挂载消费者（同一类型可挂多个，同一消费者也可挂到多个类型，
      * 重复挂载同一消费者到同一类型将被忽略）。
      *
-     * @param eventType 事件类型（{@link Event#ANY} 通配任意类型）
+     * @param eventType 事件类型（{@link kunlun.data.Event#ANY} 通配任意类型）
      * @param consumer  待挂载的消费者
      */
     void registerConsumer(String eventType, EventConsumer consumer);
@@ -113,7 +113,7 @@ public interface EventProvider {
      * 获取某事件类型已挂载的全部消费者。
      *
      * @param eventType 事件类型
-     * @return 消费者列表快照或 null（未挂载）
+     * @return 消费者列表快照（未挂载时为空列表）
      */
     List<EventConsumer> getConsumers(String eventType);
 

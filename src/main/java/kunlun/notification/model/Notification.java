@@ -7,6 +7,10 @@ package kunlun.notification.model;
 
 import kunlun.common.model.Link;
 import kunlun.io.FileBase;
+import kunlun.notification.constant.ContentType;
+import kunlun.notification.constant.Priority;
+import kunlun.notification.constant.SenderType;
+import kunlun.notification.constant.TargetType;
 import kunlun.util.CollUtil;
 import kunlun.util.StrUtil;
 
@@ -18,7 +22,7 @@ import static kunlun.util.Assert.notNull;
 /**
  * 面向用户的通知消息，参照 <b>Windows 操作中心（通知中心）</b> 中的一条通知设计 ——
  * 可消除的瞬时消息，回答<i>「要告诉谁什么」</i>，面向终端用户。
- *
+ * <p>
  * <h3>定位</h3>
  * <ul>
  *   <li><b>用途：</b>承载可展示的消息（{@code title}/{@code content}）与跳转语义（{@code links}），
@@ -32,7 +36,7 @@ import static kunlun.util.Assert.notNull;
  *       类似 Windows 任务计划程序对事件作出反应），也可直接产生（ops 反馈、系统公告、人工广播）。
  *       它是独立的载体，不是 {@code Event} 的一个变种。</li>
  * </ul>
- *
+ * <p>
  * <h3>三载体关系</h3>
  * <pre>
  *   Event（发生了什么）——订阅/转化——&gt; Notification（告诉谁）
@@ -43,8 +47,8 @@ import static kunlun.util.Assert.notNull;
  *   <li>{@code Notification} = 用户消息（瞬时、已读/未读）。</li>
  *   <li>{@link kunlun.message.model.Message} = 总线消息单元（投递载荷）。</li>
  * </ul>
- * 三者均经 {@code Action} 总线调度，但保持各自独立载体，不得合并。
- *
+ * 三者是各自独立的载体，不得合并。
+ * <p>
  * <h3>字段一览</h3>
  * <table>
  *   <tr><th>分组</th><th>字段</th><th>回答的问题</th></tr>
@@ -60,45 +64,51 @@ import static kunlun.util.Assert.notNull;
  *   <tr><td>时效</td><td>{@code priority} / {@code expireTime}</td><td>多紧急、何时失效</td></tr>
  *   <tr><td>扩展</td><td>{@code extras}</td><td>通道差异化细节与纯展示信息</td></tr>
  * </table>
- *
+ * <p>
  * <h3>通道 ≠ 端</h3>
  * {@code channels} 描述的是「经哪种通道投递」，而非「在哪个端展示」。
  * 常见的端是通道的组合：
  * <ul>
- *   <li><b>WEB 站内信 / 小红点：</b>{@code CHANNEL_INTERNAL} 写入通知中心
- *       （它才是已读未读状态与未读数统计的数据源），可搭配 {@code CHANNEL_WEBSOCKET}
- *       在用户在线时实时弹窗 / 刷新红点；</li>
- *   <li><b>手机 APP 通知：</b>{@code CHANNEL_PUSH}；</li>
- *   <li><b>微信小程序通知：</b>{@code CHANNEL_WECHAT_MINI}（订阅消息）。</li>
+ *   <li><b>WEB 站内信 / 小红点：</b>{@code Channel.INTERNAL} 写入通知中心
+ *       （它才是已读未读状态与未读数统计的数据源）；</li>
+ *   <li><b>手机 APP 通知：</b>{@code Channel.PUSH}；</li>
+ *   <li><b>短信 / 邮件：</b>{@code Channel.SMS} / {@code Channel.EMAIL}。</li>
  * </ul>
- *
+ * 微信 / 钉钉 / 飞书等更多通道不在框架内置，由业务以字符串常量自行扩展（通道即字符串）。
+ * <p>
  * <h3>本模型不承载的内容</h3>
  * <ul>
  *   <li><b>接收人联系方式</b>（deviceToken / 手机号 / openId / 邮箱）：属接收人档案，
- *       由服务实现按 {@code targetIds} 自行解析，避免本模型与具体通道耦合；</li>
+ *       由消费者实现按 {@code targetIds} 自行解析，避免本模型与具体通道耦合；</li>
  *   <li><b>已读状态 / 阅读时间 / 通知记录 ID</b>：属「每个接收人一条」的投递记录
- *       （通知中心数据），群发命令对象上不存在，读取与已读标记经
- *       {@link kunlun.notification.NotificationService} 的读取侧方法完成；</li>
- *   <li><b>免打扰时段 / 通道偏好：</b>属用户偏好层，由服务实现在投递时叠加处理；</li>
+ *       （通知中心数据），群发命令对象上不存在，读取与已读标记经小红点服务
+ *       {@link kunlun.notification.BadgeService} 完成；</li>
+ *   <li><b>免打扰时段 / 通道偏好：</b>属用户偏好层，由消费者实现在投递时叠加处理；</li>
  *   <li><b>是否落库（通知中心）、是否转 {@link kunlun.message.model.Message} 走推送通道：</b>
- *       由服务实现决定，不在本模型上承载。</li>
+ *       由实现决定，不在本模型上承载。</li>
  * </ul>
  *
  * @author Kahle
- * @see NotificationConstants
+ * @see kunlun.notification.constant.Channel
+ * @see kunlun.notification.constant.TargetType
+ * @see kunlun.notification.constant.SenderType
+ * @see kunlun.notification.constant.ContentType
+ * @see kunlun.notification.constant.Priority
  * @see kunlun.data.Event
- * @see kunlun.notification.NotificationService
+ * @see kunlun.notification.NotificationProvider
  * @see kunlun.message.model.Message
  */
 public class Notification implements Serializable {
 
     // region ======== 字段：投递（通道与类型） ========
     /**
-     * 投递通道列表，取值见 {@link NotificationConstants} 的 {@code CHANNEL_} 前缀常量
-     * （如 {@link NotificationConstants#CHANNEL_INTERNAL}、{@link NotificationConstants#CHANNEL_PUSH}、
-     * {@link NotificationConstants#CHANNEL_WECHAT_MINI}）。
-     * 一条通知可同时走多个通道（如站内信 + 推送 + 短信）；
-     * 为空时由服务实现决定默认通道（通常为站内信）。
+     * 投递通道列表，取值见 {@link kunlun.notification.constant.Channel}
+     * （如 {@link kunlun.notification.constant.Channel#INTERNAL}、
+     * {@link kunlun.notification.constant.Channel#PUSH}、
+     * {@link kunlun.notification.constant.Channel#SMS}）；
+     * 框架只内置通用通道，微信 / 钉钉 / 飞书等由业务以字符串常量自行扩展。
+     * 一条通知可同时走多个通道（如站内信 + 推送 + 短信），单条通知内重复声明的通道由
+     * 投递分发自动去重；为空时按默认通道（{@link kunlun.notification.constant.Channel#INTERNAL} 站内信）处理。
      *
      * <p>注意「通道」不等于「端」，端的常见组合见类注释的
      * <i>通道 ≠ 端</i> 一节。</p>
@@ -116,19 +126,20 @@ public class Notification implements Serializable {
     private String type;
     // endregion
 
+
     // region ======== 字段：接收人 ========
     /**
-     * 接收人类型，取值见 {@link NotificationConstants} 的 {@code TARGET_TYPE_} 前缀常量，
+     * 接收人类型，取值见 {@link kunlun.notification.constant.TargetType}，
      * 与 {@code targetIds}、{@code excludedUserIds} 配合圈定接收范围。
      *
      * <p>仅支持单一类型：混搭多类接收人（用户 + 部门 + 角色）时拆成多条一次发送即可 ——
      * {@code send} 本就接受集合，落库后每接收人一条投递记录，去重键相同即为同一件事；
      * 不为少数场景加重接收范围解析的实现。</p>
      */
-    private String       targetType;
+    private String targetType;
     /**
      * 接收人标识列表：含义随 {@code targetType} 而定 —— 用户 ID、部门 ID、角色 ID 等；
-     * {@code targetType} 为 {@link NotificationConstants#TARGET_TYPE_ALL} 时可为空。
+     * {@code targetType} 为 {@link kunlun.notification.constant.TargetType#ALL} 时可为空。
      */
     private List<Object> targetIds;
     /**
@@ -139,16 +150,17 @@ public class Notification implements Serializable {
     private List<Object> excludedUserIds;
     // endregion
 
+
     // region ======== 字段：发送者 ========
     /**
-     * 发送者类型，取值见 {@link NotificationConstants} 的 {@code SENDER_TYPE_} 前缀常量，
-     * 默认 {@link NotificationConstants#SENDER_TYPE_SYSTEM}。
+     * 发送者类型，取值见 {@link kunlun.notification.constant.SenderType}，
+     * 默认 {@link kunlun.notification.constant.SenderType#SYSTEM}。
      * 展示端据此区分官方标识与用户头像（可跳个人主页）；
      * 聊天消息转通知时为 USER，此时 {@code senderId} 即消息发送人。
      * 它决定 {@code senderId} 的语义 —— 与 {@code targetType} 决定 {@code targetIds}
      * 语义是同一套约定，见 {@code senderId}。
      */
-    private String senderType = NotificationConstants.SENDER_TYPE_SYSTEM;
+    private String senderType = SenderType.SYSTEM;
     /**
      * 发送方展示名（如 "订单中心"、"系统管理员"），通知界面通常优先展示此字段，
      * 为空时由展示端回退到 {@code senderId}。
@@ -164,20 +176,21 @@ public class Notification implements Serializable {
     private Object senderId;
     // endregion
 
+
     // region ======== 字段：内容 ========
     /**
      * 通知标题：通知中心列表、推送横幅、邮件主题通常使用此字段。
      */
     private String title;
     /**
-     * 正文内容格式，取值见 {@link NotificationConstants} 的 {@code CONTENT_} 前缀常量，
-     * 默认 {@link NotificationConstants#CONTENT_TEXT}。
-     * 不支持富文本的通道（如短信）由服务实现自行降级处理。
+     * 正文内容格式，取值见 {@link kunlun.notification.constant.ContentType}，
+     * 默认 {@link kunlun.notification.constant.ContentType#TEXT}。
+     * 不支持富文本的通道（如短信）由消费者实现自行降级处理。
      */
-    private String contentType = NotificationConstants.CONTENT_TEXT;
+    private String contentType = ContentType.TEXT;
     /**
      * 逻辑模板码：与直接写 {@code title}/{@code content} 二选一。
-     * 约定此值为业务侧统一的「逻辑模板」标识 —— 多通道发送时由服务实现负责映射到
+     * 约定此值为业务侧统一的「逻辑模板」标识 —— 多通道发送时由消费者实现负责映射到
      * 各通道的物理模板（微信模板 ID、短信模板 ID、邮件模板互不相同），
      * 配合 {@code variables} 渲染出最终内容。
      */
@@ -196,7 +209,7 @@ public class Notification implements Serializable {
      * 如：查看 → /order/1、同意 → /approval/1/accept。
      *
      * <p>约定第一项为主跳转（点击通知本体）。通道仅支持单个跳转时（微信模板消息、
-     * 小程序订阅消息、推送点击）由服务实现取第一项、其余忽略；支持多按钮的通道
+     * 小程序订阅消息、推送点击）由消费者实现取第一项、其余忽略；支持多按钮的通道
      * （APP 通知操作按钮、通知中心展开操作）可全部适配。跳转是投递语义而非纯 UI 细节，
      * 故作为一等字段而非放入 {@code extras}。</p>
      */
@@ -208,6 +221,7 @@ public class Notification implements Serializable {
     private List<FileBase> attachments;
     // endregion
 
+
     // region ======== 字段：业务关联 ========
     /**
      * 关联业务类型（如 "order"、"approval-ticket"），与 {@code businessId} 配合定位具体单据 ——
@@ -218,17 +232,18 @@ public class Notification implements Serializable {
     /**
      * 关联业务标识（如订单 ID、审批单 ID），与 {@code businessType} 配合定位具体单据。
      */
-    private Object  businessId;
+    private Object businessId;
     // endregion
+
 
     // region ======== 字段：时效（优先级与过期） ========
     /**
-     * 优先级，取值见 {@link NotificationConstants} 的 {@code PRIORITY_} 前缀常量，
-     * 默认 {@link NotificationConstants#PRIORITY_NORMAL}。
+     * 优先级，取值见 {@link kunlun.notification.constant.Priority}，
+     * 默认 {@link kunlun.notification.constant.Priority#NORMAL}。
      * 影响推送通道的提醒强度（是否弹横幅 / 穿透勿扰）、通知列表排序等，
-     * 各通道的具体映射由服务实现决定。
+     * 各通道的具体映射由消费者实现决定。
      */
-    private String priority = NotificationConstants.PRIORITY_NORMAL;
+    private String priority = Priority.NORMAL;
     /**
      * 过期时间（毫秒时间戳，与 {@link kunlun.data.Event#getTime()} 同一量纲），
      * 为空表示不过期。过期后：
@@ -240,6 +255,7 @@ public class Notification implements Serializable {
      */
     private Long expireTime;
     // endregion
+
 
     // region ======== 字段：扩展 ========
     /**
@@ -465,11 +481,14 @@ public class Notification implements Serializable {
     // region ======== 构建器（Builder） ========
     /**
      * {@link Notification} 的构建器。
-     * <p>默认值：{@code targetType} 为 {@link NotificationConstants#TARGET_TYPE_USER}、
-     * {@code senderType} 为 {@link NotificationConstants#SENDER_TYPE_SYSTEM}、
-     * {@code contentType} 为 {@link NotificationConstants#CONTENT_TEXT}、
-     * {@code priority} 为 {@link NotificationConstants#PRIORITY_NORMAL}，
+     * <p>默认值：{@code targetType} 为 {@link kunlun.notification.constant.TargetType#USER}、
+     * {@code senderType} 为 {@link kunlun.notification.constant.SenderType#SYSTEM}、
+     * {@code contentType} 为 {@link kunlun.notification.constant.ContentType#TEXT}、
+     * {@code priority} 为 {@link kunlun.notification.constant.Priority#NORMAL}，
      * 集合类字段初始化为空集合，{@code build()} 时整体回填到 {@code Notification}。
+     * 注意 {@code title} / {@code content} 以 {@code StringBuilder} 累积构建，
+     * 未追加时 {@code build()} 得到的是<b>空串</b>（区别于直接 {@code new Notification()}
+     * 时对应字段的 null）。
      *
      * @author Kahle
      */
@@ -497,23 +516,23 @@ public class Notification implements Serializable {
         }
 
         private List<String> channels = new ArrayList<String>();
-        private String       type;
-        private String       targetType = NotificationConstants.TARGET_TYPE_USER;
+        private String type;
+        private String targetType = TargetType.USER;
         private List<Object> targetIds = new ArrayList<Object>();
         private List<Object> excludedUserIds = new ArrayList<Object>();
-        private String senderType = NotificationConstants.SENDER_TYPE_SYSTEM;
+        private String senderType = SenderType.SYSTEM;
         private String senderName;
         private Object senderId;
         private StringBuilder title = new StringBuilder();
-        private String contentType = NotificationConstants.CONTENT_TEXT;
+        private String contentType = ContentType.TEXT;
         private String templateId;
         private Map<String, Object> variables = new LinkedHashMap<String, Object>();
         private StringBuilder content = new StringBuilder();
         private List<Link> links = new ArrayList<Link>();
         private List<FileBase> attachments = new ArrayList<FileBase>();
         private String businessType;
-        private Object  businessId;
-        private String priority = NotificationConstants.PRIORITY_NORMAL;
+        private Object businessId;
+        private String priority = Priority.NORMAL;
         private Long expireTime;
         private Map<String, Object> extras = new LinkedHashMap<String, Object>();
 
@@ -537,7 +556,7 @@ public class Notification implements Serializable {
         /**
          * 追加一个投递通道，空白通道忽略不计。
          *
-         * @param channel 通道常量（见 {@link NotificationConstants} 的 {@code CHANNEL_} 前缀）
+         * @param channel 通道常量（见 {@link kunlun.notification.constant.Channel}）
          * @return 当前构建器
          */
         public Builder addChannel(String channel) {
@@ -641,14 +660,21 @@ public class Notification implements Serializable {
             return this;
         }
 
+        public Builder setTitle(String title) {
+            this.title = new StringBuilder(notNull(title));
+            return this;
+        }
+
         /**
-         * 追加标题片段。
+         * 追加标题片段，null 忽略不计。
          *
          * @param title 片段内容
          * @return 当前构建器
          */
         public Builder appendTitle(Object title) {
-            this.title.append(title);
+            if (title != null) {
+                this.title.append(title);
+            }
             return this;
         }
 
@@ -692,14 +718,21 @@ public class Notification implements Serializable {
             return this;
         }
 
+        public Builder setContent(String content) {
+            this.content = new StringBuilder(notNull(content));
+            return this;
+        }
+
         /**
-         * 追加正文片段。
+         * 追加正文片段，null 忽略不计。
          *
          * @param content 片段内容
          * @return 当前构建器
          */
         public Builder appendContent(Object content) {
-            this.content.append(content);
+            if (content != null) {
+                this.content.append(content);
+            }
             return this;
         }
 
@@ -808,7 +841,7 @@ public class Notification implements Serializable {
         }
 
         @Override
-        public Object build() {
+        public Notification build() {
             Notification notification = new Notification();
             notification.setChannels(channels);
             notification.setType(type);

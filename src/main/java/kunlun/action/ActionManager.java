@@ -89,7 +89,7 @@ public interface ActionManager {
     /**
      * 执行指定逻辑，返回类型由输入参数的类型推断得出.<br />
      * <p>
-     * 输入必须实现 {@link Action.Input} 以声明其返回类型 R（当输入以 raw 方式使用时，R 为 Object）.
+     * 输入必须实现 {@link kunlun.core.Action.Input} 以声明其返回类型 R（当输入以 raw 方式使用时，R 为 Object）.
      * <p>
      * 策略优先级: command 策略 > shortcut 策略
      *

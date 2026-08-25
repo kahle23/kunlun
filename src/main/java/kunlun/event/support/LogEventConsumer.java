@@ -5,8 +5,8 @@
 
 package kunlun.event.support;
 
-import kunlun.event.EventConsumer;
 import kunlun.data.Event;
+import kunlun.event.EventConsumer;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.time.DateUtil;
@@ -20,7 +20,7 @@ import static kunlun.common.constant.Symbols.NEWLINE;
 /**
  * 日志事件消费者 —— 将事件摘要打印到日志系统的通用消费者，可自由组合挂载：
  * <ul>
- *   <li>默认由 {@code SimpleEventProvider} 预挂到 {@link Event#ANY}（任意类型都打印），
+ *   <li>默认由 {@code SimpleEventProvider} 预挂到 {@link kunlun.data.Event#ANY}（任意类型都打印），
  *       承接原简单收集器的日志兜底职责；</li>
  *   <li>挂载类型由注册处决定，也可单独挂到某一事件类型（如排障时仅为变更日志追加打印），
  *       或与其他消费者、收集器并存（如 MySQL 收集器落库 + 本消费者打印双路）。</li>
@@ -30,14 +30,6 @@ import static kunlun.common.constant.Symbols.NEWLINE;
  */
 public class LogEventConsumer implements EventConsumer {
     private static final Logger log = LoggerFactory.getLogger(LogEventConsumer.class);
-
-    @Override
-    public void consume(Collection<Event> events) {
-        if (events == null) { return; }
-        for (Event event : events) {
-            show(event);
-        }
-    }
 
     /**
      * 打印单条事件摘要（消息超过 500 字符时截断显示）。
@@ -59,6 +51,14 @@ public class LogEventConsumer implements EventConsumer {
                 "Consumer:       " + getClass().getName() + NEWLINE +
                 "---- End Event ----" + NEWLINE;
         log.info(content);
+    }
+
+    @Override
+    public void consume(Collection<Event> events) {
+        if (events == null) { return; }
+        for (Event event : events) {
+            show(event);
+        }
     }
 
 }

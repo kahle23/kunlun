@@ -10,7 +10,7 @@ import kunlun.data.Event;
 import java.util.Collection;
 
 /**
- * 事件收集器 —— 事件日志子系统的服务接口（定位对齐 {@code MessageBus} / {@code NotificationService}），
+ * 事件收集器 —— 事件日志子系统的服务接口（定位对齐 {@code MessageBus} / {@code NotificationSender}），
  * 负责审计事件的加工与分发，参照 <b>Windows 事件日志服务</b> 的职责设计。
  *
  * <h3>管线契约</h3>
@@ -59,7 +59,7 @@ public interface EventCollector {
     void push(Event event);
 
     /**
-     * 批量加工事件记录 —— 默认逐条回调 {@link #process(Event)}，
+     * 批量加工事件记录 —— 未覆写的实现可逐条回调 {@link #process(Event)}，
      * 存储型收集器（如 MySQL）覆写此方法获得批量写入收益。
      *
      * @param events 待加工的事件记录集合
@@ -67,7 +67,7 @@ public interface EventCollector {
     void process(Collection<Event> events);
 
     /**
-     * 批量分发事件记录 —— 默认逐条回调 {@link #push(Event)}，
+     * 批量分发事件记录 —— 未覆写的实现可逐条回调 {@link #push(Event)}，
      * 存储型收集器（如 MySQL）覆写此方法获得批量写入收益。
      *
      * @param events 待分发的事件记录集合
