@@ -82,6 +82,27 @@ log/
 __pycache__/
 *.egg-info/
 
+### Node.js / Frontend: dependencies ###
+node_modules/
+.pnpm-store/
+
+### Node.js / Frontend: build output & cache ###
+dist-ssr/
+coverage/
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+.npm/
+
+### Node.js / Frontend: logs & debug ###
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+### Node.js / Frontend: local config (Vite convention) ###
+*.local
+
 ### AI Agent ###
 .workbuddy/
 .trae/
@@ -95,3 +116,10 @@ CLAUDE.md
 mvnw
 mvnw.cmd
 .mvn/
+
+### Skill 工具临时目录（如 baibao 命令运行时产物）###
+.baibao
+
+
+
+
