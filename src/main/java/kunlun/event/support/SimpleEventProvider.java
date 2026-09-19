@@ -5,17 +5,18 @@
 
 package kunlun.event.support;
 
-import kunlun.data.event.EventCollector;
 import kunlun.action.event.support.SimpleEventCollector;
+import kunlun.data.Event;
+import kunlun.data.event.EventCollector;
 import kunlun.event.EventConsumer;
 import kunlun.event.EventProvider;
-import kunlun.data.Event;
 import kunlun.logging.Logger;
 import kunlun.logging.LoggerFactory;
 import kunlun.util.StrUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,7 +36,8 @@ import static kunlun.util.Assert.notNull;
  * 如默认收集器补全 {@code time}），<b>不分发消费者</b>（跨服务链路中由对端服务的监听器解析后
  * 调用 {@code EventUtil.consume}）；后者按事件类型分组后整批交给匹配的消费者。
  * 注册通常在启动期完成，投递期仅做无锁遍历（注册表与消费者列表均按快照分发，
- * 避免遍历期间的挂载引起并发修改）。单个收集器 / 消费者的异常被隔离吞掉（记录错误日志），
+ * 避免遍历期间的挂载引起并发修改）。单个收集器 / 消费者的异常被隔离吞掉
+ * （消费者由本类隔离；收集器约定自吞异常，本类另行兜底，均记录错误日志），
  * 不影响其余分发与业务主流程。
  *
  * @author Kahle
@@ -44,7 +46,6 @@ public class SimpleEventProvider implements EventProvider {
     private static final Logger log = LoggerFactory.getLogger(SimpleEventProvider.class);
     protected final ConcurrentMap<String, List<EventConsumer>> consumers;
     protected final ConcurrentMap<String, EventCollector> collectors;
-
 
     protected SimpleEventProvider(ConcurrentMap<String, EventCollector> collectors,
                                   ConcurrentMap<String, List<EventConsumer>> consumers) {
@@ -97,8 +98,15 @@ public class SimpleEventProvider implements EventProvider {
             log.debug("The event collector \"{}\" is not registered, skip. ", name);
             return;
         }
-        // 收集事件记录（校验 + 补全时间 + 加工 + 分发）。
-        collector.collect(events);
+        // 收集事件记录（校验 + 补全时间 + 加工 + 分发）；收集器约定自吞异常，此处再兜底隔离，
+        // 保证不守约的收集器也不影响业务主流程。
+        try {
+            collector.collect(events);
+        }
+        catch (Exception e) {
+            log.error("An error has occurred with the event collector \""
+                    + collector.getClass().getName() + "\". ", e);
+        }
     }
 
     @Override
@@ -126,23 +134,30 @@ public class SimpleEventProvider implements EventProvider {
     @Override
     public List<EventConsumer> getConsumers(String eventType) {
         List<EventConsumer> consumerList = consumers.get(eventType);
-        return consumerList == null ? null : new ArrayList<EventConsumer>(consumerList);
+        if (consumerList == null) { return new ArrayList<EventConsumer>(); }
+        return new ArrayList<EventConsumer>(consumerList);
     }
 
     @Override
     public void consume(Collection<Event> events) {
         if (events == null || events.isEmpty()) { return; }
-        // 按事件类型分组，整批交给该类型挂载的全部消费者；ANY 类型匹配整批。
+        // 先按事件类型分组（跳过 null 事件），再按注册类型取子批分发；ANY 类型匹配整批。
+        List<Event> all = new ArrayList<Event>(events.size());
+        Map<String, List<Event>> group = new HashMap<String, List<Event>>();
+        for (Event event : events) {
+            if (event == null) { continue; }
+            all.add(event);
+            List<Event> sameType = group.get(event.getName());
+            if (sameType == null) {
+                sameType = new ArrayList<Event>();
+                group.put(event.getName(), sameType);
+            }
+            sameType.add(event);
+        }
+        if (all.isEmpty()) { return; }
         for (Map.Entry<String, List<EventConsumer>> entry : consumers.entrySet()) {
             String eventType = entry.getKey();
-            List<Event> matched = null;
-            for (Event event : events) {
-                if (event == null) { continue; }
-                if (Event.ANY.equals(eventType) || eventType.equals(event.getName())) {
-                    if (matched == null) { matched = new ArrayList<Event>(); }
-                    matched.add(event);
-                }
-            }
+            List<Event> matched = Event.ANY.equals(eventType) ? all : group.get(eventType);
             if (matched == null) { continue; }
             // 按快照分发，避免遍历期间的挂载/摘除引起并发修改。
             for (EventConsumer consumer : new ArrayList<EventConsumer>(entry.getValue())) {

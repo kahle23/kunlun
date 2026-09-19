@@ -39,8 +39,10 @@ import static kunlun.util.Assert.notNull;
  *   <tr><td>业务关联（非 Windows 概念）</td><td>{@code businessType} / {@code businessId}</td></tr>
  * </table>
  *
- * <p>事件经由 {@link kunlun.data.event.EventCollector} 流转，其消费者可包括
- * 日志写入器（默认）以及可选的通知转发器。所有此类载体均通过 {@code Action} 总线统一调度。
+ * <p>事件经 {@link kunlun.event.EventUtil#collect(kunlun.data.Event)} 投递，由
+ * {@link kunlun.data.event.EventCollector} 加工分发，消费者默认包含日志打印
+ * （{@code LogEventConsumer}），也可挂载通知转发器等；{@code Action} 总线入口
+ * （{@code ActionUtil.execute(event)}）已弃用。
  *
  * @author Kahle
  * @see kunlun.notification.model.Notification

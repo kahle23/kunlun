@@ -6,6 +6,8 @@
 package kunlun.reflect;
 
 import kunlun.cache.support.SimpleCache;
+import kunlun.data.bean.support.FieldBasedBeanMap;
+import kunlun.data.paging.support.SerialNumberFillerImpl;
 import kunlun.exception.UncheckedException;
 import kunlun.reflect.support.CacheReflectService;
 import kunlun.reflect.support.JdkReflectService;
@@ -17,6 +19,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +42,7 @@ public class ReflectUtilTest {
         protected String parentProtected = "pp";
         private String parentPrivate = "pri";
         public String parentPublic = "pub";
+        private String shadow = "parent-shadow";
 
         public String parentGreet() { return "parent"; }
 
@@ -47,6 +51,7 @@ public class ReflectUtilTest {
 
     public static class Child extends Parent implements Const {
         private String childName = "child";
+        private String shadow = "child-shadow";
         public static String staticValue = "sv";
 
         public String childGreet() { return "child"; }
@@ -99,12 +104,11 @@ public class ReflectUtilTest {
         for (Field field : fields) { names.add(field.getName()); }
         // 无重复
         assertEquals(fields.length, names.size());
-        // 本类私有、父类 protected/public 均收录
+        // 本类私有、父类 protected/public/private 均收录
         assertTrue(names.contains("childName"));
         assertTrue(names.contains("parentProtected"));
         assertTrue(names.contains("parentPublic"));
-        // 父类 private 排除
-        assertFalse(names.contains("parentPrivate"));
+        assertTrue(names.contains("parentPrivate"));
         // User 共 11 个字段
         assertEquals(11, ReflectUtil.getAllFields(User.class).length);
     }
@@ -113,8 +117,10 @@ public class ReflectUtilTest {
     public void testGetFieldVariants() {
         assertNotNull(ReflectUtil.getField(Child.class, "childName"));
         assertNotNull(ReflectUtil.getField(Child.class, "parentProtected"));
-        // 父类 private 字段找不到
-        assertNull(ReflectUtil.getField(Child.class, "parentPrivate"));
+        // 父类 private 字段同样返回（已取消访问限制）
+        Field parentPrivate = ReflectUtil.getField(Child.class, "parentPrivate");
+        assertNotNull(parentPrivate);
+        assertEquals(Parent.class, parentPrivate.getDeclaringClass());
         // 接口常量走 public 主路径
         assertNotNull(ReflectUtil.getField(Child.class, "CONST"));
         assertEquals("const-value", ReflectUtil.getFieldValue(new Child(), "CONST"));
@@ -127,12 +133,29 @@ public class ReflectUtilTest {
         catch (UncheckedException e) {
             assertTrue(e.getCause() instanceof NoSuchFieldException);
         }
-        // hasField 与 getField 的命中/未命中语义一致（含父类 private 不可见、接口常量）
+        // hasField 与 getField 的命中/未命中语义一致（含父类 private、接口常量）
         assertTrue(ReflectUtil.hasField(Child.class, "childName"));
         assertTrue(ReflectUtil.hasField(Child.class, "parentProtected"));
+        assertTrue(ReflectUtil.hasField(Child.class, "parentPrivate"));
         assertTrue(ReflectUtil.hasField(Child.class, "CONST"));
-        assertFalse(ReflectUtil.hasField(Child.class, "parentPrivate"));
         assertFalse(ReflectUtil.hasField(Child.class, "nope"));
+    }
+
+    @Test
+    public void testSameNameFieldShadowing() {
+        // 子类与父类存在同名字段：getField 与 getAllFields 均以子类为准，父类同名字段被遮蔽
+        Field field = ReflectUtil.getField(Child.class, "shadow");
+        assertNotNull(field);
+        assertEquals(Child.class, field.getDeclaringClass());
+        int count = 0;
+        for (Field f : ReflectUtil.getAllFields(Child.class)) {
+            if ("shadow".equals(f.getName())) {
+                count++;
+                assertEquals(Child.class, f.getDeclaringClass());
+            }
+        }
+        assertEquals(1, count);
+        assertEquals("child-shadow", ReflectUtil.getFieldValue(new Child(), "shadow"));
     }
 
     @Test
@@ -144,6 +167,10 @@ public class ReflectUtilTest {
         assertEquals("x", ReflectUtil.getFieldValue(child, "childName"));
         ReflectUtil.setFieldValue(child, "parentProtected", "y");
         assertEquals("y", ReflectUtil.getFieldValue(child, "parentProtected"));
+        // 父类 private 字段可直接读写
+        assertEquals("pri", ReflectUtil.getFieldValue(child, "parentPrivate"));
+        ReflectUtil.setFieldValue(child, "parentPrivate", "p2");
+        assertEquals("p2", ReflectUtil.getFieldValue(child, "parentPrivate"));
         // 静态字段：target 传 Class 或实例均可
         assertEquals("sv", ReflectUtil.getFieldValue(Child.class, "staticValue"));
         ReflectUtil.setFieldValue(Child.class, "staticValue", "sv2");
@@ -167,8 +194,8 @@ public class ReflectUtilTest {
         for (Method method : methods) { names.add(method.getName()); }
         assertTrue(names.contains("childGreet"));
         assertTrue(names.contains("parentGreet"));
-        // 父类 private 方法排除；Object 继承方法收录
-        assertFalse(names.contains("parentSecret"));
+        // 父类 private 方法同样收录；Object 继承方法收录
+        assertTrue(names.contains("parentSecret"));
         assertTrue(names.contains("toString"));
     }
 
@@ -273,6 +300,67 @@ public class ReflectUtilTest {
         catch (UncheckedException e) {
             assertTrue(e.getCause() instanceof NoSuchMethodException);
         }
+    }
+
+    // ==================== 继承场景（公共基类字段） ====================
+
+    /**
+     * 模拟"公共出参基类"：字段全部 private 声明在父类、子类只声明业务字段（同 BaseResult1 + Lombok 场景）。
+     */
+    public static class BaseRow {
+        private int serialNumber;
+        private String createUser;
+        private String createdByName;
+
+        public int getSerialNumber() { return serialNumber; }
+    }
+
+    public static class AssetRow extends BaseRow {
+        private String assetNo;
+
+        public String getAssetNo() { return assetNo; }
+    }
+
+    @Test
+    public void testInheritedPrivateFieldOperations() {
+        assertNotNull(ReflectUtil.getField(AssetRow.class, "serialNumber"));
+        AssetRow row = new AssetRow();
+        // 名字版读写操作对父类 private 字段可用
+        ReflectUtil.setFieldValue(row, "serialNumber", 7);
+        assertEquals(Integer.valueOf(7), ReflectUtil.getFieldValue(row, "serialNumber"));
+        ReflectUtil.setFieldValue(row, "createUser", "u1");
+        assertEquals("u1", ReflectUtil.getFieldValue(row, "createUser"));
+        // 子类自身字段不受影响
+        ReflectUtil.setFieldValue(row, "assetNo", "AN-1");
+        assertEquals("AN-1", row.getAssetNo());
+    }
+
+    @Test
+    public void testFieldBasedBeanMapInheritedField() {
+        // 数据回填链路（ClassicFiller 的 FieldBasedBeanMap 视图）：父类 private 字段可读（提取查询条件）、可写（回填名称）
+        AssetRow row = new AssetRow();
+        ReflectUtil.setFieldValue(row, "createUser", "1001");
+        FieldBasedBeanMap beanMap = new FieldBasedBeanMap(row);
+        assertEquals("1001", beanMap.get("createUser"));
+        assertNull(beanMap.get("createdByName"));
+        beanMap.put("createdByName", "张三");
+        assertEquals("张三", beanMap.get("createdByName"));
+        // 回填写入真实落到对象字段上
+        assertEquals("张三", ReflectUtil.getFieldValue(row, "createdByName"));
+        // 子类字段照常
+        beanMap.put("assetNo", "TH0000001");
+        assertEquals("TH0000001", row.getAssetNo());
+    }
+
+    @Test
+    public void testSerialNumberFillerInheritedField() {
+        // 序号填充链路：serialNumber 声明在父类 private 时同样可填（第 2 页、每页 10 条）
+        List<AssetRow> list = new ArrayList<AssetRow>();
+        for (int i = 0; i < 3; i++) { list.add(new AssetRow()); }
+        new SerialNumberFillerImpl().fill(list, null, 2, 10);
+        assertEquals(11, list.get(0).getSerialNumber());
+        assertEquals(12, list.get(1).getSerialNumber());
+        assertEquals(13, list.get(2).getSerialNumber());
     }
 
     // ==================== 门面路由 ====================

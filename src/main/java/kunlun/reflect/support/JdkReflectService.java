@@ -25,6 +25,10 @@ import static kunlun.common.constant.Numbers.ZERO;
  * {@link AbstractReflectService}。通常作为 {@link CacheReflectService} 的被代理对象使用，
  * 如 {@code new CacheReflectService(new JdkReflectService())}。
  *
+ * <p>查找层是纯查询：沿父类链收录/返回全部声明成员（含父类 private），不按可见性过滤、不改变访问标记；
+ * "取消访问限制"由操作层（getFieldValue / setFieldValue / invoke 内的 makeAccessible）在读写时兜底。
+ * 缘由详见 {@link ReflectService} 接口文档"查找与可访问性的职责划分"。
+ *
  * @author Kahle
  */
 public class JdkReflectService extends AbstractReflectService {
@@ -35,15 +39,13 @@ public class JdkReflectService extends AbstractReflectService {
     @Override
     public Field[] getAllFields(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        Class<?> inputClazz = clazz;
         Map<String, Field> fieldByName = new LinkedHashMap<String, Field>();
         while (clazz != null) {
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
-                // 本类全部取，父类仅取非 private；同名子类优先
-                if (notAccess(inputClazz, clazz, field)) { continue; }
+                // 全层次字段均收录（含父类 private）；同名子类优先。
+                // 查找层只负责"找到"，不改变访问标记，可访问性由读写操作的 makeAccessible 统一兜底
                 if (fieldByName.containsKey(field.getName())) { continue; }
-                makeAccessible(field);
                 fieldByName.put(field.getName(), field);
             }
             // 接口中的字段均为 public，会被子类继承
@@ -56,16 +58,15 @@ public class JdkReflectService extends AbstractReflectService {
     public Field getField(Class<?> clazz, String fieldName) {
         Assert.notBlank(fieldName, "Parameter \"fieldName\" must not blank. ");
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        // 优先获取类层次（含接口）中的 public 字段，失败则沿父类链逐级查找声明字段（含非 public）
+        // 优先获取类层次（含接口）中的 public 字段，失败则沿父类链逐级查找声明字段（含父类 private）。
+        // 查找层只负责"找到"，不改变访问标记，可访问性由 getFieldValue/setFieldValue 的 makeAccessible 统一兜底
         try {
             return clazz.getField(fieldName);
         }
         catch (NoSuchFieldException e) {
-            Class<?> inputClazz = clazz;
             while (clazz != null) {
                 try {
-                    Field field = clazz.getDeclaredField(fieldName);
-                    if (!notAccess(inputClazz, clazz, field)) { return field; }
+                    return clazz.getDeclaredField(fieldName);
                 }
                 catch (NoSuchFieldException ignored) { }
                 clazz = clazz.getSuperclass();
@@ -105,16 +106,14 @@ public class JdkReflectService extends AbstractReflectService {
     @Override
     public Method[] getAllMethods(Class<?> clazz) {
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        Class<?> inputClazz = clazz;
         Map<String, Method> methodBySignature = new LinkedHashMap<String, Method>();
         while (clazz != null) {
             Method[] methods = clazz.getDeclaredMethods();
             for (Method method : methods) {
-                // 本类全部取，父类仅取非 private；"名 + 形参类型"相同子类优先
-                if (notAccess(inputClazz, clazz, method)) { continue; }
+                // 全层次方法均收录（含父类 private）；同名同形参签名子类优先。
+                // 查找层只负责"找到"，不改变访问标记，可访问性由 invoke 的 makeAccessible 统一兜底
                 String signature = buildMethodSignature(method.getName(), method.getParameterTypes());
                 if (methodBySignature.containsKey(signature)) { continue; }
-                makeAccessible(method);
                 methodBySignature.put(signature, method);
             }
             clazz = clazz.getSuperclass();
@@ -126,16 +125,15 @@ public class JdkReflectService extends AbstractReflectService {
     public Method getMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
         Assert.notBlank(methodName, "Parameter \"methodName\" must not blank. ");
         Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
-        // 优先在类层次（含接口）中精确匹配 public 方法，失败则沿父类链逐级查找声明方法（含非 public）
+        // 优先在类层次（含接口）中精确匹配 public 方法，失败则沿父类链逐级查找声明方法（含父类 private）。
+        // 查找层只负责"找到"，不改变访问标记，可访问性由 invoke 的 makeAccessible 统一兜底
         try {
             return clazz.getMethod(methodName, parameterTypes);
         }
         catch (NoSuchMethodException e) {
-            Class<?> inputClazz = clazz;
             while (clazz != null) {
                 try {
-                    Method method = clazz.getDeclaredMethod(methodName, parameterTypes);
-                    if (!notAccess(inputClazz, clazz, method)) { return method; }
+                    return clazz.getDeclaredMethod(methodName, parameterTypes);
                 }
                 catch (NoSuchMethodException ignored) { }
                 clazz = clazz.getSuperclass();
@@ -235,13 +233,6 @@ public class JdkReflectService extends AbstractReflectService {
 
     // endregion ======== 操作 ========
 
-
-    // region ======== 内部工具 ========
-
-    protected boolean notAccess(Class<?> thisClazz, Class<?> superClazz, Member member) {
-        // 本类成员全部可访问；来自父类的 private 成员不可访问
-        return thisClazz != superClazz && Modifier.isPrivate(member.getModifiers());
-    }
 
     // endregion ======== 内部工具 ========
 

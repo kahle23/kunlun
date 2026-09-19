@@ -18,7 +18,7 @@ import org.junit.Test;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import static kunlun.util.ObjUtil.cast;
+import static kunlun.util.CastUtil.cast;
 
 /**
  * The conversion tools Test.

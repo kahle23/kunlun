@@ -4,7 +4,7 @@
  */
 
 /**
- * 事件子系统 —— 审计事实的采集、加工与分发，参照 <b>Windows 事件日志（Event Log）</b> 设计，
+ * 事件模块 —— 审计事实的采集、加工与分发，参照 <b>Windows 事件日志（Event Log）</b> 设计，
  * 与 {@code kunlun.message}（总线载体）、{@code kunlun.notification}（用户通知）平级，构成三载体体系：
  * <pre>
  *   Event（发生了什么）——订阅/转化——&gt; Notification（告诉谁）
@@ -42,6 +42,6 @@
  * <p>默认预挂 {@code SimpleEventCollector}（默认收集器名：补全时间 + 本地桥接分发消费者）与
  * {@code LogEventConsumer}（任意类型打印事件摘要），可与其他收集器 / 消费者自由组合。
  *
- * <p>子包：{@code support}（默认提供者、日志消费者与批量优先收集器基类实现）。
+ * <p>子包：{@code support}（默认提供者与日志消费者）。
  */
 package kunlun.event;

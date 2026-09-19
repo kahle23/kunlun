@@ -18,6 +18,12 @@ import java.lang.reflect.Method;
  * {@link RuntimeException}（cause 为 JDK 原始异常）；"没找到是错误"的场景用 OrThrow，
  * "没找到是正常情况"的场景用普通 getXxx。
  *
+ * <p><b>查找与可访问性的职责划分：</b>反射中"找得到"与"能访问"是两件事——成员可见性不影响可查找性，
+ * 而运行期访问检查可由 {@code setAccessible(true)} 跳过。据此查找层（getAllXxx/getXxx 系列）是<b>纯查询</b>：
+ * 沿父类链收录全部声明成员（含父类 private），不按可见性过滤、不改变访问标记；"取消访问限制"作为授权
+ * 动作统一收敛到操作层 {@link #makeAccessible(AccessibleObject)}，由各操作方法在读写调用前兜底完成。
+ * 如此查找无副作用，成员语义与属性层（Introspector，天然含继承）一致，权限控制与审计也有唯一安放点。
+ *
  * @author Kahle
  */
 public interface ReflectService {
@@ -25,6 +31,9 @@ public interface ReflectService {
     // region ======== 可访问性 ========
     /**
      * 取消指定可访问对象的访问限制（如私有构造器、字段、方法等）。
+     * <p>本方法是框架内<b>唯一的访问授权收敛点</b>：查找层（getAllXxx/getXxx 系列）是纯查询、不做任何
+     * 访问性处理，所有成员的访问限制取消都经由本方法在读写/调用前完成（幂等：已可直接访问时不重复
+     * setAccessible）。如需按成员粒度做权限控制、审计或 JDK9+ 模块化降级，改这里即可全局生效。
      *
      * @param accessible 待操作的可访问对象
      */
@@ -44,8 +53,10 @@ public interface ReflectService {
 
     // region ======== 字段 ========
     /**
-     * 获取指定类及其父类中所有可访问的字段（含非 public，已取消访问限制）。收集规则：本类声明的全部字段 + 父类中非
-     * private 的字段，按字段名去重（子类优先）。
+     * 获取指定类及其父类中声明的全部字段（含父类 private）。收集规则：沿父类链逐层收录各层声明字段，
+     * 按字段名去重（同名子类优先）。查找层是纯查询，不改变访问标记；返回的字段经由
+     * {@link #getFieldValue(Object, String)} / {@link #setFieldValue(Object, String, Object)} 等操作方法读写时，
+     * 由操作层的 {@link #makeAccessible(AccessibleObject)} 统一兜底取消访问限制。
      *
      * @param clazz 待访问的类
      * @return 字段数组
@@ -53,7 +64,7 @@ public interface ReflectService {
     Field[] getAllFields(Class<?> clazz);
 
     /**
-     * 判断指定类中是否存在指定名称的字段（沿父类链向上查找）。
+     * 判断指定类中是否存在指定名称的字段（沿父类链向上查找，含父类 private 字段）。
      *
      * @param clazz     待访问的类
      * @param fieldName 字段名
@@ -62,7 +73,8 @@ public interface ReflectService {
     boolean hasField(Class<?> clazz, String fieldName);
 
     /**
-     * 按字段名获取指定类中匹配的字段（沿父类链向上查找），未找到返回 {@code null}。
+     * 按字段名获取指定类中匹配的字段（沿父类链向上查找，含父类 private 字段），未找到返回 {@code null}。
+     * 查找层不改变访问标记，读写请走操作方法（内部统一 {@link #makeAccessible(AccessibleObject)} 兜底）。
      *
      * @param clazz     待访问的类
      * @param fieldName 字段名
@@ -100,7 +112,7 @@ public interface ReflectService {
     Field[] getFields(Class<?> clazz);
 
     /**
-     * 获取指定类及其父类中所有可访问的字段（含非 public，已取消访问限制）。
+     * 获取指定类及其父类中声明的全部字段（含父类 private）。
      *
      * @param clazz 待访问的类
      * @return 字段数组
@@ -145,8 +157,10 @@ public interface ReflectService {
 
     // region ======== 方法 ========
     /**
-     * 获取指定类及其父类中所有可访问的方法（含非 public，已取消访问限制）。收集规则：本类声明的全部方法 + 父类中非
-     * private 的方法，按"方法名 + 形参类型"去重（子类优先）。
+     * 获取指定类及其父类中声明的全部方法（含父类 private）。收集规则：沿父类链逐层收录各层声明方法，
+     * 按"方法名 + 形参类型"去重（同名同签名子类优先）。查找层是纯查询，不改变访问标记；
+     * 返回的方法经由 {@link #invoke(Object, String, Object...)} 等操作方法调用时，
+     * 由操作层的 {@link #makeAccessible(AccessibleObject)} 统一兜底取消访问限制。
      *
      * @param clazz 待访问的类
      * @return 方法数组
@@ -154,7 +168,9 @@ public interface ReflectService {
     Method[] getAllMethods(Class<?> clazz);
 
     /**
-     * 按方法名与形参类型获取指定类中精确匹配的方法（沿父类链向上查找），未找到返回 {@code null}。
+     * 按方法名与形参类型获取指定类中精确匹配的方法（沿父类链向上查找，含父类 private 方法），
+     * 未找到返回 {@code null}。查找层不改变访问标记，调用请走操作方法（内部统一
+     * {@link #makeAccessible(AccessibleObject)} 兜底）。
      *
      * @param clazz          待访问的类
      * @param methodName     方法名
@@ -217,7 +233,7 @@ public interface ReflectService {
     Method[] getMethods(Class<?> clazz);
 
     /**
-     * 获取指定类及其父类中所有可访问的方法（含非 public，已取消访问限制）。
+     * 获取指定类及其父类中声明的全部方法（含父类 private）。
      *
      * @param clazz 待访问的类
      * @return 方法数组

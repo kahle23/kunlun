@@ -66,8 +66,9 @@ public class FieldBasedBeanMap extends BeanMap {
             return;
         }
         beanClass = bean.getClass();
-        Field[] declaredFields = ReflectUtil.getDeclaredFields(beanClass);
-        for (Field field : declaredFields) {
+        // 全层次字段（含父类 private，同名子类优先），使父类中声明的属性同样可读可写
+        Field[] allFields = ReflectUtil.getAllFields(beanClass);
+        for (Field field : allFields) {
             if (field != null) {
                 fieldMap.put(field.getName(), field);
             }
